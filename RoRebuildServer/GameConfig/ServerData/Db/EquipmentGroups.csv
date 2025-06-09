@@ -34,12 +34,12 @@ BardHigh,"Minstrel",BardHigh
 DancerHigh,"Gypsy",DancerHigh
 SoulLinker,"Soul Linker",SoulLinker
 StarGladiator,"Star Gladiator",StarGladiator
-SwordsmanHigh,"High Swordsman",SwordsmanHigh,KnightHigh,CrusaderHigh,SwordsmanHigh,KnightHigh,CrusaderHigh
-MerchantHigh,"High Merchant",MerchantHigh,BlacksmithHigh,AlchemistHigh,MerchantHigh,BlacksmithHigh,AlchemistHigh
-MageHigh,"High Mage",MageHigh,WizardHigh,SageHigh,MageHigh,WizardHigh,SageHigh
-ArcherHighGroup,"High Archer",ArcherHigh,HunterHigh,BardHigh,Dancer,ArcherHigh,HunterHigh,BardHigh,Dancer
-AcolyteHigh,"High Acolyte",AcolyteHigh,PriestHigh,MonkHigh,AcolyteHigh,PriestHigh,MonkHigh
-ThiefHigh,"High Thief",ThiefHigh,AssassinHigh,RogueHigh,ThiefHigh,AssassinHigh,RogueHigh
+SwordsmanHigh,"High Swordsman",SwordsmanHigh,KnightHigh,CrusaderHigh
+MerchantHigh,"High Merchant",MerchantHigh,BlacksmithHigh,AlchemistHigh
+MageHigh,"High Mage",MageHigh,WizardHigh,SageHigh
+ArcherHighGroup,"High Archer",ArcherHigh,HunterHigh,BardHigh,DancerHigh
+AcolyteHigh,"High Acolyte",AcolyteHigh,PriestHigh,MonkHigh
+ThiefHigh,"High Thief",ThiefHigh,AssassinHigh,RogueHigh
 TaekwonGroup,"Taekwon (Excluding Soul Linker)",Taekwon,StarGladiator
 Swordsman2ndJob,"Swordsman 2nd Job",Knight,Crusader
 Mage2ndPlusLinker,"<Auto>",Wizard,Sage,SoulLinker

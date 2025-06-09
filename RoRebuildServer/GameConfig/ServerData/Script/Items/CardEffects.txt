@@ -232,7 +232,7 @@ Item("Lude_Card") { OnValidate: return false; OnEquip: } //endure for novices
 Item("Rybio_Card") { OnEquip: } //stun resist
 Item("Leaf_Cat_Card") { OnEquip: AddStat(AddResistElementWater, 10); } //crystal blue from fish
 Item("Marin_Card") { OnEquip: } //add chance to get jellopy and giant jellopy on kill
-Item("Mastering_Card") { OnEquip: AddStat(AddLuk, 1); } //should combo with poring card
+Item("Mastering_Card") { OnEquip: AddStat(AddLuk, 2); } //should combo with poring card
 Item("Maya_Purple_Card") { OnEquip: } //should allwo you to see hidden
 Item("Merman_Card") { OnEquip: AddStat(AddHpRecoveryPercent, 10); AddStat(AddSpRecoveryPercent, 10); }
 Item("Megalith_Card") { OnEquip: if(Refine < 6) {AddStat(AddMDef, 7);} } //mdef when upgraded < +6
@@ -264,7 +264,7 @@ Item("Stone_Shooter_Card") { OnEquip: AddStat(AddHit, 10); AddStat(AddAttackPowe
 Item("Sting_Card") { OnEquip: AddStat(AddDef, 2); if(Refine > 8) {AddStat(AddMDef, 5);} }
 Item("Spring_Rabbit_Card") { OnEquip: } //meat drop and bonus meat healing
 Item("Sleeper_Card") { OnEquip: } //sleepy box on fish kill
-Item("Cloud_Tower_Manager_Card") { OnEquip: AddStat(AddInt, 1); AddStat(AddCastTime, -8); }
+Item("Cloud_Tower_Manager_Card") { OnEquip: AddStat(AddInt, 1); AddStat(AddMagicAttackPower, 10); AddStat(AddCastTime, -5); }
 Item("Shinobi_Card") { OnEquip: AddStat(AddAgi, 1); AutoSpellWhenAttacked(Cloaking, 5, 100); } //autospell cloaking when attacked
 Item("Mi_Gao_Card") { OnValidate: return false; OnEquip: } //-50% damage from woe guardians...
 Item("Hermit_Plant_Card") { OnValidate: return false; OnEquip: } //herb drops from plant and herb healing

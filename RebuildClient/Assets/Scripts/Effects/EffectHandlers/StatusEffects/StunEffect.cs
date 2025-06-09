@@ -53,13 +53,9 @@ namespace Assets.Scripts.Effects.EffectHandlers.StatusEffects
                 var target = effect.FollowTarget.GetComponent<ServerControllable>();
                 if (target == null)
                     return false;
-                var height = 1.5f;
-                if (target.SpriteAnimator?.SpriteData != null)
-                    height = target.SpriteAnimator.SpriteData.StandingHeight / 50f;
-                if (target.CharacterType == CharacterType.Player || target.CharacterType == CharacterType.PlayerLikeNpc)
-                    height += 0.1f; //head height
+                var height = target.GetStandingHeight() * 0.667f;
                 
-                var sprite = effect.LaunchSpriteEffect(StunEffectSprite, 10f, height + height / 6f);
+                var sprite = effect.LaunchSpriteEffect(StunEffectSprite, 10f, height);
                 sprite.SpriteAnimator.BaseColor = new Color(1f, 1f, 1f, 1f);
                 sprite.SpriteAnimator.AnimSpeed = 1f;
                 sprite.SpriteAnimator.ChangeActionExact(0);
@@ -69,7 +65,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.StatusEffects
                 effect.AttachToBillboardGroup(BillboardStyle.Character, sprite.gameObject);
 
                 sprite.transform.localPosition = new Vector3(0f, 0f, -0.3f);
-                sprite.transform.localScale = new Vector3(2f, 2f, 2f);
+                sprite.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
                 sprite.transform.localRotation = Quaternion.identity;
                 
                 AudioManager.Instance.OneShotSoundEffect(-1, "_stun.ogg", effect.transform.position, 0.7f);

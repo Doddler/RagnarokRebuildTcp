@@ -117,3 +117,7 @@ RoRebuildServer/RoRebuildServer/Keys/
 Other/SkillsAll.txt
 Other/SkillsUnadded.txt
 Other/RoWikiGenerator/wwwroot/images/collections/
+Other/RoWikiGenerator/wwwroot/jobs/
+Other/RoWikiGenerator/wwwroot/maps/
+Other/RoWikiGenerator/wwwroot/regions/
+Other/RebuildTests/

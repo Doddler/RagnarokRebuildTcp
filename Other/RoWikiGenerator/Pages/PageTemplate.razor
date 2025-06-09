@@ -4,6 +4,9 @@
 {
     [Parameter] public string? Title { get; set; }
     [Parameter] public string? Content { get; set; }
+    [Parameter] public bool IsSubDir { get; set; }
+
+    public string relDir = "";
 }
 
 <html>
@@ -15,7 +18,18 @@
 
 </head>
 
-<link rel="stylesheet" type="text/css" href="rebuildinfo.css" />
+@if (IsSubDir)
+{
+    <link rel="stylesheet" type="text/css" href="../rebuildinfo.css" />
+    <link rel="stylesheet" type="text/css" href="../worldmap.css" />
+    relDir = "../";
+}
+else
+{
+    <link rel="stylesheet" type="text/css" href="rebuildinfo.css" />
+    <link rel="stylesheet" type="text/css" href="worldmap.css" />
+}
+
 
 <body>
     <table class="maintb" style="max-width: 1200px; margin-left: auto; margin-right: auto;">
@@ -24,7 +38,7 @@
 
                 <div id="topic-main">
 
-                    <b>RO Renewal</b>:<br> Ragnarok Online<br>Renewal Project
+                    <b>RO Rebuild</b>:<br> Ragnarok Online<br>Rebuild Project
                 </div>
 @* 
                 <div id="topic">
@@ -41,13 +55,13 @@
                     <h2 class="topicheader">Jobs</h2>
                     <div class="content">
                         <ul>
-                            <li class="sidebar"><a href="rebuildJobNovice.html">Novice</a></li>
-                            <li class="sidebar"><a href="rebuildJobSwordsman.html">Swordsman</a></li>
-                            <li class="sidebar"><a href="rebuildJobMage.html">Mage</a></li>
-                            <li class="sidebar"><a href="rebuildJobArcher.html">Archer</a></li>
-                            <li class="sidebar"><a href="rebuildJobThief.html">Thief</a></li>
-                            <li class="sidebar"><a href="rebuildJobAcolyte.html">Acolyte</a></li>
-                            <li class="sidebar"><a href="rebuildJobMerchant.html">Merchant</a></li>
+                            <li class="sidebar"><a href="@(relDir)jobs/JobNovice.html">Novice</a></li>
+                            <li class="sidebar"><a href="@(relDir)jobs/JobSwordsman.html">Swordsman</a></li>
+                            <li class="sidebar"><a href="@(relDir)jobs/JobMage.html">Mage</a></li>
+                            <li class="sidebar"><a href="@(relDir)jobs/JobArcher.html">Archer</a></li>
+                            <li class="sidebar"><a href="@(relDir)jobs/JobThief.html">Thief</a></li>
+                            <li class="sidebar"><a href="@(relDir)jobs/JobAcolyte.html">Acolyte</a></li>
+                            <li class="sidebar"><a href="@(relDir)jobs/JobMerchant.html">Merchant</a></li>
                         </ul>
                     </div>
                 </div>
@@ -57,8 +71,10 @@
                     <div class="content">
                         <ul>
 
-                            @* <li class="sidebar"><a href="#">Maps</a></li> *@
-                            <li class="sidebar"><a href="rebuildmonsters.html">Monsters</a></li>
+                            <li class="sidebar"><a href="@(relDir)WorldMap.html">World Map</a></li>
+                            <li class="sidebar"><a href="@(relDir)FieldMaps.html">Fields</a></li>
+                            <li class="sidebar"><a href="@(relDir)Dungeons.html">Dungeons</a></li>
+                            <li class="sidebar"><a href="@(relDir)MonsterListFull.html">Monsters</a></li>
                             <!--<li class="sidebar"><a href="#">Merchants</a></li>-->
                         </ul>
                     </div>
@@ -68,9 +84,9 @@
                     <h2 class="topicheader">Items</h2>
                     <div class="content">
                         <ul>
-                            @* <li class="sidebar"><a href="#">Weapons</a></li> *@
-                            @* <li class="sidebar"><a href="#">Equipment</a></li> *@
-                            <li class="sidebar"><a href="rebuildCards.html">Cards</a></li>
+                            <li class="sidebar"><a href="@(relDir)rebuildWeapons.html">Weapons</a></li>
+                            <li class="sidebar"><a href="#">Equipment</a></li>
+                            <li class="sidebar"><a href="@(relDir)rebuildCards.html">Cards</a></li>
                             @* <li class="sidebar"><a href="#">Consumables</a></li> *@
                             @* <li class="sidebar"><a href="#">Etc Items</a></li> *@
                         </ul>

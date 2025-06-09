@@ -10,5 +10,6 @@ public class ServerOperationConfig
     public bool AllowAdminifyCommand { get; set; }
     public string? AdminifyPasscode { get; set; }
     public bool RemapDropRates { get; set; }
+    public bool GuaranteeMvpDrops { get; set; } = true;
     public float EtcItemValueMultiplier { get; set; }
 }

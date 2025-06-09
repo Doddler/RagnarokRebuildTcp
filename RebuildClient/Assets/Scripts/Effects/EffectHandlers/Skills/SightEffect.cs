@@ -95,6 +95,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
                     data.Size = new Vector2(1.0f, 0.5f);
                     data.ScalingSpeed = -data.Size / 0.333f; //why is this scaling speed in speed per second and the other per frame? Who knows!
                     data.Alpha = 120;
+                    data.AlphaMax = 255;
                     data.AlphaSpeed = -3f * 60;
                     data.MinSize = Vector2.zero;
                     data.MaxSize = data.Size;

@@ -32,7 +32,7 @@ public partial class CombatEntity
                 var secondaryStat = Player.WeaponClass == 12 ? str : dex;
                 var weaponLvl = Player.Equipment.WeaponLevel;
                 var weaponAttack = Player.Equipment.WeaponAttackPower;
-                if (Player.WeaponClass == 12)
+                if (Player.WeaponClass == 12) //bow
                     atk1 = (int)(dex * (0.8f + 0.2f * weaponLvl)); //more or less pre-renewal
                 else
                     atk1 = (int)(float.Min(weaponAttack * 0.33f, mainStat) + dex * (0.8f + 0.2f * weaponLvl)); //kinda pre-renewal but primary stat makes up 1/3 of min
@@ -46,8 +46,8 @@ public partial class CombatEntity
                 if (Player.WeaponClass == 12 && Player.Equipment.AmmoId > 0 && Player.Equipment.AmmoType == AmmoType.Arrow) //bow with arrow
                     atk2 += Player.Equipment.AmmoAttackPower; //arrows don't affect min atk, only max
 
-                atk1 = (statAtk + atk1 + Player.Equipment.MinRefineAtkBonus) * attackPercent / 100;
-                atk2 = (statAtk + atk2 + Player.Equipment.MaxRefineAtkBonus) * attackPercent / 100;
+                atk1 = (statAtk + atk1) * attackPercent / 100;
+                atk2 = (statAtk + atk2) * attackPercent / 100;
             }
             else
             {
@@ -56,8 +56,8 @@ public partial class CombatEntity
                 var statMatkMin = addMatk + matkStat + (matkStat / 7) * (matkStat / 7);
                 var statMatkMax = addMatk + matkStat + (matkStat / 5) * (matkStat / 5);
                 var magicPercent = 100 + GetStat(CharacterStat.AddMagicAttackPercent);
-                atk1 = (statMatkMin + Player.Equipment.MinRefineAtkBonus) * magicPercent / 100;
-                atk2 = (statMatkMax + Player.Equipment.MaxRefineAtkBonus) * magicPercent / 100;
+                atk1 = (statMatkMin) * magicPercent / 100;
+                atk2 = (statMatkMax) * magicPercent / 100;
             }
         }
         else
@@ -111,6 +111,7 @@ public partial class CombatEntity
 
         //determine base damage from a min and max attack value
         var baseDamage = GameRandom.NextInclusive(atk1, atk2);
+        var addDamage = 0;
 
         //---------------------------
         // Evasion and Critical Hits
@@ -295,20 +296,24 @@ public partial class CombatEntity
                 racialMod += GetStat(CharacterStat.AddAttackRaceFormless + (int)targetRace);
 
                 //masteries, demonbane, etc
-                if (isPhysical && (target.GetRace() == CharacterRace.Demon || baseElementType == AttackElement.Undead))
-                    baseDamage += Player.MaxLearnedLevelOfSkill(CharacterSkill.DemonBane) * 3;
-                baseDamage += GetStat(CharacterStat.WeaponMastery);
+                if (target.GetRace() == CharacterRace.Demon || baseElementType == AttackElement.Undead)
+                    addDamage += Player.MaxLearnedLevelOfSkill(CharacterSkill.DemonBane) * 3;
+
+                addDamage += GetStat(CharacterStat.WeaponMastery);
 
                 if (isRanged)
                     rangeMod += GetStat(CharacterStat.AddAttackRangedAttack);
 
-                if(isCrit)
+                if (isCrit)
                     attackMultiplier *= 1 + GetStat(CharacterStat.AddCritDamageRaceFormless + (int)targetRace) / 100f;
 
                 sizeMod += GetStat(CharacterStat.AddAttackSmallSize + (int)defSize);
 
-                defMod = int.Clamp(100 - target.GetStat(CharacterStat.IgnoreDefRaceFormless + (int)targetRace), 0, 100);
+                defMod = int.Clamp(100 - GetStat(CharacterStat.IgnoreDefRaceFormless + (int)targetRace), 0, 100);
             }
+
+            if (Character.Type == CharacterType.Player && (flags & AttackFlags.IgnoreWeaponRefine) == 0)
+                addDamage += GameRandom.Next(Player.Equipment.MinRefineAtkBonus, Player.Equipment.MaxRefineAtkBonus); //works on both magic and physical!
         }
 
         //-------------------------------
@@ -323,14 +328,9 @@ public partial class CombatEntity
         {
             if (isPhysical)
             {
-                //armor def
+                //armor def.
                 var def = target.GetEffectiveStat(CharacterStat.Def);
-                if (target.Character.Type == CharacterType.Player)
-                {
-                    //+20% bonus (for non-upgrade def), in place of penalty for upgrade def
-                    def += target.GetStat(CharacterStat.Def) * 20 / 100; //GetStat instead of GetEffectiveStat to get base def value
-                }
-                
+
                 //soft def
                 if (!flags.HasFlag(AttackFlags.IgnoreSubDefense))
                 {
@@ -397,7 +397,7 @@ public partial class CombatEntity
         // Combined damage calculation
         //------------------------------
 
-        var damage = (int)((baseDamage * attackMultiplier * defCut - subDef) * (eleMod / 100f) * (racialMod / 100f) * (rangeMod / 100f) * (sizeMod / 100f));
+        var damage = (int)((baseDamage * attackMultiplier * defCut - subDef + addDamage) * (eleMod / 100f) * (racialMod / 100f) * (rangeMod / 100f) * (sizeMod / 100f));
         if (damage < 1)
             damage = 1;
 
@@ -410,8 +410,8 @@ public partial class CombatEntity
         }
         else
         {
-            //monsters deal 0.5% less damage per level they are below the player, to a max of -50%
-            lvCut -= 0.005f * (targetLevel - srcLevel);
+            //monsters deal 0.25% less damage per level they are below the player, to a max of -50%
+            lvCut -= 0.0025f * (targetLevel - srcLevel);
             lvCut = float.Clamp(lvCut, 0.5f, 1f);
         }
 
@@ -464,9 +464,9 @@ public partial class CombatEntity
             {
                 TriggerOnAttackEffects(target, req, ref di, isRanged);
                 target.TriggerWhenAttackedEffects(this, req, ref di);
-                if(Character.Type == CharacterType.Player && isPhysical)
+                if (Character.Type == CharacterType.Player && isPhysical)
                     TriggerAutoSpell(target, req, ref di);
-                if(target.Character.Type == CharacterType.Player && isPhysical)
+                if (target.Character.Type == CharacterType.Player && isPhysical)
                     target.TriggerWhenAttackedAutoSpell(this, req, ref di);
             }
         }
@@ -569,7 +569,7 @@ public partial class CombatEntity
                 {
                     if (GetStat(CharacterStat.UninterruptibleCast) > 0)
                         doInterrupt = false;
-                    if (CastTimeRemaining < 0.2f) 
+                    if (CastTimeRemaining < 0.2f)
                         doInterrupt = false; //character casts aren't interrupted by attacks if they are close to executing
                 }
 
@@ -592,11 +592,11 @@ public partial class CombatEntity
 #if DEBUG
         if (GodMode)
             damage = hp - 1;
-        
+
 #endif
-        
+
         hp -= damage;
-        
+
 
         SetStat(CharacterStat.Hp, hp);
 
@@ -642,7 +642,7 @@ public partial class CombatEntity
         if (Character.Type == CharacterType.Monster && Character.State == CharacterState.Idle)
         {
             Character.Monster.Target = di.Source;
-            if(Character.Monster.InAttackRange())
+            if (Character.Monster.InAttackRange())
                 Character.Monster.CurrentAiState = MonsterAiState.StateAttacking;
         }
 

@@ -1,0 +1,2226 @@
+﻿#worldMap {
+    zoom: 0.82;
+    position: relative;
+}
+
+#worldMap .layer {
+    transform-origin: top left;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.block {
+    position: absolute;
+}
+
+.mapImg {
+    width: 100%;
+    height: 100%;
+}
+
+/*map setup taken and customized from https://www.roziten.net/data/ */
+
+#tha_t01 {
+    width: 93px;
+    height: 21px;
+    top: 3px;
+    left: 552px;
+}
+
+#tha_t02 {
+    width: 93px;
+    height: 21px;
+    top: 3px;
+    left: 552px;
+}
+
+#tha_t03 {
+    width: 93px;
+    height: 21px;
+    top: 3px;
+    left: 552px;
+}
+
+#tha_t04 {
+    width: 93px;
+    height: 21px;
+    top: 3px;
+    left: 552px;
+}
+
+#tha_t05 {
+    width: 93px;
+    height: 21px;
+    top: 3px;
+    left: 552px;
+}
+
+#tha_t06 {
+    width: 93px;
+    height: 21px;
+    top: 3px;
+    left: 552px;
+}
+
+#tha_t07 {
+    width: 93px;
+    height: 21px;
+    top: 3px;
+    left: 552px;
+}
+
+#tha_t08 {
+    width: 93px;
+    height: 21px;
+    top: 3px;
+    left: 552px;
+}
+
+#tha_t09 {
+    width: 93px;
+    height: 21px;
+    top: 3px;
+    left: 552px;
+}
+
+#tha_t10 {
+    width: 93px;
+    height: 21px;
+    top: 3px;
+    left: 552px;
+}
+
+#tha_t11 {
+    width: 93px;
+    height: 21px;
+    top: 3px;
+    left: 552px;
+}
+
+#tha_t12 {
+    width: 93px;
+    height: 21px;
+    top: 3px;
+    left: 552px;
+}
+
+#mag_dun01 {
+    width: 85px;
+    height: 21px;
+    top: 45px;
+    left: 460px;
+}
+
+#mag_dun02 {
+    width: 85px;
+    height: 21px;
+    top: 45px;
+    left: 460px;
+}
+
+#ice_dun01 {
+    width: 67px;
+    height: 21px;
+    top: 121px;
+    left: 380px;
+}
+
+#ice_dun02 {
+    width: 67px;
+    height: 21px;
+    top: 121px;
+    left: 380px;
+}
+
+#ice_dun03 {
+    width: 67px;
+    height: 21px;
+    top: 121px;
+    left: 380px;
+}
+
+#ra_san01 {
+    width: 125px;
+    height: 21px;
+    top: 120px;
+    left: 215px;
+}
+
+#ra_san02 {
+    width: 125px;
+    height: 21px;
+    top: 120px;
+    left: 215px;
+}
+
+#ra_san03 {
+    width: 125px;
+    height: 21px;
+    top: 120px;
+    left: 215px;
+}
+
+#ra_san04 {
+    width: 125px;
+    height: 21px;
+    top: 120px;
+    left: 215px;
+}
+
+#ra_san05 {
+    width: 125px;
+    height: 21px;
+    top: 120px;
+    left: 215px;
+}
+
+#abyss_01 {
+    width: 140px;
+    height: 21px;
+    top: 10px;
+    left: 935px;
+}
+
+#abyss_02 {
+    width: 140px;
+    height: 21px;
+    top: 10px;
+    left: 935px;
+}
+
+#abyss_03 {
+    width: 140px;
+    height: 21px;
+    top: 10px;
+    left: 935px;
+}
+
+#juperos_01 {
+    width: 110px;
+    height: 21px;
+    top: 48px;
+    left: 1005px;
+}
+
+#juperos_02 {
+    width: 110px;
+    height: 21px;
+    top: 48px;
+    left: 1005px;
+}
+
+#jupe_core {
+    width: 110px;
+    height: 21px;
+    top: 48px;
+    left: 1005px;
+}
+
+#ver_eju {
+    width: 110px;
+    height: 21px;
+    top: 48px;
+    left: 1005px;
+}
+
+#ver_tunn {
+    width: 110px;
+    height: 21px;
+    top: 48px;
+    left: 1005px;
+}
+
+#verus04 {
+    width: 110px;
+    height: 21px;
+    top: 48px;
+    left: 1005px;
+}
+
+#verus03 {
+    width: 110px;
+    height: 21px;
+    top: 48px;
+    left: 1005px;
+}
+
+#verus02 {
+    width: 110px;
+    height: 21px;
+    top: 48px;
+    left: 1005px;
+}
+
+#verus01 {
+    width: 110px;
+    height: 21px;
+    top: 48px;
+    left: 1005px;
+}
+
+#kh_dun01 {
+    width: 98px;
+    height: 21px;
+    top: 127px;
+    left: 889px;
+}
+
+#kh_dun02 {
+    width: 98px;
+    height: 21px;
+    top: 127px;
+    left: 889px;
+}
+
+#c_tower1 {
+    width: 125px;
+    height: 21px;
+    top: 354px;
+    left: 927px;
+}
+
+#c_tower2 {
+    width: 125px;
+    height: 21px;
+    top: 354px;
+    left: 927px;
+}
+
+#c_tower3 {
+    width: 125px;
+    height: 21px;
+    top: 354px;
+    left: 927px;
+}
+
+#c_tower4 {
+    width: 125px;
+    height: 21px;
+    top: 354px;
+    left: 927px;
+}
+
+#alde_dun01 {
+    width: 125px;
+    height: 21px;
+    top: 354px;
+    left: 927px;
+}
+
+#alde_dun02 {
+    width: 125px;
+    height: 21px;
+    top: 354px;
+    left: 927px;
+}
+
+#alde_dun03 {
+    width: 125px;
+    height: 21px;
+    top: 354px;
+    left: 927px;
+}
+
+#alde_dun04 {
+    width: 125px;
+    height: 21px;
+    top: 354px;
+    left: 927px;
+}
+
+#c_tower1_ {
+    width: 125px;
+    height: 21px;
+    top: 354px;
+    left: 927px;
+}
+
+#c_tower2_ {
+    width: 125px;
+    height: 21px;
+    top: 354px;
+    left: 927px;
+}
+
+#c_tower3_ {
+    width: 125px;
+    height: 21px;
+    top: 354px;
+    left: 927px;
+}
+
+#c_tower4_ {
+    width: 125px;
+    height: 21px;
+    top: 354px;
+    left: 927px;
+}
+
+#ein_dun01 {
+    width: 95px;
+    height: 21px;
+    top: 360px;
+    left: 584px;
+}
+
+#ein_dun02 {
+    width: 95px;
+    height: 21px;
+    top: 360px;
+    left: 584px;
+}
+
+#mjo_dun01 {
+    width: 120px;
+    height: 21px;
+    top: 434px;
+    left: 510px;
+}
+
+#mjo_dun02 {
+    width: 120px;
+    height: 21px;
+    top: 434px;
+    left: 510px;
+}
+
+#mjo_dun03 {
+    width: 120px;
+    height: 21px;
+    top: 434px;
+    left: 510px;
+}
+
+#lhz_dun01 {
+    width: 105px;
+    height: 21px;
+    top: 372px;
+    left: 384px;
+}
+
+#lhz_dun02 {
+    width: 105px;
+    height: 21px;
+    top: 372px;
+    left: 384px;
+}
+
+#lhz_dun03 {
+    width: 105px;
+    height: 21px;
+    top: 372px;
+    left: 384px;
+}
+
+#lhz_dun04 {
+    width: 105px;
+    height: 21px;
+    top: 372px;
+    left: 384px;
+}
+
+#lhz_dun_n {
+    width: 105px;
+    height: 21px;
+    top: 372px;
+    left: 384px;
+}
+
+#thor_v01 {
+    width: 140px;
+    height: 21px;
+    top: 370px;
+    left: 60px;
+}
+
+#thor_v02 {
+    width: 140px;
+    height: 21px;
+    top: 370px;
+    left: 60px;
+}
+
+#thor_v03 {
+    width: 140px;
+    height: 21px;
+    top: 370px;
+    left: 60px;
+}
+
+#gl_cas01 {
+    width: 93px;
+    height: 21px;
+    top: 488px;
+    left: 282px;
+}
+
+#gl_cas02 {
+    width: 93px;
+    height: 21px;
+    top: 488px;
+    left: 282px;
+}
+
+#gl_church {
+    width: 93px;
+    height: 21px;
+    top: 488px;
+    left: 282px;
+}
+
+#gl_chyard {
+    width: 93px;
+    height: 21px;
+    top: 488px;
+    left: 282px;
+}
+
+#gl_dun01 {
+    width: 93px;
+    height: 21px;
+    top: 488px;
+    left: 282px;
+}
+
+#gl_dun02 {
+    width: 93px;
+    height: 21px;
+    top: 488px;
+    left: 282px;
+}
+
+#gl_in01 {
+    width: 93px;
+    height: 21px;
+    top: 488px;
+    left: 282px;
+}
+
+#gl_knt01 {
+    width: 93px;
+    height: 21px;
+    top: 488px;
+    left: 282px;
+}
+
+#gl_knt02 {
+    width: 93px;
+    height: 21px;
+    top: 488px;
+    left: 282px;
+}
+
+#gl_prison {
+    width: 93px;
+    height: 21px;
+    top: 488px;
+    left: 282px;
+}
+
+#gl_prison1 {
+    width: 93px;
+    height: 21px;
+    top: 488px;
+    left: 282px;
+}
+
+#gl_sew01 {
+    width: 93px;
+    height: 21px;
+    top: 488px;
+    left: 282px;
+}
+
+#gl_sew02 {
+    width: 93px;
+    height: 21px;
+    top: 488px;
+    left: 282px;
+}
+
+#gl_sew03 {
+    width: 93px;
+    height: 21px;
+    top: 488px;
+    left: 282px;
+}
+
+#gl_sew04 {
+    width: 93px;
+    height: 21px;
+    top: 488px;
+    left: 282px;
+}
+
+#gl_step {
+    width: 93px;
+    height: 21px;
+    top: 488px;
+    left: 282px;
+}
+
+#gl_chyard_ {
+    width: 93px;
+    height: 21px;
+    top: 488px;
+    left: 282px;
+}
+
+#gl_cas02_ {
+    width: 93px;
+    height: 21px;
+    top: 488px;
+    left: 282px;
+}
+
+#gef_dun00 {
+    width: 142px;
+    height: 21px;
+    top: 579px;
+    left: 288px;
+}
+
+#gef_dun01 {
+    width: 142px;
+    height: 21px;
+    top: 579px;
+    left: 288px;
+}
+
+#gef_dun02 {
+    width: 142px;
+    height: 21px;
+    top: 579px;
+    left: 288px;
+}
+
+#gefenia01 {
+    width: 80px;
+    height: 21px;
+    top: 649px;
+    left: 415px;
+}
+
+#gefenia02 {
+    width: 80px;
+    height: 21px;
+    top: 649px;
+    left: 415px;
+}
+
+#gefenia03 {
+    width: 80px;
+    height: 21px;
+    top: 649px;
+    left: 415px;
+}
+
+#gefenia04 {
+    width: 80px;
+    height: 21px;
+    top: 649px;
+    left: 415px;
+}
+
+#niflheim {
+    width: 90px;
+    height: 21px;
+    top: 661px;
+    left: 190px;
+}
+
+#nif_fild01 {
+    width: 90px;
+    height: 21px;
+    top: 661px;
+    left: 190px;
+}
+
+#nif_fild02 {
+    width: 90px;
+    height: 21px;
+    top: 661px;
+    left: 190px;
+}
+
+#orcsdun01 {
+    width: 118px;
+    height: 21px;
+    top: 710px;
+    left: 412px;
+}
+
+#orcsdun02 {
+    width: 118px;
+    height: 21px;
+    top: 710px;
+    left: 412px;
+}
+
+#moc_pryd01 {
+    width: 135px;
+    height: 21px;
+    top: 759px;
+    left: 425px;
+}
+
+#moc_pryd02 {
+    width: 135px;
+    height: 21px;
+    top: 759px;
+    left: 425px;
+}
+
+#moc_pryd03 {
+    width: 135px;
+    height: 21px;
+    top: 759px;
+    left: 425px;
+}
+
+#moc_pryd04 {
+    width: 135px;
+    height: 21px;
+    top: 759px;
+    left: 425px;
+}
+
+#moc_pryd05 {
+    width: 135px;
+    height: 21px;
+    top: 759px;
+    left: 425px;
+}
+
+#moc_pryd06 {
+    width: 135px;
+    height: 21px;
+    top: 759px;
+    left: 425px;
+}
+
+#moc_prydn1 {
+    width: 135px;
+    height: 21px;
+    top: 759px;
+    left: 425px;
+}
+
+#moc_prydn2 {
+    width: 135px;
+    height: 21px;
+    top: 759px;
+    left: 425px;
+}
+
+#in_sphinx1 {
+    width: 139px;
+    height: 21px;
+    top: 798px;
+    left: 406px;
+}
+
+#in_sphinx2 {
+    width: 139px;
+    height: 21px;
+    top: 798px;
+    left: 406px;
+}
+
+#in_sphinx3 {
+    width: 139px;
+    height: 21px;
+    top: 798px;
+    left: 406px;
+}
+
+#in_sphinx4 {
+    width: 139px;
+    height: 21px;
+    top: 798px;
+    left: 406px;
+}
+
+#in_sphinx5 {
+    width: 139px;
+    height: 21px;
+    top: 798px;
+    left: 406px;
+}
+
+#prt_sewb1 {
+    width: 130px;
+    height: 21px;
+    top: 773px;
+    left: 700px;
+}
+
+#prt_sewb2 {
+    width: 130px;
+    height: 21px;
+    top: 773px;
+    left: 700px;
+}
+
+#prt_sewb3 {
+    width: 130px;
+    height: 21px;
+    top: 773px;
+    left: 700px;
+}
+
+#prt_sewb4 {
+    width: 130px;
+    height: 21px;
+    top: 773px;
+    left: 700px;
+}
+
+#iz_dun00 {
+    width: 130px;
+    height: 21px;
+    top: 668px;
+    left: 960px;
+}
+
+#iz_dun01 {
+    width: 130px;
+    height: 21px;
+    top: 668px;
+    left: 960px;
+}
+
+#iz_dun02 {
+    width: 130px;
+    height: 21px;
+    top: 668px;
+    left: 960px;
+}
+
+#iz_dun03 {
+    width: 130px;
+    height: 21px;
+    top: 668px;
+    left: 960px;
+}
+
+#iz_dun04 {
+    width: 130px;
+    height: 21px;
+    top: 668px;
+    left: 960px;
+}
+
+#iz_dun05 {
+    width: 130px;
+    height: 21px;
+    top: 668px;
+    left: 960px;
+}
+
+#pay_dun00 {
+    width: 120px;
+    height: 21px;
+    top: 719px;
+    left: 1030px;
+}
+
+#pay_dun01 {
+    width: 120px;
+    height: 21px;
+    top: 719px;
+    left: 1030px;
+}
+
+#pay_dun02 {
+    width: 120px;
+    height: 21px;
+    top: 719px;
+    left: 1030px;
+}
+
+#pay_dun03 {
+    width: 120px;
+    height: 21px;
+    top: 719px;
+    left: 1030px;
+}
+
+#pay_dun04 {
+    width: 120px;
+    height: 21px;
+    top: 719px;
+    left: 1030px;
+}
+
+#treasure01 {
+    width: 62px;
+    height: 21px;
+    top: 866px;
+    left: 1112px;
+}
+
+#treasure02 {
+    width: 62px;
+    height: 21px;
+    top: 866px;
+    left: 1112px;
+}
+
+#tur_dun02 {
+    width: 167px;
+    height: 21px;
+    top: 960px;
+    left: 1015px;
+}
+
+#tur_dun03 {
+    width: 167px;
+    height: 21px;
+    top: 960px;
+    left: 1015px;
+}
+
+#tur_dun04 {
+    width: 167px;
+    height: 21px;
+    top: 960px;
+    left: 1015px;
+}
+
+#beach_dun {
+    width: 100px;
+    height: 21px;
+    top: 901px;
+    left: 125px;
+}
+
+#beach_dun2 {
+    width: 100px;
+    height: 21px;
+    top: 970px;
+    left: 205px;
+}
+
+#beach_dun3 {
+    width: 102px;
+    height: 21px;
+    top: 944px;
+    left: 288px;
+}
+
+#anthell01 {
+    width: 108px;
+    height: 21px;
+    top: 981px;
+    left: 337px;
+}
+
+#anthell02 {
+    width: 108px;
+    height: 21px;
+    top: 981px;
+    left: 337px;
+}
+
+#abbey01 {
+    width: 63px;
+    height: 21px;
+    top: 718px;
+    left: 173px;
+}
+
+#abbey02 {
+    width: 63px;
+    height: 21px;
+    top: 718px;
+    left: 173px;
+}
+
+#abbey03 {
+    width: 63px;
+    height: 21px;
+    top: 718px;
+    left: 173px;
+}
+
+#prt_maze01 {
+    width: 80px;
+    height: 21px;
+    top: 597px;
+    left: 946px;
+}
+
+#prt_maze02 {
+    width: 80px;
+    height: 21px;
+    top: 597px;
+    left: 946px;
+}
+
+#prt_maze03 {
+    width: 80px;
+    height: 21px;
+    top: 597px;
+    left: 946px;
+}
+
+#hugel {
+    width: 56px;
+    height: 57px;
+    top: 0px;
+    left: 871px;
+}
+
+#hu_fild01 {
+    width: 57px;
+    height: 57px;
+    top: 0px;
+    left: 695px;
+}
+
+#hu_fild02 {
+    width: 58px;
+    height: 57px;
+    top: 0px;
+    left: 753px;
+}
+
+#hu_fild04 {
+    width: 58px;
+    height: 58px;
+    top: 58px;
+    left: 753px;
+}
+
+#hu_fild05 {
+    width: 58px;
+    height: 58px;
+    top: 58px;
+    left: 812px;
+}
+
+#hu_fild06 {
+    width: 56px;
+    height: 58px;
+    top: 58px;
+    left: 871px;
+}
+
+#ein_fild01 {
+    width: 59px;
+    height: 58px;
+    top: 58px;
+    left: 576px;
+}
+
+#yuno_fild02 {
+    width: 58px;
+    height: 56px;
+    top: 117px;
+    left: 753px;
+}
+
+#yuno_fild03 {
+    width: 57px;
+    height: 56px;
+    top: 117px;
+    left: 695px;
+}
+
+#yuno_fild04 {
+    width: 58px;
+    height: 56px;
+    top: 117px;
+    left: 636px;
+}
+
+#yuno_fild05 {
+    width: 58px;
+    height: 56px;
+    top: 58px;
+    left: 636px;
+}
+
+#yuno_fild06 {
+    width: 57px;
+    height: 58px;
+    top: 58px;
+    left: 695px;
+}
+
+#yuno {
+    width: 62px;
+    height: 56px;
+    top: 80px;
+    left: 644px;
+}
+
+#rachel {
+    width: 58px;
+    height: 59px;
+    top: 292px;
+    left: 224px;
+}
+
+#ra_temple {
+    width: 35px;
+    height: 30px;
+    top: 261px;
+    left: 236px;
+}
+
+#ra_fild01 {
+    width: 58px;
+    height: 56px;
+    top: 117px;
+    left: 283px;
+}
+
+#ra_fild03 {
+    width: 58px;
+    height: 60px;
+    top: 174px;
+    left: 224px;
+}
+
+#ra_fild04 {
+    width: 58px;
+    height: 60px;
+    top: 174px;
+    left: 283px;
+}
+
+#ra_fild05 {
+    width: 58px;
+    height: 60px;
+    top: 174px;
+    left: 342px;
+}
+
+#ra_fild08 {
+    width: 58px;
+    height: 56px;
+    top: 235px;
+    left: 283px;
+}
+
+#ra_fild12 {
+    width: 58px;
+    height: 59px;
+    top: 292px;
+    left: 283px;
+}
+
+#ra_fild06 {
+    width: 58px;
+    height: 60px;
+    top: 174px;
+    left: 401px;
+}
+
+#lighthalzen {
+    width: 58px;
+    height: 54px;
+    top: 292px;
+    left: 401px;
+}
+
+#lhz_fild01 {
+    width: 58px;
+    height: 56px;
+    top: 235px;
+    left: 401px;
+}
+
+#lhz_fild02 {
+    width: 57px;
+    height: 56px;
+    top: 235px;
+    left: 460px;
+}
+
+#lhz_fild03 {
+    width: 57px;
+    height: 59px;
+    top: 292px;
+    left: 460px;
+}
+
+#ein_fild03 {
+    width: 57px;
+    height: 60px;
+    top: 174px;
+    left: 460px;
+}
+
+#ein_fild04 {
+    width: 57px;
+    height: 60px;
+    top: 174px;
+    left: 518px;
+}
+
+#ein_fild05 {
+    width: 59px;
+    height: 60px;
+    top: 174px;
+    left: 576px;
+}
+
+#ein_fild06 {
+    width: 58px;
+    height: 60px;
+    top: 174px;
+    left: 636px;
+}
+
+#ein_fild07 {
+    width: 58px;
+    height: 56px;
+    top: 235px;
+    left: 636px;
+}
+
+#ein_fild08 {
+    width: 57px;
+    height: 59px;
+    top: 292px;
+    left: 518px;
+}
+
+#ein_fild09 {
+    width: 59px;
+    height: 59px;
+    top: 292px;
+    left: 576px;
+}
+
+#einbech {
+    width: 59px;
+    height: 46px;
+    top: 245px;
+    left: 576px;
+}
+
+#einbroch {
+    width: 57px;
+    height: 56px;
+    top: 235px;
+    left: 518px;
+}
+
+#yuno_fild01 {
+    width: 58px;
+    height: 56px;
+    top: 235px;
+    left: 812px;
+}
+
+#yuno_fild07 {
+    width: 57px;
+    height: 60px;
+    top: 174px;
+    left: 695px;
+}
+
+#yuno_fild08 {
+    width: 58px;
+    height: 60px;
+    top: 174px;
+    left: 753px;
+}
+
+#yuno_fild09 {
+    width: 58px;
+    height: 60px;
+    top: 174px;
+    left: 812px;
+}
+
+#yuno_fild10 {
+    width: 56px;
+    height: 60px;
+    top: 174px;
+    left: 871px;
+}
+
+#yuno_fild11 {
+    width: 57px;
+    height: 56px;
+    top: 235px;
+    left: 695px;
+}
+
+#yuno_fild12 {
+    width: 58px;
+    height: 56px;
+    top: 235px;
+    left: 753px;
+}
+
+#alde_gld {
+    width: 58px;
+    height: 59px;
+    top: 292px;
+    left: 753px;
+}
+
+#aldebaran {
+    width: 58px;
+    height: 59px;
+    top: 292px;
+    left: 812px;
+}
+
+#mjolnir_12 {
+    width: 58px;
+    height: 58px;
+    top: 352px;
+    left: 812px;
+}
+
+#odin_tem01 {
+    width: 55px;
+    height: 60px;
+    top: 174px;
+    left: 988px;
+}
+
+#odin_tem02 {
+    width: 58px;
+    height: 60px;
+    top: 174px;
+    left: 1044px;
+}
+
+#odin_tem03 {
+    width: 58px;
+    height: 56px;
+    top: 117px;
+    left: 1044px;
+}
+
+#aru_gld {
+    width: 58px;
+    height: 58px;
+    top: 410px;
+    left: 224px;
+}
+
+#veins {
+    width: 57px;
+    height: 57px;
+    top: 528px;
+    left: 161px;
+}
+
+#ve_fild01 {
+    width: 59px;
+    height: 57px;
+    top: 352px;
+    left: 164px;
+}
+
+#ve_fild02 {
+    width: 58px;
+    height: 57px;
+    top: 352px;
+    left: 224px;
+}
+
+#ve_fild03 {
+    width: 56px;
+    height: 58px;
+    top: 410px;
+    left: 107px;
+}
+
+#ve_fild04 {
+    width: 59px;
+    height: 58px;
+    top: 410px;
+    left: 164px;
+}
+
+#ve_fild06 {
+    width: 59px;
+    height: 42px;
+    top: 485px;
+    left: 164px;
+}
+
+#ve_fild07 {
+    width: 57px;
+    height: 57px;
+    top: 586px;
+    left: 161px;
+}
+
+#mjolnir_01 {
+    width: 59px;
+    height: 57px;
+    top: 411px;
+    left: 576px;
+}
+
+#glast_01 {
+    width: 51px;
+    height: 58px;
+    top: 469px;
+    left: 408px;
+}
+
+#gef_fild04 {
+    width: 59px;
+    height: 58px;
+    top: 469px;
+    left: 576px;
+}
+
+#gef_fild05 {
+    width: 57px;
+    height: 58px;
+    top: 469px;
+    left: 518px;
+}
+
+#gef_fild06 {
+    width: 57px;
+    height: 58px;
+    top: 469px;
+    left: 460px;
+}
+
+#gef_fild07 {
+    width: 57px;
+    height: 58px;
+    top: 528px;
+    left: 518px;
+}
+
+#gef_fild08 {
+    width: 57px;
+    height: 58px;
+    top: 528px;
+    left: 460px;
+}
+
+#gef_fild09 {
+    width: 59px;
+    height: 56px;
+    top: 587px;
+    left: 576px;
+}
+
+#gef_fild10 {
+    width: 59px;
+    height: 57px;
+    top: 644px;
+    left: 576px;
+}
+
+#gef_fild11 {
+    width: 59px;
+    height: 58px;
+    top: 702px;
+    left: 576px;
+}
+
+#gef_fild12 {
+    width: 57px;
+    height: 56px;
+    top: 587px;
+    left: 460px;
+}
+
+#gef_fild13 {
+    width: 57px;
+    height: 56px;
+    top: 587px;
+    left: 518px;
+}
+
+#gef_fild14 {
+    width: 59px;
+    height: 57px;
+    top: 644px;
+    left: 516px;
+}
+
+#geffen {
+    width: 59px;
+    height: 58px;
+    top: 528px;
+    left: 576px;
+}
+
+#mjolnir_02 {
+    width: 58px;
+    height: 57px;
+    top: 411px;
+    left: 636px;
+}
+
+#mjolnir_03 {
+    width: 57px;
+    height: 57px;
+    top: 411px;
+    left: 695px;
+}
+
+#mjolnir_04 {
+    width: 58px;
+    height: 57px;
+    top: 411px;
+    left: 753px;
+}
+
+#mjolnir_05 {
+    width: 58px;
+    height: 57px;
+    top: 411px;
+    left: 812px;
+}
+
+#mjolnir_06 {
+    width: 58px;
+    height: 58px;
+    top: 469px;
+    left: 636px;
+}
+
+#mjolnir_07 {
+    width: 57px;
+    height: 58px;
+    top: 469px;
+    left: 695px;
+}
+
+#mjolnir_08 {
+    width: 58px;
+    height: 58px;
+    top: 469px;
+    left: 753px;
+}
+
+#mjolnir_09 {
+    width: 58px;
+    height: 58px;
+    top: 528px;
+    left: 753px;
+}
+
+#mjolnir_10 {
+    width: 58px;
+    height: 58px;
+    top: 469px;
+    left: 812px;
+}
+
+#mjolnir_11 {
+    width: 56px;
+    height: 58px;
+    top: 469px;
+    left: 871px;
+}
+
+#prt_fild00 {
+    width: 57px;
+    height: 58px;
+    top: 528px;
+    left: 695px;
+}
+
+#prt_fild01 {
+    width: 58px;
+    height: 58px;
+    top: 528px;
+    left: 812px;
+}
+
+#prt_fild02 {
+    width: 56px;
+    height: 58px;
+    top: 528px;
+    left: 871px;
+}
+
+#prt_fild03 {
+    width: 58px;
+    height: 42px;
+    top: 528px;
+    left: 928px;
+}
+
+#prt_monk {
+    width: 55px;
+    height: 42px;
+    top: 528px;
+    left: 987px;
+}
+
+#gef_fild00 {
+    width: 58px;
+    height: 58px;
+    top: 528px;
+    left: 636px;
+}
+
+#prt_fild04 {
+    width: 57px;
+    height: 56px;
+    top: 587px;
+    left: 695px;
+}
+
+#prt_fild05 {
+    width: 58px;
+    height: 56px;
+    top: 587px;
+    left: 753px;
+}
+
+#prt_fild06 {
+    width: 56px;
+    height: 56px;
+    top: 587px;
+    left: 871px;
+}
+
+#prt_fild07 {
+    width: 58px;
+    height: 57px;
+    top: 644px;
+    left: 753px;
+}
+
+#prt_fild08 {
+    width: 58px;
+    height: 57px;
+    top: 644px;
+    left: 812px;
+}
+
+#prt_fild09 {
+    width: 58px;
+    height: 58px;
+    top: 702px;
+    left: 753px;
+}
+
+#prt_fild10 {
+    width: 57px;
+    height: 58px;
+    top: 702px;
+    left: 695px;
+}
+
+#prt_fild11 {
+    width: 58px;
+    height: 58px;
+    top: 702px;
+    left: 636px;
+}
+
+#prontera {
+    width: 58px;
+    height: 56px;
+    top: 587px;
+    left: 812px;
+}
+
+#izlude {
+    width: 31px;
+    height: 32px;
+    top: 644px;
+    left: 871px;
+}
+
+#izlu2dun {
+    width: 20px;
+    height: 21px;
+    top: 644px;
+    left: 928px;
+}
+
+#gef_fild01 {
+    width: 58px;
+    height: 56px;
+    top: 587px;
+    left: 636px;
+}
+
+#gef_fild02 {
+    width: 57px;
+    height: 57px;
+    top: 644px;
+    left: 695px;
+}
+
+#gef_fild03 {
+    width: 58px;
+    height: 57px;
+    top: 644px;
+    left: 636px;
+}
+
+#moc_fild01 {
+    width: 58px;
+    height: 58px;
+    top: 702px;
+    left: 812px;
+}
+
+#pay_arche {
+    width: 45px;
+    height: 51px;
+    top: 694px;
+    left: 985px;
+}
+
+#pay_fild04 {
+    width: 56px;
+    height: 58px;
+    top: 702px;
+    left: 871px;
+}
+
+#nameless_n {
+    width: 63px;
+    height: 62px;
+    top: 698px;
+    left: 94px;
+}
+
+#um_fild01 {
+    width: 57px;
+    height: 58px;
+    top: 776px;
+    left: 239px;
+}
+
+#um_fild02 {
+    width: 59px;
+    height: 58px;
+    top: 776px;
+    left: 297px;
+}
+
+#um_fild03 {
+    width: 59px;
+    height: 58px;
+    top: 776px;
+    left: 357px;
+}
+
+#um_fild04 {
+    width: 59px;
+    height: 58px;
+    top: 717px;
+    left: 297px;
+}
+
+#umbala {
+    width: 48px;
+    height: 56px;
+    top: 660px;
+    left: 308px;
+}
+
+#comodo {
+    width: 59px;
+    height: 58px;
+    top: 835px;
+    left: 297px;
+}
+
+#cmd_fild01 {
+    width: 58px;
+    height: 58px;
+    top: 835px;
+    left: 367px;
+}
+
+#cmd_fild02 {
+    width: 58px;
+    height: 56px;
+    top: 894px;
+    left: 367px;
+}
+
+#cmd_fild03 {
+    width: 57px;
+    height: 58px;
+    top: 835px;
+    left: 426px;
+}
+
+#cmd_fild04 {
+    width: 57px;
+    height: 56px;
+    top: 894px;
+    left: 426px;
+}
+
+#cmd_fild05 {
+    width: 57px;
+    height: 56px;
+    top: 836px;
+    left: 485px;
+}
+
+#cmd_fild06 {
+    width: 59px;
+    height: 56px;
+    top: 894px;
+    left: 484px;
+}
+
+#cmd_fild07 {
+    width: 59px;
+    height: 58px;
+    top: 951px;
+    left: 484px;
+}
+
+#cmd_fild08 {
+    width: 58px;
+    height: 56px;
+    top: 894px;
+    left: 544px;
+}
+
+#cmd_fild09 {
+    width: 58px;
+    height: 58px;
+    top: 951px;
+    left: 544px;
+}
+
+#moc_fild04 {
+    width: 57px;
+    height: 58px;
+    top: 761px;
+    left: 778px;
+}
+
+#moc_fild05 {
+    width: 59px;
+    height: 58px;
+    top: 761px;
+    left: 718px;
+}
+
+#moc_fild06 {
+    width: 56px;
+    height: 59px;
+    top: 785px;
+    left: 660px;
+}
+
+#moc_fild07 {
+    width: 56px;
+    height: 59px;
+    top: 785px;
+    left: 602px;
+}
+
+#moc_fild08 {
+    width: 57px;
+    height: 59px;
+    top: 820px;
+    left: 778px;
+}
+
+#moc_fild09 {
+    width: 59px;
+    height: 59px;
+    top: 820px;
+    left: 718px;
+}
+
+#moc_fild10 {
+    width: 60px;
+    height: 47px;
+    top: 846px;
+    left: 657px;
+}
+
+#moc_fild11 {
+    width: 57px;
+    height: 56px;
+    top: 894px;
+    left: 660px;
+}
+
+#moc_fild12 {
+    width: 56px;
+    height: 56px;
+    top: 894px;
+    left: 603px;
+}
+
+
+#moc_fild14 {
+    width: 59px;
+    height: 59px;
+    top: 880px;
+    left: 778px;
+}
+
+
+#moc_fild15 {
+    width: 59px;
+    height: 59px;
+    top: 880px;
+    left: 718px;
+}
+
+#moc_fild16 {
+    width: 58px;
+    height: 57px;
+    top: 942px;
+    left: 718px;
+}
+
+#moc_fild17 {
+    width: 57px;
+    height: 58px;
+    top: 951px;
+    left: 660px;
+}
+
+#moc_fild18 {
+    width: 56px;
+    height: 58px;
+    top: 951px;
+    left: 603px;
+}
+
+#moc_fild19 {
+    width: 35px;
+    height: 32px;
+    top: 849px;
+    left: 567px;
+}
+
+#moc_ruins {
+    width: 35px;
+    height: 31px;
+    top: 817px;
+    left: 567px;
+}
+
+#morocc {
+    width: 49px;
+    height: 48px;
+    top: 845px;
+    left: 606px;
+}
+
+#moc_fild02 {
+    width: 48px;
+    height: 48px;
+    top: 761px;
+    left: 858px;
+}
+
+#moc_fild03 {
+    width: 52px;
+    height: 58px;
+    top: 810px;
+    left: 883px;
+}
+
+#moc_fild13 {
+    width: 46px;
+    height: 58px;
+    top: 810px;
+    left: 836px;
+}
+
+#payon {
+    width: 46px;
+    height: 57px;
+    top: 746px;
+    left: 967px;
+}
+
+#pay_fild01 {
+    width: 58px;
+    height: 57px;
+    top: 804px;
+    left: 936px;
+}
+
+#pay_fild02 {
+    width: 43px;
+    height: 62px;
+    top: 869px;
+    left: 960px;
+}
+
+#pay_fild03 {
+    width: 54px;
+    height: 46px;
+    top: 885px;
+    left: 1004px;
+}
+
+#pay_fild05 {
+    width: 43px;
+    height: 62px;
+    top: 932px;
+    left: 960px;
+}
+
+#pay_fild06 {
+    width: 54px;
+    height: 57px;
+    top: 932px;
+    left: 1004px;
+}
+
+#pay_fild07 {
+    width: 58px;
+    height: 57px;
+    top: 804px;
+    left: 995px;
+}
+
+#pay_fild08 {
+    width: 39px;
+    height: 57px;
+    top: 746px;
+    left: 1014px;
+}
+
+#pay_fild09 {
+    width: 59px;
+    height: 57px;
+    top: 746px;
+    left: 1054px;
+}
+
+#pay_fild10 {
+    width: 59px;
+    height: 57px;
+    top: 804px;
+    left: 1054px;
+}
+
+
+#pay_fild11 {
+    width: 52px;
+    height: 58px;
+    top: 870px;
+    left: 908px;
+}
+
+
+#alberta {
+    width: 54px;
+    height: 51px;
+    top: 913px;
+    left: 1059px;
+}
+
+#alb2trea {
+    width: 20px;
+    height: 24px;
+    top: 920px;
+    left: 1114px;
+}
+
+#tur_dun01 {
+    width: 31px;
+    height: 41px;
+    top: 974px;
+    left: 1164px;
+}
+
+
+#amatsu {
+    width: 59px;
+    height: 57px;
+    top: 559px;
+    left: 1161px;
+}
+
+
+#ama_fild01 {
+    width: 59px;
+    height: 57px;
+    top: 501px;
+    left: 1197px;
+}
+
+#xmas {
+    width: 50px;
+    height: 57px;
+    top: 35px;
+    left: 1190px;
+}
+
+#xmas_fild01 {
+    width: 59px;
+    height: 57px;
+    top: 93px;
+    left: 1190px;
+}
+
+#tur_dun01 {
+    width: 31px;
+    height: 32px;
+    top: 974px;
+    left: 1163px;
+}
+
+#Prontera_Culverts {
+    width: 25px;
+    height: 25px;
+    left: 782px;
+    top: 605px;
+}
+
+#Byalan_Dungeon {
+    width: 25px;
+    height: 25px;
+    left: 942px;
+    top: 642px;
+}
+
+#Geffen_Tower {
+    width: 25px;
+    height: 25px;
+    left: 594px;
+    top: 542px;
+}
+
+#Payon_Dungeon {
+    width: 25px;
+    height: 25px;
+    left: 980px;
+    top: 698px;
+}
+
+#Ant_Hell {
+    width: 25px;
+    height: 25px;
+    left: 797px;
+    top: 759px;
+}
+
+#Ant_Hell2 {
+    width: 25px;
+    height: 25px;
+    left: 742px;
+    top: 887px;
+}
+
+#Orc_Dungeon {
+    width: 25px;
+    height: 25px;
+    left: 577px;
+    top: 643px;
+}
+
+#Sunken_Ship {
+    width: 25px;
+    height: 25px;
+    left: 1123px;
+    top: 906px;
+}
+
+#Pyramid_Dungeon {
+    width: 25px;
+    height: 25px;
+    left: 558px;
+    top: 807px;
+}
+
+#Sphinx_Dungeon {
+    width: 25px;
+    height: 25px;
+    left: 565px;
+    top: 851px;
+}
+
+#Hidden_Temple {
+    width: 25px;
+    height: 25px;
+    left: 821px;
+    top: 520px;
+}
+
+#Hidden_Temple2 {
+    width: 25px;
+    height: 25px;
+    left: 809px;
+    top: 392px;
+}
+
+#Clock_Tower {
+    width: 25px;
+    height: 25px;
+    left: 829px;
+    top: 308px;
+}
+
+#Mjolnir_Dead_Pit {
+    width: 25px;
+    height: 25px;
+    left: 636px;
+    top: 407px;
+}
+
+#Glast_Heim {
+    width: 25px;
+    height: 25px;
+    left: 420px;
+    top: 468px;
+}
+
+#Turtle_Island {
+    width: 25px;
+    height: 25px;
+    left: 1166px;
+    top: 955px;
+}
+
+#Comodo_Caves {
+    width: 25px;
+    height: 25px;
+    left: 288px;
+    top: 849px;
+}
+
+#Comodo_Caves2 {
+    width: 25px;
+    height: 25px;
+    left: 315px;
+    top: 821px;
+}
+
+#Comodo_Caves3 {
+    width: 25px;
+    height: 25px;
+    left: 349px;
+    top: 844px;
+}
+
+#Lutie_Toy_Factory {
+    width: 25px;
+    height: 25px;
+    left: 1201px;
+    top: 30px;
+}
+
+#Amatsu_Dungeon {
+    width: 25px;
+    height: 25px;
+    left: 1160px;
+    top: 554px;
+}

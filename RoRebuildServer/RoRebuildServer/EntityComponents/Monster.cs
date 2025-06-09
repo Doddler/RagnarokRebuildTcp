@@ -1,6 +1,7 @@
 ﻿using System.Buffers;
 using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
@@ -503,12 +504,17 @@ public partial class Monster : IEntityAutoReset
         if (Character.Map == null)
             return;
 
+        var isMvp = DataManager.MvpMonsterCodes.Contains(MonsterBase.Code);
+
+        var hasDrop = false;
+        var totalChance = 0;
         int dropId = 0;
         if (DataManager.MonsterDropData.TryGetValue(MonsterBase.Code, out var drops))
         {
             for (var i = 0; i < drops.DropChances.Count; i++)
             {
                 var d = drops.DropChances[i];
+                totalChance += d.Chance;
                 if (GameRandom.Next(10000) <= d.Chance)
                 {
                     var count = 1;
@@ -517,11 +523,30 @@ public partial class Monster : IEntityAutoReset
                     var dropPos = GetNextTileForDrop(dropId);
                     var item = new GroundItem(dropPos, d.Id, count);
                     Character.Map.DropGroundItem(ref item);
+                    hasDrop = true;
                     dropId++;
+                    
+                }
+            }
+
+            //special event: MVPs are guaranteed to drop at least 1 item, so if none drops, we force one to drop
+            if (isMvp && !hasDrop && ServerConfig.OperationConfig.GuaranteeMvpDrops)
+            {
+                var val = GameRandom.Next(totalChance);
+                for (var i = 0; i < drops.DropChances.Count; i++)
+                {
+                    val -= drops.DropChances[i].Chance;
+                    if (val > 0)
+                        continue;
+
+                    var dropPos = GetNextTileForDrop(dropId);
+                    var item = new GroundItem(dropPos, drops.DropChances[i].Id, 1);
+                    Character.Map.DropGroundItem(ref item);
+                    break;
                 }
             }
         }
-
+        
         dropId = 3; //bonus drops start north
         if (inventoryCount > 0 && monsterInventory != null)
         {

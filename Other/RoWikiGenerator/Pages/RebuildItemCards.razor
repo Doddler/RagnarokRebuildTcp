@@ -44,7 +44,7 @@
                     if(!File.Exists(Path.Combine(AppSettings.BasePath, "wwwroot/", art)))
                         art = "images/collections/cardart_default.png";
 
-                    <tr>
+                    <tr id="@entry.Item.Code">
                         <td width="100px"><img class="cardart" src="@(art)" /></td>
                         <td width="150px">@entry.Item.Name</td>
                         <td>@((MarkupString)entry.Description)</td>

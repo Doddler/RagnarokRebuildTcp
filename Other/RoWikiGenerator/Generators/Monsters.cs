@@ -20,17 +20,10 @@ public class MonsterModel
 
 internal static class Monsters
 {
+    public static MonsterModel MonsterModel;
+
     public static async Task<string> RenderMonsterPage()
     {
-
-        var sharedIcons = new Dictionary<string, string>();
-
-        foreach (var l in File.ReadAllLines(Path.Combine(AppSettings.ClientProjectPath, "Assets/Data/SharedItemIcons.txt")))
-        {
-            var s = l.Split('\t');
-            sharedIcons.Add(s[0], s[1]);
-        }
-
         var monsterMapSpawns = new Dictionary<int, List<(string map, MapSpawnRule spawn)>>();
 
         foreach (var map in DataManager.Maps)
@@ -63,15 +56,17 @@ internal static class Monsters
 
         var monsters = DataManager.MonsterIdLookup.Select(m => m.Value)
             //.OrderBy(m => m.Level).ThenBy(m => m.Name).ToList();
-            .OrderBy(m => m.Id).ToList();
+            .OrderBy(m => m.Exp + (m.Exp == 0 ? 99000000 : 0)).ToList();
 
         var model = new MonsterModel()
         {
             MonsterMapSpawns = monsterMapSpawns,
-            SharedIcons = sharedIcons,
+            SharedIcons = Items.SharedIcons,
             Monsters = monsters
         };
 
-        return await RenderPage<MonsterModel, RebuildMonsters>(model);
+        MonsterModel = model;
+
+        return await RenderPage<MonsterModel, MonsterListFull>(model);
     }
 }

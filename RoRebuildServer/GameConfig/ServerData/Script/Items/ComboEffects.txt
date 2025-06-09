@@ -1,0 +1,20 @@
+//pantie + undershirt
+ComboItem("PantieUndershirt", "Pantie", "Undershirt") { OnEquip: AddStat(AddAgi, 5); AddStat(AddFlee, 10); }
+ComboItem("PantieUndershirt2", "Pantie_", "Undershirt") { OnEquip: AddStat(AddAgi, 5); AddStat(AddFlee, 10); }
+ComboItem("PantieUndershirt3", "Pantie", "Undershirt_") { OnEquip: AddStat(AddAgi, 5); AddStat(AddFlee, 10); }
+ComboItem("PantieUndershirt4", "Pantie_", "Undershirt_") { OnEquip: AddStat(AddAgi, 5); AddStat(AddFlee, 10); }
+
+//miniboss sets
+ComboItem("MasteringSet", "Poring_Card", "Mastering_Card") { OnEquip: AddStat(AddFlee, 18); AddStat(AddLuk, 2); }
+ComboItem("VagabondSet", "Wolf_Card", "Vagabond_Wolf_Card") { OnEquip: AddStat(AddFlee, 18); AddStat(AddStr, 2); }
+ComboItem("ToadSet", "Roda_Frog_Card", "Toad_Card") { OnEquip: AddStat(AddFlee, 18); AddStat(AddInt, 2); }
+ComboItem("VocalSet", "Rocker_Card", "Vocal_Card") { OnEquip: AddStat(AddFlee, 18); AddStat(AddDex, 2); }
+ComboItem("EclipseSet", "Lunatic_Card", "Eclipse_Card") { OnEquip: AddStat(AddFlee, 18); AddStat(AddVit, 2); }
+ComboItem("DragonFlySet", "Chonchon_Card", "Dragon_Fly_Card") { OnEquip: AddStat(AddFlee, 18); AddStat(AddAgi, 2); }
+
+//same type sets
+ComboItem("CrampTarou", "Tarou_Card", "Cramp_Card") { OnEquip: AddStat(AddStr, 3); }
+ComboItem("PecoPecoGrandPeco", "Peco_Peco_Card", "Grand_Peco_Card") { OnEquip: AddStat(AddVit, 3); AddStat(AddDef, 3); }
+ComboItem("DarkLordSet", "Dark_Illusion_Card", "Dark_Lord_Card") { OnEquip: AddStat(AddMaxHpPercent, 18); AddStat(AddMaxSpPercent, 18); AddStat(AddCastTime, -8); }
+ComboItem("OwlSet", "Owl_Duke_Card", "Owl_Baron_Card") { OnEquip: AutoSpellOnAttack(LightningBolt, 5, 100);}
+ComboItem("CrabSet", "Crab_Card", "Aster_Card", "Shellfish_Card") { OnEquip: AddStat(AddAttackElementWater, 45); }

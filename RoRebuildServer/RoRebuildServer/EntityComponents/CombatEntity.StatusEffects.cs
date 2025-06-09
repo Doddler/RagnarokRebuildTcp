@@ -235,7 +235,7 @@ public partial class CombatEntity
             vit = vit * 3 / 2; //1.5x for players
 
         if (target.GetSpecialType() == CharacterSpecialType.Boss)
-            vit = vit * 5 / 2; //2.5x for boss
+            vit *= 2; //2x for boss
 
         var resist = MathHelper.PowScaleDown(vit);
         var resistChance = 100 - target.GetStat(CharacterStat.ResistPoisonStatus);

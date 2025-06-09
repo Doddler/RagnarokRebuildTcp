@@ -205,6 +205,10 @@ The portal will automatically close after [5 + SkillLevel * 5] seconds or when 8
 ::AquaBenedicta
 Create holy water. Consumes an empty bottle. You must have water within 2 tiles of you to cast this skill.
 
+::HolyLight
+Strikes a designated target with holy property magic at 100% magic attack.
+Cast Time: 1s
+
 //----------------Thief-------------------
 
 ::DoubleAttack
@@ -216,7 +220,7 @@ When used by an Assassin, adds +1 flee per level and +10% move speed.
 
 ::Detoxify
 Removes poison status from the target. If the target is not currently poisoned, grants Poison Resistance for 1 minute.
-POison Resistance Effect: The next with a chance to poison will fail and deal half damage.
+Poison Resistance Effect: The next attack with a chance to poison will fail and deal half damage.
 
 ::Envenom
 Deals 150% poison type damage with a chance apply poison status. Poisoning chance is reduced by the target's VIT.
@@ -232,6 +236,10 @@ Hide below ground to avoid detection. Insect, demon, and boss monsters can see t
 SP recovery rate is reduced by 100% while hiding, but HP recovery increases by 50%.
 Lasts [30+SkillLevel*15] seconds.
 Consumes 1 sp every [1+SkillLevel] seconds.
+
+::Steal
+Attempts to take an additional item from a monster. The success rate varies based on how your level, dex, and luck compares to your target. Only one item can be stolen and cannot be used on bosses.
+Success rate: [4 + SkillLevel * 6]% chance.
 
 //----------------Merchant-------------------
 

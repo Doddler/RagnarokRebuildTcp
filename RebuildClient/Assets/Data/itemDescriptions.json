@@ -5178,7 +5178,7 @@
     },
     {
       "Code": "Angra_Manyu",
-      "Description": "\u003Ccolor=#808080\u003EThe Real Holy Cross\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EATK \u002B 3000, MATK \u002B 3000\nAll Stats \u002B 50\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003EMace\u003C/color\u003E\nDurability: \u003Ccolor=#777777\u003EUnbreakable\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E200\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E1\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EThe Real Holy Cross\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EATK \u002B 3000, MATK \u002B 3000\nAll Stats \u002B 50\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003EMace\u003C/color\u003E\nDurability: \u003Ccolor=#777777\u003EUnbreakable\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E200\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs\u003C/color\u003E"
     },
     {
       "Code": "Rod",
@@ -6118,7 +6118,7 @@
     },
     {
       "Code": "Memory_Book",
-      "Description": "\u003Ccolor=#808080\u003EA magic spellbook that is so large it can be used as a shield.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EShield\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E3\u003C/color\u003E\nMagic Defense: \u003Ccolor=#777777\u003E2\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E100\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EMage, Soul Linker\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA magic spellbook that is so large it can be used as a shield.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EINT \u002B1, MDEF \u002B2\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EShield\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E3\u003C/color\u003E\nMagic Defense: \u003Ccolor=#777777\u003E2\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E100\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EMage, Soul Linker\u003C/color\u003E"
     },
     {
       "Code": "Holy_Guard",
@@ -6198,7 +6198,7 @@
     },
     {
       "Code": "Magic_Bible_Vol1",
-      "Description": "\u003Ccolor=#808080\u003EA massive book known as \u0022the spellcasting bible\u0022.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EINT \u002B2, MDEF \u002B3\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EShield\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E2\u003C/color\u003E\nMagic Defense: \u003Ccolor=#777777\u003E3\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E100\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E70\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EMage, Soul Linker\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA massive book known as \u0022the spellcasting bible\u0022.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EINT \u002B2, MDEF \u002B3\n\u002B10% chance of \u003Ccolor=#800000\u003EStun\u003C/color\u003E on receive physical damage\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EShield\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E2\u003C/color\u003E\nMagic Defense: \u003Ccolor=#777777\u003E3\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E100\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E70\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EMage, Soul Linker\u003C/color\u003E"
     },
     {
       "Code": "Tournament_Shield",
@@ -6214,11 +6214,11 @@
     },
     {
       "Code": "Sunglasses",
-      "Description": "\u003Ccolor=#808080\u003EA pair of glasses with darkened lenses that block ultraviolet light.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003E\u002B30% \u003Ccolor=#800000\u003EBlind\u003C/color\u003E resist\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Mid)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA pair of glasses with darkened lenses that block ultraviolet light.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003E\u002B40% \u003Ccolor=#800000\u003EBlind\u003C/color\u003E resist\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Mid)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E"
     },
     {
       "Code": "Sunglasses_",
-      "Description": "\u003Ccolor=#808080\u003EA pair of glasses with darkened lenses that block ultraviolet light.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003E\u002B30% \u003Ccolor=#800000\u003EBlind\u003C/color\u003E resist\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Mid)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA pair of glasses with darkened lenses that block ultraviolet light.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003E\u002B40% \u003Ccolor=#800000\u003EBlind\u003C/color\u003E resist\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Mid)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E"
     },
     {
       "Code": "Glasses",
@@ -6362,7 +6362,7 @@
     },
     {
       "Code": "Purple_Glasses",
-      "Description": "\u003Ccolor=#808080\u003EA pair of high quality sunglasses that effectively block the sun.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003E\u002B40% \u003Ccolor=#800000\u003EBlind\u003C/color\u003E resist\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Mid)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E1\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA pair of high quality sunglasses that effectively block the sun.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003E\u002B30% \u003Ccolor=#800000\u003EBlind\u003C/color\u003E resist\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Mid)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E1\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E"
     },
     {
       "Code": "Geek_Glasses",
@@ -6746,7 +6746,7 @@
     },
     {
       "Code": "Pantie",
-      "Description": "\u003Ccolor=#808080\u003EA risque undergarment that is comfortable to wear but provides little defense.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EBody\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA risque undergarment that is comfortable to wear but provides little defense.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003E\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E with \u003Ccolor=#008080\u003EUndershirt\u003C/color\u003E or \u003Ccolor=#008080\u003EUndershirt [1]\u003C/color\u003E\n AGI \u002B5, FLEE \u002B10\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EBody\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E"
     },
     {
       "Code": "Novice_Breastplate",
@@ -6838,7 +6838,7 @@
     },
     {
       "Code": "Pantie_",
-      "Description": "\u003Ccolor=#808080\u003EA risque undergarment that is comfortable to wear but provides little defense.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EBody\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA risque undergarment that is comfortable to wear but provides little defense.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003E\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E with \u003Ccolor=#008080\u003EUndershirt\u003C/color\u003E or \u003Ccolor=#008080\u003EUndershirt [1]\u003C/color\u003E\n AGI \u002B5, FLEE \u002B10\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EBody\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E"
     },
     {
       "Code": "Mage_Coat_",
@@ -7138,11 +7138,11 @@
     },
     {
       "Code": "Undershirt",
-      "Description": "\u003Ccolor=#808080\u003EA lightweight, 100% cotton, shirt that is quite durable.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EMDEF \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E2\u003C/color\u003E\nMagic Defense: \u003Ccolor=#777777\u003E1\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E15\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA lightweight, 100% cotton, shirt that is quite durable.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EMDEF \u002B1\n\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E with \u003Ccolor=#008080\u003EPantie\u003C/color\u003E or \u003Ccolor=#008080\u003EPantie [1]\u003C/color\u003E\n AGI \u002B5, FLEE \u002B10\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E2\u003C/color\u003E\nMagic Defense: \u003Ccolor=#777777\u003E1\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E15\u003C/color\u003E"
     },
     {
       "Code": "Undershirt_",
-      "Description": "\u003Ccolor=#808080\u003EA lightweight, 100% cotton, shirt that is quite durable.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EMDEF \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E2\u003C/color\u003E\nMagic Defense: \u003Ccolor=#777777\u003E1\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E15\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA lightweight, 100% cotton, shirt that is quite durable.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EMDEF \u002B1\n\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E with \u003Ccolor=#008080\u003EPantie\u003C/color\u003E or \u003Ccolor=#008080\u003EPantie [1]\u003C/color\u003E\n AGI \u002B5, FLEE \u002B10\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E2\u003C/color\u003E\nMagic Defense: \u003Ccolor=#777777\u003E1\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E15\u003C/color\u003E"
     },
     {
       "Code": "Valkyrian_Manteau",
@@ -8306,7 +8306,7 @@
     },
     {
       "Code": "Poring_Card",
-      "Description": "LUK \u002B2\nPerfect Dodge \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "LUK \u002B2\nPerfect Dodge \u002B1\n\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E\n \u003Ccolor=#008080\u003EMastering Card\u003C/color\u003E\n FLEE \u002B18, LUK \u002B2\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Fabre_Card",
@@ -8326,7 +8326,7 @@
     },
     {
       "Code": "Lunatic_Card",
-      "Description": "LUK \u002B1\nPerfect Dodge \u002B1\nCRIT \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "LUK \u002B1\nPerfect Dodge \u002B1\nCRIT \u002B1\n\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E\n \u003Ccolor=#008080\u003EEclipse Card\u003C/color\u003E\n FLEE \u002B18, VIT \u002B2\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Peco_Peco_Egg_Card",
@@ -8338,7 +8338,7 @@
     },
     {
       "Code": "Chonchon_Card",
-      "Description": "AGI \u002B1, FLEE \u002B2\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EFootgear\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "AGI \u002B1, FLEE \u002B2\n\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E\n \u003Ccolor=#008080\u003EDragon Fly Card\u003C/color\u003E\n FLEE \u002B18, AGI \u002B2\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EFootgear\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Willow_Card",
@@ -8358,7 +8358,7 @@
     },
     {
       "Code": "Roda_Frog_Card",
-      "Description": "HP \u002B400, SP \u002B50\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "HP \u002B400, SP \u002B50\n\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E\n \u003Ccolor=#008080\u003EToad Card\u003C/color\u003E\n FLEE \u002B18, INT \u002B2\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Condor_Card",
@@ -8382,11 +8382,11 @@
     },
     {
       "Code": "Familiar_Card",
-      "Description": "ATK \u002B5\n\u002B5% chance of \u003Ccolor=#800000\u003EBlind\u003C/color\u003E on physical attack\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "ATK \u002B5\n\u002B5% chance of \u003Ccolor=#800000\u003EBlind\u003C/color\u003E on physical attack\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Rocker_Card",
-      "Description": "DEX \u002B1, ATK \u002B5\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "DEX \u002B1, ATK \u002B5\n\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E\n \u003Ccolor=#008080\u003EVocal Card\u003C/color\u003E\n FLEE \u002B18, DEX \u002B2\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Spore_Card",
@@ -8398,11 +8398,11 @@
     },
     {
       "Code": "Plankton_Card",
-      "Description": "ATK \u002B5\n5% chance of \u003Ccolor=#800000\u003ESleep\u003C/color\u003E on physical attack\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "ATK \u002B5\n5% chance of \u003Ccolor=#800000\u003ESleep\u003C/color\u003E on physical attack\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Skeleton_Card",
-      "Description": "ATK \u002B10\n\u002B2% chance of \u003Ccolor=#800000\u003EStun\u003C/color\u003E on physical attack\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "ATK \u002B10\n\u002B2% chance of \u003Ccolor=#800000\u003EStun\u003C/color\u003E on physical attack\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Female_Thief_Bug_Card",
@@ -8414,11 +8414,11 @@
     },
     {
       "Code": "Tarou_Card",
-      "Description": "STR \u002B2\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "STR \u002B2\n\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E\n \u003Ccolor=#008080\u003ECramp Card\u003C/color\u003E\n STR \u002B3\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Wolf_Card",
-      "Description": "ATK \u002B15, CRIT \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "ATK \u002B15, CRIT \u002B1\n\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E\n \u003Ccolor=#008080\u003EVagabond Wolf Card\u003C/color\u003E\n FLEE \u002B18, STR \u002B2\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Mandragora_Card",
@@ -8426,7 +8426,7 @@
     },
     {
       "Code": "Peco_Peco_Card",
-      "Description": "HP \u002B10%\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "HP \u002B10%\n\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E\n \u003Ccolor=#008080\u003EGrand Peco Card\u003C/color\u003E\n VIT \u002B3, DEF \u002B3\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Ambernite_Card",
@@ -8434,7 +8434,7 @@
     },
     {
       "Code": "Poporing_Card",
-      "Description": "Enable \u003Ccolor=#0000FF\u003EDetoxify\u003C/color\u003E\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "Enables use of \u003Ccolor=#0000FF\u003EDetoxify\u003C/color\u003E.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Wormtail_Card",
@@ -8526,7 +8526,7 @@
     },
     {
       "Code": "Dustiness_Card",
-      "Description": "FLEE \u002B5\n-30% damage from Wind\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "FLEE \u002B5\n-30% damage from Wind attacks\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Metaller_Card",
@@ -8546,7 +8546,7 @@
     },
     {
       "Code": "Cornutus_Card",
-      "Description": "DEF \u002B1\nIndestructible Armor\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "DEF \u002B1\nIndestructible Armor\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Anaconda_Card",
@@ -8590,7 +8590,7 @@
     },
     {
       "Code": "Golem_Card",
-      "Description": "ATK \u002B5\nIndestructible Weapon\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "ATK \u002B5\nIndestructible Weapon\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Pirate_Skel_Card",
@@ -8942,11 +8942,11 @@
     },
     {
       "Code": "Grand_Peco_Card",
-      "Description": "\u002B5% Autospell \u003Ccolor=#0000FF\u003EGloria 1\u003C/color\u003E on receive physical damage\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EHeadgear\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "\u002B5% Autospell \u003Ccolor=#0000FF\u003EGloria 1\u003C/color\u003E on receive physical damage\n\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E\n \u003Ccolor=#008080\u003EPeco Peco Card\u003C/color\u003E\n VIT \u002B3, DEF \u002B3\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EHeadgear\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Grizzly_Card",
-      "Description": "\u002B3% chance of \u003Ccolor=#800000\u003EBlind\u003C/color\u003E on receive physical damage\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "\u002B3% chance of \u003Ccolor=#800000\u003EBlind\u003C/color\u003E on receive physical damage\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Gryphon_Card",
@@ -8954,7 +8954,7 @@
     },
     {
       "Code": "Gullinbursti_Card",
-      "Description": "\u002B10% EXP from Fish\n\u002B20% damage from Fish\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EFootgear\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "\u002B10% EXP from Fish\n\u002B20% damage from Fish\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EFootgear\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Gig_Card",
@@ -8970,11 +8970,11 @@
     },
     {
       "Code": "Dark_Lord_Card",
-      "Description": "\u002B10% Autospell \u003Ccolor=#0000FF\u003EMeteor Storm 5\u003C/color\u003E on receive physical damage\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EFootgear\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "\u002B10% Autospell \u003Ccolor=#0000FF\u003EMeteor Storm 5\u003C/color\u003E on receive physical damage\n\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E\n \u003Ccolor=#008080\u003EDark Illusion Card\u003C/color\u003E\n HP \u002B18%, SP \u002B18%\n Cast Time -8%\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EFootgear\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Dark_Illusion_Card",
-      "Description": "HP -8%, SP -8%\nCast Time -12%\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EHeadgear\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "HP -8%, SP -8%\nCast Time -12%\n\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E\n \u003Ccolor=#008080\u003EDark Lord Card\u003C/color\u003E\n HP \u002B18%, SP \u002B18%\n Cast Time -8%\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EHeadgear\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Dark_Frame_Card",
@@ -9010,11 +9010,11 @@
     },
     {
       "Code": "Dragon_Tail_Card",
-      "Description": "AGI \u002B1, FLEE \u002B10\n\u002B5% \u003Ccolor=#0000FF\u003EDouble Strafe\u003C/color\u003E, \u003Ccolor=#0000FF\u003EArrow Shower\u003C/color\u003E damage\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "AGI \u002B1, FLEE \u002B10\n\u002B10% \u003Ccolor=#0000FF\u003EDouble Strafe\u003C/color\u003E, \u003Ccolor=#0000FF\u003EArrow Shower\u003C/color\u003E damage\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Dragon_Fly_Card",
-      "Description": "AGI \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "AGI \u002B1\n\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E\n \u003Ccolor=#008080\u003EDragon Fly Card\u003C/color\u003E\n FLEE \u002B18, AGI \u002B2\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Driller_Card",
@@ -9030,11 +9030,11 @@
     },
     {
       "Code": "Vagabond_Wolf_Card",
-      "Description": "STR \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "STR \u002B1\n\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E\n \u003Ccolor=#008080\u003EWolf Card\u003C/color\u003E\n FLEE \u002B18, STR \u002B2\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Lava_Golem_Card",
-      "Description": "\u002B30% physical damage vs. Golem\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "\u002B30% physical damage vs. Golem\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Rideword_Card",
@@ -9054,7 +9054,7 @@
     },
     {
       "Code": "Wraith_Dead_Card",
-      "Description": "\u002B6% chance of \u003Ccolor=#800000\u003ECurse\u003C/color\u003E on receive physical damage\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "\u002B6% chance of \u003Ccolor=#800000\u003ECurse\u003C/color\u003E on receive physical damage\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Wraith_Card",
@@ -9086,7 +9086,7 @@
     },
     {
       "Code": "Mastering_Card",
-      "Description": "LUK \u002B1\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "LUK \u002B1\n\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E\n \u003Ccolor=#008080\u003EPoring Card\u003C/color\u003E\n FLEE \u002B18, LUK \u002B2\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Maya_Purple_Card",
@@ -9094,7 +9094,7 @@
     },
     {
       "Code": "Merman_Card",
-      "Description": "HP Regeneration \u002B10%\nSP Regeneration \u002B10%\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EFootgear\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "HP Regeneration \u002B10%\nSP Regeneration \u002B10%\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EFootgear\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Megalith_Card",
@@ -9142,7 +9142,7 @@
     },
     {
       "Code": "Vocal_Card",
-      "Description": "MDEF \u002B3\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "MDEF \u002B3\n\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E\n \u003Ccolor=#008080\u003ERocker Card\u003C/color\u003E\n FLEE \u002B18, DEX \u002B2\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Bongun_Card",
@@ -9162,7 +9162,7 @@
     },
     {
       "Code": "Sasquatch_Card",
-      "Description": "\u002B6% chance of \u003Ccolor=#800000\u003EFreeze\u003C/color\u003E on receive physical damage\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "\u002B6% chance of \u003Ccolor=#800000\u003EFreeze\u003C/color\u003E on receive physical damage\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Enchanted_Peach_Tree_Card",
@@ -9170,7 +9170,7 @@
     },
     {
       "Code": "Succubus_Card",
-      "Description": "HP \u002B1000, VIT -3\nHP Regeneration -20%\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "HP \u002B1000, VIT -3\nHP Regeneration -20%\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Sage_Worm_Card",
@@ -9178,7 +9178,7 @@
     },
     {
       "Code": "Solider_Card",
-      "Description": "DEF \u002B2, MDEF \u002B2\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "DEF \u002B2, MDEF \u002B2\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Skeleton_General_Card",
@@ -9186,7 +9186,7 @@
     },
     {
       "Code": "Skel_Prisoner_Card",
-      "Description": "\u002B3% chance of \u003Ccolor=#800000\u003ESleep\u003C/color\u003E on receive physical damage\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "\u002B3% chance of \u003Ccolor=#800000\u003ESleep\u003C/color\u003E on receive physical damage\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Stalactic_Golem_Card",
@@ -9214,7 +9214,7 @@
     },
     {
       "Code": "Cloud_Tower_Manager_Card",
-      "Description": "INT \u002B1\nCast Time -8%\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EHeadgear\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "INT \u002B1, MATK \u002B10\nCast Time -5%\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EHeadgear\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Shinobi_Card",
@@ -9246,11 +9246,11 @@
     },
     {
       "Code": "Owl_Duke_Card",
-      "Description": "\u002B0.3% Autospell \u003Ccolor=#0000FF\u003EImpositio Manus 3\u003C/color\u003E on non-skill attack\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "\u002B0.3% Autospell \u003Ccolor=#0000FF\u003EImpositio Manus 3\u003C/color\u003E on non-skill attack\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\n\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E\n \u003Ccolor=#008080\u003EOwl Baron Card\u003C/color\u003E\n \u002B10% Autospell \u003Ccolor=#0000FF\u003ELightning Bolt 5\u003C/color\u003E on non-skill attack\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Owl_Baron_Card",
-      "Description": "\u002B3% Autospell \u003Ccolor=#0000FF\u003ELex Aeterna\u003C/color\u003E on non-skill attack\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "\u002B3% Autospell \u003Ccolor=#0000FF\u003ELex Aeterna\u003C/color\u003E on non-skill attack\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\n\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E\n \u003Ccolor=#008080\u003EOwl Duke Card\u003C/color\u003E\n \u002B10% Autospell \u003Ccolor=#0000FF\u003ELightning Bolt 5\u003C/color\u003E on non-skill attack\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Iron_Fist_Card",
@@ -9274,7 +9274,7 @@
     },
     {
       "Code": "Alarm_Card",
-      "Description": "HP \u002B300, VIT \u002B1\n\u002B20% Autospell \u003Ccolor=#0000FF\u003ESight\u003C/color\u003E on receive physical damage\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EFootgear\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "HP \u002B300, VIT \u002B1\n\u002B20% Autospell \u003Ccolor=#0000FF\u003ESight\u003C/color\u003E on receive physical damage\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EFootgear\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Am_Mut_Card",
@@ -9282,7 +9282,7 @@
     },
     {
       "Code": "Assaulter_Card",
-      "Description": "CRIT damage \u002B10%\nCRIT \u002B7 vs. Demi-Human\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "CRIT damage \u002B10%\nCRIT \u002B7 vs. Demi-Human\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Aster_Card",
@@ -9290,7 +9290,7 @@
     },
     {
       "Code": "Ancient_Mummy_Card",
-      "Description": "\u002B3% Autospell \u003Ccolor=#0000FF\u003ESignum Crucis 5\u003C/color\u003E on receive physical damage\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EShield\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "\u002B3% Autospell \u003Ccolor=#0000FF\u003ESignum Crucis 5\u003C/color\u003E on receive physical damage\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EShield\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Ancient_Worm_Card",
@@ -9318,7 +9318,7 @@
     },
     {
       "Code": "Orc_Lady_Card",
-      "Description": "\u002B30% physical damage vs. non-Boss Orc\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "\u002B30% physical damage vs. Orcs\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Orc_Archer_Card",
@@ -9362,7 +9362,7 @@
     },
     {
       "Code": "Eclipse_Card",
-      "Description": "VIT \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "VIT \u002B1\n\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E\n \u003Ccolor=#008080\u003ELunatic Card\u003C/color\u003E\n FLEE \u002B18, VIT \u002B2\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Explosion_Card",
@@ -9374,7 +9374,7 @@
     },
     {
       "Code": "Incubus_Card",
-      "Description": "SP \u002B150, INT -3\nSP Regeneration -20%\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EHeadgear\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "SP \u002B150, INT -3\nSP Regeneration -20%\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EHeadgear\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Giant_Spider_Card",
@@ -9390,7 +9390,7 @@
     },
     {
       "Code": "Shellfish_Card",
-      "Description": "ATK \u002B5\n\u002B30% physical damage vs. Crab\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "ATK \u002B5\n\u002B30% physical damage vs. Crab\n\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E\n \u003Ccolor=#008080\u003ECrab Card\u003C/color\u003E\n \u003Ccolor=#008080\u003EAster Card\u003C/color\u003E\n \u002B45% physical damage vs. Water\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Zombie_Master_Card",
@@ -9434,7 +9434,7 @@
     },
     {
       "Code": "Chepet_Card",
-      "Description": "\u002B5% Autospell \u003Ccolor=#0000FF\u003EHeal 5\u003C/color\u003E (enemy) on non-skill attack\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "\u002B5% Autospell \u003Ccolor=#0000FF\u003EHeal 5\u003C/color\u003E (enemy) on non-skill attack\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Choco_Card",
@@ -9462,7 +9462,7 @@
     },
     {
       "Code": "Kobold_Leader_Card",
-      "Description": "\u002B30% physical damage vs. Kobold\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "\u002B30% physical damage vs. Kobolds\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Kobold_Archer_Card",
@@ -9482,7 +9482,7 @@
     },
     {
       "Code": "Cramp_Card",
-      "Description": "\u002B1% chance to find \u003Ccolor=#008080\u003E1~500 zeny\u003C/color\u003E on monster kill\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EHeadgear\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "\u002B1% chance to find \u003Ccolor=#008080\u003E1~500 zeny\u003C/color\u003E on monster kill\n\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E\n \u003Ccolor=#008080\u003ETarou Card\u003C/color\u003E\n STR \u002B3\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EHeadgear\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Cruiser_Card",
@@ -9522,7 +9522,7 @@
     },
     {
       "Code": "Toad_Card",
-      "Description": "Perfect Dodge \u002B1\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "Perfect Dodge \u002B1\n\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E\n \u003Ccolor=#008080\u003ERoda Frog Card\u003C/color\u003E\n FLEE \u002B18, INT \u002B2\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Beetle_King_Card",
@@ -9626,7 +9626,7 @@
     },
     {
       "Code": "Waste_Stove_Card",
-      "Description": "INT \u002B1, ATK \u002B5\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "INT \u002B1, ATK \u002B5\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EArmor\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Venomous_Card",
@@ -10063,6 +10063,10 @@
     {
       "Code": "Fallen_Bishop_Card",
       "Description": "SP -50%, MATK \u002B10% \n\u002B50% magical damage vs. Demi-Human, Angel\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003Ci\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EFootgear\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+    },
+    {
+      "Code": "Mature_Ant_Egg_Card",
+      "Description": "\u002B30% physical damage vs. Ants\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Arrow",

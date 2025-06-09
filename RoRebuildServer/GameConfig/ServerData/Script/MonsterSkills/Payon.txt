@@ -206,7 +206,12 @@ StateAttacking:
 }
 
 SkillHandler("WERE_WOLF") {
+StateChase:
+	TryCast(MonsterSnap, 1, 10%, 0.2s, 10s);
 StateAttacking:
-	TryCast(SonicBlow, 1, 10%, 0.8s, 8s);
+	TryCast(SonicBlow, 9, 10%, 0.8s, 8s);
+	TryCast(Bash, 5, 5%, 0.5s, 5s);
+	TryCast(ComboAttack, 4, 5%, 0.5s, 5s);
+	TryCast(EarthAttack, 3, 5%, 0s, 5s);
 	TryCast(TwoHandQuicken, 9, 100%, 0, 1m)[HpPercent <= 40] -> SendEmote(36);
 }

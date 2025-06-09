@@ -1,0 +1,210 @@
+﻿@using System.Text
+@using RebuildSharedData.Enum
+@using RoRebuildServer.Data
+@using RoRebuildServer.Data.Map
+@using RoRebuildServer.Data.Monster
+@using RoRebuildServer.Simulation
+@using RoWikiGenerator.Generators
+@code {
+    [Parameter] public MapEntry Model { get; set; }
+    [Parameter] public bool ShowMonsterSection { get; set; } = true;
+    [Parameter] public bool IsRelativeDir { get; set; } = true;
+
+    string TimeSpanToTimeString(TimeSpan time)
+    {
+        var sOut = new StringBuilder();
+        if (time.Hours > 0)
+            sOut.Append($"{time.Hours}h");
+        if (time.Minutes > 0)
+            sOut.Append($"{time.Minutes}m");
+        if (time.Seconds > 0)
+            sOut.Append($"{time.Seconds}s");
+        if (sOut.Length == 0)
+            return "0s";
+        return sOut.ToString();
+    }
+}
+@{
+
+    var dir = IsRelativeDir ? "../" : "";
+    var spawns = new WikiSpawnConfig();
+    var monsters = new List<MonsterDatabaseInfo>();
+    var monsterSpawns = new List<MapSpawnRule>();
+
+    if (DataManager.MapConfigs.TryGetValue(Model.Code, out var mapSpawns))
+    {
+        mapSpawns(spawns);
+
+
+        foreach (var spawn in spawns.SpawnRules)
+        {
+            var existing = monsterSpawns.FirstOrDefault(m =>
+                m.MonsterDatabaseInfo.Id == spawn.MonsterDatabaseInfo.Id && m.MinSpawnTime == spawn.MinSpawnTime && m.MaxSpawnTime == spawn.MaxSpawnTime);
+
+            if (existing == null)
+            {
+                monsterSpawns.Add(spawn);
+                continue;
+            }
+            else
+                existing.Count += spawn.Count;
+        }
+
+        monsterSpawns = monsterSpawns.OrderByDescending(m => m.Count).ThenBy(m => m.MinSpawnTime).ToList();
+
+        monsters = monsterSpawns.Select(s => s.MonsterDatabaseInfo).DistinctBy(m => m.Code).ToList();
+    }
+
+
+
+}
+
+<div class="contentzone">
+
+    <table>
+        <thead>
+            <tr>
+                <th width="200px"><h2 class="subheader"><a class="maplink" href="maps/@(Model.Code).html">@(Model.Name) (@(Model.Code))</a></h2></th>
+                @* <th width="250px"><h2 class="subheader">Map Information</h2></th> *@
+                <th><h2 class="subheader">Monster Spawns</h2></th>
+            </tr>
+        </thead>
+        <tr>
+            <td style="vertical-align: top; max-width: 200px">
+                <img style="max-width: 200px" src="@(dir)images/maps/normal/@(Model.Code).png" />
+                @if (Model.Flags.Contains("AllWater"))
+                {
+                    <br />
+                    <b>Notes: </b>
+                    <span>Underwater (skills requiring water can be activated anywhere)</span>
+                    
+                }
+
+            </td>
+            @*
+                <td style="vertical-align: top">
+                    <table>
+
+                        <tr>
+                            <td>Map Name</td>
+                            <td>@Model.Name</td>
+                        </tr>
+                        <tr>
+                            <td>Abbreviated Name:</td>
+                            <td>@Model.Code</td>
+                        </tr>
+                        <tr>
+                            <td>Map Type:</td>
+                            <td>@Model.MapMode</td>
+                        </tr>
+                        <tr>
+                            <td>Can Memo Warp Portal:</td>
+                            <td>@(Model.Flags.Contains("CanMemo") ? "Yes" : "No")</td>
+                        </tr>
+                        <tr>
+                            <td>BGM:</td>
+                            <td>@Model.Music</td>
+                        </tr>
+                        @if (Model.Flags.Contains("AllWater"))
+                        {
+                            <tr>
+                                <td>Special Settings:</td>
+                                <td>Underwater (skills requiring water can be activated anywhere)</td>
+                            </tr>
+                        }
+                    </table>
+                </td>
+                *@
+            <td style="vertical-align: top">
+                <table class="mapSpawnTable">
+                    <thead>
+                        <tr>
+                            <th>Monster Name</th>
+                            <th>Count</th>
+                            <th>HP</th>
+                            <th>ATK</th>
+                            <th>Element</th>
+                            <th>Race</th>
+                            <th>Size</th>
+                            <th>Base</th>
+                            <th>Job</th>
+                            <th>100% Hit</th>
+                            <th>95% Flee</th>
+                            <th>Spawn Time</th>
+                        </tr>
+                    </thead>
+
+                    @foreach (var spawn in monsterSpawns)
+                    {
+                        var m = spawn.MonsterDatabaseInfo;
+                        var time = "Instant";
+                        if (spawn.MinSpawnTime > ServerConfig.DebugConfig.MinSpawnTime)
+                        {
+                            var min = TimeSpan.FromMilliseconds(spawn.MinSpawnTime);
+                            var max = TimeSpan.FromMilliseconds(spawn.MaxSpawnTime);
+                            if (min == max)
+                                time = TimeSpanToTimeString(min);
+                            else
+                                time = $"{TimeSpanToTimeString(min)} - {TimeSpanToTimeString(max)}";
+                        }
+
+                        <tr>
+                            <td>
+                                @switch (spawn.DisplayType)
+                                {
+                                    case CharacterDisplayType.Boss:
+                                        <img src='@(dir)images/iconboss.png' />
+                                        break;
+                                    case CharacterDisplayType.Mvp:
+                                        <img src='@(dir)images/iconmvp.png' />
+                                        break;
+                                }
+                                @if (ShowMonsterSection)
+                                {
+                                    <a href="#@(spawn.MonsterDatabaseInfo.Code)">@spawn.MonsterDatabaseInfo.Name</a>
+                                }
+                                else
+                                {
+                                    <a href="@(dir)MonsterListFull.html#@(spawn.MonsterDatabaseInfo.Code)">@spawn.MonsterDatabaseInfo.Name</a>
+                                }
+                            </td>
+                            <td>@spawn.Count</td>
+                            <td>@m.HP.ToString("N0")</td>
+                            <td>@m.AtkMin.ToString("N0") ~ @m.AtkMax.ToString("N0")</td>
+                            <td>@m.Race</td>
+                            <td>@m.Element</td>
+                            <td>@m.Size</td>
+                            <td>@m.Exp.ToString("N0")</td>
+                            <td>@m.JobExp.ToString("N0")</td>
+                            <td>@(m.Agi + m.Level + 20)</td>
+                            <td>@(m.Dex + m.Level + 75)</td>
+                            <td>@time</td>
+                        </tr>
+
+                    }
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    @if (ShowMonsterSection)
+    {
+
+        <br />
+        @*     <h2 class="subheader">Npcs</h2>
+    <br/> *@
+        @if (monsters.Count > 0)
+        {
+            <h2 class="subheader">Monsters</h2>
+            <br />
+
+            @foreach (var monster in monsters)
+            {
+                if (monster.Id < 4000 || monster.Id == 5000)
+                    continue;
+
+                <MonsterRecord Model="@Monsters.MonsterModel" Monster="@monster" ShowSpawns="true" RelativePath="true"></MonsterRecord>
+            }
+        }
+    }
+</div>

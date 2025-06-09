@@ -128,11 +128,11 @@ All Stats + 50
 
 ::Sunglasses //id 2201 - Headgear Mid
 <desc>A pair of glasses with darkened lenses that block ultraviolet light.</desc>
-+30% <color=#800000>Blind</color> resist
++40% <color=#800000>Blind</color> resist
 
 ::Sunglasses_ //id 2202 - Headgear Mid
 <desc>A pair of glasses with darkened lenses that block ultraviolet light.</desc>
-+30% <color=#800000>Blind</color> resist
++40% <color=#800000>Blind</color> resist
 
 ::Glasses //id 2203 - Headgear Mid
 <desc>A pair of prescription glasses that compensate for vision defects.</desc>
@@ -254,7 +254,7 @@ LUK +1, MDEF +1
 
 ::Purple_Glasses //id 2242 - Headgear Mid
 <desc>A pair of high quality sunglasses that effectively block the sun.</desc>
-+40% <color=#800000>Blind</color> resist
++30% <color=#800000>Blind</color> resist
 
 ::Geek_Glasses //id 2243 - Headgear Mid
 <desc>A pair of glasses that make the wearer's eyes look like they're spinning without focus.</desc>
@@ -592,6 +592,8 @@ MDEF +15
 
 ::Pantie //id 2339 - Armor 
 <desc>A risque undergarment that is comfortable to wear but provides little defense.</desc>
+<color=#800080>Set Bonus</color> with <color=#008080>Undershirt</color> or <color=#008080>Undershirt [1]</color>
+ AGI +5, FLEE +10
 
 ::Novice_Breastplate //id 2340 - Armor 
 <desc>A breastplate exclusively for Novices!</desc>
@@ -672,6 +674,8 @@ Uninterruptible Cast
 
 ::Pantie_ //id 2371 - Armor 
 <desc>A risque undergarment that is comfortable to wear but provides little defense.</desc>
+<color=#800080>Set Bonus</color> with <color=#008080>Undershirt</color> or <color=#008080>Undershirt [1]</color>
+ AGI +5, FLEE +10
 
 ::Mage_Coat_ //id 2372 - Armor 
 <color=#808080>An exclusive robe for mages that contains magic power.</color>
@@ -952,10 +956,14 @@ HP Regeneration +5%
 ::Undershirt //id 2522 - Garment 
 <desc>A lightweight, 100% cotton, shirt that is quite durable.</desc>
 MDEF +1
+<color=#800080>Set Bonus</color> with <color=#008080>Pantie</color> or <color=#008080>Pantie [1]</color>
+ AGI +5, FLEE +10
 
 ::Undershirt_ //id 2523 - Garment 
 <desc>A lightweight, 100% cotton, shirt that is quite durable.</desc>
 MDEF +1
+<color=#800080>Set Bonus</color> with <color=#008080>Pantie</color> or <color=#008080>Pantie [1]</color>
+ AGI +5, FLEE +10
 
 ::Valkyrian_Manteau //id 2524 - Garment 
 <desc>A manteau worn by the Valkyries, Odin's battle maidens.</desc>

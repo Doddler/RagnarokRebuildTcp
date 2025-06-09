@@ -36,17 +36,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h3 {
-  margin-top: 0em;
-
-  padding-left: 15px;
-  font-size: 12px;
-
-  background: url("images/th.png");
-  background-repeat: repeat-x;
-  border-left: 10px solid #000;
-  color: #fff;
-  padding: 0.5em;
-  font-variant: small-caps;
+	margin-top: 0em;
+	padding-left: 15px;
+	font-size: 12px;
+	background: url("images/th.png"), url("../images/th.png");
+	background-repeat: repeat-x;
+	border-left: 10px solid #000;
+	color: #fff;
+	padding: 0.5em;
+	font-variant: small-caps;
 }
 
 h2{
@@ -147,14 +145,12 @@ td.top {
 
 
 #topic td.subheader {
-  margin-top: 0em;
-
-  font-size: 12px;
-
-  background: url("images/th.png");
-  background-repeat: repeat-x;
-  color: #fff;
-  padding: 0.2em;
+	margin-top: 0em;
+	font-size: 12px;
+	background: url("images/th.png"), url("../images/th.png");
+	background-repeat: repeat-x;
+	color: #fff;
+	padding: 0.2em;
 }
 
 #topic h2.topicheader {
@@ -168,13 +164,11 @@ td.top {
 }
 
 #topic h2.subheader {
-  margin-top: 0em;
-
-  font-size: 12px;
-
-  background: url("images/th.png");
-  background-repeat: repeat-x;
-  color: #fff;
+	margin-top: 0em;
+	font-size: 12px;
+	background: url("images/th.png"), url("../images/th.png");
+	background-repeat: repeat-x;
+	color: #fff;
 }
 
 #topic h2.mainhead {
@@ -288,7 +282,7 @@ table.rochart td {
 }
 
 .skillTitle {
-	background: url("images/th.png");
+	background: url("images/th.png"), url("../images/th.png");
 	color: white;
 	vertical-align: middle;
 }
@@ -316,4 +310,17 @@ table.rochart td {
 
 .cardart {
 	width: 100px;
+}
+
+.mapSpawnTable th {
+	text-align: left;
+}
+
+#topic .maplink {
+	color: white;
+}
+
+
+#topic .regionlink {
+	color: white;
 }

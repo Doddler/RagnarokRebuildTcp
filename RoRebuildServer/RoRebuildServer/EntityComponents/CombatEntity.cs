@@ -412,16 +412,16 @@ public partial class CombatEntity : IEntityAutoReset
                 stat += GetStat(CharacterStat.AddLuk);
                 break;
             case CharacterStat.Def:
-                if (Character.Type == CharacterType.Monster)
-                    return stat;
-                var addDef = GetStat(CharacterStat.AddDef) + GetStat(CharacterStat.EquipmentRefineDef);
-                stat = (int)((stat + addDef) * (1 + GetStat(CharacterStat.AddDefPercent) / 100f));
+                stat += GetStat(CharacterStat.AddDef);
+                if(Character.Type == CharacterType.Player)
+                    stat += GetStat(CharacterStat.EquipmentRefineDef);
+                stat = stat * (100 + GetStat(CharacterStat.AddDefPercent)) / 100;
                 break;
             case CharacterStat.MDef:
                 stat = (int)((stat + GetStat(CharacterStat.AddMDef)) * (1 + GetStat(CharacterStat.AddMDef) / 100f));
                 break;
             case CharacterStat.PerfectDodge:
-                stat += 1 + (GetStat(CharacterStat.Luck) * 5) / 10;
+                stat += 1 + GetEffectiveStat(CharacterStat.Luck) / 10;
                 break;
             case CharacterStat.Range:
                 if (HasBodyState(BodyStateFlags.Blind) && stat > ServerConfig.MaxAttackRangeWhileBlind)

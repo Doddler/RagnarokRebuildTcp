@@ -10,10 +10,15 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
     {
         public RagnarokEffectData.PrimitiveUpdateDelegate GetDefaultUpdateHandler() => UpdateTexture3D;
         public RagnarokEffectData.PrimitiveRenderDelegate GetDefaultRenderHandler() => RenderTexture3D;
-        
+
         public void UpdateTexture3D(RagnarokPrimitive primitive)
         {
             var data = primitive.GetPrimitiveData<Texture3DData>();
+
+#if UNITY_EDITOR
+            if (primitive.IsStepFrame && primitive.Step == 0 && data.AlphaMax == 0 && data.Alpha > 0)
+                Debug.LogWarning($"Texture3D effect has an alphamax of 0, but an alpha value of {data.Alpha}. Is this intended?");
+#endif
 
             if (data.Flags.HasFlag(RoPrimitiveHandlerFlags.NoAnimation))
                 return;
@@ -54,13 +59,13 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
             primitive.IsDirty = true; // primitive.Step == 0 || data.ScalingSpeed != Vector2.zero || data.Flags != RoPrimitiveHandlerFlags.None;
             primitive.IsActive = primitive.CurrentPos < primitive.Duration;
         }
-        
+
         private void RenderTexture3D(RagnarokPrimitive primitive, MeshBuilder mb)
         {
             mb.Clear();
-            
+
             var data = primitive.GetPrimitiveData<Texture3DData>();
-            
+
             //data.Color = Color.blue;
             //
             // #if DEBUG
@@ -69,11 +74,10 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
 
             if (data.IsStandingQuad)
             {
-                if(data.Sprite == null)
+                if (data.Sprite == null)
                     primitive.AddTextured2DQuad(Vector3.zero, data.Size.x, data.Size.y, data.Color);
                 else
                     primitive.AddTexturedSpriteQuad(data.Sprite, Vector3.zero, data.Size.x, data.Size.y, data.Color, data.Angle);
-                
             }
             else
             {

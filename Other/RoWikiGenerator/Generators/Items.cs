@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using CsvHelper;
+using CsvHelper.Configuration;
+using JetBrains.Annotations;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.CsvDataTypes;
 using RoRebuildServer.Data.Monster;
@@ -43,6 +49,7 @@ public class Items
 {
     public static Dictionary<int, ItemSource> AvailableItems = new();
     public static Dictionary<string, string> ItemDescLookup = new();
+    public static Dictionary<string, string> SharedIcons = new();
 
     public static void RegisterItemSource(MonsterDatabaseInfo monster, MonsterDropData.MonsterDropEntry dropEntry)
     {
@@ -103,16 +110,16 @@ public class Items
                                     new Dictionary<string, List<MonsterDropData.MonsterDropEntry>>(),
                                     new Dictionary<string, List<string>>());
 
-                                source.NpcSales.Add(npcName, new List<string> { $"{price:N}z" });
+                                source.NpcSales.Add(npcName, new List<string> { $"{price:N0}z" });
 
                                 AvailableItems.Add(item, source);
                                 continue;
                             }
 
                             if (itemEntry.NpcSales.TryGetValue(npcName, out var saleList))
-                                saleList.Add($"{price:N}z");
+                                saleList.Add($"{price:N0}z");
                             else
-                                itemEntry.NpcSales.Add(npcName, new List<string> { $"{price:N}z" });
+                                itemEntry.NpcSales.Add(npcName, new List<string> { $"{price:N0}z" });
                         }
                     }
                 }
@@ -182,6 +189,17 @@ public class Items
             if (!string.IsNullOrWhiteSpace(curItem) && sb.Length > 0)
                 ItemDescLookup.Add(curItem, sb.ToString().Trim());
         }
+
+        foreach (var (id, desc) in ItemDescLookup)
+        {
+            var d2 = desc;
+            if (desc.Contains("<color"))
+            {
+                d2 = Regex.Replace(desc, "<color=#([^\\\"]{6})>", "<span style=\"color: $1\">");
+            }
+
+            ItemDescLookup[id] = d2.Replace("</color>", "</span>");
+        }
     }
 
 
@@ -194,14 +212,339 @@ public class Items
         return csv.GetRecords<T>().ToList();
     }
 
+    private static List<TDst> ConvertToClient<TSrc, TDst>(string csvName, Func<List<TSrc>, List<TDst>> convert)
+    {
+        var inPath = Path.Combine(ServerConfig.DataConfig.DataPath, "Db/", csvName);
+        var tempPath = Path.Combine(Path.GetTempPath(), csvName); //copy in case file is locked
+        File.Copy(inPath, tempPath, true);
+
+        using var tr = new StreamReader(tempPath, Encoding.UTF8) as TextReader;
+        using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
+        var jobs = csv.GetRecords<TSrc>().ToList();
+
+        var list = convert(jobs);
+
+        return list;
+    }
+
+    public static void PrepareSharedItemIcons()
+    {
+        foreach (var l in File.ReadAllLines(Path.Combine(AppSettings.ClientProjectPath, "Assets/Data/SharedItemIcons.txt")))
+        {
+            var s = l.Split('\t');
+            SharedIcons.Add(s[0], s[1]);
+        }
+
+    }
+
+
     public static void PrepareItems()
     {
+        BuildJobMatrix();
         LoadItemDescriptions();
+
+
+        //weapon class
+        weaponClasses = ConvertToClient<CsvWeaponClass, PlayerWeaponClass>("WeaponClass.csv",
+            weapons => weapons.Select(w => new PlayerWeaponClass()
+            {
+                Id = w.Id,
+                Name = w.FullName,
+                WeaponClass = w.WeaponClass,
+                HitSounds = w.HitSound.Split('/').Select(a => a + ".ogg").ToList()
+            }).ToList()
+        );
+
     }
 
     public class ItemModel
     {
+        public Dictionary<string, string> CategoryLookup;
         public Dictionary<string, List<object>> ItemByCategory;
+    }
+
+
+    public record WeaponEntry(ItemData weapon, ItemSource source, CsvItemWeapon csvData, PlayerWeaponClass weaponClass, string description, string availableJobs);
+    public record EquipmentEntry(ItemData equipment, ItemSource source, CsvItemEquipment csvData, string equipPosition, string description, string availableJobs);
+
+    private static List<PlayerWeaponClass>? weaponClasses;
+    private static Dictionary<string, string> equipGroupDescriptions = new();
+
+
+    private static void BuildJobMatrix()
+    {
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = false };
+        using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, "Db/EquipmentGroups.csv")) as TextReader;
+        using var csv = new CsvReader(tr, config);
+
+        var entries = csv.GetRecords<dynamic>().ToList();
+        var autoDesc = new StringBuilder();
+
+
+        var equipableJobs = new Dictionary<string, HashSet<int>>();
+
+        foreach (IDictionary<string, object> e in entries)
+        {
+            var s = e.Values.ToList();
+            var jobGroup = (string)s[0];
+            var desc = (string)s[1];
+
+            //if (desc.Contains("Transcended") || desc.Contains("ArcherHigh"))
+            //    desc = desc;
+
+            var hasExisting = equipableJobs.TryGetValue(jobGroup, out var set);
+            if (!hasExisting || set == null)
+                set = new HashSet<int>();
+
+            var parentGroups = new List<string>();
+            for (var i = 2; i < s.Count; i++)
+            {
+                var job = (string)s[i];
+                if (equipableJobs.TryGetValue(job, out var refSet))
+                {
+                    foreach (var r in refSet)
+                        set.Add(r);
+                    parentGroups.Add(job);
+                }
+                else if (DataManager.JobIdLookup.TryGetValue(job, out var jobId))
+                {
+                    set.Add(jobId);
+                    parentGroups.Add(job);
+                }
+            }
+
+            if (set.Count == 0)
+                continue;
+
+            if (!hasExisting)
+                equipableJobs.Add(jobGroup, set);
+
+            if (desc != "<Auto>")
+            {
+                equipGroupDescriptions[jobGroup] = desc;
+            }
+            else
+            {
+                autoDesc.Clear();
+                foreach (var p in parentGroups)
+                {
+                    if (autoDesc.Length > 0)
+                        autoDesc.Append(", ");
+                    if (equipGroupDescriptions.TryGetValue(p, out var existingDesc))
+                        autoDesc.Append(existingDesc);
+                    else
+                        autoDesc.Append(p);
+                }
+
+                equipGroupDescriptions[jobGroup] = autoDesc.ToString();
+            }
+        }
+
+        //Console.WriteLine($"Finished building job matrix");
+    }
+
+    public static async Task<string> GetEquipmentPage()
+    {
+        var itemsByCategory = new Dictionary<string, List<object>>();
+        var categoryLookup = new Dictionary<string, string>();
+
+        categoryLookup.Add("Headgear", "Headgear");
+        categoryLookup.Add("Armor", "Armor");
+        categoryLookup.Add("Shield", "Shield");
+        categoryLookup.Add("Garment", "Garment");
+        categoryLookup.Add("Footgear", "Footgear");
+        categoryLookup.Add("Accessory", "Accessory");
+
+        var desc = "";
+
+        foreach (var entry in GetCsvRows<CsvItemEquipment>("ItemsEquipment.csv"))
+        {
+            if (!AvailableItems.TryGetValue(entry.Id, out var itemSource))
+                continue;
+
+            var pos = (entry.Type & ~EquipPosition.Headgear) | (EquipPosition)entry.Position;
+            var itemData = DataManager.ItemList[entry.Id];
+
+            var item = new ItemData()
+            {
+                Code = entry.Code,
+                Name = entry.Name,
+                Id = entry.Id,
+                IsUnique = true,
+                ItemRank = 4,
+                IsRefinable = entry.Refinable.ToLower() == "yes",
+                ItemClass = ItemClass.Equipment,
+                UseType = ItemUseType.NotUsable,
+                Slots = entry.Slot,
+                Price = itemData.Price,
+                SellPrice = itemData.SellToStoreValue,
+                Weight = entry.Weight,
+                Sprite = entry.Sprite,
+                Position = pos
+            };
+            //itemList.Items.Add(item);
+
+            //if (!string.IsNullOrWhiteSpace(entry.DisplaySprite))
+            //    displaySpriteList.AppendLine($"{entry.Code}\t{entry.DisplaySprite.ToLowerInvariant()}");
+
+            //fill in item description data
+            if (!ItemDescLookup.TryGetValue(item.Code, out var curDesc))
+                desc = $"<color=#080808><i>A piece of equipment with unknown properties.</i></color>";
+            else
+                desc = curDesc;
+
+
+            var equipGroup = equipGroupDescriptions.TryGetValue(entry.EquipGroup, out var groupName)
+                ? groupName
+                : "<i>Currently unequippable by any job</i>";
+            var type = entry.Type switch
+            {
+                EquipPosition.Headgear => "Headgear",
+                EquipPosition.Armor => "Armor",
+                EquipPosition.Boots => "Footgear",
+                EquipPosition.Garment => "Garment",
+                EquipPosition.Accessory => "Accessory",
+                EquipPosition.Shield => "Shield",
+                _ => "Unknown"
+            };
+
+            if (!itemsByCategory.TryGetValue(type, out var itemList))
+                itemsByCategory.Add(type, new List<object>());
+
+            var headPos = "";
+            if (entry.Type == EquipPosition.Headgear)
+            {
+                headPos = entry.Position switch
+                {
+                    HeadgearPosition.Top => "Top",
+                    HeadgearPosition.Mid => "Mid",
+                    HeadgearPosition.Bottom => "Lower",
+                    HeadgearPosition.TopMid => "Top + Mid",
+                    HeadgearPosition.TopBottom => "Top + Lower",
+                    HeadgearPosition.MidBottom => "Mid + Lower",
+                    HeadgearPosition.All => "All",
+                    _ => "N/A"
+                };
+                //type += $" ({headPosition})";
+            }
+            
+            itemsByCategory[type].Add(new EquipmentEntry(item, itemSource, entry, headPos, desc, equipGroup));
+        }
+
+        int HeadValue(string text) => text switch
+        {
+            "Top" => 0,
+            "Mid" => 1,
+            "Lower" => 3,
+            "Top + Mid" => 4,
+            "Top + Lower" => 5,
+            "Mid + Lower" => 6,
+            "All" => 7,
+            _ => -1
+        };
+
+        itemsByCategory["Headgear"] = itemsByCategory["Headgear"]
+            .OrderBy(i => HeadValue(((EquipmentEntry)i).equipPosition))
+            .ThenBy(i => ((EquipmentEntry)i).source.Item.Name).ToList();
+
+        var itemModel = new ItemModel()
+        {
+            CategoryLookup = categoryLookup,
+            ItemByCategory = itemsByCategory
+        };
+
+
+        return await Program.RenderPage<ItemModel, Equipment>(itemModel);
+    }
+
+
+    public static async Task<string> GetWeaponPage()
+    {
+
+        var itemsByCategory = new Dictionary<string, List<object>>();
+        var categoryLookup = new Dictionary<string, string>();
+
+        categoryLookup.Add("Dagger", "Daggers");
+        categoryLookup.Add("Sword", "Swords");
+        categoryLookup.Add("2HSword", "Two-Handed Swords");
+        categoryLookup.Add("Spear", "Spears");
+        categoryLookup.Add("2HSpear", "Two-Handed Spears");
+        categoryLookup.Add("Axe", "Axes");
+        categoryLookup.Add("2HAxe", "Two-Handed Axes");
+        categoryLookup.Add("Mace", "Maces");
+        //categoryLookup.Add("2HMace", "Two-Handed Maces");
+        categoryLookup.Add("Rod", "Rods");
+        //categoryLookup.Add("2HRod", "Two-Handed Rods");
+        categoryLookup.Add("Bow", "Bows");
+
+        var itemList = new ItemDataList();
+        itemList.Items = new List<ItemData>();
+        var descLookup = new Dictionary<string, string>();
+        var desc = "";
+
+        var weapons = new List<WeaponEntry>();
+
+        foreach (var entry in GetCsvRows<CsvItemWeapon>("ItemsWeapons.csv"))
+        {
+            if (!AvailableItems.TryGetValue(entry.Id, out var itemSource))
+                continue;
+
+            var itemData = DataManager.ItemList[entry.Id];
+            var item = new ItemData()
+            {
+                Code = entry.Code,
+                Name = entry.Name,
+                Id = entry.Id,
+                ItemRank = entry.Rank - 1,
+                IsUnique = true,
+                IsRefinable = entry.Refinable.ToLower() == "yes",
+                ItemClass = ItemClass.Weapon,
+                UseType = ItemUseType.NotUsable,
+                Slots = entry.Slot,
+                Price = itemData.Price,
+                SellPrice = itemData.SellToStoreValue,
+                Weight = entry.Weight,
+                Sprite = entry.Sprite,
+                Position = entry.Position == WeaponPosition.MainHand ? EquipPosition.MainHand : EquipPosition.BothHands
+            };
+            itemList.Items.Add(item);
+
+            //fill in item description data
+            if (!ItemDescLookup.TryGetValue(item.Code, out var curDesc))
+            {
+                desc = $"<color=#080808><i>A weapon with unknown properties.</i></color>";
+            }
+            else
+                desc = curDesc;
+
+            var classDef = weaponClasses.FirstOrDefault(w => w.WeaponClass == entry.Type, new PlayerWeaponClass() { Name = entry.Type });
+
+            if (!equipGroupDescriptions.TryGetValue(entry.EquipGroup, out var equipGroup))
+                continue;
+
+            weapons.Add(new WeaponEntry(item, itemSource, entry, classDef, desc, equipGroup));
+        }
+
+        itemsByCategory.Add("Dagger", weapons.Where(w => w.weaponClass.Id == 1).OrderBy(w => w.csvData.Rank).ThenBy(w => w.csvData.Attack).Select(w => (object)w).ToList());
+        itemsByCategory.Add("Sword", weapons.Where(w => w.weaponClass.Id == 2).OrderBy(w => w.csvData.Rank).ThenBy(w => w.csvData.Attack).Select(w => (object)w).ToList());
+        itemsByCategory.Add("2HSword", weapons.Where(w => w.weaponClass.Id == 3).OrderBy(w => w.csvData.Rank).ThenBy(w => w.csvData.Attack).Select(w => (object)w).ToList());
+        itemsByCategory.Add("Spear", weapons.Where(w => w.weaponClass.Id == 4).OrderBy(w => w.csvData.Rank).ThenBy(w => w.csvData.Attack).Select(w => (object)w).ToList());
+        itemsByCategory.Add("2HSpear", weapons.Where(w => w.weaponClass.Id == 5).OrderBy(w => w.csvData.Rank).ThenBy(w => w.csvData.Attack).Select(w => (object)w).ToList());
+        itemsByCategory.Add("Axe", weapons.Where(w => w.weaponClass.Id == 6).OrderBy(w => w.csvData.Rank).ThenBy(w => w.csvData.Attack).Select(w => (object)w).ToList());
+        itemsByCategory.Add("2HAxe", weapons.Where(w => w.weaponClass.Id == 7).OrderBy(w => w.csvData.Rank).ThenBy(w => w.csvData.Attack).Select(w => (object)w).ToList());
+        itemsByCategory.Add("Mace", weapons.Where(w => w.weaponClass.Id == 8).OrderBy(w => w.csvData.Rank).ThenBy(w => w.csvData.Attack).Select(w => (object)w).ToList());
+        itemsByCategory.Add("Rod", weapons.Where(w => w.weaponClass.Id == 10).OrderBy(w => w.csvData.Rank).ThenBy(w => w.csvData.Attack).Select(w => (object)w).ToList());
+        itemsByCategory.Add("Bow", weapons.Where(w => w.weaponClass.Id == 12).OrderBy(w => w.csvData.Rank).ThenBy(w => w.csvData.Attack).Select(w => (object)w).ToList());
+
+
+        var itemModel = new ItemModel()
+        {
+            CategoryLookup = categoryLookup,
+            ItemByCategory = itemsByCategory
+        };
+
+
+        return await Program.RenderPage<ItemModel, RebuildWeapons>(itemModel);
     }
 
     public record CardEntry(ItemInfo Item, string Description, string Prefix, int DropLvl);
@@ -247,7 +590,7 @@ public class Items
             };
             itemList.Items.Add(item);
             //prefixList.Items.Add(new CardPrefixData() { Id = entry.Id, Prefix = entry.Prefix, Postfix = entry.Postfix });
-            if(!string.IsNullOrWhiteSpace(entry.Prefix))
+            if (!string.IsNullOrWhiteSpace(entry.Prefix))
                 prefixLookup.Add(item.Code, entry.Prefix);
             else
                 prefixLookup.Add(item.Code, entry.Postfix);
@@ -329,7 +672,7 @@ public class Items
 
         foreach (var (_, list) in itemsByCategory)
         {
-            list.Sort((l, r) => ((CardEntry)l).DropLvl.CompareTo(((CardEntry)r).DropLvl) );
+            list.Sort((l, r) => ((CardEntry)l).DropLvl.CompareTo(((CardEntry)r).DropLvl));
         }
 
         var itemModel = new ItemModel()

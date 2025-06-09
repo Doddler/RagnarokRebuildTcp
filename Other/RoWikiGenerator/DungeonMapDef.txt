@@ -1,0 +1,96 @@
+﻿Prontera Culverts
+-prt_sewb1
+-prt_sewb2
+-prt_sewb3
+-prt_sewb4
+Byalan Dungeon
+-iz_dun00
+-iz_dun01
+-iz_dun02
+-iz_dun03
+-iz_dun04
+Geffen Tower
+-gef_dun00
+-gef_dun01
+-gef_dun02
+Payon Dungeon
+-pay_dun00
+-pay_dun01
+-pay_dun02
+-pay_dun03
+-pay_dun04
+Ant Hell#2
+-anthell01
+-anthell02
+Orc Dungeon
+-orcsdun01
+-orcsdun02
+Sunken Ship
+-treasure01
+-treasure02
+Pyramid Dungeon
+-moc_pryd01
+-moc_pryd02
+-moc_pryd03
+-moc_pryd04
+-moc_pryd05
+-moc_pryd06
+Sphinx Dungeon
+-in_sphinx1
+-in_sphinx2
+-in_sphinx3
+-in_sphinx4
+-in_sphinx5
+Hidden Temple#2
+-prt_maze01
+-prt_maze02
+-prt_maze03
+Clock Tower
+-c_tower1
+-c_tower2
+-c_tower3
+-c_tower4
+-alde_dun01
+-alde_dun02
+-alde_dun03
+-alde_dun04
+Mjolnir Dead Pit
+-mjo_dun01
+-mjo_dun02
+-mjo_dun03
+Glast Heim
+-glast_01
+-gl_cas01
+-gl_cas02
+-gl_church
+-gl_chyard
+-gl_dun01
+-gl_dun02
+-gl_in01
+-gl_knt01
+-gl_knt02
+-gl_prison
+-gl_prison1
+-gl_sew01
+-gl_sew02
+-gl_sew03
+-gl_sew04
+-gl_step
+Turtle Island
+-tur_dun01
+-tur_dun02
+-tur_dun03
+-tur_dun04
+Comodo_Caves#3
+-beach_dun
+-beach_dun2
+-beach_dun3
+Lutie Toy Factory
+-xmas_dun01
+-xmas_dun02
+Amatsu Dungeon
+-ama_dun01
+-ama_dun02
+-ama_dun03
+Debug
+-juperos_01

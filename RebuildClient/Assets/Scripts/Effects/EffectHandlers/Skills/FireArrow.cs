@@ -12,8 +12,8 @@ namespace Assets.Scripts.Effects.EffectHandlers
     [RoEffect("FireArrow")]
     public class FireArrow : IEffectHandler
     {
-        private static SpriteAtlas fireboltAtlas;
-        private static Material fireboltMaterial;
+        // private static SpriteAtlas fireboltAtlas;
+        // private static Material fireboltMaterial;
         private static Material fireboltRingMaterial;
         private static Func<RagnarokPrimitive, bool> groundHitTrigger;
 
@@ -22,22 +22,22 @@ namespace Assets.Scripts.Effects.EffectHandlers
 
         public static Ragnarok3dEffect Create(ServerControllable source, ServerControllable target, int count)
         {
-            if (fireboltMaterial == null)
-            {
-                fireboltMaterial = new Material(ShaderCache.Instance.AlphaBlendParticleShader);
-                fireboltMaterial.renderQueue = 3001;
-            }
-
-            if (fireboltRingMaterial == null)
-            {
-                var tex = Resources.Load<Texture2D>("ring_yellow");
-                fireboltRingMaterial = new Material(ShaderCache.Instance.PerspectiveAlphaShader);
-                fireboltRingMaterial.renderQueue = 3001;
-                fireboltRingMaterial.mainTexture = tex;
-            }
-
-            if (fireboltAtlas == null)
-                fireboltAtlas = Resources.Load<SpriteAtlas>("SkillAtlas");
+            // if (fireboltMaterial == null)
+            // {
+            //     fireboltMaterial = new Material(ShaderCache.Instance.AlphaBlendParticleShader);
+            //     fireboltMaterial.renderQueue = 3001;
+            // }
+            //
+            // if (fireboltRingMaterial == null)
+            // {
+            //     var tex = Resources.Load<Texture2D>("ring_yellow");
+            //     fireboltRingMaterial = new Material(ShaderCache.Instance.PerspectiveAlphaShader);
+            //     fireboltRingMaterial.renderQueue = 3001;
+            //     fireboltRingMaterial.mainTexture = tex;
+            // }
+            //
+            // if (fireboltAtlas == null)
+            //     fireboltAtlas = Resources.Load<SpriteAtlas>("SkillAtlas");
 
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.FireArrow);
             effect.SourceEntity = source;
@@ -50,12 +50,12 @@ namespace Assets.Scripts.Effects.EffectHandlers
 
             return effect;
         }
-
+        
         public void SceneChangeResourceCleanup()
         {
-            Resources.UnloadAsset(fireboltAtlas);
-            fireboltAtlas = null;
-            GameObject.Destroy(fireboltMaterial);
+            // Resources.UnloadAsset(fireboltAtlas);
+            // fireboltAtlas = null;
+            // GameObject.Destroy(fireboltMaterial);
             GameObject.Destroy(fireboltRingMaterial);
         }
 
@@ -69,14 +69,15 @@ namespace Assets.Scripts.Effects.EffectHandlers
 
             if (step >= 12 && (step - 12) % 10 == 0 && step < effect.DurationFrames && (step - 12) / 10 < effect.ObjCount)
             {
-                var prim = effect.LaunchPrimitive(PrimitiveType.DirectionalBillboard, fireboltMaterial, 1f);
+                var mat = EffectSharedMaterialManager.GetMaterial(EffectMaterialType.SkillSpriteAlphaBlended);
+                var prim = effect.LaunchPrimitive(PrimitiveType.DirectionalBillboard, mat, 1f);
                 var data = prim.GetPrimitiveData<EffectSpriteData>();
 
-                data.Atlas = fireboltAtlas;
+                data.Atlas = EffectSharedMaterialManager.SpriteAtlas;
                 data.AnimateTexture = true;
                 data.FrameTime = 12;
                 data.Style = BillboardStyle.AxisAligned;
-                data.TextureCount = fireboltAtlas.spriteCount;
+                data.TextureCount = 6;
                 data.Alpha = 255;
                 data.Width = 14f / 5f;
                 data.Height = 3.5f / 5f;

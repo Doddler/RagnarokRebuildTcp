@@ -51,7 +51,7 @@ namespace Assets.Scripts.SkillHandlers
             if (src.SpriteAnimator.State != SpriteState.Dead && src.SpriteAnimator.State != SpriteState.Walking)
             {
                 src.SpriteAnimator.State = SpriteState.Standby;
-                src.SpriteAnimator.ChangeMotion(SpriteMotion.Standby);
+                src.SpriteAnimator.ChangeMotion(SpriteMotion.Casting);
                 src.SpriteAnimator.PauseAnimation(); //castTime
             }
         }

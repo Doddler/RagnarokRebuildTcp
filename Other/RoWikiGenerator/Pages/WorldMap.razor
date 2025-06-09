@@ -1,0 +1,54 @@
+﻿@using RoRebuildServer.Data
+@using RoWikiGenerator.Generators
+
+@code {
+    [Parameter] public WorldMapModel Model { get; set; }
+
+    //this is stupid
+    List<string> validFields = new List<string>() { "gef_fild00", "gef_fild01", "gef_fild02", "gef_fild03", "gef_fild04", "gef_fild05", "gef_fild06", "gef_fild07", "gef_fild08",
+        "gef_fild09", "gef_fild10", "gef_fild11", "gef_fild12", "gef_fild13", "gef_fild14", "mjolnir_01", "mjolnir_02", "mjolnir_03", "mjolnir_04", "mjolnir_05", "mjolnir_06",
+        "mjolnir_07", "mjolnir_08", "mjolnir_09", "mjolnir_10", "mjolnir_11", "mjolnir_12", "moc_fild01", "moc_fild02", "moc_fild03", "moc_fild04", "moc_fild05", "moc_fild06",
+        "moc_fild07", "moc_fild08", "moc_fild09", "moc_fild10", "moc_fild11", "moc_fild12", "moc_fild13", "moc_fild14", "moc_fild15", "moc_fild16", "moc_fild17", "moc_fild18",
+        "moc_fild19", "pay_fild01", "pay_fild02", "pay_fild03", "pay_fild04", "pay_fild05", "pay_fild06", "pay_fild07", "pay_fild08", "pay_fild09", "pay_fild10", "pay_fild11",
+        "pay_arche", "prt_fild00", "prt_fild01", "prt_fild02", "prt_fild03", "prt_fild04", "prt_fild05", "prt_fild06", "prt_fild07", "prt_fild08", "prt_fild09", "prt_fild10",
+        "prt_fild11", "prt_gld", "glast_01", "alb2trea", "izlu2dun", "prt_monk", "yuno_fild01", "yuno_fild02", "yuno_fild03", "yuno_fild04",
+        "yuno_fild05", "yuno_fild06", "yuno_fild07", "yuno_fild08", "yuno_fild09", "yuno_fild10", "yuno_fild11", "yuno_fild12", "cmd_fild01", "cmd_fild02", "cmd_fild03",
+        "cmd_fild04", "cmd_fild05", "cmd_fild06", "cmd_fild07", "cmd_fild08", "cmd_fild09", "comodo", "moc_ruins",
+        "geffen", "izlude", "morocc", "payon", "prontera", "alberta", "aldebaran", "yuno", "amatsu", "ama_fild01", "tur_dun01", "xmas", "xmas_fild01"
+    };
+
+
+}
+
+<div class="contentzone">
+    <div id="worldMap">
+        <img src="images/maps/worldmap_main.jpg" />
+        <div class="layer">
+            @foreach (var map in DataManager.Maps)
+            {
+                if (!validFields.Contains(map.Code.ToLower()) || !Maps.IsMapInstanced(map.Code.ToLower()))
+                    continue;
+
+                <div class="block" id="@map.Code" title="@map.Name">
+                    @* <a href="maps/@(map.Code).html"> *@
+                    <a href="maps/@(map.Code).html">
+                        <img class="mapImg" src="images/maps/small/@(map.Code).png" alt="">
+                    </a>
+                </div>
+            }
+            @foreach (var (name, dest) in Maps.DungeonWorldMapEntries)
+            {
+                <div class="block" id="@(name.Replace(" ", "_"))" title="@dest">
+                    <a href="regions/@(dest.Replace(" ", "_")).html">
+                        <img class="mapImg" src="images/dungeon.png" alt="">
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+
+
+</style>

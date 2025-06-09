@@ -1,3 +1,181 @@
+//
+//Custom Juno Field Spawns
+//
+// (05 Raflesia) <---> (06 Sleepers)
+//    |                      |
+//    |     ----(Juno)       |
+//    |     |                |
+// (04 Condors)  <-----> (03 Goats)  ------- (02 Beetle King)
+//                           |                       |
+//                           |                       |
+//                      (07 Harpies) -------- (08 Grand Peco) ----- (09 Drillers)  ---- (10 ??????)
+//                           |                       |                  |
+//                           |                       |                  |
+//                     (11 Demon Punk) ------ (12 Dustiness) ------ (01 Dustiness?)
+//                                                                      |
+//                                                                      |
+//                                                                   (Aldebaran)
+//
+// Notes: A path exists to get to Juno with only passive/low level mobs (01->12->08->02->03->04)
+//
+
+MapConfig("yuno_fild01")
+{
+	CreateSpawn("DUSTINESS", 50);
+	CreateSpawn("PORING", 20);
+	CreateSpawn("POPORING", 20);
+	CreateSpawn("GRAND_PECO", 3, %(190, 329, 80, 20), 30s, 15s);
+	CreateSpawn("RED_PLANT", 15, 2m, 3m);
+	CreateSpawn("BLUE_PLANT", 2, %(70, 370, 10, 10), 2m, 3m);
+	CreateSpawn("SHINING_PLANT", 1, %(70, 370, 10, 10), 2m, 3m);
+	CreateSpawn("YELLOW_PLANT", 2, %(66, 267, 10, 10), 2m, 3m);
+	CreateSpawn("YELLOW_PLANT", 6, %(238, 326, 40, 40), 2m, 3m);
+	CreateSpawn("SHINING_PLANT", 2, %(238, 326, 40, 40), 2m, 3m);
+	CreateSpawn("YELLOW_PLANT", 15, 2m, 3m);
+	CreateSpawn("GREEN_PLANT", 20, 2m, 3m);
+}
+
+MapConfig("yuno_fild09")
+{
+	CreateSpawn("DRILLER", 90);
+	CreateSpawn("DEMON_PUNGUS", 30);
+	CreateSpawn("SLEEPER", 20);
+	CreateSpawn("RED_PLANT", 10, 1m, 90000);
+	CreateSpawn("GREEN_PLANT", 10, 1m, 90000);
+	CreateSpawn("YELLOW_PLANT", 10, 1m, 90000);
+}
+
+MapConfig("yuno_fild02")
+{
+	CreateSpawn("KIND_OF_BEETLE", 70);
+	CreateSpawn("HORN", 40);
+	CreateSpawn("DUSTINESS", 20);
+	CreateSpawn("DELETER", 2);
+	CreateSpawn("DELETER_", 2);
+	CreateSpawn("WILD_ROSE", 5);
+	CreateSpawn("RED_PLANT", 10, 2m, 3m);
+	CreateSpawn("YELLOW_PLANT", 10, 2m, 3m);
+	CreateSpawn("GREEN_PLANT", 10, 2m, 3m);
+}
+
+MapConfig("yuno_fild03")
+{
+	CreateSpawn("GOAT", 60);
+	CreateSpawn("POPORING", 50);
+	CreateSpawn("GEOGRAPHER", 15);
+	CreateSpawn("DROPS", 40);
+	CreateSpawn("PORING", 30);
+	CreateSpawn("MARIN", 20);
+	CreateSpawn("SIDE_WINDER", 1);
+	CreateSpawn("ARCHANGELING", 1, 30m, 3m, Boss);
+	CreateSpawn("DEVILING", 1, 30m, 3m, Boss);
+	CreateSpawn("YELLOW_PLANT", 20, 2m, 3m);
+	CreateSpawn("RED_PLANT", 15, 2m, 3m);
+	CreateSpawn("BLUE_PLANT", 2, %(297, 230, 10, 10), 2m, 3m);
+	CreateSpawn("BLUE_PLANT", 1, %(136, 328, 1, 1), 2m, 3m);
+	CreateSpawn("BLUE_PLANT", 1, %(137, 330, 1, 1), 2m, 3m);
+	CreateSpawn("SHINING_PLANT", 1, %(222, 262, 10, 10), 2m, 3m);
+	CreateSpawn("SHINING_PLANT", 1, %(297, 230, 10, 10), 2m, 3m);
+}
+
+MapConfig("yuno_fild04")
+{
+	CreateSpawn("CONDOR", 70);
+	CreateSpawn("PORING", 40);
+	CreateSpawn("DROPS", 30);
+	CreateSpawn("POPORING", 20);
+	CreateSpawn("MARIN", 10);
+	CreateSpawn("ANGELING", 1, 1h, Boss);
+	CreateSpawn("MASTERING", 1, 10m, Boss);
+	CreateSpawn("RED_PLANT", 10, 2m, 3m);
+	CreateSpawn("YELLOW_PLANT", 10, 2m, 3m);
+	CreateSpawn("GREEN_PLANT", 10, 2m, 3m);
+}
+
+MapConfig("yuno_fild05")
+{
+	CreateSpawn("RAFFLESIA", 70);
+	CreateSpawn("DUSTINESS", 30);
+	CreateSpawn("HORN", 30);
+	CreateSpawn("KIND_OF_BEETLE", 10);
+	CreateSpawn("RED_PLANT", 10, 2m, 3m);
+	CreateSpawn("YELLOW_PLANT", 10, 2m, 3m);
+	CreateSpawn("GREEN_PLANT", 10, 2m, 3m);
+	CreateSpawn("BLUE_PLANT", 2, %(176, 202, 8, 8), 1m, 30s);
+	CreateSpawn("BLUE_PLANT", 2, %(300, 280, 5, 5), 1m, 30s);
+}
+
+MapConfig("yuno_fild06")
+{
+	CreateSpawn("SLEEPER", 80);
+	CreateSpawn("GOAT", 40);
+	CreateSpawn("DEMON_PUNGUS", 20);
+	CreateSpawn("RED_PLANT", 10);
+	CreateSpawn("YELLOW_PLANT", 10);
+	CreateSpawn("GREEN_PLANT", 10);
+}
+
+MapConfig("yuno_fild07")
+{
+	CreateSpawn("HARPY", 70);
+	CreateSpawn("DRILLER", 20);
+	CreateSpawn("GEOGRAPHER", 10);
+	CreateSpawn("GOAT", 5);
+	CreateSpawn("RED_PLANT", 10, 2m, 3m);
+	CreateSpawn("YELLOW_PLANT", 10, 2m, 3m);
+	CreateSpawn("GREEN_PLANT", 10, 2m, 3m);
+}
+
+MapConfig("yuno_fild08")
+{
+	CreateSpawn("WILD_ROSE", 5);
+	CreateSpawn("GRAND_PECO", 30, %(200, 300, 290, 100));
+	CreateSpawn("GRAND_PECO", 20, %(272, 205, 100, 120));
+	CreateSpawn("GRAND_PECO", 30, %(230, 110, 250, 90));
+	CreateSpawn("GEOGRAPHER", 12, %(200, 300, 290, 100));
+	CreateSpawn("GEOGRAPHER", 6, %(272, 205, 100, 120));
+	CreateSpawn("GEOGRAPHER", 12, %(230, 110, 250, 90));
+	CreateSpawn("DUSTINESS", 7, %(200, 300, 290, 100));
+	CreateSpawn("DUSTINESS", 6, %(272, 205, 100, 120));
+	CreateSpawn("DUSTINESS", 7, %(230, 110, 250, 90));
+	CreateSpawn("RED_PLANT", 10, 1m, 30s);
+	CreateSpawn("GREEN_PLANT", 10, 1m, 30s);
+	CreateSpawn("YELLOW_PLANT", 10, 1m, 30s);
+}
+
+MapConfig("yuno_fild10")
+{
+	CreateSpawn("DELETER", 30);
+	CreateSpawn("DELETER_", 30);
+	CreateSpawn("HUNTER_FLY", 20);
+	CreateSpawn("GEOGRAPHER", 20);
+	CreateSpawn("STAINER", 20);
+	CreateSpawn("KIND_OF_BEETLE", 20);
+}
+
+MapConfig("yuno_fild11")
+{
+	CreateSpawn("DEMON_PUNGUS", 80);
+	CreateSpawn("GEOGRAPHER", 32);
+	CreateSpawn("PUNK", 20);
+	CreateSpawn("RED_PLANT", 10, 2m, 1m);
+	CreateSpawn("YELLOW_PLANT", 10, 2m, 1m);
+	CreateSpawn("GREEN_PLANT", 10, 2m, 1m);
+}
+
+MapConfig("yuno_fild12")
+{
+	CreateSpawn("DUSTINESS", 40);
+	CreateSpawn("POPORING", 15);
+	CreateSpawn("GEOGRAPHER", 5, 30s, 30s);
+	CreateSpawn("DEMON_PUNGUS", 2, 10m, 5m);
+}
+
+
+
+/*
+// Old Juno Field Spawns
+
 MapConfig("yuno_fild01")
 {
 	CreateSpawn("DUSTINESS", 50);
@@ -152,3 +330,6 @@ MapConfig("yuno_fild12")
 	CreateSpawn("POPORING", 15);
 	CreateSpawn("GEOGRAPHER", 5);
 }
+
+
+*/

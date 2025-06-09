@@ -1004,7 +1004,7 @@
       "IsLooping": false,
       "StrFile": "cross",
       "Sprite": "",
-      "SoundFile": "ef_signum",
+      "SoundFile": "",
       "Offset": 0,
       "PrefabName": ""
     },
@@ -1222,6 +1222,66 @@
       "Sprite": "",
       "SoundFile": "",
       "Offset": 0,
+      "PrefabName": ""
+    },
+    {
+      "Id": 102,
+      "Name": "Gloria",
+      "ImportEffect": true,
+      "Billboard": true,
+      "IsLooping": false,
+      "StrFile": "gloria",
+      "Sprite": "",
+      "SoundFile": "priest_gloria",
+      "Offset": 1,
+      "PrefabName": ""
+    },
+    {
+      "Id": 103,
+      "Name": "Magnificat",
+      "ImportEffect": true,
+      "Billboard": true,
+      "IsLooping": false,
+      "StrFile": "magnificat",
+      "Sprite": "",
+      "SoundFile": "priest_magnificat",
+      "Offset": 1,
+      "PrefabName": ""
+    },
+    {
+      "Id": 104,
+      "Name": "StatusRecovery",
+      "ImportEffect": true,
+      "Billboard": true,
+      "IsLooping": false,
+      "StrFile": "recovery",
+      "Sprite": "",
+      "SoundFile": "priest_recovery",
+      "Offset": 1,
+      "PrefabName": ""
+    },
+    {
+      "Id": 106,
+      "Name": "Suffragium",
+      "ImportEffect": true,
+      "Billboard": true,
+      "IsLooping": false,
+      "StrFile": "suffragium",
+      "Sprite": "",
+      "SoundFile": "priest_suffragium",
+      "Offset": 1,
+      "PrefabName": ""
+    },
+    {
+      "Id": 108,
+      "Name": "Sanctuary",
+      "ImportEffect": true,
+      "Billboard": true,
+      "IsLooping": false,
+      "StrFile": "sanctuary",
+      "Sprite": "",
+      "SoundFile": "priest_sanctuary",
+      "Offset": 1,
       "PrefabName": ""
     }
   ]

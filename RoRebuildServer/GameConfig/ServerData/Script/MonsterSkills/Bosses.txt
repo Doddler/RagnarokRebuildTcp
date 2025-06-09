@@ -478,7 +478,7 @@ StateAttacking:
 
 SkillHandler("DRACULA") {
 StateAny: 
-    TryCast(CallMinion, 1, 25%, 0.7s, 30s)[MinionCount < 6] -> CallDefaultMinions(); //his mob is familiars, don't really care to use MinionsDeadFor(time)
+    TryCast(CallMinion, 1, 25%, 0.7s, 15s)[MinionCount < 6] -> CallDefaultMinions(); //his mob is familiars, don't really care to use MinionsDeadFor(time)
 	TryCast(RecallMinion, 1, 100%, 0, 30s);
 StateIdle:
 	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];

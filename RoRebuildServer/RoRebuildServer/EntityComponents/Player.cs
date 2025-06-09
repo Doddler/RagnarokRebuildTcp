@@ -408,16 +408,16 @@ public class Player : IEntityAutoReset
             switch (statType)
             {
                 case CharacterStat.Attack:
-                    packet.Write(atk1);
+                    packet.Write(atk1 + Equipment.MinRefineAtkBonus);
                     break;
                 case CharacterStat.Attack2:
-                    packet.Write(atk2);
+                    packet.Write(atk2 + Equipment.MaxRefineAtkBonus);
                     break;
                 case CharacterStat.MagicAtkMin:
-                    packet.Write(matk1);
+                    packet.Write(matk1 + Equipment.MinRefineAtkBonus);
                     break;
                 case CharacterStat.MagicAtkMax:
-                    packet.Write(matk2);
+                    packet.Write(matk2 + Equipment.MaxRefineAtkBonus);
                     break;
                 case CharacterStat.Def:
                     packet.Write(CombatEntity.GetEffectiveStat(CharacterStat.Def));
@@ -432,7 +432,7 @@ public class Player : IEntityAutoReset
                     if(CombatEntity.HasBodyState(BodyStateFlags.Curse))
                         packet.Write(-CombatEntity.GetStat(CharacterStat.Luk));
                     else
-                        packet.Write(CombatEntity.GetEffectiveStat(CharacterStat.Luk));
+                        packet.Write(CombatEntity.GetStat(CharacterStat.AddLuk));
                     break;
                 default:
                     packet.Write(GetStat(statType));

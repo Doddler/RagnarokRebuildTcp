@@ -175,7 +175,7 @@ Id,Code,Name,Attack,Range,Slot,Price,Weight,Type,Position,Property,MinLvl,Rank,E
 1407,Pike,Pike,60,3,3,3450,1000,Spear,MainHand,Neutral,4,1,Swordsman,Yes,Yes,파이크,
 1408,Pike_,Pike,60,3,4,3450,1000,Spear,MainHand,Neutral,4,1,Swordsman,Yes,Yes,파이크,
 1410,Lance,Lance,185,3,0,60000,2500,2HSpear,BothHands,Neutral,33,3,Swordsman,Yes,Yes,랜스,1410
-1411,Lance_,Lance,185,3,0,60000,2500,2HSpear,BothHands,Neutral,33,3,Swordsman,Yes,Yes,랜스,1410
+1411,Lance_,Lance,185,3,2,60000,2500,2HSpear,BothHands,Neutral,33,3,Swordsman,Yes,Yes,랜스,1410
 1413,Gungnir,Gungnir,120,3,0,20,500,Spear,MainHand,Wind,4,4,Swordsman,Yes,Yes,궁그닐,
 1414,Gelerdria,Gelerdria,145,3,0,20,700,Spear,MainHand,Earth,48,4,Swordsman,Yes,Yes,겔러드리아,
 1415,Brocca,Brocca,100,3,0,20,850,Spear,MainHand,Neutral,48,4,Swordsman,Yes,Yes,꼬챙이,
@@ -274,7 +274,7 @@ Id,Code,Name,Attack,Range,Slot,Price,Weight,Type,Position,Property,MinLvl,Rank,E
 1575,Valorous_Book,Valorous Book,90,1,0,20,0,Book,MainHand,Neutral,80,3,BookUser,Yes,No,바이블,
 1576,Glorious_Tablet,Glorious Tablet,90,1,0,20,0,Book,MainHand,Neutral,80,4,BookUser,Yes,No,타블렛,
 1577,Glorious_Book,Glorious Book,90,1,0,20,0,Book,MainHand,Neutral,80,4,BookUser,Yes,No,묵시록,
-1599,Angra_Manyu,Angra Manyu,200,2,0,1,10,Mace,MainHand,Neutral,1,1,AllJobs,Yes,No,앙그라마이뉴,1366
+1599,Angra_Manyu,Angra Manyu,200,2,0,1,10,Mace,MainHand,Neutral,1,4,AllJobs,Yes,No,앙그라마이뉴,1366
 1601,Rod,Rod,15,1,3,50,400,Rod,MainHand,Neutral,1,1,NoviceCasterGroup,Yes,No,롯드,
 1602,Rod_,Rod,15,1,4,50,400,Rod,MainHand,Neutral,1,1,NoviceCasterGroup,Yes,No,롯드,
 1604,Wand,Wand,25,1,2,2500,400,Rod,MainHand,Neutral,12,2,NoviceCasterGroup,Yes,No,완드,

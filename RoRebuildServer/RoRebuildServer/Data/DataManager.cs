@@ -69,6 +69,10 @@ public static class DataManager
     private static int[] refineSuccessTable;
     public static int[] JobBonusTable;
 
+    public static Dictionary<int, List<string>> CombosForEquipmentItem = new();
+    public static Dictionary<string, int[]> ItemsInCombo = new();
+    public static Dictionary<string, ItemInteractionBase> EquipmentComboInteractions = new();
+
     public static List<MapEntry> Maps => mapList;
     
     public static ExpChart ExpChart;
@@ -112,6 +116,45 @@ public static class DataManager
         }
 
         ItemList[id].Interaction = item;
+    }
+
+    public static void RegisterComboItem(string name, ItemInteractionBase itemInteraction, List<string> comboItems)
+    {
+        Span<int> itemIds = stackalloc int[comboItems.Count];
+
+        if (EquipmentComboInteractions.ContainsKey(name))
+        {
+            ServerLogger.LogWarning($"Could not create ComboItem {name} as a combo of the same name already exists.");
+            return;
+        }
+
+        for (var i = 0; i < comboItems.Count; i++)
+        {
+            var item = comboItems[i];
+            if (!ItemIdByName.TryGetValue(item, out var id))
+            {
+                ServerLogger.LogWarning($"Could not create ComboItem {name} as the item {item} in the set could not be found.");
+                return;
+            }
+            itemIds[i] = id;
+        }
+
+        var hashSet = new int[comboItems.Count];
+        ItemsInCombo.Add(name, hashSet);
+        EquipmentComboInteractions.Add(name, itemInteraction);
+
+        for (var i = 0; i < itemIds.Length; i++)
+        {
+            var item = itemIds[i];
+            if (!CombosForEquipmentItem.TryGetValue(item, out var comboSets))
+            {
+                comboSets = new List<string>();
+                CombosForEquipmentItem.Add(item, comboSets);
+            }
+
+            comboSets.Add(name);
+            hashSet[i] = item;
+        }
     }
 
     public static void RegisterNpc(string name, string map, string? signalName, string sprite, int x, int y, int facing, int w, int h, bool hasInteract, bool hasTouch, NpcBehaviorBase npcBehavior)

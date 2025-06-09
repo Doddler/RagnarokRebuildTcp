@@ -112,8 +112,7 @@ public class PacketSocketEquipment : IClientPacketHandler
         inventory.UpdateUniqueItemReference(targetBagId, item);
         var occupiedSlot = player.Equipment.GetOccupiedSlotForItem(targetBagId);
 
-        if (occupiedSlot !=
-            EquipSlot.None) //if the item that is being socketed is already equipped, run the equip handler for the new card
+        if (occupiedSlot != EquipSlot.None) //if the item that is being socketed is already equipped, run the equip handler for the new card
         {
             player.Equipment.PerformOnEquipForNewCard(srcData, occupiedSlot);
             player.UpdateStats(false);

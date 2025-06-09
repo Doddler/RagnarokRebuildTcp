@@ -11,15 +11,15 @@ Item("Exorcism_Bible") { OnEquip: AddStat(AddInt, 1); }
 Item("Cross_Shield") { OnEquip: AddStat(AddStr, 1); }
 Item("Magic_Bible_Vol1") { OnEquip: AddStat(AddInt, 2); }
 Item("Ahura_Mazdah") { OnEquip: AddStat(AddStr, 50); AddStat(AddInt, 50); AddStat(AddVit, 50); AddStat(AddDex, 50); AddStat(AddAgi, 50); AddStat(AddLuk, 50); }
-Item("Sunglasses") { OnEquip: AddStat(ResistBlindStatus, 30); }
-Item("Sunglasses_") { OnEquip: AddStat(ResistBlindStatus, 30); }
+Item("Sunglasses") { OnEquip: AddStat(ResistBlindStatus, 40); }
+Item("Sunglasses_") { OnEquip: AddStat(ResistBlindStatus, 40); }
 Item("Fancy_Flower") { OnEquip: AddStat(AddResistRacePlant, 10); }
 Item("Bunny_Band") { OnEquip: AddStat(AddLuk, 2); }
 Item("Flu_Mask") { OnEquip: AddStat(ResistSilenceStatus, 10); }
 Item("Tiara") { OnEquip: AddStat(AddInt, 2); }
 Item("Crown") { OnEquip: AddStat(AddInt, 2); }
 Item("Santa_Hat") { OnEquip: AddStat(AddLuk, 1); }
-Item("Purple_Glasses") { OnEquip: AddStat(ResistBlindStatus, 40); }
+Item("Purple_Glasses") { OnEquip: AddStat(ResistBlindStatus, 30); }
 Item("Geek_Glasses") { OnEquip: AddStat(ResistBlindStatus, 15); }
 Item("Coronet") { OnEquip: AddStat(AddInt, 1); }
 Item("Cute_Ribbon") { OnEquip: AddStat(AddMaxSp, 20); }
@@ -469,3 +469,5 @@ Item("Soldier_Rifle") { OnEquip: AddStat(AddDex, 2); }
 Item("Soldier_Gatling_Gun") { OnEquip: AddStat(AddDex, 2); }
 Item("Soldier_Shotgun") { OnEquip: AddStat(AddDex, 2); }
 Item("Soldier_Grenade_Launcher") { OnEquip: AddStat(AddDex, 2); }
+
+Item("Silver_Arrow") { OnEquip: AddDamageVsTag("WeakVsSilver", 100); }

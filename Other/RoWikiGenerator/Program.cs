@@ -64,7 +64,7 @@ public class Program
         return html;
     }
 
-    public static async Task<string> InsertContentIntoTemplate(string content, string title)
+    public static async Task<string> InsertContentIntoTemplate(string content, string title, bool isSubDir = false)
     {
         var htmlRenderer = GetRenderer();
 
@@ -74,6 +74,7 @@ public class Program
             {
                 { "Title", title },
                 { "Content", content },
+                { "IsSubDir", isSubDir }
             };
 
             var parameters = ParameterView.FromDictionary(dictionary);
@@ -127,7 +128,7 @@ public class Program
 
 
         WikiData.World = new World();
-        
+
 
         //FixName();
         //DistanceCache.Init();
@@ -137,41 +138,85 @@ public class Program
 
         CopyFilesIfNotExists(Path.Combine(AppSettings.ClientProjectPath, "Assets\\Sprites\\Imported\\Icons\\Sprites"),
             Path.Combine(AppSettings.TargetPath, "images\\rebuilditems"), "*.png");
-        
+
         CopyFilesIfNotExists(Path.Combine(AppSettings.ClientProjectPath, "Assets\\Sprites\\Imported\\Collections"),
             Path.Combine(AppSettings.TargetPath, "images\\collections"), "*.png");
 
         ServerLogger.Log($"Min spawn time: {ServerConfig.DebugConfig.MinSpawnTime}");
         ServerLogger.Log($"Max spawn time: {ServerConfig.DebugConfig.MaxSpawnTime}");
-        
+
+        if (!Directory.Exists(Path.Combine(AppSettings.TargetPath, "jobs/")))
+            Directory.CreateDirectory(Path.Combine(AppSettings.TargetPath, "jobs/"));
+        if (!Directory.Exists(Path.Combine(AppSettings.TargetPath, "maps/")))
+            Directory.CreateDirectory(Path.Combine(AppSettings.TargetPath, "maps/"));
+
         SetUpServiceProvider();
+        Items.PrepareSharedItemIcons();
+        Maps.PrepareDungeonGroupings();
+        Maps.PrepareFieldGroupings();
 
         //monsters
         var content = await InsertContentIntoTemplate(await Monsters.RenderMonsterPage(), "Ragnarok Renewal Monsters");
-        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "rebuildmonsters.html"), content);
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "MonsterListFull.html"), content);
 
         //jobs
-        content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(0), "Ragnarok Renewal - Novice");
-        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "rebuildJobNovice.html"), content);
-        content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(1), "Ragnarok Renewal - Swordsman");
-        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "rebuildJobSwordsman.html"), content);
-        content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(3), "Ragnarok Renewal - Mage");
-        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "rebuildJobMage.html"), content);
-        content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(2), "Ragnarok Renewal - Archer");
-        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "rebuildJobArcher.html"), content);
-        content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(5), "Ragnarok Renewal - Thief");
-        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "rebuildJobThief.html"), content);
-        content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(4), "Ragnarok Renewal - Acolyte");
-        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "rebuildJobAcolyte.html"), content);
-        content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(6), "Ragnarok Renewal - Merchant");
-        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "rebuildJobMerchant.html"), content);
+        content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(0), "Ragnarok Renewal - Novice", true);
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "jobs/JobNovice.html"), content);
+        content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(1), "Ragnarok Renewal - Swordsman", true);
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "jobs/JobSwordsman.html"), content);
+        content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(3), "Ragnarok Renewal - Mage", true);
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "jobs/JobMage.html"), content);
+        content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(2), "Ragnarok Renewal - Archer", true);
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "jobs/JobArcher.html"), content);
+        content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(5), "Ragnarok Renewal - Thief", true);
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "jobs/JobThief.html"), content);
+        content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(4), "Ragnarok Renewal - Acolyte", true);
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "jobs/JobAcolyte.html"), content);
+        content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(6), "Ragnarok Renewal - Merchant", true);
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "jobs/JobMerchant.html"), content);
 
         //items
         Items.LoadItemSourceFromNpcs();
-        Items.LoadItemDescriptions();
+        Items.PrepareItems();
 
         content = await InsertContentIntoTemplate(await Items.GetCardPage(), "Ragnarok Renewal : Items - Cards");
         await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "rebuildCards.html"), content);
+
+        content = await InsertContentIntoTemplate(await Items.GetWeaponPage(), "Ragnarok Renewal : Items - Weapons");
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "rebuildWeapons.html"), content);
+
+        content = await InsertContentIntoTemplate(await Items.GetEquipmentPage(), "Ragnarok Renewal : Items - Equipment");
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "rebuildEquipment.html"), content);
+
+
+        content = await InsertContentIntoTemplate(await Maps.GetWorldMap(), "Ragnarok Renewal : World Map");
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "WorldMap.html"), content);
+
+        foreach (var map in DataManager.Maps)
+        {
+            content = await InsertContentIntoTemplate(await Maps.GetSpecificMap(map.Code), $"Ragnarok Renewal : {map.Name} ({map.Code})", true);
+            await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, $"maps/{map.Code}.html"), content);
+        }
+        
+        content = await InsertContentIntoTemplate(await Maps.GetDungeons(), $"Ragnarok Renewal : Dungeon Maps", false);
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, $"Dungeons.html"), content);
+
+        content = await InsertContentIntoTemplate(await Maps.GetFields(), $"Ragnarok Renewal : Field Maps", false);
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, $"FieldMaps.html"), content);
+
+
+        foreach (var (region, maps) in Maps.DungeonGrouping)
+        {
+            content = await InsertContentIntoTemplate(await Maps.RenderRegion(region, maps), $"Ragnarok Renewal : {region}", true);
+            await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, $"regions/{region.Replace(" ", "_")}.html"), content);
+        }
+
+        foreach (var (region, maps) in Maps.FieldGrouping)
+        {
+            content = await InsertContentIntoTemplate(await Maps.RenderRegion(region, maps), $"Ragnarok Renewal : {region}", true);
+            await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, $"regions/{region.Replace(" ", "_")}.html"), content);
+        }
+
 
         //var world = new World();
         //NetworkManager.Init(world);

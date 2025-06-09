@@ -194,7 +194,7 @@ MapConfig("gef_fild12")
 	CreateSpawn("KOBOLD_3", 30);
 	CreateSpawn("KOBOLD_ARCHER", 40);
 	CreateSpawn("POPORING", 20);
-	CreateSpawn("KOBOLD_LEADER", 1, 1800000, 1200000);
+	CreateSpawn("KOBOLD_LEADER", 1, 1800000, 1200000, Boss);
 }
 
 MapConfig("gef_fild13")

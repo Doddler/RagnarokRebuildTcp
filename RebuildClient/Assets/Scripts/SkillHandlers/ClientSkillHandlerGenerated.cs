@@ -59,7 +59,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[42] = new DefaultSkillHandler();
 			handlers[43] = new DefaultSkillHandler();
 			handlers[44] = new WarpPortalHandler();
-			handlers[45] = new DefaultSkillHandler();
+			handlers[45] = new HolyLightHandler();
 			handlers[46] = new DefaultSkillHandler();
 			handlers[47] = new EnvenomHandler();
 			handlers[48] = new DetoxifyHandler();

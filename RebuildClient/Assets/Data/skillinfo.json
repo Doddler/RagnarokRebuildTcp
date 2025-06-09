@@ -81,7 +81,7 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "Increases HP recovery by 5 HP plus 0.2% of your MaxHP per level.\r\n\u003Ci\u003ECurrently is combined with your regular HP recovery tick rather than a separate value.\u003C/i\u003E",
+      "Description": "Increases HP recovery by 5 HP plus 0.2% of your MaxHP per level.",
       "InterruptMode": 0
     },
     {
@@ -163,7 +163,7 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "Increases SP recovery by 3 SP plus 0.2% of your MaxSP per level.\r\n\u003Ci\u003ECurrently is combined with your regular SP recovery tick rather than a separate value.\u003C/i\u003E",
+      "Description": "Increases SP recovery by 3 SP plus 0.2% of your MaxSP per level.",
       "InterruptMode": 0
     },
     {
@@ -727,7 +727,7 @@
         15
       ],
       "AdjustableLevel": false,
-      "Description": "Cures blind, silence, and confusion status effects from 1 target.",
+      "Description": "Cures blind, silence, and confusion status effects from one target.",
       "InterruptMode": 0
     },
     {
@@ -755,7 +755,7 @@
         10
       ],
       "AdjustableLevel": false,
-      "Description": "Creates cloud that causes all physical attacks performed from 5 or more tiles away to miss. Affects both friend and foe alike.\r\nLasts 10 seconds. Cannot overlap another Pneuma or Safety Wall.",
+      "Description": "Creates cloud that causes all ranged physical attacks to miss. Affects both friend and foe alike.\r\nLasts 10 seconds. Cannot overlap another Pneuma or Safety Wall.",
       "InterruptMode": 0
     },
     {
@@ -828,7 +828,7 @@
         15
       ],
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "Strikes a designated target with holy property magic at 100% magic attack.\r\nCast Time: 1s",
       "InterruptMode": 0
     },
     {
@@ -1059,7 +1059,7 @@
       "Name": "Weapon Appraisal",
       "Target": 0,
       "Type": 0,
-      "MaxLevel": 1,
+      "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
       "Description": "A keen eye unlocks the hidden potential of weapons, increasing your weapon attack power by \u002B[SkillLevel * WeaponLevel].",
@@ -1085,7 +1085,7 @@
         5
       ],
       "AdjustableLevel": true,
-      "Description": "Use the power of greed to spend [SkillLevel * 50] zeny to deal [100 \u002B SkillLevel * 50] damage to a single target.\r\nZeny used is affected by your level of Discount.",
+      "Description": "Spend money to deal damage. Consumes [SkillLevel * 50] zeny to deal [100 \u002B SkillLevel * 50] damage to a single target.\r\nZeny used is affected by your level of Discount.",
       "InterruptMode": 0
     },
     {
@@ -1111,7 +1111,7 @@
         8
       ],
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "Psyche yourself up, increasing your STR by 4.",
       "InterruptMode": 0
     },
     {
@@ -1506,7 +1506,7 @@
         10
       ],
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "Strike the earth with a powerful hammer swing that has a [20 \u002B SkillLvl * 10]% chance to stun enemies in a 5x5 area.",
       "InterruptMode": 0
     },
     {

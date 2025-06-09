@@ -407,6 +407,20 @@ public class ScriptBuilder
         itemDefinitions.Add($"DataManager.RegisterItem(\"{name}\", new {behaviorName}());");
     }
 
+    public void EndComboItem(string name, string className, List<string> comboItems)
+    {
+        var behaviorName = $"RoRebuildItemGen_{className}";
+        var items = new StringBuilder();
+        foreach (var item in comboItems)
+        {
+            if (items.Length > 0)
+                items.Append(", ");
+            items.Append($"\"{item}\"");
+        }
+        itemDefinitions.Add($"DataManager.RegisterComboItem(\"{name}\", new {behaviorName}(), new List<string>() {{ {items} }});");
+    }
+
+
     private void ClearVariables()
     {
         functionSources.Clear();

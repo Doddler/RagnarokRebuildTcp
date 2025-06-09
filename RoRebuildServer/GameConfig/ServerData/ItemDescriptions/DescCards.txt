@@ -3,6 +3,9 @@
 ::Poring_Card //id 4001 - slotted on Armor
 LUK +2
 Perfect Dodge +1
+<color=#800080>Set Bonus</color>
+ <color=#008080>Mastering Card</color>
+ FLEE +18, LUK +2
 
 ::Fabre_Card //id 4002 - slotted on Weapon
 HP +100, VIT +1
@@ -20,6 +23,9 @@ DEX +1, HIT +3
 LUK +1
 Perfect Dodge +1
 CRIT +1
+<color=#800080>Set Bonus</color>
+ <color=#008080>Eclipse Card</color>
+ FLEE +18, VIT +2
 
 ::Peco_Peco_Egg_Card //id 4007 - slotted on Weapon
 +20% physical damage vs. Formless
@@ -29,6 +35,9 @@ STR +1, ATK +10
 
 ::Chonchon_Card //id 4009 - slotted on Boots
 AGI +1, FLEE +2
+<color=#800080>Set Bonus</color>
+ <color=#008080>Dragon Fly Card</color>
+ FLEE +18, AGI +2
 
 ::Willow_Card //id 4010 - slotted on Headgear
 SP +80
@@ -44,6 +53,9 @@ HP +10%
 
 ::Roda_Frog_Card //id 4014 - slotted on Armor
 HP +400, SP +50
+<color=#800080>Set Bonus</color>
+ <color=#008080>Toad Card</color>
+ FLEE +18, INT +2
 
 ::Condor_Card //id 4015 - slotted on Garment
 FLEE +10
@@ -66,6 +78,9 @@ ATK +5
 
 ::Rocker_Card //id 4021 - slotted on Armor
 DEX +1, ATK +5
+<color=#800080>Set Bonus</color>
+ <color=#008080>Vocal Card</color>
+ FLEE +18, DEX +2
 
 ::Spore_Card //id 4022 - slotted on Accessory
 VIT +2
@@ -80,7 +95,7 @@ ATK +5
 ::Skeleton_Card //id 4025 - slotted on Weapon
 ATK +10
 +2% chance of <color=#800000>Stun</color> on physical attack
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
+
 
 ::Female_Thief_Bug_Card //id 4026 - slotted on Weapon
 AGI +1, FLEE +1
@@ -90,21 +105,30 @@ AGI +2
 
 ::Tarou_Card //id 4028 - slotted on Accessory
 STR +2
+<color=#800080>Set Bonus</color>
+ <color=#008080>Cramp Card</color>
+ STR +3
 
 ::Wolf_Card //id 4029 - slotted on Weapon
 ATK +15, CRIT +1
+<color=#800080>Set Bonus</color>
+ <color=#008080>Vagabond Wolf Card</color>
+ FLEE +18, STR +2
 
 ::Mandragora_Card //id 4030 - slotted on Weapon
 +20% physical damage vs. Wind
 
 ::Peco_Peco_Card //id 4031 - slotted on Armor
 HP +10%
+<color=#800080>Set Bonus</color>
+ <color=#008080>Grand Peco Card</color>
+ VIT +3, DEF +3
 
 ::Ambernite_Card //id 4032 - slotted on Shield
 DEF +2
 
 ::Poporing_Card //id 4033 - slotted on Accessory
-Enable <color=#0000FF>Detoxify</color>
+Enables use of <color=#0000FF>Detoxify</color>.
 
 ::Wormtail_Card //id 4034 - slotted on Accessory
 DEX +2
@@ -184,7 +208,7 @@ ATK +5
 
 ::Dustiness_Card //id 4056 - slotted on Garment
 FLEE +5
--30% damage from Wind
+-30% damage from Wind attacks
 
 ::Metaller_Card //id 4057 - slotted on Weapon
 ATK +5
@@ -570,7 +594,9 @@ if Refine > 8: HP +10%, SP +10%
 
 ::Grand_Peco_Card //id 4161 - slotted on Headgear
 +5% Autospell <color=#0000FF>Gloria 1</color> on receive physical damage
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
+<color=#800080>Set Bonus</color>
+ <color=#008080>Peco Peco Card</color>
+ VIT +3, DEF +3
 
 ::Grizzly_Card //id 4162 - slotted on Armor
 +3% chance of <color=#800000>Blind</color> on receive physical damage
@@ -601,11 +627,18 @@ Lose 5 SP/unequip
 
 ::Dark_Lord_Card //id 4168 - slotted on Boots
 +10% Autospell <color=#0000FF>Meteor Storm 5</color> on receive physical damage
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
+<color=#800080>Set Bonus</color>
+ <color=#008080>Dark Illusion Card</color>
+ HP +18%, SP +18%
+ Cast Time -8%
 
 ::Dark_Illusion_Card //id 4169 - slotted on Headgear
 HP -8%, SP -8%
 Cast Time -12%
+<color=#800080>Set Bonus</color>
+ <color=#008080>Dark Lord Card</color>
+ HP +18%, SP +18%
+ Cast Time -8%
 
 ::Dark_Frame_Card //id 4170 - slotted on Armor
 +6% chance of <color=#800000>Petrify</color> on receive physical damage
@@ -644,11 +677,14 @@ CRIT +7 vs. Dragon
 
 ::Dragon_Tail_Card //id 4178 - slotted on Garment
 AGI +1, FLEE +10
-+5% <color=#0000FF>Double Strafe</color>, <color=#0000FF>Arrow Shower</color> damage
++10% <color=#0000FF>Double Strafe</color>, <color=#0000FF>Arrow Shower</color> damage
 <color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Dragon_Fly_Card //id 4179 - slotted on Garment
 AGI +1
+<color=#800080>Set Bonus</color>
+ <color=#008080>Dragon Fly Card</color>
+ FLEE +18, AGI +2
 
 ::Driller_Card //id 4180 - slotted on Weapon
 Recover 5 SP/melee kill vs. Dragon
@@ -668,6 +704,9 @@ Lose 5 SP/unequip
 
 ::Vagabond_Wolf_Card //id 4183 - slotted on Garment
 STR +1
+<color=#800080>Set Bonus</color>
+ <color=#008080>Wolf Card</color>
+ FLEE +18, STR +2
 
 ::Lava_Golem_Card //id 4184 - slotted on Weapon
 +30% physical damage vs. Golem
@@ -727,7 +766,9 @@ if bDEX > 76:
 
 ::Mastering_Card //id 4197 - slotted on Garment
 LUK +1
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
+<color=#800080>Set Bonus</color>
+ <color=#008080>Poring Card</color>
+ FLEE +18, LUK +2
 
 ::Maya_Purple_Card //id 4198 - slotted on Headgear
 See Hidden Targets
@@ -789,6 +830,9 @@ if Thief:
 
 ::Vocal_Card //id 4211 - slotted on Garment
 MDEF +3
+<color=#800080>Set Bonus</color>
+ <color=#008080>Rocker Card</color>
+ FLEE +18, DEX +2
 
 ::Bongun_Card //id 4212 - slotted on Accessory
 +2% Autospell <color=#0000FF>Bash 1</color> on non-skill attack
@@ -864,8 +908,8 @@ if Refine > 8: MDEF +5
 <color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Cloud_Tower_Manager_Card //id 4229 - slotted on Headgear
-INT +1
-Cast Time -8%
+INT +1, MATK +10
+Cast Time -5%
 
 ::Shinobi_Card //id 4230 - slotted on Accessory
 AGI +1
@@ -905,10 +949,16 @@ if bINT = 99:
 ::Owl_Duke_Card //id 4237 - slotted on Accessory
 +0.3% Autospell <color=#0000FF>Impositio Manus 3</color> on non-skill attack
 <color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
+<color=#800080>Set Bonus</color>
+ <color=#008080>Owl Baron Card</color>
+ +10% Autospell <color=#0000FF>Lightning Bolt 5</color> on non-skill attack
 
 ::Owl_Baron_Card //id 4238 - slotted on Accessory
 +3% Autospell <color=#0000FF>Lex Aeterna</color> on non-skill attack
 <color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
+<color=#800080>Set Bonus</color>
+ <color=#008080>Owl Duke Card</color>
+ +10% Autospell <color=#0000FF>Lightning Bolt 5</color> on non-skill attack
 
 ::Iron_Fist_Card //id 4239 - slotted on Boots
 +10% EXP from Formless
@@ -1025,6 +1075,9 @@ if <color=#0000FF>Jupitel Thunder 10</color>:
 
 ::Eclipse_Card //id 4266 - slotted on Garment
 VIT +1
+<color=#800080>Set Bonus</color>
+ <color=#008080>Lunatic Card</color>
+ FLEE +18, VIT +2
 
 ::Explosion_Card //id 4267 - slotted on Boots
 +10% EXP from Dragon
@@ -1052,7 +1105,11 @@ AGI +1, CRIT +3
 ::Shellfish_Card //id 4273 - slotted on Weapon
 ATK +5
 +30% physical damage vs. Crab
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
+<color=#800080>Set Bonus</color>
+ <color=#008080>Crab Card</color>
+ <color=#008080>Aster Card</color>
+ +45% physical damage vs. Water
+
 
 ::Zombie_Master_Card //id 4274 - slotted on Weapon
 Recover 5 SP/melee kill vs. Undead
@@ -1164,7 +1221,9 @@ if Novice:
 
 ::Cramp_Card //id 4296 - slotted on Headgear
 +1% chance to find <color=#008080>1~500 zeny</color> on monster kill
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
+<color=#800080>Set Bonus</color>
+ <color=#008080>Tarou Card</color>
+ STR +3
 
 ::Cruiser_Card //id 4297 - slotted on Weapon
 CRIT damage +10%
@@ -1210,6 +1269,9 @@ DEF +2
 
 ::Toad_Card //id 4306 - slotted on Garment
 Perfect Dodge +1
+<color=#800080>Set Bonus</color>
+ <color=#008080>Roda Frog Card</color>
+ FLEE +18, INT +2
 
 ::Beetle_King_Card //id 4307 - slotted on Weapon
 Recover 5 SP/melee kill vs. Fish

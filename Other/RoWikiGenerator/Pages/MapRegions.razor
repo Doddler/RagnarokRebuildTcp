@@ -1,0 +1,24 @@
+﻿@using RoRebuildServer.Data
+@using RoWikiGenerator.Generators
+@code {
+    [Parameter] public MapGroupModel Model { get; set; }
+}
+<br />
+
+<h2 class="subheader tocheader">Table of Contents</h2>
+<div class="tocdiv">
+    <ul>
+        @foreach (var mapId in Model.MapEntries)
+        {
+            var map = DataManager.Maps.First(m => m.Code == mapId);
+            <li><a href="#Map@(map.Code)">@map.Name</a></li>
+        }
+    </ul>
+</div>
+<br />
+<h3>@Model.MapName</h3>
+@foreach (var map in Model.MapEntries)
+{
+    var model = DataManager.Maps.First(m => m.Code == map);
+    <MapView Model="@model" ShowMonsterSection="false" IsRelativeDir="true"></MapView>
+}

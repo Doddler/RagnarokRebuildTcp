@@ -1,0 +1,19 @@
+﻿@using System.Text
+@using RebuildSharedData.Enum
+@using RebuildSharedData.Enum.EntityStats
+@using RoRebuildServer.Data
+@using RoWikiGenerator.Generators
+@code
+{
+    [Parameter] public Generators.MonsterModel Model { get; set; }
+
+
+}
+
+@foreach (var m in Model.Monsters)
+{
+    if (m.Id < 4000 || m.Id == 5000)
+        continue;
+
+    <MonsterRecord Model="@Model" Monster="@m" ShowSpawns="true"></MonsterRecord>
+}

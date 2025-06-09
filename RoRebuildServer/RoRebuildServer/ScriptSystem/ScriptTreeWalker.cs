@@ -34,6 +34,7 @@ internal class ScriptTreeWalker
         builder = new ScriptBuilder(inputName.Replace(" ", "_"),
             "System",
             "System.Linq",
+            "System.Collections.Generic",
             "RoRebuildServer.Data.Map",
             "RebuildSharedData.Data",
             "RoRebuildServer.Data",
@@ -128,7 +129,7 @@ internal class ScriptTreeWalker
         parser.AddErrorListener(new QueryLanguageErrorListener());
 
         var str = String.Empty;
-        
+
         try
         {
             scriptNameStack.Push(name);
@@ -163,6 +164,9 @@ internal class ScriptTreeWalker
                 break;
             case "Item":
                 EnterItemStatement(context);
+                break;
+            case "ComboItem":
+                EnterComboItemStatement(context);
                 break;
             case "MapConfig":
                 EnterMapConfigStatement(context);
@@ -212,7 +216,7 @@ internal class ScriptTreeWalker
         //only expect one param, the item name
         var param = functionContext.functionparam();
         if (param.expression().Length != 1)
-            throw new Exception($"Incorrect number of parameters on MapConfig expression on line {param.start.Line}");
+            throw new Exception($"Incorrect number of parameters on Item expression on line {param.start.Line}");
 
         var itemName = param.expression()[0].GetText();
         if (itemName.StartsWith("\""))
@@ -233,11 +237,55 @@ internal class ScriptTreeWalker
         builder.EndItem(itemName, className);
     }
 
+    private void EnterComboItemStatement(FunctionDefinitionContext functionContext)
+    {
+        //only expect one param, the item name
+        var param = functionContext.functionparam();
+        if (param.expression().Length < 3)
+            throw new Exception($"Incorrect number of parameters on ComboItem expression on line {param.start.Line}");
+
+        var expr = param.expression();
+
+        var itemName = expr[0].GetText();
+        if (itemName.StartsWith("\""))
+            itemName = itemName.Substring(1, itemName.Length - 2);
+
+        var comboItems = new List<string>();
+        for (var i = 1; i < expr.Length; i++)
+        {
+            var txt = expr[i].GetText();
+            
+            if(txt == null || txt.Length <= 0)
+                ErrorResult(functionContext, $"Invalid combo item parameters, combo item value is empty.");
+
+            txt = txt!.Substring(1, txt.Length - 2);
+
+            if (txt.Contains(" ") || txt.Contains('\"'))
+                ErrorResult(functionContext, $"Invalid combo item parameters, item name cannot contain spaces or quotes. Name: {txt}");
+
+            comboItems.Add(txt);
+        }
+
+        var className = itemName.Replace(" ", "_").Replace(".", "").Replace("'", "").Replace("-", "_");
+
+        sectionHandler = ItemSectionHandler;
+
+        builder.StartItem(className);
+
+        var statements = functionContext.block1;
+        VisitStatementBlock(statements);
+
+        builder.EndMethod();
+        builder.EndClass();
+
+        builder.EndComboItem(itemName, className, comboItems);
+    }
+
+
     public void ItemSectionHandler(StartSectionContext context)
     {
         builder.StartItemSection(context.IDENTIFIER().GetText());
     }
-
 
     private void EnterMapConfigStatement(FunctionDefinitionContext functionContext)
     {
@@ -293,7 +341,7 @@ internal class ScriptTreeWalker
         builder.EndMethod();
         builder.EndClass();
     }
-    
+
     private void EnterSkillHandlerStatement(FunctionDefinitionContext functionContext, bool isAltType)
     {
         //only expect one param, the item name
@@ -412,7 +460,7 @@ internal class ScriptTreeWalker
         VisitStatementBlock(statements);
 
         //methodBuilder.WithBody(block);
-        
+
         //if (isTrader)
         //{
         //    builder.StartNpcSection("OnClick");
@@ -423,7 +471,7 @@ internal class ScriptTreeWalker
         //    builder.EndMethod();
         //}
         //else
-        
+
         builder.EndMethod();
         builder.EndClass();
 
@@ -1024,7 +1072,7 @@ internal class ScriptTreeWalker
                 if (hasEventBlock)
                 {
                     var eventName = builder.OutputEventCall();
-                    if(builder.ActiveMacro != null)
+                    if (builder.ActiveMacro != null)
                         eventMacros.Add(eventName, builder.ActiveMacro);
                     eventHandlers.Add(eventName, functionContext.eventblock!);
                 }
@@ -1104,7 +1152,7 @@ internal class ScriptTreeWalker
                 break;
             case SpecialAssignmentContext context:
                 var left = context.IDENTIFIER().GetText();
-                if(context.specialassignment_operator().DE() != null)
+                if (context.specialassignment_operator().DE() != null)
                     builder.OutputRaw($"{left} = {left} / (");
                 if (context.specialassignment_operator().TE() != null)
                     builder.OutputRaw($"{left} = {left} * (");
@@ -1218,7 +1266,7 @@ internal class ScriptTreeWalker
         var script = name;
         if (builder.ActiveMacro != null)
             script = builder.ActiveMacro.CurrentScript;
-        if(ActiveEventMacro != null)
+        if (ActiveEventMacro != null)
             script = ActiveEventMacro.CurrentScript;
 
         if (string.IsNullOrWhiteSpace(message))

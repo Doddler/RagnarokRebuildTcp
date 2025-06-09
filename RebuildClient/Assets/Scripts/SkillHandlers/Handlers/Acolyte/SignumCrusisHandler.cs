@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Network;
+using Assets.Scripts.Objects;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 
@@ -20,6 +21,8 @@ namespace Assets.Scripts.SkillHandlers.Handlers
                 return;
             
             src.PerformSkillMotion();
+            AudioManager.Instance.OneShotSoundEffect(src.Id, "ef_signum.ogg", src.transform.position, 1f, 0.5f);
+            AudioManager.Instance.OneShotSoundEffect(src.Id, "ef_bash.ogg", src.transform.position, 1f, 0.5f);
             CameraFollower.Instance.AttachEffectToEntity("SignumCrusis", src.gameObject, src.Id);
         }
     }

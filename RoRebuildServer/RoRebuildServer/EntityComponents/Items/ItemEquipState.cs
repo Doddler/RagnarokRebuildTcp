@@ -13,6 +13,7 @@ using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
 using RoRebuildServer.Simulation.Util;
 using Wintellect.PowerCollections;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RoRebuildServer.EntityComponents.Items;
 
@@ -21,7 +22,7 @@ public struct EquipStatChange : IEquatable<EquipStatChange>
     public int Value;
     public int Change;
     public CharacterStat Stat;
-    public EquipSlot Slot;
+    public int Slot;
 
     public bool Equals(EquipStatChange other)
     {
@@ -64,17 +65,20 @@ public class ItemEquipState
     public int WeaponAttackPower;
     public int MinRefineAtkBonus;
     public int MaxRefineAtkBonus;
+    public Dictionary<string, int> ActiveItemCombos = new();
+    public Dictionary<int, int> EquippedItems = new();
     public Dictionary<int, AutoSpellEffect> AutoSpellSkillsOnAttack = new();
     public Dictionary<int, AutoSpellEffect> AutoSpellSkillsWhenAttacked = new();
     private readonly SwapList<EquipStatChange> equipmentEffects = new();
-    private EquipSlot activeSlot;
+    private int activeSlotId;
     private readonly HeadgearPosition[] headgearMultiSlotInfo = new HeadgearPosition[3];
     private bool isTwoHandedWeapon;
     private static int[] attackPerRefine = [2, 3, 5, 7];
     private static int[] overRefineLevel = [8, 7, 6, 5];
     private static int[] overRefineAttackBonus = [3, 5, 8, 14];
     private int nextId = 0;
-    
+    private int nextComboSlotId = 100;
+
     public void Reset()
     {
         for (var i = 0; i < ItemSlots.Length; i++)
@@ -93,6 +97,8 @@ public class ItemEquipState
         AutoSpellSkillsOnAttack.Clear();
         AutoSpellSkillsWhenAttacked.Clear();
         equipmentEffects.Clear();
+        EquippedItems.Clear();
+        ActiveItemCombos.Clear();
         nextId = 0;
     }
 
@@ -102,6 +108,17 @@ public class ItemEquipState
     {
         for (var i = 0; i < 10; i++)
             if (ItemSlots[i] == bagId)
+                return true;
+        return false;
+    }
+
+
+    public bool IsItemIdEquipped(int itemId)
+    {
+        if (AmmoId == itemId)
+            return true;
+        for (var i = 0; i < 10; i++)
+            if (ItemIds[i] == itemId)
                 return true;
         return false;
     }
@@ -296,7 +313,7 @@ public class ItemEquipState
         if ((equipSlot == EquipSlot.Shield && ItemSlots[(int)EquipSlot.Weapon] == bagId)
             || (equipSlot == EquipSlot.Weapon && ItemSlots[(int)EquipSlot.Shield] == bagId))
             return EquipChangeResult.InvalidItem;
-        
+
         if (weaponInfo.IsTwoHanded)
             UnEquipItem(EquipSlot.Shield);
 
@@ -307,7 +324,7 @@ public class ItemEquipState
 
         ItemSlots[(int)equipSlot] = bagId;
         ItemIds[(int)equipSlot] = itemData.Id;
-        
+
         OnEquipEvent(equipSlot);
         CommandBuilder.UpdatePlayerAppearanceAuto(Player);
 
@@ -348,7 +365,7 @@ public class ItemEquipState
 
         if (equipInfo.EquipPosition == EquipPosition.Shield && isTwoHandedWeapon)
             UnEquipItem(EquipSlot.Weapon);
-        
+
         UnEquipItem(equipSlot);
 
         if (equipInfo.EquipPosition == EquipPosition.Headgear)
@@ -384,7 +401,7 @@ public class ItemEquipState
 
         var itemData = DataManager.ItemList[item.Id];
 
-        if(itemData.ItemClass == ItemClass.Ammo)
+        if (itemData.ItemClass == ItemClass.Ammo)
             return EquipAmmo(item.Id) ? EquipChangeResult.Success : EquipChangeResult.InvalidItem;
 
         if (itemData.ItemClass == ItemClass.Weapon)
@@ -396,18 +413,46 @@ public class ItemEquipState
         return EquipChangeResult.InvalidItem;
     }
 
-    public bool EquipAmmo(int ammoId, bool notify = true)
+    private void RemoveEquipEffectForAmmo()
+    {
+        if (!DataManager.ItemList.TryGetValue(AmmoId, out var unEquipInfo))
+            return;
+
+        for (var i = 0; i < equipmentEffects.Count; i++)
+        {
+            var effect = equipmentEffects[i];
+            if (effect.Slot == (int)EquipSlot.Ammunition)
+            {
+                ReverseEquipmentEffect(effect);
+                equipmentEffects.Remove(i);
+                i--; //we've moved the last element into our current position, so we step the enumerator back by 1
+            }
+        }
+
+        unEquipInfo.Interaction?.OnUnequip(Player, Player.CombatEntity, this, new UniqueItem(),
+            EquipSlot.Ammunition);
+    }
+
+    public bool EquipAmmo(int ammoId, bool isPlayerActive = true)
     {
         if (!DataManager.AmmoInfo.TryGetValue(ammoId, out var ammo))
             return false;
+
+        //player can be null here if we're deserializing on character load. In that case, the OnEquip event will be sent from RunEquipAll
+        if (isPlayerActive)
+            RemoveEquipEffectForAmmo();
 
         AmmoId = ammoId;
         AmmoType = ammo.Type;
         AmmoAttackPower = ammo.Attack;
         AmmoElement = ammo.Element;
 
-        if(notify)
+        if (isPlayerActive)
+        {
             CommandBuilder.PlayerEquipItem(Player, ammoId, EquipSlot.Ammunition, true);
+            if (DataManager.ItemList.TryGetValue(ammoId, out var equipInfo))
+                equipInfo.Interaction?.OnEquip(Player, Player.CombatEntity, this, new UniqueItem(), EquipSlot.Ammunition);
+        }
 
         return true;
     }
@@ -419,7 +464,7 @@ public class ItemEquipState
         if (slot == EquipSlot.None || ItemSlots[(int)slot] <= 0)
             return;
 
-        activeSlot = slot;
+        activeSlotId = (int)slot;
         var bagId = ItemSlots[(int)slot];
         var item = Player.Inventory.UniqueItems[bagId];
         if (!DataManager.ItemList.TryGetValue(item.Id, out var data))
@@ -444,7 +489,7 @@ public class ItemEquipState
                 var refBonus = item.Refine * attackPerRefine[WeaponLevel];
                 var overRefBonus = 0;
                 var overRefine = item.Refine - overRefineLevel[WeaponLevel];
-                if(overRefine >= 0)
+                if (overRefine >= 0)
                     overRefBonus = item.Refine * overRefineAttackBonus[WeaponLevel];
 
                 Player.WeaponClass = weapon.WeaponClass;
@@ -456,7 +501,7 @@ public class ItemEquipState
                 Player.SetStat(CharacterStat.Attack2, 0);
                 Player.RefreshWeaponMastery();
                 WeaponElement = weapon.Element;
-                if(slot == EquipSlot.Weapon)
+                if (slot == EquipSlot.Weapon)
                     WeaponRange = weapon.Range;
             }
         }
@@ -471,10 +516,12 @@ public class ItemEquipState
                 if (armor.IsRefinable)
                     Player.AddStat(CharacterStat.EquipmentRefineDef, item.Refine);
 
-                if(armor.EquipPosition == EquipPosition.Body)
+                if (armor.EquipPosition == EquipPosition.Body)
                     ArmorElement = armor.Element;
             }
         }
+
+        AddEquipItemCount(item.Id);
 
         data.Interaction?.OnEquip(Player, Player.CombatEntity, this, item, slot);
         for (var j = 0; j < 4; j++)
@@ -487,15 +534,42 @@ public class ItemEquipState
                 if (!DataManager.ItemList.TryGetValue(slotItem, out var slotData))
                     throw new Exception($"Attempting to run RunAllOnEquip event for item {slotItem} (socketed in a {item.Id}), but it doesn't appear to exist in the item database.");
 
+                AddEquipItemCount(slotData.Id);
                 slotData.Interaction?.OnEquip(Player, Player.CombatEntity, this, default, slot);
+                OnEquipUpdateItemSets(slotData.Id);
             }
         }
+
+        OnEquipUpdateItemSets(item.Id);
+    }
+
+    private void AddEquipItemCount(int itemId)
+    {
+        if (EquippedItems.TryGetValue(itemId, out var equipCount))
+            EquippedItems[itemId] = equipCount + 1;
+        else
+            EquippedItems.Add(itemId, 1);
+    }
+
+    private void SubEquipItemCount(int itemId)
+    {
+        if (EquippedItems.TryGetValue(itemId, out var equipCount))
+        {
+            if (equipCount > 1)
+                EquippedItems[itemId] = equipCount - 1;
+            else
+                EquippedItems.Remove(itemId);
+        }
+        else
+            ServerLogger.LogWarning($"Attempting to perform SubEquipItemCount for itemId {itemId}, but we don't think that item is currently equipped.");
     }
 
     public void PerformOnEquipForNewCard(ItemInfo item, EquipSlot slot)
     {
-        activeSlot = slot;
+        activeSlotId = (int)slot;
+        AddEquipItemCount(item.Id);
         item.Interaction?.OnEquip(Player, Player.CombatEntity, this, default, slot);
+        OnEquipUpdateItemSets(item.Id);
     }
 
     private void UnEquipEvent(EquipSlot slot)
@@ -505,7 +579,7 @@ public class ItemEquipState
         if (ItemSlots[(int)slot] <= 0)
             return;
 
-        activeSlot = slot;
+        activeSlotId = (int)slot;
         var bagId = ItemSlots[(int)slot];
         var item = Player.Inventory.UniqueItems[bagId];
         if (!DataManager.ItemList.TryGetValue(item.Id, out var data))
@@ -521,7 +595,7 @@ public class ItemEquipState
             WeaponElement = AttackElement.Neutral;
             Player.RefreshWeaponMastery();
         }
-        
+
         if (data.ItemClass == ItemClass.Equipment)
         {
             if (DataManager.ArmorInfo.TryGetValue(item.Id, out var armor))
@@ -536,7 +610,8 @@ public class ItemEquipState
                     ArmorElement = CharacterElement.Neutral1;
             }
         }
-        
+
+        SubEquipItemCount(item.Id);
         data.Interaction?.OnUnequip(Player, Player.CombatEntity, this, item, slot);
         for (var j = 0; j < 4; j++)
         {
@@ -549,10 +624,18 @@ public class ItemEquipState
                 if (!DataManager.ItemList.TryGetValue(slotItem, out var slotData))
                     throw new Exception($"Attempting to run RunAllOnEquip event for item {item.Id} (socketed in a {item.Id}), but it doesn't appear to exist in the item database."); ;
 
+                SubEquipItemCount(slotData.Id);
                 slotData.Interaction?.OnUnequip(Player, Player.CombatEntity, this, default, slot);
+                OnUnEquipUpdateItemSets(slotData.Id);
             }
         }
 
+        ReverseEquipEffectsForSlot((int)slot);
+        OnUnEquipUpdateItemSets(item.Id);
+    }
+
+    private void ReverseEquipEffectsForSlot(int slot)
+    {
         var removedGrantedSkill = false;
         //remove saved item effects from the player
         for (var i = 0; i < equipmentEffects.Count; i++)
@@ -565,7 +648,7 @@ public class ItemEquipState
                 i--; //we've moved the last element into our current position, so we step the enumerator back by 1
             }
         }
-        if(removedGrantedSkill)
+        if (removedGrantedSkill)
             CommandBuilder.RefreshGrantedSkills(Player);
     }
 
@@ -599,6 +682,73 @@ public class ItemEquipState
         }
     }
 
+    private bool IsComboPrereqsMet(string comboName, int curItem = -1)
+    {
+
+        var itemsInSet = DataManager.ItemsInCombo[comboName];
+
+        foreach (var item in itemsInSet)
+        {
+            if (item == curItem)
+                continue;
+
+            if (!EquippedItems.ContainsKey(item))
+                return false;
+        }
+
+        return true;
+    }
+
+    private void OnEquipUpdateItemSets(int itemId)
+    {
+        if (!DataManager.CombosForEquipmentItem.TryGetValue(itemId, out var comboNameList))
+            return;
+
+        var oldActiveSlot = activeSlotId; //don't want to cause issues if we call OnEquipUpdateItemSets on cards
+
+        foreach (var comboName in comboNameList)
+        {
+            if (ActiveItemCombos.ContainsKey(comboName))
+                continue;
+
+            if (!IsComboPrereqsMet(comboName, itemId))
+                continue;
+
+            activeSlotId = nextComboSlotId;
+            DataManager.EquipmentComboInteractions[comboName].OnEquip(Player, Player.CombatEntity, this, default, EquipSlot.None);
+
+            ActiveItemCombos.Add(comboName, nextComboSlotId);
+            nextComboSlotId++;
+        }
+
+        activeSlotId = oldActiveSlot;
+    }
+
+    private void OnUnEquipUpdateItemSets(int itemId)
+    {
+        if (!DataManager.CombosForEquipmentItem.TryGetValue(itemId, out var comboNameList))
+            return;
+
+        var oldActiveSlot = activeSlotId; //don't want to cause issues if we call OnUnEquipUpdateItemSets on cards
+
+        foreach (var comboName in comboNameList)
+        {
+            if (!ActiveItemCombos.TryGetValue(comboName, out var comboSlot))
+                continue;
+
+            if (IsComboPrereqsMet(comboName))
+                continue;
+
+            activeSlotId = comboSlot;
+            DataManager.EquipmentComboInteractions[comboName].OnUnequip(Player, Player.CombatEntity, this, default, EquipSlot.None);
+            ActiveItemCombos.Remove(comboName);
+
+            ReverseEquipEffectsForSlot(comboSlot);
+        }
+
+        activeSlotId = oldActiveSlot;
+    }
+
     public void RunAllOnEquip()
     {
         if (Player.Inventory == null)
@@ -613,14 +763,18 @@ public class ItemEquipState
 
         for (var i = 0; i < 10; i++)
             OnEquipEvent((EquipSlot)i);
+
+        if (AmmoId > 0 && DataManager.ItemList.TryGetValue(AmmoId, out var equipInfo))
+            equipInfo.Interaction?.OnEquip(Player, Player.CombatEntity, this, new UniqueItem(), EquipSlot.Ammunition);
     }
 
-    public int Refine {
+    public int Refine
+    {
         get
         {
-            if (ItemIds[(int)activeSlot] <= 0 || Player.Inventory == null)
+            if (ItemIds[(int)activeSlotId] <= 0 || Player.Inventory == null)
                 return 0;
-            if (!Player.Inventory.UniqueItems.TryGetValue(ItemSlots[(int)activeSlot], out var item))
+            if (!Player.Inventory.UniqueItems.TryGetValue(ItemSlots[(int)activeSlotId], out var item))
                 return 0;
 
             return (int)item.Refine;
@@ -629,7 +783,7 @@ public class ItemEquipState
 
     public bool IsInPosition(EquipPosition pos)
     {
-        switch (activeSlot)
+        switch ((EquipSlot)activeSlotId)
         {
             case EquipSlot.HeadTop:
                 return (pos & EquipPosition.HeadUpper) > 0;
@@ -670,7 +824,7 @@ public class ItemEquipState
 
         var equipState = new EquipStatChange()
         {
-            Slot = activeSlot,
+            Slot = (int)activeSlotId,
             Stat = CharacterStat.AutoSpellOnAttacking,
             Value = (int)skill,
             Change = id,
@@ -694,7 +848,7 @@ public class ItemEquipState
 
         var equipState = new EquipStatChange()
         {
-            Slot = activeSlot,
+            Slot = (int)activeSlotId,
             Stat = CharacterStat.AutoSpellWhenAttacked,
             Value = (int)skill,
             Change = id,
@@ -707,7 +861,7 @@ public class ItemEquipState
     {
         var equipState = new EquipStatChange()
         {
-            Slot = activeSlot,
+            Slot = (int)activeSlotId,
             Stat = CharacterStat.SkillValue,
             Value = (int)skill,
             Change = level,
@@ -727,7 +881,7 @@ public class ItemEquipState
 
         var equipState = new EquipStatChange()
         {
-            Slot = activeSlot,
+            Slot = (int)activeSlotId,
             Change = change,
             Value = tagId,
             Stat = CharacterStat.DamageVsTag
@@ -738,7 +892,7 @@ public class ItemEquipState
         if (Player.AttackVersusTag == null)
             Player.AttackVersusTag = new Dictionary<int, int>();
 
-        if(Player.AttackVersusTag.TryGetValue(tagId, out var existing))
+        if (Player.AttackVersusTag.TryGetValue(tagId, out var existing))
             Player.AttackVersusTag[tagId] = existing + change;
         else
             Player.AttackVersusTag.Add(tagId, change);
@@ -748,11 +902,11 @@ public class ItemEquipState
     {
 #if DEBUG
         if (stat >= CharacterStat.Str && stat <= CharacterStat.Luk)
-            ServerLogger.LogWarning($"Warning! Adding directly to a base stat {stat} in equip handler for {Player.Inventory?.UniqueItems[(int)activeSlot]}! You probably want AddStat.");
+            ServerLogger.LogWarning($"Warning! Adding directly to a base stat {stat} in equip handler for {Player.Inventory?.UniqueItems[(int)activeSlotId]}! You probably want AddStat.");
 #endif
         var equipState = new EquipStatChange()
         {
-            Slot = activeSlot,
+            Slot = (int)activeSlotId,
             Change = change,
             Stat = stat
         };
@@ -775,7 +929,7 @@ public class ItemEquipState
 
     public void SetPreserveStatusOnDeath(CharacterStatusEffect statusEffect, bool enabled)
     {
-        if(enabled)
+        if (enabled)
             Player.CombatEntity.StatusContainer?.SetStatusToKeepOnDeath(statusEffect);
         else
             Player.CombatEntity.StatusContainer?.RemoveStatusFromKeepOnDeath(statusEffect);
@@ -784,9 +938,9 @@ public class ItemEquipState
 
     public void SetArmorElement(CharacterElement element)
     {
-        if (activeSlot != EquipSlot.Body)
+        if (activeSlotId != (int)EquipSlot.Body)
             ServerLogger.LogWarning(
-                $"Warning! Attempting to call SetArmorElement on a card or property in the {activeSlot} slot. CallStack:\n" +
+                $"Warning! Attempting to call SetArmorElement on a card or property in the {activeSlotId} slot. CallStack:\n" +
                 Environment.StackTrace);
         else
             ArmorElement = element;
