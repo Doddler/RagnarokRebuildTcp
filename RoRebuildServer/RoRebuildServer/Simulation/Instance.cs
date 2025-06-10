@@ -53,6 +53,14 @@ public class Instance
         }
     }
 
+    public void LoadNpcs()
+    {
+        foreach (var map in Maps)
+        {
+            map.LoadNpcs();
+        }
+    }
+
     public void ReloadScripts()
     {
         foreach (var map in Maps)

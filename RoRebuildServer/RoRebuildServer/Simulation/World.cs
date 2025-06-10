@@ -66,12 +66,14 @@ public class World
     private readonly object aoeLock = new();
     private readonly Lock entityLock = new();
 
+    public ConcurrentStack<Action> MainThreadActions = new();
+
     public bool TryFindPartyById(int id, [NotNullWhen(true)] out Party? party) => partyLookup.TryGetValue(id, out party);
     public bool TryAddParty(Party party) => partyLookup.TryAdd(party.PartyId, party);
     public bool RemoveParty(Party party) => partyLookup.TryRemove(party.PartyId, out _);
     public bool TryFindPlayerByGuid(Guid id, out Entity entity) => playerList.TryGetValue(id, out entity) && entity.IsAlive();
     public bool TryFindPlayerByName(string name, out Entity entity) => playerNameLookup.TryGetValue(name, out entity) && entity.IsAlive();
-
+    
     public World()
     {
         Instance = this;
@@ -97,7 +99,9 @@ public class World
             }
         }
 
-
+        foreach (var instance in Instances)
+            instance.LoadNpcs(); //we defer this till after all the maps are loaded, as some npcs will need to do cross map stuff
+        
         moveRequests = Channel.CreateUnbounded<MapMoveRequest>(new UnboundedChannelOptions() { AllowSynchronousContinuations = false, SingleReader = true, SingleWriter = false });
 
         ServerLogger.Log($"World created using {mapCount} maps across {Instances.Count} instances placing a total of {nextEntityId} entities in {Time.CurrentDiagnosticsTime():F2}s.");
@@ -160,6 +164,10 @@ public class World
 
         PerformMoves();
         PerformRemovals();
+
+        if (MainThreadActions.Count > 0)
+            while (MainThreadActions.TryPop(out var a))
+                a();
 
         if (reloadScriptsFlag)
         {
@@ -302,7 +310,7 @@ public class World
         if (!DataManager.NpcManager.EventBehaviorLookup.TryGetValue(eventName, out var behavior))
             throw new Exception($"Unable to create event \"{eventName}\" as the matching script could not be found.");
 
-        
+
         ch.IsActive = true;
         ch.AdminHidden = true;
         ch.ClassId = 0;
@@ -530,13 +538,13 @@ public class World
         if (ce.GetStat(CharacterStat.Hp) <= 0)
             player.Character.State = CharacterState.Dead;
         //ce.FullRecovery(true, true);
-        
+
         player.Init();
 
         ch.Name = player.Name;
         connection.LoadCharacterRequest = null;
         connection.Player = player;
-        
+
         if (player.Party != null)
             player.Party.LogMemberIn(player);
 
@@ -614,7 +622,7 @@ public class World
         ch.Init(ref e);
 
         ce.Entity = e;
-        
+
         ce.Init(ref e, ch);
         m.Initialize(ref e, ch, ce, monsterDef, monsterDef.AiType, spawnRule, map.Name);
 

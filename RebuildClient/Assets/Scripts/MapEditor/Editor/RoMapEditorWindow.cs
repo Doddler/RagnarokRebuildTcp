@@ -307,10 +307,48 @@ namespace Assets.Editor
 					else
 						Clipboard.SetText($"%({(int)sel.center.x}, {(int)sel.center.y}, {sel.width/2}, {sel.height/2})");
 				}
+
+				if (currentEditor.HasSelection && currentEditor.MapData.IsWalkTable)
+				{
+					GUILayout.BeginHorizontal();
+					if (GUILayout.Button("Make Walkable"))
+					{
+						currentEditor.MapData.WalkCellData.SetCellMode(currentEditor.SelectedRegion, CellType.Walkable);
+						PaintRegionTexture(currentEditor.SelectedRegion, "green");
+						currentEditor.RebuildMeshInArea(currentEditor.SelectedRegion);						
+					}
+
+					if (GUILayout.Button("Make Snipeable"))
+					{
+						currentEditor.MapData.WalkCellData.SetCellMode(currentEditor.SelectedRegion, CellType.Snipable);
+						PaintRegionTexture(currentEditor.SelectedRegion, "yellow");
+						currentEditor.RebuildMeshInArea(currentEditor.SelectedRegion);						
+					}
+					
+					if (GUILayout.Button("Make Unwalkable"))
+					{
+						currentEditor.MapData.WalkCellData.SetCellMode(currentEditor.SelectedRegion, CellType.None);
+						PaintRegionTexture(currentEditor.SelectedRegion, "red");
+						currentEditor.RebuildMeshInArea(currentEditor.SelectedRegion);
+					}
+					GUILayout.EndHorizontal();
+				}
 				
 
                 //if (Event.current.isKey && Event.current.shift && Event.current.keyCode == KeyCode.C)
                 //    Debug.Log("HI");
+			}
+		}
+
+		private void PaintRegionTexture(RectInt area, string texture)
+		{
+			for (var x = area.xMin; x < area.xMax; x++)
+			{
+				for (var y = area.yMin; y < area.yMax; y++)
+				{
+					currentEditor.MapData.SetCellTexture(texture, x, y);
+								
+				}
 			}
 		}
 

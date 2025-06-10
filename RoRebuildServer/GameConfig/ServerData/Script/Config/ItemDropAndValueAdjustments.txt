@@ -15,8 +15,8 @@ OnLoadDropData:
 	else rate = 10000;
 	
 OnSetItemPurchasePrice:
-	//all etc type items (other than those used for refining) have 2x value
-	if(type == Etc && subType != "Refine")
+	//all etc type items (other than those used for refining or fixed NPC sell value) have 2x value
+	if(type == Etc && subType != "Refine" && subType != "HighValue")
 		price *= 2;
 
 OnSetItemSaleValue:

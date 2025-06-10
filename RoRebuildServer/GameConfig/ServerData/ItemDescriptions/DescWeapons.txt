@@ -75,7 +75,7 @@ INT +3
 
 ::Ice_Falchion //id 1131 - Sword
 <desc>A formal decorative sword imbued with water.</desc>
-MATK +120
+MATK +80
 Enables use of <skill>Cold Bolt 3</skill>.
 +5% chance to autocast <skill>Cold Bolt 3</skill> on melee attack.
 +5% chance of <status>Freeze</status> on physical attack.
@@ -86,7 +86,7 @@ Enables use of <skill>Cold Bolt 3</skill>.
 
 ::Fire_Brand //id 1133 - Sword
 <desc>A formal decorative sword imbued with fire.</desc>
-MATK +120
+MATK +80
 Enables use of <skill>Fire Bolt 3</skill>.
 +5% chance to autocast <skill>Fire Bolt 3</skill> on physical attack.
 

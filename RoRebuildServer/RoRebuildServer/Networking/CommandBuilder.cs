@@ -1167,13 +1167,14 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
-    public static void SendNpcDialog(Player p, string name, string dialog)
+    public static void SendNpcDialog(Player p, string name, string dialog, bool isBig)
     {
         var packet = NetworkManager.StartPacket(PacketType.NpcInteraction, 256);
 
         packet.Write((byte)NpcInteractionType.NpcDialog);
         packet.Write(name);
         packet.Write(dialog);
+        packet.Write(isBig);
 
         NetworkManager.SendMessage(packet, p.Connection);
     }

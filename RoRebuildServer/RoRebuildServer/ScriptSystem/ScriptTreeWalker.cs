@@ -547,6 +547,10 @@ internal class ScriptTreeWalker
         var name = builder.StartNpc(str, false);
         //builder.OutputRaw($"npc.RevealAsEffect(NpcEffectType.MapWarp, {(v["displayName"].IsString ? v["displayName"].String : "")};");
         //builder.EndLine(functionContext.start.Line);
+        builder.OutputRaw($"npc.RegisterLink({v["destMap"]}, {v["dx"]}, {v["dy"]})");
+        builder.EndLine(functionContext.start.Line);
+        builder.OutputRaw($"npc.RemoveIfLinksInvalid()");
+        builder.EndLine(functionContext.start.Line);
         builder.StartNpcSection("OnTouch");
         builder.OutputRaw($"state.MoveTo({v["destMap"]}, {v["dx"]}, {v["dy"]}, {v["dw"]}, {v["dh"]})");
         builder.EndLine(functionContext.start.Line);

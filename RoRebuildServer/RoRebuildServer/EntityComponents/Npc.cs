@@ -48,6 +48,9 @@ public class Npc : IEntityAutoReset
     public int[]? ParamsInt;
     public string? ParamString;
 
+    public record WarpDestinationLink(string TargetMap, Position Destination, bool IsNpcLink);
+
+    public List<WarpDestinationLink>? DestinationLinks;
     public List<(int id, int price)>? ItemsForSale;
     public Dictionary<int, int>? SaleItemIndexes;
 
@@ -64,7 +67,7 @@ public class Npc : IEntityAutoReset
     public bool IsPathActive;
     public bool ExpireEventWithoutOwner;
     public NpcPathHandler? NpcPathHandler;
-    
+
     private string? currentSignalTarget;
 
     //private SkillCastInfo? skillInfo;
@@ -138,6 +141,8 @@ public class Npc : IEntityAutoReset
             NpcPathHandler.Npc = null!;
             NpcPathHandler = null;
         }
+
+        DestinationLinks = null;
 
         if (Mobs != null)
             EntityListPool.Return(Mobs);
@@ -613,7 +618,7 @@ public class Npc : IEntityAutoReset
             }
 
             var saleEntry = ItemsForSale[saleItemId];
-            
+
             var dcValue = saleEntry.Item2 * discount / 100;
             totalCost += (saleEntry.Item2 - dcValue) * count;
             totalWeight += info.Weight * count;
@@ -932,6 +937,41 @@ public class Npc : IEntityAutoReset
     {
         Character.MoveSpeed = speed / 1000f;
         Character.TryMove(new Position(x, y), 0);
+    }
+
+    public void RegisterNpcLink(string mapName, int x, int y) => RegisterLink(mapName, x, y, true);
+
+    public void RegisterLink(string mapName, int x, int y, bool isNpcLink = false)
+    {
+        if (DestinationLinks == null)
+            DestinationLinks = new List<WarpDestinationLink>();
+        DestinationLinks.Add(new WarpDestinationLink(mapName, new Position(x, y), isNpcLink));
+    }
+
+    private void RemoveWarpNpcNoValidLinks()
+    {
+        var name = !string.IsNullOrWhiteSpace(FullName) ? FullName : currentSignalTarget;
+        if (DestinationLinks == null || DestinationLinks.Count == 0)
+            ServerLogger.Debug($"Removing the warp npc {name} on map {Character.Map?.Name} as it has no valid links.");
+        else
+            ServerLogger.Debug($"Removing the warp npc {name} on map {Character.Map?.Name} as it's link to {DestinationLinks[0].TargetMap} is invalid.");
+        EndEvent();
+    }
+
+    public void RemoveIfLinksInvalid()
+    {
+        if (DestinationLinks == null)
+        {
+            RemoveWarpNpcNoValidLinks();
+            return;
+        }
+
+        foreach (var link in DestinationLinks)
+        {
+            if (World.Instance.TryGetWorldMapByName(link.TargetMap, out var _))
+                return; //we're valid if we have any valid links
+        }
+        RemoveWarpNpcNoValidLinks();
     }
 
     public void CreateEvent(string eventName, Position pos, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, 0, 0, 0, 0, valueString);

@@ -53,6 +53,17 @@ namespace Assets.Scripts.MapEditor
             Debug.LogWarning("Could not determine cell type from cell data: " + color);
             return CellType.None;
         }
+
+        public void SetCellMode(RectInt area, CellType type)
+        {
+            for (var x = area.xMin; x < area.xMax; x++)
+            {
+                for (var y = area.yMin; y < area.yMax; y++)
+                {
+                    Cells[x + y * Width].Type = type;
+                }
+            }
+        }
         
         public void UpdateWalkCellData()
         {

@@ -19,7 +19,7 @@ namespace Assets.Scripts.MapEditor.Editor.GroundBrushes
 
         private bool skipRegisterUndo = false;
 
-        
+
         public override void OnEnable()
         {
             Editor.UpdateSelectionMode(SelectionMode.TopRect);
@@ -27,7 +27,7 @@ namespace Assets.Scripts.MapEditor.Editor.GroundBrushes
             dragHandleStart = new Vector3[9];
 
             LoadSettings();
-            
+
             CenterDragHandle();
             UpdateDragHandle();
         }
@@ -68,7 +68,7 @@ namespace Assets.Scripts.MapEditor.Editor.GroundBrushes
 
             CenterDragHandle();
         }
-        
+
         public void CenterDragHandle()
         {
             if (!Editor.HasSelection)
@@ -76,7 +76,7 @@ namespace Assets.Scripts.MapEditor.Editor.GroundBrushes
 
             for (var i = 0; i < 8; i++)
             {
-                var dir = (Direction) i;
+                var dir = (Direction)i;
                 var x = Mathf.FloorToInt(Editor.SelectedRegion.center.x);
                 var y = Mathf.FloorToInt(Editor.SelectedRegion.center.y);
 
@@ -116,16 +116,16 @@ namespace Assets.Scripts.MapEditor.Editor.GroundBrushes
 
             setHeightAmount = EditorGUILayout.FloatField("Height", setHeightAmount);
             GUILayout.BeginHorizontal();
-            if(GUILayout.Button("Add"))
+            if (GUILayout.Button("Add"))
                 AddHeightToSelection(setHeightAmount);
-            if(GUILayout.Button("Subtract"))
+            if (GUILayout.Button("Subtract"))
                 AddHeightToSelection(-setHeightAmount);
             GUILayout.EndHorizontal();
         }
 
         public override void OnSceneGUI()
         {
-            if(Event.current.type == EventType.ValidateCommand && Event.current.commandName == "UndoRedoPerformed")
+            if (Event.current.type == EventType.ValidateCommand && Event.current.commandName == "UndoRedoPerformed")
                 CenterDragHandle();
 
             if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Alpha1)
@@ -135,6 +135,7 @@ namespace Assets.Scripts.MapEditor.Editor.GroundBrushes
                 Repaint();
                 Event.current.Use();
             }
+
             if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Alpha2)
             {
                 useEdgeHandles = !useEdgeHandles;
@@ -142,6 +143,7 @@ namespace Assets.Scripts.MapEditor.Editor.GroundBrushes
                 Repaint();
                 Event.current.Use();
             }
+
             if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Alpha3)
             {
                 useCenterHandle = !useCenterHandle;
@@ -163,10 +165,7 @@ namespace Assets.Scripts.MapEditor.Editor.GroundBrushes
 
             var undo = sw.ElapsedMilliseconds;
 
-            Data.ModifyHeightsRect(Editor.SelectedRegion, Editor.DragSeparated, (v, c) =>
-            {
-                c.Heights += new Vector4(height, height, height, height);
-            });
+            Data.ModifyHeightsRect(Editor.SelectedRegion, Editor.DragSeparated, (v, c) => { c.Heights += new Vector4(height, height, height, height); });
 
             var mid = sw.ElapsedMilliseconds - undo;
 
@@ -210,12 +209,13 @@ namespace Assets.Scripts.MapEditor.Editor.GroundBrushes
 
             return Vector2.zero; //should never happen
         }
-        
+
         private void UpdateDragHandle()
         {
             if (!Editor.HasSelection || Mathf.Approximately(Editor.HeightSnap, 0))
                 return;
-
+            
+            Debug.Log($"Start update drag handle");
             Profiler.BeginSample("UpdateDragHandle");
 
             if (Event.current.type == EventType.MouseUp && Event.current.button == 0)
@@ -235,14 +235,11 @@ namespace Assets.Scripts.MapEditor.Editor.GroundBrushes
 
                     var dist = moved / RoMapData.YScale;
 
-                    if(!skipRegisterUndo)
+                    if (!skipRegisterUndo)
                         Data.RegisterUndo(Editor.SelectedRegion.ExpandRect(1));
                     skipRegisterUndo = true;
-                    
-                    Data.MoveCells(Editor.SelectedRegion, Editor.DragSeparated, (v, c) =>
-                    {
-                        c.Heights += new Vector4(dist, dist, dist, dist);
-                    });
+
+                    Data.MoveCells(Editor.SelectedRegion, Editor.DragSeparated, (v, c) => { c.Heights += new Vector4(dist, dist, dist, dist); });
                     Editor.RebuildMeshInArea(Editor.SelectedRegion.ExpandRect(1));
 
                     CenterDragHandle();
@@ -260,10 +257,10 @@ namespace Assets.Scripts.MapEditor.Editor.GroundBrushes
 
                     var amountToMove = moved / RoMapData.YScale;
 
-                    var dir = (Direction) i;
+                    var dir = (Direction)i;
                     var movedPoint = GetCornerPointForDirection(dir);
                     var oppositePoint = GetCornerPointForDirection(dir.FlipDirection());
-                    
+
                     if (!skipRegisterUndo)
                         Data.RegisterUndo(Editor.SelectedRegion.ExpandRect(1));
                     skipRegisterUndo = true;
@@ -321,7 +318,7 @@ namespace Assets.Scripts.MapEditor.Editor.GroundBrushes
                         for (var j = 0; j < 4; j++)
                         {
                             float weight;
-                            if(useXWeight)
+                            if (useXWeight)
                                 weight = t[j].x.Remap(oppositeEdge.x, edge.x, 0, 1);
                             else
                                 weight = t[j].y.Remap(oppositeEdge.y, edge.y, 0, 1);
@@ -331,7 +328,7 @@ namespace Assets.Scripts.MapEditor.Editor.GroundBrushes
                             c.Heights[j] += amountToMove * weight;
                         }
                     });
-                    
+
                     Editor.RebuildMeshInArea(Editor.SelectedRegion.ExpandRect(1));
 
                     CenterDragHandle();

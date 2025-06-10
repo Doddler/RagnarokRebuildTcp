@@ -121,7 +121,7 @@ Id,Code,Name,Price,Weight,Usage,Sprite
 966,Clam_Flesh,Clam Flesh,158,10,None,조개살
 967,Turtle_Shell,Turtle Shell,680,10,None,거북이등껍질
 968,Heroic_Emblem,Heroic Emblem,3000,10,None,오크용자의증표
-969,Gold,Gold,200000,200,None,황금
+969,Gold,Gold,200000,200,HighValue,황금
 970,Alcohol,Alcohol,400,30,None,알코올
 971,Detrimindexta,Detrimindexta,400,30,None,디트리민
 972,Karvodailnirol,Karvodailnirol,400,30,None,카르보딜
@@ -597,7 +597,7 @@ Id,Code,Name,Price,Weight,Usage,Sprite
 7441,Blue_Feather,Blue Feather,1408,10,None,푸른깃털
 7442,Cursed_Seal,Cursed Seal,1332,10,None,저주받은인
 7443,Three-Headed_Dragon's_Head,Three-Headed Dragon's Head,956,10,None,삼두룡의목
-7444,Treasure_Box,Treasure Box,300000,10,None,보물상자
+7444,Treasure_Box,Treasure Box,300000,10,HighValue,보물상자
 7445,Green_Bijou,Green Bijou,887,10,None,용의보주_녹
 7446,Blue_Bijou,Blue Bijou,887,10,None,용의보주_청
 7447,Red_Bijou,Red Bijou,887,10,None,용의보주_홍

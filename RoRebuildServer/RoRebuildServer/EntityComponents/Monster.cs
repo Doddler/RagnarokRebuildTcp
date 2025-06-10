@@ -142,6 +142,7 @@ public partial class Monster : IEntityAutoReset
     }
 #endif
 
+    [EntityIgnoreNullCheck] public static Action<Monster>? OnMonsterDieEvent;
 
     public bool HasMaster => Master.IsAlive();
     public Entity GetMaster() => Master;
@@ -573,12 +574,10 @@ public partial class Monster : IEntityAutoReset
             dmgValues[0] = dmgValues[0] * 130 / 100; //give first attacker a bonus contribution
     }
 
-    public void RewardMVP()
+    public WorldObject? GetTopContributor()
     {
         var maxDamage = 0;
         WorldObject? damageDealer = null;
-        if (TotalDamageReceived == null || TotalDamageReceived.Count == 0)
-            return;
 
         foreach (var (attacker, damage) in TotalDamageReceived)
         {
@@ -591,6 +590,16 @@ public partial class Monster : IEntityAutoReset
             damageDealer = player;
             maxDamage = damage;
         }
+
+        return damageDealer;
+    }
+
+    public void RewardMVP()
+    {
+        if (TotalDamageReceived == null || TotalDamageReceived.Count == 0)
+            return;
+
+        var damageDealer = GetTopContributor();
 
         if (damageDealer == null)
             return;

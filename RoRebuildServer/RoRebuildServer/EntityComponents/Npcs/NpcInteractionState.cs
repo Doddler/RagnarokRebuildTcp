@@ -14,6 +14,7 @@ using System;
 using System.Diagnostics;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum.EntityStats;
+using RoRebuildServer.Data.Scripting;
 using RoRebuildServer.Database.Requests;
 using RoRebuildServer.EntityComponents.Items;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -370,8 +371,21 @@ public class NpcInteractionState
             return;
 
         //Console.WriteLine($"Dialog {name}: {text}");
-        CommandBuilder.SendNpcDialog(Player, name, text);
+        CommandBuilder.SendNpcDialog(Player, name, text, false);
     }
+
+    public void DialogBig(string name, string text)
+    {
+        if (Player == null)
+            return;
+
+        //Console.WriteLine($"Dialog {name}: {text}");
+        CommandBuilder.SendNpcDialog(Player, name, text, true);
+    }
+
+    public bool IsStringEmpty(string str) => string.IsNullOrWhiteSpace(str);
+
+    public string GetGlobalString(string str) => ScriptGlobalManager.StringValue(str);
 
     public int GetItemCount(string str)
     {

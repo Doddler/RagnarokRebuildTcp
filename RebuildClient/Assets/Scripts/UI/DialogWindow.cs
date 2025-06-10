@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Network;
 using Assets.Scripts.Utility;
 using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -34,6 +35,18 @@ namespace Assets.Scripts.UI
                 NpcImage.SetNativeSize();
                 NpcImage.gameObject.SetActive(true);
             });
+        }
+
+        public void MakeBig()
+        {
+            transform.RectTransform().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 900);
+            transform.RectTransform().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 550);
+        }
+
+        public void MakeNormalSize()
+        {
+            transform.RectTransform().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 800);
+            transform.RectTransform().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 230);
         }
 
         public void HideUI()

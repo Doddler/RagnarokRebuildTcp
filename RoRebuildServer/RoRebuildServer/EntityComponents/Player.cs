@@ -84,6 +84,7 @@ public class Player : IEntityAutoReset
     public StatusTriggerFlags OnMeleeAttackStatusSelfFlags;
     public StatusTriggerFlags WhenAttackedStatusFlags;
 
+    [EntityIgnoreNullCheck] public static Action<Player>? OnLevelUpEvent;
 
     public int GetItemIdForEquipSlot(EquipSlot slot) => Equipment.ItemIds[(int)slot];
 
@@ -890,6 +891,9 @@ public class Player : IEntityAutoReset
         UpdateStats();
 
         CombatEntity.FullRecovery(true, true);
+
+        if (OnLevelUpEvent != null)
+            OnLevelUpEvent(this);
     }
 
     public void JumpToLevel(int target)
@@ -907,6 +911,9 @@ public class Player : IEntityAutoReset
 
         RefreshPassiveSkills();
         UpdateStats();
+
+        if (OnLevelUpEvent != null)
+            OnLevelUpEvent(this);
 
         CombatEntity.FullRecovery(true, true);
     }

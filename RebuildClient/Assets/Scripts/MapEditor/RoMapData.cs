@@ -207,6 +207,11 @@ namespace Assets.Scripts.MapEditor
                 LoadCellData();
             return container.CellData[x + y * Width];
         }
+
+        public void SetCellTexture(string texture, int x, int y)
+        {
+            container.CellData[x + y * Width].Top.Texture = texture;
+        }
         
         [NonSerialized]
         private MapDataContainer container;

@@ -16,7 +16,9 @@ public class ServerConfigScriptManager
 {
     private readonly List<ServerConfigScriptHandlerBase> handlers = new();
 
-    public ServerConfigScriptManager(Assembly assembly)
+    public ServerConfigScriptManager(Assembly assembly) => RegisterServerConfigAssembly(assembly);
+
+    public void RegisterServerConfigAssembly(Assembly assembly)
     {
         var itemType = typeof(ServerConfigScriptHandlerBase);
         foreach (var type in assembly.GetTypes().Where(t => t.IsAssignableTo(itemType)))
@@ -64,6 +66,19 @@ public class ServerConfigScriptManager
             item.SellToStoreValue = sellValue;
         }
     }
+
+    public void PostServerStartEvent()
+    {
+        foreach(var c in handlers)
+            c.PostServerStartEvent();
+    }
+
+
+    public void OnScriptReload()
+    {
+        foreach (var c in handlers)
+            c.UnloadServerConfigScript();
+    }
 }
 
 
@@ -73,4 +88,6 @@ public abstract class ServerConfigScriptHandlerBase
     public virtual int OnLoadDropData(ItemClass type, string code, string subType, int rate) => rate;
     public virtual int OnSetItemPurchasePrice(ItemClass type, string code, string subType, int price) => price;
     public virtual int OnSetItemSaleValue(ItemClass type, string code, string subType, int price) => price;
+    public virtual void PostServerStartEvent() {}
+    public virtual void UnloadServerConfigScript() { }
 }

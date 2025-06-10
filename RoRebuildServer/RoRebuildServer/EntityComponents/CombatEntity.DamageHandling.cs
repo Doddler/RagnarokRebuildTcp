@@ -622,6 +622,8 @@ public partial class CombatEntity
                 if (DataManager.MvpMonsterCodes.Contains(monster.MonsterBase.Code))
                     monster.RewardMVP();
 
+                Monster.OnMonsterDieEvent?.Invoke(monster);
+
                 monster.Die();
                 DamageQueue.Clear();
 

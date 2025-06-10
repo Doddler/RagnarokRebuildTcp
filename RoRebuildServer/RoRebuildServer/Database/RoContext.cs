@@ -27,6 +27,8 @@ public class RoContext : IdentityDbContext<RoUserAccount, UserRole, int>
         builder.Entity<IdentityUserClaim<int>>().ToTable("DbUserClaims");
         builder.Entity<IdentityUserLogin<int>>().ToTable("DbUserLogins");
         builder.Entity<IdentityUserToken<int>>().ToTable("DbUserTokens");
+
+        builder.Entity<ScriptGlobalVar>().ToTable("ScriptGlobals");
         
         builder.Entity<RoUserAccount>().HasMany<DbCharacter>(c => c.Characters).WithOne(o => o.Account).HasForeignKey("AccountId");
         builder.Entity<DbCharacter>().HasIndex(c => c.Name).IsUnique();
@@ -40,4 +42,5 @@ public class RoContext : IdentityDbContext<RoUserAccount, UserRole, int>
     public DbSet<DbCharacter> Character { get; set; }
     public DbSet<StorageInventory> StorageInventory { get; set; }
     public DbSet<DbParty> Parties { get; set; }
+    public DbSet<ScriptGlobalVar> ScriptGlobalVars { get; set; }
 }

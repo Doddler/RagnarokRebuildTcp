@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime;
 using RoRebuildServer.Data;
+using RoRebuildServer.Data.Scripting;
 using RoRebuildServer.Database;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Logging;
@@ -30,13 +31,15 @@ internal class ZoneWorker : BackgroundService
         this.appLifetime = appLifetime;
     }
 
-    private void Initialize()
+    private async Task Initialize()
     {
         ServerLogger.Log("Ragnarok Rebuild Zone Server, starting up!");
 
         DistanceCache.Init();
         RoDatabase.Initialize();
         DataManager.Initialize();
+
+        await ScriptGlobalManager.LoadGlobalsFromDatabase();
 
         var spawnTime = ServerConfig.DebugConfig.MaxSpawnTime;
 
@@ -48,8 +51,10 @@ internal class ZoneWorker : BackgroundService
         
         world = new World();
         NetworkManager.Init(world);
-            
+
         Time.Start();
+
+        DataManager.ServerConfigScriptManager.PostServerStartEvent();
 
         GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
         GC.Collect();

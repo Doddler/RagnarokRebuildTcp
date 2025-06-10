@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers;
@@ -972,10 +973,26 @@ namespace Assets.Scripts.Network
                 {
                     var name = msg.ReadString();
                     var text = msg.ReadString();
+                    var isBig = msg.ReadBoolean();
+                    
+                    int count = 0;
+                    int n = 0;
+
+                    while ((n = text.IndexOf('\n', n)) != -1)
+                    {
+                        n++;
+                        count++;
+                    }
 
                     //CameraFollower.AppendChatText(name + ": " + text);
                     CameraFollower.IsInNPCInteraction = true;
-                    CameraFollower.DialogPanel.GetComponent<DialogWindow>().SetDialog(name, text);
+                    var window = CameraFollower.DialogPanel.GetComponent<DialogWindow>();
+                    if(isBig || count > 4)
+                        window.MakeBig();
+                    else
+                        window.MakeNormalSize();
+                    
+                    window.SetDialog(name, text);
                     break;
                 }
                 case NpcInteractionType.NpcFocusNpc:

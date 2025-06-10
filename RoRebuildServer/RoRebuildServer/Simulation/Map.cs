@@ -1220,7 +1220,7 @@ public class Map
         }
     }
 
-    private void LoadNpcs()
+    public void LoadNpcs()
     {
         if (!DataManager.NpcManager.NpcSpawnsForMaps.TryGetValue(Name, out var spawns))
             return;
@@ -1727,7 +1727,7 @@ public class Map
             }
         }
 
-        LoadNpcs();
+        //LoadNpcs();
         LoadMapConfig();
     }
 }

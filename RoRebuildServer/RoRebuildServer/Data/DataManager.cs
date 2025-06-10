@@ -73,6 +73,8 @@ public static class DataManager
     public static Dictionary<string, int[]> ItemsInCombo = new();
     public static Dictionary<string, ItemInteractionBase> EquipmentComboInteractions = new();
 
+    public static ServerConfigScriptManager ServerConfigScriptManager;
+
     public static List<MapEntry> Maps => mapList;
     
     public static ExpChart ExpChart;
@@ -226,7 +228,10 @@ public static class DataManager
         var assemblyBuildTime = Time.SampleDiagnosticsTime();
 
         NpcManager = new NpcBehaviorManager();
-        var scriptConfig = new ServerConfigScriptManager(ScriptAssembly);
+        if(ServerConfigScriptManager != null!)
+            ServerConfigScriptManager.OnScriptReload();
+        ServerConfigScriptManager = new ServerConfigScriptManager(ScriptAssembly);
+        ServerConfigScriptManager.RegisterServerConfigAssembly(Assembly.GetExecutingAssembly());
         
         var monsterIdLookup = new Dictionary<int, MonsterDatabaseInfo>(monsterStats.Count);
         var monsterCodeLookup = new Dictionary<string, MonsterDatabaseInfo>(monsterStats.Count);
@@ -258,7 +263,7 @@ public static class DataManager
         var t1 = Time.SampleDiagnosticsSubTime();
         SkillTree = loader.LoadSkillTree();
         var t2 = Time.SampleDiagnosticsSubTime();
-        MonsterDropData = loader.LoadMonsterDropChanceData(scriptConfig);
+        MonsterDropData = loader.LoadMonsterDropChanceData(ServerConfigScriptManager);
         var t3 = Time.SampleDiagnosticsSubTime();
         ItemMonsterSummonList = loader.LoadMonsterSummonItemList();
         ItemBoxSummonList = loader.LoadItemBoxSummonList();
@@ -269,7 +274,7 @@ public static class DataManager
         ValidEmotes = loader.LoadEmotes();
 
         var t6 = Time.SampleDiagnosticsSubTime();
-        scriptConfig.UpdateItemValue(ItemList);
+        ServerConfigScriptManager.UpdateItemValue(ItemList);
 
         var postTime = Time.SampleDiagnosticsTime();
 

@@ -15,7 +15,10 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
 
             if (id == -1)
             {
-                Camera.AppendChatText("Server: " + text);
+                if(!string.IsNullOrWhiteSpace(name))
+                    Camera.AppendChatText($"{name}: {text}");
+                else
+                    Camera.AppendChatText(text);
                 return;
             }
 
