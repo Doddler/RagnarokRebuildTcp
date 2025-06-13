@@ -63,6 +63,29 @@ public static class ScriptGlobalManager
         varLock.ExitWriteLock();
     }
 
+    public static int IncrementInt(string varName)
+    {
+        varLock.EnterWriteLock();
+
+        if (scriptGlobals.TryGetValue(varName, out var gVal))
+        {
+            gVal.IntValue += 1;
+        }
+        else
+        {
+            gVal = new ScriptGlobalVar() { VariableName = varName, IntValue = 1 };
+            scriptGlobals.Add(varName, gVal);
+        }
+
+        RoDatabase.EnqueueDbRequest(new SaveScriptGlobalVariableRequest(new ScriptGlobalVar() { VariableName = gVal.VariableName, IntValue = gVal.IntValue, StringValue = gVal.StringValue }));
+
+        var r = gVal.IntValue;
+        varLock.ExitWriteLock();
+
+        return r;
+    }
+
+
 
     public static void SetString(string varName, string strVal)
     {

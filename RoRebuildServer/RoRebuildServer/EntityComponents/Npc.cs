@@ -11,6 +11,7 @@ using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.Data.Player;
+using RoRebuildServer.Data.Scripting;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntityComponents.Npcs;
@@ -878,6 +879,11 @@ public class Npc : IEntityAutoReset
         CommandBuilder.ClearRecipients();
     }
 
+    public void RegisterGlobalSignal(string signalName)
+    {
+        World.Instance.SetGlobalSignal(signalName, Entity);
+    }
+
     public void SignalMyEvents(string signal, int value1 = 0, int value2 = 0, int value3 = 0, int value4 = 0)
     {
         var events = Character.Events;
@@ -909,6 +915,13 @@ public class Npc : IEntityAutoReset
 
         var npc = destNpc.Get<Npc>();
         npc.OnSignal(this, signal, value1, value2, value3, value4);
+    }
+
+    public void ServerWideMessage(string msg, string name = "Server")
+    {
+        CommandBuilder.AddAllPlayersAsRecipients();
+        CommandBuilder.SendServerMessage(msg, name);
+        CommandBuilder.ClearRecipients();
     }
 
     public Position RandomFreeTileInRange(int range)
@@ -1140,6 +1153,11 @@ public class Npc : IEntityAutoReset
 
         //DebugMessage($"Setting npc {Name} timer from {prevStart} to {TimerStart} (current server time is {Time.ElapsedTime})");
     }
+
+    public bool IsStringEmpty(string str) => string.IsNullOrWhiteSpace(str);
+
+    public string GetGlobalString(string str) => ScriptGlobalManager.StringValue(str);
+    public int GetGlobalInt(string intVar) => ScriptGlobalManager.IntValue(intVar);
 
     public void MakeGroundTileWater(int x, int y)
     {

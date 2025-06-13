@@ -49,6 +49,31 @@ public class PacketAdminServerAction : IClientPacketHandler
                     mon.Monster.Die(false);
             }
         }
+
+        if (type == AdminAction.SignalNpc)
+        {
+            var chara = connection.Character;
+            if (!connection.IsConnectedAndInGame || chara == null || chara.Map == null)
+                return;
+
+            var signalName = msg.ReadString();
+            var signalValue = msg.ReadString();
+
+            if (chara.Map.Instance.NpcNameLookup.TryGetValue(signalName, out var localEntity) && localEntity.TryGet<Npc>(out var npc))
+            {
+                npc.OnSignal(npc, signalValue);
+                return;
+            }
+
+            if (World.Instance.GetGlobalSignalTarget(signalName).TryGet<Npc>(out npc))
+            {
+                npc.OnSignal(npc, signalValue);
+                return;
+            }
+
+            CommandBuilder.ErrorMessage(connection, $"Could not find an NPC signal by the name of {signalName}");
+        }
+
 #if DEBUG
         if (type == AdminAction.EnableMonsterDebugLogging)
         {

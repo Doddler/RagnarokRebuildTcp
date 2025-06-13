@@ -44,6 +44,7 @@ public class World
 
     private Dictionary<int, Entity> entityList = new();
     private Dictionary<string, Entity> playerNameLookup = new();
+    private Dictionary<string, Entity> globalSignalNpcs = new();
 
     private Dictionary<string, int> worldMapInstanceLookup = new();
     private ConcurrentBag<Entity> removeList = new();
@@ -201,6 +202,7 @@ public class World
         CommandBuilder.SendServerMessage("Server is reloading NPC and Monster scripts, things might get a bit spicy!");
         CommandBuilder.ClearRecipients(); //if we don't clear it can cause issues
 
+        globalSignalNpcs.Clear();
         NetworkManager.ExtendTimeoutForAllPlayers(30); //add 30s to player timeout timers. Won't take nearly that long, but better safe.
         UnloadAllNpcsAndMonsters(); //remove all npc/monsters from the maps
         PerformRemovals(); //recycle all returned npc/monster entities
@@ -867,6 +869,19 @@ public class World
     {
         character.IsActive = false;
         moveRequests.Writer.TryWrite(new MapMoveRequest(entity, MoveRequestType.MapMove, character.Map, map, newPosition));
+    }
+
+    public void SetGlobalSignal(string signalName, Entity entity)
+    {
+        using (entityLock.EnterScope())
+        {
+            globalSignalNpcs.Add(signalName, entity);
+        }
+    }
+
+    public Entity GetGlobalSignalTarget(string signalName)
+    {
+        return globalSignalNpcs.TryGetValue(signalName, out var e) ? e : Entity.Null;
     }
 
     public Entity GetEntityById(int id)

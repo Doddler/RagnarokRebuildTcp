@@ -760,6 +760,7 @@ public class ScriptBuilder
 
         waitingFunctions.Clear();
         waitingFunctions.Add("Dialog", NpcInteractionResult.WaitForContinue);
+        waitingFunctions.Add("DialogBig", NpcInteractionResult.WaitForContinue);
         waitingFunctions.Add("Option", NpcInteractionResult.WaitForInput);
         waitingFunctions.Add("OpenShop", NpcInteractionResult.WaitForShop);
         waitingFunctions.Add("OpenStorage", NpcInteractionResult.WaitForStorageAccess);

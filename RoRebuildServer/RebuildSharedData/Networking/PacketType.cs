@@ -133,6 +133,7 @@ public enum AdminAction : byte
     ReloadScripts,
     KillMobs,
     EnableMonsterDebugLogging,
+    SignalNpc,
 }
 public enum ClientTextCommand : byte
 {
