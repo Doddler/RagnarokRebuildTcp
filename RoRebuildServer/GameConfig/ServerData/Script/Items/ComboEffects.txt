@@ -18,3 +18,6 @@ ComboItem("PecoPecoGrandPeco", "Peco_Peco_Card", "Grand_Peco_Card") { OnEquip: A
 ComboItem("DarkLordSet", "Dark_Illusion_Card", "Dark_Lord_Card") { OnEquip: AddStat(AddMaxHpPercent, 18); AddStat(AddMaxSpPercent, 18); AddStat(AddCastTime, -8); }
 ComboItem("OwlSet", "Owl_Duke_Card", "Owl_Baron_Card") { OnEquip: AutoSpellOnAttack(LightningBolt, 5, 100);}
 ComboItem("CrabSet", "Crab_Card", "Aster_Card", "Shellfish_Card") { OnEquip: AddStat(AddAttackElementWater, 45); }
+
+//custom
+ComboItem("OrcHeroSet", "Orc_Hero_Helm", "Orcish_Sword") { OnEquip: AutoSpellOnAttack(GrandThunderstorm, 1, 30); AddStat(AddMagicAttackPower, 120); }

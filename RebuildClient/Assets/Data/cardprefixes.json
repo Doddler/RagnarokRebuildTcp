@@ -2204,6 +2204,26 @@
       "Id": 4442,
       "Prefix": "Ant Repellent",
       "Postfix": ""
+    },
+    {
+      "Id": 994,
+      "Prefix": "Fire",
+      "Postfix": ""
+    },
+    {
+      "Id": 995,
+      "Prefix": "Water",
+      "Postfix": ""
+    },
+    {
+      "Id": 996,
+      "Prefix": "Wind",
+      "Postfix": ""
+    },
+    {
+      "Id": 997,
+      "Prefix": "Earth",
+      "Postfix": ""
     }
   ]
 }

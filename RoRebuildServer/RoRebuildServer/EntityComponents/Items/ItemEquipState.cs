@@ -898,6 +898,11 @@ public class ItemEquipState
             Player.AttackVersusTag.Add(tagId, change);
     }
 
+    public void ChangeWeaponElement(AttackElement element)
+    {
+        WeaponElement = element;
+    }
+
     public void AddStat(CharacterStat stat, int change)
     {
 #if DEBUG

@@ -132,3 +132,10 @@ public class CsvItemMonsterSummonEntry
     public required string Monster { get; set; }
     public required int Chance { get; set; }
 }
+
+public class CsvNonCardPrefixes
+{
+    public required string Code { get; set; }
+    public string? Prefix { get; set; }
+    public string? Postfix { get; set; }
+}

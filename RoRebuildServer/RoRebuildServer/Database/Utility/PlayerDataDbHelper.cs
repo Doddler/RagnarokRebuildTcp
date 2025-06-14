@@ -218,7 +218,7 @@ public static class PlayerDataDbHelper
         var dataLen = 32;
         dataLen += charData.Length * sizeof(int);
         dataLen += player.NpcFlags == null ? 4 : player.NpcFlags.Count * 8;
-        dataLen += player.LearnedSkills.Count * 8;
+        dataLen += player.LearnedSkills.Count * 32;
         dataLen += player.CombatEntity.StatusContainer == null ? 8 : player.CombatEntity.StatusContainer.TotalStatusEffectCount * 16;
         dataLen += 32 * 4; //space for map memos
 

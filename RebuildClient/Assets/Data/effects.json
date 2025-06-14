@@ -1273,7 +1273,7 @@
       "PrefabName": ""
     },
     {
-      "Id": 108,
+      "Id": 107,
       "Name": "Sanctuary",
       "ImportEffect": true,
       "Billboard": true,
@@ -1282,6 +1282,18 @@
       "Sprite": "",
       "SoundFile": "priest_sanctuary",
       "Offset": 1,
+      "PrefabName": ""
+    },
+    {
+      "Id": 108,
+      "Name": "AdrenalineRush",
+      "ImportEffect": false,
+      "Billboard": false,
+      "IsLooping": false,
+      "StrFile": "",
+      "Sprite": "",
+      "SoundFile": "",
+      "Offset": 0,
       "PrefabName": ""
     }
   ]

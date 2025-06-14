@@ -54,6 +54,14 @@ namespace Assets.Scripts.UI
             CountText.text = $"<color=#0000ed>{CountText.text}</color>";
         }
         
+        public void RedCount()
+        {
+            if (CountText == null)
+                return;
+            
+            CountText.text = $"<color=#FF3333>{CountText.text}</color>";
+        }
+        
         public void UpdateCount(int count)
         {
             // Debug.Log($"Update item count for {ItemId} to {count}");

@@ -1,6 +1,7 @@
 ﻿using RebuildSharedData.Networking;
 using System.Diagnostics;
 using System.Runtime.InteropServices.JavaScript;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents.Items;
@@ -35,6 +36,12 @@ public class PacketSocketEquipment : IClientPacketHandler
         {
             ServerLogger.LogWarning($"Player {player} tried to socket item id {srcBagId} into an item (bagId {targetBagId}), but the target item could not be found.");
             goto OnError;
+        }
+
+        if (((UniqueItemFlags)targetItem.UniqueItem.Flags & UniqueItemFlags.CraftedItem) > 0)
+        {
+            CommandBuilder.ErrorMessage(connection, "You can't slot anything onto a crafted item.");
+            return;
         }
 
         var targetData = DataManager.GetItemInfoById(targetItem.Id); //get details on the target item

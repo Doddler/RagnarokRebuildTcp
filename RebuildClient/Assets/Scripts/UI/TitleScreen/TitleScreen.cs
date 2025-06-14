@@ -25,7 +25,8 @@ namespace Assets.Scripts.UI.TitleScreen
 
         public TitleScreenState TitleState = TitleScreenState.LogIn;
         public TitleScreenState LastTitleState = TitleScreenState.LogIn;
-        public List<Sprite> Backgrounds;
+        //public List<Sprite> Backgrounds;
+        public TextAsset BackgroundList;
         public Image BackgroundArea;
 
         public LoginBox LoginBox;
@@ -41,6 +42,8 @@ namespace Assets.Scripts.UI.TitleScreen
         private bool isInErrorState;
         private float loginTimeoutTime;
         private bool isLoginTimerActive;
+
+        private List<string> bgNames = new();
 
         [NonSerialized] public AudioClip ButtonSound;
 
@@ -138,7 +141,10 @@ namespace Assets.Scripts.UI.TitleScreen
         // Start is called before the first frame update
         void Awake()
         {
-            BackgroundArea.sprite = Backgrounds[Random.Range(0, Backgrounds.Count)];
+            foreach (var l in BackgroundList.text.Split('\n'))
+                bgNames.Add(l.Trim());
+
+            BackgroundArea.sprite = Resources.Load<Sprite>(bgNames[Random.Range(0, bgNames.Count)]);
             NoticeBox.gameObject.SetActive(false);
             CharacterSelectWindow.gameObject.SetActive(false);
 

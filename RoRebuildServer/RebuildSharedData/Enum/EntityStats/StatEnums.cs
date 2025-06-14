@@ -310,6 +310,8 @@ public enum CharacterStat
     SpConsumption,
     UninterruptibleCast,
 
+    ReverseDefense,
+
     SkillValue, //used to store skill unlocks in ItemEquipState
     AutoSpellOnAttacking,
     AutoSpellWhenAttacked,

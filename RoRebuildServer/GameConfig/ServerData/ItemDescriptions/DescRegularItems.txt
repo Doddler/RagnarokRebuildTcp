@@ -1,5 +1,66 @@
 //Etc Items
 
+
+::Skull_Helm //10001
+<desc>An item suitable for a pet, if pets were a thing you could get.</desc>
+
+::Monster_Oxygen_Mask //10002
+<desc>An item suitable for a pet, if pets were a thing you could get.</desc>
+
+::Transparent_Head_Protector //10003
+<desc>An item suitable for a pet, if pets were a thing you could get.</desc>
+
+::Pacifier //10004
+<desc>An item suitable for a pet, if pets were a thing you could get.</desc>
+
+::Wig //10005
+<desc>An item suitable for a pet, if pets were a thing you could get.</desc>
+
+::Queen's_Hair_Ornament //10006
+<desc>An item suitable for a pet, if pets were a thing you could get.</desc>
+
+::Silk_Ribbon //10007
+<desc>An item suitable for a pet, if pets were a thing you could get.</desc>
+
+::Punisher //10008
+<desc>An item suitable for a pet, if pets were a thing you could get.</desc>
+
+::Wild_Flower //10009
+<desc>An item suitable for a pet, if pets were a thing you could get.</desc>
+
+::Battered_Pot //10010
+<desc>An item suitable for a pet, if pets were a thing you could get.</desc>
+
+::Stellar_Hairpin //10011
+<desc>An item suitable for a pet, if pets were a thing you could get.</desc>
+
+::Tiny_Egg_Shell //10012
+<desc>An item suitable for a pet, if pets were a thing you could get.</desc>
+
+::Poring_Pet_Backpack //10013
+<desc>An item suitable for a pet, if pets were a thing you could get.</desc>
+
+::Rocker_Glasses //10014
+<desc>An item suitable for a pet, if pets were a thing you could get.</desc>
+
+::Green_Lace //10015
+<desc>An item suitable for a pet, if pets were a thing you could get.</desc>
+
+::Golden_Bell //10016
+<desc>An item suitable for a pet, if pets were a thing you could get.</desc>
+
+::Bark_Shorts //10017
+<desc>An item suitable for a pet, if pets were a thing you could get.</desc>
+
+::Monkey_Circlet //10018
+<desc>An item suitable for a pet, if pets were a thing you could get.</desc>
+
+::Red_Scarf //10019
+<desc>An item suitable for a pet, if pets were a thing you could get.</desc>
+
+::Grave_Keeper's_Sword //10020
+<desc>An item suitable for a pet, if pets were a thing you could get.</desc>
+
 ::Ora_Ora //701
 <color=#808080>A trap that uses sticky, sweet scented liquid to lure and ensnare bugs.</color>
 

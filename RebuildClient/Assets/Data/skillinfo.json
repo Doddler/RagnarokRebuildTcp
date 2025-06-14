@@ -634,12 +634,12 @@
         28,
         32,
         36,
-        50,
-        55,
-        58,
-        62,
-        67,
-        70,
+        40,
+        44,
+        48,
+        52,
+        56,
+        60,
         64
       ],
       "AdjustableLevel": true,
@@ -877,7 +877,7 @@
         10
       ],
       "AdjustableLevel": false,
-      "Description": "Removes poison status from the target. If the target is not currently poisoned, grants Poison Resistance for 1 minute.\r\nPOison Resistance Effect: The next with a chance to poison will fail and deal half damage.",
+      "Description": "Removes poison status from the target. If the target is not currently poisoned, grants Poison Resistance for 1 minute.\r\nPoison Resistance Effect: The next attack with a chance to poison will fail and deal half damage.",
       "InterruptMode": 0
     },
     {
@@ -914,7 +914,7 @@
         10
       ],
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "Attempts to take an additional item from a monster. The success rate varies based on how your level, dex, and luck compares to your target. Only one item can be stolen and cannot be used on bosses.\r\nSuccess rate: [4 \u002B SkillLevel * 6]% chance.",
       "InterruptMode": 0
     },
     {
@@ -1458,12 +1458,23 @@
     },
     {
       "SkillId": 81,
-      "Icon": "nv_basic",
+      "Icon": "bs_adrenaline",
       "Name": "Adrenaline Rush",
-      "Target": 0,
+      "Target": 5,
       "Type": 0,
-      "MaxLevel": 0,
-      "SpCost": null,
+      "MaxLevel": 10,
+      "SpCost": [
+        20,
+        23,
+        26,
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47
+      ],
       "AdjustableLevel": false,
       "Description": null,
       "InterruptMode": 0
@@ -2134,7 +2145,7 @@
     {
       "SkillId": 134,
       "Icon": "nv_basic",
-      "Name": "Smoking",
+      "Name": "Invisible",
       "Target": 5,
       "Type": 0,
       "MaxLevel": 0,
@@ -2146,7 +2157,7 @@
     {
       "SkillId": 135,
       "Icon": "nv_basic",
-      "Name": "Suicide",
+      "Name": "Smoking",
       "Target": 5,
       "Type": 0,
       "MaxLevel": 0,
@@ -2158,8 +2169,8 @@
     {
       "SkillId": 136,
       "Icon": "nv_basic",
-      "Name": "Stop",
-      "Target": 1,
+      "Name": "Suicide",
+      "Target": 5,
       "Type": 0,
       "MaxLevel": 0,
       "SpCost": null,
@@ -2170,7 +2181,7 @@
     {
       "SkillId": 137,
       "Icon": "nv_basic",
-      "Name": "Hallucination",
+      "Name": "Stop",
       "Target": 1,
       "Type": 0,
       "MaxLevel": 0,
@@ -2182,7 +2193,7 @@
     {
       "SkillId": 138,
       "Icon": "nv_basic",
-      "Name": "Lick",
+      "Name": "Hallucination",
       "Target": 1,
       "Type": 0,
       "MaxLevel": 0,
@@ -2194,6 +2205,18 @@
     {
       "SkillId": 139,
       "Icon": "nv_basic",
+      "Name": "Lick",
+      "Target": 1,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 140,
+      "Icon": "nv_basic",
       "Name": "Emotion",
       "Target": 5,
       "Type": 0,
@@ -2204,7 +2227,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 140,
+      "SkillId": 141,
       "Icon": "nv_basic",
       "Name": "Dark Thunder",
       "Target": 0,
@@ -2216,7 +2239,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 141,
+      "SkillId": 142,
       "Icon": "nv_basic",
       "Name": "Bulwark",
       "Target": 0,
@@ -2228,7 +2251,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 142,
+      "SkillId": 143,
       "Icon": "nv_basic",
       "Name": "Pharaoh\u0027s Curse",
       "Target": 1,
@@ -2240,7 +2263,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 143,
+      "SkillId": 144,
       "Icon": "nv_basic",
       "Name": "Grand Thunderstorm",
       "Target": 5,
@@ -2252,7 +2275,7 @@
       "InterruptMode": 3
     },
     {
-      "SkillId": 144,
+      "SkillId": 145,
       "Icon": "nv_basic",
       "Name": "Reward for Quest",
       "Target": 0,
@@ -2264,7 +2287,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 145,
+      "SkillId": 146,
       "Icon": "nv_basic",
       "Name": "Vampyrism",
       "Target": 5,
@@ -2276,7 +2299,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 146,
+      "SkillId": 147,
       "Icon": "nv_basic",
       "Name": "Snap",
       "Target": 1,
@@ -2288,7 +2311,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 147,
+      "SkillId": 148,
       "Icon": "nv_basic",
       "Name": "HP Cut",
       "Target": 1,
@@ -2300,7 +2323,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 148,
+      "SkillId": 149,
       "Icon": "nv_basic",
       "Name": "Mental Breaker",
       "Target": 1,
@@ -2312,7 +2335,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 149,
+      "SkillId": 150,
       "Icon": "nv_basic",
       "Name": "",
       "Target": 3,
@@ -2324,7 +2347,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 150,
+      "SkillId": 151,
       "Icon": "nv_basic",
       "Name": "NoCast",
       "Target": 0,

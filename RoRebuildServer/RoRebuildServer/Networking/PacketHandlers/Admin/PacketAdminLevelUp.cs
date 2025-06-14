@@ -30,10 +30,10 @@ public class PacketAdminLevelUp : IClientPacketHandler
 
             character.Player.JumpToLevel(newLevel);
 
-            for (var i = level; i < lvTarget; i++)
-            {
-                character.Player.LevelUp();
-            }
+            //for (var i = level; i < lvTarget; i++)
+            //{
+            //    character.Player.LevelUp();
+            //}
 
             if (player.Party != null)
                 CommandBuilder.NotifyPartyOfChange(player.Party, player.PartyMemberId, PartyUpdateType.UpdatePlayer);

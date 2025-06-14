@@ -50,6 +50,7 @@ namespace RebuildSharedData.Enum
         NoTriggerWhenAttackedEffects = 1 << 14,
         CanAttackHidden = 1 << 15,
         IgnoreWeaponRefine = 1 << 16,
+        ReverseDefense = 1 << 17,
         NoTriggers = NoTriggerOnAttackEffects | NoTriggerWhenAttackedEffects,
         PhysicalStatusTest = Physical | IgnoreEvasion | IgnoreNullifyingGroundMagic | NoTriggerOnAttackEffects | NoTriggerWhenAttackedEffects | NoElement
     }

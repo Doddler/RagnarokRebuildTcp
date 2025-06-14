@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Microsoft.VisualBasic;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
@@ -9,6 +10,7 @@ using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
+using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation;
@@ -1244,7 +1246,29 @@ public static class CommandBuilder
         NetworkManager.SendMessage(packet, p.Connection);
     }
 
-    public static void SendNpcStartTrade(Player p)
+    public static void SendNpcBeginTrading(Player p, Npc npc, List<NpcTradeItem> set)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.StartNpcTrade, 128);
+        
+        packet.Write((byte)set.Count);
+        
+        foreach(var trade in set)
+        {
+            trade.CombinedItem.SerializeWithType(packet);
+            packet.Write(trade.TradeCount);
+            packet.Write(trade.ZenyCost);
+            packet.Write(trade.ItemRequirements.Count);
+            foreach (var (reqId, reqCount) in trade.ItemRequirements)
+            {
+                packet.Write(reqId);
+                packet.Write((short)reqCount);
+            }
+        }
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+
+    public static void SendNpcSellToShop(Player p)
     {
         var packet = NetworkManager.StartPacket(PacketType.OpenShop, 128);
         packet.Write((byte)0); //sell to NPC

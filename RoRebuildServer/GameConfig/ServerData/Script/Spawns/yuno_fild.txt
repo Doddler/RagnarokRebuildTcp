@@ -8,7 +8,7 @@
 // (04 Condors)  <-----> (03 Goats)  ------- (02 Beetle King)
 //                           |                       |
 //                           |                       |
-//                      (07 Harpies) -------- (08 Grand Peco) ----- (09 Drillers)  ---- (10 ??????)
+//                      (07 Harpies) -------- (08 Grand Peco) ----- (09 Drillers)  ---- (10 Deleters? Maybe?)
 //                           |                       |                  |
 //                           |                       |                  |
 //                     (11 Demon Punk) ------ (12 Dustiness) ------ (01 Dustiness?)

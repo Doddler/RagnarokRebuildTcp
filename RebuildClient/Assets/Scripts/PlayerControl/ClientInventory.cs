@@ -73,6 +73,15 @@ namespace Assets.Scripts.PlayerControl
             return false;
         }
 
+        public static InventoryItem DeserializeWithType(ClientInboundMessage msg, int bagId)
+        {
+            var type = (ItemType)msg.ReadByte();
+            if (type == ItemType.RegularItem)
+                return DeserializeRegular(msg);
+            else
+                return DeserializeUnique(msg, bagId);
+        }
+        
         public static InventoryItem Deserialize(ClientInboundMessage msg, ItemType type, int bagId)
         {
             if (type == ItemType.RegularItem)
@@ -103,15 +112,17 @@ namespace Assets.Scripts.PlayerControl
         private static StringBuilder sb = new();
         private static CardPrefixData[] prefixData = new CardPrefixData[4];
 
+        public string MakeNameWithSockets() => MakeNameWithSockets(UniqueItem, ItemData);
+
         //there must be a non-retarded way to do this that doesn't allocate like a hog
-        public string MakeNameWithSockets()
+        public static string MakeNameWithSockets(UniqueItem uniqueItem, ItemData data)
         {
             Span<int> ids = stackalloc int[4];
             Span<int> counts = stackalloc int[4];
             var uniqueSlot = 0;
             for (var i = 0; i < 4; i++)
             {
-                var item = UniqueItem.SlotData(i);
+                var item = uniqueItem.SlotData(i);
                 if (item > 0)
                 {
                     var hasMatch = false;
@@ -136,7 +147,7 @@ namespace Assets.Scripts.PlayerControl
             }
 
             if (uniqueSlot == 0)
-                return ItemData.Name;
+                return data.Name;
 
             sb.Clear();
             //prefixes
@@ -158,7 +169,7 @@ namespace Assets.Scripts.PlayerControl
 
             if (sb.Length > 0)
                 sb.Append(" ");
-            sb.Append(ItemData.Name);
+            sb.Append(data.Name);
             
             //postfixes
             for (var i = 0; i < uniqueSlot; i++)
@@ -193,23 +204,43 @@ namespace Assets.Scripts.PlayerControl
         {
             return BagSlotId;
         }
-        
+
         public string ProperName()
         {
-            if (ItemData == null)
+            if (Type == ItemType.UniqueItem)
+                return MakeProperName(UniqueItem, ItemData);
+            else
+                return MakeProperName(Item, ItemData);
+        }
+
+        public static string MakeProperName(RegularItem item, ItemData data)
+        {
+            if(data.Slots > 0)
+                return $"{data.Name}[{data.Slots}]";
+            return data.Name;
+        }
+        
+        public static string MakeProperName(UniqueItem item, ItemData data)
+        {
+            if (data == null)
                 return $"Unknown Item";
             
-            if (ItemData.IsUnique)
+            if (data.IsUnique)
             {
                 var refine = "";
-                if (UniqueItem.Refine > 0)
-                    refine = $"+{UniqueItem.Refine} ";
-                if (ItemData.Slots == 0)
-                    return $"{refine}{ItemData.Name}";
-                return $"{refine}{MakeNameWithSockets()}[{ItemData.Slots}]";
+                if (item.Refine > 0)
+                    refine = $"+{item.Refine} ";
+                if (data.Slots == 0 || (item.Flags & (byte)UniqueItemFlags.CraftedItem) > 0)
+                {
+                    if (item.SlotData(0) == 0)
+                        return $"{refine}{data.Name}";
+                    return $"{refine}{MakeNameWithSockets(item, data)}";
+                }
+
+                return $"{refine}{MakeNameWithSockets(item, data)}[{data.Slots}]";
             }
 
-            return $"{ItemData.Name}";
+            return $"{data.Name}";
         }
 
         public override string ToString()
@@ -236,7 +267,9 @@ namespace Assets.Scripts.PlayerControl
         private readonly SortedDictionary<int, InventoryItem> inventoryLookup = new();
 
         public SortedDictionary<int, InventoryItem> GetInventoryData() => inventoryLookup;
+        public Dictionary<int, int> UniqueItemCounts = new();
         public InventoryItem GetInventoryItem(int bagId) => inventoryLookup[bagId];
+        public bool TryGetInventoryItem(int bagId, out InventoryItem item) => inventoryLookup.TryGetValue(bagId, out item);
 
         public int TotalItems => inventoryLookup.Count;
         
@@ -247,13 +280,27 @@ namespace Assets.Scripts.PlayerControl
             return 0;
         }
 
+        public int CountItemByItemId(int itemId)
+        {
+            if (inventoryLookup.TryGetValue(itemId, out var item))
+                return item.Count;
+            return UniqueItemCounts.GetValueOrDefault(itemId, 0);
+        }
+
         public bool RemoveItem(int itemId, int count)
         {
             if (!inventoryLookup.TryGetValue(itemId, out var item))
                 return false;
 
             if (item.Count <= count || item.Type == ItemType.UniqueItem)
+            {
                 inventoryLookup.Remove(itemId);
+                if (UniqueItemCounts.TryGetValue(item.Id, out var curCount) && curCount - count <= 0)
+                    UniqueItemCounts.Remove(item.Id);
+                else
+                    UniqueItemCounts[item.Id] = curCount - count;
+
+            }
             else
             {
                 item.Count -= count;
@@ -266,8 +313,14 @@ namespace Assets.Scripts.PlayerControl
         public void UpdateItem(InventoryItem item)
         {
             var change = item.Count;
-            if (inventoryLookup.TryGetValue(item.BagSlotId, out var existing))
-                change -= existing.Count;
+            if (!inventoryLookup.ContainsKey(item.BagSlotId) && item.Type == ItemType.UniqueItem)
+            {
+                if (UniqueItemCounts.TryGetValue(item.Id, out var curCount))
+                    UniqueItemCounts[item.Id] += 1;
+                else
+                    UniqueItemCounts[item.Id] = 1;
+            }
+            
             inventoryLookup[item.BagSlotId] = item;
         }
 
@@ -312,6 +365,7 @@ namespace Assets.Scripts.PlayerControl
         public void Deserialize(ClientInboundMessage msg)
         {
             inventoryLookup.Clear();
+            UniqueItemCounts.Clear();
             var hasBagData = msg.ReadByte();
             if (hasBagData == 0)
                 return;
@@ -328,6 +382,10 @@ namespace Assets.Scripts.PlayerControl
                 var key = msg.ReadInt32();
                 var item = InventoryItem.DeserializeUnique(msg, key);
                 inventoryLookup.Add(key, item);
+                if (UniqueItemCounts.TryGetValue(item.Id, out var count))
+                    UniqueItemCounts[item.Id] = count + 1;
+                else
+                    UniqueItemCounts.Add(item.Id, 1);
                 // items.Add(item);
             }
         }

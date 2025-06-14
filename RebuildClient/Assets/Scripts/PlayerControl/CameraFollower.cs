@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Effects.EffectHandlers.General;
@@ -98,6 +100,8 @@ namespace Assets.Scripts
 
         public ScrollRect TextBoxScrollRect;
         public TextMeshProUGUI TextBoxText;
+
+        private List<string> chatMessages = new();
 
         public CharacterDetailBox CharacterDetailBox;
 
@@ -1267,7 +1271,32 @@ namespace Assets.Scripts
 
         public void ResetChat()
         {
-            TextBoxText.text = "Welcome to Ragnarok Rebuild!";
+            chatMessages.Clear();
+            chatMessages.Add("Welcome to Ragnarok Rebuild!");
+            RefreshChatWindow();
+        }
+
+        private readonly StringBuilder chatBuilder = new();
+        
+        private void RefreshChatWindow()
+        {
+            if (chatMessages.Count > 50)
+                chatMessages.RemoveAt(0);
+
+            foreach (var c in chatMessages)
+                chatBuilder.AppendLine(c);
+
+            TextBoxText.text = chatBuilder.ToString();
+            chatBuilder.Clear();
+            
+            StartCoroutine(ApplyScrollPosition(TextBoxScrollRect, 0));
+        }
+        
+        IEnumerator ApplyScrollPosition( ScrollRect sr, float verticalPos )
+        {
+            yield return new WaitForEndOfFrame( );
+            sr.verticalNormalizedPosition = verticalPos;
+            LayoutRebuilder.ForceRebuildLayoutImmediate( (RectTransform)sr.transform );
         }
 
         public void AppendChatText(string txt)
@@ -1275,10 +1304,13 @@ namespace Assets.Scripts
             if (string.IsNullOrWhiteSpace(txt))
                 return;
 
-            TextBoxText.text += Environment.NewLine + txt;
-            TextBoxText.ForceMeshUpdate();
-            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)TextBoxScrollRect.transform);
-            TextBoxScrollRect.verticalNormalizedPosition = 0;
+            chatMessages.Add(txt);
+            RefreshChatWindow();
+
+            // TextBoxText.ForceMeshUpdate();
+            // LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)TextBoxScrollRect.transform);
+            // TextBoxScrollRect.verticalNormalizedPosition = 0;
+            // Debug.Log(TextBoxScrollRect.verticalNormalizedPosition);
         }
         
         public void AppendChatText(string txt, TextColor color)
@@ -1296,11 +1328,14 @@ namespace Assets.Scripts
                 TextColor.Error => "color=#ed0000>",
                 _ => ""
             };
-
-            TextBoxText.text += Environment.NewLine + txt;
-            TextBoxText.ForceMeshUpdate();
-            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)TextBoxScrollRect.transform);
-            TextBoxScrollRect.verticalNormalizedPosition = 0;
+            
+            chatMessages.Add(c + txt + "</color>");
+            RefreshChatWindow();
+            
+            // TextBoxText.text += Environment.NewLine + txt;
+            // TextBoxText.ForceMeshUpdate();
+            // LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)TextBoxScrollRect.transform);
+            // TextBoxScrollRect.verticalNormalizedPosition = 0;
         }
 
         public void AppendNotice(string text)
@@ -1313,10 +1348,8 @@ namespace Assets.Scripts
             if (string.IsNullOrWhiteSpace(txt))
                 return;
 
-            TextBoxText.text += Environment.NewLine + "<color=red>Error</color>: " + txt;
-            TextBoxText.ForceMeshUpdate();
-            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)TextBoxScrollRect.transform);
-            TextBoxScrollRect.verticalNormalizedPosition = 0;
+            chatMessages.Add("<color=red>Error</color>: " + txt);
+            RefreshChatWindow();
         }
 
         public void Emote(int id)
@@ -1669,7 +1702,7 @@ namespace Assets.Scripts
             if (pointerOverUi && selected == null)
             {
                 var pointerEvent = ExtendedStandaloneInputModule.GetPointerEventData();
-                if (pointerEvent.pointerEnter.name == "Viewport")
+                if (pointerEvent.pointerEnter.name == "ChatViewport")
                 {
                     blockScrollZoom = true;
                     pointerOverUi = false;

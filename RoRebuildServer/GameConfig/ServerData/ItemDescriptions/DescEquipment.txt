@@ -1667,6 +1667,7 @@ INT +2, SP +100
 
 ::Decorative_Mushroom //id 5082 - Headgear Top
 <desc>A headgear fashioned to resemble a mushroom.</desc>
+Increases damage against mushroom-type monsters by +10%
 
 ::Red_Ribbon //id 5083 - Headgear Top
 <desc>A big red ribbon made in the style of a legendary female shaman who loved nature.</desc>
@@ -1708,6 +1709,9 @@ SP +100
 ::Orc_Hero_Helm //id 5094 - Headgear TopMid
 <desc>A headgear bestowed only to true Orc Heroes.</desc>
 STR +2, VIT +1
+<color=#800080>Set Bonus</color> with <color=#008080>Orcish Sword</color>:
+MATK +120
++3% autospell <skill>Grand Thunderstorm</skill> on non-skill attack.
 
 ::Assassin_Mask //id 5096 - Headgear Bottom
 <desc>A dark mask worn by assassins.</desc>

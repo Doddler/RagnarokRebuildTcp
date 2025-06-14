@@ -16,7 +16,7 @@ OnLoadDropData:
 	
 OnSetItemPurchasePrice:
 	//all etc type items (other than those used for refining or fixed NPC sell value) have 2x value
-	if(type == Etc && subType != "Refine" && subType != "HighValue")
+	if(type == Etc && subType != "Refine" && subType != "HighValue" && subType != "Catalyst")
 		price *= 2;
 
 OnSetItemSaleValue:

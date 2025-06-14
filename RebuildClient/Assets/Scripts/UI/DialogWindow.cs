@@ -39,14 +39,14 @@ namespace Assets.Scripts.UI
 
         public void MakeBig()
         {
-            transform.RectTransform().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 900);
-            transform.RectTransform().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 550);
+            transform.RectTransform().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1100);
+            // transform.RectTransform().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 550);
         }
 
         public void MakeNormalSize()
         {
             transform.RectTransform().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 800);
-            transform.RectTransform().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 230);
+            // transform.RectTransform().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 230);
         }
 
         public void HideUI()

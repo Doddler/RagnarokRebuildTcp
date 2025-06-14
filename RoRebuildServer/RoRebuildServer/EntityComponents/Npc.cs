@@ -53,6 +53,7 @@ public class Npc : IEntityAutoReset
 
     public List<WarpDestinationLink>? DestinationLinks;
     public List<(int id, int price)>? ItemsForSale;
+    public Dictionary<string, List<NpcTradeItem>>? TradeItemSets;
     public Dictionary<int, int>? SaleItemIndexes;
 
     public NpcBehaviorBase Behavior = null!;
@@ -137,6 +138,7 @@ public class Npc : IEntityAutoReset
         EventType = null!;
         ItemsForSale = null; //no point in pooling these, we don't place vendor npcs during runtime usually
         SaleItemIndexes = null;
+        TradeItemSets = null;
         if (NpcPathHandler != null)
         {
             NpcPathHandler.Npc = null!;
@@ -1145,6 +1147,37 @@ public class Npc : IEntityAutoReset
         EntityListPool.Return(el);
     }
 
+    public NpcTradeItem CreateCraftedItem(string itemType)
+    {
+        var item = new NpcTradeItem(itemType);
+        item.IsCrafted = true;
+        return item;
+    }
+
+    public NpcTradeItem CreateTradedItem(string itemType, int count = 1)
+    {
+        var item = new NpcTradeItem(itemType);
+        item.TradeCount = count;
+        return item;
+    }
+
+    public void AddItemToTradeSet(string set, NpcTradeItem trade) => AddTradedItem(trade, set);
+
+    public void AddTradedItem(NpcTradeItem trade, string set = "Default")
+    {
+        trade.FinalizeItem();
+        if (TradeItemSets == null)
+            TradeItemSets = new Dictionary<string, List<NpcTradeItem>>();
+
+        if (!TradeItemSets.TryGetValue(set, out var curSet))
+        {
+            curSet = new List<NpcTradeItem>();
+            TradeItemSets[set] = curSet;
+        }
+
+        curSet.Add(trade);
+    }
+    
     public void SetTimer(int timer)
     {
         var prevStart = TimerStart;
@@ -1158,6 +1191,9 @@ public class Npc : IEntityAutoReset
 
     public string GetGlobalString(string str) => ScriptGlobalManager.StringValue(str);
     public int GetGlobalInt(string intVar) => ScriptGlobalManager.IntValue(intVar);
+    public int IncrementGlobalInt(string intVar) => ScriptGlobalManager.IncrementInt(intVar);
+    public void SetGlobalInt(string intVar, int val) => ScriptGlobalManager.SetInt(intVar, val);
+    public void SetGlobalString(string intVar, string val) => ScriptGlobalManager.SetString(intVar, val);
 
     public void MakeGroundTileWater(int x, int y)
     {

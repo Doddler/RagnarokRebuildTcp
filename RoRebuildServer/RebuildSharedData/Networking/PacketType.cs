@@ -94,8 +94,10 @@ public enum PacketType : byte
     PickUpItem,
     [ServerOnlyPacket] OpenShop,
     [ServerOnlyPacket] OpenStorage,
+    [ServerOnlyPacket] StartNpcTrade,
     StorageInteraction,
     ShopBuySell,
+    NpcTradeItem,
     [ServerOnlyPacket] ItemUpdate,
     [ServerOnlyPacket] ServerEvent,
     [ServerOnlyPacket] ServerResult,
@@ -150,4 +152,6 @@ public enum NpcInteractionType
     NpcEndInteraction,
     NpcShowSprite,
     NpcOpenRefineWindow,
+    NpcBeginItemTrade,
+    NpcPromptForCount,
 }

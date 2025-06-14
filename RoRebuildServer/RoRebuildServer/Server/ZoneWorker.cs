@@ -64,7 +64,7 @@ internal class ZoneWorker : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        Initialize();
+        await Initialize();
 
         Debug.Assert(world != null);
         

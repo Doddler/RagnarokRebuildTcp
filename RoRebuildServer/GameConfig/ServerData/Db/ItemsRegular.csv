@@ -13,9 +13,9 @@ Id,Code,Name,Price,Weight,Usage,Sprite
 712,Flower,Flower,2,10,None,꽃
 713,Empty_Bottle,Empty Bottle,6,20,None,빈병
 714,Emperium,Emperium,2,1000,None,엠펠리움
-715,Yellow_Gemstone,Yellow Gemstone,600,30,None,옐로우젬스톤
-716,Red_Gemstone,Red Gemstone,600,30,None,레드젬스톤
-717,Blue_Gemstone,Blue Gemstone,600,30,None,블루젬스톤
+715,Yellow_Gemstone,Yellow Gemstone,600,30,Catalyst,옐로우젬스톤
+716,Red_Gemstone,Red Gemstone,600,30,Catalyst,레드젬스톤
+717,Blue_Gemstone,Blue Gemstone,600,30,Catalyst,블루젬스톤
 718,Garnet,Garnet,6000,100,None,검붉은보석
 719,Amethyst,Amethyst,6000,100,None,보라색보석
 720,Aquamarine,Aquamarine,6000,100,None,하늘색보석
@@ -723,6 +723,26 @@ Id,Code,Name,Price,Weight,Usage,Sprite
 7881,Mystery_Magic_Book,Mystery Magic Book,0,50,None,여러권의책
 7882,Sharp_Branch,Sharp Branch,0,0,None,대나무조각
 7883,Wooden_Flute,Wooden Flute,0,0,None,대나무조각
+10001,Skull_Helm,Skull Helm,20,0,None,동물의머리뼈
+10002,Monster_Oxygen_Mask,Monster Oxygen Mask,20,0,None,몬스터마스크
+10003,Transparent_Head_Protector,Transparent Head Protector,20,0,None,투명머리보호대
+10004,Pacifier,Pacifier,20,0,None,꼭지
+10005,Wig,Wig,20,0,None,패션가발
+10006,Queen's_Hair_Ornament,Queen's Hair Ornament,20,0,None,여왕의머리장식
+10007,Silk_Ribbon,Silk Ribbon,20,0,None,실크리본
+10008,Punisher,Punisher,20,0,None,정신봉
+10009,Wild_Flower,Wild Flower,20,0,None,야생화
+10010,Battered_Pot,Battered Pot,20,0,None,찌그러진냄비
+10011,Stellar_Hairpin,Stellar Hairpin,20,0,None,별모양머리핀
+10012,Tiny_Egg_Shell,Tiny Egg Shell,20,0,None,작은알껍질
+10013,Poring_Pet_Backpack,Poring Pet Backpack,1500,0,None,책가방
+10014,Rocker_Glasses,Rocker Glasses,2000,0,None,메뚜기안경
+10015,Green_Lace,Green Lace,20,0,None,초록색레이스
+10016,Golden_Bell,Golden Bell,20,0,None,금방울
+10017,Bark_Shorts,Bark Shorts,20,0,None,나무팬츠
+10018,Monkey_Circlet,Monkey Circlet,20,0,None,원숭이머리띠
+10019,Red_Scarf,Red Scarf,20,0,None,붉은색머플러
+10020,Grave_Keeper's_Sword,Grave Keeper's Sword,20,0,None,영환도사검
 11002,Chef_King_Orleans_Vol.1,Chef King Orleans Vol.1,8000,0,None,양장본
 11003,Kafra_Legend_Vol.1,Kafra Legend Vol.1,8000,0,None,묵시록
 11012,Expedition_Report,Expedition Report,0,10,None,서류철

@@ -368,15 +368,23 @@ public partial class CombatEntity
                     subDef = subDef * (100 + target.GetStat(CharacterStat.AddSoftDefPercent)) / 100;
                 }
 
-                //convert def to damage reduction %
-                defCut = MathHelper.DefValueLookup(def);
-
-                if (def >= 200)
-                    subDef = 999999;
-                else if (defMod != 100)
+                if ((flags & AttackFlags.ReverseDefense) > 0 || GetStat(CharacterStat.ReverseDefense) > 0)
                 {
-                    defCut = defCut * defMod / 100;
-                    subDef = subDef * defMod / 100;
+                    defCut = (def + subDef) * (defMod / 100f) / 100f;
+                    subDef = 0;
+                }
+                else
+                {
+                    //convert def to damage reduction %
+                    defCut = MathHelper.DefValueLookup(def);
+
+                    if (def >= 200)
+                        subDef = 999999;
+                    else if (defMod != 100)
+                    {
+                        defCut = defCut * defMod / 100;
+                        subDef = subDef * defMod / 100;
+                    }
                 }
             }
 

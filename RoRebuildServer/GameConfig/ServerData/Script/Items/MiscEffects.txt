@@ -1,0 +1,5 @@
+
+Item("Flame_Heart") { OnEquip: ChangeWeaponElement(FireElement); }
+Item("Mystic_Frozen") { OnEquip: ChangeWeaponElement(WaterElement); }
+Item("Rough_Wind") { OnEquip: ChangeWeaponElement(WindElement); }
+Item("Great_Nature") { OnEquip: ChangeWeaponElement(EarthElement); }

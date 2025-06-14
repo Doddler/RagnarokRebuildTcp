@@ -99,7 +99,7 @@ class Program
         var inPath = new TemporaryFile(Path.Combine(path, fileName));
         using var tr = new StreamReader(inPath.FilePath, Encoding.UTF8) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
-        
+
         return csv.GetRecords<T>().ToList();
     }
 
@@ -123,13 +123,13 @@ class Program
                     l = line.Split("//")[0].Trim();
                 var newItem = l.Substring(2);
                 if (curItem != "" && sb.Length > 0)
-                    patchNotes.Add(new PatchNotes { Date = curItem, Desc = sb.ToString().Trim()});
+                    patchNotes.Add(new PatchNotes { Date = curItem, Desc = sb.ToString().Trim() });
                 curItem = newItem;
                 sb.Clear();
                 lineNum = 0;
                 continue;
             }
-            
+
             sb.AppendLine(line);
 
             lineNum++;
@@ -141,7 +141,7 @@ class Program
         SaveToClient("PatchNotes.txt", patchNotes);
 
     }
-    
+
     private static void BuildJobMatrix()
     {
         var config = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = false };
@@ -264,7 +264,7 @@ class Program
             if (!string.IsNullOrWhiteSpace(curItem) && sb.Length > 0)
                 itemDescLookup.Add(curItem, sb.ToString().Trim());
         }
-        
+
         var displaySpriteList = new StringBuilder();
         var desc = "";
 
@@ -295,7 +295,7 @@ class Program
             else
                 desc = curDesc;
             desc += $"<line-height=120%>\n</line-height=100%>Weight: <color=#777777>{item.Weight / 10f:0.#}</color>";
-            itemDescriptions.Add(new ItemDescription() {Code = item.Code, Description = desc});
+            itemDescriptions.Add(new ItemDescription() { Code = item.Code, Description = desc });
         }
 
         foreach (var entry in GetCsvRows<CsvItemRegular>("ItemsRegular.csv"))
@@ -309,7 +309,7 @@ class Program
                 IsUnique = false,
                 ItemClass = ItemClass.Etc,
                 UseType = ItemUseType.NotUsable,
-                Price = itemData.Price, 
+                Price = itemData.Price,
                 SellPrice = itemData.SellToStoreValue,
                 Weight = entry.Weight,
                 Sprite = entry.Sprite,
@@ -350,7 +350,7 @@ class Program
             };
             itemList.Items.Add(item);
 
-            if (!string.IsNullOrWhiteSpace(entry.WeaponSprite)) 
+            if (!string.IsNullOrWhiteSpace(entry.WeaponSprite))
                 displaySpriteList.AppendLine($"{entry.Code}\t{entry.WeaponSprite}");
 
             //fill in item description data
@@ -380,21 +380,21 @@ class Program
                 desc += "Durability: <color=#777777>Unrefinable</color>\n";
             else if (!breakable)
                 desc += "Durability: <color=#777777>Unbreakable</color>\n";
-        
+
             desc += $"Attack: <color=#777777>{entry.Attack}</color>\n";
-            if(entry.Property != AttackElement.Neutral && entry.Property != AttackElement.None)
+            if (entry.Property != AttackElement.Neutral && entry.Property != AttackElement.None)
                 desc += $"Property: <color=#777777>{entry.Property}</color>\n";
             desc += $"Weight: <color=#777777>{item.Weight / 10f}</color>\n";
             desc += $"Weapon Level: <color=#777777>{entry.Rank}</color>\n";
-            if(entry.MinLvl > 1)
+            if (entry.MinLvl > 1)
                 desc += $"Required Level: <color=#777777>{entry.MinLvl}</color>\n";
             desc += $"Jobs: <color=#777777>{equipGroup}</color>";
             itemDescriptions.Add(new ItemDescription() { Code = item.Code, Description = desc });
         }
-        
+
         foreach (var entry in GetCsvRows<CsvItemEquipment>("ItemsEquipment.csv"))
         {
-            var pos = (entry.Type & ~EquipPosition.Headgear) | (EquipPosition) entry.Position;
+            var pos = (entry.Type & ~EquipPosition.Headgear) | (EquipPosition)entry.Position;
             var itemData = DataManager.ItemList[entry.Id];
 
             var item = new ItemData()
@@ -440,7 +440,7 @@ class Program
                 EquipPosition.Shield => "Shield",
                 _ => "Unknown"
             };
-            
+
             if (entry.Type == EquipPosition.Headgear)
             {
                 var headPosition = entry.Position switch
@@ -456,7 +456,7 @@ class Program
                 };
                 type += $" ({headPosition})";
             }
-            
+
             desc += $"<line-height=120%>\n</line-height=100%>Type: <color=#777777>{type}</color>";
 
             //this is a mess, but basically you can't refine or break accessories or headgear that don't occupy the top headgear slot
@@ -473,7 +473,7 @@ class Program
             }
 
             desc += $"\nDefense: <color=#777777>{entry.Defense}</color>";
-            if(entry.MagicDef > 0)
+            if (entry.MagicDef > 0)
                 desc += $"\nMagic Defense: <color=#777777>{entry.MagicDef}</color>";
             desc += $"\nWeight: <color=#777777>{item.Weight / 10f}</color>";
             if (entry.MinLvl > 1)
@@ -501,7 +501,7 @@ class Program
                 Position = entry.EquipableSlot
             };
             itemList.Items.Add(item);
-            prefixList.Items.Add(new CardPrefixData() {Id = entry.Id, Prefix = entry.Prefix, Postfix = entry.Postfix});
+            prefixList.Items.Add(new CardPrefixData() { Id = entry.Id, Prefix = entry.Prefix, Postfix = entry.Postfix });
 
             var type = entry.EquipableSlot switch
             {
@@ -529,6 +529,11 @@ class Program
             desc += $"Sockets In: <color=#777777>{type}</color>";
             desc += $"\nWeight: <color=#777777>{item.Weight / 10f}</color>";
             itemDescriptions.Add(new ItemDescription() { Code = item.Code, Description = desc });
+        }
+
+        foreach (var entry in GetCsvRows<CsvNonCardPrefixes>("NonCardPrefixes.csv"))
+        {
+            prefixList.Items.Add(new CardPrefixData() { Id = DataManager.ItemIdByName[entry.Code], Prefix = entry.Prefix, Postfix = entry.Postfix });
         }
 
         foreach (var entry in GetCsvRows<CsvItemAmmo>("ItemsAmmo.csv"))
@@ -1004,7 +1009,7 @@ class Program
                 skill.Description = desc;
             skillOut.Add(skill);
         }
-        
+
         SaveToClient("skillinfo.json", skillOut);
 
         //skill tree

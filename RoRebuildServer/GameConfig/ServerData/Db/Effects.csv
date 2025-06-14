@@ -105,4 +105,5 @@
 103,Magnificat,TRUE,TRUE,FALSE,magnificat,,priest_magnificat,1,,
 104,StatusRecovery,TRUE,TRUE,FALSE,recovery,,priest_recovery,1,,
 106,Suffragium,TRUE,TRUE,FALSE,suffragium,,priest_suffragium,1,,
-108,Sanctuary,TRUE,TRUE,FALSE,sanctuary,,priest_sanctuary,1,,
+107,Sanctuary,TRUE,TRUE,FALSE,sanctuary,,priest_sanctuary,1,,
+108,AdrenalineRush,FALSE,FALSE,TRUE,,,,0,,

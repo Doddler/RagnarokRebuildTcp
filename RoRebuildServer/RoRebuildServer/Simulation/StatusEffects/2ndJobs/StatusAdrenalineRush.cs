@@ -6,7 +6,7 @@ using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Simulation.StatusEffects._2ndJobs;
 
-[StatusEffectHandler(CharacterStatusEffect.AdrenalineRush, StatusClientVisibility.Owner)]
+[StatusEffectHandler(CharacterStatusEffect.AdrenalineRush, StatusClientVisibility.Owner, StatusEffectFlags.None, "AspdBoost")]
 public class StatusAdrenalineRush : StatusEffectBase
 {
     //State Value 1 : Attack Speed Bonus

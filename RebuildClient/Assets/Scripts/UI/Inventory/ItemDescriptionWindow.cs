@@ -3,6 +3,7 @@ using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
 using RebuildSharedData.ClientTypes;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using TMPro;
 using UnityEngine;
@@ -73,13 +74,14 @@ namespace Assets.Scripts.UI.Inventory
 
             ShowIllustrationButton.gameObject.SetActive(item.ItemClass == ItemClass.Card);
 
-            if (!item.IsUnique || item.Slots <= 0 || CardSocketEntries == null || CardSocketEntries.Count == 0)
+            if (!item.IsUnique || (item.Slots <= 0 && inventoryItem.UniqueItem.SlotData(0) <= 0) || CardSocketEntries == null || CardSocketEntries.Count == 0)
             {
                 CardSocketPanel.SetActive(false);
             }
             else
             {
                 CardSocketPanel.SetActive(true);
+                var hasSlots = item.Slots > 0 && (inventoryItem.UniqueItem.Flags & (byte)UniqueItemFlags.CraftedItem) == 0;
 
                 for (var i = 0; i < CardSocketEntries.Count; i++)
                 {
@@ -93,7 +95,7 @@ namespace Assets.Scripts.UI.Inventory
                     }
                     else
                     {
-                        if (i < item.Slots)
+                        if (i < item.Slots && hasSlots)
                             CardSocketEntries[i].Assign(DragItemType.SocketedItem, CardSlotOpen, -1, 0);
                         else
                             CardSocketEntries[i].Assign(DragItemType.SocketedItem, CardSlotClosed, -1, 0);

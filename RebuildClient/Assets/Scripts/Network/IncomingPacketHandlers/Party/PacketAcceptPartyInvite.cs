@@ -26,7 +26,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Party
             else
             {
                 sb.AppendLine($"<color=#77FF77>You have joined the party '{State.PartyName}'</color>");
-                sb.AppendLine($"<color=#77FF77>Exp gained will be shared with party members within 10 levels.");
+                sb.AppendLine($"<color=#77FF77>Exp gained will be shared with party members within 10 levels.</color>");
             }
 
             sb.Append($"<color=#77FF77>Party members: ");

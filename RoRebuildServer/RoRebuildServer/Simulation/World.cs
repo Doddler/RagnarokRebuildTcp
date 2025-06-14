@@ -209,6 +209,8 @@ public class World
         DataManager.ReloadScripts(); //recompile scripts
         ReloadNpcsAndMonsters(); //re-add npcs and monsters to maps
 
+        DataManager.ServerConfigScriptManager.PostServerStartEvent();
+
         CommandBuilder.AddAllPlayersAsRecipients();
         CommandBuilder.SendServerMessage("Reload complete! Hopefully things continue to work!");
         CommandBuilder.ClearRecipients();

@@ -322,7 +322,7 @@ Asura_	Asura
 Murasame_	Murasame
 Hakujin_	Hakujin
 Poison_Knife_	Poison_Knife
-Ice_Pick	Ice_pick
+Ice_Pick_	Ice_Pick
 Sucsamad_	Sucsamad
 Ginnungagap_	Ginnungagap
 Dragon_Killer_	Dragon_Killer
@@ -923,6 +923,7 @@ Banshee_Card	Poring_Card
 Flame_Skull_Card	Poring_Card
 Necromancer_Card	Poring_Card
 Fallen_Bishop_Card	Poring_Card
+Mature_Ant_Egg_Card	Poring_Card
 Flash_Arrow	Stun_Arrow
 Oridecon_Arrow	Steel_Arrow
 Iron_Arrow	Arrow

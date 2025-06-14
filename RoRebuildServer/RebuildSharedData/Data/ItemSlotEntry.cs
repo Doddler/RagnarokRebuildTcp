@@ -34,6 +34,13 @@ public unsafe struct RegularItem : ISerializableItem
     public static RegularItem ZeroResult() => new RegularItem() { Id = -1, Count = 0 };
 }
 
+[Flags]
+public enum UniqueItemFlags : byte
+{
+    None = 0,
+    CraftedItem = 1 << 0,
+}
+
 public unsafe struct UniqueItem : ISerializableItem
 {
     public int Id;

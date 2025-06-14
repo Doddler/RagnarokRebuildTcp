@@ -7,7 +7,7 @@ using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Simulation.StatusEffects._1stJob
 {
-    [StatusEffectHandler(CharacterStatusEffect.TwoHandQuicken, StatusClientVisibility.Everyone)]
+    [StatusEffectHandler(CharacterStatusEffect.TwoHandQuicken, StatusClientVisibility.Everyone, StatusEffectFlags.None, "AspdBoost")]
     public class StatusTwoHandQuicken : StatusEffectBase
     {
         //State Value 1 : Attack Speed Bonus

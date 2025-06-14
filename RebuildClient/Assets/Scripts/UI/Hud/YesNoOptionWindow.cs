@@ -2,6 +2,7 @@
 using Assets.Scripts.Objects;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.Hud
 {
@@ -14,6 +15,7 @@ namespace Assets.Scripts.UI.Hud
         private Action onYesAction;
         private Action onNoAction;
         private bool runNoActionOnHide;
+        private bool useSound;
 
         public void Awake()
         {
@@ -31,13 +33,14 @@ namespace Assets.Scripts.UI.Hud
             HideWindow();
         }
 
-        public void BeginPrompt(string description, string yesText, string noText, Action onYes, Action onNo, bool noOnHide)
+        public void BeginPrompt(string description, string yesText, string noText, Action onYes, Action onNo, bool runNoActionOnHide, bool playClickSound = true)
         {
             onYesAction = onYes;
             onNoAction = onNo;
             YesButtonText.text = yesText;
             NoButtonText.text = noText;
-            runNoActionOnHide = noOnHide;
+            this.runNoActionOnHide = runNoActionOnHide;
+            useSound = playClickSound;
             
             transform.SetAsLastSibling();
             TextTitle.text = description;
@@ -45,11 +48,15 @@ namespace Assets.Scripts.UI.Hud
             
             CenterWindow();
             ShowWindow();
+            
+            TextTitle.ForceMeshUpdate();
+            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform);
         }
 
         public void ClickOk()
         {
-            AudioManager.Instance.PlaySystemSound("버튼소리.ogg");
+            if(useSound)
+                AudioManager.Instance.PlaySystemSound("버튼소리.ogg");
             if(onYesAction != null)
                 onYesAction();
             HideInputWindow();

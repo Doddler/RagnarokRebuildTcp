@@ -1212,6 +1212,90 @@
       "Music": "28.mp3"
     },
     {
+      "Code": "yuno_fild01",
+      "Name": "Border Post",
+      "MapMode": 3,
+      "CanMemo": true,
+      "Music": "71.mp3"
+    },
+    {
+      "Code": "yuno_fild02",
+      "Name": "Kiel Hyre\u0027s Cottage",
+      "MapMode": 3,
+      "CanMemo": true,
+      "Music": "71.mp3"
+    },
+    {
+      "Code": "yuno_fild03",
+      "Name": "El Mes Plateau",
+      "MapMode": 3,
+      "CanMemo": true,
+      "Music": "72.mp3"
+    },
+    {
+      "Code": "yuno_fild04",
+      "Name": "El Mes Plateau",
+      "MapMode": 3,
+      "CanMemo": true,
+      "Music": "72.mp3"
+    },
+    {
+      "Code": "yuno_fild05",
+      "Name": "El Mes Plateau",
+      "MapMode": 3,
+      "CanMemo": true,
+      "Music": "72.mp3"
+    },
+    {
+      "Code": "yuno_fild06",
+      "Name": "El Mes Plateau",
+      "MapMode": 3,
+      "CanMemo": true,
+      "Music": "72.mp3"
+    },
+    {
+      "Code": "yuno_fild07",
+      "Name": "El Mes Gorge (Valley of Abyss)",
+      "MapMode": 3,
+      "CanMemo": true,
+      "Music": "72.mp3"
+    },
+    {
+      "Code": "yuno_fild08",
+      "Name": "Kiel Hyre Academy",
+      "MapMode": 3,
+      "CanMemo": true,
+      "Music": "71.mp3"
+    },
+    {
+      "Code": "yuno_fild09",
+      "Name": "Schwaltzwald Guard Camp",
+      "MapMode": 3,
+      "CanMemo": true,
+      "Music": "71.mp3"
+    },
+    {
+      "Code": "yuno_fild10",
+      "Name": "Juno Field",
+      "MapMode": 3,
+      "CanMemo": true,
+      "Music": "72.mp3"
+    },
+    {
+      "Code": "yuno_fild11",
+      "Name": "Juno Field",
+      "MapMode": 3,
+      "CanMemo": true,
+      "Music": "71.mp3"
+    },
+    {
+      "Code": "yuno_fild12",
+      "Name": "Border Checkpoint",
+      "MapMode": 3,
+      "CanMemo": true,
+      "Music": "71.mp3"
+    },
+    {
       "Code": "yuno",
       "Name": "Juno, Capital of Schwartzwald Republic",
       "MapMode": 1,

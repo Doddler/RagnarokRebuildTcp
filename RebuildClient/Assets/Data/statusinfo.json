@@ -290,6 +290,15 @@
     },
     {
       "StatusEffect": 33,
+      "Name": "Adrenaline Rush",
+      "Description": null,
+      "Type": "Buff",
+      "Icon": "\uC544\uB4DC\uB808\uB0A0\uB9B0\uB7EC\uC26C",
+      "CanDispel": true,
+      "CanDisable": true
+    },
+    {
+      "StatusEffect": 34,
       "Name": "Movement Speed Up",
       "Description": "\u003Ccolor=#FFA300\u003EMovement Speed Up\u003C/color\u003E\nYour move speed is increased.",
       "Type": "Buff",
@@ -298,7 +307,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 34,
+      "StatusEffect": 35,
       "Name": "Attack Speed Up",
       "Description": "\u003Ccolor=#FFA300\u003EAttack Speed Up\u003C/color\u003E\nYour attack speed is increased.",
       "Type": "Buff",
@@ -307,7 +316,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 35,
+      "StatusEffect": 36,
       "Name": "Elemental Converter",
       "Description": "\u003Ccolor=#FFA300\u003EElemental Converter\u003C/color\u003E\n",
       "Type": "Buff",
@@ -316,7 +325,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 36,
+      "StatusEffect": 37,
       "Name": "Elemental Converter (Fire)",
       "Description": "\u003Ccolor=#FFA300\u003EElemental Converter (Fire)\u003C/color\u003E\nYour physical attacks deal fire property damage.",
       "Type": "Buff",
@@ -325,7 +334,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 37,
+      "StatusEffect": 38,
       "Name": "Elemental Converter (Water)",
       "Description": "\u003Ccolor=#FFA300\u003EElemental Converter (Water)\u003C/color\u003E\nYour physical attacks deal water property damage.",
       "Type": "Buff",
@@ -334,7 +343,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 38,
+      "StatusEffect": 39,
       "Name": "Elemental Converter (Wind)",
       "Description": "\u003Ccolor=#FFA300\u003EElemental Converter (Wind)\u003C/color\u003E\nYour physical attacks deal wind property damage.",
       "Type": "Buff",
@@ -343,7 +352,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 39,
+      "StatusEffect": 40,
       "Name": "Elemental Converter (Earth)",
       "Description": "\u003Ccolor=#FFA300\u003EElemental Converter (Earth)\u003C/color\u003E\nYour physical attacks deal earth property damage.",
       "Type": "Buff",
@@ -352,7 +361,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 40,
+      "StatusEffect": 41,
       "Name": "Cursed Water",
       "Description": null,
       "Type": "Buff",
@@ -361,7 +370,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 41,
+      "StatusEffect": 42,
       "Name": "Guided Attack",
       "Description": null,
       "Type": "Buff",
@@ -370,7 +379,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 42,
+      "StatusEffect": 43,
       "Name": "Magic Weapon",
       "Description": null,
       "Type": "Buff",
@@ -379,7 +388,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 43,
+      "StatusEffect": 44,
       "Name": "Dark Blessing",
       "Description": "\u003Ccolor=#FF3300\u003EDark Blessing\u003C/color\u003E\nWhen this effect expires you will be reduced to 1 HP.",
       "Type": "Debuff",
@@ -388,7 +397,7 @@
       "CanDisable": false
     },
     {
-      "StatusEffect": 44,
+      "StatusEffect": 45,
       "Name": "Power Up",
       "Description": "\u003Ccolor=#FFA300\u003EPower Up\u003C/color\u003E\nAttack power greatly increased.",
       "Type": "Buff",
@@ -397,7 +406,7 @@
       "CanDisable": false
     },
     {
-      "StatusEffect": 45,
+      "StatusEffect": 46,
       "Name": "Speed Up",
       "Description": "\u003Ccolor=#FFA300\u003ESpeed Up\u003C/color\u003E\nMove speed and evasion greatly increased.",
       "Type": "Buff",
@@ -406,7 +415,7 @@
       "CanDisable": false
     },
     {
-      "StatusEffect": 46,
+      "StatusEffect": 47,
       "Name": null,
       "Description": "\u003Ccolor=#FFA300\u003EVampyrism\u003C/color\u003E\nAll your attacks heal you.",
       "Type": "Buff",
@@ -415,7 +424,7 @@
       "CanDisable": false
     },
     {
-      "StatusEffect": 47,
+      "StatusEffect": 48,
       "Name": "Doom",
       "Description": "\u003Ccolor=#FF3300\u003EDoom\u003C/color\u003E\nYou are doomed to die in the near future.",
       "Type": "Debuff",
@@ -424,7 +433,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 48,
+      "StatusEffect": 49,
       "Name": "Bulwark",
       "Description": null,
       "Type": "Buff",
@@ -433,7 +442,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 49,
+      "StatusEffect": 50,
       "Name": "Smoking",
       "Description": null,
       "Type": "Debuff",
@@ -442,7 +451,7 @@
       "CanDisable": false
     },
     {
-      "StatusEffect": 50,
+      "StatusEffect": 51,
       "Name": "Stop",
       "Description": "\u003Ccolor=#FF3300\u003EStop\u003C/color\u003E\nA nearby enemy has entangled the two of you, preventing either of you from moving.",
       "Type": "Debuff",
@@ -451,7 +460,7 @@
       "CanDisable": false
     },
     {
-      "StatusEffect": 51,
+      "StatusEffect": 52,
       "Name": null,
       "Description": null,
       "Type": null,
@@ -460,8 +469,8 @@
       "CanDisable": false
     },
     {
-      "StatusEffect": 52,
-      "Name": "Adrenaline Rush",
+      "StatusEffect": 53,
+      "Name": null,
       "Description": null,
       "Type": null,
       "Icon": null,
@@ -469,7 +478,7 @@
       "CanDisable": false
     },
     {
-      "StatusEffect": 53,
+      "StatusEffect": 54,
       "Name": "Admin Invisibility",
       "Description": "\u003Ccolor=#FFA300\u003EAdmin Invisibility\u003C/color\u003E\nYou cannot be seen and you cannot be targeted.",
       "Type": "Buff",
@@ -478,7 +487,7 @@
       "CanDisable": true
     },
     {
-      "StatusEffect": 54,
+      "StatusEffect": 55,
       "Name": "Stolen From",
       "Description": "\u003Ccolor=#FF3300\u003EStolen From\u003C/color\u003E\nYou\u0027ve had something recently taken and cannot be stolen from again.",
       "Type": "Debuff",

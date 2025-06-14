@@ -585,6 +585,10 @@ public class ScriptBuilder
             foreach (var i in Enum.GetValues<CharacterElement>())
                 additionalVariables.Add(i.ToString(), $"CharacterElement.{i}");
 
+
+            foreach (var i in Enum.GetValues<AttackElement>())
+                additionalVariables.Add($"{i}Element", $"AttackElement.{i}");
+
             additionalVariables.Add("position", "position");
 
             foreach (var i in Enum.GetNames<EquipPosition>())
@@ -762,7 +766,9 @@ public class ScriptBuilder
         waitingFunctions.Add("Dialog", NpcInteractionResult.WaitForContinue);
         waitingFunctions.Add("DialogBig", NpcInteractionResult.WaitForContinue);
         waitingFunctions.Add("Option", NpcInteractionResult.WaitForInput);
+        waitingFunctions.Add("PromptForCount", NpcInteractionResult.WaitForItemPrompt);
         waitingFunctions.Add("OpenShop", NpcInteractionResult.WaitForShop);
+        waitingFunctions.Add("StartItemTrade", NpcInteractionResult.WaitForTrade);
         waitingFunctions.Add("OpenStorage", NpcInteractionResult.WaitForStorageAccess);
         waitingFunctions.Add("OpenRefineDialog", NpcInteractionResult.WaitForRefine);
         waitingFunctions.Add("MoveTo", NpcInteractionResult.EndInteraction);

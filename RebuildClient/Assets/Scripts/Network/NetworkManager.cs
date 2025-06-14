@@ -973,24 +973,24 @@ namespace Assets.Scripts.Network
                 {
                     var name = msg.ReadString();
                     var text = msg.ReadString();
-                    var isBig = msg.ReadBoolean();
+                     var isBig = msg.ReadBoolean();
                     
-                    int count = 0;
-                    int n = 0;
-
-                    while ((n = text.IndexOf('\n', n)) != -1)
-                    {
-                        n++;
-                        count++;
-                    }
+                    // int count = 0;
+                    // int n = 0;
+                    //
+                    // while ((n = text.IndexOf('\n', n)) != -1)
+                    // {
+                    //     n++;
+                    //     count++;
+                    // }
 
                     //CameraFollower.AppendChatText(name + ": " + text);
                     CameraFollower.IsInNPCInteraction = true;
                     var window = CameraFollower.DialogPanel.GetComponent<DialogWindow>();
-                    if(isBig || count > 4)
-                        window.MakeBig();
+                    if(isBig)
+                         window.MakeBig();
                     else
-                        window.MakeNormalSize();
+                     window.MakeNormalSize();
                     
                     window.SetDialog(name, text);
                     break;
@@ -1502,6 +1502,21 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
+        public void SendAdminSignalNpc(string npcName, string signalVal, int v1, int v2, int v3, int v4)
+        {
+            var msg = StartMessage(PacketType.AdminServerAction);
+
+            msg.Write((byte)AdminAction.SignalNpc);
+            msg.Write(npcName);
+            msg.Write(signalVal);
+            msg.Write(v1);
+            msg.Write(v2);
+            msg.Write(v3);
+            msg.Write(v4);
+
+            SendMessage(msg);
+        }
+
         public void SendAdminStatusAdd(CharacterStatusEffect status, float time, int v1, int v2, int v3, int v4)
         {
             var msg = StartMessage(PacketType.AdminCharacterAction);
@@ -1770,6 +1785,32 @@ namespace Assets.Scripts.Network
             msg.Write(bagId);
             msg.Write(count);
             
+            SendMessage(msg);
+        }
+        
+        public void SendCancelTrade()
+        {
+            var msg = StartMessage(PacketType.NpcTradeItem);
+            
+            msg.Write(-1);
+            
+            SendMessage(msg);
+        }
+
+        public void SendCompleteNpcTrade(int selectedItem, int tradeCount, List<int> bagIds)
+        {
+            var msg = StartMessage(PacketType.NpcTradeItem);
+
+            var bagCount = bagIds?.Count ?? 0;
+            msg.Write(selectedItem);
+            msg.Write(tradeCount);
+            msg.Write(bagCount);
+            if (bagCount > 0)
+            {
+                foreach (var b in bagIds)
+                    msg.Write(b);
+            }
+
             SendMessage(msg);
         }
 

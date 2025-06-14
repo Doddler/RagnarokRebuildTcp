@@ -12,6 +12,7 @@ public class ResizeHandle : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     public int StepSize;
     public int StepSizeY;
     public Vector2 BaseSize;
+    public bool FlipYAxis;
     [NonSerialized] public Vector2Int CurrentStepSize = Vector2Int.one;
 
     private bool isMouseDown = false;
@@ -68,6 +69,8 @@ public class ResizeHandle : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
             var mPos = new Vector2(Mathf.Clamp(curPos.x, 0, Screen.width), Mathf.Clamp(curPos.y, 0, Screen.height));
 
             var diff = mPos - (Vector2)startMousePosition;
+            if (FlipYAxis)
+                diff.y = -diff.y;
 
             var rect = Target.GetComponent<RectTransform>();
 

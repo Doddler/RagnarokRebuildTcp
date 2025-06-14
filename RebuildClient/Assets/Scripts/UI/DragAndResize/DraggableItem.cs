@@ -18,6 +18,7 @@ namespace Assets.Scripts.UI
         Equipment,
         ShopItem,
         StorageItem,
+        
         SocketedItem
     }
 

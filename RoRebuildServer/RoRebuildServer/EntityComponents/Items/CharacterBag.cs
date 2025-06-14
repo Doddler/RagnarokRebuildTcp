@@ -191,6 +191,7 @@ public class CharacterBag : IResettable
             return true;
         }
 
+        //if you're removing a unique item be really sure the item isn't equipped first or it goes very poorlyk!
         if (UniqueItems.TryGetValue(id, out var unique))
         {
             if (unique.Count != removeCount)

@@ -53,6 +53,7 @@ public class UiManager : MonoBehaviour
     public GameObject RefineWindowPrefab;
     public GameObject StorageWindowPrefab;
     public GameObject WarpMemoWindowPrefab;
+    public GameObject NpcTradePrefab;
 
     private IItemDropTarget inventoryDropTarget;
     private IItemDropTarget equipmentWindowDropTarget;

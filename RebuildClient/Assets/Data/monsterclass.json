@@ -5532,6 +5532,50 @@
       "Size": 1,
       "AttackTiming": 0,
       "Color": "FFFFFFFF"
+    },
+    {
+      "Id": 1186,
+      "Code": "4_F_KHELLISIA",
+      "Name": "4_F_KHELLISIA",
+      "SpriteName": "4_f_khellisia.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1,
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
+    },
+    {
+      "Id": 1187,
+      "Code": "4_F_KHELLY",
+      "Name": "4_F_KHELLY",
+      "SpriteName": "4_f_khelly.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1,
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
+    },
+    {
+      "Id": 1188,
+      "Code": "4_F_KHGIRL",
+      "Name": "4_F_KHGIRL",
+      "SpriteName": "4_f_khgirl.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1,
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
+    },
+    {
+      "Id": 1189,
+      "Code": "4_F_KHWOMAN",
+      "Name": "4_F_KHWOMAN",
+      "SpriteName": "4_f_khwoman.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1,
+      "AttackTiming": 0,
+      "Color": "FFFFFFFF"
     }
   ]
 }

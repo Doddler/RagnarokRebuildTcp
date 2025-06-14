@@ -19,6 +19,7 @@ using RoRebuildServer.Database.Requests;
 using RoRebuildServer.EntityComponents.Items;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using RoRebuildServer.Database;
+using System.Numerics;
 
 namespace RoRebuildServer.EntityComponents.Npcs;
 
@@ -30,7 +31,7 @@ public class NpcInteractionState
     public int OptionResult = -1;
     
     public const int StorageCount = 10;
-
+    
     public int[] ValuesInt = new int[StorageCount];
     public string?[] ValuesString = new string[StorageCount];
 
@@ -38,6 +39,7 @@ public class NpcInteractionState
     public bool IsTouchEvent { get; set; }
     public bool IsBuyingFromNpc { get; set; }
     public bool AllowDiscount { get; set; }
+    public string? CurrentShopCategory;
 
 
     public void Reset()
@@ -312,6 +314,11 @@ public class NpcInteractionState
         CommandBuilder.SendNpcOption(Player, options);
     }
 
+    public void PromptForCount(string requestDesc, int maxCount)
+    {
+
+    }
+
     public void OpenRefineDialog()
     {
         if (Player == null) return;
@@ -327,11 +334,154 @@ public class NpcInteractionState
         AllowDiscount = hasDiscount;
     }
 
+    public void StartItemTrade(string setName = "Default")
+    {
+        if (Player == null || !NpcEntity.TryGet<Npc>(out var npc))
+        {
+            CancelInteraction();
+            return;
+        }
+
+        if (npc.TradeItemSets == null || !npc.TradeItemSets.TryGetValue(setName, out var set))
+        {
+            ServerLogger.LogWarning($"Attempting to StartItemTrade for NPC {npc.FullName} item set {setName}, but that set does not exist.");
+            CancelInteraction();
+            return;
+        }
+
+        CurrentShopCategory = setName;
+        CommandBuilder.SendNpcBeginTrading(Player, npc, set);
+    }
+
+    public void FinalizeItemTrade(int itemEntry, int tradeCount, Span<int> submittedBagIds)
+    {
+        if (Player == null || Player.Inventory == null || !NpcEntity.TryGet<Npc>(out var npc) || npc.TradeItemSets == null || string.IsNullOrWhiteSpace(CurrentShopCategory) || tradeCount <= 0)
+            return;
+
+        if (!npc.TradeItemSets.TryGetValue(CurrentShopCategory, out var tradeSet))
+        {
+            ServerLogger.LogWarning($"Could not FinalizeItemTrade, the current shop category '{CurrentShopCategory}' was not found on the npc.");
+            return;
+        }
+
+        if (itemEntry < 0 || itemEntry >= tradeSet.Count)
+        {
+            CommandBuilder.ErrorMessage(Player, $"Could not complete the trade.");
+            ServerLogger.LogWarning($"Player submitted a FinalizeTradeItem request for item {itemEntry} in category '{CurrentShopCategory}', but that ID is out of bounds.");
+            return;
+        }
+
+        var trade = tradeSet[itemEntry];
+        if (trade.IsCrafted && tradeCount != 1)
+        {
+            CommandBuilder.ErrorMessage(Player, $"Could not complete the trade.");
+            ServerLogger.LogWarning($"Player submitted a FinalizeTradeItem request for item {tradeCount}x {itemEntry} in category '{CurrentShopCategory}', but you can't get more than 1 of an item.");
+            return;
+        }
+
+        if (Player.GetZeny() < tradeCount * trade.ZenyCost)
+        {
+            CommandBuilder.ErrorMessage(Player, $"You don't have enough zeny to complete this trade.");
+            return;
+        }
+
+        //link the submitted list of equipment items to their proper item types
+        var bagIdCount = submittedBagIds.Length;
+        Span<int> resolvedBagItemTypes = stackalloc int[submittedBagIds.Length];
+
+        for (var i = 0; i < submittedBagIds.Length; i++)
+        {
+            if (!Player.Inventory.GetItem(submittedBagIds[i], out var item))
+            {
+                CommandBuilder.ErrorMessage(Player, $"Could not complete the trade.");
+                ServerLogger.LogWarning($"Player submitted FinalizeTradeItem and provided a bagId item of {submittedBagIds[i]}, but they don't have that item in their inventory.");
+                return;
+            }
+
+            resolvedBagItemTypes[i] = item.UniqueItem.Id;
+        }
+
+        Span<int> removeIds = stackalloc int[trade.ItemRequirements.Count]; //a combined list of all the bagIds we want to remove
+        Span<int> removeCounts = stackalloc int[trade.ItemRequirements.Count]; //the counts for each of the bag items
+        Span<int> equippedItems = stackalloc int[trade.ItemRequirements.Count]; //any items we need to take off if the trade succeeds
+        var equipCount = 0;
+
+        //validate we have all the items for the request
+        for (var i = 0; i < trade.ItemRequirements.Count; i++)
+        {
+            var (req, count) = trade.ItemRequirements[i];
+            var item = DataManager.GetItemInfoById(req);
+            if (item == null)
+                throw new Exception($"Could not process FinalizeTradeItem, the item requirement {req} is invalid!");
+            if (item.IsUnique && tradeCount > 1)
+                throw new Exception($"Could not process FinalizeTradeItem, you cannot require unique items for a trade with a count above 1!");
+            count *= tradeCount;
+            if (!item.IsUnique)
+            {
+                removeIds[i] = req;
+                removeCounts[i] = count;
+                if (Player.Inventory.GetItemCount(req) >= count) continue;
+                CommandBuilder.ErrorMessage(Player, $"Insufficient items available to complete trade.");
+                return;
+            }
+
+            var hasMatch = false;
+            for (var j = 0; j < bagIdCount; j++)
+            {
+                if (req == resolvedBagItemTypes[j])
+                {
+                    hasMatch = true;
+                    //we need to keep track of which items are equipped so we can take them off first
+                    if (Player.Equipment.IsItemEquipped(submittedBagIds[j]))
+                    {
+                        equippedItems[equipCount] = submittedBagIds[j];
+                        equipCount++;
+                    }
+
+                    //add this unique item to the list of items we'll remove
+                    removeIds[i] = submittedBagIds[j];
+                    removeCounts[i] = 1;
+                    //remove the current entry from the list so it can't be used again
+                    resolvedBagItemTypes[j] = resolvedBagItemTypes[bagIdCount - 1];
+                    submittedBagIds[j] = submittedBagIds[bagIdCount - 1];
+                    bagIdCount--;
+                    break;
+                }
+            }
+
+            if (!hasMatch)
+            {
+                CommandBuilder.ErrorMessage(Player, $"Insufficient items are available to complete the trade.");
+                return;
+            }
+        }
+
+        if (bagIdCount > 0)
+        {
+            CommandBuilder.ErrorMessage(Player, $"Could not complete the trade.");
+            ServerLogger.LogWarning($"Player attempted to trade npc {npc.Character.Name} for item {trade.ItemId}, but they submitted {bagIdCount} more items than expected.");
+            return;
+        }
+
+        for(var i = 0; i < equippedItems.Length; i++)
+            Player.Equipment.UnEquipItem(equippedItems[i]);
+
+        //we have everything we need, take the stuff out of our inventory and give us our item
+        for (var i = 0; i < trade.ItemRequirements.Count; i++)
+        {
+            Player.Inventory.RemoveItemByBagId(removeIds[i], removeCounts[i]);
+            CommandBuilder.RemoveItemFromInventory(Player, removeIds[i], removeCounts[i]);
+        }
+        Player.DropZeny(tradeCount * trade.ZenyCost);
+        Player.CreateItemInInventory(new ItemReference(trade.CombinedItem.Id, trade.CombinedItem.Count));
+        CommandBuilder.SendServerEvent(Player, ServerEvent.TradeSuccess);
+    }
+
     public void StartSellToNpc()
     {
         if (Player == null)
             return;
-        CommandBuilder.SendNpcStartTrade(Player);
+        CommandBuilder.SendNpcSellToShop(Player);
         IsBuyingFromNpc = false;
     }
 
@@ -400,13 +550,25 @@ public class NpcInteractionState
         return Player.Inventory.HasItem(itemId);
     }
 
+    public bool DropItem(string str, int count)
+    {
+        if (Player?.Inventory == null || !DataManager.ItemIdByName.TryGetValue(str, out var itemId))
+            return false;
+
+        return Player.TryRemoveItemFromInventory(itemId, count, true);
+    }
+
     public int GetZeny()
     {
-        return 99999;
+        if (Player == null)
+            return 0;
+        return Player.GetZeny();
     }
 
     public void DropZeny(int zeny)
     {
-
+        if (Player == null)
+            return;
+        Player.DropZeny(zeny);
     }
 }

@@ -27,8 +27,8 @@ namespace PlayerControl
         {
             emoteList.TryAdd(command, id);
         }
-        
-        
+
+
         [CanBeNull]
         private static string[] SplitStringCommand(string input)
         {
@@ -65,7 +65,6 @@ namespace PlayerControl
 
         public static void HandleClientCommand(CameraFollower cameraFollower, ServerControllable controllable, string text)
         {
-            
             if (string.IsNullOrWhiteSpace(text))
                 return;
 
@@ -76,6 +75,13 @@ namespace PlayerControl
                 return;
             }
             
+            if (text.StartsWith("/s "))
+            {
+                var msg = text.Substring(3);
+                NetworkManager.Instance.SendSay(msg, true);
+                return;
+            }
+
             if (text.StartsWith("/shout "))
             {
                 var msg = text.Substring(7);
@@ -126,8 +132,8 @@ namespace PlayerControl
                 {
                     NetworkManager.Instance.SendClientTextCommand(ClientTextCommand.Info);
                 }
-                
-                
+
+
                 if (s[0] == "/adminify")
                 {
                     if (s.Length > 1)
@@ -144,8 +150,8 @@ namespace PlayerControl
                     var newName = text.Substring(s[0].Length + 1);
                     NetworkManager.Instance.SendChangeName(newName);
                 }
-                
-                
+
+
                 if (s[0] == "/find")
                 {
                     var target = text.Substring(s[0].Length + 1);
@@ -159,7 +165,7 @@ namespace PlayerControl
                     else
                         NetworkManager.Instance.SendAdminLevelUpRequest(level, false);
                 }
-                
+
                 if (s[0] == "/joblevel")
                 {
                     if (s.Length == 1 || !int.TryParse(s[1], out var level))
@@ -201,23 +207,23 @@ namespace PlayerControl
                     {
                         cameraFollower.AppendError("Invalid item request.");
                     }
-                    
+
                     var count = 1;
                     var name = s[1];
                     var nameMax = s.Length;
-                    
+
                     if (s.Length >= 3 && int.TryParse(s[s.Length - 1], out var newCount))
                     {
                         count = newCount;
                         nameMax--;
                     }
-                    
+
                     Debug.Log($"Item '{name}' {count} {nameMax}");
 
                     if (s.Length > 2)
-                        name = String.Join(" ", s.Skip(1).Take(nameMax-1));
-                    
-                    if(!ClientDataLoader.Instance.TryGetItemByName(name, out var item))
+                        name = String.Join(" ", s.Skip(1).Take(nameMax - 1));
+
+                    if (!ClientDataLoader.Instance.TryGetItemByName(name, out var item))
                         cameraFollower.AppendError($"The item name '{name}' is not valid.");
                     else
                         NetworkManager.Instance.SendAdminCreateItem(item.Id, count);
@@ -276,7 +282,7 @@ namespace PlayerControl
                         var item = NetworkManager.Instance.PlayerState.Inventory.GetInventoryItem(itemId);
                         refine = item.UniqueItem.Refine + 1;
                     }
-                    
+
                     NetworkManager.Instance.SendAdminRefineAttempt(itemId, refine);
                 }
 
@@ -287,24 +293,24 @@ namespace PlayerControl
                         cameraFollower.AppendError("Invalid summon monster request.");
                         return;
                     }
-                    
+
                     //var failed = false;
                     var count = 1;
                     var name = s[1];
                     var nameMax = s.Length;
-                    
+
                     if (s.Length >= 3 && int.TryParse(s[s.Length - 1], out var newCount))
                     {
                         count = newCount;
                         nameMax--;
                     }
-                    
+
                     Debug.Log($"Summon '{name}' {count} {nameMax}");
 
                     var isBoss = s[0] == "/boss";
 
                     if (s.Length > 2)
-                        name = String.Join(" ", s.Skip(1).Take(nameMax-1));
+                        name = String.Join(" ", s.Skip(1).Take(nameMax - 1));
 
                     if (!ClientDataLoader.Instance.IsValidMonsterName(name) && !ClientDataLoader.Instance.IsValidMonsterCode(name))
                         cameraFollower.AppendError($"The monster name '{name}' is not valid.");
@@ -409,7 +415,7 @@ namespace PlayerControl
                     {
                         if (Application.isEditor && s.Length > 2 && int.TryParse(s[2], out var count))
                         {
-                            for(var i = 0; i < count; i++)
+                            for (var i = 0; i < count; i++)
                                 cameraFollower.AttachEffectToEntity(id, controllable.gameObject);
                         }
                         else
@@ -445,7 +451,7 @@ namespace PlayerControl
                 {
                     if (Enum.TryParse<CharacterSkill>(s[1], out var skill))
                     {
-                        if(s.Length > 2 && int.TryParse(s[2], out var lvl))
+                        if (s.Length > 2 && int.TryParse(s[2], out var lvl))
                             NetworkManager.Instance.AdminGrantSkill(skill, lvl);
                         else
                             NetworkManager.Instance.AdminGrantSkill(skill, 1);
@@ -486,8 +492,8 @@ namespace PlayerControl
                 {
                     NetworkManager.Instance.SendAdminAction(AdminAction.ForceGC);
                 }
-                
-                if(s[0] == "/clear" || s[0] == "/cls" || s[0] == "/clearchat")
+
+                if (s[0] == "/clear" || s[0] == "/cls" || s[0] == "/clearchat")
                     cameraFollower.ResetChat();
 
                 if (s[0] == "/debug")
@@ -504,22 +510,26 @@ namespace PlayerControl
                         cameraFollower.AppendChatText("<color=yellow>Incorrect parameters. Usage:</color>/debug valueName float");
                 }
 
-                if ((s[0] == "/organize" || s[0] == "/party")  && s.Length > 1)
+                if ((s[0] == "/organize" || s[0] == "/party") && s.Length > 1)
                 {
                     if (PlayerState.Instance.IsInParty)
                     {
                         cameraFollower.AppendChatText($"<color=yellow>You are already in a party. You'll need to /leave to form a new party.</color>");
                         return;
                     }
-                    
-                    var msg = text.Substring(s[0].Length + 1);
+
+                    var msg = s[1];
+                    if (!msg.Contains("\""))
+                        text.Substring(s[0].Length + 1);
                     NetworkManager.Instance.OrganizeParty(msg);
                 }
 
                 if (s[0] == "/invite" && s.Length > 1)
                 {
-                    var name = text.Substring(s[0].Length + 1);
-                    if(!PlayerState.Instance.IsInParty)
+                    var name = s[1];
+                    if (!name.Contains("\""))
+                        text.Substring(s[0].Length + 1);
+                    if (!PlayerState.Instance.IsInParty)
                         cameraFollower.AppendChatText($"<color=yellow>You must first create a party with /organize before you can invite a player.</color>");
                     else
                         NetworkManager.Instance.PartyInviteByName(name);
@@ -542,7 +552,7 @@ namespace PlayerControl
 
                 if (s[0] == "/leave" || s[0] == "/leaveparty")
                 {
-                    if(!PlayerState.Instance.IsInParty)
+                    if (!PlayerState.Instance.IsInParty)
                         cameraFollower.AppendChatText($"<color=yellow>You are not currently in a party.</color>");
                     else
                         NetworkManager.Instance.LeaveParty();
@@ -570,10 +580,23 @@ namespace PlayerControl
                         if (member.EntityId == 0)
                             sb.Append(" (offline)");
                     }
+
                     cameraFollower.AppendChatText(sb.ToString());
                 }
-                
-                if(emoteList.TryGetValue(s[0], out var emote))
+
+                if (s[0] == "/signalnpc" && s.Length > 1)
+                {
+                    var npcName = s[1];
+                    var signalVal = s.Length > 2 ? s[2] : "";
+                    var v1 = s.Length > 3 && int.TryParse(s[3], out var i) ? i : 0;
+                    var v2 = s.Length > 4 && int.TryParse(s[4], out i) ? i : 0;
+                    var v3 = s.Length > 5 && int.TryParse(s[5], out i) ? i : 0;
+                    var v4 = s.Length > 6 && int.TryParse(s[6], out i) ? i : 0;
+
+                    NetworkManager.Instance.SendAdminSignalNpc(npcName, signalVal, v1, v2, v3, v4);
+                }
+
+                if (emoteList.TryGetValue(s[0], out var emote))
                     NetworkManager.Instance.SendEmote(emote);
             }
             else

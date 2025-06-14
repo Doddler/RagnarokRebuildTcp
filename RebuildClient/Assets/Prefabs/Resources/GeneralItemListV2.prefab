@@ -557,17 +557,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 495c1e4a716518e4c8303af3d671e267, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Target: {fileID: 0}
+  Target: {fileID: 3766158488165240874}
   MinSize: {x: 400, y: 200}
   MaxSize: {x: 600, y: 900}
   SnapToStep: 0
   StepSize: 61
   StepSizeY: 57
   BaseSize: {x: 52, y: 10}
+  FlipYAxis: 0
   OnDragEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 7783244261296909373}
         m_TargetAssemblyTypeName: Assets.Scripts.UI.WindowBase, Assembly-CSharp
         m_MethodName: MoveToTop
         m_Mode: 1
@@ -1295,6 +1296,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HighlightZone: {fileID: 6318726391045965544}
+  ValidDragOrigins: 0
 --- !u!1 &3312798010281939208
 GameObject:
   m_ObjectHideFlags: 0
@@ -2029,6 +2031,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a127b78cb07406cb1f4a9efca41bde3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CanCloseWithEscape: 1
+  AutomaticallyFitIntoPlayArea: 1
   DropZone: {fileID: 904492761408667327}
   ItemListEntryPrefab: {fileID: 2745545851498939006, guid: d57584249a9a55242aa5100ca951befb,
     type: 3}

@@ -15,7 +15,7 @@ namespace Assets.Scripts.Network.PacketBase
 	{
 		static ClientPacketHandler()
 		{
-			handlers = new ClientPacketHandlerBase[101];
+			handlers = new ClientPacketHandlerBase[103];
 			handlers[0] = new PacketOnConnectionApproved(); //ConnectionApproved
 			handlers[1] = new InvalidPacket(); //ConnectionDenied
 			handlers[2] = new InvalidPacket(); //PlayerReady
@@ -100,23 +100,25 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[81] = new PacketPickUpItem(); //PickUpItem
 			handlers[82] = new PacketOpenShop(); //OpenShop
 			handlers[83] = new PacketOpenStorage(); //OpenStorage
-			handlers[84] = new PacketStorageInteraction(); //StorageInteraction
-			handlers[85] = new InvalidPacket(); //ShopBuySell
-			handlers[86] = new InvalidPacket(); //ItemUpdate
-			handlers[87] = new PacketServerEvent(); //ServerEvent
-			handlers[88] = new PacketServerResult(); //ServerResult
-			handlers[89] = new InvalidPacket(); //DebugEntry
-			handlers[90] = new PacketMemoMapLocation(); //MemoMapLocation
-			handlers[91] = new InvalidPacket(); //DeleteCharacter
-			handlers[92] = new InvalidPacket(); //AdminCharacterAction
-			handlers[93] = new PacketChangePlayerSpecialActionState(); //ChangePlayerSpecialActionState
-			handlers[94] = new PacketRefreshGrantedSkills(); //RefreshGrantedSkills
-			handlers[95] = new InvalidPacket(); //CreateParty
-			handlers[96] = new PacketInvitePartyMember(); //InvitePartyMember
-			handlers[97] = new PacketAcceptPartyInvite(); //AcceptPartyInvite
-			handlers[98] = new PacketUpdateParty(); //UpdateParty
-			handlers[99] = new PacketNotifyPlayerPartyChange(); //NotifyPlayerPartyChange
-			handlers[100] = new PacketSkillWithMaskedArea(); //SkillWithMaskedArea
+			handlers[84] = new PacketStartNpcTrade(); //StartNpcTrade
+			handlers[85] = new PacketStorageInteraction(); //StorageInteraction
+			handlers[86] = new InvalidPacket(); //ShopBuySell
+			handlers[87] = new InvalidPacket(); //NpcTradeItem
+			handlers[88] = new InvalidPacket(); //ItemUpdate
+			handlers[89] = new PacketServerEvent(); //ServerEvent
+			handlers[90] = new PacketServerResult(); //ServerResult
+			handlers[91] = new InvalidPacket(); //DebugEntry
+			handlers[92] = new PacketMemoMapLocation(); //MemoMapLocation
+			handlers[93] = new InvalidPacket(); //DeleteCharacter
+			handlers[94] = new InvalidPacket(); //AdminCharacterAction
+			handlers[95] = new PacketChangePlayerSpecialActionState(); //ChangePlayerSpecialActionState
+			handlers[96] = new PacketRefreshGrantedSkills(); //RefreshGrantedSkills
+			handlers[97] = new InvalidPacket(); //CreateParty
+			handlers[98] = new PacketInvitePartyMember(); //InvitePartyMember
+			handlers[99] = new PacketAcceptPartyInvite(); //AcceptPartyInvite
+			handlers[100] = new PacketUpdateParty(); //UpdateParty
+			handlers[101] = new PacketNotifyPlayerPartyChange(); //NotifyPlayerPartyChange
+			handlers[102] = new PacketSkillWithMaskedArea(); //SkillWithMaskedArea
 		}
 	}
 }

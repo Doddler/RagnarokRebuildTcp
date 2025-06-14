@@ -24,6 +24,8 @@ namespace Assets.Scripts.UI.Inventory
         private int activeEntryCount;
         private int activeItemSection;
         private bool isInit;
+        
+        
 
         public void Awake()
         {

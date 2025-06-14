@@ -84,12 +84,26 @@ namespace Assets.Scripts.UI
             CountText.enabled = true;
         }
 
+        public void ResolveLeftClick()
+        {
+            if (CanSelect)
+            {
+                IsSelected = true;
+                Background.color = SelectedColor;
+                EventOnSelect?.Invoke(UniqueEntryId);
+            }
+            else
+            {
+                EventOnClick?.Invoke(UniqueEntryId);
+            }
+        }
+
         public void OnPointerClick(PointerEventData eventData)
         {
             if (!IsActive)
                 return;
             
-            if (EventOnRightClick != null && eventData.button == PointerEventData.InputButton.Right && (Type == DragItemType.Item || Type == DragItemType.Equipment))
+            if (EventOnRightClick != null && eventData.button == PointerEventData.InputButton.Right && Type != DragItemType.Skill)
                 EventOnRightClick(UniqueEntryId);
             
             if (eventData.button != PointerEventData.InputButton.Left)
@@ -101,18 +115,7 @@ namespace Assets.Scripts.UI
                 return;
             }
 
-            if (CanSelect)
-            {
-                IsSelected = true;
-                Background.color = SelectedColor;
-                EventOnSelect?.Invoke(UniqueEntryId);
-            }
-            else
-            {
-                EventOnClick?.Invoke(UniqueEntryId);
-            }
-
-
+            ResolveLeftClick();
         }
     }
 }

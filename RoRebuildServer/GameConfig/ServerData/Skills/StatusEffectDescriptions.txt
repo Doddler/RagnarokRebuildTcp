@@ -114,6 +114,9 @@ Your physical attacks deal wind property damage.
 ::ElementalConverterEarth
 Your physical attacks deal earth property damage.
 
+::CursedWater
+Your physical attacks deal dark property damage.
+
 ::DarkBlessing
 When this effect expires you will be reduced to 1 HP.
 

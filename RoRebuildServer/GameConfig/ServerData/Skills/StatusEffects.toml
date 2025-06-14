@@ -183,6 +183,13 @@ Icon = "Detoxify"
 CanDispel = true
 CanDisable = true
 
+[AdrenalineRush]
+Name = "Adrenaline Rush"
+Type = "Buff"
+Icon = "아드레날린러쉬"
+CanDispel = true
+CanDisable = true
+
 #----------------------------------
 # Item Buffs
 #----------------------------------
@@ -312,8 +319,7 @@ CanDisable = false
 CanDispel = false
 CanDisable = false
 
-[AdrenalineRush]
-Name = "Adrenaline Rush"
+[Invisible]
 
 #----------------------------------
 # Utility Effects

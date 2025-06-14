@@ -167,7 +167,7 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4164,CRAMP,Cramp,56,4698,40,22,37,50,23,55,291,356,1,0,5,3242,1958,10,12,Small,Beast,Poison2,1000,1000,500,100,Normal,AiAggressiveSense,620,cramp.spr,0,0.5,1,#FFFFFFFF,
 4165,JOKER,Joker,67,8797,51,61,14,64,100,170,493,668,1,6,29,10174,7600,10,12,Large,Demihuman,Wind4,1364,432,864,100,Normal,AiStandardBoss,312,joker.spr,0,0.5,1,#FFFFFFFF,
 4166,PENOMENA,Penomena,57,5597,43,13,32,87,13,26,363,444,7,7,25,3877,2750,10,12,Medium,Aquatic,Poison1,832,600,500,400,Normal,AiStandardBoss,336,penomena.spr,0,0.5,1,#FFFFFFFF,
-4167,MYSTELTAINN,Mysteltain,76,61131,88,88,79,98,51,53,884,1197,2,34,33,73151,52350,10,12,Large,Formless,Dark4,1152,240,500,250,Boss,AiStandardBoss,768,mysteltainn.spr,0,0.5,1,#FFFFFFFF,
+4167,MYSTELTAINN,Mistilteinn,76,61131,88,88,79,98,51,53,884,1197,2,34,33,73151,52350,10,12,Large,Formless,Dark4,1152,240,500,250,Boss,AiStandardBoss,768,mysteltainn.spr,0,0.5,1,#FFFFFFFF,
 4168,TIRFING,Tyrfing,71,52921,82,82,72,92,47,49,770,1041,1,31,30,60628,41429,10,12,Medium,Formless,Dark3,816,240,500,100,Boss,AiStandardBoss,576,tirfing.spr,0,0.5,1,#FFFFFFFF,
 4169,BRILIGHT,Brilight,46,3282,29,15,14,56,54,22,260,317,1,16,13,1980,1664,10,12,Small,Insect,Fire1,1500,1000,500,200,Normal,AiAggressiveSense,720,brilight.spr,0,0.5,1,#FFFFFFFF,
 4170,MARTIN,Martin,28,1206,16,15,24,22,11,9,66,81,1,0,6,483,324,10,12,Small,Beast,Earth2,1480,480,480,300,Normal,AiPassive,192,martin.spr,0,0.5,1,#FFFFFFFF,

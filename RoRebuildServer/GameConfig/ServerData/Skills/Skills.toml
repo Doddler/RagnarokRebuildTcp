@@ -251,7 +251,7 @@ SpCost = [15,17,19,21,23,25,27,29,31,33]
 Icon = "al_blessing"
 Target = "Ally"
 MaxLevel = 10
-SpCost = [28,32,36,50,55,58,62,67,70,64]
+SpCost = [28,32,36,40,44,48,52,56,60,64]
 AdjustableLevel = true
 
 [DemonBane]
@@ -593,6 +593,10 @@ SpCost = [15,20,20,25,25,25,25,25,25,25]
 
 [AdrenalineRush]
 Name = "Adrenaline Rush"
+Icon = "bs_adrenaline"
+Target = "Self"
+MaxLevel = 10
+SpCost = [20,23,26,29,32,35,38,41,44,47]
 
 [TwoHandQuicken]
 Name = "Two-Hand Quicken"
@@ -820,6 +824,8 @@ Target = "Enemy"
 Name = "Dark Blessing"
 Target = "Enemy"
 
+[Invisible]
+Target = "Self"
 
 [Smoking]
 Target = "Self"

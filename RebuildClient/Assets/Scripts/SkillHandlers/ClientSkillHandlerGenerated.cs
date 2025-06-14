@@ -6,7 +6,7 @@ namespace Assets.Scripts.SkillHandlers
 	{
 		static ClientSkillHandler()
 		{
-			handlers = new SkillHandlerBase[151];
+			handlers = new SkillHandlerBase[152];
 			handlers[0] = new DefaultSkillHandler();
 			handlers[1] = new DefaultSkillHandler();
 			handlers[2] = new FirstAidHandler();
@@ -153,23 +153,24 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[131] = new DefaultSkillHandler();
 			handlers[132] = new DefaultSkillHandler();
 			handlers[133] = new DefaultSkillHandler();
-			handlers[134] = new SmokingHandler();
-			handlers[135] = new DefaultSkillHandler();
+			handlers[134] = new DefaultSkillHandler();
+			handlers[135] = new SmokingHandler();
 			handlers[136] = new DefaultSkillHandler();
 			handlers[137] = new DefaultSkillHandler();
-			handlers[138] = new LickHandler();
-			handlers[139] = new DefaultSkillHandler();
-			handlers[140] = new DarkThunderHandler();
-			handlers[141] = new BulwarkHandler();
-			handlers[142] = new DefaultSkillHandler();
-			handlers[143] = new GrandThunderstormHandler();
-			handlers[144] = new DefaultSkillHandler();
+			handlers[138] = new DefaultSkillHandler();
+			handlers[139] = new LickHandler();
+			handlers[140] = new DefaultSkillHandler();
+			handlers[141] = new DarkThunderHandler();
+			handlers[142] = new BulwarkHandler();
+			handlers[143] = new DefaultSkillHandler();
+			handlers[144] = new GrandThunderstormHandler();
 			handlers[145] = new DefaultSkillHandler();
 			handlers[146] = new DefaultSkillHandler();
 			handlers[147] = new DefaultSkillHandler();
 			handlers[148] = new DefaultSkillHandler();
 			handlers[149] = new DefaultSkillHandler();
 			handlers[150] = new DefaultSkillHandler();
+			handlers[151] = new DefaultSkillHandler();
 		}
 	}
 }
