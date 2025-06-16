@@ -278,7 +278,7 @@
         16
       ],
       "AdjustableLevel": true,
-      "Description": "Deals [100 \u002B SkillLevel * 10]% water element damage with a [35 \u002B SkillLevel * 3]% chance to freeze.\r\nFreeze Effect: Target becomes immobilized and water element, and receive DEF-50% and MDEF\u002B25%. The effect ends upon taking damage.\r\nCast Time: 0.8s\r\nAfter Cast Delay: 1s",
+      "Description": "Deals [100 \u002B SkillLevel * 10]% water element damage with a [35 \u002B SkillLevel * 3]% chance to freeze.\r\nFreeze Effect: Target becomes immobilized, water element, DEF-50% and MDEF\u002B25%. The effect ends upon taking damage.\r\nCast Time: 0.8s\r\nAfter Cast Delay: 1s",
       "InterruptMode": 0
     },
     {
@@ -1097,7 +1097,7 @@
       "MaxLevel": 1,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "Rent a pushcart, increasing your character\u0027s weight capacity by \u002B2000.\r\n\u003Ci\u003EThe skill\u0027s current effect is temporary until cart storage and rental is implemented.\u003C/i\u003E",
+      "Description": "Authorizes the use of a merchant cart and enables purchasing one from most Kafra employees.\r\nThe cart has a weight capacity of 8000 and can store up to 100 items.\r\nA new cart design is available at levels 41, 66, 81, and 91. Type \u0022/changecart [1-5]\u0022 to swap designs.",
       "InterruptMode": 0
     },
     {

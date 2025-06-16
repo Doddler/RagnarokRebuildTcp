@@ -15,7 +15,7 @@ namespace Assets.Scripts.Network.PacketBase
 	{
 		static ClientPacketHandler()
 		{
-			handlers = new ClientPacketHandlerBase[103];
+			handlers = new ClientPacketHandlerBase[104];
 			handlers[0] = new PacketOnConnectionApproved(); //ConnectionApproved
 			handlers[1] = new InvalidPacket(); //ConnectionDenied
 			handlers[2] = new InvalidPacket(); //PlayerReady
@@ -92,7 +92,7 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[73] = new InvalidPacket(); //AdminResetStats
 			handlers[74] = new InvalidPacket(); //AdminCreateItem
 			handlers[75] = new InvalidPacket(); //NpcClick
-			handlers[76] = new InvalidPacket(); //NpcInteraction
+			handlers[76] = new PacketNpcInteraction(); //NpcInteraction
 			handlers[77] = new InvalidPacket(); //NpcAdvance
 			handlers[78] = new InvalidPacket(); //NpcSelectOption
 			handlers[79] = new InvalidPacket(); //NpcRefineSubmit
@@ -104,21 +104,22 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[85] = new PacketStorageInteraction(); //StorageInteraction
 			handlers[86] = new InvalidPacket(); //ShopBuySell
 			handlers[87] = new InvalidPacket(); //NpcTradeItem
-			handlers[88] = new InvalidPacket(); //ItemUpdate
-			handlers[89] = new PacketServerEvent(); //ServerEvent
-			handlers[90] = new PacketServerResult(); //ServerResult
-			handlers[91] = new InvalidPacket(); //DebugEntry
-			handlers[92] = new PacketMemoMapLocation(); //MemoMapLocation
-			handlers[93] = new InvalidPacket(); //DeleteCharacter
-			handlers[94] = new InvalidPacket(); //AdminCharacterAction
-			handlers[95] = new PacketChangePlayerSpecialActionState(); //ChangePlayerSpecialActionState
-			handlers[96] = new PacketRefreshGrantedSkills(); //RefreshGrantedSkills
-			handlers[97] = new InvalidPacket(); //CreateParty
-			handlers[98] = new PacketInvitePartyMember(); //InvitePartyMember
-			handlers[99] = new PacketAcceptPartyInvite(); //AcceptPartyInvite
-			handlers[100] = new PacketUpdateParty(); //UpdateParty
-			handlers[101] = new PacketNotifyPlayerPartyChange(); //NotifyPlayerPartyChange
-			handlers[102] = new PacketSkillWithMaskedArea(); //SkillWithMaskedArea
+			handlers[88] = new InvalidPacket(); //CartPartyInteraction
+			handlers[89] = new PacketChangeFollower(); //ChangeFollower
+			handlers[90] = new PacketServerEvent(); //ServerEvent
+			handlers[91] = new PacketServerResult(); //ServerResult
+			handlers[92] = new InvalidPacket(); //DebugEntry
+			handlers[93] = new PacketMemoMapLocation(); //MemoMapLocation
+			handlers[94] = new InvalidPacket(); //DeleteCharacter
+			handlers[95] = new InvalidPacket(); //AdminCharacterAction
+			handlers[96] = new PacketChangePlayerSpecialActionState(); //ChangePlayerSpecialActionState
+			handlers[97] = new PacketRefreshGrantedSkills(); //RefreshGrantedSkills
+			handlers[98] = new InvalidPacket(); //CreateParty
+			handlers[99] = new PacketInvitePartyMember(); //InvitePartyMember
+			handlers[100] = new PacketAcceptPartyInvite(); //AcceptPartyInvite
+			handlers[101] = new PacketUpdateParty(); //UpdateParty
+			handlers[102] = new PacketNotifyPlayerPartyChange(); //NotifyPlayerPartyChange
+			handlers[103] = new PacketSkillWithMaskedArea(); //SkillWithMaskedArea
 		}
 	}
 }

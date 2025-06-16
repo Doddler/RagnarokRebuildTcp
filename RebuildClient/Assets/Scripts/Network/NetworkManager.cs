@@ -290,10 +290,10 @@ namespace Assets.Scripts.Network
                 return; //we've already handled the error
             Dispatcher.RunOnMainThread(() =>
             {
-                if (isConnected || TitleScreen.TitleState != TitleScreen.TitleScreenState.LogIn)
-                    TitleScreen.LogInError($"You have been disconnected from the server.");
+                if (isConnected || Instance.TitleScreen.TitleState != TitleScreen.TitleScreenState.LogIn)
+                    Instance.TitleScreen.LogInError($"You have been disconnected from the server.");
                 else
-                    TitleScreen.LogInError($"Unable to connect to server at url: {webUrl}");
+                    Instance.TitleScreen.LogInError($"Unable to connect to server at url: {webUrl}");
             });
 
             socket = null;
@@ -308,7 +308,7 @@ namespace Assets.Scripts.Network
 
             Dispatcher.RunOnMainThread(() =>
             {
-                TitleScreen.LogInError($"An error has occured: {message}");
+                Instance.TitleScreen.LogInError($"An error has occured: {message}");
                 socket.Close();
                 socket = null;
             });
@@ -1188,9 +1188,9 @@ namespace Assets.Scripts.Network
                 case PacketType.ChangeName:
                     OnMessageChangeName(msg);
                     break;
-                case PacketType.NpcInteraction:
-                    OnMessageNpcInteraction(msg);
-                    break;
+                // case PacketType.NpcInteraction:
+                //     OnMessageNpcInteraction(msg);
+                //     break;
                 // case PacketType.StartCast:
                 //     OnMessageStartCasting(msg);
                 //     break;
@@ -1499,6 +1499,17 @@ namespace Assets.Scripts.Network
             msg.Write((byte)PacketType.AdminServerAction);
             msg.Write((byte)action);
 
+            SendMessage(msg);
+        }
+
+        public void SendServerShutdown(int seconds, string reason)
+        {
+            var msg = StartMessage(PacketType.AdminServerAction);
+            
+            msg.Write((byte)AdminAction.ShutdownServer);
+            msg.Write(seconds);
+            msg.Write(reason);
+            
             SendMessage(msg);
         }
 
@@ -1903,6 +1914,15 @@ namespace Assets.Scripts.Network
                 msg.Write((byte)stats[i]);
             msg.Write(isMale);
 
+            SendMessage(msg);
+        }
+
+        public void SendChangeCart(int cartId)
+        {
+            var msg = StartMessage(PacketType.ChangeFollower);
+            
+            msg.Write(cartId);
+            
             SendMessage(msg);
         }
 

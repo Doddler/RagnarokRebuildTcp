@@ -177,6 +177,7 @@ public class Program
 
         //items
         Items.LoadItemSourceFromNpcs();
+        Items.LoadItemSourceFromBoxes();
         Items.PrepareItems();
 
         content = await InsertContentIntoTemplate(await Items.GetCardPage(), "Ragnarok Renewal : Items - Cards");
@@ -188,6 +189,11 @@ public class Program
         content = await InsertContentIntoTemplate(await Items.GetEquipmentPage(), "Ragnarok Renewal : Items - Equipment");
         await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "rebuildEquipment.html"), content);
 
+        content = await InsertContentIntoTemplate(await Items.GetUsableItemPage(), "Ragnarok Renewal : Items - Consumables");
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "rebuildConsumable.html"), content);
+
+        content = await InsertContentIntoTemplate(await Items.GetEtcItemPage(), "Ragnarok Renewal : Items - Regular");
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "rebuildEtcItems.html"), content);
 
         content = await InsertContentIntoTemplate(await Maps.GetWorldMap(), "Ragnarok Renewal : World Map");
         await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "WorldMap.html"), content);

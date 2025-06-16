@@ -30,6 +30,7 @@ Byalan Undersea Tunnel 2F,iz_dun01,iz_dun01.walk,Dungeon,None,29.mp3
 Byalan Undersea Tunnel 3F,iz_dun02,iz_dun02.walk,Dungeon,None,29.mp3
 Byalan Undersea Tunnel 4F,iz_dun03,iz_dun03.walk,Dungeon,AllWater,49.mp3
 Byalan Undersea Tunnel 5F,iz_dun04,iz_dun04.walk,Dungeon,AllWater,49.mp3
+Juperos Cave,jupe_cave,jupe_cave.walk,Indoor,None,89.mp3
 Juperos 1F,juperos_01,juperos_01.walk,Dungeon,None,89.mp3
 Juperos Core Elevator,jupe_ele,jupe_ele.walk,Indoor,None,89.mp3
 Mt. Mjolnir 1,mjolnir_01,mjolnir_01.walk,Field,CanMemo,31.mp3

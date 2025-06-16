@@ -1,4 +1,4 @@
-
+/*
 Trader("prontera", "Festive Trader", "4_F_06", 167, 124, SW) {
 	SellItem("Santa_Hat", 200);
 	SellItem("Clown_Nose", 3000);
@@ -42,3 +42,4 @@ Trader("prontera", "Super Shady Trader", "4_M_DSTMAN", 185, 124, SW) {
 	SellItem("Ahura_Mazdah", 12000000);
 	SellItem("Angra_Manyu", 20000000);
 }
+*/

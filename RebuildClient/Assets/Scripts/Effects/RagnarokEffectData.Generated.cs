@@ -67,6 +67,7 @@ namespace Assets.Scripts.Effects
 		Teleport,
 		BlueWaterfallEffect,
 		DiscoLights,
+		MapPillar,
 	}
 
 	public enum PrimitiveType
@@ -158,6 +159,7 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.Teleport, new Assets.Scripts.Effects.EffectHandlers.General.TeleportEffect());
 			effectHandlers.Add(EffectType.BlueWaterfallEffect, new Assets.Scripts.Effects.EffectHandlers.Environment.BlueWaterfallEffect());
 			effectHandlers.Add(EffectType.DiscoLights, new Assets.Scripts.Effects.EffectHandlers.Environment.DiscoLightsEffect());
+			effectHandlers.Add(EffectType.MapPillar, new Assets.Scripts.Effects.EffectHandlers.Environment.MapPillarEffect());
 			primitiveHandlers.Add(PrimitiveType.AnimatedTexture2D, new Assets.Scripts.Effects.PrimitiveHandlers.AnimatedTexture2DPrimitive());
 			primitiveDataFactory.Add(PrimitiveType.AnimatedTexture2D, () => new Assets.Scripts.Effects.PrimitiveData.EffectSpriteData());
 			primitiveHandlers.Add(PrimitiveType.Aura, new Assets.Scripts.Effects.PrimitiveHandlers.AuraPrimitive());

@@ -56,6 +56,8 @@ namespace RoWikiGenerator
             if (maxTime > 0 && respawnMax > maxTime)
                 respawnMax = maxTime;
 
+            DataManager.ServerConfigScriptManager.SetMonsterSpawnTime(mobStats, "", ref respawn, ref respawnMax);
+
             //area = area.ClipArea(Map.MapBounds);
 
             var displayType = CharacterDisplayType.Monster;

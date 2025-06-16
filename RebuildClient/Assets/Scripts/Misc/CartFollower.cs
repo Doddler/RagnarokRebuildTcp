@@ -12,14 +12,16 @@ namespace Assets.Scripts.Misc
     public class CartFollower : MonoBehaviour
     {
         public ServerControllable TargetCharacter;
+        public int CartStyle;
         private RoSpriteAnimator spriteAnimator;
 
         private AsyncOperationHandle<RoSpriteData> spriteLoadTask;
         private bool isLoaded;
 
-        public void AttachCart(ServerControllable followTarget)
+        public void AttachCart(ServerControllable followTarget, int cartStyle)
         {
             TargetCharacter = followTarget;
+            CartStyle = cartStyle;
             spriteLoadTask = Addressables.LoadAssetAsync<RoSpriteData>("Assets/Sprites/Effects/손수레.spr");
             isLoaded = false;
         }

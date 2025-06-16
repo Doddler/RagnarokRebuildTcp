@@ -109,6 +109,9 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     partyId = msg.ReadInt32();
                     partyName = msg.ReadString();
                 }
+
+                var follower = (PlayerFollower)msg.ReadByte();
+                
                 var isMain = Network.PlayerId == id;
                 if (isMain)
                 {
@@ -153,7 +156,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     Weapon = weaponId,
                     Shield = shieldId,
                     PartyId = partyId,
-                    PartyName = partyName
+                    PartyName = partyName,
+                    Follower = follower
                 };
 
                 controllable = ClientDataLoader.Instance.InstantiatePlayer(ref playerData);
@@ -169,9 +173,11 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     State.IsMale = isMale;
                     State.HairStyleId = headId;
                     State.HairColorId = hairDyeId;
+                    State.HasCart = (follower & PlayerFollower.AnyCart) > 0;
                     
                     UiManager.Instance.SkillManager.UpdateAvailableSkills();
                     UiManager.Instance.EquipmentWindow.UpdateCharacterDisplay(head1, head2, head3);
+                    UiManager.Instance.EquipmentWindow.RefreshEquipmentWindow(); //follower state might have changed
                 }
             }
             else

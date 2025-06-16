@@ -99,6 +99,7 @@ Cures: <color=#800000>Poison</color>, <color=#800000>Blind</color>, <color=#8000
 ::Royal_Jelly //526
 <color=#808080>A highly nutritious jelly secreted from honeybees fed to larvae and future queens.</color>
 Recover<color=#008000> 325~405</color> HP and<color=#008000> 40~60</color> SP
+Cures: <color=#800000>Poison</color>, <color=#800000>Blind</color>, <color=#800000>Silence</color>, <color=#800000>Curse</color>, <color=#800000>Confusion</color>, <color=#800000>Hallucination</color>
 
 ::Monster's_Feed //528
 <color=#808080>A entree of processed food for monsters.</color>
@@ -322,6 +323,7 @@ Returns you to your save location
 
 ::Old_Blue_Box //603
 <color=#808080>An old blue box with unknown contents.</color>
+Contains a random item.
 
 ::Dead_Branch //604
 <color=#808080>A twig which contains the mysterious power of eternity, capable of summoning a living creature.</color>
@@ -369,9 +371,11 @@ Channelled: <color=#777777>Being hit while casting will interrupt the skill, but
 
 ::Old_Card_Album //616
 <color=#808080>An antique album which contains an unknown card.</color>
+Contains a random card.
 
 ::Old_Purple_Box //617
 <color=#808080>An old purple box with unknown contents. More likely to contain equipment than an old blue box.</color>
+Contains a random item.
 
 ::Worn_Out_Scroll //618
 <color=#808080>A rolled up piece of parchment, now brittle with age, on which faded text can scarcely be read.</color>
@@ -453,6 +457,7 @@ Channelled: <color=#777777>Being hit while casting will interrupt the skill, but
 
 ::Gift_Box //644
 <color=#808080>A box that contains a present.</color>
+Contains a random item.
 
 ::Concentration_Potion //645
 <color=#808080>A potent tonic that stimulates concentration.</color>
@@ -461,10 +466,12 @@ Increases attack speed by 10% for 30 minutes.
 ::Awakening_Potion //656
 <color=#808080>A special tonic that combats drowsiness.</color>
 Increases attack speed by 15% for 30 minutes.
+Cannot be used by Acolyte Jobs.
 
 ::Berserk_Potion //657
 <color=#808080>A powerful tonic that amplifies quickness.</color>
 Increases attack speed by 20% for 30 minutes.
+Useable by Swordsman, Merchant, and Mage.
 
 ::Union_of_Tribe //658
 <color=#808080>A symbol of solidarity that evokes feelings of nobility in those who see it.</color>
@@ -557,6 +564,7 @@ Move slowly for 5 seconds
 
 ::Cursed_Water //12020
 <color=#808080>A bottle of cursed water.</color>
+Enchant weapon with Dark for 3 minutes
 
 ::Pork //12021
 <color=#808080>Savory pork that is very tempting.</color>

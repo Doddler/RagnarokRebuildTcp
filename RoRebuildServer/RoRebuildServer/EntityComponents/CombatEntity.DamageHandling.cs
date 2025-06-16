@@ -625,6 +625,12 @@ public partial class CombatEntity
                     return;
                 }
 
+                if (di.Source.Type == EntityType.Player && di.Source.TryGet<Player>(out var player))
+                {
+                    if((player.OnAttackTriggerFlags & (AttackEffectTriggers.HpOnKill | AttackEffectTriggers.SpOnKill)) > 0)
+                        player.CombatEntity.TriggerOnKillEffects(this);
+                }
+
                 monster.BoostDamageContributionOfFirstAttacker();
 
                 if (DataManager.MvpMonsterCodes.Contains(monster.MonsterBase.Code))

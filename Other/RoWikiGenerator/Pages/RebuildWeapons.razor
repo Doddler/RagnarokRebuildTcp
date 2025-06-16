@@ -84,7 +84,17 @@
                             @foreach (var (vendor, prices) in entry.source.NpcSales)
                             {
                                 <span span="float: left">Sold by @vendor</span>
-                                <span style="float: right">@prices[0]</span>
+                                <span style="float: right">@prices</span>
+                                <br style="clear:both" />
+                            }
+                            @foreach (var (vendor, prices) in entry.source.NpcTrades)
+                            {
+                                <span span="float: left">Trade with @vendor</span>
+                                <br style="clear:both" />
+                            }
+                            @foreach (var box in entry.source.BoxSources)
+                            {
+                                <span span="float: left">Found in @box</span>
                                 <br style="clear:both" />
                             }
                         </td>

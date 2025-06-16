@@ -113,7 +113,7 @@ Cast Time: [2.15 - SkillLevel * 0.15]s
 
 ::FrostDiver
 Deals [100 + SkillLevel * 10]% water element damage with a [35 + SkillLevel * 3]% chance to freeze.
-Freeze Effect: Target becomes immobilized and water element, and receive DEF-50% and MDEF+25%. The effect ends upon taking damage.
+Freeze Effect: Target becomes immobilized, water element, DEF-50% and MDEF+25%. The effect ends upon taking damage.
 Cast Time: 0.8s
 After Cast Delay: 1s
 
@@ -251,10 +251,9 @@ Spend money to deal damage. Consumes [SkillLevel * 50] zeny to deal [100 + Skill
 Zeny used is affected by your level of Discount.
 
 ::PushCart
-Rent a pushcart, increasing your character's weight capacity by +2000.
-<i>The skill's current effect is temporary until cart storage and rental is implemented.</i>
-//Authorizes the use of a merchant cart and enables purchasing one from most Kafra employees.
-//The cart has a weight capacity of 8000 and can store up to 100 items.
+Authorizes the use of a merchant cart and enables purchasing one from most Kafra employees.
+The cart has a weight capacity of 8000 and can store up to 100 items.
+A new cart design is available at levels 41, 66, 81, and 91. Type "/changecart [1-5]" to swap designs.
 
 ::Overcharge
 Obtain better sale value of items to the NPC, increasing the sale value of goods by [4 + SkillLevel * 2]%.

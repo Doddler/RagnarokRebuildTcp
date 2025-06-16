@@ -426,7 +426,8 @@ FLEE +5
 -30% damage from Shadow attacks
 
 ::Sidewinder_Card //id 4117 - slotted on Weapon
-Adds a 5% chance to double attack while performing regular attacks. Stacks with the thief skill Double Attack.
+Adds a 5% chance to double attack while performing regular attacks.
+If used in combination with Thief's <skill>Double Attack</skill> it also disables the weapon type requirement.
 
 ::Earth_Petite_Card //id 4118 - slotted on Weapon
 +20% physical damage vs. Dragon
@@ -569,7 +570,6 @@ ATK +5
 
 ::Goblin_Leader_Card //id 4155 - slotted on Weapon
 +30% physical damage vs. Goblin
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Goblin_Steamrider_Card //id 4156 - slotted on Weapon
 CRIT damage +10%
@@ -582,7 +582,6 @@ CRIT +7 vs. Undead
 ::Sky_Deleter_Card //id 4158 - slotted on Armor
 HP Regeneration -100%
 recover 100 HP/melee kill
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Nine_Tail_Card //id 4159 - slotted on Garment
 AGI +2
@@ -614,8 +613,6 @@ if Swordman:
 
 ::Gig_Card //id 4165 - slotted on Weapon
 Recover 5 SP/melee kill vs. Insect
-Lose 5 SP/unequip
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Nightmare_Terror_Card //id 4166 - slotted on Armor
 +3% chance of <color=#800000>Curse</color> on receive physical damage
@@ -651,8 +648,6 @@ if Sage:
 
 ::The_Paper_Card //id 4172 - slotted on Weapon
 CRIT damage +20%
-Lose 1 SP/physical attack
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Demon_Fungus_Card //id 4173 - slotted on Armor
 +6% chance of <color=#800000>Sleep</color> on receive physical damage
@@ -688,8 +683,6 @@ AGI +1
 
 ::Driller_Card //id 4180 - slotted on Weapon
 Recover 5 SP/melee kill vs. Dragon
-Lose 5 SP/unequip
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Disguise_Card //id 4181 - slotted on Armor
 +3% chance of <color=#800000>Silence</color> on receive physical damage
@@ -699,8 +692,6 @@ if bVIT > 76:
 
 ::Diabolic_Card //id 4182 - slotted on Weapon
 Recover 5 SP/melee kill vs. Demon
-Lose 5 SP/unequip
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Vagabond_Wolf_Card //id 4183 - slotted on Garment
 STR +1
@@ -1085,7 +1076,6 @@ VIT +1
 
 ::Injustice_Card //id 4268 - slotted on Weapon
 +5% Autospell <color=#0000FF>Sonic Blow 1</color> on non-skill attack
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Incubus_Card //id 4269 - slotted on Headgear
 SP +150, INT -3
@@ -1113,8 +1103,6 @@ ATK +5
 
 ::Zombie_Master_Card //id 4274 - slotted on Weapon
 Recover 5 SP/melee kill vs. Undead
-Lose 5 SP/unequip
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Zombie_Prisoner_Card //id 4275 - slotted on Boots
 +10% EXP from Undead
@@ -1191,8 +1179,6 @@ if Refine > 8: SP +150
 
 ::Caterpillar_Card //id 4289 - slotted on Weapon
 Recover 5 SP/melee kill vs. Plant
-Lose 5 SP/unequip
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Cat_O'_Nine_Tails_Card //id 4290 - slotted on Boots
 MDEF +3
@@ -1275,18 +1261,13 @@ Perfect Dodge +1
 
 ::Beetle_King_Card //id 4307 - slotted on Weapon
 Recover 5 SP/melee kill vs. Fish
-Lose 5 SP/unequip
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Tri_Joint_Card //id 4308 - slotted on Weapon
 Recover 5 SP/melee kill vs. Formless
-Lose 5 SP/unequip
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Parasite_Card //id 4309 - slotted on Shield
 DEF +1
 -5% damage from Neutral attacks
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Panzer_Goblin_Card //id 4310 - slotted on Weapon
 CRIT damage +10%
@@ -1352,11 +1333,9 @@ DEF +1
 
 ::Hati_Baby_Card //id 4323 - slotted on Weapon
 +5% Autospell <color=#0000FF>Frost Diver 3</color> on non-skill attack
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Hati_Card //id 4324 - slotted on Armor
 +50% chance of <color=#800000>Freeze</color> on receive physical damage
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Harpy_Card //id 4325 - slotted on Garment
 +5% <color=#0000FF>Napalm Beat</color> damage
@@ -1379,8 +1358,6 @@ FLEE +15, CRIT +1
 
 ::Phendark_Card //id 4329 - slotted on Weapon
 Recover 5 SP/melee kill vs. Demi-Human
-Lose 5 SP/unequip
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.<i></color>
 
 ::Evil_Snake_Lord_Card //id 4330 - slotted on Headgear
 INT +3

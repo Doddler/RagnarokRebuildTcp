@@ -183,16 +183,16 @@ Item("Dumpling_Kid_Card") { OnValidate: return false; OnEquip: }
 Item("Goblin_Leader_Card") { OnEquip: AddDamageVsTag("Goblin", 30); } //should add 30% damage to all goblins
 Item("Goblin_Steamrider_Card") { OnEquip: AddStat(AddCritDamage, 10); AddStat(AddCritChanceRaceFormless, 7); }
 Item("Goblin_Archer_Card") { OnEquip: AddStat(AddCritDamage, 10); AddStat(AddCritChanceRaceUndead, 7); }
-Item("Sky_Deleter_Card") { OnValidate: return false; OnEquip: }
+Item("Sky_Deleter_Card") { OnEquip: AddStat(HpGainOnKill, 100); AddStat(AddHpRecoveryPercent, -100); }
 Item("Nine_Tail_Card") { OnEquip: AddStat(AddAgi, 2); if(Refine > 8) {AddStat(AddFlee, 20);} } //should add 20 flee if upgraded to +9
 Item("Firelock_Soldier_Card") { OnEquip: AddStat(AddStr, 2); if(Refine > 8) {AddStat(AddMaxHpPercent, 10); AddStat(AddMaxSpPercent, 10);} }
 Item("Grand_Peco_Card") { OnEquip: } //should auto-cast gloria when attacked
 Item("Grizzly_Card") { OnEquip: AddStat(WhenAttackedBlind, 30); }
 Item("Gryphon_Card") { OnEquip: AddStat(AddFlee, 2); AddStat(AddCrit, 7); } //should add a 1% chance for swordsman to proc bowling bash 5
 Item("Gullinbursti_Card") { OnEquip: AddStat(AddExpRaceAquatic, 10); AddStat(AddResistRaceAquatic, -20); }
-Item("Gig_Card") { OnValidate: return false; OnEquip: }
+Item("Gig_Card") { OnEquip: AddStat(SpGainOnKillRaceInsect, 5); }
 Item("Nightmare_Terror_Card") { OnEquip: AddStat(WhenAttackedCurse, 30); }
-Item("Nereid_Card") { OnEquip: } //should add recover 5 sp when killing animal race
+Item("Nereid_Card") { OnEquip: AddStat(SpGainOnKillRaceBeast, 5); }
 Item("Dark_Lord_Card") { OnEquip: } //should add 10% chance to autospell meteor storm 5 when taking damage
 Item("Dark_Illusion_Card") { OnEquip: AddStat(AddMaxHpPercent, -8); AddStat(AddMaxSpPercent, -8); AddStat(AddCastTime, -12); }
 Item("Dark_Frame_Card") { OnEquip: AddStat(WhenAttackedStone, 60); }
@@ -215,13 +215,13 @@ Item("Dullahan_Card") { OnEquip: AddStat(AddCritDamage, 10); AddStat(AddCritChan
 Item("Dryad_Card") { OnEquip: AddStat(AddResistElementEarth, 10); } //should add a chance to get yellow live when killing plants
 Item("Dragon_Tail_Card") { OnEquip: AddStat(AddAgi, 1); AddStat(AddFlee, 10); } //should increase double strafe and arrow shower damage by 5%
 Item("Dragon_Fly_Card") { OnEquip: AddStat(AddAgi, 1); } //should combo with wolf card
-Item("Driller_Card") { OnEquip: } //should add sp 5 sp recovery when killing dragons
+Item("Driller_Card") { OnEquip: AddStat(SpGainOnKillRaceDragon, 5); }
 Item("Disguise_Card") { OnEquip: AddStat(WhenAttackedSilence, 30); } //some silence shenanigans
-Item("Diabolic_Card") { OnEquip: } //should add sp 5 sp recovery when killing demon
+Item("Diabolic_Card") { OnEquip: AddStat(SpGainOnKillRaceDemon, 5); }
 Item("Vagabond_Wolf_Card") { OnEquip: AddStat(AddStr, 1); } //should combo with wolf card
 Item("Lava_Golem_Card") { OnEquip: AddDamageVsTag("Golem", 30); } //should add 30% damage vs golem
 Item("Rideword_Card") { OnEquip: AddStat(AddInt, 1); } //should add 1 int 1 mdef for acolytes
-Item("Raggler_Card") { OnEquip: AddStat(AddStr, 1); AddStat(AddVit, 1);}
+Item("Raggler_Card") { OnEquip: AddStat(AddStr, 1); AddStat(AddVit, 1); }
 Item("Raydric_Archer_Card") { OnEquip: } //should add chance to get box of grudge when killin demon
 Item("Leib_Olmai_Card") { OnEquip: AddStat(AddResistElementFire, 10); } //should add a chance to get red blood when killing animals
 Item("Wraith_Dead_Card") { OnEquip: AddStat(WhenAttackedCurse, 60); }
@@ -232,7 +232,7 @@ Item("Lude_Card") { OnValidate: return false; OnEquip: } //endure for novices
 Item("Rybio_Card") { OnEquip: } //stun resist
 Item("Leaf_Cat_Card") { OnEquip: AddStat(AddResistElementWater, 10); } //crystal blue from fish
 Item("Marin_Card") { OnEquip: } //add chance to get jellopy and giant jellopy on kill
-Item("Mastering_Card") { OnEquip: AddStat(AddLuk, 2); } //should combo with poring card
+Item("Mastering_Card") { OnEquip: AddStat(AddLuk, 1); }
 Item("Maya_Purple_Card") { OnEquip: } //should allwo you to see hidden
 Item("Merman_Card") { OnEquip: AddStat(AddHpRecoveryPercent, 10); AddStat(AddSpRecoveryPercent, 10); }
 Item("Megalith_Card") { OnEquip: if(Refine < 6) {AddStat(AddMDef, 7);} } //mdef when upgraded < +6
@@ -303,13 +303,13 @@ Item("Wind_Ghost_Card") { OnEquip: } //autospell jupitel thunder
 Item("Jing_Guai_Card") { OnValidate: return false; OnEquip: }
 Item("Eclipse_Card") { OnEquip: AddStat(AddVit, 1); }
 Item("Explosion_Card") { OnEquip: AddStat(AddExpRaceDragon, 10); AddStat(AddResistRaceDragon, -20); }
-Item("Injustice_Card") { OnEquip: AutoSpellWhenAttacked(SonicBlow, 1, 50, TargetEnemy); }
+Item("Injustice_Card") { OnEquip: AutoSpellOnAttack(SonicBlow, 1, 50, TargetEnemy); }
 Item("Incubus_Card") { OnEquip: AddStat(AddInt, -3); AddStat(AddSpRecoveryPercent, -20); AddStat(AddMaxSp, 150); }
 Item("Giant_Spider_Card") { OnEquip: AddStat(WhenAttackedPoison, 60); }
 Item("Giant_Hornet_Card") { OnValidate: return false; OnEquip: }
 Item("Zhu_Po_Long_Card") { OnEquip: AddStat(AddAgi, 1); AddStat(AddCrit, 3); }
 Item("Shellfish_Card") { OnEquip: AddStat(AddAttackPower, 5); } //should add +30% damage to crab
-Item("Zombie_Master_Card") { OnValidate: return false; OnEquip: } //sp recovery from undead
+Item("Zombie_Master_Card") { OnEquip: AddStat(SpGainOnKillRaceUndead, 5); }
 Item("Zombie_Prisoner_Card") { OnEquip: AddStat(AddExpRaceUndead, 10); AddStat(AddResistRaceUndead, -20); }
 Item("Lord_of_The_Dead_Card") { OnEquip: AddStat(OnMeleeAttackCurse, 50); AddStat(OnMeleeAttackPoison, 50); AddStat(OnMeleeAttackSilence, 50); AddStat(OnMeleeAttackBleeding, 50); AddStat(OnMeleeAttackStun, 50); }
 Item("Zealotus_Card") { OnEquip: AddStat(AddLuk, 2); } //autospell throw arrow and musical strike
@@ -327,7 +327,7 @@ Item("Carat_Card") { OnEquip: AddStat(AddInt, 2); if(Refine > 8) {AddStat(AddMax
 Item("Caterpillar_Card") { OnValidate: return false; OnEquip: }
 Item("Cat_O'_Nine_Tails_Card") { OnEquip: AddStat(AddMDef, 3); } //add 5% magic reflect
 Item("Kobold_Leader_Card") { OnEquip: AddDamageVsTag("Kobold", 30); } //+30% damage vs kobolds
-Item("Kobold_Archer_Card") { OnEquip: AddStat(AddCritDamage, 10); } //+7% crit vs plant
+Item("Kobold_Archer_Card") { OnEquip: AddStat(AddCritDamage, 10); AddStat(AddCritChanceRacePlant, 7); }
 Item("Cookie_Card") { OnEquip: AddStat(AddLuk, 2); } //+10% damage with holy light
 Item("Quve_Card") { OnValidate: return false; OnEquip: } //autospell inc agi for novices
 Item("Kraben_Card") { OnEquip: AddStat(WhenAttackedBlind, 60); }
@@ -342,8 +342,8 @@ Item("Giant_Whisper_Card") { OnEquip: AddStat(AddFlee, 10); } //should give bonu
 Item("Tamruan_Card") { OnEquip: AddStat(AddDef, 2); } //more damage with shield charge/boomerang
 Item("Turtle_General_Card") { OnEquip: AddStat(AddAttackSpecialNormal, 20); AddStat(AddAttackSpecialBoss, 20); AutoSpellOnAttack(MagnumBreak, 10, 30, TargetSelf); }
 Item("Toad_Card") { OnEquip: AddStat(PerfectDodge, 1); } //should combo with... roda frog?
-Item("Beetle_King_Card") { OnValidate: return false; OnEquip: } //sp from fish
-Item("Tri_Joint_Card") { OnEquip:  } //sp on kill from formless
+Item("Beetle_King_Card") { OnEquip: AddStat(SpGainOnKillRaceAquatic, 5); }
+Item("Tri_Joint_Card") { OnEquip: AddStat(SpGainOnKillRaceFormless, 5); }
 Item("Parasite_Card") { OnEquip: AddStat(AddDef, 1); AddStat(AddResistRaceFormless, 5); }
 Item("Panzer_Goblin_Card") { OnEquip: AddStat(AddCritDamage, 10); AddStat(AddCritChanceRaceDemon, 7); }
 Item("Permeter_Card") { OnEquip: AddStat(AddResistElementUndead, 15); AddStat(AddResistElementDark, 15); }
@@ -358,13 +358,13 @@ Item("Freezer_Card") { OnEquip: AddStat(AddMaxHp, 300); } //bonus bash damage
 Item("Bloody_Knight_Card") { OnEquip: } //autospell meteor storm
 Item("Hylozoist_Card") { OnValidate: return false; OnEquip: } //monster class change
 Item("High_Orc_Card") { OnEquip: AddStat(AddDef, 1); } //melee reflect
-Item("Hati_Baby_Card") { OnEquip: AutoSpellWhenAttacked(FrostDiver, 3, 50, TargetEnemy); }
+Item("Hati_Baby_Card") { OnEquip: AutoSpellOnAttack(FrostDiver, 3, 50, TargetEnemy); }
 Item("Hati_Card") { OnEquip: AddStat(WhenAttackedFreeze, 500); }
 Item("Harpy_Card") { OnEquip: AddStat(AddResistElementNeutral, 15); } //bonus napalm beat damage
 Item("Sea_Otter_Card") { OnEquip: } //sushi/sashimi
 Item("Bloody_Butterfly_Card") { OnValidate: return false; OnEquip: } //discount phen
 Item("Yao_Jun_Card") { OnEquip: AddStat(AddFlee, 15); AddStat(AddCrit, 1); }
-Item("Phendark_Card") { OnEquip: } //sp from human kills
+Item("Phendark_Card") { OnEquip: AddStat(SpGainOnKillRaceDemihuman, 5); }
 Item("Evil_Snake_Lord_Card") { OnEquip: AddStat(ResistBlindStatus, 100); AddStat(ResistCurseStatus, 100); AddStat(AddInt, 3); }
 Item("Heater_Card") { OnEquip: AddStat(AddCrit, 3); } //should add 3 perfect dodge for swordsman
 Item("Waste_Stove_Card") { OnEquip: AddStat(AddAttackPower, 5); AddStat(AddInt, 1); }
@@ -434,7 +434,7 @@ Item("Thanatos_Maero_Card") { OnValidate: return false; OnEquip: }
 Item("Thanatos_Odium_Card") { OnValidate: return false; OnEquip: }
 Item("Thanatos_Despero_Card") { OnValidate: return false; OnEquip: }
 Item("Thanatos_Dolor_Card") { OnValidate: return false; OnEquip: }
-Item("Thanatos_Phantom_Card") { OnValidate: return false; OnEquip: }
+Item("Thanatos_Phantom_Card") { OnEquip: AddStat(ReverseDefense, 1); /* SubSPAmount_Attack User 1 */ AddStat(AddDef, -30); AddStat(AddFlee, -30); }
 Item("Aliza_Card") { OnValidate: return false; OnEquip: }
 Item("Alicel_Card") { OnEquip: AddStat(AddFlee, 10); AddStat(AddDef, -5); }
 Item("Aliot_Card") { OnValidate: return false; OnEquip: }

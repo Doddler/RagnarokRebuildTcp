@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using CsvHelper;
 using CsvHelper.Configuration;
 using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore.Storage.Json;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
@@ -22,6 +23,7 @@ using RoRebuildServer.Data.Player;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Monsters;
 using RoRebuildServer.Logging;
+using RoRebuildServer.Networking.PacketHandlers.NPC;
 using RoWikiGenerator.Pages;
 
 namespace RoWikiGenerator.Generators;
@@ -29,7 +31,9 @@ namespace RoWikiGenerator.Generators;
 public record ItemSource(
     ItemInfo Item,
     Dictionary<string, List<MonsterDropData.MonsterDropEntry>> DropsFromMonsters,
-    Dictionary<string, List<string>> NpcSales);
+    Dictionary<string, string> NpcSales,
+    Dictionary<string, string> NpcTrades,
+    List<string> BoxSources);
 
 internal class FakeNpc : Npc
 {
@@ -50,18 +54,34 @@ public class Items
     public static Dictionary<int, ItemSource> AvailableItems = new();
     public static Dictionary<string, string> ItemDescLookup = new();
     public static Dictionary<string, string> SharedIcons = new();
+    public static Dictionary<int, List<string>> ItemUses = new();
+
+
+    public class ItemModel
+    {
+        public Dictionary<string, string> CategoryLookup;
+        public Dictionary<string, List<object>> ItemByCategory;
+    }
+
+    public record WeaponEntry(ItemData weapon, ItemSource source, CsvItemWeapon csvData, PlayerWeaponClass weaponClass, string description, string availableJobs);
+    public record UseableItemEntry(ItemData item, ItemSource source, CsvItemUseable csvData, string description, List<string> itemUsage);
+    public record RegularItemEntry(ItemData item, ItemSource source, CsvItemRegular csvData, string description, List<string> itemUsage);
+    public record EquipmentEntry(ItemData equipment, ItemSource source, CsvItemEquipment csvData, string equipPosition, string description, string availableJobs);
+
+    private static List<PlayerWeaponClass>? weaponClasses;
+    private static Dictionary<string, string> equipGroupDescriptions = new();
+    
+    private static ItemSource NewItemSource(ItemInfo info) => new(info, new(), new(), new(), new());
 
     public static void RegisterItemSource(MonsterDatabaseInfo monster, MonsterDropData.MonsterDropEntry dropEntry)
     {
         var data = DataManager.GetItemInfoById(dropEntry.Id);
-        if (data == null)
+        if (data == null || monster.Code == "RANDGRIS" || monster.Code == "ICE_TITAN")
             return;
 
         if (!AvailableItems.TryGetValue(dropEntry.Id, out var itemEntry))
         {
-            var source = new ItemSource(data,
-                new Dictionary<string, List<MonsterDropData.MonsterDropEntry>>(),
-                new Dictionary<string, List<string>>());
+            var source = NewItemSource(data);
 
             source.DropsFromMonsters.Add(monster.Code, new List<MonsterDropData.MonsterDropEntry>() { dropEntry });
 
@@ -80,21 +100,64 @@ public class Items
 
     }
 
+    public static void LoadItemSourceFromBoxes()
+    {
+        foreach (var (boxType, itemList) in DataManager.ItemBoxSummonList)
+        {
+
+            if (boxType == "Gift Box_1" || boxType == "Gift Box_2" || boxType == "Gift Box_3" || boxType == "Gift Box_4" || boxType == "Cookie_Bag")
+                continue;
+
+            var boxName = boxType switch
+            {
+                "Old_Violet_Box" => "Old Purple Box",
+                "Gift_Box_1" => "Gift Box",
+                "Gift_Box_2" => "Gift Box",
+                "Gift_Box_3" => "Gift Box",
+                "Gift_Box_4" => "Gift Box",
+                _ => boxType.Replace("_", " ")
+            };
+
+
+            foreach (var item in itemList)
+            {
+                var data = DataManager.GetItemInfoById(item);
+                if (data == null)
+                    continue;
+
+                if (!AvailableItems.TryGetValue(item, out var itemEntry))
+                {
+                    var source = NewItemSource(data);
+
+                    source.BoxSources.Add(boxName);
+
+                    AvailableItems.Add(item, source);
+                    continue;
+                }
+
+                if(!itemEntry.BoxSources.Contains(boxName))
+                    itemEntry.BoxSources.Add(boxName);
+            }
+        }
+    }
+
     public static void LoadItemSourceFromNpcs()
     {
         foreach (var instance in WikiData.World.Instances)
         {
             foreach (var map in instance.Maps)
             {
-                foreach (var chunk in map.Chunks)
-                {
-                    foreach (var entity in chunk.AllEntities)
-                    {
-                        if (!entity.TryGet<Npc>(out var npc))
-                            continue;
+                foreach (var entity in instance.Entities)
 
-                        if (npc.ItemsForSale == null || npc.ItemsForSale.Count == 0)
-                            continue;
+                    //foreach (var chunk in map.Chunks)
+                    //{
+                    //    foreach (var entity in chunk.AllEntities)
+                {
+                    if (!entity.TryGet<Npc>(out var npc))
+                        continue;
+
+                    if (npc.ItemsForSale != null && npc.ItemsForSale.Count > 0)
+                    {
 
                         foreach (var (item, price) in npc.ItemsForSale)
                         {
@@ -103,24 +166,63 @@ public class Items
                                 continue;
 
                             var npcName = $"{npc.Name} ({npc.Character.Map.Name})";
+                            if(npc.Character.Map.Name == "prt_fild08")
+                                npcName = $"????? ({npc.Character.Map.Name})";
 
                             if (!AvailableItems.TryGetValue(item, out var itemEntry))
                             {
-                                var source = new ItemSource(data,
-                                    new Dictionary<string, List<MonsterDropData.MonsterDropEntry>>(),
-                                    new Dictionary<string, List<string>>());
+                                var source = NewItemSource(data);
 
-                                source.NpcSales.Add(npcName, new List<string> { $"{price:N0}z" });
+                                source.NpcSales.Add(npcName, $"{price:N0}z");
 
                                 AvailableItems.Add(item, source);
                                 continue;
                             }
 
-                            if (itemEntry.NpcSales.TryGetValue(npcName, out var saleList))
-                                saleList.Add($"{price:N0}z");
-                            else
-                                itemEntry.NpcSales.Add(npcName, new List<string> { $"{price:N0}z" });
+                            itemEntry.NpcSales[npcName] = $"{price:N0}z";
                         }
+                    }
+
+                    if (npc.TradeItemSets != null && npc.TradeItemSets.Count > 0)
+                    {
+                        foreach (var (setName, set) in npc.TradeItemSets)
+                        {
+                            foreach (var trade in set)
+                            {
+                                var item = trade.ItemId;
+                                var data = DataManager.GetItemInfoById(item);
+                                if (data == null)
+                                    continue;
+
+                                var npcName = $"????? ({npc.Character.Map.Name})";
+
+                                foreach (var (req, _) in trade.ItemRequirements)
+                                {
+                                    if (!ItemUses.TryGetValue(req, out var useList))
+                                    {
+                                        useList = new List<string>();
+                                        ItemUses.Add(req, useList);
+                                    }
+                                    if(!useList.Contains(npcName))
+                                        useList.Add(npcName);
+                                }
+                                
+                                if (!AvailableItems.TryGetValue(item, out var itemEntry))
+                                {
+                                    var source = NewItemSource(data);
+
+                                    source.NpcTrades.Add(npcName, "");
+                                    //source.NpcSales.Add(npcName, new List<string> { $"{price:N0}z" });
+
+                                    AvailableItems.Add(item, source);
+                                    continue;
+                                }
+
+                                itemEntry.NpcTrades[npcName] = "";
+                            }
+                        }
+                        //    }
+                        //}
                     }
                 }
             }
@@ -257,18 +359,6 @@ public class Items
 
     }
 
-    public class ItemModel
-    {
-        public Dictionary<string, string> CategoryLookup;
-        public Dictionary<string, List<object>> ItemByCategory;
-    }
-
-
-    public record WeaponEntry(ItemData weapon, ItemSource source, CsvItemWeapon csvData, PlayerWeaponClass weaponClass, string description, string availableJobs);
-    public record EquipmentEntry(ItemData equipment, ItemSource source, CsvItemEquipment csvData, string equipPosition, string description, string availableJobs);
-
-    private static List<PlayerWeaponClass>? weaponClasses;
-    private static Dictionary<string, string> equipGroupDescriptions = new();
 
 
     private static void BuildJobMatrix()
@@ -427,7 +517,7 @@ public class Items
                 };
                 //type += $" ({headPosition})";
             }
-            
+
             itemsByCategory[type].Add(new EquipmentEntry(item, itemSource, entry, headPos, desc, equipGroup));
         }
 
@@ -477,8 +567,8 @@ public class Items
         //categoryLookup.Add("2HRod", "Two-Handed Rods");
         categoryLookup.Add("Bow", "Bows");
 
-        var itemList = new ItemDataList();
-        itemList.Items = new List<ItemData>();
+        //var itemList = new ItemDataList();
+        //itemList.Items = new List<ItemData>();
         var descLookup = new Dictionary<string, string>();
         var desc = "";
 
@@ -507,7 +597,7 @@ public class Items
                 Sprite = entry.Sprite,
                 Position = entry.Position == WeaponPosition.MainHand ? EquipPosition.MainHand : EquipPosition.BothHands
             };
-            itemList.Items.Add(item);
+            //itemList.Items.Add(item);
 
             //fill in item description data
             if (!ItemDescLookup.TryGetValue(item.Code, out var curDesc))
@@ -556,6 +646,129 @@ public class Items
         var monster = DataManager.MonsterCodeLookup[monster1.Key];
         return monster.Level;
     }
+
+    public static async Task<string> GetUsableItemPage()
+    {
+        var itemsByCategory = new Dictionary<string, List<object>>();
+        var items = new List<UseableItemEntry>();
+
+        var descLookup = new Dictionary<string, string>();
+        var desc = "";
+
+        foreach (var entry in GetCsvRows<CsvItemUseable>("ItemsUsable.csv"))
+        {
+            if (!AvailableItems.TryGetValue(entry.Id, out var itemSource))
+                continue;
+
+            var itemData = DataManager.ItemList[entry.Id];
+            var item = new ItemData()
+            {
+                Code = entry.Code,
+                Name = entry.Name,
+                Id = entry.Id,
+                IsUnique = false,
+                ItemClass = ItemClass.Useable,
+                UseType = entry.UseMode,
+                Price = itemData.Price,
+                SellPrice = itemData.SellToStoreValue,
+                Weight = entry.Weight,
+                Sprite = entry.Sprite,
+            };
+
+            //fill in item description data
+            if (!ItemDescLookup.TryGetValue(item.Code, out var curDesc))
+            {
+                desc = $"<color=#080808><i>An item with unknown properties.</i></color>";
+            }
+            else
+                desc = curDesc;
+            //desc += $"<line-height=120%>\n</line-height=100%>Weight: <color=#777777>{item.Weight / 10f:0.#}</color>";
+            descLookup.Add(item.Code, desc.Replace("\n", "<br>"));
+
+            if (!ItemUses.TryGetValue(item.Id, out var uses))
+                uses = new();
+            items.Add(new UseableItemEntry(item, itemSource, entry, desc, uses));
+        }
+
+        var categoryLookup = new Dictionary<string, string>();
+
+        categoryLookup.Add("Consumeables", "Consumable Items");
+        itemsByCategory.Add("Consumeables", items.OrderBy(i => i.csvData.Id).Select(i => (object)i).ToList());
+
+        var itemModel = new ItemModel()
+        {
+            CategoryLookup = categoryLookup,
+            ItemByCategory = itemsByCategory
+        };
+
+
+        return await Program.RenderPage<ItemModel, ItemsUseable>(itemModel);
+    }
+
+
+    public static async Task<string> GetEtcItemPage()
+    {
+        var itemsByCategory = new Dictionary<string, List<object>>();
+        var items = new List<RegularItemEntry>();
+
+        var descLookup = new Dictionary<string, string>();
+        var desc = "";
+
+        foreach (var entry in GetCsvRows<CsvItemRegular>("ItemsRegular.csv"))
+        {
+            if (!AvailableItems.TryGetValue(entry.Id, out var itemSource))
+                continue;
+
+            var itemData = DataManager.ItemList[entry.Id];
+            var item = new ItemData()
+            {
+                Code = entry.Code,
+                Name = entry.Name,
+                Id = entry.Id,
+                IsUnique = false,
+                ItemClass = ItemClass.Etc,
+                UseType = ItemUseType.NotUsable,
+                Price = itemData.Price,
+                SellPrice = itemData.SellToStoreValue,
+                Weight = entry.Weight,
+                Sprite = entry.Sprite,
+            };
+
+            //fill in item description data
+            if (!ItemDescLookup.TryGetValue(item.Code, out var curDesc))
+            {
+                desc = $"<color=#080808><i>An item with unknown properties.</i></color>";
+            }
+            else
+                desc = curDesc;
+            //desc += $"<line-height=120%>\n</line-height=100%>Weight: <color=#777777>{item.Weight / 10f:0.#}</color>";
+            descLookup.Add(item.Code, desc.Replace("\n", "<br>"));
+
+            if (!ItemUses.TryGetValue(item.Id, out var uses))
+                uses = new();
+            items.Add(new RegularItemEntry(item, itemSource, entry, desc, uses));
+        }
+
+        var categoryLookup = new Dictionary<string, string>();
+
+        categoryLookup.Add("Catalysts", "Skill Catalysts");
+        categoryLookup.Add("Refine", "Refining Items");
+        categoryLookup.Add("Normal", "Regular Items");
+        
+        itemsByCategory.Add("Refine", items.Where(i => i.csvData.Usage.Contains("Refine")).OrderBy(i => i.csvData.Id).Select(i => (object)i).ToList());
+        itemsByCategory.Add("Catalysts", items.Where(i => i.csvData.Usage.Contains("Catalyst")).OrderBy(i => i.csvData.Id).Select(i => (object)i).ToList());
+        itemsByCategory.Add("Normal", items.Where(i => !i.csvData.Usage.Contains("Refine") && !i.csvData.Usage.Contains("Catalyst")).OrderBy(i => i.csvData.Id).Select(i => (object)i).ToList());
+
+        var itemModel = new ItemModel()
+        {
+            CategoryLookup = categoryLookup,
+            ItemByCategory = itemsByCategory
+        };
+
+
+        return await Program.RenderPage<ItemModel, ItemsEtc>(itemModel);
+    }
+
 
     public static async Task<string> GetCardPage()
     {
@@ -639,6 +852,9 @@ public class Items
         foreach (var item in items)
         {
             var card = DataManager.CardInfo[item.Id];
+            if (AvailableItems[item.Id].DropsFromMonsters.Count <= 0)
+                continue;
+
             var lvl = GetCardDropLevel(item);
 
             switch (card.EquipPosition)

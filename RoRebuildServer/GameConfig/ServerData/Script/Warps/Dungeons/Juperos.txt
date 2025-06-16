@@ -1,0 +1,5 @@
+
+HiddenWarp("yuno_fild07", "jupe_entrance", 207, 176, 2, 2, "jupe_cave", 143, 52);
+Warp("jupe_cave", "jupe_entrance#2", 29, 52, 2, 2, "juperos_01", 54, 246);
+HiddenWarp("jupe_cave", "jupe_entrance#2", 147, 52, 2, 2, "yuno_fild07", 234, 171);
+Warp("juperos_01", "jupe_exit", 51, 249, 2, 2, "jupe_cave", 36, 51);

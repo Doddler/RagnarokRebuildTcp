@@ -95,7 +95,7 @@ namespace Assets.Scripts.PlayerControl
                 {
                     var go = new GameObject();
                     var cart = go.AddComponent<CartFollower>();
-                    cart.AttachCart(controllable);
+                    cart.AttachCart(controllable, 0);
                     controllable.FollowerObject = go;
                     break;
                 }

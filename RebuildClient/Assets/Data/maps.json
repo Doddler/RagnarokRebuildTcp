@@ -218,6 +218,13 @@
       "Music": "49.mp3"
     },
     {
+      "Code": "jupe_cave",
+      "Name": "Juperos Cave",
+      "MapMode": 4,
+      "CanMemo": false,
+      "Music": "89.mp3"
+    },
+    {
       "Code": "juperos_01",
       "Name": "Juperos 1F",
       "MapMode": 2,

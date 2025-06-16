@@ -1,19 +1,12 @@
-﻿using System;
-using System.Diagnostics;
-using System.Numerics;
-using System.Threading;
-using Antlr4.Runtime.Tree.Xpath;
-using CsvHelper;
+﻿using System.Diagnostics;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
-using RebuildSharedData.Util;
 using RebuildZoneServer.Networking;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.Database;
-using RoRebuildServer.Database.Domain;
 using RoRebuildServer.Database.Requests;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
@@ -29,7 +22,6 @@ using RoRebuildServer.Simulation.Parties;
 using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.Util;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -79,10 +71,14 @@ public class Player : IEntityAutoReset
     public int PartyMemberId;
     public bool HasEnteredServer;
 
+    public PlayerFollower PlayerFollower;
+    public bool HasCart => (PlayerFollower & PlayerFollower.AnyCart) > 0;
+
     public StatusTriggerFlags OnMeleeAttackStatusFlags;
     public StatusTriggerFlags OnRangedAttackStatusFlags;
     public StatusTriggerFlags OnMeleeAttackStatusSelfFlags;
     public StatusTriggerFlags WhenAttackedStatusFlags;
+    public AttackEffectTriggers OnAttackTriggerFlags;
 
     [EntityIgnoreNullCheck] public static Action<Player>? OnLevelUpEvent;
 
@@ -242,6 +238,7 @@ public class Player : IEntityAutoReset
         jobStatBonuses = null;
         SpecialState = SpecialPlayerActionState.None;
         SpecialStateTarget = Position.Invalid;
+        PlayerFollower = PlayerFollower.None;
 
         if(AttackVersusTag != null)
             AttackVersusTag.Clear();
@@ -796,25 +793,56 @@ public class Player : IEntityAutoReset
         OnRangedAttackStatusFlags = 0;
         OnMeleeAttackStatusSelfFlags = 0;
         WhenAttackedStatusFlags = 0;
+        OnAttackTriggerFlags = 0;
 
-        var statusFlagCount = (int)(CharacterStat.OnMeleeAttackLast - CharacterStat.OnMeleeAttackFirst);
-
-        for (var i = 0; i < statusFlagCount; i++)
+        foreach (var (effect, val) in PlayerStatData)
         {
-            if (GetStat(CharacterStat.OnMeleeAttackFirst + i) > 0)
-                OnMeleeAttackStatusFlags |= (StatusTriggerFlags)(1 << i);
+            if (val == 0)
+                continue;
 
-            if (GetStat(CharacterStat.OnRangedAttackFirst + i) > 0)
-                OnRangedAttackStatusFlags |= (StatusTriggerFlags)(1 << i);
-
-            if (GetStat(CharacterStat.OnMeleeStatusSelfFirst + i) > 0)
-                OnMeleeAttackStatusSelfFlags |= (StatusTriggerFlags)(1 << i);
-
-            if (GetStat(CharacterStat.WhenAttackedFirst + i) > 0)
-                WhenAttackedStatusFlags |= (StatusTriggerFlags)(1 << i);
+            switch (effect)
+            {
+                case >= CharacterStat.OnMeleeAttackFirst and <= CharacterStat.OnMeleeAttackLast:
+                    OnMeleeAttackStatusFlags |= (StatusTriggerFlags)(1 << (CharacterStat.OnMeleeAttackLast - effect));
+                    break;
+                case >= CharacterStat.OnRangedAttackFirst and <= CharacterStat.OnRangedAttackLast:
+                    OnMeleeAttackStatusFlags |= (StatusTriggerFlags)(1 << (CharacterStat.OnRangedAttackLast - effect));
+                    break;
+                case >= CharacterStat.OnMeleeStatusSelfFirst and <= CharacterStat.OnMeleeStatusSelfLast:
+                    OnMeleeAttackStatusFlags |= (StatusTriggerFlags)(1 << (CharacterStat.OnMeleeStatusSelfLast - effect));
+                    break;
+                case >= CharacterStat.WhenAttackedFirst and <= CharacterStat.WhenAttackedLast:
+                    OnMeleeAttackStatusFlags |= (StatusTriggerFlags)(1 << (CharacterStat.WhenAttackedLast - effect));
+                    break;
+                case CharacterStat.HpDrainChance:
+                    OnAttackTriggerFlags |= AttackEffectTriggers.HpDrain;
+                    break;
+                case CharacterStat.SpDrainChance:
+                    OnAttackTriggerFlags |= AttackEffectTriggers.SpDrain;
+                    break;
+                case CharacterStat.HpGainOnAttack:
+                case >= CharacterStat.HpGainOnAttackRaceFormless and <= CharacterStat.HpGainOnAttackRaceUndead:
+                    OnAttackTriggerFlags |= AttackEffectTriggers.HpOnAttack;
+                    break;
+                case CharacterStat.SpGainOnAttack:
+                case >= CharacterStat.SpGainOnAttackRaceFormless and <= CharacterStat.SpGainOnAttackRaceUndead:
+                    OnAttackTriggerFlags |= AttackEffectTriggers.SpOnAttack;
+                    break;
+                case CharacterStat.HpGainOnKill:
+                case >= CharacterStat.HpGainOnKillRaceFormless and <= CharacterStat.HpGainOnKillRaceUndead:
+                    OnAttackTriggerFlags |= AttackEffectTriggers.HpOnKill;
+                    break;
+                case CharacterStat.SpGainOnKill:
+                case >= CharacterStat.SpGainOnKillRaceFormless and <= CharacterStat.SpGainOnKillRaceUndead:
+                    OnAttackTriggerFlags |= AttackEffectTriggers.SpOnKill;
+                    break;
+                case CharacterStat.KnockOutOnAttack:
+                case >= CharacterStat.KnockOutOnAttackRaceFormless and <= CharacterStat.KnockOutOnAttackRaceUndead:
+                    OnAttackTriggerFlags |= AttackEffectTriggers.KillOnAttack;
+                    break;
+            }
         }
-
-
+        
         //update skill points! Ideally, this only should happen when you change your skills, but, well...
         var jobLevel = GetData(PlayerStat.JobLevel);
         var skillPointEarned = job == 0 ? jobLevel - 1 : jobLevel + 9 - 1;

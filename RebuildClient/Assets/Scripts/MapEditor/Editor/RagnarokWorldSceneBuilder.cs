@@ -368,6 +368,8 @@ namespace Assets.Scripts.MapEditor.Editor
             effectContainer.transform.SetParent(baseObject.transform, false);
             EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
 
+            SceneEffectCullingManager culledSpawner = null;
+
             foreach (var effect in world.Effects)
             {
                 if (effect.Id == 44) //chimney smoke
@@ -493,19 +495,56 @@ namespace Assets.Scripts.MapEditor.Editor
 
                     continue;
                 }
+                
+                
+                if (effect.Id == 231 || effect.Id == 247 || effect.Id == 259 || effect.Id == 260) //MapPillar and MapPillar2
+                {
+                    if (culledSpawner == null)
+                        culledSpawner = effectContainer.AddComponent<SceneEffectCullingManager>();
+                    
+                    var obj = new GameObject(effect.Name);
+                    var spawner = obj.AddComponent<EffectSpawner>();
+                    spawner.EffectType = EffectType.MapPillar;
+                    spawner.Variant = 0;
+                    spawner.IsRemotelyManaged = true;
+                    spawner.gameObject.SetActive(false);
+                    spawner.Size = 8;
+                    spawner.EffectCenterOffset = new Vector3(0f, 6f, 0f);
+                    if (effect.Id == 247)
+                        spawner.Variant = 1;
+                    if (effect.Id == 259)
+                        spawner.Variant = 2;
+                    if (effect.Id == 260)
+                        spawner.Variant = 3;
+                    obj.transform.SetParent(effectContainer.transform, false);
+                    obj.transform.localPosition = new Vector3(effect.Position.x / 5, -effect.Position.y / 5, effect.Position.z / 5);
+                    culledSpawner.Spawners.Add(spawner);
+                    // obj.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+
+                    continue;
+                }
 
                 if (effect.Id == 307 || effect.Id == 322 || effect.Id == 323)
                 {
+                    if (culledSpawner == null)
+                        culledSpawner = effectContainer.AddComponent<SceneEffectCullingManager>();
+
+                    
                     var obj = new GameObject(effect.Name);
                     var spawner = obj.AddComponent<EffectSpawner>();
                     spawner.EffectType = EffectType.ForestLightEffect;
                     spawner.Variant = 0;
+                    spawner.IsRemotelyManaged = true;
+                    spawner.gameObject.SetActive(false);
                     if (effect.Id == 322)
                         spawner.Variant = 1;
                     if (effect.Id == 323)
                         spawner.Variant = 2;
+                    spawner.EffectCenterOffset = new Vector3(0, 15f, 0f);
+                    spawner.Size = 15f;
                     obj.transform.SetParent(effectContainer.transform, false);
                     obj.transform.localPosition = new Vector3(effect.Position.x / 5, -effect.Position.y / 5, effect.Position.z / 5);
+                    culledSpawner.Spawners.Add(spawner);
                     // obj.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
                     continue;
@@ -675,7 +714,7 @@ namespace Assets.Scripts.MapEditor.Editor
                     var child = oldBox.transform.GetChild(i);
                     if (child.name == "effects")
                     {
-                        Debug.Log("AAAAA FOUND YOU");
+                        Debug.Log("Removing existing effects container");
                         Debug.Log(child);
                         GameObject.DestroyImmediate(child.gameObject);
                     }

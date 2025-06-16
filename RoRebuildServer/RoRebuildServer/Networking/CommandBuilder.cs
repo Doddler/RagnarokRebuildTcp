@@ -239,6 +239,8 @@ public static class CommandBuilder
                 else
                     packet.Write((byte)0);
 
+                packet.Write((byte)player.PlayerFollower);
+
                 //packet.Write(isSelf);
             }
             else
@@ -1631,6 +1633,25 @@ public static class CommandBuilder
                     AddRecipient(partyMember.Connection);
             }
         }
+        NetworkManager.SendMessageMulti(packet, recipients);
+        ClearRecipients();
+    }
+
+    public static void UpdatePlayerFollowerStateAutoVis(Player p)
+    {
+        if (p.Character.Map == null)
+            return;
+
+        p.Character.Map.AddVisiblePlayersAsPacketRecipients(p.Character);
+
+        if (!HasRecipients())
+            return;
+
+        var packet = NetworkManager.StartPacket(PacketType.ChangeFollower, 12);
+
+        packet.Write(p.Character.Id);
+        packet.Write((byte)p.PlayerFollower);
+
         NetworkManager.SendMessageMulti(packet, recipients);
         ClearRecipients();
     }

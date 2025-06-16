@@ -125,6 +125,62 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
         }
         
         
+        //used in main elemental casting
+        public static void UpdateMapPillar(RagnarokPrimitive primitive)
+        {
+            var step = primitive.Step;
+
+            var mid = (EffectPart.SegmentCount - 1) / 2;
+            var m2 = 90 / mid;
+            
+            for (var ec = 0; ec < primitive.Parts.Length; ec++)
+            {
+                //if (Mathf.Approximately(size, 3f) && ec < 3)
+                //    ec = 3;
+
+                var p = primitive.Parts[ec];
+
+                if (!p.Active)
+                    continue;
+
+                if (primitive.IsStepFrame)
+                    p.Step++;
+
+                p.Angle += 60 * Time.deltaTime;
+
+                if (p.Step >= 800)
+                {
+                    p.MaxHeight -= 60f * Time.deltaTime;
+                    if (p.MaxHeight < 0)
+                        p.MaxHeight = 0;
+                }
+
+                for (var i = 0; i < EffectPart.SegmentCount; i++)
+                {
+                    if (p.Flags[i] == 0)
+                    {
+                        if (p.Step < 200)
+                        {
+                            p.Heights[i] = 0;
+                            continue;
+                        }
+
+                        if (p.Step <= 290)
+                            p.Heights[i] = p.MaxHeight * Mathf.Sin((p.Step - 200) * Mathf.Deg2Rad);
+                        else
+                            p.Heights[i] = p.MaxHeight;
+                        
+                        if (p.Heights[i] < 0)
+                            p.Heights[i] = 0;
+                    }
+                }
+            }
+
+            primitive.IsDirty = true;
+        }
+        
+        
+        
         public static void Render3DCasting(RagnarokPrimitive primitive, MeshBuilder mb)
         {
             mb.Clear();
@@ -151,7 +207,7 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
                     if (angle > 360)
                         angle -= 360;
 
-                    if (p.CoverAngle == 360)
+                    if (p.CoverAngle >= 359.9f)
                     {
                         if (pos == EffectPart.SegmentCount - 1)
                             angle = p.Angle;

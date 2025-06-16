@@ -405,25 +405,26 @@ event GrandThunderObject {
 	local delay = Param1;
 	StartTimer();
 	SetTimer(2000-delay);
-	StartCastCircle(SelfPosition, 2, delay, false);
+	StartCastCircle(SelfPosition, 2, delay, Param2 == 1);
 OnTimer 2000:
 	AreaSkillIndirect(SelfPosition, ThunderStorm, 10);
 	EndEvent();
 }
 
 event GrandThunderstorm {
+	local allyMode = Param1;
 	StartTimer();
-OnTimer 500: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 2000);
-OnTimer 600: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1950);
-OnTimer 700: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1900);
-OnTimer 800: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1850);
-OnTimer 900: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1800);
-OnTimer 1000: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1750);
-OnTimer 1100: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1700);
-OnTimer 1200: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1650);
-OnTimer 1300: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1600);
-OnTimer 1400: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1550);
-OnTimer 1500: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1500);
+OnTimer 500: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 2000, allyMode);
+OnTimer 600: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1950, allyMode);
+OnTimer 700: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1900, allyMode);
+OnTimer 800: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1850, allyMode);
+OnTimer 900: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1800, allyMode);
+OnTimer 1000: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1750, allyMode);
+OnTimer 1100: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1700, allyMode);
+OnTimer 1200: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1650, allyMode);
+OnTimer 1300: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1600, allyMode);
+OnTimer 1400: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1550, allyMode);
+OnTimer 1500: CreateEvent("GrandThunderObject", RandomFreeTileInRange(12), 1500, allyMode);
 OnTimer 4200: EndEvent();
 }
 

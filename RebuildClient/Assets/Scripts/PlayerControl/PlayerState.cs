@@ -45,6 +45,7 @@ namespace Assets.Scripts.PlayerControl
         public HashSet<int> EquippedBagIdHashes = new();
         public MapMemoLocation[] MemoLocations = new MapMemoLocation[4];
         public bool IsInParty;
+        public bool HasCart;
         public int PartyId;
         public int PartyLeader = -1;
         public int PartyMemberId;

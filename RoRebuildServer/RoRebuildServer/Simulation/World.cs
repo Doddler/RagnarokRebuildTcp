@@ -67,6 +67,8 @@ public class World
     private readonly object aoeLock = new();
     private readonly Lock entityLock = new();
 
+    public CancellationTokenSource CancellationSource;
+    
     public ConcurrentStack<Action> MainThreadActions = new();
 
     public bool TryFindPartyById(int id, [NotNullWhen(true)] out Party? party) => partyLookup.TryGetValue(id, out party);
@@ -74,10 +76,13 @@ public class World
     public bool RemoveParty(Party party) => partyLookup.TryRemove(party.PartyId, out _);
     public bool TryFindPlayerByGuid(Guid id, out Entity entity) => playerList.TryGetValue(id, out entity) && entity.IsAlive();
     public bool TryFindPlayerByName(string name, out Entity entity) => playerNameLookup.TryGetValue(name, out entity) && entity.IsAlive();
+
+    public CancellationToken GetCancellationToken => CancellationSource.Token;
     
     public World()
     {
         Instance = this;
+        CancellationSource = new CancellationTokenSource();
 
         Time.ResetDiagnosticsTimer();
         EntityManager.Initialize(initialEntityCount);

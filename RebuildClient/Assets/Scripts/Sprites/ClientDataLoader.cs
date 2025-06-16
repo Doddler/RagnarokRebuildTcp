@@ -8,6 +8,7 @@ using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Effects.EffectHandlers.Environment;
 using Assets.Scripts.Effects.EffectHandlers.General;
 using Assets.Scripts.Effects.EffectHandlers.Skills;
+using Assets.Scripts.Misc;
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using Assets.Scripts.PlayerControl;
@@ -611,6 +612,23 @@ namespace Assets.Scripts.Sprites
             if (param.CharacterStatusEffects != null)
                 foreach (var (s, duration) in param.CharacterStatusEffects)
                     StatusEffectState.AddStatusToTarget(control, s, true, duration);
+
+            if ((param.Follower & PlayerFollower.AnyCart) > 0)
+            {
+                var cartStyle = param.Follower switch
+                {
+                    PlayerFollower.Cart0 => 0,
+                    PlayerFollower.Cart1 => 1,
+                    PlayerFollower.Cart2 => 2,
+                    PlayerFollower.Cart3 => 3,
+                    PlayerFollower.Cart4 => 4,
+                    _ => 0
+                };
+                var cartObj = new GameObject();
+                var cart = cartObj.AddComponent<CartFollower>();
+                cart.AttachCart(control, cartStyle);
+                control.FollowerObject = cartObj;
+            }
 
             return control;
         }

@@ -17,6 +17,11 @@ namespace Assets.Scripts.UI
             var id = 0;
             foreach (string option in options)
             {
+                if (string.IsNullOrWhiteSpace(option))
+                {
+                    id++; //empty options aren't valid, but we still increment the id
+                    continue;
+                }
                 var newButton = GameObject.Instantiate(TemplateButton);
                 newButton.transform.SetParent(ButtonGroup.transform, false);
                 newButton.SetActive(true);
@@ -30,7 +35,7 @@ namespace Assets.Scripts.UI
             }
             
             var rect = GetComponent<RectTransform>();
-            rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 10 + 40f * options.Count);
+            rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 10 + 40f * activeButtons.Count);
 
             TemplateButton.SetActive(false);
             gameObject.SetActive(true);

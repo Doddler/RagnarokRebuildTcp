@@ -68,29 +68,29 @@ namespace PlayerControl
             if (string.IsNullOrWhiteSpace(text))
                 return;
 
-            if (text.StartsWith("/sh "))
-            {
-                var msg = text.Substring(4);
-                NetworkManager.Instance.SendSay(msg, true);
-                return;
-            }
-            
-            if (text.StartsWith("/s "))
-            {
-                var msg = text.Substring(3);
-                NetworkManager.Instance.SendSay(msg, true);
-                return;
-            }
-
-            if (text.StartsWith("/shout "))
-            {
-                var msg = text.Substring(7);
-                NetworkManager.Instance.SendSay(msg, true);
-                return;
-            }
-
             if (text.StartsWith("/"))
             {
+                if (text.StartsWith("/sh "))
+                {
+                    var msg = text.Substring(4);
+                    NetworkManager.Instance.SendSay(msg, true);
+                    return;
+                }
+
+                if (text.StartsWith("/s "))
+                {
+                    var msg = text.Substring(3);
+                    NetworkManager.Instance.SendSay(msg, true);
+                    return;
+                }
+
+                if (text.StartsWith("/shout "))
+                {
+                    var msg = text.Substring(7);
+                    NetworkManager.Instance.SendSay(msg, true);
+                    return;
+                }
+
                 var s = SplitStringCommand(text);
                 if (s == null)
                 {
@@ -594,6 +594,29 @@ namespace PlayerControl
                     var v4 = s.Length > 6 && int.TryParse(s[6], out i) ? i : 0;
 
                     NetworkManager.Instance.SendAdminSignalNpc(npcName, signalVal, v1, v2, v3, v4);
+                }
+
+                if (s[0] == "/shutdown")
+                {
+                    if (s.Length == 1)
+                        NetworkManager.Instance.SendServerShutdown(60, "");
+                    else
+                    {
+                        if (int.TryParse(s[1], out var seconds))
+                        {
+                            if (s.Length > 3)
+                                cameraFollower.AppendChatText("Incorrectly formated command", TextColor.Error);
+                            else
+                                NetworkManager.Instance.SendServerShutdown(seconds, s.Length > 2 ? s[2] : "");
+                        }
+                        else
+                        {
+                            if (s.Length > 2)
+                                cameraFollower.AppendChatText("Incorrectly formated command", TextColor.Error);
+                            else
+                                NetworkManager.Instance.SendServerShutdown(60, s[1]);
+                        }
+                    }
                 }
 
                 if (emoteList.TryGetValue(s[0], out var emote))

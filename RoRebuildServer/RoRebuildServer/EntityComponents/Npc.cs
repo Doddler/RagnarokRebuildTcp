@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
+using System.Xml.Linq;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
@@ -22,6 +23,7 @@ using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.Util;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -800,6 +802,53 @@ public class Npc : IEntityAutoReset
         //OnMobKill();
     }
 
+    public void HideFromView()
+    {
+        var chara = Entity.Get<WorldObject>();
+
+        if (chara.AdminHidden)
+            return; //npc already hidden
+
+        if (chara.Map == null)
+            throw new Exception($"Npc {FullName} attempting to execute HideNpc, but the npc is not currently attached to a map.");
+
+        chara.AdminHidden = true;
+
+        using var notifyList = EntityListPool.Get();
+
+        var visible = chara.GetVisiblePlayerList();
+        if (visible == null)
+            return;
+        foreach (var e in visible)
+            notifyList.Add(e);
+        CommandBuilder.AddRecipients(notifyList);
+        CommandBuilder.SendRemoveEntityMulti(chara, CharacterRemovalReason.OutOfSight);
+        CommandBuilder.ClearRecipients();
+    }
+
+    public void RevealToPlayers()
+    {
+        var chara = Entity.Get<WorldObject>();
+
+        if (!chara.AdminHidden)
+            return; //npc is already visible
+
+        if (chara.Map == null)
+            throw new Exception($"Npc {FullName} attempting to execute ShowNpc, but the npc is not currently attached to a map.");
+
+        chara.AdminHidden = false;
+
+        using var notifyList = EntityListPool.Get();
+        var visible = chara.GetVisiblePlayerList();
+        if (visible == null)
+            return;
+        foreach (var e in visible)
+            notifyList.Add(e);
+        CommandBuilder.AddRecipients(notifyList);
+        CommandBuilder.SendCreateEntityMulti(chara, CreateEntityEventType.Normal);
+        CommandBuilder.ClearRecipients();
+    }
+
     public void HideNpc()
     {
         var chara = Entity.Get<WorldObject>();
@@ -1177,7 +1226,7 @@ public class Npc : IEntityAutoReset
 
         curSet.Add(trade);
     }
-    
+
     public void SetTimer(int timer)
     {
         var prevStart = TimerStart;

@@ -21,6 +21,7 @@ namespace Assets.Scripts.UI.Inventory
         public ScrollRect ScrollArea;
         private List<InventoryEntry> entryList = new();
         public TextMeshProUGUI WeightText;
+        public Button CartButton;
         private int activeEntryCount;
         private int activeItemSection;
         private bool isInit;
@@ -37,6 +38,7 @@ namespace Assets.Scripts.UI.Inventory
         {
             base.ShowWindow();
             UpdateActiveVisibleBag();
+            CartButton.gameObject.SetActive(PlayerState.Instance.HasCart);
         }
         
         public void ClickTabButton(int tab)

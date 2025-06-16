@@ -2,7 +2,6 @@
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
-using RoRebuildServer.Data.Player;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
@@ -12,23 +11,11 @@ using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.Util;
-using System;
 using System.Diagnostics.CodeAnalysis;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-using static System.Net.Mime.MediaTypeNames;
-using RoRebuildServer.Database.Domain;
-using System.Xml.Linq;
-using System.Threading;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using RebuildSharedData.ClientTypes;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using RebuildSharedData.Util;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using RoRebuildServer.Data.Monster;
 using RoRebuildServer.ScriptSystem;
 using System.Runtime.InteropServices;
 
@@ -692,77 +679,6 @@ public partial class CombatEntity : IEntityAutoReset
         DamageQueue.Clear();
     }
 
-    public void DistributeExperience()
-    {
-        var list = EntityListPool.Get();
-
-        var mon = Character.Entity.Get<Monster>();
-        var exp = mon.MonsterBase.Exp;
-        var job = mon.MonsterBase.JobExp;
-
-        if (Character.Map == null)
-            return;
-        if (exp == 0 && job == 0)
-            return;
-
-        Character.Map.GatherPlayersInRange(Character.Position, 12, list, false);
-        //Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
-
-        foreach (var e in list)
-        {
-            if (e.IsNull() || !e.IsAlive())
-                continue;
-
-            var player = e.Get<Player>();
-            if (player.Character.State == CharacterState.Dead)
-                continue;
-
-            if (exp > 0)
-                player.GainBaseExp(exp);
-            if (job > 0)
-                player.GainJobExp(job);
-
-            //var level = player.GetData(PlayerStat.Level);
-
-            //if (level >= 99)
-            //    continue;
-
-            //var curExp = player.GetData(PlayerStat.Experience);
-            //var requiredExp = DataManager.ExpChart.ExpRequired[level];
-
-            //if (exp > requiredExp)
-            //    exp = requiredExp; //cap to 1 level per kill
-
-            CommandBuilder.SendExpGain(player, exp, job);
-
-            //curExp += exp;
-
-            //if (curExp < requiredExp)
-            //{
-            //    player.SetData(PlayerStat.Experience, curExp);
-            //    continue;
-            //}
-
-            //while (curExp >= requiredExp && level < 99)
-            //{
-            //    curExp -= requiredExp;
-
-            //    player.LevelUp();
-            //    level++;
-
-            //    if (level < 99)
-            //        requiredExp = DataManager.ExpChart.ExpRequired[level];
-            //}
-
-            //player.SetData(PlayerStat.Experience, curExp);
-
-            //CommandBuilder.LevelUp(player.Character, level, curExp);
-            //CommandBuilder.SendHealMulti(player.Character, 0, HealType.None);
-            //CommandBuilder.ChangeSpValue(player, player.GetStat(CharacterStat.Sp), player.GetStat(CharacterStat.MaxSp));
-        }
-        //CommandBuilder.ClearRecipients();
-        EntityListPool.Return(list);
-    }
     private void FinishCasting()
     {
         IsCasting = false;
@@ -1560,7 +1476,7 @@ public partial class CombatEntity : IEntityAutoReset
             flags |= AttackFlags.CanCrit;
 
         var di = CalculateCombatResult(target, 1f, 1, flags);
-        if (Character.Type == CharacterType.Player)
+        if (Character.Type == CharacterType.Player && (Character.Player.WeaponClass == 1 || Character.Player.Equipment.DoubleAttackModifiers > 0))
         {
             var doubleChance = GetStat(CharacterStat.DoubleAttackChance);
             if (doubleChance > 0 && GameRandom.Next(0, 100) <= doubleChance)

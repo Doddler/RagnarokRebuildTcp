@@ -363,7 +363,7 @@
     {
       "StatusEffect": 41,
       "Name": "Cursed Water",
-      "Description": null,
+      "Description": "\u003Ccolor=#FFA300\u003ECursed Water\u003C/color\u003E\nYour physical attacks deal dark property damage.",
       "Type": "Buff",
       "Icon": "i_p_dark",
       "CanDispel": true,

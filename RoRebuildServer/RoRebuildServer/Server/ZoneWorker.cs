@@ -59,12 +59,13 @@ internal class ZoneWorker : BackgroundService
         GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
         GC.Collect();
         GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency;
-
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         await Initialize();
+
+        var worldCancellation = World.Instance.GetCancellationToken;
 
         Debug.Assert(world != null);
         
@@ -74,8 +75,6 @@ internal class ZoneWorker : BackgroundService
         var total = 0d;
         var max = 0d;
         var spos = 0;
-
-
 
 #if DEBUG
         var noticeTime = 15f;
@@ -90,7 +89,7 @@ internal class ZoneWorker : BackgroundService
         
         try
         {
-            while (!stoppingToken.IsCancellationRequested)
+            while (!stoppingToken.IsCancellationRequested && !worldCancellation.IsCancellationRequested)
             {
                 Time.Update();
                 
@@ -165,7 +164,10 @@ internal class ZoneWorker : BackgroundService
             ServerLogger.LogError("Server threw exception!" + Environment.NewLine + e);
         }
 
-        logger.LogCritical("Oh no! We've dropped out of the processing loop! We will now shutdown.");
+        if(worldCancellation.IsCancellationRequested)
+            logger.LogCritical("The server has left the main processing loop due to an admin initiated shutdown.");
+        else
+            logger.LogCritical("Oh no! We've dropped out of the processing loop! We will now shutdown.");
         appLifetime.StopApplication();
     }
 

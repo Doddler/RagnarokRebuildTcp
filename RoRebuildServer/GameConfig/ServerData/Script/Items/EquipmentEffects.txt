@@ -254,7 +254,7 @@ Item("Haedonggum") { OnEquip: AddStat(AddInt, 3); }
 Item("Haedonggum_") { OnEquip: AddStat(AddInt, 3); }
 Item("Nagan") { OnEquip: AddStat(DoubleAttackChance, 25); AddStat(AddAttackRaceDemihuman, 20); }
 Item("Ice_Falchion") { OnEquip: AddStat(AddMagicAttackPower, 80); GrantSkill(ColdBolt, 3); AutoSpellOnAttack(ColdBolt, 3, 100); AddStat(OnMeleeAttackFreeze, 50); AddStat(OnRangedAttackFreeze, 50); AddStat(OnAttackFreezeSelf, 1); }
-Item("Fire_Brand") { OnEquip: AddStat(AddMagicAttackPower, 80); GrantSkill(FireBolt, 3); AutoSpellOnAttack(FireBolt, 3, 100); }
+Item("Edge") { OnEquip: AddStat(KnockOutOnAttack, 1); AddStat(OnMeleeAttackCurse, 3); AddStat(OnRangedAttackCurse, 3); }
 Item("Caesar's_Sword") { OnEquip: AddStat(IgnoreDefRacePlant, 100); AddStat(AddAttackRacePlant, 25); }
 Item("Cutlus") { OnEquip: AddStat(AddStr, 2); GrantSkill(Bash, 5); AddStat(AddDef, 1); }
 Item("Excalibur") { OnEquip: AddStat(AddInt, 5); AddStat(AddLuk, 10); }
@@ -262,10 +262,12 @@ Item("Mistilteinn") { OnEquip: AddStat(AddDex, 3); AddStat(AddResistRaceDemihuma
 Item("Byeol-ungeom") { OnEquip: AddStat(AddStr, 2); AddStat(AddInt, 2); AddStat(AddVit, 2); AddStat(AddDex, 2); AddStat(AddAgi, 2); AddStat(AddLuk, 2); AddStat(AddAttackSpecialBoss, 50); AddStat(AddResistSpecialNormal, -10); }
 Item("Holy_Avenger") { OnEquip: AddStat(AddVit, 2); }
 Item("Fortune_Sword") { OnEquip: AddStat(AddLuk, 5); AddStat(PerfectDodge, 20); }
+Item("Combat_Knife") { OnEquip: AddStat(AddResistRaceDemon, -10); AddStat(AddResistRaceDemihuman, 10); AddStat(IgnoreDefRaceDemihuman, 100); }
 Item("Kitchen_Knife") { OnEquip: AddStat(AddCrit, 30); }
 Item("Bazerald") { OnEquip: AddStat(AddInt, 5); AddStat(AddMagicAttackPower, 40); AddStat(AddMagicAttackPercent, 10); }
 Item("Assassin_Dagger") { OnEquip: AddStat(AddMaxSpPercent, 15); AddStat(AddMaxHpPercent, 20); AddStat(AspdBonus, 2); }
-Item("Moonlight_Dagger") { OnEquip: AddStat(AddMaxSpPercent, 10); AddStat(SpOnAttack, 3); }
+Item("Exorciser") { OnEquip: AddStat(IgnoreDefRaceDemon, 100); AddStat(AddResistRaceDemon, 5); AddStat(AddResistRaceDemihuman, -10); }
+Item("Moonlight_Dagger") { OnEquip: AddStat(AddMaxSpPercent, 10); AddStat(SpGainOnAttack, 3); }
 Item("Sucsamad") { OnEquip: AddStat(AddAttackElementEarth, 25); AddStat(AddAttackElementWind, 25); }
 Item("Grimtooth") { OnEquip: AddStat(AddDefPercent, -33); AddStat(AddFlee, 15); AddStat(PerfectDodge, 10); }
 Item("Poison_Knife") { OnEquip: AddStat(OnMeleeAttackPoison, 300); AddStat(OnRangedAttackPoison, 300); }
@@ -282,6 +284,7 @@ Item("Stunner") { OnEquip: AddStat(OnMeleeAttackStun, 100); }
 Item("Spike") { OnEquip: AddStat(AddCrit, 40); AddStat(AddDefPercent, -66); }
 Item("Golden_Mace") { OnEquip: /* IndestructibleWeapon 1 */ AddStat(AddAttackRaceUndead, 20); }
 Item("Long_Mace") { OnEquip: AddStat(AddResistRangedAttack, 10); }
+Item("Slash") { OnEquip: AddStat(KnockOutOnAttackRaceUndead, 1); AddStat(AddExpRaceUndead, 5); AddStat(AddAttackElementUndead, 15); }
 Item("Quadrille") { OnEquip: AddStat(AddAttackRaceDemihuman, 10); AddStat(AddAttackElementUndead, 10); AddStat(AddAttackElementEarth, 10); }
 Item("Mjolnir") { OnEquip: AddStat(AddStr, 15); AddStat(AddDex, 40); AddStat(AspdBonus, 10); }
 Item("Wrench") { OnEquip: AddStat(OnMeleeAttackStun, 10); AddStat(OnMeleeAttackBlind, 10); AddStat(OnMeleeAttackFreeze, 10); AddStat(OnMeleeAttackPoison, 10); AddStat(OnRangedAttackStun, 10); AddStat(OnRangedAttackBlind, 10); AddStat(OnRangedAttackFreeze, 10); AddStat(OnRangedAttackPoison, 10); }
@@ -375,6 +378,7 @@ Item("Asura_") { OnEquip: AddStat(AddMagicAttackPercent, 10); }
 Item("Hakujin") { OnEquip: AddStat(AddInt, 2); }
 Item("Hakujin_") { OnEquip: AddStat(AddInt, 2); }
 Item("Sucsamad_") { OnEquip: AddStat(AddAttackElementEarth, 25); AddStat(AddAttackElementWind, 25); }
+Item("Dragon_Killer_") { OnEquip: AddStat(IgnoreDefRaceDragon, 100); AddStat(AddExpRaceDragon, 10); }
 Item("Assassin_Dagger_") { OnEquip: AddStat(AddMaxSpPercent, 15); AddStat(AddMaxHpPercent, 20); AddStat(AspdBonus, 2); }
 Item("Valorous_Damascus") { OnEquip: AddStat(AddStr, 1); AddStat(AddAgi, 1); }
 Item("Ivory_Knife") { OnEquip: AddStat(AddAgi, 2); }
@@ -390,17 +394,17 @@ Item("Broad_Sword") { OnEquip: AddStat(AddDef, 5); }
 Item("Broad_Sword_") { OnEquip: AddStat(AddDef, 5); }
 Item("Muramasa") { OnEquip: AddStat(AddCrit, 30); AddStat(AspdBonus, 12); }
 Item("Masamune") { OnEquip: AddStat(AddFlee, 30); AddStat(AspdBonus, 20); AddStat(AddStr, -5); AddStat(AddDefPercent, -66); }
-Item("Dragon_Slayer") { OnEquip: AddStat(AddAttackRaceDragon, 15); }
-Item("Schweizersabel") { OnEquip: AutoSpellWhenAttacked(LightningBolt, 3, 100, TargetEnemy); AddStat(AddDef, 1); }
-Item("Executioner") { OnEquip: AddStat(AddResistRaceDemihuman, -10); AddStat(AddAttackRaceDemihuman, 20); }
+Item("Dragon_Slayer") { OnEquip: AddStat(IgnoreDefRaceDragon, 100); AddStat(AddAttackRaceDragon, 15); }
+Item("Schweizersabel") { OnEquip: AddStat(AddMagicAttackPower, 120); AutoSpellOnAttack(LightningBolt, 3, 100); AddStat(AddDef, 1); }
+Item("Executioner") { OnEquip: AddStat(IgnoreDefRaceDemihuman, 100); AddStat(AddResistRaceDemihuman, -10); AddStat(AddAttackRaceDemihuman, 20); }
 Item("Katzbalger") { OnEquip: AddStat(AddVit, 5); AddStat(AddDef, 10); }
 Item("Atlas_Weapon") { OnEquip: AddStat(AddCrit, 10); }
 Item("Muscle_Cutter") { OnEquip: AddStat(OnMeleeAttackBleeding, 80); AutoSpellWhenAttacked(DecreaseAgility, 1, 30, TargetEnemy); }
-Item("Schweizersabel_") { OnEquip: AutoSpellWhenAttacked(LightningBolt, 3, 100, TargetEnemy); AddStat(AddDef, 1); }
-Item("Executioner_") { OnEquip: AddStat(AddResistRaceDemihuman, -10); AddStat(AddAttackRaceDemihuman, 20); }
-Item("Dragon_Slayer_") { OnEquip: AddStat(AddAttackRaceDragon, 15); }
+Item("Schweizersabel_") { OnEquip: AddStat(AddMagicAttackPower, 120); AutoSpellOnAttack(LightningBolt, 3, 100); AddStat(AddDef, 1); }
+Item("Executioner_") { OnEquip: AddStat(IgnoreDefRaceDemihuman, 100); AddStat(AddResistRaceDemihuman, -10); AddStat(AddAttackRaceDemihuman, 20); }
+Item("Dragon_Slayer_") { OnEquip: AddStat(IgnoreDefRaceDragon, 100); AddStat(AddAttackRaceDragon, 15); }
 Item("Tae_Goo_Lyeon") { OnEquip: AddStat(PerfectDodge, 10); }
-Item("Brave_Katzbalger") { OnEquip: AddStat(AddStr, 2); }
+Item("Brave_Katzbalger") { OnEquip: AddStat(AddStr, 2); AddStat(AddAttackRaceDemihuman, 55); AddStat(IgnoreDefRaceDemihuman, 20); }
 Item("Valorous_Katzbalger") { OnEquip: AddStat(AddAttackRaceDemihuman, 55); AddStat(AddCrit, 20); AddStat(AddCritDamage, 20); }
 Item("Death_Guidance") { OnEquip: AddStat(AddStr, 5); AddStat(AddAgi, 2); }
 Item("Katar") { OnEquip: AddStat(AddDex, 1); }
@@ -424,6 +428,8 @@ Item("Bloody_Axe") { OnEquip: AddStat(AddStr, 10); AddStat(MoveSpeedBonus, 34); 
 Item("Great_Axe") { OnEquip: AddStat(OnMeleeAttackStun, 150); AddStat(OnRangedAttackStun, 150); }
 Item("Sabbath") { OnEquip: AddStat(AddCritChanceRaceUndead, 50); }
 Item("Light_Epsilon") { OnEquip: GrantSkill(Heal, 3); AddStat(AddAttackRaceDemon, 3); }
+Item("Slaughter") { OnEquip: AddStat(KnockOutOnAttackRaceBeast, 4); AddStat(IgnoreDefRaceBeast, 100); }
+Item("Guillotine") { OnEquip: AddStat(KnockOutOnAttackRaceDemihuman, 3); AddStat(SpGainOnAttackRaceDemihuman, 2); AddStat(SpGainOnKillRaceDemihuman, 20); }
 Item("Bardiche") { OnEquip: AddStat(AddResistMidSize, 13); AddStat(AddResistLargeSize, 15); }
 Item("Brave_Battle_Axe") { OnEquip: AddStat(AddStr, 3); }
 Item("Valorous_Battle_Axe") { OnEquip: AddStat(AddStr, 3); }
@@ -435,7 +441,7 @@ Item("Brionac") { OnEquip: GrantSkill(Heal, 5); AutoSpellWhenAttacked(SoulStrike
 Item("Hellfire") { OnEquip: AutoSpellWhenAttacked(FireBall, 5, 100, TargetEnemy); AddStat(AddStr, 3); }
 Item("Soul_Staff") { OnEquip: AddStat(AddInt, 5); AddStat(AddAgi, 2); AddStat(AddMagicAttackPercent, 20); }
 Item("Wizardry_Staff") { OnEquip: AddStat(AddInt, 6); AddStat(AddDex, 2); AddStat(AddMagicAttackPercent, 20); }
-Item("Gae_Bolg") { OnEquip: /* SetIgnoreDEFRace RACE_Dragon */ AddStat(AddAttackSpecialBoss, 10); }
+Item("Gae_Bolg") { OnEquip: AddStat(IgnoreDefRaceDragon, 100); AddStat(AddAttackSpecialBoss, 10); }
 Item("Crescent_Scythe_") { OnEquip: AddStat(AddCrit, 30); AddStat(AddHit, 10); }
 Item("Spectral_Spear") { OnEquip: AddStat(AddResistRaceUndead, 10); AddStat(AddResistRaceDemon, 10); AddStat(AddResistElementDark, 10); AddStat(AddAttackElementDark, 20); AddStat(AddAttackElementUndead, 20); AddStat(AddAttackRaceDemon, 20); AddStat(OnAttackConfusionSelf, 100); }
 Item("Assaulter_Lance") { OnEquip: AddStat(AddStr, 2); AddStat(AddAttackRaceDemihuman, 25); }

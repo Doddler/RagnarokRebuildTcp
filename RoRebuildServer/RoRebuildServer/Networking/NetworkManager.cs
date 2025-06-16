@@ -1,4 +1,5 @@
-﻿using System.Buffers;
+﻿using System;
+using System.Buffers;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -43,7 +44,7 @@ public class NetworkManager
     public static bool[] PacketCheckClientState;
     public static bool[] AdminPacketTypes;
     public static PacketType LastPacketType;
-    
+
     private static NetQueue<InboundMessage> inboundChannel;
     private static NetQueue<OutboundMessage> outboundChannel;
     private static Channel<NetworkConnection> disconnectList;
@@ -68,16 +69,19 @@ public class NetworkManager
     private static int clientTimeoutTime = ServerConfig.OperationConfig.ClientTimeoutSeconds;
 
     public static bool IsRunning;
+    public static bool IsServerOpen;
     public static bool IsSingleThreadMode { get; set; }
     public static bool DebugMode;
+
+    public static string? ServerClosedReason = "Server is currently starting up.";
 
     public static void Init(World gameWorld)
     {
         World = gameWorld;
-        
+
         IsSingleThreadMode = !ServerConfig.OperationConfig.UseMultipleThreads;
         var debugConfig = ServerConfig.DebugConfig;
-        
+
         DebugMode = debugConfig.UseDebugMode;
 
 #if DEBUG
@@ -87,7 +91,7 @@ public class NetworkManager
         useSimulatedLag = debugConfig.AddSimulatedLag;
         inboundLagTime = debugConfig.InboundSimulatedLag / 1000f;
         outboundLagTime = debugConfig.OutboundSimulatedLag / 1000f;
-        if(useSimulatedLag && inboundLagTime > 0f)
+        if (useSimulatedLag && inboundLagTime > 0f)
             ServerLogger.Log($"Simulated inbound lag enabled with a lag time of {debugConfig.InboundSimulatedLag}ms.");
         if (useSimulatedLag && outboundLagTime > 0f)
         {
@@ -106,11 +110,11 @@ public class NetworkManager
         inboundChannel = new NetQueue<InboundMessage>(100);
         outboundChannel = new NetQueue<OutboundMessage>(100);
         disconnectList = Channel.CreateUnbounded<NetworkConnection>(new UnboundedChannelOptions
-            { SingleReader = true, SingleWriter = false });
+        { SingleReader = true, SingleWriter = false });
 
         outboundPool = new DefaultObjectPool<OutboundMessage>(new OutboundMessagePooledObjectPolicy(), 10);
         inboundPool = new DefaultObjectPool<InboundMessage>(new DefaultPooledObjectPolicy<InboundMessage>(), 10);
-        
+
         if (!IsSingleThreadMode)
         {
             ServerLogger.Log("Starting messaging thread...");
@@ -134,7 +138,7 @@ public class NetworkManager
             var handler = (IClientPacketHandler)Activator.CreateInstance(type)!;
             var attr = type.GetCustomAttribute<ClientPacketHandlerAttribute>();
             var packetType = attr!.PacketType;
-            
+
             if (PacketHandlers[(int)packetType] != null)
                 throw new Exception($"Duplicate packet handler exists for type {packetType}!");
 
@@ -158,7 +162,7 @@ public class NetworkManager
                 var member = type.GetMember(ptype.ToString());
 
                 //only complain about packets not marked with ServerOnlyPacket
-                if(member[0].GetCustomAttribute<ServerOnlyPacketAttribute>() == null)
+                if (member[0].GetCustomAttribute<ServerOnlyPacketAttribute>() == null)
                     ServerLogger.Debug($"No packet handler for packet type PacketType.{(PacketType)i} exists.");
 
                 PacketHandlers[i] = PacketHandlers[(int)PacketType.UnhandledPacket];
@@ -169,6 +173,8 @@ public class NetworkManager
             clientTimeoutTime = 10;
 
         IsRunning = true;
+        IsServerOpen = true;
+        ServerClosedReason = null;
 
         ServerLogger.Log("Server started.");
     }
@@ -186,7 +192,7 @@ public class NetworkManager
     {
         var players = Players;
         clientLock.EnterReadLock();
-        
+
         try
         {
             for (var i = 0; i < players.Count; i++)
@@ -333,13 +339,13 @@ public class NetworkManager
         message.Clear();
         outboundPool.Return(message);
     }
-    
+
     public static void RetireInboundMessage(InboundMessage message)
     {
         message.Clear();
         inboundPool.Return(message);
     }
-    
+
     public static async Task ProcessIncomingMessages()
     {
 #if DEBUG
@@ -385,7 +391,7 @@ public class NetworkManager
 #if DEBUG
     private static async Task OutboundLagBackgroundThread()
     {
-        ServerLogger.Debug($"Using simulated lag, adding {(int)(inboundLagTime*1000)}ms to each inbound packet.");
+        ServerLogger.Debug($"Using simulated lag, adding {(int)(inboundLagTime * 1000)}ms to each inbound packet.");
 
         while (!IsRunning)
             await Task.Delay(500);
@@ -414,7 +420,7 @@ public class NetworkManager
             }
             else
             {
-                if(PlayerCount <= 0)
+                if (PlayerCount <= 0)
                     await Task.Delay(1000);
                 else
                     await Task.Delay(1);
@@ -431,7 +437,7 @@ public class NetworkManager
     {
         while (!IsRunning)
             await Task.Delay(1);
-        
+
         while (IsRunning)
         {
             await ProcessOutgoingMessages();
@@ -481,7 +487,7 @@ public class NetworkManager
             RetireOutboundMessage(message);
         }
     }
-    
+
     public static void HandleMessage(InboundMessage msg)
     {
         if (msg.Length == 0)
@@ -578,7 +584,7 @@ public class NetworkManager
         if (connections == null || message == null)
             return;
 
-        if(message.IsQueued)
+        if (message.IsQueued)
             ServerLogger.LogError($"Attempting to send client message, but it's already queued to be sent!");
 
         for (var i = 0; i < connections.Count; i++)
@@ -611,7 +617,7 @@ public class NetworkManager
         outboundChannel.Enqueue(message);
 #endif
     }
-    
+
     public static OutboundMessage StartPacket(PacketType type, int capacity = 0)
     {
         var msg = CreateOutboundMessage();
@@ -671,10 +677,10 @@ public class NetworkManager
         bw.Write(Encoding.UTF8.GetBytes(sb.ToString()));
 
         var data = new ArraySegment<byte>(buffer, 0, (int)ms.Position);
-        
+
         await socket.SendAsync(data, WebSocketMessageType.Binary, true, CancellationToken.None);
         await socket.CloseAsync(WebSocketCloseStatus.ProtocolError, "Disconnected", CancellationToken.None);
-        
+
         return;
     }
 
@@ -749,6 +755,16 @@ public class NetworkManager
                                                              "You will need to update your client before logging in. If you are using the web build, you may need to force refresh or clear the site cache.");
                 return;
             }
+        }
+
+        if (!IsServerOpen)
+        {
+            if (string.IsNullOrWhiteSpace(ServerClosedReason))
+                await ReturnServerErrorAndDisconnect(socket, $"The server is closed and cannot receive new connections.");
+            else
+                await ReturnServerErrorAndDisconnect(socket, $"The server is closed and cannot receive new connections. Reason: {ServerClosedReason}");
+            ServerLogger.Log($"New connection (user {userName}) being turned away because the server is closed to new connections.");
+            return;
         }
 
         //isNewCharacter = true;
@@ -829,7 +845,7 @@ public class NetworkManager
         //var hasCharacter = false;
 
         //playerConnection.LoadCharacterRequest = await LoadOrCreateCharacter(userId, userName);
-        
+
         clientLock.EnterWriteLock();
 
         try
@@ -851,7 +867,7 @@ public class NetworkManager
         if (requestToken)
         {
             msg.Write(token!.Length);
-            msg.Write(token!); //no it can't be null fuck you
+            msg.Write(token);
         }
 
         await RoDatabase.LoadCharacterSelectDataForPlayer(msg, userId);
@@ -894,7 +910,7 @@ public class NetworkManager
 #if DEBUG
             if (useSimulatedLag && inboundLagTime > 0f)
             {
-                lock(inboundLagLock)
+                lock (inboundLagLock)
                     inboundLagSimQueue.Enqueue(inMsg, Time.ElapsedTimeFloat + inboundLagTime);
             }
             else

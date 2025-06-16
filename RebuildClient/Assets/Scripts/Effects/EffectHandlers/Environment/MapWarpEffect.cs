@@ -52,55 +52,35 @@ namespace Assets.Scripts.Effects.EffectHandlers
             
             prim.UpdateHandler = CastingCylinderPrimitive.Update3DCasting4;
             prim.RenderHandler = CastingCylinderPrimitive.Render3DCasting;
+
+            for (var i = 0; i < 4; i++)
+            {
+                prim.Parts[i].Active = true;
+                prim.Parts[i].Step = 0;
+                prim.Parts[i].CoverAngle = 360;
+                prim.Parts[i].Alpha = 0;
+            }
             
-            prim.Parts[0] = new EffectPart()
-            {
-                Active = true,
-                Step = 0,
-                CoverAngle = 360,
-                MaxHeight = 2.5f,
-                Angle = 270,
-                Alpha = 0,
-                Distance = 2.5f, //4.5f,
-                RiseAngle = angle - 7
-            };
-
-            prim.Parts[1] = new EffectPart()
-            {
-                Active = true,
-                Step = 0,
-                CoverAngle = 360,
-                MaxHeight = 5f,
-                Angle = 0,
-                Alpha = 0,
-                Distance = 5f, //4.5f,
-                RiseAngle = angle
-            };
-
-            prim.Parts[2] = new EffectPart()
-            {
-                Active = true,
-                Step = 0,
-                CoverAngle = 360,
-                MaxHeight = 7.5f,
-                Angle = 90,
-                Alpha = 0,
-                Distance = 7.5f, //4.5f,
-                RiseAngle = angle - 5
-            };
-
-            prim.Parts[3] = new EffectPart()
-            {
-                Active = true,
-                Step = 0,
-                CoverAngle = 360,
-                MaxHeight = 10f,
-                Angle = 180,
-                Alpha = 0,
-                Distance = 10f, //4.5f,
-                RiseAngle = angle - 10
-            };
+            prim.Parts[0].MaxHeight = 2.5f;
+            prim.Parts[0].Angle = 270;
+            prim.Parts[0].Distance = 2.5f;
+            prim.Parts[0].RiseAngle = angle - 7;
             
+            prim.Parts[1].MaxHeight = 5f;
+            prim.Parts[1].Angle = 0;
+            prim.Parts[1].Distance = 5f;
+            prim.Parts[1].RiseAngle = angle;
+            
+            prim.Parts[2].MaxHeight = 7.5f;
+            prim.Parts[2].Angle = 90;
+            prim.Parts[2].Distance = 7.5f;
+            prim.Parts[2].RiseAngle = angle - 5;
+            
+            prim.Parts[3].MaxHeight = 10f;
+            prim.Parts[3].Angle = 180;
+            prim.Parts[3].Distance = 10f;
+            prim.Parts[3].RiseAngle = angle - 10;
+    
             var prim2 = effect.LaunchPrimitive(PrimitiveType.Casting3D, Ring2Material, float.MaxValue);
             prim2.CreateParts(4);
             prim2.transform.localScale = new Vector3(2f, 2f, 2f);
@@ -109,54 +89,34 @@ namespace Assets.Scripts.Effects.EffectHandlers
             prim2.UpdateHandler = CastingCylinderPrimitive.Update3DCasting4;
             // prim2.RenderHandler = CastingCylinderPrimitive.Render3DCasting;
             
-            prim2.Parts[0] = new EffectPart()
+            for (var i = 0; i < 4; i++)
             {
-                Active = true,
-                Step = 0,
-                CoverAngle = 360,
-                MaxHeight = 2.5f,
-                Angle = 271,
-                Alpha = 0,
-                Distance = 2.7f,
-                RiseAngle = angle - 8
-            };
-
-            prim2.Parts[1] = new EffectPart()
-            {
-                Active = true,
-                Step = 0,
-                CoverAngle = 360,
-                MaxHeight = 5f,
-                Angle = 1,
-                Alpha = 0,
-                Distance = 5.2f,
-                RiseAngle = angle - 1
-            };
-
-            prim2.Parts[2] = new EffectPart()
-            {
-                Active = true,
-                Step = 0,
-                CoverAngle = 360,
-                MaxHeight = 7.7f,
-                Angle = 91,
-                Alpha = 0,
-                Distance = 7.7f,
-                RiseAngle = angle - 6
-            };
-
-            prim2.Parts[3] = new EffectPart()
-            {
-                Active = true,
-                Step = 0,
-                CoverAngle = 360,
-                MaxHeight = 10.2f,
-                Angle = 181,
-                Alpha = 0,
-                Distance = 10.2f,
-                RiseAngle = angle - 11
-            };
-
+                prim2.Parts[i].Active = true;
+                prim2.Parts[i].Step = 0;
+                prim2.Parts[i].CoverAngle = 360;
+                prim2.Parts[i].Alpha = 0;
+            }
+            
+            prim2.Parts[0].MaxHeight = 2.7f;
+            prim2.Parts[0].Angle = 271;
+            prim2.Parts[0].Distance = 2.7f;
+            prim2.Parts[0].RiseAngle = angle - 8;
+            
+            prim2.Parts[1].MaxHeight = 5.2f;
+            prim2.Parts[1].Angle = 1;
+            prim2.Parts[1].Distance = 5.2f;
+            prim2.Parts[1].RiseAngle = angle - 1;
+            
+            prim2.Parts[2].MaxHeight = 7.7f;
+            prim2.Parts[2].Angle = 91;
+            prim2.Parts[2].Distance = 7.7f;
+            prim2.Parts[2].RiseAngle = angle - 6;
+            
+            prim2.Parts[3].MaxHeight = 10.2f;
+            prim2.Parts[3].Angle = 181;
+            prim2.Parts[3].Distance = 10.2f;
+            prim2.Parts[3].RiseAngle = angle - 11;
+            
             var circle = effect.LaunchPrimitive(PrimitiveType.Circle, CircleMaterial, float.MaxValue);
             circle.DelayTime = 2 / 60f;
             circle.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);

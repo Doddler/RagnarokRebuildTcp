@@ -49,6 +49,9 @@ namespace Assets.Scripts.Effects
         CastWind,
         CastEarth,
         MagnumBreak,
+        MapPillarBlue,
+        MapPillarGreen,
+        MapPillarRed,
         EffectMaterialMax
     }
 
@@ -344,6 +347,16 @@ namespace Assets.Scripts.Effects
                         break;
                     case EffectMaterialType.MagnumBreak:
                         SetUpTextureMaterial(mat, ShaderCache.Instance.AlphaBlendParticleShader, Resources.Load<Texture2D>("BigBang"));
+                        break;
+                    
+                    case EffectMaterialType.MapPillarBlue:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.AdditiveShader, GetOrLoadEffectTexture(EffectTextureType.RingBlue), new Color(100 / 255f, 100 / 255f, 255 / 255f));
+                        break;
+                    case EffectMaterialType.MapPillarGreen:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.AdditiveShader, GetOrLoadEffectTexture(EffectTextureType.MagicGreen), new Color(100 / 255f, 255 / 255f, 100 / 255f));
+                        break;
+                    case EffectMaterialType.MapPillarRed:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.AdditiveShader, GetOrLoadEffectTexture(EffectTextureType.RingRed), new Color(255 / 255f, 100 / 255f, 100 / 255f));
                         break;
                 }
             }

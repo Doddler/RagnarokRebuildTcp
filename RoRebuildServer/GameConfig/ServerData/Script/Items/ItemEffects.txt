@@ -22,7 +22,7 @@ RecoveryItem("Aloe_Leaflet", 325, 405, 0, 0);
 RecoveryItem("Mastela_Fruit", 400, 600, 0, 0);
 Item("Holy_Water") { OnUse: CleanseStatusEffect(StatusCurse); }
 Item("Panacea") { OnUse: CleanseStatusEffect(StatusPoison | StatusBlind | StatusSilence | StatusCurse | StatusHallucination | StatusConfusion) }
-RecoveryItem("Royal_Jelly", 325, 405, 40, 60);
+Item("Royal_Jelly") { OnUse: HealRange(325, 405); RecoverSpRange(40, 60); CleanseStatusEffect(StatusPoison | StatusBlind | StatusSilence | StatusCurse | StatusHallucination | StatusConfusion); }
 RecoveryItem("Monster's_Feed", 72, 108, 0, 0);
 RecoveryItem("Candy", 45, 65, 0, 0);
 RecoveryItem("Candy_Cane", 105, 145, 0, 0);
@@ -157,7 +157,7 @@ Item("Rusty_Arrow_Quiver") { OnValidate: return CanOpenItemPackage("Rusty_Arrow"
 Item("Speed_Potion") { OnValidate: return false; OnUse: }
 Item("Slow_Potion") { OnValidate: return false; OnUse: }
 Item("Firecracker") { OnValidate: return false; OnUse: }
-Item("Cursed_Water") { OnValidate: return false; OnUse: }
+Item("Cursed_Water") { OnUse: AddStatusEffect(StatusCursedWater, 3m); }
 Item("Pork") { OnValidate: return false; OnUse: }
 Item("Galbi") { OnValidate: return false; OnUse: }
 Item("Box_of_Laughter") { OnValidate: return false; OnUse: }

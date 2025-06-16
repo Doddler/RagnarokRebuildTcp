@@ -95,8 +95,11 @@ internal class ScriptTreeWalker
                 case "RecoveryItem":
                     EnterRecoveryItemStatement(standaloneContext);
                     break;
+                case "HiddenWarp":
+                    EnterWarpStatement(standaloneContext, true);
+                    break;
                 case "Warp":
-                    EnterWarpStatement(standaloneContext);
+                    EnterWarpStatement(standaloneContext, false);
                     break;
                 default:
                     throw new Exception("Unexpected top level function call: " + id);
@@ -520,7 +523,7 @@ internal class ScriptTreeWalker
 
     }
 
-    private void EnterWarpStatement(StandaloneFunctionContext functionContext)
+    private void EnterWarpStatement(StandaloneFunctionContext functionContext, bool isHidden)
     {
         var param = functionContext.functionparam();
         var expr = param.expression();
@@ -551,6 +554,10 @@ internal class ScriptTreeWalker
         builder.EndLine(functionContext.start.Line);
         builder.OutputRaw($"npc.RemoveIfLinksInvalid()");
         builder.EndLine(functionContext.start.Line);
+        if(isHidden){
+            builder.OutputRaw($"npc.HideFromView()");
+            builder.EndLine(functionContext.start.Line);
+        }
         builder.StartNpcSection("OnTouch");
         builder.OutputRaw($"state.MoveTo({v["destMap"]}, {v["dx"]}, {v["dy"]}, {v["dw"]}, {v["dh"]})");
         builder.EndLine(functionContext.start.Line);

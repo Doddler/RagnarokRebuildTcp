@@ -83,6 +83,7 @@ Enables use of <skill>Cold Bolt 3</skill>.
 ::Edge //id 1132 - Sword
 <desc>A sword with an extremely sharp blade.</desc>
 +0.3% chance of <color=#800000>Curse</color> on physical attack
++0.1% chance of dealing lethal damage to on attack
 
 ::Fire_Brand //id 1133 - Sword
 <desc>A formal decorative sword imbued with fire.</desc>
@@ -110,7 +111,7 @@ LUK +10, INT +5, DEX -1
 ::Mistilteinn //id 1138 - Sword
 <desc>A sword inspired by the legendary twig that killed Baldur, god of light.</desc>
 DEX +3
-+15% physical damage vs. Ghost
++30% damage against Demi-human, beast, insect, dragon, aquatic, and plant.
 +10% Autospell <color=#0000FF>Stone Curse 3</color> on non-skill attack
 
 ::Tyrfing //id 1139 - Sword
@@ -199,7 +200,7 @@ ASPD +20%, FLEE +30
 
 ::Schweizersabel //id 1167 - 2HSword
 <desc>A formal decorative sword imbued with wind.</desc>
-DEF +1
+MATK +120, DEF +1
 +10% Autospell <color=#0000FF>Lightning Bolt 3</color> on non-skill attack
 
 ::Zweihander //id 1168 - 2HSword
@@ -232,7 +233,7 @@ CRIT +10
 
 ::Schweizersabel_ //id 1178 - 2HSword
 <desc>A formal decorative sword imbued with wind.</desc>
-DEF +1
+MATK +120, DEF +1
 +10% Autospell <color=#0000FF>Lightning Bolt 3</color> on non-skill attack
 
 ::Executioner_ //id 1179 - 2HSword
@@ -351,8 +352,9 @@ Perfect Dodge +20
 <desc>A domestic knife used by housewives, or househusbands, for cooking.</desc>
 CRIT +30
 
-::Ice_pick //id 1230 - Dagger
+::Ice_Pick //id 1230 - Dagger
 <desc>A thin, sharp blade capable of piercing the strongest of armors.</desc>
+Physical Damage Scales with Enemy Defense
 
 ::Bazerald //id 1231 - Dagger
 <color=#808080>A decorative dagger engraved with luxurious emblems.</color>
@@ -589,6 +591,7 @@ Movement Speed +34%
 ::Sabbath //id 1365 - 2HAxe
 <desc>An axe that guides lost souls to the afterlife.</desc>
 +50 CRIT vs. Undead
++0.5% chance to deal lethal damage to Undead on attack
 
 ::Light_Epsilon //id 1366 - 2HAxe
 <desc>A ceremonial axe that possesses a holy power.</desc>
@@ -598,6 +601,7 @@ Enable use of <skill>Heal 3</skill>
 ::Slaughter //id 1367 - 2HAxe
 <desc>An axe that brutally slaughters enemies.</desc>
 +100% DEF ignore vs. Brute
++0.4% chance to deal lethal damage to Brute on attack
 
 ::Tomahawk //id 1368 - 2HAxe
 <desc>A light, windy axe that can be thrown.</desc>
@@ -605,6 +609,8 @@ Enable use of <skill>Heal 3</skill>
 ::Guillotine //id 1369 - 2HAxe
 <desc>A huge guillotine blade welded to a handle for combat use.</desc>
 Recover 2 SP/melee attack vs. Demi-Human
+Recover 20 SP/melee kill vs. Demi-Human
++0.3% chance to deal lethal damage to Demi-Human on attack
 
 ::Doom_Slayer //id 1370 - 2HAxe
 <desc>A gigantic, ridiculously heavy axe that requires great strength to use.</desc>
@@ -894,6 +900,7 @@ DEF -66%, CRIT +40
 <desc>A hefty mace with curved, sharp blades.</desc>
 +15% physical damage vs. Undead
 +5% EXP from Undead
++0.1% chance of dealing lethal damage to Undead on attack
 
 ::Quadrille //id 1527 - Mace
 <desc>A heavy and powerful iron mace with a rounded top.</desc>
@@ -1608,8 +1615,9 @@ INT +2
 <desc>A dreadful dagger that has been soaked in toxin.</desc>
 +30% chance of <color=#800000>Poison</color> on physical attack
 
-::Ice_Pick //id 13017 - Dagger
+::Ice_Pick_ //id 13017 - Dagger
 <desc>A thin, sharp blade capable of piercing the strongest of armors.</desc>
+Physical Damage Scales with Enemy Defense
 
 ::Sucsamad_ //id 13018 - Dagger
 <desc>A dagger crafted in the ancient, traditional ways of a small desert tribe.</desc>

@@ -43,5 +43,17 @@ public enum StatusTriggerFlags : uint
     Stone = 1 << 8,
     Freeze = 1 << 9,
     Sleep = 1 << 10,
+}
 
+[Flags]
+public enum AttackEffectTriggers
+{
+    None = 0,
+    SpDrain = 1 << 0,
+    HpDrain = 1 << 1,
+    SpOnAttack = 1 << 2,
+    HpOnAttack = 1 << 3,
+    SpOnKill = 1 << 4,
+    HpOnKill = 1 << 5,
+    KillOnAttack = 1 << 6,
 }

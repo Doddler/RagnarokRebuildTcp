@@ -57,6 +57,7 @@ public class ItemEquipState
     public AmmoType AmmoType;
     public int AmmoAttackPower;
     public bool IsDualWielding;
+    public int DoubleAttackModifiers;
     public int WeaponRange;
     public AttackElement WeaponElement;
     public AttackElement AmmoElement;
@@ -676,6 +677,9 @@ public class ItemEquipState
                         Player.AttackVersusTag[effect.Value] = newVal;
                 }
                 return false;
+            case CharacterStat.DoubleAttackChance:
+                DoubleAttackModifiers--;
+                goto default;
             default:
                 Player.CombatEntity.SubStat(effect.Stat, effect.Change);
                 return false;
@@ -917,6 +921,9 @@ public class ItemEquipState
         };
         equipmentEffects.Add(ref equipState);
         Player.CombatEntity.AddStat(stat, change);
+
+        if (stat == CharacterStat.DoubleAttackChance)
+            DoubleAttackModifiers++;
     }
 
     public void SubStat(CharacterStat stat, int change) => AddStat(stat, -change); //lol

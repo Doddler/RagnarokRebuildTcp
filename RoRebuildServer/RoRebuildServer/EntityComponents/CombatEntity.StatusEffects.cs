@@ -9,6 +9,7 @@ using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.ScriptSystem;
 using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Skills;
+using System.Diagnostics;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -30,11 +31,11 @@ public partial class CombatEntity
             case StatusTriggerFlags.Poison:
                 TryPoisonOnTarget(target, chance, true, useDamage ? (res.Damage * res.HitCount / 2) : 0);
                 break;
-            case StatusTriggerFlags.Confusion: 
+            case StatusTriggerFlags.Confusion:
                 break;
-            case StatusTriggerFlags.HeavyPoison: 
+            case StatusTriggerFlags.HeavyPoison:
                 break;
-            case StatusTriggerFlags.Bleeding: 
+            case StatusTriggerFlags.Bleeding:
                 break;
             case StatusTriggerFlags.Stun:
                 TryStunTarget(target, chance);
@@ -53,49 +54,119 @@ public partial class CombatEntity
 
     private void TriggerOnAttackEffects(CombatEntity target, AttackRequest req, ref DamageInfo res, bool isRanged)
     {
-        if (!req.Flags.HasFlag(AttackFlags.Physical) || req.Flags.HasFlag(AttackFlags.NoTriggerOnAttackEffects) || Character.Type != CharacterType.Player)
+        if (req.Flags.HasFlag(AttackFlags.NoTriggerOnAttackEffects) || Character.Type != CharacterType.Player)
             return;
 
-        if (!isRanged && Player.OnMeleeAttackStatusFlags > 0)
-        {
-            var flags = Player.OnMeleeAttackStatusFlags;
-            var count = (int)(CharacterStat.OnMeleeAttackLast - CharacterStat.OnMeleeAttackFirst);
-            for (var i = 0; i < count; i++)
-            {
-                var idx = 1 << i;
-                if ((idx & (int)flags) <= 0)
-                    continue;
+        var isPhysical = req.Flags.HasFlag(AttackFlags.Physical);
 
-                var chance = GetStat(CharacterStat.OnMeleeAttackFirst + i);
-                TryTriggerStatus((StatusTriggerFlags)idx, target, chance, ref res);
+        if (isPhysical)
+        {
+            if (!isRanged && Player.OnMeleeAttackStatusFlags > 0)
+            {
+                var flags = Player.OnMeleeAttackStatusFlags;
+                var count = (int)(CharacterStat.OnMeleeAttackLast - CharacterStat.OnMeleeAttackFirst);
+                for (var i = 0; i < count; i++)
+                {
+                    var idx = 1 << i;
+                    if ((idx & (int)flags) <= 0)
+                        continue;
+
+                    var chance = GetStat(CharacterStat.OnMeleeAttackFirst + i);
+                    TryTriggerStatus((StatusTriggerFlags)idx, target, chance, ref res);
+                }
+            }
+
+            if (isRanged && Player.OnRangedAttackStatusFlags > 0)
+            {
+                var flags = Player.OnRangedAttackStatusFlags;
+                var count = (int)(CharacterStat.OnRangedAttackLast - CharacterStat.OnRangedAttackFirst);
+                for (var i = 0; i < count; i++)
+                {
+                    var idx = 1 << i;
+                    if ((idx & (int)flags) <= 0)
+                        continue;
+
+                    var chance = GetStat(CharacterStat.OnRangedAttackFirst + i);
+                    TryTriggerStatus((StatusTriggerFlags)idx, target, chance, ref res);
+                }
             }
         }
-        
-        if(isRanged && Player.OnRangedAttackStatusFlags > 0)
-        {
-            var flags = Player.OnRangedAttackStatusFlags;
-            var count = (int)(CharacterStat.OnRangedAttackLast - CharacterStat.OnRangedAttackFirst);
-            for (var i = 0; i < count; i++)
-            {
-                var idx = 1 << i;
-                if ((idx & (int)flags) <= 0)
-                    continue;
 
-                var chance = GetStat(CharacterStat.OnRangedAttackFirst + i);
-                TryTriggerStatus((StatusTriggerFlags)idx, target, chance, ref res);
+        var attackTriggerFlags = Player.OnAttackTriggerFlags;
+        if (attackTriggerFlags > 0)
+        {
+            var race = target.GetRace();
+
+            if ((attackTriggerFlags & AttackEffectTriggers.SpDrain) > 0)
+            {
+                var chance = GetStat(CharacterStat.SpDrainChance);
+                if (chance > 0 && GameRandom.Next(0, 100) < chance)
+                    RecoverSp(res.Damage * res.HitCount * GetStat(CharacterStat.SpDrainAmount) / 100);
+            }
+
+            if ((attackTriggerFlags & AttackEffectTriggers.HpDrain) > 0)
+            {
+                var chance = GetStat(CharacterStat.HpDrainChance);
+                if (chance > 0 && GameRandom.Next(0, 100) < chance)
+                    HealHp(res.Damage * res.HitCount * GetStat(CharacterStat.HpDrainAmount) / 100);
+            }
+
+            if ((attackTriggerFlags & AttackEffectTriggers.HpOnAttack) > 0)
+            {
+                var val = GetStat(CharacterStat.HpGainOnAttack);
+                if (val > 0)
+                    HealHp(val, true);
+
+                val = GetStat(CharacterStat.HpGainOnAttackRaceFormless + (int)race);
+                if (val > 0)
+                    HealHp(val, true);
+            }
+
+            if ((attackTriggerFlags & AttackEffectTriggers.HpOnAttack) > 0)
+            {
+                var val = GetStat(CharacterStat.SpGainOnAttack);
+                if (val > 0)
+                    RecoverSp(val);
+
+                val = GetStat(CharacterStat.SpGainOnAttackRaceFormless + (int)race);
+                if (val > 0)
+                    RecoverSp(val);
+            }
+
+            if ((attackTriggerFlags & AttackEffectTriggers.KillOnAttack) > 0
+                    && isPhysical && target.GetSpecialType() != CharacterSpecialType.Boss)
+            {
+                var val = GetStat(CharacterStat.KnockOutOnAttack);
+                val += GetStat(CharacterStat.KnockOutOnAttackRaceFormless + (int)race);
+
+                var lvlDiff = target.GetStat(CharacterStat.Level) - GetStat(CharacterStat.Level);
+                if (lvlDiff > 0)
+                    val -= lvlDiff;
+
+                if (val > 0 && CheckLuckModifiedRandomChanceVsTarget(target, val, 1000))
+                {
+                    var curHp = target.GetStat(CharacterStat.Hp);
+                    if (curHp > res.Damage)
+                        res.Damage = curHp;
+                }
             }
         }
+    }
 
+    public void TriggerOnKillEffects(CombatEntity target)
+    {
+        if ((Player.OnAttackTriggerFlags & AttackEffectTriggers.HpOnKill) > 0)
         {
-            var chance = GetStat(CharacterStat.SpDrainChance);
-            if (chance > 0 && GameRandom.Next(0, 100) < chance)
-                RecoverSp(res.Damage * res.HitCount * GetStat(CharacterStat.SpDrainAmount) / 100);
+            var val = GetStat(CharacterStat.HpGainOnKill);
+            val += GetStat(CharacterStat.HpGainOnAttackRaceFormless + (int)target.GetRace());
+            if (val > 0)
+                HealHp(val, true);
+        }
 
-            chance = GetStat(CharacterStat.HpDrainChance);
-            if (chance > 0 && GameRandom.Next(0, 100) < chance)
-                HealHp(res.Damage * res.HitCount * GetStat(CharacterStat.HpDrainAmount) / 100);
-
-            var val = GetStat(CharacterStat.SpOnAttack);
+        if ((Player.OnAttackTriggerFlags & AttackEffectTriggers.SpOnKill) > 0)
+        {
+            var val = GetStat(CharacterStat.SpGainOnKill);
+            val += GetStat(CharacterStat.SpGainOnAttackRaceFormless + (int)target.GetRace());
             if (val > 0)
                 RecoverSp(val);
         }

@@ -2,6 +2,7 @@
 using System.Reflection;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum;
+using RoRebuildServer.Data.Monster;
 using RoRebuildServer.Data.Player;
 using RoRebuildServer.Logging;
 
@@ -39,6 +40,12 @@ public class ServerConfigScriptManager
             rate = 10000;
 
         return rate;
+    }
+
+    public void SetMonsterSpawnTime(MonsterDatabaseInfo monster, string mapName, ref int minTime, ref int maxTime)
+    {
+        foreach(var c in handlers)
+            c.OnSetMonsterSpawnTime(monster, mapName, ref minTime, ref maxTime);
     }
 
     public void UpdateItemValue(ReadOnlyDictionary<int, ItemInfo> itemList)
@@ -86,6 +93,7 @@ public abstract class ServerConfigScriptHandlerBase
 {
     public virtual void Init() {}
     public virtual int OnLoadDropData(ItemClass type, string code, string subType, int rate) => rate;
+    public virtual void OnSetMonsterSpawnTime(MonsterDatabaseInfo monster, string mapName, ref int minTime, ref int maxTime) {}
     public virtual int OnSetItemPurchasePrice(ItemClass type, string code, string subType, int price) => price;
     public virtual int OnSetItemSaleValue(ItemClass type, string code, string subType, int price) => price;
     public virtual void PostServerStartEvent() {}

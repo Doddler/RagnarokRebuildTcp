@@ -113,6 +113,8 @@ public class ServerMapConfig : IServerMapConfig
             respawn = maxTime;
         if (maxTime > 0 && respawnMax > maxTime)
             respawnMax = maxTime;
+
+        DataManager.ServerConfigScriptManager.SetMonsterSpawnTime(mobStats, Map.Name, ref respawn, ref respawnMax);
         
         area = area.ClipArea(Map.MapBounds);
 

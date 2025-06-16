@@ -255,6 +255,7 @@ namespace Assets.Scripts
         private Vector3 startPos;
 
         public float TargetRotation;
+        public float DefaultRotation;
 
         public float ClickDelay;
 
@@ -424,6 +425,7 @@ namespace Assets.Scripts
         {
             CameraMode = CameraMode.Fixed;
             TargetRotation = Rotation = viewpoint.SpinIn;
+            DefaultRotation = viewpoint.SpinIn;
             Height = viewpoint.HeightIn;
             Distance = viewpoint.ZoomIn;
             rotationRange = new Vector2(viewpoint.SpinMin, viewpoint.SpinMax);
@@ -460,6 +462,7 @@ namespace Assets.Scripts
             {
                 Rotation = PlayerPrefs.GetFloat("cameraIndoorX", 45);
                 Height = PlayerPrefs.GetFloat("cameraIndoorY", 55);
+                DefaultRotation = 45;
                 TargetRotation = Rotation;
                 lockCamera = true;
                 Distance = 55;
@@ -469,7 +472,7 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            zoomRange = new Vector2(30, 500);
+            // zoomRange = new Vector2(30, 500);
 #endif
         }
 
@@ -1024,7 +1027,7 @@ namespace Assets.Scripts
                     isSkillAllyTargeted = true;
                 }
             }
-            
+
             var walkMask = 1 << LayerMask.NameToLayer("WalkMap");
             var groundMask = 1 << LayerMask.NameToLayer("Ground");
 
@@ -1109,7 +1112,7 @@ namespace Assets.Scripts
                 UiManager.Instance.DropCountConfirmationWindow.gameObject.SetActive(false);
                 InItemInputBox = false;
             }
-            
+
             if (!isOverUi && InTextInputBox && leftClick)
             {
                 UiManager.Instance.TextInputWindow.HideInputWindow();
@@ -1277,7 +1280,7 @@ namespace Assets.Scripts
         }
 
         private readonly StringBuilder chatBuilder = new();
-        
+
         private void RefreshChatWindow()
         {
             if (chatMessages.Count > 50)
@@ -1288,15 +1291,15 @@ namespace Assets.Scripts
 
             TextBoxText.text = chatBuilder.ToString();
             chatBuilder.Clear();
-            
+
             StartCoroutine(ApplyScrollPosition(TextBoxScrollRect, 0));
         }
-        
-        IEnumerator ApplyScrollPosition( ScrollRect sr, float verticalPos )
+
+        IEnumerator ApplyScrollPosition(ScrollRect sr, float verticalPos)
         {
-            yield return new WaitForEndOfFrame( );
+            yield return new WaitForEndOfFrame();
             sr.verticalNormalizedPosition = verticalPos;
-            LayoutRebuilder.ForceRebuildLayoutImmediate( (RectTransform)sr.transform );
+            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)sr.transform);
         }
 
         public void AppendChatText(string txt)
@@ -1312,12 +1315,12 @@ namespace Assets.Scripts
             // TextBoxScrollRect.verticalNormalizedPosition = 0;
             // Debug.Log(TextBoxScrollRect.verticalNormalizedPosition);
         }
-        
+
         public void AppendChatText(string txt, TextColor color)
         {
             if (string.IsNullOrWhiteSpace(txt))
                 return;
-            
+
             var c = color switch
             {
                 TextColor.Party => "<color=#77FF77>",
@@ -1328,10 +1331,10 @@ namespace Assets.Scripts
                 TextColor.Error => "color=#ed0000>",
                 _ => ""
             };
-            
+
             chatMessages.Add(c + txt + "</color>");
             RefreshChatWindow();
-            
+
             // TextBoxText.text += Environment.NewLine + txt;
             // TextBoxText.ForceMeshUpdate();
             // LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)TextBoxScrollRect.transform);
@@ -1726,7 +1729,7 @@ namespace Assets.Scripts
                     }
                 }
             }
-            
+
             InTextBox = false;
             if (selected != null && !InItemInputBox)
                 InTextBox = selected.GetComponent<TMP_InputField>() != null;
@@ -1896,7 +1899,7 @@ namespace Assets.Scripts
                     if (Input.GetKey(KeyCode.LeftShift))
                         Height = 50;
                     else
-                        TargetRotation = CameraMode == CameraMode.Normal ? 0 : (rotationRange.y + rotationRange.x) / 2f;
+                        TargetRotation = CameraMode == CameraMode.Normal ? 0 : DefaultRotation; // (rotationRange.y + rotationRange.x) / 2f;
                 }
 
                 LastRightClick = Time.timeSinceLevelLoad;
@@ -1917,7 +1920,15 @@ namespace Assets.Scripts
                     var turnSpeed = 200;
                     TargetRotation += Input.GetAxis("Mouse X") * turnSpeed * Time.deltaTime;
                     if (lockCamera)
+                    {
+                        if (TargetRotation > 180 && rotationRange.x < 0)
+                            TargetRotation -= 360;
+
                         TargetRotation = Mathf.Clamp(TargetRotation, rotationRange.x, rotationRange.y);
+
+                        if (TargetRotation < 0)
+                            TargetRotation += 360;
+                    }
                 }
             }
 

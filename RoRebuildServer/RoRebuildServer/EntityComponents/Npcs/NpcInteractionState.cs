@@ -32,6 +32,7 @@ public class NpcInteractionState
     
     public const int StorageCount = 10;
     
+    public bool[] ValidOptions = new bool[10];
     public int[] ValuesInt = new int[StorageCount];
     public string?[] ValuesString = new string[StorageCount];
 
@@ -100,6 +101,14 @@ public class NpcInteractionState
             return;
 
         var npc = NpcEntity.Get<Npc>();
+
+        if (result < 10 && !ValidOptions[result])
+        {
+            ServerLogger.LogWarning($"Player {Player.Character.Name} tried to pick option {result} on npc {npc.FullName}, but that option is flagged as invalid.");
+            CancelInteraction();
+            return;
+        }
+        
         npc.OptionAdvance(Player, result);
     }
 
@@ -159,6 +168,8 @@ public class NpcInteractionState
     public void ChangePlayerJob(int jobId) => Player?.ChangeJob(jobId);
     public void SkillReset() => Player?.SkillReset();
     public void StatPointReset() => Player?.StatPointReset();
+    public bool HasLearnedSkill(CharacterSkill skill, int level = 1) => Player?.DoesCharacterKnowSkill(skill, level) ?? false;
+    public bool HasCart => Player?.GetData(PlayerStat.PushCart) > 0;
 
     public void FocusNpc()
     {
@@ -310,7 +321,18 @@ public class NpcInteractionState
 
         if (Player == null)
             return;
-        
+
+        var optCount = options.Length;
+        if (optCount > 10)
+        {
+            var npc = NpcEntity.Get<Npc>();
+            ServerLogger.LogWarning($"Npc interaction with {npc.FullName} attempting to create an Option with more than 10 options!");
+            optCount = 10;
+        }
+
+        for (var i = 0; i < 10; i++)
+            ValidOptions[i] = i < optCount && !string.IsNullOrWhiteSpace(options[i]); //an empty string can't be selected by the user
+
         CommandBuilder.SendNpcOption(Player, options);
     }
 
@@ -473,7 +495,7 @@ public class NpcInteractionState
             CommandBuilder.RemoveItemFromInventory(Player, removeIds[i], removeCounts[i]);
         }
         Player.DropZeny(tradeCount * trade.ZenyCost);
-        Player.CreateItemInInventory(new ItemReference(trade.CombinedItem.Id, trade.CombinedItem.Count));
+        Player.CreateItemInInventory(new ItemReference(trade.CombinedItem.Id, trade.CombinedItem.Count * tradeCount));
         CommandBuilder.SendServerEvent(Player, ServerEvent.TradeSuccess);
     }
 
@@ -570,5 +592,33 @@ public class NpcInteractionState
         if (Player == null)
             return;
         Player.DropZeny(zeny);
+    }
+
+    public void EquipPushCart()
+    {
+        if (Player == null)
+            return;
+
+        var cartStyle = Level switch
+        {
+            < 41 => 1,
+            < 66 => 2,
+            < 81 => 3,
+            < 91 => 4,
+            _ => 5
+        };
+        var follower = cartStyle switch
+        {
+            1 => PlayerFollower.Cart1,
+            2 => PlayerFollower.Cart2,
+            3 => PlayerFollower.Cart3,
+            4 => PlayerFollower.Cart4,
+            _ => PlayerFollower.Cart0
+        };
+
+        Player.SetData(PlayerStat.PushCart, cartStyle);
+        Player.PlayerFollower = follower;
+
+        CommandBuilder.UpdatePlayerFollowerStateAutoVis(Player);
     }
 }

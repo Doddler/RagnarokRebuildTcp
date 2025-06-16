@@ -672,6 +672,12 @@ public class ScriptBuilder
 
         methodName = section;
 
+        stateVariable = "this";
+        UseStateMachine = false;
+        UseStateStorage = false;
+        UseLocalStorage = false;
+        StateStorageLimit = 0;
+
         if (section == "OnLoadDropData" || section == "OnSetItemPurchasePrice" || section == "OnSetItemSaleValue")
         {
 
@@ -680,12 +686,6 @@ public class ScriptBuilder
             else
                 StartIndentedBlockLine().AppendLine($"public override int {section}(ItemClass type, string code, string subType, int price)");
             OpenScope();
-
-            stateVariable = "this";
-            UseStateMachine = false;
-            UseStateStorage = false;
-            UseLocalStorage = false;
-            StateStorageLimit = 0;
 
             additionalVariables.Add("type", "type");
             additionalVariables.Add("code", "code");
@@ -705,6 +705,17 @@ public class ScriptBuilder
 
             foreach (var i in Enum.GetValues<ItemClass>())
                 additionalVariables.Add(i.ToString(), $"ItemClass.{i}");
+        }
+        else if (section == "OnSetMonsterSpawnTime")
+        {
+            StartIndentedBlockLine().AppendLine($"public override void OnSetMonsterSpawnTime(MonsterDatabaseInfo monster, string mapName, ref int minTime, ref int maxTime)");
+            OpenScope();
+
+            additionalVariables.Add("minTime", "minTime");
+            additionalVariables.Add("maxTime", "maxTime");
+            additionalVariables.Add("mapName", "mapName");
+
+            LoadFunctionSource(typeof(MonsterDatabaseInfo), "monster");
         }
         else
             throw new Exception($"Invalid ServerConfig section type {section}!");
@@ -939,6 +950,9 @@ public class ScriptBuilder
             LoadFunctionSource(typeof(NpcInteractionState), "state");
             LoadFunctionSource(typeof(ScriptUtilityFunctions), "ScriptUtilityFunctions");
 
+            foreach (var i in Enum.GetValues<CharacterSkill>())
+                additionalVariables.Add(i.ToString(), $"CharacterSkill.{i}");
+
             if (section == "OnClick")
                 hasInteract = true;
             if (section == "OnTouch")
@@ -979,6 +993,7 @@ public class ScriptBuilder
 
         LoadFunctionSource(typeof(Npc), "npc");
         LoadFunctionSource(typeof(ScriptUtilityFunctions), "ScriptUtilityFunctions");
+
 
         if (section.StartsWith("OnTimer"))
         {

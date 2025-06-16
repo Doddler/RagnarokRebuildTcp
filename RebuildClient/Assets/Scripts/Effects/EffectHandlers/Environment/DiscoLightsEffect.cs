@@ -80,7 +80,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.Environment
                 }
 
                 data.LightControlGroup.SetBrightness(effect.DataValue);
-                var size = effect.DataValue / 3f;
+                var size = effect.DataValue / 3f * 0.7f;
                 data.Orb.transform.localScale = new Vector3(size, size, size);
                 return true;
             }
