@@ -32,6 +32,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             State.Level = State.GetData(PlayerStat.Level);
             State.AttackSpeed = msg.ReadFloat();
             State.CurrentWeight = msg.ReadInt32();
+            State.CartWeight = msg.ReadInt32();
 
             var hp = State.GetStat(CharacterStat.Hp); //we don't assign these to player state directly so we can do the health bar animation thing
             var maxHp = State.GetStat(CharacterStat.MaxHp);

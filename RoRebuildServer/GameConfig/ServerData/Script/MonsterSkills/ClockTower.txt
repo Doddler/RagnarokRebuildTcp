@@ -55,14 +55,17 @@ StateAttacking:
 SkillHandler("ELDER") {
 StateIdle:
 	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
-StateAttacking:
 	TryCast(FireBolt, 7, 1000, 1200, 7000, EasyInterrupt) -> SendEmote(11); //rock
 	TryCast(FrostDiver, 9, 1000, 1200, 7000, EasyInterrupt) -> SendEmote(12); //paper
 	TryCast(LightningBolt, 7, 1000, 1200, 7000, EasyInterrupt) -> SendEmote(10); //scissors
+	TryCast(StoneCurse, 10, 1000, 0, 7000, EasyInterrupt) -> SendEmote(12); //paper
 StateChase:
-	TryCast(FireBolt, 7, 1000, 1200, 7000, EasyInterrupt) -> SendEmote(11); //rock
 	TryCast(FrostDiver, 9, 1000, 1200, 7000, EasyInterrupt) -> SendEmote(12); //paper
 	TryCast(LightningBolt, 7, 1000, 1200, 7000, EasyInterrupt) -> SendEmote(10); //scissors
+StateAttacking:
+	TryCast(Silence, 5, 5%, 0.7s, 5000, NoInterrupt);
+	TryCast(FireBolt, 7, 1000, 1200, 7000, EasyInterrupt) -> SendEmote(11); //rock
+	TryCast(StoneCurse, 10, 1000, 0, 7000, EasyInterrupt) -> SendEmote(12); //paper
 }
 
 SkillHandler("OWL_DUKE") {

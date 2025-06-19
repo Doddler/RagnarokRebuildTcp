@@ -144,12 +144,14 @@ public class ItemEquipState
 
             ItemSlots[i] = -1;
             ItemIds[i] = -1;
-            AmmoId = -1;
             IsDualWielding = false;
             isTwoHandedWeapon = false;
         }
         for (var i = 0; i < 3; i++)
             headgearMultiSlotInfo[i] = HeadgearPosition.None;
+
+        RemoveEquipEffectForAmmo();
+        AmmoId = -1;
     }
 
     public void UpdateAppearanceIfNecessary(EquipSlot slot)
@@ -176,6 +178,7 @@ public class ItemEquipState
 
         if (itemData.ItemClass == ItemClass.Ammo)
         {
+            RemoveEquipEffectForAmmo();
             AmmoId = -1;
             AmmoAttackPower = 0;
             AmmoElement = AttackElement.None;
@@ -430,17 +433,20 @@ public class ItemEquipState
             }
         }
 
+        SubEquipItemCount(AmmoId);
+
         unEquipInfo.Interaction?.OnUnequip(Player, Player.CombatEntity, this, new UniqueItem(),
             EquipSlot.Ammunition);
+        OnUnEquipUpdateItemSets(AmmoId);
     }
 
-    public bool EquipAmmo(int ammoId, bool isPlayerActive = true)
+    public bool EquipAmmo(int ammoId, bool isPlayerActive = true, bool unEquipExisting = true)
     {
         if (!DataManager.AmmoInfo.TryGetValue(ammoId, out var ammo))
             return false;
 
         //player can be null here if we're deserializing on character load. In that case, the OnEquip event will be sent from RunEquipAll
-        if (isPlayerActive)
+        if (isPlayerActive && unEquipExisting)
             RemoveEquipEffectForAmmo();
 
         AmmoId = ammoId;
@@ -450,9 +456,11 @@ public class ItemEquipState
 
         if (isPlayerActive)
         {
+            AddEquipItemCount(AmmoId);
             CommandBuilder.PlayerEquipItem(Player, ammoId, EquipSlot.Ammunition, true);
             if (DataManager.ItemList.TryGetValue(ammoId, out var equipInfo))
                 equipInfo.Interaction?.OnEquip(Player, Player.CombatEntity, this, new UniqueItem(), EquipSlot.Ammunition);
+            OnEquipUpdateItemSets(AmmoId);
         }
 
         return true;
@@ -769,7 +777,10 @@ public class ItemEquipState
             OnEquipEvent((EquipSlot)i);
 
         if (AmmoId > 0 && DataManager.ItemList.TryGetValue(AmmoId, out var equipInfo))
-            equipInfo.Interaction?.OnEquip(Player, Player.CombatEntity, this, new UniqueItem(), EquipSlot.Ammunition);
+        {
+            EquipAmmo(AmmoId, true, false);
+            //equipInfo.Interaction?.OnEquip(Player, Player.CombatEntity, this, new UniqueItem(), EquipSlot.Ammunition);
+        }
     }
 
     public int Refine

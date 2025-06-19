@@ -22,7 +22,17 @@ namespace Assets.Scripts.Misc
         {
             TargetCharacter = followTarget;
             CartStyle = cartStyle;
-            spriteLoadTask = Addressables.LoadAssetAsync<RoSpriteData>("Assets/Sprites/Effects/손수레.spr");
+
+            var cartSprite = cartStyle switch
+            {
+                1 => "Assets/Sprites/Effects/손수레1.spr",
+                2 => "Assets/Sprites/Effects/손수레2.spr",
+                3 => "Assets/Sprites/Effects/손수레3.spr",
+                4 => "Assets/Sprites/Effects/손수레4.spr",
+                _ => "Assets/Sprites/Effects/손수레.spr"
+            };
+            
+            spriteLoadTask = Addressables.LoadAssetAsync<RoSpriteData>(cartSprite);
             isLoaded = false;
         }
         

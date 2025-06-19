@@ -32,6 +32,7 @@ namespace Assets.Scripts.PlayerControl
         public bool IsMale;
         public int HairStyleId;
         public int HairColorId;
+        public int CartWeight = 0;
         public int CurrentWeight = 0;
         public int MaxWeight = 3000;
         public int Zeny = 0;

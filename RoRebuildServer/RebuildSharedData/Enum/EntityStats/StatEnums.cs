@@ -300,7 +300,9 @@ public enum CharacterStat
     DecreaseStunDuration,
     DecreaseFreezeDuration,
 
-    HpDrainChance,
+    PureHpDrain, //effects with 100% chance to recover x% of damage as HP
+    PureSpDrain,
+    HpDrainChance, //effects that add x% chance to recover y% of damage as HP (doesn't stack with pure hp drain for balance)
     HpDrainAmount,
     SpDrainChance,
     SpDrainAmount,

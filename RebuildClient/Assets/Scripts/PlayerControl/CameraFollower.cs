@@ -337,6 +337,8 @@ namespace Assets.Scripts
             UseSmoothPixel = false;
             Shader.SetKeyword(smoothPixelKeyword, UseSmoothPixel);
 
+            ResetChat();
+
             //targetWalkable = Target.GetComponent<EntityWalkable>();
             //if (targetWalkable == null)
             //    targetWalkable = Target.AddComponent<EntityWalkable>();
@@ -1856,10 +1858,18 @@ namespace Assets.Scripts
 
             if (!inInputUI && Input.GetKeyDown(KeyCode.W))
             {
-                if (!WarpPanel.activeInHierarchy)
-                    WarpPanel.GetComponent<WarpWindow>().ShowWindow();
+#if UNITY_EDITOR
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    if (!WarpPanel.activeInHierarchy)
+                        WarpPanel.GetComponent<WarpWindow>().ShowWindow();
+                    else
+                        WarpPanel.GetComponent<WarpWindow>().HideWindow();
+                }
                 else
-                    WarpPanel.GetComponent<WarpWindow>().HideWindow();
+#endif
+                if (PlayerState.Instance.HasCart)
+                    UiManager.Instance.CartWindow.ToggleVisibility();
             }
 
             if (!inInputUI && Input.GetKeyDown(KeyCode.Q))

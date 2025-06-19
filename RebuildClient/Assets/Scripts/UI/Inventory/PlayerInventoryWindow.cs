@@ -40,6 +40,12 @@ namespace Assets.Scripts.UI.Inventory
             UpdateActiveVisibleBag();
             CartButton.gameObject.SetActive(PlayerState.Instance.HasCart);
         }
+
+        public void ToggleCart()
+        {
+            if(PlayerState.Instance.HasCart)
+                UiManager.Instance.CartWindow.ShowWindow();
+        }
         
         public void ClickTabButton(int tab)
         {
@@ -73,6 +79,17 @@ namespace Assets.Scripts.UI.Inventory
             UpdateActiveVisibleBag();
         }
 
+        private void OnRightClick(InventoryItem item)
+        {
+            if (PlayerState.Instance.HasCart && (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)))
+            {
+                UiManager.Instance.CartWindow.OnMoveInventoryItemToCart(item.BagSlotId);
+                return;
+            }
+
+            UiManager.Instance.ItemDescriptionWindow.ShowItemDescription(item);
+        }
+
         private void OnDoubleClick(InventoryEntry itemEntry, InventoryItem item)
         {
             var state = NetworkManager.Instance.PlayerState;
@@ -82,6 +99,12 @@ namespace Assets.Scripts.UI.Inventory
                 StorageUI.Instance.OnMoveInventoryItemToStorage(item.BagSlotId);
                 return;
             }
+            //
+            // if (UiManager.Instance.CartWindow.gameObject.activeInHierarchy && (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)))
+            // {
+            //     UiManager.Instance.CartWindow.OnMoveInventoryItemToCart(itemEntry.DragItem.OriginId);
+            //     return;
+            // }
 
             switch (item.ItemData.UseType)
             {
@@ -164,9 +187,10 @@ namespace Assets.Scripts.UI.Inventory
                 }
 
                 itemEntry.DragItem.Assign(DragItemType.Item, sprite, bagEntry.Key, item.Count);
+                itemEntry.DragItem.OriginId = bagEntry.Key;
                 itemEntry.gameObject.SetActive(true);
                 itemEntry.DragItem.gameObject.SetActive(true);
-                itemEntry.DragItem.OnRightClick = () => UiManager.Instance.ItemDescriptionWindow.ShowItemDescription(item);
+                itemEntry.DragItem.OnRightClick = () => OnRightClick(item);
                 if (state.EquippedItems.Contains(item.BagSlotId))
                 {
                     itemEntry.DragItem.SetEquipped();

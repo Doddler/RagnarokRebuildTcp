@@ -1399,6 +1399,22 @@ public static class CommandBuilder
         NetworkManager.SendMessage(packet, p.Connection);
     }
 
+    public static void MoveItemIntoOrOutOfCart(Player p, CartInteractionType moveType, ItemReference item, int bagId, int change)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.CartInventoryInteraction, 32);
+        packet.Write((byte)moveType);
+        packet.Write(bagId);
+        item.SerializeWithType(packet);
+        packet.Write((short)change);
+        packet.Write(p.CartInventory?.BagWeight ?? 0);
+        if(moveType == CartInteractionType.InventoryToCart || moveType == CartInteractionType.CartToInventory)
+            packet.Write(p.Inventory?.BagWeight ?? 0);
+        else
+            packet.Write(p.StorageInventory?.BagWeight ?? 0);
+        
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+
     public static void SendMapMemoLocations(Player p)
     {
         var packet = NetworkManager.StartPacket(PacketType.MemoMapLocation, 96);

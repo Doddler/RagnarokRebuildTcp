@@ -416,7 +416,7 @@
         16
       ],
       "AdjustableLevel": false,
-      "Description": "Curse a target to become stone, a 5 second long process that ends with the target being petrified. Chance of success is [35 \u002B SkillLevel * 3]%. In the event of failure there is no cooldown, and at level 3\u002B failure will not consume a catalyst.\r\nPetrifying Effect: Target is greatly slowed and unable to attack or use skills.\r\nPetrification Effect: Target becomes immobilized and earth element, and receive DEF-50% and MDEF\u002B25%. The next attack will free the target and deal \u002B50% damage.\r\nCatalyst: \u003Ccolor=#777777\u003E1 Red Gemstone\u003C/color\u003E",
+      "Description": "Curse a target to turn to stone, a 5 second long process that ends with the target being petrified. Chance of success is [35 \u002B SkillLevel * 3]%. In the event of failure there is no cooldown and no catalyst is consumed.\r\nPetrifying Effect: Target is greatly slowed and unable to attack or use skills.\r\nPetrification Effect: Target becomes immobilized and earth element, and receive DEF-50% and MDEF\u002B25%. The next attack will free the target and deal \u002B50% damage.\r\nCatalyst: \u003Ccolor=#777777\u003E1 Red Gemstone\u003C/color\u003E. The chance of consuming a gemstone on a successful cast is [80 - SkillLevel * 5]%.",
       "InterruptMode": 0
     },
     {
@@ -1059,10 +1059,10 @@
       "Name": "Weapon Appraisal",
       "Target": 0,
       "Type": 0,
-      "MaxLevel": 10,
+      "MaxLevel": 5,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "A keen eye unlocks the hidden potential of weapons, increasing your weapon attack power by \u002B[SkillLevel * WeaponLevel].",
+      "Description": "A keen eye unlocks the hidden potential of weapons, increasing your weapon attack power by \u002B[SkillLevel * WeaponLevel * 2].",
       "InterruptMode": 0
     },
     {
@@ -1094,10 +1094,10 @@
       "Name": "Push Cart",
       "Target": 0,
       "Type": 0,
-      "MaxLevel": 1,
+      "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "Authorizes the use of a merchant cart and enables purchasing one from most Kafra employees.\r\nThe cart has a weight capacity of 8000 and can store up to 100 items.\r\nA new cart design is available at levels 41, 66, 81, and 91. Type \u0022/changecart [1-5]\u0022 to swap designs.",
+      "Description": "Authorizes the use of a merchant cart and enables purchasing one from most Kafra employees. Movement speed with a cart is lowered by [50 - SkillLevel * 5]% (no penalty at level 10).\r\nThe cart has a weight capacity of 8000 and can store up to 100 items.\r\nA new cart design is available at levels 41, 66, 81, and 91. Type \u0022/changecart [1-5]\u0022 to swap designs.",
       "InterruptMode": 0
     },
     {
@@ -1125,7 +1125,7 @@
         12
       ],
       "AdjustableLevel": false,
-      "Description": "Strikes a target with your cart, dealing [150 \u002B Weight / 60]% damage to all enemies in a 3x3 area and knocking them away 2 tiles.",
+      "Description": "Strikes a target with your cart, dealing [150 \u002B Weight / 80]% damage to all enemies in a 3x3 area and knocking them away 2 tiles.",
       "InterruptMode": 0
     },
     {
@@ -1476,7 +1476,7 @@
         47
       ],
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "Increases attack speed with axes and maces by 60% you and 50% your party members. Lasts [SkillLevel * 30] seconds.",
       "InterruptMode": 0
     },
     {

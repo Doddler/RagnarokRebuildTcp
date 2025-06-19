@@ -46,8 +46,7 @@ public class Instance
                 continue;
             }
             
-            var map = new Map(world, this, md.Code, md.WalkData);
-            map.CanTeleport = md.MapMode != "Indoor";
+            var map = new Map(world, this, md.Code, md.WalkData, md.MapMode != "Indoor");
             Maps.Add(map);
             MapNameLookup.Add(md.Code, map);
         }

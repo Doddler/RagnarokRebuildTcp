@@ -1669,7 +1669,7 @@ public class Map
         LoadMapConfig();
     }
 
-    public Map(World world, Instance instance, string name, string walkData)
+    public Map(World world, Instance instance, string name, string walkData, bool canTeleport)
     {
 #if DEBUG
         Players.IsActive = true; //bypass EntityListPool borrow tracking
@@ -1681,6 +1681,8 @@ public class Map
         MapConfig = new ServerMapConfig(this);
         Instance = instance;
         Flags = DataManager.GetFlagsForMap(name);
+
+        CanTeleport = canTeleport & (Flags & MapFlags.NoTeleport) == 0;
 
         WalkData = new MapWalkData(walkData, Flags);
 

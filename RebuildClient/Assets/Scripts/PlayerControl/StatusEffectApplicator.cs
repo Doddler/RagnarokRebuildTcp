@@ -101,6 +101,7 @@ namespace Assets.Scripts.PlayerControl
                 }
                 case CharacterStatusEffect.Hiding:
                 case CharacterStatusEffect.Cloaking:
+                case CharacterStatusEffect.Invisible:
                     controllable.SpriteAnimator.IsHidden = true;
                     controllable.SpriteAnimator.HideShadow = !controllable.IsMainCharacter;
                     if(controllable.FollowerObject != null)
@@ -230,6 +231,7 @@ namespace Assets.Scripts.PlayerControl
                 }
                 case CharacterStatusEffect.Hiding:
                 case CharacterStatusEffect.Cloaking:
+                case CharacterStatusEffect.Invisible:
                     controllable.SpriteAnimator.IsHidden = false;
                     controllable.SpriteAnimator.HideShadow = false;
                     if(controllable.FollowerObject != null)

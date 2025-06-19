@@ -76,7 +76,7 @@ RecoveryItem("Jam_Pancake", 325, 405, 40, 60);
 RecoveryItem("Honey_Pancake", 325, 405, 40, 60);
 RecoveryItem("Sour_Cream_Pancake", 325, 405, 40, 60);
 RecoveryItem("Mushroom_Pancake", 325, 405, 40, 60);
-Item("Fly_Wing") { OnValidate: return CanTeleport(); OnUse: RandomTeleport(); }
+Item("Fly_Wing") { OnValidate: return CanTeleportWithError(); OnUse: RandomTeleport(); }
 Item("Butterfly_Wing") { OnValidate: return true; OnUse: ReturnToSavePoint(); }
 Item("Old_Blue_Box") { OnUse: UseItemCreationItem("Old_Blue_Box"); }
 Item("Old_Purple_Box") { OnUse: UseItemCreationItem("Old_Violet_Box"); }

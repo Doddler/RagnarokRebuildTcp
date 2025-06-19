@@ -80,6 +80,7 @@ public class ScriptBuilder
     public int StateStorageLimit = 0;
     public bool IsEvent;
     public string? defaultReturn = null;
+    public string RequiresServerEvent = "";
     private StateMachineType stateMachineType;
 
     private int indentation = 1;
@@ -779,6 +780,7 @@ public class ScriptBuilder
         waitingFunctions.Add("Option", NpcInteractionResult.WaitForInput);
         waitingFunctions.Add("PromptForCount", NpcInteractionResult.WaitForItemPrompt);
         waitingFunctions.Add("OpenShop", NpcInteractionResult.WaitForShop);
+        waitingFunctions.Add("StartSellToNpc", NpcInteractionResult.WaitForShop);
         waitingFunctions.Add("StartItemTrade", NpcInteractionResult.WaitForTrade);
         waitingFunctions.Add("OpenStorage", NpcInteractionResult.WaitForStorageAccess);
         waitingFunctions.Add("OpenRefineDialog", NpcInteractionResult.WaitForRefine);
@@ -1430,6 +1432,9 @@ public class ScriptBuilder
         StartIndentedScriptLine().AppendLine("public void Load()");
         StartIndentedScriptLine().AppendLine("{");
         indentation++;
+
+        if (!string.IsNullOrWhiteSpace(RequiresServerEvent))
+            StartIndentedScriptLine().AppendLine($"if (!ServerConfig.OperationConfig.ActiveEvents?.Contains(\"{RequiresServerEvent}\")?? false) return;");
 
         foreach (var line in lines)
             StartIndentedScriptLine().AppendLine(line);

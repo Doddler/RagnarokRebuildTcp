@@ -10,7 +10,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Monster;
 [SkillHandler(CharacterSkill.MonsterSnap, SkillClass.None, SkillTarget.Enemy)]
 public class MonsterSnapHandler : SkillHandlerBase
 {
-    public override int GetSkillRange(CombatEntity source, int lvl) => 14;
+    public override int GetSkillRange(CombatEntity source, int lvl) => lvl == 1 ? 14 : 21;
 
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
     {
@@ -19,7 +19,8 @@ public class MonsterSnapHandler : SkillHandlerBase
         if (target == null || map == null || !target.IsValidTarget(source))
             return;
         
-        if (!map.WalkData.HasLineOfSight(source.Character.Position, target.Character.Position))
+        //level 2 ignores line of sight
+        if (lvl == 1 && !map.WalkData.HasLineOfSight(source.Character.Position, target.Character.Position))
             return;
 
         var angle = target.Character.Position.Angle(source.Character.Position);

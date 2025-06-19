@@ -76,7 +76,7 @@
               "Level": 10
             },
             {
-              "Skill": 7,
+              "Skill": 4,
               "Level": 5
             }
           ]
@@ -504,7 +504,7 @@
           "Prerequisites": [
             {
               "Skill": 62,
-              "Level": 1
+              "Level": 3
             }
           ]
         },
@@ -530,7 +530,7 @@
             },
             {
               "Skill": 60,
-              "Level": 5
+              "Level": 1
             }
           ]
         },
@@ -539,7 +539,7 @@
           "Prerequisites": [
             {
               "Skill": 62,
-              "Level": 1
+              "Level": 10
             },
             {
               "Skill": 63,
@@ -549,7 +549,29 @@
         },
         {
           "Skill": 83,
-          "Prerequisites": []
+          "Prerequisites": [
+            {
+              "Skill": 56,
+              "Level": 5
+            }
+          ]
+        },
+        {
+          "Skill": 81,
+          "Prerequisites": [
+            {
+              "Skill": 60,
+              "Level": 5
+            },
+            {
+              "Skill": 58,
+              "Level": 5
+            },
+            {
+              "Skill": 62,
+              "Level": 5
+            }
+          ]
         }
       ]
     }

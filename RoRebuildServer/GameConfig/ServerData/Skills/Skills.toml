@@ -434,7 +434,7 @@ SpCost = [10,10,10,10,10,10,10,10,10,10]
 Name = "Weapon Appraisal"
 Icon = "mc_identify"
 Target = "Passive"
-MaxLevel = 10
+MaxLevel = 5
 
 [Mammonite]
 Icon = "mc_mammonite"
@@ -447,7 +447,7 @@ AdjustableLevel = true
 Name = "Push Cart"
 Icon = "mc_pushcart"
 Target = "Passive"
-MaxLevel = 1
+MaxLevel = 10
 
 [CrazyUproar]
 Name = "Crazy Uproar"

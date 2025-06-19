@@ -10,7 +10,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte
         public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl)
         {
             if (!source.CanTeleport())
-                return SkillValidationResult.Failure;
+                return SkillValidationResult.CannotTeleportHere;
             return base.ValidateTarget(source, target, position, lvl);
         }
 

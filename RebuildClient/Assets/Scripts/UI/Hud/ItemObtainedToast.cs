@@ -21,7 +21,7 @@ namespace Assets.Scripts.UI.Hud
             Container.SetActive(false);
         }
 
-        public void SetText(InventoryItem inventoryItem, int itemCount)
+        public void SetText(InventoryItem inventoryItem, int itemCount, bool chatOnly = false)
         {
             //var itemName = item.Slots == 0 ? item.Name : $"{item.Name} [{item.Slots}]";
             var obtainedText = $"{inventoryItem.ProperName()} - {itemCount} obtained.";
@@ -30,6 +30,9 @@ namespace Assets.Scripts.UI.Hud
                 CameraFollower.Instance.AppendChatText($"<color=#00fbfb>You got {inventoryItem.ProperName()}.</color>");
             else
                 CameraFollower.Instance.AppendChatText($"<color=#00fbfb>You got {itemCount}x {inventoryItem.ProperName()}.</color>");
+
+            if (chatOnly)
+                return;
             
             Icon.sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(inventoryItem.ItemData.Sprite);
             Icon.rectTransform.sizeDelta = Icon.sprite.rect.size * 2;

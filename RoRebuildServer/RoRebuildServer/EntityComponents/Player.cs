@@ -440,6 +440,7 @@ public class Player : IEntityAutoReset
 
         packet.Write(GetTiming(TimingStat.AttackDelayTime));
         packet.Write(Inventory?.BagWeight ?? 0);
+        packet.Write(CartInventory?.BagWeight ?? 0);
         packet.Write(refreshSkills);
 
         if (refreshSkills)
@@ -474,7 +475,7 @@ public class Player : IEntityAutoReset
             packet.Write(Equipment.AmmoId);
         }
     }
-
+    
     public bool TryRemoveItemFromInventory(int type, int count, bool sendPacket = false)
     {
         Debug.Assert(count < short.MaxValue);
@@ -767,7 +768,7 @@ public class Player : IEntityAutoReset
         if (GetStat(CharacterStat.Sp) > newMaxSp)
             SetStat(CharacterStat.Sp, newMaxSp);
 
-        var weightBonus = (CombatEntity.HasStatusEffectOfType(CharacterStatusEffect.PushCart) ? 20000 : 0) + MaxLearnedLevelOfSkill(CharacterSkill.EnlargeWeightLimit) * 2000;
+        var weightBonus = MaxLearnedLevelOfSkill(CharacterSkill.EnlargeWeightLimit) * 2000;
         SetStat(CharacterStat.WeightCapacity, 28000 + GetEffectiveStat(CharacterStat.Str) * 300 + weightBonus);
 
         var moveBonus = 1f;
@@ -777,7 +778,9 @@ public class Player : IEntityAutoReset
         {
             moveBonus = 100f / (100f + float.Clamp(GetStat(CharacterStat.MoveSpeedBonus), -99, 500));
             if (moveBonus < 0.8f)
-                moveBonus = 0.8f;
+                moveBonus = 0.8f; //lower is faster, speed here is capped at +20%. Later peco will push this limit to 0.7 (+30%)
+            if (HasCart)
+                moveBonus += 0.05f * (10 - MaxLearnedLevelOfSkill(CharacterSkill.PushCart));
         }
 
         //var moveSpeed = 0.15f - (0.001f * level / 5f);
@@ -814,9 +817,11 @@ public class Player : IEntityAutoReset
                 case >= CharacterStat.WhenAttackedFirst and <= CharacterStat.WhenAttackedLast:
                     OnMeleeAttackStatusFlags |= (StatusTriggerFlags)(1 << (CharacterStat.WhenAttackedLast - effect));
                     break;
+                case CharacterStat.PureHpDrain:
                 case CharacterStat.HpDrainChance:
                     OnAttackTriggerFlags |= AttackEffectTriggers.HpDrain;
                     break;
+                case CharacterStat.PureSpDrain:
                 case CharacterStat.SpDrainChance:
                     OnAttackTriggerFlags |= AttackEffectTriggers.SpDrain;
                     break;
@@ -898,7 +903,7 @@ public class Player : IEntityAutoReset
 
         var appraisal = MaxLearnedLevelOfSkill(CharacterSkill.ItemAppraisal);
         if (appraisal > 0)
-            mastery += appraisal * Equipment.WeaponLevel;
+            mastery += appraisal * Equipment.WeaponLevel * 2;
 
         SetStat(CharacterStat.WeaponMastery, mastery);
     }

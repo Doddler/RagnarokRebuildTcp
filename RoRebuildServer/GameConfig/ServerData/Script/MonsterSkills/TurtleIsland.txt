@@ -24,11 +24,11 @@ StateRandomMove:
 	TryCast(NoCast, 1, 20%, 0, 5%) -> SendEmote(20); //doubt
 StateChase:
     @GiveUpChase(2%, AiPassive, 19); //sweating
-	TryCast(ColdBolt, 3, 50, 1.5s, 5%);
+	TryCast(ColdBolt, 3, 5%, 1.5s, 5%);
 StateAttacking:
-	TryCast(ColdBolt, 3, 50, 1.5s, 5%);
-	TryCast(FrostDiver, 9, 50, 1000, 5000);
-	TryCast(WaterAttack, 3, 50, 500, 5000) -> SendEmote(6); //angry
+	TryCast(ColdBolt, 3, 5%, 1.5s, 5%);
+	TryCast(FrostDiver, 9, 5%, 1s, 5s);
+	TryCast(WaterAttack, 3, 5%, 0.5s, 5s) -> SendEmote(6); //angry
 }
 
 SkillHandler("HEATER") {

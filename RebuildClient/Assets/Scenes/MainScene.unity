@@ -1383,13 +1383,14 @@ GameObject:
   - component: {fileID: 57283160}
   - component: {fileID: 57283159}
   - component: {fileID: 57283158}
+  - component: {fileID: 57283161}
   m_Layer: 5
-  m_Name: Inventory (1)
+  m_Name: CartWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &57283157
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1405,12 +1406,13 @@ RectTransform:
   - {fileID: 1607163995}
   - {fileID: 741688248}
   - {fileID: 1079340173}
+  - {fileID: 986417897}
   - {fileID: 194644120}
   m_Father: {fileID: 1741302444}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -640, y: -633}
+  m_AnchoredPosition: {x: 811, y: -162}
   m_SizeDelta: {x: 540, y: 315}
   m_Pivot: {x: 0, y: 1}
 --- !u!225 &57283158
@@ -1463,6 +1465,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 57283156}
   m_CullTransparentMesh: 1
+--- !u!114 &57283161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 57283156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f67c332d1e5442f080cd10081e7af548, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CanCloseWithEscape: 1
+  AutomaticallyFitIntoPlayArea: 1
+  UnitSize: {x: 61, y: 56}
+  ItemBoxRoot: {fileID: 407686244}
+  ViewBoxTransform: {fileID: 1063118114}
+  ItemEntryPrefab: {fileID: 1038130379823229050, guid: 6e33923a1bf6018499615c6ece5fbebd,
+    type: 3}
+  ScrollArea: {fileID: 741688249}
+  DropZone: {fileID: 986417901}
+  WeightText: {fileID: 1079340174}
 --- !u!114 &58007168 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1097450766456304344, guid: 5ed819797f6fc4347b4da259655bc38e,
@@ -3234,7 +3258,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1319599711}
   m_HandleRect: {fileID: 1319599710}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3614,9 +3638,9 @@ RectTransform:
   m_Father: {fileID: 1607163995}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 32, y: -4}
-  m_SizeDelta: {x: 97.3175, y: 26}
+  m_SizeDelta: {x: -82, y: 26}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &107737540
 MonoBehaviour:
@@ -3638,7 +3662,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Inventory
+  m_text: Cart Inventory
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f526b3b4777a17244865df0c27c65fbf, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 4ebe81e88bddbd04ba8109a5d01bf248, type: 2}
@@ -7313,7 +7337,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 209670566}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 57283161}
+        m_TargetAssemblyTypeName: Assets.Scripts.UI.WindowBase, Assembly-CSharp
+        m_MethodName: ToggleVisibility
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &209670566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14561,7 +14597,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 5, y: 0.000061035156}
-  m_SizeDelta: {x: -5, y: 0}
+  m_SizeDelta: {x: -5, y: 60}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &407686245
 MonoBehaviour:
@@ -23604,6 +23640,7 @@ RectTransform:
   - {fileID: 71643063}
   - {fileID: 678962323}
   - {fileID: 1326304107}
+  - {fileID: 1460721192}
   - {fileID: 209670564}
   m_Father: {fileID: 1741302444}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -25500,8 +25537,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2088088636}
   m_HandleRect: {fileID: 2088088635}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.9401847
+  m_Value: 1.0000012
+  m_Size: 0.9401848
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -36649,7 +36686,7 @@ RectTransform:
   m_Father: {fileID: 1111517688}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -40286,7 +40323,7 @@ GameObject:
   - component: {fileID: 986417897}
   - component: {fileID: 986417900}
   - component: {fileID: 986417899}
-  - component: {fileID: 986417898}
+  - component: {fileID: 986417901}
   m_Layer: 5
   m_Name: InventoryDropZone
   m_TagString: Untagged
@@ -40306,26 +40343,13 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1063118114}
+  m_Father: {fileID: 57283157}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 3.499939}
+  m_SizeDelta: {x: 0.000030517578, y: -73}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &986417898
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 986417896}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05f2143c3ac04dc7ab2e6a987b6d5e41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HighlightZone: {fileID: 986417899}
 --- !u!114 &986417899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40364,6 +40388,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 986417896}
   m_CullTransparentMesh: 1
+--- !u!114 &986417901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 986417896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88a45d42a64c47068e973f492596fe9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HighlightZone: {fileID: 986417899}
 --- !u!1 &987728300
 GameObject:
   m_ObjectHideFlags: 0
@@ -43857,7 +43894,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 407686244}
-  - {fileID: 986417897}
   m_Father: {fileID: 741688248}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -52865,7 +52901,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 694946602}
-  - {fileID: 1460721192}
   m_Father: {fileID: 71643063}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -59223,12 +59258,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1314540992}
+  m_Father: {fileID: 594638459}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0.000030517578, y: 3.5000305}
+  m_SizeDelta: {x: -0.000061035156, y: -73}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1460721193
 MonoBehaviour:
@@ -63832,7 +63867,7 @@ PrefabInstance:
     - target: {fileID: 4030004123747734258, guid: 6e33923a1bf6018499615c6ece5fbebd,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4030004123747734258, guid: 6e33923a1bf6018499615c6ece5fbebd,
         type: 3}
@@ -63842,17 +63877,17 @@ PrefabInstance:
     - target: {fileID: 4030004123747734258, guid: 6e33923a1bf6018499615c6ece5fbebd,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4030004123747734258, guid: 6e33923a1bf6018499615c6ece5fbebd,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 56
       objectReference: {fileID: 0}
     - target: {fileID: 4030004123747734258, guid: 6e33923a1bf6018499615c6ece5fbebd,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 52
       objectReference: {fileID: 0}
     - target: {fileID: 4030004123747734258, guid: 6e33923a1bf6018499615c6ece5fbebd,
         type: 3}
@@ -63892,12 +63927,12 @@ PrefabInstance:
     - target: {fileID: 4030004123747734258, guid: 6e33923a1bf6018499615c6ece5fbebd,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 48
       objectReference: {fileID: 0}
     - target: {fileID: 4030004123747734258, guid: 6e33923a1bf6018499615c6ece5fbebd,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -30
       objectReference: {fileID: 0}
     - target: {fileID: 4030004123747734258, guid: 6e33923a1bf6018499615c6ece5fbebd,
         type: 3}
@@ -65654,7 +65689,7 @@ MonoBehaviour:
   OnDragEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 57283161}
         m_TargetAssemblyTypeName: Assets.Scripts.UI.WindowBase, Assembly-CSharp
         m_MethodName: MoveToTop
         m_Mode: 1
@@ -82429,7 +82464,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 57283161}
         m_TargetAssemblyTypeName: Assets.Scripts.UI.WindowBase, Assembly-CSharp
         m_MethodName: HideWindow
         m_Mode: 1
@@ -83607,6 +83642,7 @@ MonoBehaviour:
   ConfigManager: {fileID: 2001710694}
   SkillHotbar: {fileID: 950574772}
   InventoryWindow: {fileID: 594638464}
+  CartWindow: {fileID: 57283161}
   HelpWindow: {fileID: 1992905110}
   PartyPanel: {fileID: 1191924974}
   TrashBucket: {fileID: 449474681}
@@ -83651,6 +83687,7 @@ MonoBehaviour:
   - {fileID: 1931065338}
   - {fileID: 1783050164}
   - {fileID: 599538745}
+  - {fileID: 1607163998}
   HelpWindowText: {fileID: 1027778951}
   SpecialUiMode: 
 --- !u!114 &2007945112
@@ -86276,7 +86313,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -10, y: -10.000366}
+  m_AnchoredPosition: {x: -10, y: -10.000427}
   m_SizeDelta: {x: 862.5, y: 50}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &2093357073

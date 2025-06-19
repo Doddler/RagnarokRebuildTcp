@@ -261,7 +261,7 @@ Lutie [Inside],xmas_in,xmas_in.walk,Indoor,None,59.mp3
 "Amatsu, the Land of Destiny",amatsu,amatsu.walk,Town,CanMemo,76.mp3
 Amatsu [Indoors],ama_in01,ama_in01.walk,Indoor,None,76.mp3
 Amatsu [Himeji Castle],ama_in02,ama_in02.walk,Indoor,None,76.mp3
-Amatsu Dungeon 1F: Tatami Maze,ama_dun01,ama_dun01.walk,None,None,77.mp3
+Amatsu Dungeon 1F: Tatami Maze,ama_dun01,ama_dun01.walk,None,NoTeleport,77.mp3
 Amatsu Dungeon 2F: Underground Forest,ama_dun02,ama_dun02.walk,Dungeon,None,77.mp3
 Amatsu Dungeon 3F: Underground Shrine,ama_dun03,ama_dun03.walk,Dungeon,None,77.mp3
 Amatsu Field,ama_fild01,ama_fild01.walk,Field,CanMemo,73.mp3

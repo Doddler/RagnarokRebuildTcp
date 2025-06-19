@@ -16,12 +16,17 @@ OnLoadDropData:
 	
 OnSetItemPurchasePrice:
 	//all etc type items (other than those used for refining or fixed NPC sell value) have 2x value
-	if(type == Etc && subType != "Refine" && subType != "HighValue" && subType != "Catalyst")
+	if(type == Etc && subType == "None")
 		price *= 2;
+	if(type == Weapon)
+		price = price * 3 / 2; //since etc items are worth 2x as much, buying weapons early is really easy, so buy price of weapons is up 50%.
 
 OnSetItemSaleValue:
 	//the price variable here is the already modified price set via OnSetItemPurchasePrice.
-	price /= 2;//sell to npc price is 1/2 the amount you buy it.
+	if(type != Weapon)
+		price /= 2;//sell to npc price is 1/2 the amount you buy it.
+	else
+		price = price / 3; //even though shop buy prices are 50% higher, they still sell to the npc at the same price as before.
 	
 	//make ammo sell to npc for 0. Not worth the possible exploit with buying/opening arrow quivers and selling the contents.
 	if(type == Ammo)

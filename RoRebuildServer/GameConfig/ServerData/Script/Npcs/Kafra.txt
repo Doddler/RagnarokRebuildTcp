@@ -9,7 +9,9 @@ macro Kafra(%map, %x, %y, %facing, %npcName, %chatName, %sprite, %cutin, %saveLo
 		FocusNpc();
 		ShowSprite(%cutin, right);
 		Dialog(name, "Welcome to the Kafra Corporation~ The Kafra Services are always here to support you. So how can I be of service today?");
-		Option("Save", "Use Storage", "Teleport Service", "Cancel");
+		string cartOption = "";
+		if(HasLearnedSkill(PushCart, 1) && !HasCart) cartOption = "Rent Push Cart";
+		Option("Save", "Use Storage", "Teleport Service", cartOption, "Cancel");
 		switch(Result) 	
 		{
 		case 0:
@@ -29,6 +31,20 @@ macro Kafra(%map, %x, %y, %facing, %npcName, %chatName, %sprite, %cutin, %saveLo
 		case 2:
 			Dialog(name, "Please choose your destination.");
 			@%teleportMacro();
+		case 3:
+			Dialog(name, "The fee to rent a push cart is 850 zeny. Is that alright?");
+			Option("Yes", "No");
+			switch(Result)
+			{
+			case 0:
+				if(GetZeny() < 850)
+				{
+					Dialog(name, "Oh dear, you don't have enough money. Please come back when you have at least 850 zeny.");
+					return;
+				}
+				DropZeny(850);
+				EquipPushCart();
+			}
 		}
 	}
 }
@@ -210,8 +226,6 @@ macro TeleportCase(%map, %x, %y, %zeny)
 @Kafra("prontera", 282, 200, W, "Kafra Staff", "Kafra Bennit - Kafra Employee", "4_F_KAFRA4", "kafra_04", "Prontera East", "in the city of Prontera", KafraTeleportListProntera);
 @Kafra("prontera", 29, 207, E, "Kafra Staff", "Kafra Glaris - Kafra Employee", "4_F_KAFRA5", "kafra_05", "Prontera West", "in the city of Prontera", KafraTeleportListProntera);
 @Kafra("prontera", 152, 326, SE, "Kafra Staff", "Kafra W - Kafra Employee", "4_F_KAFRA6", "kafra_06", "Prontera North", "in the city of Prontera", KafraTeleportListProntera);
-
-//@Kafra("prt_fild08", 164, 384, N, "Kafra Staff", "Kafra Sorin - Kafra Employee", "4_F_KAFRA3", "kafra_03", "Prontera South", "in the city of Prontera", KafraTeleportListProntera);
 
 @Kafra("pay_fild03", 405, 59, N, "Kafra Staff", "Kafra Employee", "4_F_KAFRA2", "kafra_02", "Alberta North", "in the city of Alberta", KafraTeleportListAlberta);
 @Kafra("alberta", 28, 229, N, "Kafra Staff", "Kafra Employee", "4_F_KAFRA2", "kafra_02", "Alberta North", "in the city of Alberta", KafraTeleportListAlberta);

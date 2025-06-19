@@ -38,12 +38,19 @@ namespace Assets.Scripts.UI.RefineItem
         private PlayerState state;
 
         public static RefineItemWindow Instance;
-
+        
+        
         public new void OnDestroy()
         {
             Instance = null;
             base.OnDestroy();
         }
+        //
+        // public override void HideWindow()
+        // {
+        //     CancelRefine();
+        //     base.HideWindow();
+        // }
 
         public void CancelRefine()
         {

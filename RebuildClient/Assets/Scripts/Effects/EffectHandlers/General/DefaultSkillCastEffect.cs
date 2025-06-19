@@ -9,7 +9,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
     public class DefaultSkillCastEffect : IEffectHandler
     {
         public static Material CircleMaterial;
-        public static Material FlashMaterial;
+        public static Material flashMaterial;
 
         public static Material GetCircleMaterial()
         {
@@ -26,13 +26,8 @@ namespace Assets.Scripts.Effects.EffectHandlers
         public static Ragnarok3dEffect Create(ServerControllable source, bool showCirclePrimitive = true)
         {
             GetCircleMaterial();
-            
-            if (FlashMaterial == null)
-            {
-                FlashMaterial = new Material(ShaderCache.Instance.AlphaBlendNoZTestShader);
-                FlashMaterial.mainTexture = Resources.Load<Texture2D>("alpha_center");
-                FlashMaterial.renderQueue = 3003; //this material will render above everything
-            }
+
+            flashMaterial = EffectSharedMaterialManager.GetMaterial(EffectMaterialType.SkillFlashEffect);
             
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.DefaultSkillCastEffect);
             var scale = 0.025f;
@@ -60,7 +55,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
 
             for (var i = 0; i < 20; i++)
             {
-                var flashPrim = effect.LaunchPrimitive(PrimitiveType.Flash2D, FlashMaterial, 0.667f);
+                var flashPrim = effect.LaunchPrimitive(PrimitiveType.Flash2D, flashMaterial, 0.667f);
                 var fData = flashPrim.GetPrimitiveData<FlashData>();
                 flashPrim.transform.localScale = new Vector3(scale, scale, scale);
                 flashPrim.transform.localPosition += new Vector3(0f, 2f, -0.01f);

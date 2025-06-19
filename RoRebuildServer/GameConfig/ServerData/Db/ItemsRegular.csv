@@ -1,36 +1,36 @@
 Id,Code,Name,Price,Weight,Usage,Sprite
-701,Ora_Ora,Ora Ora,55000,200,None,오라오라
+701,Ora_Ora,Ora Ora,55000,200,HighValue,오라오라
 702,Animal_Gore,Animal Gore,450,100,None,가축의피
 703,Hinalle,Hinalle,500,10,None,히나레
 704,Aloe,Aloe,500,10,None,알로에
 705,Clover,Clover,10,10,None,클로버
-706,Four_Leaf_Clover,Four Leaf Clover,80000,10,None,네잎클로버
+706,Four_Leaf_Clover,Four Leaf Clover,80000,10,HighValue,네잎클로버
 707,Singing_Plant,Singing Plant,500,10,None,노래하는풀
 708,Ment,Ment,500,10,None,멘트
 709,Izidor,Izidor,500,10,None,이지도르
 710,Illusion_Flower,Illusion Flower,1000,10,None,환상의꽃
 711,Shoot,Shoot,16,10,None,새싹
 712,Flower,Flower,2,10,None,꽃
-713,Empty_Bottle,Empty Bottle,6,20,None,빈병
+713,Empty_Bottle,Empty Bottle,6,20,Catalyst,빈병
 714,Emperium,Emperium,2,1000,None,엠펠리움
-715,Yellow_Gemstone,Yellow Gemstone,600,30,Catalyst,옐로우젬스톤
-716,Red_Gemstone,Red Gemstone,600,30,Catalyst,레드젬스톤
-717,Blue_Gemstone,Blue Gemstone,600,30,Catalyst,블루젬스톤
-718,Garnet,Garnet,6000,100,None,검붉은보석
-719,Amethyst,Amethyst,6000,100,None,보라색보석
-720,Aquamarine,Aquamarine,6000,100,None,하늘색보석
-721,Emerald,Emerald,6000,100,None,초록색보석
-722,Pearl,Pearl,6000,100,None,분홍색보석
-723,Ruby,Ruby,6000,100,None,진홍색보석
-724,Cursed_Ruby,Cursed Ruby,600,100,None,진홍색보석
-725,Sardonyx,Sardonyx,6000,100,None,붉은색보석
-726,Sapphire,Sapphire,6000,100,None,파란색보석
-727,Opal,Opal,6000,100,None,하얀색보석
-728,Topaz,Topaz,6000,100,None,노란색보석
-729,Zircon,Zircon,6000,100,None,청록색보석
-730,1_Carat_Diamond,1 Carat Diamond,10000,100,None,투명한보석
-731,2_Carat_Diamond,2 Carat Diamond,25000,100,None,투명한보석
-732,3_Carat_Diamond,3 Carat Diamond,55000,100,None,투명한보석
+715,Yellow_Gemstone,Yellow Gemstone,250,30,Catalyst,옐로우젬스톤
+716,Red_Gemstone,Red Gemstone,250,30,Catalyst,레드젬스톤
+717,Blue_Gemstone,Blue Gemstone,250,30,Catalyst,블루젬스톤
+718,Garnet,Garnet,6000,100,HighValue,검붉은보석
+719,Amethyst,Amethyst,6000,100,HighValue,보라색보석
+720,Aquamarine,Aquamarine,6000,100,HighValue,하늘색보석
+721,Emerald,Emerald,6000,100,HighValue,초록색보석
+722,Pearl,Pearl,6000,100,HighValue,분홍색보석
+723,Ruby,Ruby,6000,100,HighValue,진홍색보석
+724,Cursed_Ruby,Cursed Ruby,600,100,HighValue,진홍색보석
+725,Sardonyx,Sardonyx,6000,100,HighValue,붉은색보석
+726,Sapphire,Sapphire,6000,100,HighValue,파란색보석
+727,Opal,Opal,6000,100,HighValue,하얀색보석
+728,Topaz,Topaz,6000,100,HighValue,노란색보석
+729,Zircon,Zircon,6000,100,HighValue,청록색보석
+730,1_Carat_Diamond,1 Carat Diamond,10000,100,HighValue,투명한보석
+731,2_Carat_Diamond,2 Carat Diamond,25000,100,HighValue,투명한보석
+732,3_Carat_Diamond,3 Carat Diamond,55000,100,HighValue,투명한보석
 733,Cracked_Diamond,Cracked Diamond,10,100,None,투명한보석
 734,Red_Frame,Red Frame,3000,200,None,붉은액자
 735,Chung_Jah,Chung Jah,5000,500,None,푸른도자기
@@ -170,7 +170,7 @@ Id,Code,Name,Price,Weight,Usage,Sprite
 1016,Rat_Tail,Rat Tail,52,10,None,쥐의꼬리
 1017,Mole_Whiskers,Mole Whiskers,106,10,None,두더지의수염
 1018,Mole_Claw,Mole Claw,210,10,None,두더지의손톱
-1019,Trunk,Trunk,60,10,None,나무조각
+1019,Trunk,Trunk,60,10,Crafting,나무조각
 1020,Black_Hair,Black Hair,292,10,None,긴머리카락
 1021,Dokebi_Horn,Dokebi Horn,292,10,None,도깨비의뿔
 1022,Nine_Tails,Nine Tails,650,10,None,여우의꼬리
@@ -586,7 +586,7 @@ Id,Code,Name,Price,Weight,Usage,Sprite
 7430,Black_Charm_Stone,Black Charm Stone,0,0,None,마력석_검정
 7431,Pile_of_Books,Pile of Books,0,0,None,여러권의책
 7432,Leather_Pouch,Leather Pouch,0,0,None,주머니
-7433,Blank_Scroll,Blank Scroll,4000,10,None,낡은두루마리
+7433,Blank_Scroll,Blank Scroll,4000,10,Crafting,낡은두루마리
 7434,Elemental_Potion_Creation_Guide,Elemental Potion Creation Guide,100000,10,None,기뢰병제조책
 7435,Golden_Ornament,Golden Ornament,1907,10,None,금색장신구
 7436,Fragment_of_Agony,Fragment of Agony,1506,10,None,기억의파편_녹

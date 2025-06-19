@@ -16,7 +16,7 @@ Bash = []
 MagnumBreak = [["Bash", 5]]
 Provoke = []
 Endure = [["Provoke", 5]]
-TwoHandQuicken = [["Bash", 10], ["Provoke", 5]] #just for testing
+TwoHandQuicken = [["Bash", 10], ["Endure", 5]] #just for testing
 
 [Archer]
 JobRank = 1
@@ -94,10 +94,11 @@ EnlargeWeightLimit = []
 Discount = [["EnlargeWeightLimit",3]]
 Overcharge = [["Discount",3]]
 PushCart = [["EnlargeWeightLimit",5]]
-Vending = [["PushCart",1]]
+Vending = [["PushCart",3]]
 ItemAppraisal = [["Discount",5]]
 Mammonite = []
-CrazyUproar = [["Mammonite", 3], ["ItemAppraisal", 5]]
-CartRevolution = [["PushCart", 1], ["CrazyUproar", 1]]
-HammerFall = []
+CrazyUproar = [["Mammonite", 3], ["ItemAppraisal", 1]]
+CartRevolution = [["PushCart", 10], ["CrazyUproar", 1]]
+HammerFall = [["EnlargeWeightLimit",5]]
+AdrenalineRush = [["ItemAppraisal",5],["Overcharge",5],["PushCart",5]]
 

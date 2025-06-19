@@ -18,8 +18,8 @@ namespace Assets.Scripts.UI
         Equipment,
         ShopItem,
         StorageItem,
-        
-        SocketedItem
+        SocketedItem,
+        CartItem
     }
 
     public class DraggableItem : DragItemBase, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
@@ -70,7 +70,7 @@ namespace Assets.Scripts.UI
         public void OnPointerClick(PointerEventData eventData)
         {
             if (OnRightClick != null && eventData.button == PointerEventData.InputButton.Right 
-                                     && (Type == DragItemType.Item || Type == DragItemType.Equipment || Type == DragItemType.SocketedItem))
+                                     && (Type == DragItemType.Item || Type == DragItemType.Equipment || Type == DragItemType.SocketedItem || Type == DragItemType.CartItem))
                 OnRightClick();
             if (OnDoubleClick != null && Type != DragItemType.None && eventData.button == PointerEventData.InputButton.Left 
                 && eventData.clickCount >= 2 && OnDoubleClick != null)
@@ -101,6 +101,14 @@ namespace Assets.Scripts.UI
                     else
                         text = $"{skill.Name}{spCost}";
                     
+                }
+
+                if (Type == DragItemType.CartItem)
+                {
+                    var inventory = NetworkManager.Instance.PlayerState.Cart.GetInventoryData();
+                    if (!inventory.TryGetValue(ItemId, out var dat))
+                        return;
+                    text = dat.ToString();
                 }
 
                 if (Type == DragItemType.Item)

@@ -14,8 +14,12 @@ namespace Assets.Scripts.SkillHandlers.Handlers
         
         public override void ExecuteSkillTargeted(ServerControllable src, ref AttackResultData attack)
         {
-            src?.PerformBasicAttackMotion();
-            CartRevolutionEffect.CreateCartRevolution(src, attack.Target);
+            //src.SetAttackAnimationSpeed(attack.MotionTime);
+            src?.PerformSkillMotion();
+            if(src != null)
+                CartRevolutionEffect.CreateCartRevolution(src, 0);
+            if(attack.Target != null)
+                CartRevolutionEffect.CreateCartRevolution(attack.Target, attack.DamageTiming);
         }
     }
 }

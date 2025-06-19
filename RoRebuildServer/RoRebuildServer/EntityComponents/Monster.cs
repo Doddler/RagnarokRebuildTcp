@@ -125,6 +125,8 @@ public partial class Monster : IEntityAutoReset
     public bool WasMagicLocked;
     private bool canResetAttackedState;
 
+    public Entity RudeAttacker;
+
     public EntityValueList<int>? TotalDamageReceived;
 
     //private WorldObject searchTarget = null!;
@@ -233,6 +235,7 @@ public partial class Monster : IEntityAutoReset
         CastSuccessEvent = null;
         WasAttacked = false;
         WasRudeAttacked = false;
+        RudeAttacker = Entity.Invalid;
         WasMagicLocked = false;
         LastAttackPhysical = false;
         canResetAttackedState = false;

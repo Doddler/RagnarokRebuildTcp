@@ -15,6 +15,14 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Merchant
     {
         public override int GetSkillRange(CombatEntity source, int lvl) => 1;
 
+        public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl)
+        {
+            if (source.Character.Type == CharacterType.Player && !source.Player.HasCart)
+                return SkillValidationResult.CartRequired;
+
+            return base.ValidateTarget(source, target, position, lvl);
+        }
+
         public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
         {
             if (target == null || !target.IsTargetable || source.Character.Map == null)
@@ -33,13 +41,13 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Merchant
             var weight = 0;
             if (source.Character.Type == CharacterType.Player)
             {
-                if (source.Player.Inventory != null)
-                    weight = source.Player.Inventory.BagWeight / 10;
+                if (source.Player.CartInventory != null)
+                    weight = source.Player.CartInventory.BagWeight / 10;
             }
             else
                 weight = (source.GetStat(CharacterStat.Level) + source.GetEffectiveStat(CharacterStat.Str)) * 50;
 
-            var skillMod = 1.5f + weight / 6000f;
+            var skillMod = 1.5f + weight / 8000f;
 
             var attack = new AttackRequest(CharacterSkill.CartRevolution, skillMod, 1, AttackFlags.Physical, AttackElement.None);
 

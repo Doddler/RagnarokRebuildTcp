@@ -10,6 +10,7 @@ toplevelstatement : MACRO IDENTIFIER LPAREN functionparam? RPAREN statementblock
 				  | macrocall SEMI?																		# TopLevelMacroCall
 				  | IDENTIFIER LPAREN functionparam? RPAREN SEMI										# StandaloneFunction
 				  | INCLUDE file=STRING																	# IncludeFileContext
+				  | SERVEREVENT eventName=STRING														# ServerEventContext
 				  ;
 
 statement : IF LPAREN expression RPAREN block1=statementblock (ELSE block2=statementblock)?				# IfStatement
@@ -86,6 +87,7 @@ BREAK : 'break';
 MACRO : 'macro';
 EVENT : 'event';
 INCLUDE : '#include';
+SERVEREVENT : '#event';
 PER : '%';
 NOT : '!';
 SWITCH : 'switch';

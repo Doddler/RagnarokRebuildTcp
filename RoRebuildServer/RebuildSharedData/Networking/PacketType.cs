@@ -98,7 +98,8 @@ public enum PacketType : byte
     StorageInteraction,
     ShopBuySell,
     NpcTradeItem,
-    [ServerOnlyPacket] ItemUpdate,
+    CartInventoryInteraction,
+    ChangeFollower,
     [ServerOnlyPacket] ServerEvent,
     [ServerOnlyPacket] ServerResult,
     DebugEntry,
@@ -136,6 +137,7 @@ public enum AdminAction : byte
     KillMobs,
     EnableMonsterDebugLogging,
     SignalNpc,
+    ShutdownServer,
 }
 public enum ClientTextCommand : byte
 {

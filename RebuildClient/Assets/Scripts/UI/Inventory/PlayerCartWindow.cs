@@ -3,6 +3,7 @@ using System.Linq;
 using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
+using Assets.Scripts.UI.Hud;
 using RebuildSharedData.Enum;
 using TMPro;
 using UnityEngine;
@@ -12,26 +13,27 @@ namespace Assets.Scripts.UI.Inventory
 {
     public class PlayerCartWindow: WindowBase
     {
-        public Button[] UiTabButtons;
-        public GameObject[] UiButtonGroups;
         public Vector2 UnitSize;
         public RectTransform ItemBoxRoot;
         public RectTransform ViewBoxTransform;
         public GameObject ItemEntryPrefab;
         public ScrollRect ScrollArea;
+        public CartDropZone DropZone;
         private List<InventoryEntry> entryList = new();
         public TextMeshProUGUI WeightText;
-        public Button CartButton;
         private int activeEntryCount;
-        private int activeItemSection;
         private bool isInit;
         
-        
-
         public void Awake()
         {
             if (ItemBoxRoot.childCount != 0)
                 Destroy(ItemBoxRoot.transform.GetChild(0).gameObject);
+        }
+
+        public void UpdateDropArea(bool isActive)
+        {
+            DropZone.DisableDropArea();
+            DropZone.gameObject.SetActive(isActive);
         }
 
         public override void ShowWindow()
@@ -40,82 +42,51 @@ namespace Assets.Scripts.UI.Inventory
             UpdateActiveVisibleBag();
         }
         
-        public void ClickTabButton(int tab)
+        public void OnMoveInventoryItemToCart(int bagSlotId)
         {
-            switch (tab)
+            Debug.Log($"Moving item to cart: {bagSlotId}");
+
+            if (NetworkManager.Instance.PlayerState.Inventory.GetInventoryData().TryGetValue(bagSlotId, out var item))
             {
-                case 0:
-                    UiButtonGroups[1].transform.SetAsLastSibling();
-                    UiButtonGroups[2].transform.SetAsLastSibling();
-                    UiButtonGroups[0].transform.SetAsLastSibling();
-                    break;
-                case 1:
-                    UiButtonGroups[0].transform.SetAsLastSibling();
-                    UiButtonGroups[2].transform.SetAsLastSibling();
-                    UiButtonGroups[1].transform.SetAsLastSibling();
-                    break;
-                case 2:
-                    UiButtonGroups[0].transform.SetAsLastSibling();
-                    UiButtonGroups[1].transform.SetAsLastSibling();
-                    UiButtonGroups[2].transform.SetAsLastSibling();
-                    break;
+                if (item.ItemData.IsUnique || item.Count == 1 || Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+                    NetworkManager.Instance.CartItemInteraction(CartInteractionType.InventoryToCart, bagSlotId, item.Count);
+                else
+                    UiManager.Instance.DropCountConfirmationWindow.BeginItemDrop(item, DropConfirmationType.InventoryToCart);
             }
+        }
+        
+        public void OnMoveCartItemToInventory(int bagSlotId)
+        {
+            Debug.Log($"Moving item to storage: {bagSlotId}");
 
-            UiTabButtons[0].transform.localPosition = new Vector3(tab == 0 ? -30 : -24, UiTabButtons[0].transform.localPosition.y, 0);
-            UiTabButtons[1].transform.localPosition = new Vector3(tab == 1 ? -30 : -24, UiTabButtons[1].transform.localPosition.y, 0);
-            UiTabButtons[2].transform.localPosition = new Vector3(tab == 2 ? -30 : -24, UiTabButtons[2].transform.localPosition.y, 0);
-            UiTabButtons[0].interactable = tab != 0;
-            UiTabButtons[1].interactable = tab != 1;
-            UiTabButtons[2].interactable = tab != 2;
-            activeItemSection = tab;
-
-            UpdateActiveVisibleBag();
+            if (NetworkManager.Instance.PlayerState.Cart.GetInventoryData().TryGetValue(bagSlotId, out var item))
+            {
+                if (item.ItemData.IsUnique || item.Count == 1 || Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+                    NetworkManager.Instance.CartItemInteraction(CartInteractionType.CartToInventory, bagSlotId, item.Count);
+                else
+                    UiManager.Instance.DropCountConfirmationWindow.BeginItemDrop(item, DropConfirmationType.CartToInventory);
+            }
         }
 
-        private void OnDoubleClick(InventoryEntry itemEntry, InventoryItem item)
+        private void OnRightClick(InventoryItem item)
         {
-            var state = NetworkManager.Instance.PlayerState;
-
-            if (StorageUI.Instance != null)
+            if (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt))
             {
-                StorageUI.Instance.OnMoveInventoryItemToStorage(item.BagSlotId);
+                OnMoveCartItemToInventory(item.BagSlotId);
                 return;
             }
 
-            switch (item.ItemData.UseType)
+            UiManager.Instance.ItemDescriptionWindow.ShowItemDescription(item);
+        }
+        
+        private void OnDoubleClick(InventoryItem item)
+        {
+            var state = NetworkManager.Instance.PlayerState;
+        
+            if (UiManager.Instance.InventoryWindow.gameObject.activeInHierarchy)
             {
-                case ItemUseType.Use:
-                    NetworkManager.Instance.SendUseItem(item.BagSlotId);
-                    break;
-                case ItemUseType.UseOnAlly:
-                    CameraFollower.Instance.BeginTargetingItem(item.Id, SkillTarget.Ally);
-                    break;
-                case ItemUseType.UseOnEnemy:
-                    CameraFollower.Instance.BeginTargetingItem(item.Id, SkillTarget.Enemy);
-                    break;
-                default:
-                {
-                    var itemClass = item.ItemData.ItemClass;
-                    if (itemClass == ItemClass.Weapon || itemClass == ItemClass.Equipment || itemClass == ItemClass.Ammo)
-                    {
-                        if (!state.EquippedItems.Contains(item.BagSlotId))
-                        {
-                            if (itemClass == ItemClass.Ammo)
-                            {
-                                if (state.AmmoId == item.Id)
-                                    itemEntry.DragItem.BlueCount();
-                            }
-                            else
-                                itemEntry.DragItem.HideCount();
-
-                            NetworkManager.Instance.SendEquipItem(item.BagSlotId);
-                        }
-                    }
-                    else if (itemClass == ItemClass.Card)
-                        CardSocketWindow.BeginCardSocketing(item);
-
-                    break;
-                }
+                OnMoveCartItemToInventory(item.BagSlotId);
+                return;
             }
         }
         
@@ -125,27 +96,22 @@ namespace Assets.Scripts.UI.Inventory
                 return;
 
             var state = NetworkManager.Instance.PlayerState;
-            var inventory = state.Inventory;
+            var inventory = state.Cart;
             activeEntryCount = 0;
             var bagItems = inventory.GetInventoryData();
-            var curWeight = state.CurrentWeight / 10;
-            var totalWeight = state.MaxWeight / 10;
+            var curWeight = state.CartWeight / 10;
+            var totalWeight = 8000;
 
             var weightPercent = curWeight * 100 / totalWeight;
-            var countText = bagItems.Count < 190 ? $"{bagItems.Count}/200" : $"<color=red>{bagItems.Count}</color>/200";
-            var percentText = weightPercent < 90 ? $"{weightPercent}%" : $"<color=red>{weightPercent}%</color>";
+            var countText = $"{bagItems.Count}/100";
+            var percentText = $"{weightPercent}%";
             
             WeightText.text = $"Items: {countText}  Weight: {curWeight}/{totalWeight} ({percentText})";
             
             foreach (var bagEntry in bagItems)
             {
                 var item = bagEntry.Value;
-                if (activeItemSection == 0 && (item.ItemData.IsUnique || item.ItemData.UseType == ItemUseType.NotUsable)) continue;
-                if (activeItemSection == 1 && (!item.ItemData.IsUnique || item.ItemData.Id < 0)) continue;
-                if (activeItemSection == 2 && (item.ItemData.IsUnique || item.ItemData.UseType != ItemUseType.NotUsable) && item.ItemData.Id > 0) continue;
 
-                // if (state.EquippedItems.Contains(item.BagSlotId))
-                //     continue;
 
                 if (entryList.Count <= activeEntryCount)
                 {
@@ -162,17 +128,19 @@ namespace Assets.Scripts.UI.Inventory
                     sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite("Apple");
                 }
 
-                itemEntry.DragItem.Assign(DragItemType.Item, sprite, bagEntry.Key, item.Count);
+                itemEntry.DragItem.Assign(DragItemType.CartItem, sprite, bagEntry.Key, item.Count);
+                itemEntry.DragItem.Origin = ItemDragOrigin.CartWindow;
+                itemEntry.DragItem.OriginId = bagEntry.Key;
                 itemEntry.gameObject.SetActive(true);
                 itemEntry.DragItem.gameObject.SetActive(true);
-                itemEntry.DragItem.OnRightClick = () => UiManager.Instance.ItemDescriptionWindow.ShowItemDescription(item);
-                if (state.EquippedItems.Contains(item.BagSlotId))
-                {
-                    itemEntry.DragItem.SetEquipped();
-                    itemEntry.DragItem.OnDoubleClick = null;
-                }
-                else
-                    itemEntry.DragItem.OnDoubleClick = () => OnDoubleClick(itemEntry, item);
+                itemEntry.DragItem.OnRightClick = () => OnRightClick(item); //captures like this allocate a lot, don't they? Hmm...
+                // if (state.EquippedItems.Contains(item.BagSlotId))
+                // {
+                //     itemEntry.DragItem.SetEquipped();
+                //     itemEntry.DragItem.OnDoubleClick = null;
+                // }
+                // else
+                itemEntry.DragItem.OnDoubleClick = () => OnDoubleClick(item);
 
                 activeEntryCount++;
             }

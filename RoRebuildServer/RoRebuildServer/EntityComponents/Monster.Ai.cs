@@ -471,6 +471,7 @@ public partial class Monster
             case MonsterOutputCheck.OutMoveToItem: return OutMoveToItem();
             case MonsterOutputCheck.OutPickUpItem: return OutPickUpItem();
             case MonsterOutputCheck.OutStopMoving: return OutStopMoving();
+            case MonsterOutputCheck.OutChangeNormal: return true;
             case MonsterOutputCheck.OutDebug: return OutDebug();
         }
 

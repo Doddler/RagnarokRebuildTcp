@@ -2,6 +2,7 @@
 using System.Numerics;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using RebuildSharedData.Networking;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
@@ -27,7 +28,14 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
 
             if (!connection.Player.CanPerformCharacterActions() || (connection.Character.CombatEntity.BodyState & BodyStateFlags.NoSkillAttack) > 0)
                 return;
-            
+
+            var player = connection.Player;
+            if (player.Inventory != null && player.Inventory.BagWeight > player.GetStat(CharacterStat.WeightCapacity) && !player.IsAdmin)
+            {
+                CommandBuilder.ErrorMessage(player, $"You cannot attack while over 100% weight limit.");
+                return;
+            }
+
             var type = (SkillTarget)msg.ReadByte();
 
             switch (type)

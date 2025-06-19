@@ -52,12 +52,14 @@ namespace Assets.Scripts.Effects
         MapPillarBlue,
         MapPillarGreen,
         MapPillarRed,
+        SkillFlashEffect,
         EffectMaterialMax
     }
 
     public enum EffectTextureType
     {
         AlphaDown,
+        AlphaCenter,
         MagicViolet,
         MagicGreen,
         RingRed,
@@ -164,6 +166,7 @@ namespace Assets.Scripts.Effects
                 EffectTextureType.MagicGreen => "magic_green",
                 EffectTextureType.RingYellow => "ring_yellow",
                 EffectTextureType.AlphaDown => "alpha_down",
+                EffectTextureType.AlphaCenter => "alpha_center",
                 EffectTextureType.MagicViolet => "magic_violet",
                 _ => null
             };
@@ -357,6 +360,10 @@ namespace Assets.Scripts.Effects
                         break;
                     case EffectMaterialType.MapPillarRed:
                         SetUpTextureMaterial(mat, ShaderCache.Instance.AdditiveShader, GetOrLoadEffectTexture(EffectTextureType.RingRed), new Color(255 / 255f, 100 / 255f, 100 / 255f));
+                        break;
+                    
+                    case EffectMaterialType.SkillFlashEffect:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.AlphaBlendNoZTestShader, GetOrLoadEffectTexture(EffectTextureType.AlphaCenter), 3003);
                         break;
                 }
             }

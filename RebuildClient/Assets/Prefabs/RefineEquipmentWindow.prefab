@@ -296,7 +296,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c04777dc3fd4e4291c9e73c704f2d26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CanCloseWithEscape: 1
+  CanCloseWithEscape: 0
   AutomaticallyFitIntoPlayArea: 1
   OkButton: {fileID: 1329417161664512266}
   MainTargetItem: {fileID: 8399698633860962555}

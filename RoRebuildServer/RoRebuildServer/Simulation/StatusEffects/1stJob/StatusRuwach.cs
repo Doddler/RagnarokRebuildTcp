@@ -106,10 +106,10 @@ public class RuwachObjectEvent : NpcBehaviorBase
             return;
         }
 
-        if (!target.HasBodyState(BodyStateFlags.Hidden))
+        if (!target.HasBodyState(BodyStateFlags.AnyHiddenState))
             return;
 
-        target.RemoveStatusOfTypeIfExists(CharacterStatusEffect.Hiding);
+        target.RemoveStatusOfGroupIfExists("Hiding");
 
         if (!target.IsValidTarget(owner, false, true))
             return;

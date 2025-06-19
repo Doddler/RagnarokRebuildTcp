@@ -1667,7 +1667,7 @@ INT +2, SP +100
 
 ::Decorative_Mushroom //id 5082 - Headgear Top
 <desc>A headgear fashioned to resemble a mushroom.</desc>
-Increases damage against mushroom-type monsters by +10%
+Increases damage against mushroom and fungus type monsters by +10%
 
 ::Red_Ribbon //id 5083 - Headgear Top
 <desc>A big red ribbon made in the style of a legendary female shaman who loved nature.</desc>

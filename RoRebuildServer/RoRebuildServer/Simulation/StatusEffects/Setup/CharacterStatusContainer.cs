@@ -454,6 +454,26 @@ public class CharacterStatusContainer
             OnUpdate();
     }
 
+
+    public bool ExtendStatusEffectOfType(CharacterStatusEffect type, float newEndTime)
+    {
+        if (statusEffects == null)
+            return false;
+
+        for (var i = 0; i < statusEffects.Count; i++)
+        {
+            var status = statusEffects[i];
+            if (status.Type == type)
+            {
+                status.Expiration = newEndTime;
+                statusEffects[i] = status;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public void ExpireStatusEffectOfType(CharacterStatusEffect type)
     {
         Debug.Assert(Owner != null);

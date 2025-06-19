@@ -166,6 +166,7 @@ AiAggressiveLooter,StateDead,InDeadTimeoutEnd,OutTryRevival,StateIdle
 //originally monster type 06
 AiPlant,StateIdle,InWaitEnd,OutWaitForever,StateIdle
 AiPlant,StateAbnormal,InChangeNormal,OutChangeNormal,StateIdle
+AiPlant,StateAttacking,InChangeNormal,OutChangeNormal,StateIdle
 AiPlant,StateDead,InDeadTimeoutEnd,OutTryRevival,StateIdle
 
 //originally monster type 07
@@ -362,14 +363,17 @@ AiMinion,StateDead,InDeadTimeoutEnd,OutTryRevival,StateIdle
 
 AiPacifist,StateIdle,InWaitEnd,OutRandomMoveStart,StateRandomMove
 AiPacifist,StateRandomMove,InReachedRandomMoveTarget,OutWaitStart,StateIdle
+AiPacifist,StateAttacking,InChangeNormal,OutChangeNormal,StateIdle
 AiPacifist,StateAbnormal,InChangeNormal,OutChangeNormal,StateIdle
 AiPacifist,StateDead,InDeadTimeoutEnd,OutTryRevival,StateIdle
 
 AiHyperPacifist,StateIdle,InWaitEnd,OutRandomMoveStart,StateRandomMove
+AiHyperPacifist,StateAttacking,InChangeNormal,OutChangeNormal,StateIdle
 AiHyperPacifist,StateRandomMove,InReachedRandomMoveTarget,OutRandomMoveStart,StateRandomMove
 AiHyperPacifist,StateAbnormal,InChangeNormal,OutChangeNormal,StateIdle
 AiHyperPacifist,StateDead,InDeadTimeoutEnd,OutTryRevival,StateIdle
 
 AiDebug,StateIdle,InWaitEnd,OutDebug,StateIdle
+AiDebug,StateAttacking,InChangeNormal,OutChangeNormal,StateIdle
 AiDebug,StateAbnormal,InChangeNormal,OutChangeNormal,StateIdle
 AiDebug,StateDead,InDeadTimeoutEnd,OutTryRevival,StateIdle

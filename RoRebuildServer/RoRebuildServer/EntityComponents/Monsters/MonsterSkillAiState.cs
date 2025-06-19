@@ -456,6 +456,9 @@ public class MonsterSkillAiState(Monster monsterIn)
         var range = SkillHandler.GetSkillRange(ce, skill, level);
         if (flags.HasFlag(MonsterSkillAiFlags.UnlimitedRange))
             range = 21;
+        if ((flags & MonsterSkillAiFlags.TargetRudeAttacker) > 0)
+            monster.RudeAttacker.TryGet<WorldObject>(out targetForSkill);
+        var ignoreLoS = (flags & MonsterSkillAiFlags.IgnoreLineOfSight) > 0;
 
         if (flags.HasFlag(MonsterSkillAiFlags.SelfTarget))
             skillTarget = SkillTarget.Self;
@@ -555,7 +558,7 @@ public class MonsterSkillAiState(Monster monsterIn)
             //if we're in a state where we have a target, we only need to check if we can use this skill on that enemy
             if (target != null && !flags.HasFlag(MonsterSkillAiFlags.RandomTarget))
             {
-                if (!ce.CanAttackTarget(target, range)) 
+                if (!ce.CanAttackTarget(target, range, ignoreLoS)) 
                     return SkillFail();
                 if (!ce.AttemptStartSingleTargetSkillAttack(target.CombatEntity, skill, level, castTime / 1000f, castFlags))
                     return SkillFail();

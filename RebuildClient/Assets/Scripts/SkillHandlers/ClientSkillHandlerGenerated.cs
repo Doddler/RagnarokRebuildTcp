@@ -95,7 +95,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[78] = new DefaultSkillHandler();
 			handlers[79] = new DefaultSkillHandler();
 			handlers[80] = new WaterBallHandler();
-			handlers[81] = new DefaultSkillHandler();
+			handlers[81] = new AdrenalineRushHandler();
 			handlers[82] = new TwoHandQuickenHandler();
 			handlers[83] = new HammerFallHandler();
 			handlers[84] = new SonicBlowHandler();
@@ -153,7 +153,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[131] = new DefaultSkillHandler();
 			handlers[132] = new DefaultSkillHandler();
 			handlers[133] = new DefaultSkillHandler();
-			handlers[134] = new DefaultSkillHandler();
+			handlers[134] = new InvisibleHandler();
 			handlers[135] = new SmokingHandler();
 			handlers[136] = new DefaultSkillHandler();
 			handlers[137] = new DefaultSkillHandler();

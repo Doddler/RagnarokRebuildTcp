@@ -45,6 +45,9 @@ namespace Assets.Scripts.UI.Inventory
             var obj = UiManager.Instance.DragItemObject;
             switch (obj.Origin)
             {
+                case ItemDragOrigin.CartWindow:
+                    UiManager.Instance.CartWindow.OnMoveCartItemToInventory(obj.OriginId);
+                    break;
                 case ItemDragOrigin.HotBar:
                     UiManager.Instance.SkillHotbar.GetEntryById(obj.OriginId).Clear();
                     break;

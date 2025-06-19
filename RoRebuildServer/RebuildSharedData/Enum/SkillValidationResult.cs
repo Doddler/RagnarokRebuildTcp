@@ -27,5 +27,7 @@ namespace RebuildSharedData.Enum
         MustBeStandingInWater,
         MissingRequiredItem,
         SkillNotKnown,
+        CannotTeleportHere,
+        CartRequired
     }
 }

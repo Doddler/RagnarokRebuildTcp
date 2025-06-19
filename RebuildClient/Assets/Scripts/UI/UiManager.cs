@@ -29,6 +29,7 @@ public class UiManager : MonoBehaviour
     public OptionsWindow ConfigManager;
     public SkillHotbar SkillHotbar;
     public PlayerInventoryWindow InventoryWindow;
+    public PlayerCartWindow CartWindow;
     public HelpWindow HelpWindow;
     public PartyPanel PartyPanel;
     public DragTrashBucket TrashBucket;
@@ -127,6 +128,8 @@ public class UiManager : MonoBehaviour
         ItemDescriptionWindow.HideWindow();
         SubDescriptionWindow.HideWindow();
         RightClickMenuWindow.HideWindow();
+        
+        CartWindow.HideWindow();
         
         PartyPanel.gameObject.SetActive(false);
         
@@ -341,9 +344,23 @@ public class UiManager : MonoBehaviour
                 EquipmentDropArea.SetActive(true);
             if(StorageUI.Instance != null)
                 StorageUI.Instance.UpdateDropArea(true);
+            if(PlayerState.Instance.HasCart)
+                CartWindow.UpdateDropArea(true);
         }
-        if(dragItem.Type == DragItemType.StorageItem)
+
+        if (dragItem.Type == DragItemType.StorageItem)
+        {
             InventoryDropArea.SetActive(true);
+            if(PlayerState.Instance.HasCart)
+                CartWindow.UpdateDropArea(true);
+        }
+
+        if (dragItem.Type == DragItemType.CartItem)
+        {
+            InventoryDropArea.SetActive(true);
+            if(StorageUI.Instance != null)
+                StorageUI.Instance.UpdateDropArea(true);
+        }
     }
     
     public bool EndItemDrag(bool allowDrop = true)
@@ -356,6 +373,7 @@ public class UiManager : MonoBehaviour
         equipmentWindowDropTarget.DisableDropArea();
         InventoryDropArea.SetActive(false);
         EquipmentDropArea.SetActive(false);
+        CartWindow.UpdateDropArea(false);
         if(StorageUI.Instance != null)
             StorageUI.Instance.UpdateDropArea(false);
 

@@ -601,11 +601,11 @@ public class NpcInteractionState
 
         var cartStyle = Level switch
         {
-            < 41 => 1,
-            < 66 => 2,
-            < 81 => 3,
-            < 91 => 4,
-            _ => 5
+            < 41 => 0,
+            < 66 => 1,
+            < 81 => 2,
+            < 91 => 3,
+            _ => 4
         };
         var follower = cartStyle switch
         {

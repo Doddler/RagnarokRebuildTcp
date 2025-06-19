@@ -103,6 +103,8 @@ Enables use of <skill>Bash 5</skill>.
 
 ::Solar_Sword //id 1136 - Sword
 <desc>A sword adorned with an engraving of the sun, symbolizing battle spirit and vigor.</desc>
+1% of physical damage dealt is recovered as HP.
+SP Regeneration -20%
 
 ::Excalibur //id 1137 - Sword
 <desc>The sword of legend that supposedly selects its owner by its own will.</desc>
@@ -125,6 +127,8 @@ DEX +3
 
 ::Immaterial_Sword //id 1141 - Sword
 <desc>A formless sword that can ravage the enemy's mind.</desc>
+0.3% of physical damage dealt is recovered as SP.
+
 
 ::Jeweled_Sword //id 1142 - Sword
 <desc>A sword with a beautiful, transparent blade and a hilt adorned with a princely jewel.</desc>
@@ -1275,6 +1279,8 @@ DEF +2
 
 ::Orc_Archer_Bow //id 1734 - Bow
 <desc>A large, powerful bow used by Orc Archers.</desc>
+<color=#800080>Set Bonus</color> with <color=#008080>Steel Arrow</color>
+ +50% range physical damage
 
 ::Brave_Cross_Bow //id 1738 - Bow
 DEX +2

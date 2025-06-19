@@ -11,6 +11,7 @@ using RoRebuildServer.Logging;
 using RoServerScript;
 using static RoServerScript.RoScriptParser;
 using Microsoft.AspNetCore.Components.Forms;
+using RoRebuildServer.Data;
 
 namespace RoRebuildServer.ScriptSystem;
 
@@ -111,6 +112,15 @@ internal class ScriptTreeWalker
 
         if (topLevelContext is IncludeFileContextContext includeContext)
             VisitIncludeFile(includeContext);
+
+        if (topLevelContext is ServerEventContextContext eventContext)
+            VisitServerEventContext(eventContext);
+    }
+
+    private void VisitServerEventContext(ServerEventContextContext eventContext)
+    {
+        var eventName = eventContext.eventName.Text.Unescape();
+        builder.RequiresServerEvent = eventName;
     }
 
     private void VisitIncludeFile(IncludeFileContextContext includeContext)

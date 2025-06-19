@@ -619,6 +619,18 @@ namespace PlayerControl
                     }
                 }
 
+                if (s[0] == "/changecart")
+                {
+                    if (s.Length != 2 || !int.TryParse(s[1], out var cartId))
+                    {
+                        cameraFollower.AppendChatText("Incorrectly formatted command. Command should look like: /changecart #");
+                        return;
+                    }
+
+                    NetworkManager.Instance.SendChangeCart(cartId - 1);
+                    return;
+                }
+
                 if (emoteList.TryGetValue(s[0], out var emote))
                     NetworkManager.Instance.SendEmote(emote);
             }

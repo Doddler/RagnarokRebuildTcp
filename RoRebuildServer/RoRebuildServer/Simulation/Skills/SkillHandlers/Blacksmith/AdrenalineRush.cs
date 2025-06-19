@@ -1,7 +1,9 @@
 ﻿using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
+using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Networking;
+using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Blacksmith;
@@ -25,6 +27,26 @@ public class AdrenalineRush : SkillHandlerBase
         //was 30% cut in delay, but 60% faster is the closest with new aspd formula
         var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.AdrenalineRush, lvl * 30, 60);
         source.AddStatusEffect(status);
+        var effectId = DataManager.EffectIdForName["AdrenalineRush"];
+        CommandBuilder.SendEffectOnCharacterMulti(source.Character, effectId);
+
+        if (source.Character.Type == CharacterType.Player && source.Player.Party != null)
+        {
+            foreach (var p in source.Player.Party.OnlineMembers)
+            {
+                if (!p.TryGet<WorldObject>(out var partyMember) || partyMember.Map != source.Character.Map)
+                    continue;
+                if (!partyMember.CombatEntity.IsValidAlly(source, true))
+                    continue;
+                if (partyMember.Player.WeaponClass < 6 || source.Player.WeaponClass > 9)
+                    continue;
+
+                status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.AdrenalineRush, lvl * 30, 50);
+                source.AddStatusEffect(status);
+                //CommandBuilder.SendEffectOnCharacterMulti(partyMember, effectId);
+                CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(source.Character, CharacterSkill.AdrenalineRush, lvl, true);
+            }
+        }
 
         CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(source.Character, CharacterSkill.AdrenalineRush, lvl, isIndirect);
     }

@@ -518,7 +518,7 @@ namespace Assets.Scripts.Sprites
                 if (CurrentMotion == SpriteMotion.Sit || CurrentMotion == SpriteMotion.Dead)
                     Shadow.SetActive(false);
                 else
-                    Shadow.SetActive(true);
+                    Shadow.SetActive(!HideShadow);
             }
         }
 

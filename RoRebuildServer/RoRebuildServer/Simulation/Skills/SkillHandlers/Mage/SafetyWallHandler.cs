@@ -18,6 +18,8 @@ public class SafetyWallHandler : SkillHandlerBase
 {
     public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => float.Clamp(4.5f - lvl * 0.5f, 1f, 5f);
 
+    private const int GemstoneId = 717;
+
     //we use this instead of ValidateTarget because we only want the cast to fail at the end of the cast time if the target cell is overlapping
     public override bool PreProcessValidation(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
     {
@@ -36,6 +38,14 @@ public class SafetyWallHandler : SkillHandlerBase
         }
 
         return true;
+    }
+
+    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl)
+    {
+        if (source.Character.Type == CharacterType.Player && (source.Player.Inventory == null || !source.Player.Inventory.HasItem(GemstoneId))) //red gemstone
+            return SkillValidationResult.MissingRequiredItem;
+
+        return base.ValidateTarget(source, target, position, lvl);
     }
 
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)

@@ -14,6 +14,13 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
         private void UpdateFlash2D(RagnarokPrimitive primitive)
         {
             var data = primitive.GetPrimitiveData<FlashData>();
+
+            if (primitive.IsStepFrame && data.ChangePoint > 0 && data.ChangePoint == primitive.Step)
+            {
+                data.RotationSpeed = data.ChangeRotationSpeed;
+                data.RotationAccel = data.ChangeRotationAccel;
+                data.LengthSpeed = data.ChangeLengthSpeed;
+            }
             
             var fadeStartTime = primitive.Duration - data.FadeOutLength;
             if (primitive.CurrentPos > fadeStartTime)
@@ -37,10 +44,15 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
             // Debug.Log($"{Time.deltaTime}: Angle: {data.RotationAngle} RotationSpeed: {data.RotationSpeed} Accel: {data.RotationAccel} Length: {data.Length} Arc: {data.ArcLength} Alpha: {data.Alpha}");
 
             primitive.IsDirty = true;
+            primitive.IsActive = primitive.Step <= primitive.FrameDuration;
         }
         
         private void RenderFlash2D(RagnarokPrimitive primitive, MeshBuilder mb)
         {
+            mb.Clear();
+            if (!primitive.IsActive)
+                return;
+            
             var data = primitive.GetPrimitiveData<FlashData>();
             
             var color = new Color(1f, 1f, 1f, data.Alpha / 255f);

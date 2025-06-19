@@ -53,6 +53,10 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 case SkillValidationResult.SkillNotKnown:
                     Camera.AppendChatText("<color=#FF7777>Skill failed: Skill not learned or available.</color>");
                     break;
+                
+                case SkillValidationResult.CannotTeleportHere:
+                    Camera.AppendChatText("<color=#FF7777>You're unable to teleport in this location.</color>");
+                    break;
                 default:
                     Debug.Log($"Skill failure (not shown to user): {result}");
                     break;

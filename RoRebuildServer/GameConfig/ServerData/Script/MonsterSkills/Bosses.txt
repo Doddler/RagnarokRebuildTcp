@@ -156,6 +156,7 @@ StateAny:
 	TryCast(RecallMinion, 1, 100%, 0, 30s);
 StateIdle:
 	TryCast(Heal, 9999, 100%, 0s, 5s)[HpPercent < 50];
+	TryCast(MonsterSnap, 2, 100%, 0.2s, 5s, TargetRudeAttacker | UnlimitedRange)[RudeAttacked] -> ResetSkillCooldown(RecallMinion);
 	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
 StateChase:
     TryCast(MonsterSnap, 1, 20%, 0.2s, 1s);
@@ -481,15 +482,22 @@ SkillHandler("DRACULA") {
 StateAny: 
     TryCast(CallMinion, 1, 25%, 0.7s, 15s)[MinionCount < 6] -> CallDefaultMinions(); //his mob is familiars, don't really care to use MinionsDeadFor(time)
 	TryCast(RecallMinion, 1, 100%, 0, 30s);
+	TryCast(Invisible, 1, 20%, 0.2s, 5s, HideSkillName);
 StateIdle:
+	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
+StateRandomMove:
 	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
 StateChase:
 	TryCast(EnergyDrain, 1, 20%, 0, 0);
 	TryCast(Silence, 5, 20%, 0s, 20s);
+	TryCast(DecreaseAgility, 10, 20%, 0s, 5s);
+	TryCast(MonsterSnap, 1, 20%, 0.2s, 20s, HideSkillName);
 StateAttacking:
 	TryCast(Vampyrism, 1, 100%, 1.3s, 90s)[HpPercent < 30];
 	TryCast(SpeedUp, 5, 100%, 0.7s, 30s)[HpPercent < 30] -> SendEmote(6);
 	TryCast(DarkAttack, 5, 100%, 0s, 20s)[HpPercent < 80];
+	TryCast(BloodDrain, 1, 30%, 0, 0);
+	TryCast(Silence, 5, 20%, 0s, 20s);
 }
 
 //------------------------------------

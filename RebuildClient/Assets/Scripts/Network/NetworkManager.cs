@@ -1798,6 +1798,17 @@ namespace Assets.Scripts.Network
             
             SendMessage(msg);
         }
+
+        public void CartItemInteraction(CartInteractionType moveType, int bagId, int count)
+        {
+            var msg = StartMessage(PacketType.CartInventoryInteraction);
+            
+            msg.Write(bagId);
+            msg.Write((short)count);
+            msg.Write((byte)moveType);
+            
+            SendMessage(msg);
+        }
         
         public void SendCancelTrade()
         {

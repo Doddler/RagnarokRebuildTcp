@@ -95,9 +95,10 @@ SkillHandler("GARGOYLE") {
 StateIdle:
 	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
 StateAttacking:
+	TryCast(ChargeArrow, 1, 5%, 0, 5s);
 	TryCast(Blind, 1, 5%, 0, 5s);
-	TryCast(WindAttack, 1, 20%, 0, 5s);
 	TryCast(Bulwark, 1, 20%, 0, 5s)[HpPercent < 30] -> SendEmote(9); //...
+	TryCast(WindAttack, 1, 20%, 0, 5s);
 }
 
 macro JokerStateSwap() {
@@ -229,6 +230,11 @@ StateAttacking:
     TryCast(UndeadAttack, 3, 5%, 0, 5s, NoInterrupt | HideSkillName);
 }
 
+SkillHandler("EXECUTIONER") {
+StateAttacking:
+	TryCast(DarkAttack, 1, 5%, 0, 5s);
+}
+
 SkillHandler("KHALITZBURG") {
 StateIdle:
 	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
@@ -251,6 +257,13 @@ StateIdle:
 	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
 StateAttacking:
 	TryCast(DarkAttack, 2, 5%, 0.5s, 5s, NoInterrupt | HideSkillName) -> SendEmote(9); //...
+}
+
+SkillHandler("DARK_ILLUSION") {
+StateIdle:
+	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
+StateAttacking:
+	TryCast(GuidedAttack, 2, 5%, 1s, 5s, NoInterrupt | HideSkillName);
 }
 
 

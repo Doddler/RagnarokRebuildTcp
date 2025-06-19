@@ -137,10 +137,10 @@ A barrier which nullifies short range physical attacks, blocking up to [1 + Skil
 Catalyst: <color=#777777>1 Blue Gemstone</color>
 
 ::StoneCurse
-Curse a target to become stone, a 5 second long process that ends with the target being petrified. Chance of success is [35 + SkillLevel * 3]%. In the event of failure there is no cooldown, and at level 3+ failure will not consume a catalyst.
+Curse a target to turn to stone, a 5 second long process that ends with the target being petrified. Chance of success is [35 + SkillLevel * 3]%. In the event of failure there is no cooldown and no catalyst is consumed.
 Petrifying Effect: Target is greatly slowed and unable to attack or use skills.
 Petrification Effect: Target becomes immobilized and earth element, and receive DEF-50% and MDEF+25%. The next attack will free the target and deal +50% damage.
-Catalyst: <color=#777777>1 Red Gemstone</color>
+Catalyst: <color=#777777>1 Red Gemstone</color>. The chance of consuming a gemstone on a successful cast is [80 - SkillLevel * 5]%.
 
 ::Sight
 Conjure a magic flame that reveals hidden monsters and players in a 7x7 area around you. Lasts for 10 seconds.
@@ -251,7 +251,7 @@ Spend money to deal damage. Consumes [SkillLevel * 50] zeny to deal [100 + Skill
 Zeny used is affected by your level of Discount.
 
 ::PushCart
-Authorizes the use of a merchant cart and enables purchasing one from most Kafra employees.
+Authorizes the use of a merchant cart and enables purchasing one from most Kafra employees. Movement speed with a cart is lowered by [50 - SkillLevel * 5]% (no penalty at level 10).
 The cart has a weight capacity of 8000 and can store up to 100 items.
 A new cart design is available at levels 41, 66, 81, and 91. Type "/changecart [1-5]" to swap designs.
 
@@ -263,13 +263,16 @@ Obtain a better deal when buying items from the NPC, reducing the cost of goods 
 Some shops cannot be discounted. Decreases the zeny cost of Mammonite.
 
 ::CartRevolution
-Strikes a target with your cart, dealing [150 + Weight / 60]% damage to all enemies in a 3x3 area and knocking them away 2 tiles.
+Strikes a target with your cart, dealing [150 + Weight / 80]% damage to all enemies in a 3x3 area and knocking them away 2 tiles.
 
 ::ItemAppraisal
-A keen eye unlocks the hidden potential of weapons, increasing your weapon attack power by +[SkillLevel * WeaponLevel].
+A keen eye unlocks the hidden potential of weapons, increasing your weapon attack power by +[SkillLevel * WeaponLevel * 2].
 
 ::CrazyUproar
 Psyche yourself up, increasing your STR by 4.
 
 ::HammerFall
 Strike the earth with a powerful hammer swing that has a [20 + SkillLvl * 10]% chance to stun enemies in a 5x5 area.
+
+::AdrenalineRush
+Increases attack speed with axes and maces by 60% you and 50% your party members. Lasts [SkillLevel * 30] seconds.

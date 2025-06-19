@@ -1,6 +1,8 @@
-﻿namespace Assets.Scripts.Effects.PrimitiveData
+﻿using Assets.Scripts.Utility;
+
+namespace Assets.Scripts.Effects.PrimitiveData
 {
-    public class FlashData
+    public class FlashData : IResettable
     {
         public float ArcLength;
         public float RotationAngle;
@@ -12,5 +14,14 @@
         public float Alpha;
         public float Length;
         public float LengthSpeed;
+        public int ChangePoint;
+        public float ChangeRotationSpeed;
+        public float ChangeRotationAccel;
+        public float ChangeLengthSpeed;
+        
+        public void Reset()
+        {
+            ChangePoint = 0;
+        }
     }
 }

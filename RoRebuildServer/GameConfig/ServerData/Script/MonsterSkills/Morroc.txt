@@ -17,6 +17,20 @@ StateAttacking:
 	TryCast(WindAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
 }
 
+SkillHandler("DRAGON_FLY") {
+OnInit:
+	ResummonMinionCount = 0; //resummon if we have 0 minions
+StateAny: 
+    TryCast(CallMinion, 1, 100%, 2s, 60s)[MinionsDeadFor(30s)] -> { CallDefaultMinions(); SendEmote(27); } //go!
+StateIdle:
+	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
+StateChase:
+	TryCast(Silence, 3, 5%, 0.7s, 5s, NoInterrupt) -> SendEmote(6); //angry
+StateAttacking:
+	TryCast(Silence, 3, 5%, 0.7s, 5s, NoInterrupt) -> SendEmote(6); //angry
+	TryCast(WindAttack, 5, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
+}
+
 SkillHandler("FRILLDORA") {
 StateAny:
 	TryCast(Cloaking, 1, 20%, 0.2s, 5s);

@@ -5,6 +5,7 @@ using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Simulation;
 using System.Diagnostics;
+using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents.Character;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;
@@ -29,7 +30,15 @@ public class PacketAttack : IClientPacketHandler
         var character = connection.Character;
         if (character.State == CharacterState.Sitting || character.CombatEntity.HasBodyState(BodyStateFlags.Hidden))
             return;
-        
+
+        var player = character.Player;
+
+        if (player.Inventory != null && player.Inventory.BagWeight > player.GetStat(CharacterStat.WeightCapacity) && !player.IsAdmin)
+        {
+            CommandBuilder.ErrorMessage(player, $"You cannot attack while over 100% weight limit.");
+            return;
+        }
+
         character.Player.AddActionDelay(CooldownActionType.Click);
 
         var target = World.Instance.GetEntityById(id);

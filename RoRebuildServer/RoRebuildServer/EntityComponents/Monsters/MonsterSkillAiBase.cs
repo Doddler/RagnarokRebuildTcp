@@ -13,19 +13,21 @@ public interface IMonsterLoader
 public enum MonsterSkillAiFlags
 {
     None = 0,
-    NoInterrupt = 1,
-    NeverInterrupt = 2,
-    EasyInterrupt = 4,
-    EventOnStartCast = 8,
-    RandomTarget = 16,
-    HideSkillName = 32,
-    HideCastBar = 64,
-    UnlimitedRange = 128,
-    NoTarget = 256,
-    IgnoreCooldown = 512,
-    HiddenCast = 1024,
-    NoEffect = 2048,
-    SelfTarget = 4096
+    NoInterrupt = 1 << 0,
+    NeverInterrupt = 1 << 1,
+    EasyInterrupt = 1 << 2,
+    EventOnStartCast = 1 << 3,
+    RandomTarget = 1 << 4,
+    HideSkillName = 1 << 5,
+    HideCastBar = 1 << 6,
+    UnlimitedRange = 1 << 7,
+    NoTarget = 1 << 8,
+    IgnoreCooldown = 1 << 9,
+    HiddenCast = 1 << 10,
+    NoEffect = 1 << 11,
+    SelfTarget = 1 << 12,
+    TargetRudeAttacker = 1 << 13,
+    IgnoreLineOfSight = 1 << 14,
 }
 
 public abstract class MonsterSkillAiBase

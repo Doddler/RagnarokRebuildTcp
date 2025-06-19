@@ -102,6 +102,11 @@ public partial class CombatEntity
                 var chance = GetStat(CharacterStat.SpDrainChance);
                 if (chance > 0 && GameRandom.Next(0, 100) < chance)
                     RecoverSp(res.Damage * res.HitCount * GetStat(CharacterStat.SpDrainAmount) / 100);
+
+
+                var pureDrain = GetStat(CharacterStat.PureSpDrain);
+                if (pureDrain > 0)
+                    RecoverSp(res.Damage * res.HitCount * pureDrain / 1000);
             }
 
             if ((attackTriggerFlags & AttackEffectTriggers.HpDrain) > 0)
@@ -109,6 +114,10 @@ public partial class CombatEntity
                 var chance = GetStat(CharacterStat.HpDrainChance);
                 if (chance > 0 && GameRandom.Next(0, 100) < chance)
                     HealHp(res.Damage * res.HitCount * GetStat(CharacterStat.HpDrainAmount) / 100);
+
+                var pureDrain = GetStat(CharacterStat.PureHpDrain);
+                if(pureDrain > 0)
+                    HealHp(res.Damage * res.HitCount * pureDrain / 1000);
             }
 
             if ((attackTriggerFlags & AttackEffectTriggers.HpOnAttack) > 0)

@@ -1,5 +1,12 @@
 #include "_macro.txt"
 
+SkillHandler("GEOGRAPHER") {
+StateAny:
+    TryCast(Heal, 10, 100%, 0.5s, 5s)[FindAllyBelowHpPercent(60)];
+StateAttacking:
+	TryCast(Sleep, 5, 5%, 0s, 5s);
+}
+
 SkillHandler("ARCHANGELING") {
 OnInit:
 	ResummonMinionCount = 3; //resummon if we have 3 or less
@@ -17,6 +24,64 @@ StateAttacking:
 	TryCast(Heal, 9999, 100%, 0, 5s)[FindAllyBelowHpPercent(50)] -> SendEmote(18);
 	TryCast(Heal, 9999, 100%, 0, 10s)[HpPercent < 50] -> SendEmote(18);
 	TryCast(HolyAttack, 5, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(18);
+}
+
+SkillHandler("DELETER") {
+StateIdle:
+    @ResumeAiState(10%, AiAggressive, 6); //angry
+StateChase:
+	@GiveUpChase(2%, AiPassive, 19); //sweat
+	TryCast(FireBall, 9, 5%, 0, 5s);
+	TryCast(FireAttack, 3, 5%, 0.5s, 5s) -> SendEmote(6); //angry
+StateAttacking:
+	TryCast(FireAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
+	TryCast(PiercingAttack, 1, 5%, 0, 5s);
+}
+
+SkillHandler("DELETER_") {
+StateIdle:
+    @ResumeAiState(10%, AiAggressive, 6); //angry
+StateChase:
+	@GiveUpChase(2%, AiPassive, 19); //sweat
+	TryCast(FireWall, 5, 5%, 0.5s, 5s);
+StateAttacking:
+	TryCast(FireWall, 5, 5%, 0.5s, 5s);
+	TryCast(FireAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
+	TryCast(MagnumBreak, 9, 5%, 0.5s, 5s, NoInterrupt);
+}
+
+
+SkillHandler("DRILLER") {
+StateIdle:
+	TryCast(NoCast, 1, 20%, 0s, 5s) -> SendEmote(22); //??
+	TryCast(Cloaking, 1, 1%, 0.2s, 5s);
+StateFollow:
+	TryCast(Cloaking, 1, 20%, 0.2s, 5s);
+StateChase:
+	TryCast(Cloaking, 1, 20%, 0.2s, 5s);
+StateAngry:
+	TryCast(Cloaking, 1, 20%, 0.2s, 5s);
+	TryCast(ComboAttack, 2, 5%, 0.7s, 5s, NoInterrupt);
+	TryCast(EarthAttack, 1, 5%, 0s, 5s);
+StateAttacking:
+	TryCast(Cloaking, 1, 20%, 0.2s, 5s);
+	TryCast(ComboAttack, 2, 5%, 0.7s, 5s, NoInterrupt);
+	TryCast(EarthAttack, 1, 5%, 0s, 5s);
+}
+
+SkillHandler("DEMON_PUNGUS") {
+StateFollow:
+	TryCast(Blind, 5, 5%, 0s, 5s);
+	TryCast(Petrify, 5, 5%, 0.5s, 5s, NoInterrupt);
+StateChase:
+	TryCast(Blind, 5, 5%, 0s, 5s);
+	TryCast(Petrify, 5, 5%, 0.5s, 5s, NoInterrupt);
+StateAngry:
+	TryCast(Blind, 5, 5%, 0s, 5s);
+	TryCast(Petrify, 5, 5%, 0.5s, 5s, NoInterrupt);
+StateAttacking:
+	TryCast(Blind, 5, 5%, 0s, 5s);
+	TryCast(Petrify, 5, 5%, 0.5s, 5s, NoInterrupt);
 }
 
 SkillHandler("GRAND_PECO") {

@@ -180,7 +180,6 @@ namespace Assets.Scripts.UI
                         UiManager.Instance.DropCountConfirmationWindow.BeginItemDrop(item, DropConfirmationType.StorageToInventory);
                 }
             }
-
         }
 
         private void RefreshItemCount()

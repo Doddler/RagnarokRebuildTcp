@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
+using RebuildSharedData.Enum;
 using TMPro;
 using UnityEngine;
 
@@ -10,7 +11,9 @@ namespace Assets.Scripts.UI.Hud
         DropOnGround,
         ShopTransfer,
         InventoryToStorage,
-        StorageToInventory
+        StorageToInventory,
+        InventoryToCart,
+        CartToInventory
     }
     
     public class DropCountConfirmationWindow : MonoBehaviour
@@ -88,7 +91,12 @@ namespace Assets.Scripts.UI.Hud
                     case DropConfirmationType.StorageToInventory:
                         NetworkManager.Instance.SendMoveStorageItem(bagItem.Id, count, false);
                         break;
-                    
+                    case DropConfirmationType.InventoryToCart:
+                        NetworkManager.Instance.CartItemInteraction(CartInteractionType.InventoryToCart, bagItem.Id, count);
+                        break;
+                    case DropConfirmationType.CartToInventory:
+                        NetworkManager.Instance.CartItemInteraction(CartInteractionType.CartToInventory, bagItem.Id, count);
+                        break;
                 }
             }
             HideInputWindow();

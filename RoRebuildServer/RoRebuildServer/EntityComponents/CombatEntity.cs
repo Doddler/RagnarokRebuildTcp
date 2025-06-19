@@ -218,7 +218,7 @@ public partial class CombatEntity : IEntityAutoReset
 
         return success;
     }
-
+    
     public void RemoveStatusOfGroupIfExists(string groupName)
     {
         if (statusContainer == null || statusContainer.TotalStatusEffectCount == 0) //that last one fixes an unfortunate issue where attempting to remove an existing status while adding a status breaks things
@@ -269,6 +269,18 @@ public partial class CombatEntity : IEntityAutoReset
 
     [ScriptUseable]
     public bool CanTeleport() => Character.Map?.CanTeleport ?? false;
+    [ScriptUseable]
+    public bool CanTeleportWithError()
+    {
+        if (!CanTeleport())
+        {
+            if(Character.Type == CharacterType.Player)
+                CommandBuilder.SkillFailed(Character.Player, SkillValidationResult.CannotTeleportHere);
+            return false;
+        }
+
+        return true;
+    }
 
     [ScriptUseable]
     public void RandomTeleport()
@@ -643,7 +655,7 @@ public partial class CombatEntity : IEntityAutoReset
         return true;
     }
 
-    public bool CanAttackTarget(WorldObject target, int range = -1)
+    public bool CanAttackTarget(WorldObject target, int range = -1, bool ignoreLineOfSight = false)
     {
         if (range == -1)
             range = GetEffectiveStat(CharacterStat.Range);
@@ -651,6 +663,8 @@ public partial class CombatEntity : IEntityAutoReset
             return false;
         if (DistanceCache.IntDistance(Character.Position, target.Position) > range)
             return false;
+        if (ignoreLineOfSight)
+            return true;
         if (Character.Map == null || !Character.Map.WalkData.HasLineOfSight(Character.Position, target.Position))
             return false;
         return true;

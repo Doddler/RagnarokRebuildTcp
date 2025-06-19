@@ -106,7 +106,7 @@ public class SightObjectEvent : NpcBehaviorBase
             return;
         }
 
-        target.RemoveStatusOfTypeIfExists(CharacterStatusEffect.Hiding);
+        target.RemoveStatusOfGroupIfExists("Hiding");
     }
 }
 

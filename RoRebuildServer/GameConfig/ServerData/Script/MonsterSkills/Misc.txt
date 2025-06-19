@@ -44,10 +44,7 @@ StateAttacking:
 	TryCast(SonicBlow, 2, 5%, 0.8s, 5s) -> SendEmote(6); //angry
 }
 
-SkillHandler("GEOGRAPHER") {
-StateAny:
-    TryCast(Heal, 10, 100%, 0.5s, 5s)[FindAllyBelowHpPercent(60)];
-}
+
 
 event TestCastEvent {
 	local delay = Param1;

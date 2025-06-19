@@ -15,3 +15,19 @@ OnClick:
 	if(result == 0)
 		MoveTo("mjo_dun02", 155, 21);
 }
+
+Npc("ama_dun01", "Suspicious Tile", "CLEAR_NPC", 8, 62, E) { 
+OnClick:
+	Dialog("", "It looks like there's some kind of secret passage hidden here...");
+	if(GetItemCount("Shinobi_Sash") <= 0)
+	{
+		Dialog("", "There seems to be some kind of trick to it though. Maybe it would open if you had something that belonged to a shinobi...?");
+		return;
+	}
+
+	Dialog("", "Reacting to something in your inventory, the passage opens.");
+
+	Option("Take Shortcut", "Leave");
+	if(result == 0)
+		MoveTo("ama_dun01", 233, 222);
+}

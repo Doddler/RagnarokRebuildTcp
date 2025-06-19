@@ -28,6 +28,7 @@ namespace Assets.Scripts.Effects
 		Silence,
 		Sleep,
 		Stun,
+		AdrenalineRush,
 		AgiDown,
 		AgiUp,
 		Blessing,
@@ -85,6 +86,7 @@ namespace Assets.Scripts.Effects
 		Heal,
 		Particle3DSpline,
 		ParticleAnimatedSprite,
+		ParticleOrbit,
 		ParticleUp,
 		ProjectorPrimitive,
 		RoSprite,
@@ -120,6 +122,7 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.Silence, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.SilenceEffect());
 			effectHandlers.Add(EffectType.Sleep, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.SleepEffect());
 			effectHandlers.Add(EffectType.Stun, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.StunEffect());
+			effectHandlers.Add(EffectType.AdrenalineRush, new Assets.Scripts.Effects.EffectHandlers.Skills.AdrenalineRushEffect());
 			effectHandlers.Add(EffectType.AgiDown, new Assets.Scripts.Effects.EffectHandlers.Skills.AgiDownEffect());
 			effectHandlers.Add(EffectType.AgiUp, new Assets.Scripts.Effects.EffectHandlers.Skills.AgiUpEffect());
 			effectHandlers.Add(EffectType.Blessing, new Assets.Scripts.Effects.EffectHandlers.Skills.BlessingEffect());
@@ -182,6 +185,8 @@ namespace Assets.Scripts.Effects
 			primitiveDataFactory.Add(PrimitiveType.Particle3DSpline, () => new Assets.Scripts.Effects.PrimitiveData.Particle3DSplineData());
 			primitiveHandlers.Add(PrimitiveType.ParticleAnimatedSprite, new Assets.Scripts.Effects.PrimitiveHandlers.ParticleAnimatedSpritePrimitive());
 			primitiveDataFactory.Add(PrimitiveType.ParticleAnimatedSprite, () => new Assets.Scripts.Effects.PrimitiveData.SpriteParticleData());
+			primitiveHandlers.Add(PrimitiveType.ParticleOrbit, new Assets.Scripts.Effects.PrimitiveHandlers.ParticleOrbitPrimitive());
+			primitiveDataFactory.Add(PrimitiveType.ParticleOrbit, () => new Assets.Scripts.Effects.PrimitiveData.ParticleOrbitData());
 			primitiveHandlers.Add(PrimitiveType.ParticleUp, new Assets.Scripts.Effects.PrimitiveHandlers.ParticleUpPrimitive());
 			primitiveDataFactory.Add(PrimitiveType.ParticleUp, () => new Assets.Scripts.Effects.PrimitiveData.ParticleUpData());
 			primitiveHandlers.Add(PrimitiveType.ProjectorPrimitive, new Assets.Scripts.Effects.PrimitiveHandlers.ProjectorPrimitive());

@@ -1,5 +1,27 @@
 
 
+SkillHandler("COOKIE") {
+StateAny:
+	TryCast(Heal, 5, 100%, 0.5s, 5s)[FindAllyBelowHpPercent(60)] -> SendEmote(0); //!
+	TryCast(Heal, 5, 100%, 0.5s, 5s)[HpPercent < 30] -> SendEmote(0); //!
+StateRandomMove:
+	TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(2); //whistle
+StateChase:
+	TryCast(GhostAttack, 5, 5%, 0, 5s) -> SendEmote(4); //sweat
+StateAttacking:
+	TryCast(GhostAttack, 5, 5%, 0, 5s) -> SendEmote(4); //sweat
+}
+
+SkillHandler("COOKIE_XMAS") {
+StateRandomMove:
+	TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(2); //whistle
+StateChase:
+	TryCast(ColdBolt, 3, 5%, 1.5s, 5s) -> SendEmote(21); //nice
+StateAttacking:
+	TryCast(HolyAttack, 1, 5%, 0.5s, 5s, NoInterrupt);
+	TryCast(ColdBolt, 3, 5%, 1.5s, 5s) -> SendEmote(21); //nice
+}
+
 SkillHandler("CHEPET") {
 OnInit:
 	ResummonMinionCount = 0;

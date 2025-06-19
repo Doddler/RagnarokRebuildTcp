@@ -104,7 +104,7 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[85] = new PacketStorageInteraction(); //StorageInteraction
 			handlers[86] = new InvalidPacket(); //ShopBuySell
 			handlers[87] = new InvalidPacket(); //NpcTradeItem
-			handlers[88] = new InvalidPacket(); //CartPartyInteraction
+			handlers[88] = new PacketCartInventoryInteraction(); //CartInventoryInteraction
 			handlers[89] = new PacketChangeFollower(); //ChangeFollower
 			handlers[90] = new PacketServerEvent(); //ServerEvent
 			handlers[91] = new PacketServerResult(); //ServerResult
