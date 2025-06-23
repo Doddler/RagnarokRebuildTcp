@@ -15,6 +15,7 @@ namespace Assets.Scripts.UI
         public Image Background;
         public TextMeshProUGUI ItemName;
         public TextMeshProUGUI RightText;
+        public TMP_InputField InputField;
         
         [NonSerialized] public ItemDragOrigin DragOrigin;
         [NonSerialized] public int UniqueEntryId;

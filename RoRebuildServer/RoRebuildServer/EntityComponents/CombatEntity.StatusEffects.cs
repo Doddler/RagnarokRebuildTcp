@@ -116,7 +116,7 @@ public partial class CombatEntity
                     HealHp(res.Damage * res.HitCount * GetStat(CharacterStat.HpDrainAmount) / 100);
 
                 var pureDrain = GetStat(CharacterStat.PureHpDrain);
-                if(pureDrain > 0)
+                if (pureDrain > 0)
                     HealHp(res.Damage * res.HitCount * pureDrain / 1000);
             }
 
@@ -183,7 +183,7 @@ public partial class CombatEntity
 
     private void TriggerWhenAttackedEffects(CombatEntity attacker, AttackRequest req, ref DamageInfo res)
     {
-        if (!req.Flags.HasFlag(AttackFlags.Physical) || req.Flags.HasFlag(AttackFlags.NoTriggerOnAttackEffects) || Character.Type != CharacterType.Player)
+        if (!req.Flags.HasFlag(AttackFlags.Physical) || req.Flags.HasFlag(AttackFlags.NoTriggerOnAttackEffects) || Character.Type != CharacterType.Player || !CanPerformIndirectActions())
             return;
 
         var flags = Player.WhenAttackedStatusFlags;
@@ -246,6 +246,7 @@ public partial class CombatEntity
         if (Character.Type != CharacterType.Player
             || !req.Flags.HasFlag(AttackFlags.Physical)
             || !res.IsDamageResult
+            || !CanPerformIndirectActions()
             || Character.Position.DistanceTo(attacker.Character.Position) > 14)
             return;
 

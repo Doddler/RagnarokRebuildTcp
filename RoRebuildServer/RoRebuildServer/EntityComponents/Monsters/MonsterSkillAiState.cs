@@ -86,6 +86,23 @@ public class MonsterSkillAiState(Monster monsterIn)
         }
     }
 
+    public bool MinionsLost
+    {
+        get
+        {
+            if (monster.ChildCount == 0 || monster.Children == null)
+                return false;
+
+            foreach (var childEntity in monster.Children)
+            {
+                if (childEntity.TryGet<WorldObject>(out var child) &&
+                    child.Position.DistanceTo(monster.Character.Position) > 15)
+                    return true;
+            }
+
+            return false;
+        }
+    }
 
     public bool IsMasterAlive => monster.HasMaster && monster.GetMaster().TryGet<WorldObject>(out var chara) && chara.IsActive &&  chara.State != CharacterState.Dead;
 

@@ -58,7 +58,7 @@ Mjolnir Dead Pit
 -mjo_dun01
 -mjo_dun02
 -mjo_dun03
-Glast Heim
+Glast Heim Dungeons
 -glast_01
 -gl_cas01
 -gl_cas02
@@ -92,5 +92,5 @@ Amatsu Dungeon
 -ama_dun01
 -ama_dun02
 -ama_dun03
-Debug
+Juperos
 -juperos_01

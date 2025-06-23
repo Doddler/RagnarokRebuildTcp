@@ -342,7 +342,7 @@ public class Player : IEntityAutoReset
             SetData(PlayerStat.Status, 1);
             UpdateStats(false, false); //update without sending update because we want to trigger inventory update too
             CombatEntity.FullRecovery(true, true);
-            CommandBuilder.SendUpdatePlayerData(this, true, false);
+            CommandBuilder.SendUpdatePlayerData(this, false, false, false);
         }
         else
         {
@@ -393,7 +393,7 @@ public class Player : IEntityAutoReset
         return true;
     }
     
-    public void SendPlayerUpdateData(OutboundMessage packet, bool sendInventory, bool refreshSkills)
+    public void SendPlayerUpdateData(OutboundMessage packet, bool sendInventory, bool sendCart, bool refreshSkills)
     {
         foreach (var dataType in PlayerClientStatusDef.PlayerUpdateData)
             packet.Write(GetData(dataType));
@@ -468,7 +468,9 @@ public class Player : IEntityAutoReset
         if (sendInventory)
         {
             Inventory.TryWrite(packet, true);
-            CartInventory.TryWrite(packet, true);
+            packet.Write((byte)(sendCart ? 1 : 0));
+            if(sendCart)
+                CartInventory.TryWrite(packet, true);
             //StorageInventory.TryWrite(packet, true);
             for (var i = 0; i < 10; i++)
                 packet.Write(Equipment.ItemSlots[i]);
@@ -708,7 +710,26 @@ public class Player : IEntityAutoReset
         SetStat(CharacterStat.Luk, GetData(PlayerStat.Luk));
 
         RefreshJobBonus();
+
+        //updated aspd chart
+        //base attack speed is identical to pre-renewal, 0.4% lower delay per point of agi and 0.1% for dex
+        //the aspd bonus is handled differently should work out to nearly the same up to +60% aspd
+        //above that, there's diminishing returns.
+        //For example, 0agi/dex +80% apsd (berserk pot/2hq/frenzy) goes from 4.34/sec to 3.54/sec
         
+        var jobAspd = jobInfo.WeaponTimings[WeaponClass];
+        var aspdBonus = (float)GetStat(CharacterStat.AspdBonus);
+        if (aspdBonus >= 0) aspdBonus *= MathF.Pow(1.0064f, aspdBonus);
+
+        var agi = GetEffectiveStat(CharacterStat.Agi);
+        var dex = GetEffectiveStat(CharacterStat.Dex);
+
+        var speedScore = 1 - (agi + dex / 4f) / 250f;
+        var speedBoost = MathF.Pow(0.99f, aspdBonus);
+        var recharge = jobAspd * speedScore * speedBoost;
+
+        //--- old formula -------------------------------------------------------
+        /*
         var jobAspd = jobInfo.WeaponTimings[WeaponClass];
         var aspdBonus = 100f / (100f + float.Clamp(GetStat(CharacterStat.AspdBonus), -99, 1000));
 
@@ -719,8 +740,10 @@ public class Player : IEntityAutoReset
         var speedScore = (agi + dex / 4) * 5 / 3; //agi * 1.6667
         var speedBoost = 1 + ((MathHelper.PowScaleUp(speedScore) - 1) / 4.8f);
         var statSpeedValue = 1f / speedBoost;
-
+        
         var recharge = jobAspd * aspdBonus * statSpeedValue;
+        */
+        //--- end old formula -------------------------------------------------------
 
         if (recharge > 2f)
             recharge = 2f;

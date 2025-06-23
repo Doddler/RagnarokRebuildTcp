@@ -1,0 +1,95 @@
+﻿@using RoRebuildServer.Data
+
+@{
+    var totalExp = 0;
+}
+
+<div class="contentzone" style="padding:20px;">
+    <table>
+        <tr>
+            <td style="vertical-align: top">
+                <table style="border-collapse: collapse" border="1" class="exptable">
+                    <tr>
+                        <th colspan="3">
+                            <h2 class="subheader">Base Experience</h2>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th><h2 class="subheader">Current Level</h2></th>
+                        <th><h2 class="subheader">Exp To Next</h2></th>
+                        <th><h2 class="subheader">Total</h2></th>
+                    </tr>
+                    @{
+                        totalExp = 0;
+                    }
+                    @for (var i = 0; i < 99; i++)
+                    {
+                        var curLevel = DataManager.ExpChart.ExpRequired[i + 1];
+                        totalExp += curLevel;
+                        <tr>
+                            <td><b>@(i + 1)</b></td>
+                            <td>@(curLevel.ToString("N0"))</td>
+                            <td>@(totalExp.ToString("N0"))</td>
+                        </tr>
+                    }
+                </table>
+            </td>
+            <td> </td>
+            <td style="vertical-align: top">
+                <table style="border-collapse: collapse" border="1" class="exptable">
+                    <tr>
+                        <th colspan="3">
+                            <h2 class="subheader">Job Experience (Novice)</h2>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th><h2 class="subheader">Current Level</h2></th>
+                        <th><h2 class="subheader">Exp To Next</h2></th>
+                        <th><h2 class="subheader">Total</h2></th>
+                    </tr>
+                    @{
+                        totalExp = 0;
+                    }
+                    @for (var i = 0; i < 9; i++)
+                    {
+                        var curLevel = DataManager.ExpChart.RequiredJobExp(0, i + 1);
+                        totalExp += curLevel;
+                        <tr>
+                            <td><b>@(i + 1)</b></td>
+                            <td>@(curLevel.ToString("N0"))</td>
+                            <td>@(totalExp.ToString("N0"))</td>
+                        </tr>
+                    }
+                </table>
+            </td>
+            <td> </td>
+            <td style="vertical-align: top">
+                <table style="border-collapse: collapse" border="1" class="exptable">
+                    <tr>
+                        <th colspan="3">
+                            <h2 class="subheader">Job Experience (1st Job)</h2>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th><h2 class="subheader">Current Level</h2></th>
+                        <th><h2 class="subheader">Exp To Next</h2></th>
+                        <th><h2 class="subheader">Total</h2></th>
+                    </tr>
+                    @{
+                        totalExp = 0;
+                    }
+                    @for (var i = 0; i < 69; i++)
+                    {
+                        var curLevel = DataManager.ExpChart.RequiredJobExp(1, i + 1);
+                        totalExp += curLevel;
+                        <tr>
+                            <td><b>@(i + 1)</b></td>
+                            <td>@(curLevel.ToString("N0"))</td>
+                            <td>@(totalExp.ToString("N0"))</td>
+                        </tr>
+                    }
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>

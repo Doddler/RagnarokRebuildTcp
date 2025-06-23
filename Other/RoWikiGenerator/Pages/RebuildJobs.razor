@@ -1,8 +1,20 @@
-﻿@using RebuildSharedData.Enum
+﻿@using System.Text.RegularExpressions
+@using RebuildSharedData.Enum
 @using RoRebuildServer.Data
 @code
 {
     [Parameter] public Generators.JobModel Model { get; set; }
+
+    string FixDesc(string desc)
+    {
+        var d2 = desc;
+        if (desc.Contains("<color"))
+        {
+            d2 = Regex.Replace(desc, "<color=#([^\\\"]{6})>", "<span style=\"color: #$1\">");
+        }
+
+        return d2.Replace("</color>", "</span>");
+    }
 }
 
 <div class="contentzone">
@@ -31,7 +43,7 @@
                 {
                     <span><b>SP Cost: </b> @spCost</span> <br />
                 }
-                @((MarkupString)skillDesc)
+                @((MarkupString)FixDesc(skillDesc))
             </div>
         </div>
     }

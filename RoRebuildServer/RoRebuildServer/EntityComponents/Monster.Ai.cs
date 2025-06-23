@@ -277,7 +277,7 @@ public partial class Monster
         if (!WasAttacked)
             return false;
 
-        if (!Character.LastAttacked.TryGet<CombatEntity>(out var ce) || !ce.CanBeTargeted(CombatEntity))
+        if (!Character.LastAttacked.TryGet<CombatEntity>(out var ce) || !ce.CanBeTargeted(CombatEntity, true))
             return false;
 
         if (swapToNewAttacker && Target != Character.LastAttacked)
@@ -712,7 +712,7 @@ public partial class Monster
             return false;
 
         var targetEntity = targetCharacter.Entity.Get<CombatEntity>();
-        if (!targetEntity.CanBeTargeted(CombatEntity))
+        if (!targetEntity.CanBeTargeted(CombatEntity, true))
             return false;
 
         if (performSkillCheck && AiSkillScanUpdate())

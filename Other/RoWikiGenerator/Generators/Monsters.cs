@@ -21,10 +21,19 @@ public class MonsterModel
 internal static class Monsters
 {
     public static MonsterModel MonsterModel;
+    public static Dictionary<int, string> IdToTagLookup = new();
 
     public static async Task<string> RenderMonsterPage()
     {
         var monsterMapSpawns = new Dictionary<int, List<(string map, MapSpawnRule spawn)>>();
+
+        foreach (var (tag, id) in DataManager.TagToIdLookup)
+        {
+            var tString = tag;
+            if (tString == "WeakToSilver")
+                tString = "Weak to Silver";
+            IdToTagLookup.Add(id, tString);
+        }
 
         foreach (var map in DataManager.Maps)
         {

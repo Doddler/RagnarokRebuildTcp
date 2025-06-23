@@ -8,6 +8,7 @@ using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Effects.EffectHandlers.Environment;
 using Assets.Scripts.Effects.EffectHandlers.General;
 using Assets.Scripts.Effects.EffectHandlers.Skills;
+using Assets.Scripts.Effects.EffectHandlers.Skills.Priest;
 using Assets.Scripts.Misc;
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
@@ -88,7 +89,7 @@ namespace Assets.Scripts.Sprites
         private readonly Dictionary<int, EmoteData> emoteDataTable = new();
         private readonly Dictionary<int, StatusEffectData> statusEffectData = new();
         private readonly int[] jobExpData = new int[70 * 2];
-        
+
         private readonly List<string> validMonsterClasses = new();
         private readonly List<string> validMonsterCodes = new();
 
@@ -120,7 +121,9 @@ namespace Assets.Scripts.Sprites
         public CardPrefixData GetCardPrefixData(int id) => cardPrefixPostfixTable.GetValueOrDefault(id, null);
         public StatusEffectData GetStatusEffect(int id) => statusEffectData.GetValueOrDefault(id, null);
         public int GetJobExpRequired(int job, int level) => level < 0 || level >= 70 ? -1 : jobExpData[(job == 0 ? 0 : 1) * 70 + level];
-        public bool TryGetMetamorphResult(string spriteName, out MetamorphTransitionResult result) => metamorphTransitionResult.TryGetValue(spriteName, out result);
+
+        public bool TryGetMetamorphResult(string spriteName, out MetamorphTransitionResult result) =>
+            metamorphTransitionResult.TryGetValue(spriteName, out result);
 
         public static int UniqueItemStartId = 20000;
         public string LatestPatchNotes = "";
@@ -173,7 +176,7 @@ namespace Assets.Scripts.Sprites
                 jobExpData[70 + jobLvl] = int.Parse(s[1]);
                 jobLvl++;
             }
-            
+
             var entityData = JsonUtility.FromJson<Wrapper<MonsterClassData>>(MonsterClassData.text);
             foreach (var m in entityData.Items)
             {
@@ -240,12 +243,12 @@ namespace Assets.Scripts.Sprites
             var weaponClass = JsonUtility.FromJson<Wrapper<WeaponClassData>>(WeaponClassData.text);
             foreach (var weapon in weaponClass.Items)
                 weaponClassData.TryAdd(weapon.Id, weapon);
-            
+
             var emoteData = JsonUtility.FromJson<Wrapper<EmoteData>>(EmoteData.text);
             foreach (var emote in emoteData.Items)
-                if(!emoteDataTable.TryAdd(emote.Id, emote))
+                if (!emoteDataTable.TryAdd(emote.Id, emote))
                     Debug.LogWarning($"Failed to add emote {emote.Id} to emote table");
-            
+
             var items = JsonUtility.FromJson<Wrapper<ItemData>>(ItemData.text);
 
             var itemIcons = new Dictionary<string, string>();
@@ -291,12 +294,13 @@ namespace Assets.Scripts.Sprites
                 else
                     Debug.LogWarning($"Could not convert {action.Action} to a skill type when parsing unique skill actions");
             }
-            
+
             var metamorphResults = JsonUtility.FromJson<Wrapper<MetamorphTransitionResult>>(MetamorphResultData.text);
             foreach (var result in metamorphResults.Items)
             {
                 metamorphTransitionResult.Add(result.Sprite, result);
             }
+
             var skills = JsonUtility.FromJson<Wrapper<SkillData>>(SkillData.text);
             foreach (var skill in skills.Items)
             {
@@ -310,7 +314,7 @@ namespace Assets.Scripts.Sprites
             var trees = JsonUtility.FromJson<Wrapper<ClientSkillTree>>(SkillTreeData.text);
             foreach (var tree in trees.Items)
                 jobSkillTrees.Add(tree.ClassId, tree);
-            
+
             var prePosData = JsonUtility.FromJson<Wrapper<CardPrefixData>>(CardPrefixData.text);
             foreach (var dat in prePosData.Items)
                 cardPrefixPostfixTable.Add(dat.Id, dat);
@@ -338,7 +342,7 @@ namespace Assets.Scripts.Sprites
             var mapClass = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(MapData.text);
             foreach (var map in mapClass.Items)
                 mapDataLookup.TryAdd(map.Code, map);
-            
+
             var statusData = JsonUtility.FromJson<Wrapper<StatusEffectData>>(StatusEffectData.text);
             foreach (var status in statusData.Items)
                 statusEffectData.Add((int)status.StatusEffect, status);
@@ -348,7 +352,7 @@ namespace Assets.Scripts.Sprites
                 itemDescriptionTable.Add(desc.Code, desc.Description);
 
             var notes = JsonUtility.FromJson<Wrapper<PatchNotes>>(PatchNoteData.text);
-            
+
             var sb = new StringBuilder();
             //sb.AppendLine("<b>Changes</b>");
             if (notes.Items.Length > 0)
@@ -359,6 +363,7 @@ namespace Assets.Scripts.Sprites
                 sb.AppendLine(notes.Items[i].Desc);
                 sb.Append("\n");
             }
+
             PatchNotes = sb.ToString();
 
             isInitialized = true;
@@ -561,10 +566,10 @@ namespace Assets.Scripts.Sprites
                 bodySprite.State = SpriteState.Sit;
             if (param.State == CharacterState.Moving)
                 bodySprite.State = SpriteState.Walking;
-            
+
             if (param.State == CharacterState.Dead)
                 control.PlayerDie(Vector2Int.zero);
-            
+
             headSprite.Parent = bodySprite;
             headSprite.SpriteOrder = 1;
 
@@ -650,11 +655,12 @@ namespace Assets.Scripts.Sprites
             {
                 if (!isEffect)
                 {
-                    if(playerWeaponLookup.TryGetValue(ctrl.ClassId, out var weaponsByJob2))
-                        if(weaponsByJob2.TryGetValue(0, out var unarmed))
+                    if (playerWeaponLookup.TryGetValue(ctrl.ClassId, out var weaponsByJob2))
+                        if (weaponsByJob2.TryGetValue(0, out var unarmed))
                             ctrl.SpriteAnimator.PreferredAttackMotion = ctrl.IsMale ? unarmed.AttackMale : unarmed.AttackFemale;
                     LoadAndAttachWeapon(ctrl, int.MaxValue);
                 }
+
                 return;
             }
 
@@ -766,7 +772,7 @@ namespace Assets.Scripts.Sprites
                 emoteId -= 143; //these are dice, which sprites starts at 57. They use an out of range value so you can't send packet to get a specific roll.
             else if (emoteDataTable.TryGetValue(emoteId, out var id))
                 emoteId = id.Sprite;
-                
+
             var go = new GameObject("Emote");
             //go.layer = LayerMask.NameToLayer("Characters");
             var billboard = go.AddComponent<BillboardObject>();
@@ -787,21 +793,21 @@ namespace Assets.Scripts.Sprites
             var child = new GameObject("Sprite");
             //child.layer = LayerMask.NameToLayer("Characters");
             child.transform.SetParent(go.transform, false);
-            child.transform.localPosition = Vector3.zero + new Vector3(0, height/30f, -0.01f);
+            child.transform.localPosition = Vector3.zero + new Vector3(0, height / 30f, -0.01f);
             child.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
             var sr = child.AddComponent<RoSpriteRendererStandard>();
             sr.SecondPassForWater = false;
             sr.UpdateAngleWithCamera = false;
-            
+
             var sprite = child.AddComponent<RoSpriteAnimator>();
             emote.RoSpriteAnimator = sprite;
             sprite.Type = SpriteType.Npc;
             sprite.State = SpriteState.Dead;
             //sprite.LockAngle = true;
             sprite.SpriteRenderer = sr;
-            sprite.SpriteOrder = 50; 
-            
+            sprite.SpriteOrder = 50;
+
             AddressableUtility.LoadRoSpriteData(go, "Assets/Sprites/Misc/emotion.spr", emote.OnFinishLoad);
         }
 
@@ -813,7 +819,9 @@ namespace Assets.Scripts.Sprites
                 return null;
             }
 
+#if UNITY_EDITOR
             Debug.Log($"Instantiating entity effect {type}");
+#endif
 
             var obj = new GameObject(type.ToString());
             obj.layer = LayerMask.NameToLayer("Characters");
@@ -868,6 +876,14 @@ namespace Assets.Scripts.Sprites
                     break;
                 case NpcEffectType.LightOrb:
                     DiscoLightsEffect.LaunchDiscoLights(control);
+                    break;
+                case NpcEffectType.Sanctuary:
+                    SanctuaryEffect.Create(control, false);
+                    //DummyGroundEffect.Create(obj, "Sanctuary");
+                    break;
+                case NpcEffectType.MagnusExorcismus:
+                    SanctuaryEffect.Create(control, true);
+                    //DummyGroundEffect.Create(obj, "Sanctuary");
                     break;
             }
 
@@ -974,7 +990,7 @@ namespace Assets.Scripts.Sprites
             AddressableUtility.LoadRoSpriteData(go, basePath + mData.SpriteName, control.SpriteAnimator.OnSpriteDataLoad);
             if (mData.ShadowSize > 0)
                 control.AttachShadow(ShadowSprite);
-                //AddressableUtility.LoadSprite(go, "shadow", control.AttachShadow);
+            //AddressableUtility.LoadSprite(go, "shadow", control.AttachShadow);
 
             control.Init();
 

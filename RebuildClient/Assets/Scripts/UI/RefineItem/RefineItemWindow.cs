@@ -35,6 +35,7 @@ namespace Assets.Scripts.UI.RefineItem
         private InventoryItem targetItem;
         private InventoryItem targetCatalyst;
         private bool hasCatalyst;
+        private bool isAlive = true;
         private PlayerState state;
 
         public static RefineItemWindow Instance;
@@ -52,10 +53,16 @@ namespace Assets.Scripts.UI.RefineItem
         //     base.HideWindow();
         // }
 
+        public override void CloseWindow()
+        {
+            CancelRefine();
+        }
+
         public void CancelRefine()
         {
             NetworkManager.Instance.SendNpcAdvance();
             Destroy(gameObject);
+            isAlive = false;
         }
 
         public void SubmitRefine()
@@ -72,6 +79,9 @@ namespace Assets.Scripts.UI.RefineItem
 
         public void RevealAndRefresh()
         {
+            if (!isAlive)
+                return;
+            
             targetItem = state.Inventory.GetInventoryItem(MainTargetItem.ItemId);
             if(state.EquippedBagIdHashes.Contains(targetItem.BagSlotId))
                 MainTargetItem.SetEquipped();

@@ -481,6 +481,62 @@ Target = "Ally"
 MaxLevel = 5
 SpCost = [20,20,20,20,20]
 
+[Sanctuary]
+Name = "Sanctuary"
+Icon = "pr_sanctuary"
+Target = "Ground"
+MaxLevel = 10
+SpCost = [15,18,21,24,27,30,33,36,39,42]
+
+[Gloria]
+Name = "Gloria"
+Icon = "pr_gloria"
+Target = "Self"
+MaxLevel = 5
+SpCost = [20,20,20,20,20]
+
+[Magnificat]
+Name = "Magnificat"
+Icon = "pr_magnificat"
+Target = "Self"
+MaxLevel = 5
+SpCost = [40,40,40,40,40]
+
+[ImpositioManus]
+Name = "Impositio Manus"
+Icon = "pr_impositio"
+Target = "Ally"
+MaxLevel = 5
+SpCost = [13,16,19,21,24]
+
+[KyrieEleison]
+Name = "Kyrie Eleison"
+Icon = "pr_kyrie"
+Target = "Self"
+MaxLevel = 10
+SpCost = [20,20,20,25,25,25,30,30,30,35]
+
+[LexAeterna]
+Name = "Lex Aeterna"
+Icon = "pr_lexaeterna"
+Target = "Enemy"
+MaxLevel = 1
+SpCost = [10]
+
+[LexDivina]
+Name = "Lex Divina"
+Icon = "pr_lexdivina"
+Target = "Enemy"
+MaxLevel = 10
+SpCost = [20,20,20,20,20,18,16,14,12,10]
+
+[MagnusExorcismus]
+Name = "Magnus Exorcismus"
+Icon = "pr_magnus"
+Target = "Ground"
+MaxLevel = 10
+SpCost = [40,42,44,46,48,50,52,54,56,58]
+
 [Resurrection]
 Name = "Resurrection"
 Icon = "all_resurrection"
@@ -488,6 +544,27 @@ Target = "Ally"
 MaxLevel = 4
 SpCost = [60, 60, 60, 60]
 InterruptMode = "InterruptOnDamage"
+
+[StatusRecovery]
+Name = "Status Recovery"
+Icon = "pr_strecovery"
+Target = "Any"
+MaxLevel = 1
+SpCost = [5]
+
+[Suffragium]
+Name = "Suffragium"
+Icon = "pr_suffragium"
+Target = "Ally"
+MaxLevel = 3
+SpCost = [8]
+
+[TurnUndead]
+Name = "Turn Undead"
+Icon = "pr_turnundead"
+Target = "Enemy"
+MaxLevel = 10
+SpCost = [20,20,20,20,20,20,20,20,20,20]
 
 #----------------------------------
 # Wizard Skills

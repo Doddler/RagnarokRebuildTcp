@@ -1295,6 +1295,18 @@
       "SoundFile": "",
       "Offset": 0,
       "PrefabName": ""
+    },
+    {
+      "Id": 109,
+      "Name": "MagnusExorcismus",
+      "ImportEffect": true,
+      "Billboard": true,
+      "IsLooping": false,
+      "StrFile": "magnus",
+      "Sprite": "",
+      "SoundFile": "priest_magnus",
+      "Offset": 1,
+      "PrefabName": ""
     }
   ]
 }

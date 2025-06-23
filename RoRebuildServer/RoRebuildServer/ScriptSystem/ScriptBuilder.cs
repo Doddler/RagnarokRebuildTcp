@@ -601,6 +601,9 @@ public class ScriptBuilder
 
             foreach (var i in Enum.GetValues<SkillPreferredTarget>())
                 additionalVariables.TryAdd($"Target{i}", $"SkillPreferredTarget.{i}");
+
+            foreach (var i in Enum.GetValues<JobType>())
+                additionalVariables.TryAdd(i.ToString(), $"JobType.{i}");
         }
         else
         {

@@ -32,6 +32,7 @@ public abstract class NpcBehaviorBase
     public virtual NpcPathUpdateResult OnPath(Npc npc, NpcPathHandler path) => NpcPathUpdateResult.EndPath;
 
     public virtual void OnSignal(Npc npc, Npc srcNpc, string signal, int value1, int value2, int value3, int value4) { }
+    public virtual int OnQuery(Npc npc, Npc srcNpc, string signal, int value1, int value2, int value3, int value4) => 0;
 
     public virtual void OnMobKill(Npc npc) { }
 

@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Network.HandlerBase;
+using Assets.Scripts.Objects;
 using RebuildSharedData.Networking;
 
 namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
@@ -12,6 +13,10 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             var text = msg.ReadString();
             var name = msg.ReadString();
             var isShout = msg.ReadBoolean();
+            var hasNotice = msg.ReadBoolean();
+            
+            if(hasNotice)
+                AudioManager.Instance.PlaySystemSound("버튼소리.ogg");
 
             if (id == -1)
             {

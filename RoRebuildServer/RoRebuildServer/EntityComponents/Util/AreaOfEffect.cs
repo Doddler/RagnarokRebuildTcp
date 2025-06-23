@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Buffers;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.ObjectPool;
 using RebuildSharedData.Data;
@@ -28,6 +29,7 @@ public class AreaOfEffect
 {
     public Entity SourceEntity = Entity.Null;
     public Area Area = Area.Zero;
+    public Area EffectiveArea = Area.Zero;
     public Map CurrentMap = null!;
     public EntityList? TouchingEntities;
 
@@ -42,11 +44,16 @@ public class AreaOfEffect
 
     public int Value1 = 0;
     public int Value2 = 0;
-
+    public bool IsMaskedArea = false;
     public bool IsActive = false;
     public bool CheckStayTouching = false;
     public bool TriggerOnFirstTouch = true;
     public bool TriggerOnLeaveArea = false;
+
+    private bool[]? areaMask;
+    private int tileRange;
+
+    public bool[]? GetAreaMask() => areaMask;
 
     public void Init(WorldObject sourceCharacter, Area area, AoeType type, TargetingInfo targetingInfo, float duration, float tickRate, int value1, int value2)
     {
@@ -55,14 +62,17 @@ public class AreaOfEffect
         SourceEntity = sourceCharacter.Entity;
         CurrentMap = sourceCharacter.Map;
         Area = area;
+        EffectiveArea = area;
         Type = type;
         TickRate = tickRate;
         Value1 = value1;
         Value2 = value2;
+        tileRange = 0;
         TargetingInfo = targetingInfo;
         Expiration = Time.ElapsedTime + duration;
         NextTick = Time.ElapsedTime + tickRate;
         IsActive = true;
+        IsMaskedArea = false;
         CheckStayTouching = false;
         SkillSource = CharacterSkill.None;
         TriggerOnFirstTouch = type == AoeType.NpcTouch;
@@ -73,8 +83,16 @@ public class AreaOfEffect
     {
         SourceEntity = Entity.Null;
         IsActive = false;
+        IsMaskedArea = false;
+
         if(TouchingEntities != null)
             EntityListPool.Return(TouchingEntities);
+        if (areaMask != null)
+        {
+            ArrayPool<bool>.Shared.Return(areaMask);
+            areaMask = null;
+        }
+
         TouchingEntities = null;
     }
 
@@ -86,18 +104,44 @@ public class AreaOfEffect
         npc.Behavior.OnAoEEvent(npc, interactingEntity, this, eventData);
     }
 
+    public void AssignAreaMask(Span<bool> mask)
+    {
+        if (!IsMaskedArea || areaMask == null)
+        {
+            areaMask = ArrayPool<bool>.Shared.Rent(Area.Size);
+            IsMaskedArea = true;
+        }
+
+        var targetSpan = areaMask.AsSpan(0, Area.Size);
+        mask.CopyTo(targetSpan);
+    }
+
+    public bool IsInAoE(Position pos)
+    {
+        if (!Area.Contains(pos))
+            return false;
+
+        if (IsMaskedArea && areaMask != null)
+        {
+            var rel = pos - Area.Min;
+            return areaMask[rel.X + rel.Y * Area.Width];
+        }
+        
+        return true;
+    }
+
     //HasTouchedAoE checks if we are entering an aoe we were not previously in. If we are already in the aoe nothing happens.
     public bool HasTouchedAoE(Position initial, Position newPos)
     {
-        if (Area.Contains(initial))
+        if (IsInAoE(initial))
             return false;
         
-        return Area.Contains(newPos);
+        return IsInAoE(newPos);
     }
 
     public bool HasLeftAoE(Position initial, Position newPos)
     {
-        return Area.Contains(initial) && !Area.Contains(newPos);
+        return IsInAoE(initial) && !IsInAoE(newPos);
     }
 
     public void OnLeaveAoE(WorldObject character)
@@ -135,7 +179,7 @@ public class AreaOfEffect
                 return;
             if(TriggerOnFirstTouch)
                 npc.Behavior.OnAoEInteraction(npc, character.CombatEntity, this);
-            if (IsActive && CheckStayTouching && Area.Contains(character.Position)) //it might have moved so we check position again
+            if (IsActive && CheckStayTouching && IsInAoE(character.Position)) //it might have moved so we check position again
             {
                 if (TouchingEntities == null)
                     TouchingEntities = EntityListPool.Get();
@@ -153,7 +197,7 @@ public class AreaOfEffect
                 return;
             if (TriggerOnFirstTouch)
                 npc.Behavior.OnAoEInteraction(npc, character.CombatEntity, this);
-            if (IsActive && CheckStayTouching && Area.Contains(character.Position)) //it might have moved so we check position again
+            if (IsActive && CheckStayTouching && IsInAoE(character.Position)) //it might have moved so we check position again
             {
                 if (TouchingEntities == null)
                     TouchingEntities = EntityListPool.Get();
@@ -179,7 +223,7 @@ public class AreaOfEffect
                 continue;
             if (CurrentMap != ch.Map || ch.Type == CharacterType.NPC)
                 continue;
-            if (!Area.Contains(ch.Position))
+            if (!IsInAoE(ch.Position))
             {
                 TouchingEntities.SwapFromBack(i);
                 i--;
@@ -213,7 +257,7 @@ public class AreaOfEffect
                 continue;
             if (ch.Type == CharacterType.NPC)
                 continue;
-            if (!Area.Contains(ch.Position) || CurrentMap != ch.Map)
+            if (!IsInAoE(ch.Position) || CurrentMap != ch.Map)
             {
                 if(TriggerOnLeaveArea)
                     OnLeaveAoE(ch);

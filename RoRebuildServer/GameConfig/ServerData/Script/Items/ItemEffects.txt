@@ -86,7 +86,7 @@ Item("Bloody_Branch") { OnValidate: return CanUseSummonItem(); OnUse: UseSummonI
 Item("Anodyne") { OnUse: ItemActivatedSkillSelfTarget(Endure, 1); }
 Item("Aloevera") { OnUse: ItemActivatedSkillSelfTarget(Provoke, 1); }
 Item("Yggdrasil_Berry") { OnUse: HealHpPercent(100); HealSpPercent(100); }
-Item("Yggdrasil_Seed") { OnUse: HealHpPercent(50); HealSpPercent(100); }
+Item("Yggdrasil_Seed") { OnUse: HealHpPercent(50); HealSpPercent(50); }
 Item("Amulet") { OnValidate: return false; OnUse: }
 Item("Yggdrasil_Leaf") { OnUseTargeted: return TryCastItemSkill(item, target, Resurrection, 1); }
 Item("Magnifier") { OnValidate: return false; OnUse: }

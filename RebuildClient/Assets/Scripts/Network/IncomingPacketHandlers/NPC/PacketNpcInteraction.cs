@@ -71,8 +71,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers
                         GameObject.Destroy(StorageUI.Instance);
                     break;
                 case NpcInteractionType.NpcOpenRefineWindow:
-                    RefineItemWindow.OpenRefineItemWindow();
                     Camera.DialogPanel.GetComponent<DialogWindow>().HideUI();
+                    RefineItemWindow.OpenRefineItemWindow();
                     break;
                 default:
                     Debug.LogError($"Unknown Npc Interaction type: {type}");

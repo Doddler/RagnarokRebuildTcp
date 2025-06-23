@@ -107,3 +107,4 @@
 106,Suffragium,TRUE,TRUE,FALSE,suffragium,,priest_suffragium,1,,
 107,Sanctuary,TRUE,TRUE,FALSE,sanctuary,,priest_sanctuary,1,,
 108,AdrenalineRush,FALSE,FALSE,TRUE,,,,0,,
+109,MagnusExorcismus,TRUE,TRUE,FALSE,magnus,,priest_magnus,1,,

@@ -27,13 +27,13 @@ public class PacketEquipUnequipGear : IClientPacketHandler
         if (!isEquip)
         {
             connection.Player.Equipment.UnEquipItem(bagId);
-            CommandBuilder.SendHealMultiAutoVis(connection.Player, 0, HealType.None);
+            CommandBuilder.SendHealMultiAutoVis(connection.Character, 0, HealType.None);
             if (connection.Player.Party != null)
                 CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(connection.Player);
             //connection.Player.UpdateStats();
             return;
         }
-    
+        
         switch (connection.Player.Equipment.EquipItem(bagId))
         {
             case EquipChangeResult.InvalidItem:
@@ -48,9 +48,11 @@ public class PacketEquipUnequipGear : IClientPacketHandler
             case EquipChangeResult.InvalidPosition:
                 CommandBuilder.ErrorMessage(connection.Player, "Cannot equip this item to this position.");
                 return;
+            case EquipChangeResult.AlreadyEquipped:
+                return; //do nothing
             default:
                 connection.Player.UpdateStats();
-                CommandBuilder.SendHealMultiAutoVis(connection.Player, 0, HealType.None);
+                CommandBuilder.SendHealMultiAutoVis(connection.Character, 0, HealType.None);
                 if (connection.Player.Party != null)
                     CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(connection.Player);
                 return; //if it succeeds we'll have already sent a response

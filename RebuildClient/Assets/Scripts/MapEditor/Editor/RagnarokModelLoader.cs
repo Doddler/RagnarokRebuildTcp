@@ -564,7 +564,7 @@ namespace Assets.Scripts.MapEditor.Editor
 				
 				//var modelName = @"프론테라\민가04.rsm"; //prontera armory
 				//var modelName = @"splen\민가침대02.rsm";
-				var modelName = @"외부소품\광산_레일01.rsm";
+				var modelName = @"외부소품\트랩01.rsm";
 				
 				var modelPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, $@"model\{modelName}"); //prontera armory
 				var savePath = DirectoryHelper.GetRelativeDirectory(RagnarokDirectory.GetRagnarokDataDirectory, Path.GetDirectoryName(modelPath));
@@ -578,7 +578,7 @@ namespace Assets.Scripts.MapEditor.Editor
 				model.transform.SetParent(go.transform, false);
 				model.transform.localScale = new Vector3(1f, 1f, 1f);
 				
-				PrefabUtility.SaveAsPrefabAssetAndConnect(model, "Assets/Models/prefabs/외부소품/광산_레일01.prefab", InteractionMode.AutomatedAction);
+				PrefabUtility.SaveAsPrefabAssetAndConnect(model, "Assets/Models/prefabs/외부소품/트랩01.prefab", InteractionMode.AutomatedAction);
 			}
 			finally
 			{

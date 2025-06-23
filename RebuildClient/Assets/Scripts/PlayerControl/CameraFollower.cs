@@ -1481,6 +1481,50 @@ namespace Assets.Scripts
                 }
             };
         }
+        
+        
+        public void CreateEffectAtLocation(string effectName, Vector3 pos, Vector3 scale, int facing)
+        {
+            var effect = EffectIdLookup[effectName];
+            
+            if (!EffectList.TryGetValue(effect, out var asset))
+            {
+                AppendError($"Could not find effect with id {effect}.");
+                return;
+            }
+
+            var outputObj = new GameObject(asset.Name);
+            outputObj.transform.localPosition = pos;
+            outputObj.transform.localScale = scale;
+
+            if (EffectCache.TryGetValue(effect, out var prefab) && prefab != null)
+            {
+                var obj2 = GameObject.Instantiate(prefab, outputObj.transform, false);
+                obj2.transform.localPosition = new Vector3(0, asset.Offset, 0);
+                if (asset.Billboard)
+                    obj2.AddComponent<BillboardObject>();
+
+                outputObj.AddComponent<RemoveWhenChildless>();
+
+                if (facing != 0)
+                    obj2.transform.localRotation = Quaternion.AngleAxis(45 * facing, Vector3.up);
+
+                return;
+            }
+
+            var loader = Addressables.LoadAssetAsync<GameObject>(asset.PrefabName);
+            loader.Completed += ah =>
+            {
+                var obj2 = GameObject.Instantiate(ah.Result, outputObj.transform, false);
+                obj2.transform.localPosition = new Vector3(0, asset.Offset, 0);
+                if (asset.Billboard)
+                    obj2.AddComponent<BillboardObject>();
+
+                outputObj.AddComponent<RemoveWhenChildless>();
+
+                EffectCache[asset.Id] = ah.Result;
+            };
+        }
 
         public void CreateEffect(int effect, Vector3 pos, int facing)
         {
@@ -1517,9 +1561,6 @@ namespace Assets.Scripts
                     obj2.AddComponent<BillboardObject>();
 
                 outputObj.AddComponent<RemoveWhenChildless>();
-
-
-                // Debug.Log("Loaded effect " + asset.PrefabName);
 
                 EffectCache[asset.Id] = ah.Result;
             };

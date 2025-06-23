@@ -69,11 +69,21 @@
                 <tr><td><b>HP:</b></td><td>@m.HP.ToString("N0")</td></tr>
                 @if (!string.IsNullOrWhiteSpace(mvp))
                 {
-                    <tr><td><b>Type:</b></td><td>@mvp</td></tr>
+                    <tr><td><b>Class:</b></td><td>@mvp</td></tr>
                 }
                 <tr><td><b>Size:</b></td><td>@m.Size</td></tr>
                 <tr><td><b>Element:</b></td><td>@m.Element</td></tr>
                 <tr><td><b>Race:</b></td><td>@m.Race</td></tr>
+                @if (m.Tags?.Count > 0)
+                {
+                    <tr>
+                        <td><b>Special Type:</b></td>
+                        <td>
+                            @string.Join(", ", m.Tags.Select(t => Monsters.IdToTagLookup[t]).ToList())
+                        </td>
+                    </tr>
+
+                }
                 <tr><td><b>Base Exp:</b></td><td>@m.Exp.ToString("N0")</td></tr>
                 <tr><td><b>Job Exp:</b></td><td>@m.JobExp.ToString("N0")</td></tr>
                 <tr><td><b>Attack Power:</b></td><td>@m.AtkMin.ToString("N0") ~ @m.AtkMax.ToString("N0")</td></tr>
@@ -132,6 +142,13 @@
 
                         if (item.ItemClass == ItemClass.Card && data != null)
                             itemPath = $"{relPath}rebuildCards.html#{data.Code}";
+
+                        if (item.ItemClass == ItemClass.Useable && data != null)
+                            itemPath = $"{relPath}rebuildConsumable.html#{data.Code}";
+
+                        if (item.ItemClass == ItemClass.Etc && data != null)
+                            itemPath = $"{relPath}rebuildEtcItems.html#{data.Code}";
+
                         Items.RegisterItemSource(m, drop);
 
                         <tr>

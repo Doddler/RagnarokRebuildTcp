@@ -79,9 +79,10 @@ SkillHandler("TOAD") {
 OnInit:
 	ResummonMinionCount = 3; //resummon if we have 3 or less
 StateIdle:
-    TryCast(CallMinion, 1, 100%, 2s, 60s)[MinionsDeadFor(60s)] -> CallDefaultMinions();
+    TryCast(CallMinion, 1, 100%, 2s, 60s)[MinionsDeadFor(25s)] -> CallDefaultMinions();
 StateAttacking:
 	TryCast(WaterAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
+	TryCast(RecallMinion, 1, 10%, 0, 30s)[MinionsLost];
 }
 
 SkillHandler("ROCKER") {
@@ -95,7 +96,7 @@ SkillHandler("VOCAL") {
 OnInit:
 	ResummonMinionCount = 3; //resummon if we have 3 or less
 StateAny: 
-    TryCast(CallMinion, 1, 100%, 2s, 60s)[MinionsDeadFor(60s)] -> CallDefaultMinions();
+    TryCast(CallMinion, 1, 100%, 2s, 60s)[MinionsDeadFor(25s)] -> CallDefaultMinions();
 StateIdle:
     TryCast(NoCast, 1, 5%, 0, 5s) -> SendEmote(2); //whistle
 	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
@@ -105,6 +106,7 @@ StateAttacking:
 	TryCast(ComboAttack, 2, 5%, 0.7s, 5s) -> SendEmote(6);
 	TryCast(EarthAttack, 1, 20%, 0, 5s);
 	TryCast(Silence, 3, 5%, 0.7s, 5s) -> SendEmote(2); //whistle
+	TryCast(RecallMinion, 1, 10%, 0, 30s)[MinionsLost];
 }
 
 SkillHandler("ECLIPSE") {
@@ -115,6 +117,7 @@ StateIdle:
 	TryCast(CallMinion, 1, 100%, 2s, 60s)[MinionsDeadFor(15s)] -> CallDefaultMinions();
 StateAttacking:
 	TryCast(Lick, 3, 5%, 0.7s, 5s);
+	TryCast(RecallMinion, 1, 10%, 0, 30s)[MinionsLost];
 }
 
 SkillHandler("YOYO") {
@@ -194,7 +197,7 @@ StateAttacking:
 SkillHandler("ORK_WARRIOR") {
 StateIdle:
     @ResumeAiState(20%, AiAggressive, 32); //pif
-	TryCast(Smoking, 1, 20%, 0, 30s);
+	TryCast(Smoking, 1, 20%, 0, 120s)[CanSeePlayers];
 StateChase:
 	//TryCast(NoCast, 3, 5%, 0, 5s) -> SendEmote(27); //go
     @GiveUpChase(2%, AiPassive, 19); //sweating
@@ -284,15 +287,30 @@ StateAttacking:
     TryCast(PoisonAttack, 2, 5%, 0.5s, 5s, NoInterrupt);
 }
 
+SkillHandler("GOBLIN_LEADER") {
+OnInit:
+	ResummonMinionCount = 3; //resummon if we have 3 or less
+StateAny:
+	TryCast(CallMinion, 1, 100%, 2s, 60s)[MinionsDeadFor(20s)] -> { CallDefaultMinions();  SendEmote(27); } //go!
+StateAttacking:
+	TryCast(ComboAttack, 3, 5%, 0.5s, 5s) -> SendEmote(27); //go
+	TryCast(Silence, 5, 5%, 0.8s, 10s) -> SendEmote(27);
+	TryCast(RecallMinion, 1, 10%, 0, 30s)[MinionsLost];
+}
+
 SkillHandler("MASTERING") { 
 OnInit:
 	ResummonMinionCount = 3; //resummon if we have 3 or less
 StateAny:
 	TryCast(CallMinion, 1, 20%, 2s, 0s, HideSkillName)[MinionsDeadFor(15s)] -> {
 		TossSummonMinion(6, "PORING", 6, 6);
+		SendEmote(21); //whistle
 	}
+StateAttacking:
+	TryCast(WaterAttack, 3, 5%, 0.5s, 5s, NoInterrupt);
+	TryCast(RecallMinion, 1, 10%, 0, 30s)[MinionsLost];
 OnDie:
-	TossSummonMonster(12, "PORING", "MasteringFinalSplit", 8, 8);
+	TossSummonMonster(12, "PORING", "MasteringFinalSplit", 8, 8); //third param is the AI skill handler to give the created monsters
 }
 
 //TossSummonMonster will default to have no exp/drops so this exists to fix that

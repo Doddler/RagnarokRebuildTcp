@@ -21,7 +21,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
             effect.Material = EffectSharedMaterialManager.GetMaterial(EffectMaterialType.StoneMaterial);
             effect.ActiveDelay = startTime;
 
-            var len = 4f;
+            // var len = 4f;
 
             //position.SnapToWorldHeight()
 

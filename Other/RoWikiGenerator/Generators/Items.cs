@@ -277,13 +277,17 @@ public class Items
                     hasDescription = true;
                 if (lineNum > 0)
                 {
-                    if (hasDescription && lineNum == 1 && !string.IsNullOrWhiteSpace(l2.Trim()))
-                        sb.Append("<line-height=120%>\n<line-height=100%>");
-                    else
+                    //if (hasDescription && lineNum == 1 && !string.IsNullOrWhiteSpace(l2.Trim()))
+                    //    sb.Append("<line-height=120%>\n<line-height=100%>");
+                    //else
                         sb.Append("\n");
                 }
 
                 sb.Append(l2);
+
+                sb.Replace("<line-height=120%>", "");
+                sb.Replace("<line-height=100%>", "");
+                sb.Replace("[Properties]", "");
 
                 lineNum++;
             }
@@ -297,7 +301,7 @@ public class Items
             var d2 = desc;
             if (desc.Contains("<color"))
             {
-                d2 = Regex.Replace(desc, "<color=#([^\\\"]{6})>", "<span style=\"color: $1\">");
+                d2 = Regex.Replace(desc, "<color=#([^\\\"]{6})>", "<span style=\"color: #$1\">");
             }
 
             ItemDescLookup[id] = d2.Replace("</color>", "</span>");

@@ -256,6 +256,7 @@ SkillHandler("BLOODY_KNIGHT") {
 StateIdle:
 	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
 StateAttacking:
+	TryCast(CriticalAttack, 1, 5%, 0s, 5s) -> SendEmote(9); //...
 	TryCast(DarkAttack, 2, 5%, 0.5s, 5s, NoInterrupt | HideSkillName) -> SendEmote(9); //...
 }
 

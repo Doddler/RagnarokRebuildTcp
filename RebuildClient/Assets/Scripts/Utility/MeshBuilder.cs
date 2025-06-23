@@ -56,6 +56,20 @@ namespace Assets.Scripts.Utility
             useUv3 = false;
         }
 
+        public void SetAllVertexColors(Color32 color)
+        {
+            for(var i = 0; i < vertices.Count; i++)
+                colors.Add(color);
+        }
+        
+        
+        public void FillEmptyNormals()
+        {
+            for(var i = 0; i < vertices.Count; i++)
+                normals.Add(Vector3.up);
+        }
+
+
         public void AddFullTriangle(Vector3[] vertArray, Vector3[] normalArray, Vector2[] uvArray, Color32[] colorArray, int[] triangleArray)
         {
             StartTriangle();

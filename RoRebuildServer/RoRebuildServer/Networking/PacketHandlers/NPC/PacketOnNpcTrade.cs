@@ -47,6 +47,13 @@ public class PacketOnNpcTrade : IClientPacketHandler
             return;
         }
 
+        if (reqCount > 99)
+        {
+            CommandBuilder.ErrorMessage(player, $"The maximum number of items tradeable in one transaction is 99.");
+            player.NpcInteractionState.ContinueInteraction();
+            return;
+        }
+
         var bagEntryCount = msg.ReadInt32();
         if (bagEntryCount > 10)
             throw new Exception($"Attempting to process PacketOnTrade packet but receiving too many bag IDs");

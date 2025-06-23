@@ -16,4 +16,11 @@ public static class NetworkExtensions
         buffer.Write(position.X);
         buffer.Write(position.Y);
     }
+
+    public static void Write(this OutboundMessage buffer, Area area)
+    {
+        buffer.Write(area.Min);
+        buffer.Write((byte)area.Width);
+        buffer.Write((byte)area.Height);
+    }
 }

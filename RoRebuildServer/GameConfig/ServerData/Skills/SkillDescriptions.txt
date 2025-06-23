@@ -24,7 +24,7 @@ Resists flinching from enemy attacks, allowing you to escape without being slowe
 Lasts [SkillLevel + 2] hits or [7 + SkillLevel * 3] seconds, whichever ends first.
 
 ::IncreasedHPRecovery
-Increases HP recovery by 5 HP plus 0.2% of your MaxHP per level.
+Adds a heal over time effect that recovers [SkillLevel * 5] HP plus [SkillLevel * 0.2]% of your MaxHP per level every 6 seconds. Additionally increases the effectiveness of healing items by 10% per level.
 
 ::MagnumBreak
 Inflicts [100 + SkillLevel * 20]% fire damage to nearby enemies and knocking them back 2 tiles.
@@ -77,7 +77,7 @@ Adds +1 DEX per level.
 //----------------Mage-------------------
 
 ::IncreaseSPRecovery
-Increases SP recovery by 3 SP plus 0.2% of your MaxSP per level.
+Adds an SP recovery over time effect that recovers [SkillLevel * 3] SP plus [SkillLevel * 0.2]% of your MaxSP every 6 seconds. Additionally increases the effectiveness of SP recovery items by 10% per level.
 
 ::FireBolt
 Deals [SkillLevel] hits at 100% fire element magic damage to a single target.

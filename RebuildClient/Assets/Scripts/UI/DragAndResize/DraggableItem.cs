@@ -116,7 +116,7 @@ namespace Assets.Scripts.UI
                     var inventory = NetworkManager.Instance.PlayerState.Inventory.GetInventoryData();
                     if (!inventory.TryGetValue(ItemId, out var dat))
                         return;
-                    text = dat.ToString();
+                    text = dat.ProperName();
                     // if (dat.ItemData.IsUnique)
                     // {
                     //     if (dat.ItemData.Slots == 0)

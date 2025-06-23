@@ -36,6 +36,8 @@ namespace Assets.Scripts.Effects
         SkillSpriteAlphaBlendedNoZCheck,
         TeleportPillar,
         SafetyWall,
+        Sanctuary,
+        MagnusExorcismus,
         ParticleAlphaBlend,
         ParticleAdditive,
         IceMaterial,
@@ -62,6 +64,7 @@ namespace Assets.Scripts.Effects
         AlphaCenter,
         MagicViolet,
         MagicGreen,
+        MagicRed,
         RingRed,
         RingBlue,
         RingYellow,
@@ -163,6 +166,7 @@ namespace Assets.Scripts.Effects
             {
                 EffectTextureType.RingBlue => "ring_blue",
                 EffectTextureType.RingRed => "ring_red",
+                EffectTextureType.MagicRed => "magic_red",
                 EffectTextureType.MagicGreen => "magic_green",
                 EffectTextureType.RingYellow => "ring_yellow",
                 EffectTextureType.AlphaDown => "alpha_down",
@@ -324,6 +328,14 @@ namespace Assets.Scripts.Effects
                     case EffectMaterialType.SafetyWall:
                         SetUpTextureMaterial(mat, ShaderCache.Instance.AdditiveShader, GetOrLoadEffectTexture(EffectTextureType.AlphaDown),
                             new Color(255 / 255f, 89 / 255f, 182 / 255f));
+                        break;
+                    case EffectMaterialType.Sanctuary:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.InvAlphaShader, GetOrLoadEffectTexture(EffectTextureType.AlphaDown),
+                            new Color(235 / 255f, 255 / 255f, 235 / 255f));
+                        break;
+                    case EffectMaterialType.MagnusExorcismus:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.AdditiveShader, GetOrLoadEffectTexture(EffectTextureType.MagicRed),
+                            new Color(255 / 255f, 255 / 255f, 255 / 255f));
                         break;
                     case EffectMaterialType.SightEffect:
                         SetUpTextureMaterial(mat, ShaderCache.Instance.AlphaBlendParticleShader, null);

@@ -64,7 +64,7 @@
     <table>
         <thead>
             <tr>
-                <th width="200px"><h2 class="subheader"><a class="maplink" href="maps/@(Model.Code).html">@(Model.Name) (@(Model.Code))</a></h2></th>
+                <th width="200px"><h2 class="subheader"><a class="maplink" href="@(dir)maps/@(Model.Code).html">@(Model.Name) (@(Model.Code))</a></h2></th>
                 @* <th width="250px"><h2 class="subheader">Map Information</h2></th> *@
                 <th><h2 class="subheader">Monster Spawns</h2></th>
             </tr>
@@ -119,18 +119,19 @@
                 <table class="mapSpawnTable">
                     <thead>
                         <tr>
-                            <th>Monster Name</th>
-                            <th>Count</th>
-                            <th>HP</th>
-                            <th>ATK</th>
-                            <th>Element</th>
-                            <th>Race</th>
-                            <th>Size</th>
-                            <th>Base</th>
-                            <th>Job</th>
-                            <th>100% Hit</th>
-                            <th>95% Flee</th>
-                            <th>Spawn Time</th>
+                            <th style="text-align: right">Monster Name</th>
+                            <th style="text-align: right">Count</th>
+                            <th style="text-align: right">HP</th>
+                            <th style="text-align: right">Attack</th>
+                            <th style="text-align: right">Level</th>
+                            <th style="text-align: right">Race</th>
+                            <th style="text-align: right">Element</th>
+                            <th style="text-align: right">Size</th>
+                            <th style="text-align: right">Base</th>
+                            <th style="text-align: right">Job</th>
+                            <th style="text-align: right">100% Hit</th>
+                            <th style="text-align: right">95% Flee</th>
+                            <th style="text-align: right">Spawn Time</th>
                         </tr>
                     </thead>
 
@@ -168,17 +169,18 @@
                                     <a href="@(dir)MonsterListFull.html#@(spawn.MonsterDatabaseInfo.Code)">@spawn.MonsterDatabaseInfo.Name</a>
                                 }
                             </td>
-                            <td>@spawn.Count</td>
-                            <td>@m.HP.ToString("N0")</td>
-                            <td>@m.AtkMin.ToString("N0") ~ @m.AtkMax.ToString("N0")</td>
-                            <td>@m.Race</td>
-                            <td>@m.Element</td>
-                            <td>@m.Size</td>
-                            <td>@m.Exp.ToString("N0")</td>
-                            <td>@m.JobExp.ToString("N0")</td>
-                            <td>@(m.Agi + m.Level + 20)</td>
-                            <td>@(m.Dex + m.Level + 75)</td>
-                            <td>@time</td>
+                            <td style="text-align: right">@spawn.Count</td>
+                            <td style="text-align: right">@m.HP.ToString("N0")</td>
+                            <td style="text-align: right">@m.AtkMin.ToString("N0") ~ @m.AtkMax.ToString("N0")</td>
+                            <td style="text-align: right">@m.Level</td>
+                            <td style="text-align: right">@m.Race</td>
+                            <td style="text-align: right">@m.Element</td>
+                            <td style="text-align: right">@m.Size</td>
+                            <td style="text-align: right">@m.Exp.ToString("N0")</td>
+                            <td style="text-align: right">@m.JobExp.ToString("N0")</td>
+                            <td style="text-align: right">@(m.Agi + m.Level + 20)</td>
+                            <td style="text-align: right">@(m.Dex + m.Level + 75)</td>
+                            <td style="text-align: right">@time</td>
                         </tr>
 
                     }

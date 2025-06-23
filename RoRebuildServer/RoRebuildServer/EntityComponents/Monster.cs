@@ -8,6 +8,7 @@ using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
+using RoRebuildServer.Data.Player;
 using RoRebuildServer.Database.Domain;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
@@ -425,7 +426,10 @@ public partial class Monster : IEntityAutoReset
 
     public void UpdateStats()
     {
-        var aspdBonus = 100f / (float.Clamp(GetStat(CharacterStat.AspdBonus), -99, 5000) + 100);
+        var aspdBonus = 1f;
+        var aspdStat = GetStat(CharacterStat.AspdBonus);
+        if (aspdStat != 0)
+            aspdBonus *= MathF.Pow(0.99f, aspdStat * MathF.Pow(1.0064f, aspdStat));
         
         var recharge = MonsterBase.RechargeTime * aspdBonus;
         var motionTime = MonsterBase.AttackLockTime;

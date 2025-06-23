@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Assets.Scripts.Network;
 using Assets.Scripts.Sprites;
+using JetBrains.Annotations;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
@@ -59,6 +60,9 @@ namespace Assets.Scripts.PlayerControl
                 return false;
 
             if (ItemData.ItemClass != ItemClass.Equipment && ItemData.ItemClass != ItemClass.Weapon)
+                return false;
+
+            if (ItemData.ItemClass == ItemClass.Weapon && (position & EquipPosition.MainHand) == 0)
                 return false;
 
             if ((ItemData.Position & position) == 0)
@@ -270,6 +274,7 @@ namespace Assets.Scripts.PlayerControl
         public Dictionary<int, int> UniqueItemCounts = new();
         public InventoryItem GetInventoryItem(int bagId) => inventoryLookup[bagId];
         public bool TryGetInventoryItem(int bagId, out InventoryItem item) => inventoryLookup.TryGetValue(bagId, out item);
+        public Dictionary<Guid, int> UniqueItemIdToBagId = new();
 
         public int TotalItems => inventoryLookup.Count;
         
@@ -299,6 +304,7 @@ namespace Assets.Scripts.PlayerControl
                     UniqueItemCounts.Remove(item.Id);
                 else
                     UniqueItemCounts[item.Id] = curCount - count;
+                UniqueItemIdToBagId.Remove(item.UniqueItem.UniqueId);
 
             }
             else
@@ -319,6 +325,7 @@ namespace Assets.Scripts.PlayerControl
                     UniqueItemCounts[item.Id] += 1;
                 else
                     UniqueItemCounts[item.Id] = 1;
+                UniqueItemIdToBagId[item.UniqueItem.UniqueId] = item.BagSlotId;
             }
             
             inventoryLookup[item.BagSlotId] = item;
@@ -358,6 +365,9 @@ namespace Assets.Scripts.PlayerControl
                 return;
             }
 
+            UniqueItemIdToBagId.Remove(curItem.UniqueItem.UniqueId);
+            UniqueItemIdToBagId[item.UniqueId] = bagId;
+            
             curItem.UniqueItem = item;
             inventoryLookup[bagId] = curItem;
         }
@@ -366,6 +376,7 @@ namespace Assets.Scripts.PlayerControl
         {
             inventoryLookup.Clear();
             UniqueItemCounts.Clear();
+            UniqueItemIdToBagId.Clear();
             var hasBagData = msg.ReadByte();
             if (hasBagData == 0)
                 return;
@@ -386,6 +397,7 @@ namespace Assets.Scripts.PlayerControl
                     UniqueItemCounts[item.Id] = count + 1;
                 else
                     UniqueItemCounts.Add(item.Id, 1);
+                UniqueItemIdToBagId.Add(item.UniqueItem.UniqueId, item.BagSlotId);
                 // items.Add(item);
             }
         }

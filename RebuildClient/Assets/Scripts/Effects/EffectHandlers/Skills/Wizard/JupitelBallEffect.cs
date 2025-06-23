@@ -37,6 +37,9 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
 
         public bool Update(Ragnarok3dEffect effect, float pos, int step)
         {
+            if (effect.SourceEntity == null || effect.AimTarget == null)
+                return false;
+            
             if (step == 0 && effect.IsStepFrame)
             {
                 var prim1 = effect.LaunchPrimitive(PrimitiveType.Texture2D, effect.Material, 0.333f);
@@ -77,6 +80,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
                 prim.transform.localRotation = Quaternion.identity;
             }
 
+            
             effect.transform.position = Vector3.Lerp(effect.SourceEntity.transform.position, effect.AimTarget.transform.position, pos / effect.Duration);
             
             return effect.IsTimerActive;

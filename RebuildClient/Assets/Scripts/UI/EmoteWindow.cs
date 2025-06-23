@@ -21,6 +21,13 @@ namespace Assets.Scripts.UI
             if (!isInitialized)
                 Init();
         }
+
+        public void EnsureInitialized()
+        {
+            if (!isInitialized)
+                Init();
+        }
+        
         //
         // private EmoteEntry CreateEntry(string line)
         // {

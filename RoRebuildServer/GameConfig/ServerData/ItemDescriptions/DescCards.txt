@@ -517,7 +517,7 @@ INT +1, DEF +1
 Undead Property Armor
 
 ::Doppelganger_Card //id 4142 - slotted on Weapon
-ASPD +15%
+ASPD +10%
 
 ::Orc_Hero_Card //id 4143 - slotted on Headgear
 VIT +3
@@ -1212,7 +1212,6 @@ if Novice:
 ::Cruiser_Card //id 4297 - slotted on Weapon
 CRIT damage +10%
 CRIT +7 vs. Brute
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.</i></color>
 
 ::Creamy_Fear_Card //id 4298 - slotted on Armor
 +6% chance of <color=#800000>Chaos</color> on receive physical damage
@@ -1278,7 +1277,6 @@ CRIT +7 vs. Demon
 HIT +10, FLEE +3
 if Acolyte:
  CRIT +9 vs. Undead, Demon
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.</i></color>
 
 ::Punk_Card //id 4313 - slotted on Garment
 +5% Autospell <color=#0000FF>Quagmire 1</color> on receive physical damage
@@ -1302,8 +1300,8 @@ Lose 5 SP/unequip
 
 ::Mobster_Card //id 4317 - slotted on Weapon
 CRIT damage +15%
-if Thief: CRIT +4
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.</i></color>
+If Thief: CRIT +4
+
 
 ::Stormy_Knight_Card //id 4318 - slotted on Weapon
 +20% chance of <color=#800000>Freeze</color> on physical attack
@@ -1363,9 +1361,8 @@ INT +3
 
 ::Heater_Card //id 4331 - slotted on Accessory
 CRIT +3
-if Swordman:
+If Swordman:
  Perfect Dodge +3
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.</i></color>
 
 ::Waste_Stove_Card //id 4332 - slotted on Armor
 INT +1, ATK +5

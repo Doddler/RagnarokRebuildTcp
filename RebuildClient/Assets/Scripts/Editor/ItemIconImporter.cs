@@ -99,8 +99,8 @@ namespace Assets.Scripts.Editor
 
                 var fName = icon;
                 var newName = convertName[icon];
-                if (newName == "Amulet")
-                    Debug.Log(icon);
+                // if (newName == "Amulet")
+                //     Debug.Log(icon);
                 var destPath = $@"Assets/Sprites/Imported/Icons/Sprites/{newName}.png";
                 var collectionDestPath = $"Assets/Sprites/Imported/Collections/{newName}.png";
                 var importedAssetName = $"Assets/Sprites/Imported/Icons/{fName}.asset";

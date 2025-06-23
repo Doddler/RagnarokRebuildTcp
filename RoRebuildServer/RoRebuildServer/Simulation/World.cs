@@ -835,6 +835,7 @@ public class World
                 character.Map.RemoveEntity(ref move.Player, CharacterRemovalReason.OutOfSight, character.Map.Instance != move.DestMap.Instance);
             }
 
+            character.IsActive = false;
             character.ResetState();
             character.Position = move.Position;
 
@@ -874,7 +875,7 @@ public class World
 
     public void MovePlayerMap(ref Entity entity, WorldObject character, Map map, Position newPosition)
     {
-        character.IsActive = false;
+        //character.IsActive = false;
         moveRequests.Writer.TryWrite(new MapMoveRequest(entity, MoveRequestType.MapMove, character.Map, map, newPosition));
     }
 

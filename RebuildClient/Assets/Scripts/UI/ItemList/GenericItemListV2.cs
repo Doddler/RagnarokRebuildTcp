@@ -57,6 +57,7 @@ namespace Assets.Scripts.UI
         
         public Action OnPressOk;
         public Action OnPressCancel;
+        public Action OnCloseWindow;
 
         private bool isActive;
         
@@ -82,9 +83,12 @@ namespace Assets.Scripts.UI
             base.HideWindow();
         }
 
-        public void CloseWindow()
+        public override void CloseWindow()
         {
-            base.HideWindow();
+            if (OnCloseWindow == null)
+                base.HideWindow();
+            else
+                OnCloseWindow();
         }
 
         public void ReturnItemListEntry(ItemListEntryV2 entry)

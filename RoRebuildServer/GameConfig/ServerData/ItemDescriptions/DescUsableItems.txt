@@ -350,7 +350,7 @@ Recover 50% HP and SP
 
 ::Yggdrasil_Leaf //610
 <color=#808080>A leaf from the Yggdrasil tree, it can bring life to fallen characters.</color>
-Casts: <color=#0000FF>Resurrection 1</color>
+[Properties]Casts: <color=#0000FF>Resurrection Lv 1</color>
 Cast Time: <color=#777777>6 Seconds</color>
 Channelled: <color=#777777>Being hit while casting will interrupt the skill, but not consume the item.</color>
 
@@ -463,15 +463,17 @@ Contains a random item.
 <color=#808080>A potent tonic that stimulates concentration.</color>
 Increases attack speed by 10% for 30 minutes.
 
-::Awakening_Potion //656
+::Awakening_Potion //656 - [Properties] block starts the property section early, allows weight to be appended without extra line spacing
 <color=#808080>A special tonic that combats drowsiness.</color>
 Increases attack speed by 15% for 30 minutes.
-Cannot be used by Acolyte Jobs.
+[Properties]Useable by: <color=#777777>All jobs except acolyte</color>
+Required Level: <color=#777777>40</color>
 
-::Berserk_Potion //657
+::Berserk_Potion //657 - [Properties] block starts the property section early, allows weight to be appended without extra line spacing
 <color=#808080>A powerful tonic that amplifies quickness.</color>
 Increases attack speed by 20% for 30 minutes.
-Useable by Swordsman, Merchant, and Mage.
+[Properties]Useable by: <color=#777777>Swordsman, Merchant, Mage</color>
+Required Level: <color=#777777>85</color>
 
 ::Union_of_Tribe //658
 <color=#808080>A symbol of solidarity that evokes feelings of nobility in those who see it.</color>

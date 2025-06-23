@@ -17,5 +17,6 @@ public enum EquipChangeResult
     InvalidItem,
     LevelTooLow,
     NotApplicableJob,
-    InvalidPosition
+    InvalidPosition,
+    AlreadyEquipped
 }

@@ -25,7 +25,7 @@ public class AdrenalineRush : SkillHandlerBase
         source.ApplyCooldownForSupportSkillAction();
 
         //was 30% cut in delay, but 60% faster is the closest with new aspd formula
-        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.AdrenalineRush, lvl * 30, 60);
+        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.AdrenalineRush, lvl * 30, 30);
         source.AddStatusEffect(status);
         var effectId = DataManager.EffectIdForName["AdrenalineRush"];
         CommandBuilder.SendEffectOnCharacterMulti(source.Character, effectId);
@@ -41,7 +41,7 @@ public class AdrenalineRush : SkillHandlerBase
                 if (partyMember.Player.WeaponClass < 6 || source.Player.WeaponClass > 9)
                     continue;
 
-                status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.AdrenalineRush, lvl * 30, 50);
+                status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.AdrenalineRush, lvl * 30, 25);
                 source.AddStatusEffect(status);
                 //CommandBuilder.SendEffectOnCharacterMulti(partyMember, effectId);
                 CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(source.Character, CharacterSkill.AdrenalineRush, lvl, true);

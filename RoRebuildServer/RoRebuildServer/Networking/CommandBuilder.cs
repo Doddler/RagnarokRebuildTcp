@@ -267,10 +267,21 @@ public static class CommandBuilder
         if (type == CharacterType.NPC)
         {
             var npc = c.Entity.Get<Npc>();
+            var display = npc.DisplayType;
+            if (display == NpcDisplayType.MaskedEffect && (npc.AreaOfEffect == null || !npc.AreaOfEffect.IsMaskedArea))
+                display = NpcDisplayType.Effect;
             packet.Write(npc.Name);
             packet.Write(npc.HasInteract);
-            packet.Write((byte)npc.DisplayType);
+            packet.Write((byte)display);
             packet.Write((byte)npc.EffectType);
+            if (display == NpcDisplayType.MaskedEffect)
+            {
+                var aoe = npc.AreaOfEffect!;
+                packet.Write(aoe.Area);
+                var mask = aoe.GetAreaMask()!;
+                for(var i = 0; i < aoe.Area.Size; i++)
+                    packet.Write(mask[i]);
+            }
         }
         
         if (c.AdminHidden && !isSelf)
@@ -295,11 +306,14 @@ public static class CommandBuilder
         return packet;
     }
 
-    public static void SendUpdatePlayerData(Player p, bool sendInventory = false, bool sendSkills = false)
+    public static void SendUpdatePlayerData(Player p, bool sendInventory = false, bool sendSkills = false, bool sendCart = false)
     {
         var packet = NetworkManager.StartPacket(PacketType.UpdatePlayerData, 512);
 
-        p.SendPlayerUpdateData(packet, sendInventory, sendSkills);
+        if (sendInventory)
+            sendInventory = sendInventory;
+
+        p.SendPlayerUpdateData(packet, sendInventory, sendCart, sendSkills);
 
         NetworkManager.SendMessage(packet, p.Connection);
     }
@@ -795,7 +809,7 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
-    public static void SendServerMessage(string text, string name = "Server")
+    public static void SendServerMessage(string text, string name = "Server", bool playNoticeSound = false)
     {
         var packet = NetworkManager.StartPacket(PacketType.Say, 364);
 
@@ -803,6 +817,7 @@ public static class CommandBuilder
         packet.Write(text);
         packet.Write(name);
         packet.Write(false);
+        packet.Write(playNoticeSound);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
@@ -844,6 +859,7 @@ public static class CommandBuilder
         packet.Write(text);
         packet.Write(name);
         packet.Write(isShout);
+        packet.Write(false);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
@@ -881,7 +897,7 @@ public static class CommandBuilder
         packet.Write(c.Player.Id.ToByteArray());
         
         NetworkManager.SendMessage(packet, p.Connection);
-        SendUpdatePlayerData(p, true, true);
+        SendUpdatePlayerData(p, true, true, true);
     }
 
     public static void SendCreateEntityMulti(WorldObject c, CreateEntityEventType entryType = CreateEntityEventType.Normal)
@@ -1104,16 +1120,16 @@ public static class CommandBuilder
     }
 
 
-    public static void SendHealMultiAutoVis(Player p, int healAmount, HealType type)
+    public static void SendHealMultiAutoVis(WorldObject p, int healAmount, HealType type)
     {
         var packet = NetworkManager.StartPacket(PacketType.HpRecovery, 32);
-        packet.Write(p.Character.Id);
+        packet.Write(p.Id);
         packet.Write(healAmount);
         packet.Write(p.CombatEntity.GetStat(CharacterStat.Hp));
         packet.Write(p.CombatEntity.GetStat(CharacterStat.MaxHp));
         packet.Write((byte)type);
 
-        p.Character.Map?.AddVisiblePlayersAsPacketRecipients(p.Character);
+        p.Map?.AddVisiblePlayersAsPacketRecipients(p);
         NetworkManager.SendMessageMulti(packet, recipients);
         ClearRecipients();
     }

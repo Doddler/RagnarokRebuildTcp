@@ -267,6 +267,11 @@ public partial class CombatEntity : IEntityAutoReset
         statusContainer.Deserialize(br, count);
     }
 
+    public bool CanPerformIndirectActions()
+    {
+        return Character.State != CharacterState.Dead && GetStat(CharacterStat.Disabled) == 0;
+    }
+
     [ScriptUseable]
     public bool CanTeleport() => Character.Map?.CanTeleport ?? false;
     [ScriptUseable]
@@ -1384,7 +1389,7 @@ public partial class CombatEntity : IEntityAutoReset
     public void ApplyCooldownForAttackAction(CombatEntity target)
     {
 #if DEBUG
-        if (!target.IsValidTarget(this))
+        if (!target.IsValidTarget(this, true))
             throw new Exception("Entity attempting to attack an invalid target! This should be checked before calling PerformAttackAction.");
 #endif
         ApplyCooldownForAttackAction();
@@ -1488,6 +1493,8 @@ public partial class CombatEntity : IEntityAutoReset
         var flags = AttackFlags.Physical;
         if (Character.Type == CharacterType.Player)
             flags |= AttackFlags.CanCrit;
+        if (Character.Type == CharacterType.Monster)
+            flags |= AttackFlags.CanHarmAllies; //they can auto attack their allies if they get hit by them
 
         var di = CalculateCombatResult(target, 1f, 1, flags);
         if (Character.Type == CharacterType.Player && (Character.Player.WeaponClass == 1 || Character.Player.Equipment.DoubleAttackModifiers > 0))

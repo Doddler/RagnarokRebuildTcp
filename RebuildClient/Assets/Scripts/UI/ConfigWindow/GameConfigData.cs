@@ -22,6 +22,7 @@ namespace Assets.Scripts.UI.ConfigWindow
         public DragItemType Type;
         public int ItemId;
         public int ItemCount;
+        public byte[] UniqueItem;
     }
     
     [Serializable]

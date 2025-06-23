@@ -495,7 +495,12 @@ public class NpcInteractionState
             CommandBuilder.RemoveItemFromInventory(Player, removeIds[i], removeCounts[i]);
         }
         Player.DropZeny(tradeCount * trade.ZenyCost);
-        Player.CreateItemInInventory(new ItemReference(trade.CombinedItem.Id, trade.CombinedItem.Count * tradeCount));
+        var newItem = trade.CombinedItem;
+        if (newItem.Type == ItemType.UniqueItem)
+            newItem.UniqueItem.UniqueId = Guid.NewGuid();
+        else
+            newItem.UniqueItem.Count = (short)(newItem.UniqueItem.Count * tradeCount);
+        Player.CreateItemInInventory(newItem);
         CommandBuilder.SendServerEvent(Player, ServerEvent.TradeSuccess);
     }
 

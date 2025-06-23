@@ -23,6 +23,7 @@ StateChase:
 StateAttacking:
 	TryCast(Heal, 9999, 100%, 0, 5s)[FindAllyBelowHpPercent(50)] -> SendEmote(18);
 	TryCast(Heal, 9999, 100%, 0, 10s)[HpPercent < 50] -> SendEmote(18);
+	TryCast(Sanctuary, 10, 100%, 0.5s, 30s, NoInterrupt) -> SendEmote(18);
 	TryCast(HolyAttack, 5, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(18);
 }
 

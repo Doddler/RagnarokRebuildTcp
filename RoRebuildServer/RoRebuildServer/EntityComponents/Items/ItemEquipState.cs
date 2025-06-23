@@ -408,6 +408,9 @@ public class ItemEquipState
         if (itemData.ItemClass == ItemClass.Ammo)
             return EquipAmmo(item.Id) ? EquipChangeResult.Success : EquipChangeResult.InvalidItem;
 
+        if (IsItemEquipped(bagId))
+            return EquipChangeResult.AlreadyEquipped;
+
         if (itemData.ItemClass == ItemClass.Weapon)
             return EquipWeapon(bagId, equipSlot, itemData);
 
@@ -442,6 +445,9 @@ public class ItemEquipState
 
     public bool EquipAmmo(int ammoId, bool isPlayerActive = true, bool unEquipExisting = true)
     {
+        if (AmmoId == ammoId)
+            return true;
+
         if (!DataManager.AmmoInfo.TryGetValue(ammoId, out var ammo))
             return false;
 
@@ -913,10 +919,14 @@ public class ItemEquipState
             Player.AttackVersusTag.Add(tagId, change);
     }
 
+    public bool HasLearnedSkill(CharacterSkill skill, int lvl = 1) => Player.MaxLearnedLevelOfSkill(skill) >= lvl;
+
     public void ChangeWeaponElement(AttackElement element)
     {
         WeaponElement = element;
     }
+
+    public bool IsBaseJob(JobType type) => JobTypes.IsBaseJob(Player.JobId, type);
 
     public void AddStat(CharacterStat stat, int change)
     {

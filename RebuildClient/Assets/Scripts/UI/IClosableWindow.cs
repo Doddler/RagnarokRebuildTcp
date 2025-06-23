@@ -2,7 +2,7 @@
 {
     public interface IClosableWindow
     {
-        public void HideWindow();
+        public void CloseWindow();
         public bool CanCloseWindow();
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using UnityEngine;
 
@@ -112,6 +113,8 @@ namespace Assets.Scripts.UI
             foreach (var (_, item) in inventory.GetInventoryData())
             {
                 if (item.Type != ItemType.UniqueItem)
+                    continue;
+                if (((UniqueItemFlags)item.UniqueItem.Flags & UniqueItemFlags.CraftedItem) > 0)
                     continue;
                 if (item.IsAvailableForSocketing(socketPosition))
                     validItems.Add(item);

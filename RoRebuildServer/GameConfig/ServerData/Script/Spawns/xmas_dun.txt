@@ -1,11 +1,12 @@
 MapConfig("xmas_dun01")
 {
-	CreateSpawn("PORING", 10);
-	CreateSpawn("POPORING", 20);
+	CreateSpawn("SANTA_PORING", 25);
+	CreateSpawn("GOBLINE_XMAS", 5);
+	CreateSpawn("POPORING", 10);
 	CreateSpawn("MASTERING", 1, 1800000, 900000);
 	CreateSpawn("ANGELING", 1, 3600000, 1800000, Boss);
 	CreateSpawn("DROPS", 10);
-	CreateSpawn("MARIN", 20);
+	CreateSpawn("MARIN", 10);
 	CreateSpawn("COOKIE_XMAS", 40);
 	CreateSpawn("MYSTCASE", 5);
 	CreateSpawn("CHEPET", 1, 1200000, 900000, Boss);
@@ -14,6 +15,7 @@ MapConfig("xmas_dun01")
 
 MapConfig("xmas_dun02")
 {
+	CreateSpawn("GOBLINE_XMAS", 2);
 	CreateSpawn("COOKIE_XMAS", 20);
 	CreateSpawn("CRUISER", 35);
 	CreateSpawn("MYSTCASE", 50);

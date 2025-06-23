@@ -1,8 +1,6 @@
-﻿using System;
-using Assets.Scripts.Utility;
+﻿using Assets.Scripts.Utility;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace Assets.Scripts.UI
 {
@@ -10,16 +8,39 @@ namespace Assets.Scripts.UI
     {
         public bool CanCloseWithEscape = true;
         public bool AutomaticallyFitIntoPlayArea = true;
-        
-        protected bool IsPointerOverUIObject() => RectTransformUtility.RectangleContainsScreenPoint(transform.RectTransform(), Input.mousePosition);
-        
+
+        public void OnDestroy()
+        {
+            UiManager.Instance.WindowStack.Remove(this);
+        }
+
+        public virtual void CloseWindow()
+        {
+            HideWindow();
+        }
+
+        public bool CanCloseWindow()
+        {
+            return CanCloseWithEscape;
+        }
+
+        public virtual void OnPointerDown(PointerEventData eventData)
+        {
+            MoveToTop();
+        }
+
+        protected bool IsPointerOverUIObject()
+        {
+            return RectTransformUtility.RectangleContainsScreenPoint(transform.RectTransform(), Input.mousePosition);
+        }
+
         public virtual void MoveToTop()
         {
             // Debug.Log($"MoveToTop {name}");
             transform.SetAsLastSibling(); //move to top
             UiManager.Instance.MoveToLast(this);
         }
-        
+
         public void FitWindowIntoPlayArea()
         {
             if (!AutomaticallyFitIntoPlayArea)
@@ -30,14 +51,15 @@ namespace Assets.Scripts.UI
             var pos = transform.position;
             var halfx = rect.sizeDelta.x * rect.transform.lossyScale.x / 2f;
 
-            pos = new Vector3(Mathf.Clamp(pos.x, -halfx, Screen.width - halfx), Mathf.Clamp(pos.y, rect.sizeDelta.y * rect.transform.lossyScale.y / 2f, Screen.height), pos.z);
+            pos = new Vector3(Mathf.Clamp(pos.x, -halfx, Screen.width - halfx),
+                Mathf.Clamp(pos.y, rect.sizeDelta.y * rect.transform.lossyScale.y / 2f, Screen.height), pos.z);
 
             transform.position = pos;
         }
 
         public void ToggleVisibility()
         {
-            if(gameObject.activeInHierarchy)
+            if (gameObject.activeInHierarchy)
                 HideWindow();
             else
                 ShowWindow();
@@ -54,9 +76,9 @@ namespace Assets.Scripts.UI
 
             FitWindowIntoPlayArea();
             transform.SetAsLastSibling(); //move to top
-            
+
             ((RectTransform)transform).ForceUpdateRectTransforms();
-            
+
             //Init();
         }
 
@@ -72,29 +94,24 @@ namespace Assets.Scripts.UI
                 mgr.ForceHideTooltip();
             }
 
-            if (mgr.IsDraggingItem)
-            {
-                mgr.EndItemDrag(false);
-            }
+            if (mgr.IsDraggingItem) mgr.EndItemDrag(false);
 
             // Debug.Log(name + " : " + gameObject.activeInHierarchy);
         }
-
-        public bool CanCloseWindow() => CanCloseWithEscape;
 
         public void CenterWindow(int setHeight = 0)
         {
             //center window
             ((RectTransform)transform).ForceUpdateRectTransforms();
             var rect = gameObject.GetComponent<RectTransform>();
-            if(setHeight > 0)
+            if (setHeight > 0)
                 rect.sizeDelta = new Vector2(rect.sizeDelta.x, setHeight);
             var parentContainer = (RectTransform)gameObject.transform.parent;
             var middle = parentContainer.rect.size / 2f;
             middle = new Vector2(middle.x, -middle.y);
             rect.anchoredPosition = middle - new Vector2(rect.sizeDelta.x / 2, -rect.sizeDelta.y / 2);
         }
-        
+
         public void CenterWindow(Vector2 center)
         {
             //center window
@@ -111,16 +128,6 @@ namespace Assets.Scripts.UI
         {
             transform.SetParent(UiManager.Instance.PrimaryUserWindowContainer);
             transform.localScale = Vector3.one;
-        }
-
-        public virtual void OnPointerDown(PointerEventData eventData)
-        {
-            MoveToTop();
-        }
-
-        public void OnDestroy()
-        {
-            UiManager.Instance.WindowStack.Remove(this);
         }
     }
 }

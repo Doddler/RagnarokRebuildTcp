@@ -167,7 +167,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
             var particles = GameObject.Instantiate(prefab);
             particles.transform.parent = effect.gameObject.transform;
             particles.transform.localPosition = Vector3.zero;
-            effect.AimTarget = particles;
+            effect.AttachChildObject(particles);
             // particles.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 
             return effect;
@@ -180,9 +180,6 @@ namespace Assets.Scripts.Effects.EffectHandlers
 
         public bool Update(Ragnarok3dEffect effect, float pos, int step)
         {
-            if(effect.CurrentPos >= effect.Duration && effect.AimTarget != null)
-                GameObject.Destroy(effect.AimTarget); //particles are stored here for lack of a better spot
-            
             //nothing to do but wait for it to end
             return effect.CurrentPos < effect.Duration;
         }

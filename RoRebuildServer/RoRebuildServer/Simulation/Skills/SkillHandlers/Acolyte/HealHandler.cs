@@ -64,8 +64,12 @@ public class HealHandler : SkillHandlerBase
                 res.AttackMotionTime = 0.5f;
                 res.Result = AttackResult.NormalDamage;
 
-                source.ApplyAfterCastDelay(1f, ref res);
-                source.ApplyCooldownForAttackAction(target);
+                if (!isIndirect)
+                {
+                    source.ApplyAfterCastDelay(1f, ref res);
+                    source.ApplyCooldownForAttackAction(target);
+                }
+
                 target.ExecuteCombatResult(res, false, false);
 
                 ch.Map?.AddVisiblePlayersAsPacketRecipients(ch);

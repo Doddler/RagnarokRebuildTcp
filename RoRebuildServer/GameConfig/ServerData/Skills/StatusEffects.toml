@@ -197,6 +197,7 @@ CanDisable = true
 [IncreasedMoveSpeed]
 Name = "Movement Speed Up"
 Type = "Buff"
+Icon = "민첩성증가"
 CanDispel = true
 CanDisable = true
 

@@ -302,7 +302,7 @@
       "Name": "Movement Speed Up",
       "Description": "\u003Ccolor=#FFA300\u003EMovement Speed Up\u003C/color\u003E\nYour move speed is increased.",
       "Type": "Buff",
-      "Icon": null,
+      "Icon": "\uBBFC\uCCA9\uC131\uC99D\uAC00",
       "CanDispel": true,
       "CanDisable": true
     },

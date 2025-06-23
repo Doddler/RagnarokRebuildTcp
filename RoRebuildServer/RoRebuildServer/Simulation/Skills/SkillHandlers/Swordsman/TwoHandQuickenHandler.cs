@@ -22,9 +22,9 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Swordsman
         {
             source.ApplyCooldownForSupportSkillAction();
             
-            var timing = 6 * lvl; //+6% aspd per level, to a max of +60% attack speed
+            var timing = 3 * lvl; //3% reduction in attack delay, max 30% (works out to +42% aspd with no modifiers, +75% with berserk pot)
             if (source.Character.Type == CharacterType.Monster && lvl >= 10)
-                timing = 200; //monsters with lvl 10 get 3x attack speed instead (+200%)
+                timing = 70; //monsters with lvl 10 get 70% delay reduction (about +330% faster with no other modifiers)
 
             var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.TwoHandQuicken, 180f, timing);
             source.AddStatusEffect(status);

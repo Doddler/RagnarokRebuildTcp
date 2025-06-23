@@ -131,6 +131,7 @@ public class Npc : IEntityAutoReset
         valuesInt = null!;
         valuesString = null!;
         Entity = Entity.Null;
+        Owner = Entity.Null;
         Behavior = null!;
         ParamsInt = null;
         ParamString = null;
@@ -916,6 +917,15 @@ public class Npc : IEntityAutoReset
         ShowNpc(name);
     }
 
+    public void RevealAsMaskedEffect(NpcEffectType type, string? name = null)
+    {
+        ChangeNpcClass("EFFECT");
+        DisplayType = NpcDisplayType.MaskedEffect;
+        EffectType = type;
+
+        ShowNpc(name);
+    }
+
     public void ChangeEffectType(NpcEffectType type)
     {
         DisplayType = NpcDisplayType.Effect;
@@ -968,10 +978,10 @@ public class Npc : IEntityAutoReset
         npc.OnSignal(this, signal, value1, value2, value3, value4);
     }
 
-    public void ServerWideMessage(string msg, string name = "Server")
+    public void ServerWideMessage(string msg, string name = "Server", bool playNotice = false)
     {
         CommandBuilder.AddAllPlayersAsRecipients();
-        CommandBuilder.SendServerMessage(msg, name);
+        CommandBuilder.SendServerMessage(msg, name, playNotice);
         CommandBuilder.ClearRecipients();
     }
 
@@ -1038,25 +1048,25 @@ public class Npc : IEntityAutoReset
         RemoveWarpNpcNoValidLinks();
     }
 
-    public void CreateEvent(string eventName, Position pos, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, 0, 0, 0, 0, valueString);
-    public void CreateEvent(string eventName, Position pos, int value1, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, value1, 0, 0, 0, valueString);
-    public void CreateEvent(string eventName, Position pos, int value1, int value2, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, value1, value2, 0, 0, valueString);
-    public void CreateEvent(string eventName, Position pos, int value1, int value2, int value3, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, value1, value2, value3, 0, valueString);
-    public void CreateEvent(string eventName, Position pos, int value1, int value2, int value3, int value4, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, value1, value2, value3, value4, valueString);
+    public void CreateEvent(string eventName, Position pos, string? valueString = null, bool swapOwnerToParent = true) => CreateEvent(eventName, pos.X, pos.Y, 0, 0, 0, 0, valueString, swapOwnerToParent);
+    public void CreateEvent(string eventName, Position pos, int value1, string? valueString = null, bool swapOwnerToParent = true) => CreateEvent(eventName, pos.X, pos.Y, value1, 0, 0, 0, valueString, swapOwnerToParent);
+    public void CreateEvent(string eventName, Position pos, int value1, int value2, string? valueString = null, bool swapOwnerToParent = true) => CreateEvent(eventName, pos.X, pos.Y, value1, value2, 0, 0, valueString, swapOwnerToParent);
+    public void CreateEvent(string eventName, Position pos, int value1, int value2, int value3, string? valueString = null, bool swapOwnerToParent = true) => CreateEvent(eventName, pos.X, pos.Y, value1, value2, value3, 0, valueString, swapOwnerToParent);
+    public void CreateEvent(string eventName, Position pos, int value1, int value2, int value3, int value4, string? valueString = null, bool swapOwnerToParent = true) => CreateEvent(eventName, pos.X, pos.Y, value1, value2, value3, value4, valueString, swapOwnerToParent);
 
-    public void CreateEvent(string eventName, int x, int y, string? valueString = null) => CreateEvent(eventName, x, y, 0, 0, 0, 0, valueString);
-    public void CreateEvent(string eventName, int x, int y, int value1, string? valueString = null) => CreateEvent(eventName, x, y, value1, 0, 0, 0, valueString);
-    public void CreateEvent(string eventName, int x, int y, int value1, int value2, string? valueString = null) => CreateEvent(eventName, x, y, value1, value2, 0, 0, valueString);
-    public void CreateEvent(string eventName, int x, int y, int value1, int value2, int value3, string? valueString = null) => CreateEvent(eventName, x, y, value1, value2, value3, 0, valueString);
+    public void CreateEvent(string eventName, int x, int y, string? valueString = null, bool swapOwnerToParent = true) => CreateEvent(eventName, x, y, 0, 0, 0, 0, valueString, swapOwnerToParent);
+    public void CreateEvent(string eventName, int x, int y, int value1, string? valueString = null, bool swapOwnerToParent = true) => CreateEvent(eventName, x, y, value1, 0, 0, 0, valueString, swapOwnerToParent);
+    public void CreateEvent(string eventName, int x, int y, int value1, int value2, string? valueString = null, bool swapOwnerToParent = true) => CreateEvent(eventName, x, y, value1, value2, 0, 0, valueString, swapOwnerToParent);
+    public void CreateEvent(string eventName, int x, int y, int value1, int value2, int value3, string? valueString = null, bool swapOwnerToParent = true) => CreateEvent(eventName, x, y, value1, value2, value3, 0, valueString, swapOwnerToParent);
 
-    public void CreateEvent(string eventName, int x, int y, int value1, int value2, int value3, int value4, string? valueString = null)
+    public void CreateEvent(string eventName, int x, int y, int value1, int value2, int value3, int value4, string? valueString = null, bool swapOwnerToParent = true)
     {
         var chara = Entity.Get<WorldObject>();
         if (chara.Map == null)
             throw new Exception($"Npc {FullName} attempting to create event, but the npc is not currently attached to a map.");
 
         var eventObj = World.Instance.CreateEvent(Character.Entity, chara.Map, eventName, new Position(x, y), value1, value2, value3, value4, valueString);
-        if (Owner.IsAlive())
+        if (Owner.IsAlive() && swapOwnerToParent)
             eventObj.Get<Npc>().Owner = Owner;
         Character.Events ??= EntityListPool.Get();
         Character.Events.ClearInactive();

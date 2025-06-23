@@ -81,7 +81,7 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "Increases HP recovery by 5 HP plus 0.2% of your MaxHP per level.",
+      "Description": "Adds a heal over time effect that recovers [SkillLevel * 5] HP plus [SkillLevel * 0.2]% of your MaxHP per level every 6 seconds. Additionally increases the effectiveness of healing items by 10% per level.",
       "InterruptMode": 0
     },
     {
@@ -163,7 +163,7 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "Increases SP recovery by 3 SP plus 0.2% of your MaxSP per level.",
+      "Description": "Adds an SP recovery over time effect that recovers [SkillLevel * 3] SP plus [SkillLevel * 0.2]% of your MaxSP every 6 seconds. Additionally increases the effectiveness of SP recovery items by 10% per level.",
       "InterruptMode": 0
     },
     {
@@ -1166,6 +1166,166 @@
     },
     {
       "SkillId": 67,
+      "Icon": "pr_sanctuary",
+      "Name": "Sanctuary",
+      "Target": 4,
+      "Type": 0,
+      "MaxLevel": 10,
+      "SpCost": [
+        15,
+        18,
+        21,
+        24,
+        27,
+        30,
+        33,
+        36,
+        39,
+        42
+      ],
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 68,
+      "Icon": "pr_gloria",
+      "Name": "Gloria",
+      "Target": 5,
+      "Type": 0,
+      "MaxLevel": 5,
+      "SpCost": [
+        20,
+        20,
+        20,
+        20,
+        20
+      ],
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 69,
+      "Icon": "pr_magnificat",
+      "Name": "Magnificat",
+      "Target": 5,
+      "Type": 0,
+      "MaxLevel": 5,
+      "SpCost": [
+        40,
+        40,
+        40,
+        40,
+        40
+      ],
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 70,
+      "Icon": "pr_impositio",
+      "Name": "Impositio Manus",
+      "Target": 2,
+      "Type": 0,
+      "MaxLevel": 5,
+      "SpCost": [
+        13,
+        16,
+        19,
+        21,
+        24
+      ],
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 71,
+      "Icon": "pr_kyrie",
+      "Name": "Kyrie Eleison",
+      "Target": 5,
+      "Type": 0,
+      "MaxLevel": 10,
+      "SpCost": [
+        20,
+        20,
+        20,
+        25,
+        25,
+        25,
+        30,
+        30,
+        30,
+        35
+      ],
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 72,
+      "Icon": "pr_lexaeterna",
+      "Name": "Lex Aeterna",
+      "Target": 1,
+      "Type": 0,
+      "MaxLevel": 1,
+      "SpCost": [
+        10
+      ],
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 73,
+      "Icon": "pr_lexdivina",
+      "Name": "Lex Divina",
+      "Target": 1,
+      "Type": 0,
+      "MaxLevel": 10,
+      "SpCost": [
+        20,
+        20,
+        20,
+        20,
+        20,
+        18,
+        16,
+        14,
+        12,
+        10
+      ],
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 74,
+      "Icon": "pr_magnus",
+      "Name": "Magnus Exorcismus",
+      "Target": 4,
+      "Type": 0,
+      "MaxLevel": 10,
+      "SpCost": [
+        40,
+        42,
+        44,
+        46,
+        48,
+        50,
+        52,
+        54,
+        56,
+        58
+      ],
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 75,
       "Icon": "all_resurrection",
       "Name": "Resurrection",
       "Target": 2,
@@ -1182,7 +1342,58 @@
       "InterruptMode": 1
     },
     {
-      "SkillId": 68,
+      "SkillId": 76,
+      "Icon": "pr_strecovery",
+      "Name": "Status Recovery",
+      "Target": 3,
+      "Type": 0,
+      "MaxLevel": 1,
+      "SpCost": [
+        5
+      ],
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 77,
+      "Icon": "pr_suffragium",
+      "Name": "Suffragium",
+      "Target": 2,
+      "Type": 0,
+      "MaxLevel": 3,
+      "SpCost": [
+        8
+      ],
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 78,
+      "Icon": "pr_turnundead",
+      "Name": "Turn Undead",
+      "Target": 1,
+      "Type": 0,
+      "MaxLevel": 10,
+      "SpCost": [
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20
+      ],
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 79,
       "Icon": "wz_earthspike",
       "Name": "Earth Spike",
       "Target": 1,
@@ -1200,7 +1411,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 69,
+      "SkillId": 80,
       "Icon": "wz_heavendrive",
       "Name": "Heaven\u0027s Drive",
       "Target": 4,
@@ -1218,7 +1429,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 70,
+      "SkillId": 81,
       "Icon": "wz_firepillar",
       "Name": "Fire Pillar",
       "Target": 4,
@@ -1241,7 +1452,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 71,
+      "SkillId": 82,
       "Icon": "wz_frostnova",
       "Name": "Frost Nova",
       "Target": 5,
@@ -1264,7 +1475,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 72,
+      "SkillId": 83,
       "Icon": "wz_icewall",
       "Name": "Ice Wall",
       "Target": 4,
@@ -1287,7 +1498,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 73,
+      "SkillId": 84,
       "Icon": "wz_jupitel",
       "Name": "Jupitel Thunder",
       "Target": 1,
@@ -1310,7 +1521,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 74,
+      "SkillId": 85,
       "Icon": "wz_vermilion",
       "Name": "Lord of Vermilion",
       "Target": 4,
@@ -1333,7 +1544,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 75,
+      "SkillId": 86,
       "Icon": "wz_meteor",
       "Name": "Meteor Storm",
       "Target": 4,
@@ -1356,7 +1567,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 76,
+      "SkillId": 87,
       "Icon": "wz_quagmire",
       "Name": "Quagmire",
       "Target": 4,
@@ -1374,7 +1585,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 77,
+      "SkillId": 88,
       "Icon": "wz_estimation",
       "Name": "Sense",
       "Target": 1,
@@ -1388,7 +1599,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 78,
+      "SkillId": 89,
       "Icon": "wz_sightrasher",
       "Name": "Sightrasher",
       "Target": 5,
@@ -1411,7 +1622,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 79,
+      "SkillId": 90,
       "Icon": "wz_stormgust",
       "Name": "Storm Gust",
       "Target": 4,
@@ -1434,7 +1645,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 80,
+      "SkillId": 91,
       "Icon": "wz_waterball",
       "Name": "Water Ball",
       "Target": 1,
@@ -1457,7 +1668,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 81,
+      "SkillId": 92,
       "Icon": "bs_adrenaline",
       "Name": "Adrenaline Rush",
       "Target": 5,
@@ -1480,7 +1691,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 82,
+      "SkillId": 93,
       "Icon": "kn_twohandquicken",
       "Name": "Two-Hand Quicken",
       "Target": 5,
@@ -1503,7 +1714,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 83,
+      "SkillId": 94,
       "Icon": "bs_hammerfall",
       "Name": "Hammer Fall",
       "Target": 4,
@@ -1521,7 +1732,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 84,
+      "SkillId": 95,
       "Icon": "as_sonicblow",
       "Name": "Sonic Blow",
       "Target": 1,
@@ -1544,7 +1755,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 85,
+      "SkillId": 96,
       "Icon": "as_cloaking",
       "Name": "Cloaking",
       "Target": 5,
@@ -1567,7 +1778,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 86,
+      "SkillId": 97,
       "Icon": "nv_basic",
       "Name": "Demonstration",
       "Target": 4,
@@ -1579,7 +1790,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 87,
+      "SkillId": 98,
       "Icon": "nv_basic",
       "Name": "Fire Attack",
       "Target": 1,
@@ -1591,7 +1802,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 88,
+      "SkillId": 99,
       "Icon": "nv_basic",
       "Name": "Ice Attack",
       "Target": 1,
@@ -1603,7 +1814,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 89,
+      "SkillId": 100,
       "Icon": "nv_basic",
       "Name": "Water Attack",
       "Target": 1,
@@ -1615,7 +1826,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 90,
+      "SkillId": 101,
       "Icon": "nv_basic",
       "Name": "Wind Attack",
       "Target": 1,
@@ -1627,7 +1838,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 91,
+      "SkillId": 102,
       "Icon": "nv_basic",
       "Name": "Earth Attack",
       "Target": 1,
@@ -1639,7 +1850,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 92,
+      "SkillId": 103,
       "Icon": "nv_basic",
       "Name": "Dark Attack",
       "Target": 1,
@@ -1651,7 +1862,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 93,
+      "SkillId": 104,
       "Icon": "nv_basic",
       "Name": "Holy Attack",
       "Target": 1,
@@ -1663,7 +1874,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 94,
+      "SkillId": 105,
       "Icon": "nv_basic",
       "Name": "Poison Attack",
       "Target": 1,
@@ -1675,7 +1886,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 95,
+      "SkillId": 106,
       "Icon": "nv_basic",
       "Name": "Undead Attack",
       "Target": 1,
@@ -1687,7 +1898,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 96,
+      "SkillId": 107,
       "Icon": "nv_basic",
       "Name": "Immaterial Attack",
       "Target": 1,
@@ -1699,7 +1910,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 97,
+      "SkillId": 108,
       "Icon": "nv_basic",
       "Name": "Critical Slash",
       "Target": 1,
@@ -1711,7 +1922,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 98,
+      "SkillId": 109,
       "Icon": "nv_basic",
       "Name": "Curse",
       "Target": 1,
@@ -1723,7 +1934,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 99,
+      "SkillId": 110,
       "Icon": "nv_basic",
       "Name": "Poison",
       "Target": 1,
@@ -1735,7 +1946,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 100,
+      "SkillId": 111,
       "Icon": "nv_basic",
       "Name": "Sleep",
       "Target": 1,
@@ -1747,7 +1958,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 101,
+      "SkillId": 112,
       "Icon": "nv_basic",
       "Name": "Stun",
       "Target": 1,
@@ -1759,7 +1970,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 102,
+      "SkillId": 113,
       "Icon": "nv_basic",
       "Name": "Blind",
       "Target": 1,
@@ -1771,7 +1982,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 103,
+      "SkillId": 114,
       "Icon": "nv_basic",
       "Name": "Silence",
       "Target": 1,
@@ -1783,7 +1994,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 104,
+      "SkillId": 115,
       "Icon": "nv_basic",
       "Name": "Petrify",
       "Target": 1,
@@ -1795,7 +2006,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 105,
+      "SkillId": 116,
       "Icon": "nv_basic",
       "Name": "Fire Breath",
       "Target": 1,
@@ -1807,7 +2018,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 106,
+      "SkillId": 117,
       "Icon": "nv_basic",
       "Name": "Ice Breath",
       "Target": 1,
@@ -1819,7 +2030,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 107,
+      "SkillId": 118,
       "Icon": "nv_basic",
       "Name": "Wind Breath",
       "Target": 1,
@@ -1831,7 +2042,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 108,
+      "SkillId": 119,
       "Icon": "nv_basic",
       "Name": "Earth Breath",
       "Target": 1,
@@ -1843,7 +2054,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 109,
+      "SkillId": 120,
       "Icon": "nv_basic",
       "Name": "Dark Breath",
       "Target": 1,
@@ -1855,7 +2066,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 110,
+      "SkillId": 121,
       "Icon": "nv_basic",
       "Name": "Holy Breath",
       "Target": 1,
@@ -1867,7 +2078,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 111,
+      "SkillId": 122,
       "Icon": "nv_basic",
       "Name": "Poison Breath",
       "Target": 1,
@@ -1879,7 +2090,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 112,
+      "SkillId": 123,
       "Icon": "nv_basic",
       "Name": "Undead Breath",
       "Target": 1,
@@ -1891,7 +2102,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 113,
+      "SkillId": 124,
       "Icon": "nv_basic",
       "Name": "Immaterial Breath",
       "Target": 1,
@@ -1903,7 +2114,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 114,
+      "SkillId": 125,
       "Icon": "nv_basic",
       "Name": "Self Destruct",
       "Target": 5,
@@ -1915,7 +2126,7 @@
       "InterruptMode": 3
     },
     {
-      "SkillId": 115,
+      "SkillId": 126,
       "Icon": "nv_basic",
       "Name": "Power Up",
       "Target": 5,
@@ -1927,7 +2138,7 @@
       "InterruptMode": 3
     },
     {
-      "SkillId": 116,
+      "SkillId": 127,
       "Icon": "nv_basic",
       "Name": "Speed Up",
       "Target": 5,
@@ -1939,7 +2150,7 @@
       "InterruptMode": 3
     },
     {
-      "SkillId": 117,
+      "SkillId": 128,
       "Icon": "nv_basic",
       "Name": "Call Minion",
       "Target": 0,
@@ -1951,7 +2162,7 @@
       "InterruptMode": 3
     },
     {
-      "SkillId": 118,
+      "SkillId": 129,
       "Icon": "nv_basic",
       "Name": "Recall",
       "Target": 0,
@@ -1963,7 +2174,7 @@
       "InterruptMode": 3
     },
     {
-      "SkillId": 119,
+      "SkillId": 130,
       "Icon": "nv_basic",
       "Name": "Summon Monster",
       "Target": 0,
@@ -1975,7 +2186,7 @@
       "InterruptMode": 3
     },
     {
-      "SkillId": 120,
+      "SkillId": 131,
       "Icon": "nv_basic",
       "Name": "Metamorphosis",
       "Target": 0,
@@ -1987,7 +2198,7 @@
       "InterruptMode": 3
     },
     {
-      "SkillId": 121,
+      "SkillId": 132,
       "Icon": "nv_basic",
       "Name": "Magic Weapon",
       "Target": 5,
@@ -1999,7 +2210,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 122,
+      "SkillId": 133,
       "Icon": "nv_basic",
       "Name": "Blood Drain",
       "Target": 1,
@@ -2011,7 +2222,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 123,
+      "SkillId": 134,
       "Icon": "nv_basic",
       "Name": "Energy Drain",
       "Target": 1,
@@ -2023,7 +2234,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 124,
+      "SkillId": 135,
       "Icon": "nv_basic",
       "Name": "Guided Attacks",
       "Target": 1,
@@ -2035,7 +2246,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 125,
+      "SkillId": 136,
       "Icon": "nv_basic",
       "Name": "Area Attack",
       "Target": 1,
@@ -2047,7 +2258,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 126,
+      "SkillId": 137,
       "Icon": "nv_basic",
       "Name": "Combo Attack",
       "Target": 1,
@@ -2059,7 +2270,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 127,
+      "SkillId": 138,
       "Icon": "nv_basic",
       "Name": "Piercing Attack",
       "Target": 1,
@@ -2071,7 +2282,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 128,
+      "SkillId": 139,
       "Icon": "nv_basic",
       "Name": "Ranged Strike",
       "Target": 1,
@@ -2083,7 +2294,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 129,
+      "SkillId": 140,
       "Icon": "nv_basic",
       "Name": "Dark Strike",
       "Target": 1,
@@ -2095,7 +2306,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 130,
+      "SkillId": 141,
       "Icon": "nv_basic",
       "Name": "Break Armor",
       "Target": 1,
@@ -2107,7 +2318,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 131,
+      "SkillId": 142,
       "Icon": "nv_basic",
       "Name": "Break Weapon",
       "Target": 1,
@@ -2119,7 +2330,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 132,
+      "SkillId": 143,
       "Icon": "nv_basic",
       "Name": "Break Helm",
       "Target": 1,
@@ -2131,7 +2342,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 133,
+      "SkillId": 144,
       "Icon": "nv_basic",
       "Name": "Dark Blessing",
       "Target": 1,
@@ -2143,7 +2354,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 134,
+      "SkillId": 145,
       "Icon": "nv_basic",
       "Name": "Invisible",
       "Target": 5,
@@ -2155,7 +2366,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 135,
+      "SkillId": 146,
       "Icon": "nv_basic",
       "Name": "Smoking",
       "Target": 5,
@@ -2167,7 +2378,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 136,
+      "SkillId": 147,
       "Icon": "nv_basic",
       "Name": "Suicide",
       "Target": 5,
@@ -2179,7 +2390,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 137,
+      "SkillId": 148,
       "Icon": "nv_basic",
       "Name": "Stop",
       "Target": 1,
@@ -2191,7 +2402,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 138,
+      "SkillId": 149,
       "Icon": "nv_basic",
       "Name": "Hallucination",
       "Target": 1,
@@ -2203,7 +2414,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 139,
+      "SkillId": 150,
       "Icon": "nv_basic",
       "Name": "Lick",
       "Target": 1,
@@ -2215,7 +2426,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 140,
+      "SkillId": 151,
       "Icon": "nv_basic",
       "Name": "Emotion",
       "Target": 5,
@@ -2227,7 +2438,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 141,
+      "SkillId": 152,
       "Icon": "nv_basic",
       "Name": "Dark Thunder",
       "Target": 0,
@@ -2239,7 +2450,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 142,
+      "SkillId": 153,
       "Icon": "nv_basic",
       "Name": "Bulwark",
       "Target": 0,
@@ -2251,7 +2462,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 143,
+      "SkillId": 154,
       "Icon": "nv_basic",
       "Name": "Pharaoh\u0027s Curse",
       "Target": 1,
@@ -2263,7 +2474,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 144,
+      "SkillId": 155,
       "Icon": "nv_basic",
       "Name": "Grand Thunderstorm",
       "Target": 5,
@@ -2275,7 +2486,7 @@
       "InterruptMode": 3
     },
     {
-      "SkillId": 145,
+      "SkillId": 156,
       "Icon": "nv_basic",
       "Name": "Reward for Quest",
       "Target": 0,
@@ -2287,7 +2498,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 146,
+      "SkillId": 157,
       "Icon": "nv_basic",
       "Name": "Vampyrism",
       "Target": 5,
@@ -2299,7 +2510,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 147,
+      "SkillId": 158,
       "Icon": "nv_basic",
       "Name": "Snap",
       "Target": 1,
@@ -2311,7 +2522,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 148,
+      "SkillId": 159,
       "Icon": "nv_basic",
       "Name": "HP Cut",
       "Target": 1,
@@ -2323,7 +2534,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 149,
+      "SkillId": 160,
       "Icon": "nv_basic",
       "Name": "Mental Breaker",
       "Target": 1,
@@ -2335,7 +2546,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 150,
+      "SkillId": 161,
       "Icon": "nv_basic",
       "Name": "",
       "Target": 3,
@@ -2347,7 +2558,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 151,
+      "SkillId": 162,
       "Icon": "nv_basic",
       "Name": "NoCast",
       "Target": 0,

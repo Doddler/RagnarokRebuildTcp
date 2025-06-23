@@ -294,7 +294,16 @@ class Program
             }
             else
                 desc = curDesc;
-            desc += $"<line-height=120%>\n</line-height=100%>Weight: <color=#777777>{item.Weight / 10f:0.#}</color>";
+
+            if (desc.Contains("[Properties]"))
+            {
+                var s = desc.Split("[Properties]");
+                if (s[0].EndsWith("<line-height=120%>\n<line-height=100%>"))
+                    s[0] = s[0].Substring(0, s[0].Length - "<line-height=120%>\n<line-height=100%>".Length);
+                desc = $"{s[0].TrimEnd()}<line-height=120%>\n<line-height=100%>{s[1].Trim()}\nWeight: <color=#777777>{item.Weight / 10f:0.#}</color>";
+            }
+            else
+                desc += $"<line-height=120%>\n</line-height=100%>Weight: <color=#777777>{item.Weight / 10f:0.#}</color>";
             itemDescriptions.Add(new ItemDescription() { Code = item.Code, Description = desc });
         }
 

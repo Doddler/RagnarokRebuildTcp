@@ -55,6 +55,7 @@ namespace Assets.Scripts.Effects
 		LordOfVermilion,
 		WaterBallAttack,
 		WaterBallRise,
+		Sanctuary,
 		ArcherArrow,
 		CastHolyEffect,
 		ColdHit,
@@ -89,6 +90,7 @@ namespace Assets.Scripts.Effects
 		ParticleOrbit,
 		ParticleUp,
 		ProjectorPrimitive,
+		RectUp,
 		RoSprite,
 		Sphere3D,
 		Spike3D,
@@ -149,6 +151,7 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.LordOfVermilion, new Assets.Scripts.Effects.EffectHandlers.Skills.LordOfVermilionEffect());
 			effectHandlers.Add(EffectType.WaterBallAttack, new Assets.Scripts.Effects.EffectHandlers.Skills.WaterBallAttackEffect());
 			effectHandlers.Add(EffectType.WaterBallRise, new Assets.Scripts.Effects.EffectHandlers.Skills.WaterBallRiseEffect());
+			effectHandlers.Add(EffectType.Sanctuary, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.SanctuaryEffect());
 			effectHandlers.Add(EffectType.ArcherArrow, new Assets.Scripts.Effects.EffectHandlers.General.ArcherArrow());
 			effectHandlers.Add(EffectType.CastHolyEffect, new Assets.Scripts.Effects.EffectHandlers.General.CastHolyEffect());
 			effectHandlers.Add(EffectType.ColdHit, new Assets.Scripts.Effects.EffectHandlers.General.ColdHitEffect());
@@ -190,6 +193,7 @@ namespace Assets.Scripts.Effects
 			primitiveHandlers.Add(PrimitiveType.ParticleUp, new Assets.Scripts.Effects.PrimitiveHandlers.ParticleUpPrimitive());
 			primitiveDataFactory.Add(PrimitiveType.ParticleUp, () => new Assets.Scripts.Effects.PrimitiveData.ParticleUpData());
 			primitiveHandlers.Add(PrimitiveType.ProjectorPrimitive, new Assets.Scripts.Effects.PrimitiveHandlers.ProjectorPrimitive());
+			primitiveHandlers.Add(PrimitiveType.RectUp, new Assets.Scripts.Effects.PrimitiveHandlers.RectUpPrimitive());
 			primitiveHandlers.Add(PrimitiveType.RoSprite, new Assets.Scripts.Effects.PrimitiveHandlers.RoSpritePrimitive());
 			primitiveHandlers.Add(PrimitiveType.Sphere3D, new Assets.Scripts.Effects.PrimitiveHandlers.Sphere3DPrimitive());
 			primitiveDataFactory.Add(PrimitiveType.Sphere3D, () => new Assets.Scripts.Effects.PrimitiveData.CircleData());

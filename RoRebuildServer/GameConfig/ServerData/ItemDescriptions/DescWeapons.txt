@@ -196,7 +196,7 @@ CRIT +30, ASPD +8%
 ::Masamune //id 1165 - 2HSword
 <desc>An oriental sword named after the legendary swordsmith, Masamune.</desc>
 STR -5, DEF -66%
-ASPD +20%, FLEE +30
+ASPD +12%, FLEE +30
 
 ::Dragon_Slayer //id 1166 - 2HSword
 <desc>A giant sword, made from a dragon's tooth, that can easily cut through dragon scales.</desc>

@@ -404,8 +404,8 @@ Item("Glorious_Rapier") { OnEquip: AddStat(AddInt, 6); }
 Item("Glorious_Holy_Avenger") { OnEquip: AddStat(AddInt, 6); }
 Item("Broad_Sword") { OnEquip: AddStat(AddDef, 5); }
 Item("Broad_Sword_") { OnEquip: AddStat(AddDef, 5); }
-Item("Muramasa") { OnEquip: AddStat(AddCrit, 30); AddStat(AspdBonus, 12); }
-Item("Masamune") { OnEquip: AddStat(AddFlee, 30); AddStat(AspdBonus, 20); AddStat(AddStr, -5); AddStat(AddDefPercent, -66); }
+Item("Muramasa") { OnEquip: AddStat(AddCrit, 30); AddStat(AspdBonus, 8); }
+Item("Masamune") { OnEquip: AddStat(AddFlee, 30); AddStat(AspdBonus, 12); AddStat(AddStr, -5); AddStat(AddDefPercent, -66); }
 Item("Dragon_Slayer") { OnEquip: AddStat(IgnoreDefRaceDragon, 100); AddStat(AddAttackRaceDragon, 15); }
 Item("Schweizersabel") { OnEquip: AddStat(AddMagicAttackPower, 120); AutoSpellOnAttack(LightningBolt, 3, 100); AddStat(AddDef, 1); }
 Item("Executioner") { OnEquip: AddStat(IgnoreDefRaceDemihuman, 100); AddStat(AddResistRaceDemihuman, -10); AddStat(AddAttackRaceDemihuman, 20); }

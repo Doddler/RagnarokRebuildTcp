@@ -167,7 +167,7 @@ Item("Anubis_Card") { OnEquip: AddStat(AddResistRaceAngel, 30); }
 Item("Joker_Card") { OnEquip: GrantSkill(Steal, 1); }
 Item("Abyssal_Knight_Card") { OnEquip: AddStat(AddAttackSpecialBoss, 25); }
 Item("Evil_Druid_Card") { OnEquip: SetArmorElement(Undead1); AddStat(AddInt, 1); AddStat(AddDef, 1); }
-Item("Doppelganger_Card") { OnEquip: AddStat(AspdBonus, 15); }
+Item("Doppelganger_Card") { OnEquip: AddStat(AspdBonus, 10); }
 Item("Orc_Hero_Card") { OnEquip: AddStat(ResistStunStatus, 100); AddStat(AddVit, 3); }
 Item("Osiris_Card") { OnEquip: } //should make it so you revive with 100% hp/sp
 Item("Beelzebub_Card") { OnEquip: AddStat(AddCastTime, -30); }
@@ -238,7 +238,7 @@ Item("Merman_Card") { OnEquip: AddStat(AddHpRecoveryPercent, 10); AddStat(AddSpR
 Item("Megalith_Card") { OnEquip: if(Refine < 6) {AddStat(AddMDef, 7);} } //mdef when upgraded < +6
 Item("Majorous_Card") { OnEquip: AddStat(WhenAttackedStun, 60); }
 Item("Mao_Guai_Card") { OnEquip: AddStat(AddAttackElementGhost, 20); }
-Item("Mutant_Dragonoid_Card") { OnEquip: AddStat(AddAttackPower, 15); AutoSpellWhenAttacked(FireBall, 3, 50, TargetEnemy); } //should add a chance to autospell fireball
+Item("Mutant_Dragonoid_Card") { OnEquip: AddStat(AddAttackPower, 15); var lvl = 3; if(HasLearnedSkill(FireBall, 10)) lvl = 10; AutoSpellWhenAttacked(FireBall, lvl, 50, TargetEnemy); }
 Item("Mini_Demon_Card") { OnEquip: AddStat(AddExpRaceBeast, 10); AddStat(AddResistRaceBeast, -20); }
 Item("Mimic_Card") { OnEquip: } //chance to obtain old blue box
 Item("Myst_Case_Card") { OnEquip: } //chance to obtain gift box
@@ -347,12 +347,12 @@ Item("Tri_Joint_Card") { OnEquip: AddStat(SpGainOnKillRaceFormless, 5); }
 Item("Parasite_Card") { OnEquip: AddStat(AddDef, 1); AddStat(AddResistRaceFormless, 5); }
 Item("Panzer_Goblin_Card") { OnEquip: AddStat(AddCritDamage, 10); AddStat(AddCritChanceRaceDemon, 7); }
 Item("Permeter_Card") { OnEquip: AddStat(AddResistElementUndead, 15); AddStat(AddResistElementDark, 15); }
-Item("Fur_Seal_Card") { OnEquip: AddStat(AddHit, 10); AddStat(AddFlee, 3); } //should add bonus crit vs undead/demon fro acolyte
+Item("Fur_Seal_Card") { OnEquip: AddStat(AddHit, 10); AddStat(AddFlee, 3); if(IsBaseJob(JobAcolyte)) { AddStat(AddCritChanceRaceDemon, 9); AddStat(AddCritChanceRaceUndead, 9); } } //should add bonus crit vs undead/demon fro acolyte
 Item("Punk_Card") { OnEquip: } //autospell quagmire
 Item("Penomena_Card") { OnEquip: AddStat(AddResistRaceFormless, 30); }
 Item("Pest_Card") { OnEquip: AddStat(WhenAttackedStone, 30); } //petrify when attacked
 Item("False_Angel_Card") { OnEquip: AddStat(SpGainOnKillRaceAngel, 5); }
-Item("Mobster_Card") { OnEquip: AddStat(AddCritDamage, 15); } //should add 4 crit to thief
+Item("Mobster_Card") { OnEquip: AddStat(AddCritDamage, 15); if(IsBaseJob(JobThief)) AddStat(AddCrit, 4); } //should add 4 crit to thief
 Item("Stormy_Knight_Card") { OnEquip: AddStat(OnMeleeAttackFreeze, 200); AddStat(OnRangedAttackFreeze, 200);  } //autospell SG
 Item("Freezer_Card") { OnEquip: AddStat(AddMaxHp, 300); } //bonus bash damage
 Item("Bloody_Knight_Card") { OnEquip: } //autospell meteor storm
@@ -366,7 +366,7 @@ Item("Bloody_Butterfly_Card") { OnValidate: return false; OnEquip: } //discount 
 Item("Yao_Jun_Card") { OnEquip: AddStat(AddFlee, 15); AddStat(AddCrit, 1); }
 Item("Phendark_Card") { OnEquip: AddStat(SpGainOnKillRaceDemihuman, 5); }
 Item("Evil_Snake_Lord_Card") { OnEquip: AddStat(ResistBlindStatus, 100); AddStat(ResistCurseStatus, 100); AddStat(AddInt, 3); }
-Item("Heater_Card") { OnEquip: AddStat(AddCrit, 3); } //should add 3 perfect dodge for swordsman
+Item("Heater_Card") { OnEquip: AddStat(AddCrit, 3); if(IsBaseJob(JobSwordsman)) AddStat(PerfectDodge, 3); } //should add 3 perfect dodge for swordsman
 Item("Waste_Stove_Card") { OnEquip: AddStat(AddAttackPower, 5); AddStat(AddInt, 1); }
 Item("Venomous_Card") { OnEquip: AddStat(WhenAttackedPoison, 30); }
 Item("Noxious_Card") { OnEquip: AddStat(AddResistRangedAttack, 10); AddStat(AddResistElementNeutral, 10); }

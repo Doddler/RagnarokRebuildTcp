@@ -55,6 +55,7 @@ namespace Assets.Scripts.UI
             gameObject.SetActive(false);
             NameBox.text = "";
             TextBox.text = "";
+            UiManager.Instance.WindowStack.Remove(this);
         }
         public new void OnPointerDown(PointerEventData eventData)
         {

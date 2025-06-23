@@ -66,7 +66,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             if (hasInventory)
             {
                 State.Inventory.Deserialize(msg);
-                State.Cart.Deserialize(msg);
+                if(msg.ReadByte() == 1) //has cart
+                    State.Cart.Deserialize(msg);
                 State.EquippedBagIdHashes.Clear();
                 for (var i = 0; i < 10; i++)
                 {

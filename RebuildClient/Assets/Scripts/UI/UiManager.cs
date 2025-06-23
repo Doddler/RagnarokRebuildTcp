@@ -243,6 +243,8 @@ public class UiManager : MonoBehaviour
     public void SyncFloatingBoxPositionsWithSaveData()
     {
         var positions = GameConfig.Data.WindowPositions;
+        if(positions.Length != FloatingDialogBoxes.Count)
+            Array.Resize(ref positions, FloatingDialogBoxes.Count);
         for (var i = 0; i < positions.Length; i++)
             positions[i] = FloatingDialogBoxes[i].Target.anchoredPosition;
         GameConfig.Data.WindowPositions = positions;
@@ -414,7 +416,7 @@ public class UiManager : MonoBehaviour
         var close = WindowStack[^1];
         if (!close.CanCloseWindow())
             return false;
-        close.HideWindow();
+        close.CloseWindow();
         return true;
     }
 

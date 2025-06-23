@@ -136,7 +136,7 @@ public partial class CombatEntity
         if (!isCrit && flags.HasFlag(AttackFlags.CanCrit))
         {
             //crit rate: 1%, + 0.3% per luk, + 0.1% per level
-            var critRate = (10 + GetEffectiveStat(CharacterStat.Luck) * 3 + srcLevel + GetStat(CharacterStat.AddCrit)) / 10;
+            var critRate = (1 + GetEffectiveStat(CharacterStat.Luck) / 3 + GetStat(CharacterStat.AddCrit)) * 10 + srcLevel;
 
             if (Character.Type == CharacterType.Player)
                 critRate = critRate * (100 + GetStat(CharacterStat.AddCritChanceRaceFormless + (int)targetRace)) / 100;
@@ -144,9 +144,9 @@ public partial class CombatEntity
             //should double crit for katar here
 
             //counter crit: 0.2% per luck, 0.67% per level
-            var counterCrit = (target.GetEffectiveStat(CharacterStat.Luck) * 2 + targetLevel * 2 / 3) / 10;
+            var counterCrit = target.GetEffectiveStat(CharacterStat.Luck) / 5 * 10 + targetLevel * 2 / 3;
 
-            if (target.HasBodyState(BodyStateFlags.Sleep) || CheckLuckModifiedRandomChanceVsTarget(target, critRate - counterCrit, 100))
+            if (target.HasBodyState(BodyStateFlags.Sleep) || CheckLuckModifiedRandomChanceVsTarget(target, critRate - counterCrit, 1000))
                 isCrit = true;
         }
 

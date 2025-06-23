@@ -46,7 +46,7 @@ namespace Assets.Scripts.UI
             ItemWindow.DropZone.DisableDropArea();
             ItemWindow.DropZone.gameObject.SetActive(isActive);
         }
-
+        
         private void CloseStorage()
         {
             NetworkManager.Instance.SendEndStorage();
@@ -116,7 +116,9 @@ namespace Assets.Scripts.UI
             ItemWindow.TitleBar.text = $"Storage";
             ItemWindow.CancelButtonText.text = $"Close";
             ItemWindow.OnPressCancel = CloseStorage;
+            ItemWindow.OnCloseWindow = CloseStorage;
             ItemWindow.OnPressOk = null;
+            ItemWindow.MoveToTop();
 
             ItemWindow.DropZone.ValidDragOrigins = ItemDragOrigin.ItemWindow;
             ItemWindow.DropZone.OnDropItem = OnDropInventoryItem;

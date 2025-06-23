@@ -7,7 +7,8 @@ namespace RebuildSharedData.Enum;
 public enum NpcDisplayType : byte
 {
     Sprite,
-    Effect
+    Effect,
+    MaskedEffect
 }
 
 public enum NpcEffectType : byte
@@ -21,7 +22,9 @@ public enum NpcEffectType : byte
     MapWarp,
     Demonstration,
     WaterBall,
-    
+    Sanctuary,
+    MagnusExorcismus,
+
     //custom
     LightOrb,
 }

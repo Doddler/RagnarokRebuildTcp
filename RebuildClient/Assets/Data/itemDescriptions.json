@@ -350,7 +350,7 @@
     },
     {
       "Code": "Yggdrasil_Leaf",
-      "Description": "\u003Ccolor=#808080\u003EA leaf from the Yggdrasil tree, it can bring life to fallen characters.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ECasts: \u003Ccolor=#0000FF\u003EResurrection 1\u003C/color\u003E\nCast Time: \u003Ccolor=#777777\u003E6 Seconds\u003C/color\u003E\nChannelled: \u003Ccolor=#777777\u003EBeing hit while casting will interrupt the skill, but not consume the item.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA leaf from the Yggdrasil tree, it can bring life to fallen characters.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ECasts: \u003Ccolor=#0000FF\u003EResurrection Lv 1\u003C/color\u003E\nCast Time: \u003Ccolor=#777777\u003E6 Seconds\u003C/color\u003E\nChannelled: \u003Ccolor=#777777\u003EBeing hit while casting will interrupt the skill, but not consume the item.\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E10\u003C/color\u003E"
     },
     {
       "Code": "Magnifier",
@@ -494,11 +494,11 @@
     },
     {
       "Code": "Awakening_Potion",
-      "Description": "\u003Ccolor=#808080\u003EA special tonic that combats drowsiness.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EIncreases attack speed by 15% for 30 minutes.\nCannot be used by Acolyte Jobs.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E15\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA special tonic that combats drowsiness.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EIncreases attack speed by 15% for 30 minutes.\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EUseable by: \u003Ccolor=#777777\u003EAll jobs except acolyte\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E40\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E15\u003C/color\u003E"
     },
     {
       "Code": "Berserk_Potion",
-      "Description": "\u003Ccolor=#808080\u003EA powerful tonic that amplifies quickness.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EIncreases attack speed by 20% for 30 minutes.\nUseable by Swordsman, Merchant, and Mage.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E20\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA powerful tonic that amplifies quickness.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EIncreases attack speed by 20% for 30 minutes.\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EUseable by: \u003Ccolor=#777777\u003ESwordsman, Merchant, Mage\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E85\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E20\u003C/color\u003E"
     },
     {
       "Code": "Union_of_Tribe",
@@ -4370,7 +4370,7 @@
     },
     {
       "Code": "Masamune",
-      "Description": "\u003Ccolor=#808080\u003EAn oriental sword named after the legendary swordsmith, Masamune.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ESTR -5, DEF -66%\nASPD \u002B20%, FLEE \u002B30\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ESword (2-Handed)\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E200\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E100\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E48\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EAn oriental sword named after the legendary swordsmith, Masamune.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ESTR -5, DEF -66%\nASPD \u002B12%, FLEE \u002B30\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ESword (2-Handed)\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E200\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E100\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E48\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman\u003C/color\u003E"
     },
     {
       "Code": "Dragon_Slayer",
@@ -8946,7 +8946,7 @@
     },
     {
       "Code": "Doppelganger_Card",
-      "Description": "ASPD \u002B15%\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "ASPD \u002B10%\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Orc_Hero_Card",
@@ -9566,7 +9566,7 @@
     },
     {
       "Code": "Cruiser_Card",
-      "Description": "CRIT damage \u002B10%\nCRIT \u002B7 vs. Brute\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003C/i\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "CRIT damage \u002B10%\nCRIT \u002B7 vs. Brute\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Creamy_Fear_Card",
@@ -9626,7 +9626,7 @@
     },
     {
       "Code": "Fur_Seal_Card",
-      "Description": "HIT \u002B10, FLEE \u002B3\nif Acolyte:\n CRIT \u002B9 vs. Undead, Demon\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003C/i\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "HIT \u002B10, FLEE \u002B3\nif Acolyte:\n CRIT \u002B9 vs. Undead, Demon\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Punk_Card",
@@ -9646,7 +9646,7 @@
     },
     {
       "Code": "Mobster_Card",
-      "Description": "CRIT damage \u002B15%\nif Thief: CRIT \u002B4\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003C/i\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "CRIT damage \u002B15%\nIf Thief: CRIT \u002B4\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EWeapon\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Stormy_Knight_Card",
@@ -9702,7 +9702,7 @@
     },
     {
       "Code": "Heater_Card",
-      "Description": "CRIT \u002B3\nif Swordman:\n Perfect Dodge \u002B3\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003C/i\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "CRIT \u002B3\nIf Swordman:\n Perfect Dodge \u002B3\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Waste_Stove_Card",

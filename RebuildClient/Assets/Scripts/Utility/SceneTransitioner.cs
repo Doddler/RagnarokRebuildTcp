@@ -8,6 +8,7 @@ using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
+using Assets.Scripts.UI;
 using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.UI.Hud;
 using RebuildSharedData.ClientTypes;
@@ -199,6 +200,7 @@ namespace Assets.Scripts.Utility
 
             PlayerState.Instance.MapName = newMap.Code;
             UiManager.Instance.PartyPanel.OnChangeMaps();
+            UiManager.Instance.EmoteManager.GetComponent<EmoteWindow>()?.EnsureInitialized();
 
 			if (needAudioChange)
 			{
