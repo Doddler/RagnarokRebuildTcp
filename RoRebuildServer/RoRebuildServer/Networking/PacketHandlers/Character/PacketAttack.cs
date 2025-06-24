@@ -39,7 +39,7 @@ public class PacketAttack : IClientPacketHandler
             return;
         }
 
-        character.Player.AddActionDelay(CooldownActionType.Click);
+        character.Player.AddInputActionDelay(InputActionCooldownType.Click);
 
         var target = World.Instance.GetEntityById(id);
 

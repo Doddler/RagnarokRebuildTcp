@@ -25,7 +25,7 @@ public class PacketLookTowards : IClientPacketHandler
 
         var player = connection.Player;
 
-        player.AddActionDelay(CooldownActionType.FaceDirection);
+        player.AddInputActionDelay(InputActionCooldownType.FaceDirection);
 
         var dir = (Direction)msg.ReadByte();
         var head = (HeadFacing)msg.ReadByte();

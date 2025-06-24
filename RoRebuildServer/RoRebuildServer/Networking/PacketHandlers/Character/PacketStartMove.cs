@@ -28,7 +28,7 @@ public class PacketStartMove : IClientPacketHandler
         if (player.CombatEntity.HasBodyState(BodyStateFlags.Hidden))
             return;
 
-        player.AddActionDelay(CooldownActionType.Click);
+        player.AddInputActionDelay(InputActionCooldownType.Click);
 
         //player.Target = EcsEntity.Null;
 

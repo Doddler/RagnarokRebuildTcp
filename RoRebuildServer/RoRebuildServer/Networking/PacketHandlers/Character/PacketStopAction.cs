@@ -17,7 +17,7 @@ public class PacketStopAction : IClientPacketHandler
         if (!player.CanPerformCharacterActions())
             return;
 
-        player.AddActionDelay(CooldownActionType.StopAction);
+        player.AddInputActionDelay(InputActionCooldownType.StopAction);
 
         connection.Character.ShortenMovePath();
 

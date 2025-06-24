@@ -35,7 +35,7 @@ public class PacketEmote : IClientPacketHandler
         }
 
         var player = connection.Player;
-        if (player.InActionCooldown() || player.LastEmoteTime + 1.8f > Time.ElapsedTimeFloat 
+        if (player.InInputActionCooldown() || player.LastEmoteTime + 1.8f > Time.ElapsedTimeFloat 
                                       || (player.CombatEntity.BodyState & (BodyStateFlags.Silence)) > 0)
             return;
 

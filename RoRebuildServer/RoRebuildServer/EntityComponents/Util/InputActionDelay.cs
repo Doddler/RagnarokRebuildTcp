@@ -2,7 +2,7 @@
 
 namespace RoRebuildServer.EntityComponents.Util;
 
-public enum CooldownActionType
+public enum InputActionCooldownType
 {
     Click,
     FaceDirection,
@@ -13,7 +13,7 @@ public enum CooldownActionType
     Teleport
 }
 
-public static class ActionDelay
+public static class InputActionDelay
 {
     public const float ClickCooldownTime = 0.25f;
     public const float FaceDirectionCooldown = 0.10f;
@@ -23,17 +23,17 @@ public static class ActionDelay
     private const float PickUpItemCooldown = 0.20f;
     private const float TeleportCooldown = 0.5f;
 
-    public static float CooldownTime(CooldownActionType type)
+    public static float CooldownTime(InputActionCooldownType type)
     {
         switch (type)
         {
-            case CooldownActionType.Click: return ClickCooldownTime;
-            case CooldownActionType.FaceDirection: return FaceDirectionCooldown;
-            case CooldownActionType.SitStand: return SitStandCooldown;
-            case CooldownActionType.StopAction: return StopActionCooldown;
-            case CooldownActionType.UseItem: return UseItemCooldown;
-            case CooldownActionType.PickUpItem: return PickUpItemCooldown;
-            case CooldownActionType.Teleport: return TeleportCooldown;
+            case InputActionCooldownType.Click: return ClickCooldownTime;
+            case InputActionCooldownType.FaceDirection: return FaceDirectionCooldown;
+            case InputActionCooldownType.SitStand: return SitStandCooldown;
+            case InputActionCooldownType.StopAction: return StopActionCooldown;
+            case InputActionCooldownType.UseItem: return UseItemCooldown;
+            case InputActionCooldownType.PickUpItem: return PickUpItemCooldown;
+            case InputActionCooldownType.Teleport: return TeleportCooldown;
             default:
                 ServerLogger.LogWarning($"Could not get ActionDelay Cooldown for type {type} (value {(int)type}.");
                 return 0.3f;

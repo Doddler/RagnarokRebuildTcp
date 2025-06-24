@@ -19,9 +19,9 @@ public class PacketNpcAdvance : IClientPacketHandler
             player.NpcInteractionState.InteractionResult != NpcInteractionResult.WaitForRefine)
             return;
         
-        if (player.InActionCooldown())
+        if (player.InInputActionCooldown())
             return;
-        player.AddActionDelay(CooldownActionType.Click);
+        player.AddInputActionDelay(InputActionCooldownType.Click);
 
         player.NpcInteractionState.ContinueInteraction();
         if (player.NpcInteractionState.InteractionResult == NpcInteractionResult.WaitForRefine)

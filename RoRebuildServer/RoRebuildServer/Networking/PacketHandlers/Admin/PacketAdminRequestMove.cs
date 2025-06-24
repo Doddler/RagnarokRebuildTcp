@@ -45,7 +45,7 @@ public class PacketAdminRequestMove : IClientPacketHandler
             return;
         }
 
-        if (player.InActionCooldown())
+        if (player.InInputActionCooldown())
         {
             CommandBuilder.SendRequestFailed(player, ClientErrorType.TooManyRequests);
             return;
@@ -54,7 +54,7 @@ public class PacketAdminRequestMove : IClientPacketHandler
         if (player.IsInNpcInteraction)
             return;
 
-        player.AddActionDelay(CooldownActionType.Teleport);
+        player.AddInputActionDelay(InputActionCooldownType.Teleport);
         ch.ResetState();
         ch.SetSpawnImmunity();
 

@@ -13,10 +13,10 @@ public class PacketClientTextCommand : IClientPacketHandler
         if (!connection.IsConnectedAndInGame || connection.Character == null || connection.Player == null)
             return;
 
-        if (connection.Player.InActionCooldown())
+        if (connection.Player.InInputActionCooldown())
             return;
 
-        connection.Player.AddActionDelay(0.8f);
+        connection.Player.AddInputActionDelay(0.8f);
         
         var type = (ClientTextCommand)msg.ReadByte();
 
@@ -27,7 +27,7 @@ public class PacketClientTextCommand : IClientPacketHandler
             if (!string.IsNullOrWhiteSpace(serverPass) && text != serverPass)
             {
                 CommandBuilder.ErrorMessage(connection.Player, $"Invalid parameters.");
-                connection.Player.AddActionDelay(1.2f);
+                connection.Player.AddInputActionDelay(1.2f);
                 return;
             }
             connection.Player.IsAdmin = true;

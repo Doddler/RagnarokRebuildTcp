@@ -28,7 +28,7 @@ public class PacketNpcClick : IClientPacketHandler
         if (!character.Player.CanPerformCharacterActions() && !character.CombatEntity.HasBodyState(BodyStateFlags.Hidden))
             return;
 
-        connection.Player.AddActionDelay(CooldownActionType.Click);
+        connection.Player.AddInputActionDelay(InputActionCooldownType.Click);
 
         var targetNpc = World.Instance.GetEntityById(id);
         

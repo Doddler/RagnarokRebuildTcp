@@ -35,7 +35,7 @@ public class PacketUseInventoryItem : IClientPacketHandler
 
         //obviously you should check if the item is in your inventory, but we have no inventory!
 
-        player.AddActionDelay(CooldownActionType.UseItem);
+        player.AddInputActionDelay(InputActionCooldownType.UseItem);
         
         if (!DataManager.ItemList.TryGetValue(itemId, out var item) || !DataManager.UseItemInfo.TryGetValue(itemId, out var useInfo))
         {

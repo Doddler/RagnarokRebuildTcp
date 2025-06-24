@@ -27,7 +27,7 @@ public class PacketRespawn : IClientPacketHandler
         var ce = player.CombatEntity;
         var ch = connection.Character;
 
-        if (player.InActionCooldown())
+        if (player.InInputActionCooldown())
             return;
 
         if (ch.State != CharacterState.Dead)
@@ -56,7 +56,7 @@ public class PacketRespawn : IClientPacketHandler
             player.ReturnToSavePoint();
         else
         {
-            player.AddActionDelay(CooldownActionType.Click);
+            player.AddInputActionDelay(InputActionCooldownType.Click);
 
             ch.Map.AddVisiblePlayersAsPacketRecipients(ch);
             CommandBuilder.SendPlayerResurrection(ch);

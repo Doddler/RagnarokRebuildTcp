@@ -134,7 +134,7 @@ public class Player : IEntityAutoReset
 
 #if DEBUG
     private float actionCooldown;
-    public float ActionCooldown
+    public float InputActionCooldown
     {
         get => actionCooldown;
         set
@@ -145,7 +145,7 @@ public class Player : IEntityAutoReset
         }
     }
 #else
-    public float ActionCooldown;
+    public float InputActionCooldown;
 #endif
 
     public float LastEmoteTime; //we'll probably need to have like, a bunch of timers at some point...
@@ -216,7 +216,7 @@ public class Player : IEntityAutoReset
         Character = null!;
         CombatEntity = null!;
         Connection = null!;
-        ActionCooldown = 0f;
+        InputActionCooldown = 0f;
         HeadFacing = HeadFacing.Center;
         AutoAttackLock = false;
         Id = Guid.Empty;
@@ -1029,7 +1029,7 @@ public class Player : IEntityAutoReset
         if (!WarpPlayer(savePoint, position.X, position.Y, area, area, false))
             ServerLogger.LogWarning($"Failed to move player via ReturnToSavePoint to {savePoint}!");
 
-        AddActionDelay(CooldownActionType.Teleport);
+        AddInputActionDelay(InputActionCooldownType.Teleport);
     }
 
     public bool HasSpForSkill(CharacterSkill skill, int level)
@@ -1761,7 +1761,7 @@ public class Player : IEntityAutoReset
         if (!World.Instance.TryGetWorldMapByName(mapName, out var map))
             return false;
 
-        AddActionDelay(CooldownActionType.Teleport);
+        AddInputActionDelay(InputActionCooldownType.Teleport);
         Character.ResetState();
         Character.SetSpawnImmunity();
 
@@ -1828,9 +1828,9 @@ public class Player : IEntityAutoReset
         }
     }
 
-    public bool InActionCooldown() => ActionCooldown > 1f;
-    public void AddActionDelay(CooldownActionType type) => ActionCooldown += ActionDelay.CooldownTime(type);
-    public void AddActionDelay(float time) => ActionCooldown += time;
+    public bool InInputActionCooldown() => InputActionCooldown > 1f;
+    public void AddInputActionDelay(InputActionCooldownType type) => InputActionCooldown += InputActionDelay.CooldownTime(type);
+    public void AddInputActionDelay(float time) => InputActionCooldown += time;
 
     private bool InCombatReadyState => (Character.State == CharacterState.Idle || Character.State == CharacterState.Moving)
         && !CombatEntity.IsCasting && Character.AttackCooldown < Time.ElapsedTimeFloat;
@@ -1839,7 +1839,7 @@ public class Player : IEntityAutoReset
 
     public bool CanPerformCharacterActions()
     {
-        if (InActionCooldown())
+        if (InInputActionCooldown())
             return false;
         if (Character.State == CharacterState.Dead)
             return false;
@@ -1950,9 +1950,9 @@ public class Player : IEntityAutoReset
 
     public void Update()
     {
-        ActionCooldown -= Time.DeltaTimeFloat; //this cooldown is the delay on how often a player can perform actions
-        if (ActionCooldown < 0)
-            ActionCooldown = 0;
+        InputActionCooldown -= Time.DeltaTimeFloat; //this cooldown is the delay on how often a player can perform actions
+        if (InputActionCooldown < 0)
+            InputActionCooldown = 0;
 
         Debug.Assert(Character.Map != null);
         Debug.Assert(CombatEntity != null);

@@ -14,7 +14,6 @@ public abstract class NpcBehaviorBase
         return NpcInteractionResult.EndInteraction;
     }
 
-
     public virtual NpcInteractionResult OnTouch(Npc npc, Player player, NpcInteractionState state)
     {
         return NpcInteractionResult.EndInteraction;

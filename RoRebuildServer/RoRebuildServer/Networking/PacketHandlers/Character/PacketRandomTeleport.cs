@@ -51,7 +51,7 @@ public class PacketRandomTeleport : IClientPacketHandler
 
         ServerLogger.Log($"Player {player.Name} executes a random teleport from {ch.Position} to {p}");
 
-        player.AddActionDelay(CooldownActionType.Teleport);
+        player.AddInputActionDelay(InputActionCooldownType.Teleport);
         ch.ResetState();
         ch.SetSpawnImmunity();
         map.TeleportEntity(ref connection.Entity, ch, p);
