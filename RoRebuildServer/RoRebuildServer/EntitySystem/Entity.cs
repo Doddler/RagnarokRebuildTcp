@@ -112,6 +112,9 @@ public struct Entity
             throw new Exception("Attempting to get component of an expired entity!");
 #endif
         var id = EntityComponentManager.GetComponentIndex<T>(data.Type);
+        if (id == -1)
+            return null;
+
         return (T)data.Components[id];
     }
 

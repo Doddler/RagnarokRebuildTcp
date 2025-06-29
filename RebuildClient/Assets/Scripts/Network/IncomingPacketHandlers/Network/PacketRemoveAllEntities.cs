@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Network.HandlerBase;
+using Assets.Scripts.UI.Hud;
 using RebuildSharedData.Networking;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
             }
 
             Network.EntityList.Clear();
+            UiManager.VendAndChatManager.RemoveAllDialogNpcs();
         }
     }
 }

@@ -59,6 +59,7 @@ public class Player : IEntityAutoReset
     public CharacterBag? Inventory;
     public CharacterBag? CartInventory;
     public CharacterBag? StorageInventory;
+    public VendingState? VendingState;
     public EntityValueList<float> RecentAttackersList = null!;
     private float lastAttackerListCheckUpdate;
     public float ShoutCooldown;
@@ -263,6 +264,7 @@ public class Player : IEntityAutoReset
         Equipment = null!;
         EntityValueListPool<float>.Return(RecentAttackersList);
         RecentAttackersList = null!;
+        VendingState = null;
 
         if (Party != null)
         {
@@ -1992,6 +1994,9 @@ public class Player : IEntityAutoReset
                     }
                 }
             }
+
+            if (!NpcInteractionState.NpcEntity.IsAlive())
+                EndNpcInteractions();
         }
 
         if (Connection.ActiveDbAction != ActiveDbAction.None)

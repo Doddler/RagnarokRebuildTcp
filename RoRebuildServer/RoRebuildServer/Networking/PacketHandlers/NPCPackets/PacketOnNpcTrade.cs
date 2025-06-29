@@ -1,11 +1,9 @@
-﻿using RebuildSharedData.Enum;
+﻿using System.Diagnostics;
+using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
-using RoRebuildServer.EntityComponents;
-using RoRebuildServer.EntityComponents.Npcs;
-using System.Diagnostics;
 using RoRebuildServer.Logging;
 
-namespace RoRebuildServer.Networking.PacketHandlers.NPC;
+namespace RoRebuildServer.Networking.PacketHandlers.NPCPackets;
 
 
 [ClientPacketHandler(PacketType.NpcTradeItem)]

@@ -1,12 +1,11 @@
 ﻿using System.Buffers;
-using RebuildSharedData.Networking;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Networking;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Items;
 
-namespace RoRebuildServer.Networking.PacketHandlers.NPC;
+namespace RoRebuildServer.Networking.PacketHandlers.NPCPackets;
 
 [ClientPacketHandler(PacketType.ShopBuySell)]
 public class PacketShopBuySell : IClientPacketHandler

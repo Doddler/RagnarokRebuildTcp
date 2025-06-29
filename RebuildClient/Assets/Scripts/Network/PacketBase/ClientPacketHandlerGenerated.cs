@@ -15,7 +15,7 @@ namespace Assets.Scripts.Network.PacketBase
 	{
 		static ClientPacketHandler()
 		{
-			handlers = new ClientPacketHandlerBase[104];
+			handlers = new ClientPacketHandlerBase[109];
 			handlers[0] = new PacketOnConnectionApproved(); //ConnectionApproved
 			handlers[1] = new InvalidPacket(); //ConnectionDenied
 			handlers[2] = new InvalidPacket(); //PlayerReady
@@ -120,6 +120,11 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[101] = new PacketUpdateParty(); //UpdateParty
 			handlers[102] = new PacketNotifyPlayerPartyChange(); //NotifyPlayerPartyChange
 			handlers[103] = new PacketSkillWithMaskedArea(); //SkillWithMaskedArea
+			handlers[104] = new PacketStartVending(); //VendingStart
+			handlers[105] = new PacketVendingStop(); //VendingStop
+			handlers[106] = new PacketVendingStoreView(); //VendingViewStore
+			handlers[107] = new PacketVendingNotifyOfSale(); //VendingNotifyOfSale
+			handlers[108] = new InvalidPacket(); //VendingPurchaseFromStore
 		}
 	}
 }

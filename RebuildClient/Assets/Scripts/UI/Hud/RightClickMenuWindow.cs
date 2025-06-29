@@ -62,7 +62,7 @@ namespace Assets.Scripts.UI.Hud
             targetEntityId = target.Id;
             
             var state = PlayerState.Instance;
-            if (state.EntityId == target.Id)
+            if (state.EntityId == target.Id || target.CharacterType == CharacterType.PlayerLikeNpc)
                 return;
             
             if (state.IsInParty)

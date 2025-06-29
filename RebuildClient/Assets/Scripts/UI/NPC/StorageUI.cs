@@ -107,7 +107,7 @@ namespace Assets.Scripts.UI
         {
             ItemWindow.HasSubmitButtons = false;
             ItemWindow.HasToggleButton = false;
-            ItemWindow.ShowItemValues = false;
+            // ItemWindow.ShowItemValues = false;
             ItemWindow.OkButton.interactable = false;
             ItemWindow.OkButton.gameObject.SetActive(false);
             ItemWindow.CancelButton.gameObject.SetActive(true);
@@ -141,9 +141,9 @@ namespace Assets.Scripts.UI
             StorageControls.ClickStorageButton((int)targetSection);
         }
 
-        public void OnDropInventoryItem()
+        public void OnDropInventoryItem(ItemDragObject srcItem)
         {
-            var srcItem = UiManager.Instance.DragItemObject;
+            // var srcItem = UiManager.Instance.DragItemObject;
             Debug.Log($"Dropped item {srcItem.ItemId}");
 
             if (NetworkManager.Instance.PlayerState.Inventory.GetInventoryData().TryGetValue(srcItem.ItemId, out var item))

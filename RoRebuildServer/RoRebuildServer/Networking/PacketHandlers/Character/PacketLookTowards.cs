@@ -21,7 +21,11 @@ public class PacketLookTowards : IClientPacketHandler
         Debug.Assert(connection.Character.Map != null);
 
         if (!connection.Player.CanPerformCharacterActions())
-            return;
+        {
+            //while you can't normally look around during a npc interaction, we make an exception if they are vending (which is a type of npc interaction)
+            if (!connection.Player.IsInNpcInteraction || connection.Player.NpcInteractionState.InteractionResult != NpcInteractionResult.CurrentlyVending)
+                return;
+        }
 
         var player = connection.Player;
 

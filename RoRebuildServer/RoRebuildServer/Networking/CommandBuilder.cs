@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Numerics;
 using Microsoft.VisualBasic;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
@@ -166,7 +167,7 @@ public static class CommandBuilder
             type = CharacterType.PlayerLikeNpc;
             //isCharacterNpc = true;
         }
-        
+
         packet.Write(c.Id);
         packet.Write((byte)type);
         packet.Write((short)c.ClassId);
@@ -195,7 +196,7 @@ public static class CommandBuilder
             packet.Write(ce.GetStat(CharacterStat.Hp));
 
             var status = ce.StatusContainer;
-            if(status == null)
+            if (status == null)
                 packet.Write(false);
             else
                 status.PrepareCreateEntityMessage(packet);
@@ -260,6 +261,7 @@ public static class CommandBuilder
                 packet.Write(0); //sp
                 packet.Write(0); //maxsp
 
+                packet.Write((byte)(npc.HasCart ? PlayerFollower.Cart0 : PlayerFollower.None ));
                 //packet.Write(false);
             }
         }
@@ -268,22 +270,38 @@ public static class CommandBuilder
         {
             var npc = c.Entity.Get<Npc>();
             var display = npc.DisplayType;
-            if (display == NpcDisplayType.MaskedEffect && (npc.AreaOfEffect == null || !npc.AreaOfEffect.IsMaskedArea))
+
+
+            if (display == NpcDisplayType.MaskedEffect &&
+                (npc.AreaOfEffect == null || !npc.AreaOfEffect.IsMaskedArea))
                 display = NpcDisplayType.Effect;
             packet.Write(npc.Name);
-            packet.Write(npc.HasInteract);
             packet.Write((byte)display);
+            packet.Write(npc.HasInteract);
             packet.Write((byte)npc.EffectType);
             if (display == NpcDisplayType.MaskedEffect)
             {
                 var aoe = npc.AreaOfEffect!;
                 packet.Write(aoe.Area);
                 var mask = aoe.GetAreaMask()!;
-                for(var i = 0; i < aoe.Area.Size; i++)
+                for (var i = 0; i < aoe.Area.Size; i++)
                     packet.Write(mask[i]);
             }
+
+            if (display == NpcDisplayType.VendingProxy)
+            {
+                if (!npc.Owner.TryGet<WorldObject>(out var ownerCh))
+                {
+                    ServerLogger.LogWarning($"Attempting to send vend proxy npc to client, but it's owner {npc.FullName} does not exist!");
+                    packet.Write(-1);
+                }
+                else
+                    packet.Write(ownerCh.Id);
+
+
+            }
         }
-        
+
         if (c.AdminHidden && !isSelf)
             ServerLogger.LogWarning($"We are sending the data of hidden character \"{c.Name}\" to the client!");
 
@@ -292,7 +310,7 @@ public static class CommandBuilder
             WriteWalkData2(c, packet);
         }
     }
-    
+
     private static OutboundMessage BuildCreateEntity(WorldObject c, bool isSelf = false)
     {
         var type = isSelf ? PacketType.EnterServer : PacketType.CreateEntity;
@@ -321,7 +339,7 @@ public static class CommandBuilder
     public static void RefreshGrantedSkills(Player p)
     {
         var packet = NetworkManager.StartPacket(PacketType.RefreshGrantedSkills, 256);
-        if(p.GrantedSkills == null)
+        if (p.GrantedSkills == null)
             packet.Write((short)0);
         else
         {
@@ -481,7 +499,7 @@ public static class CommandBuilder
     public static void SkillExecuteTargetedSkillAutoVis(WorldObject caster, WorldObject? target, CharacterSkill skill, int lvl, DamageInfo di, bool isIndirect = false)
     {
         caster.Map?.AddVisiblePlayersAsPacketRecipients(caster);
-        if(target != null) EnsureRecipient(target.Entity);
+        if (target != null) EnsureRecipient(target.Entity);
         SkillExecuteTargetedSkill(caster, target, skill, lvl, di, isIndirect);
         ClearRecipients();
     }
@@ -498,7 +516,7 @@ public static class CommandBuilder
 
         //the owner of the damage can be different from where the attack is launched from, so inform the client if that's the case
         if (caster.Entity != di.Source)
-            packet.Write(di.Source.TryGet<WorldObject>(out var attacker) ? attacker.Id : -1 ); 
+            packet.Write(di.Source.TryGet<WorldObject>(out var attacker) ? attacker.Id : -1);
         else
             packet.Write(-1);
         packet.Write(target?.Id ?? -1);
@@ -537,7 +555,7 @@ public static class CommandBuilder
         packet.Write((byte)di.AttackSkill);
         packet.Write((byte)di.HitCount);
         packet.Write((byte)di.Result);
-        
+
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
@@ -581,7 +599,7 @@ public static class CommandBuilder
 
         var packet = NetworkManager.StartPacket(PacketType.Skill, 48);
 
-        if(motionTime < 0)
+        if (motionTime < 0)
             motionTime = caster.CombatEntity?.GetTiming(TimingStat.AttackMotionTime) ?? 0;
 
         packet.Write((byte)SkillTarget.Ground);
@@ -615,7 +633,7 @@ public static class CommandBuilder
         packet.Write((byte)range);
         packet.Write(motionTime);
         packet.Write(isIndirect);
-        for(var i = 0; i < mask.Length; i++)
+        for (var i = 0; i < mask.Length; i++)
             packet.Write(mask[i]);
 
         NetworkManager.SendMessageMulti(packet, recipients);
@@ -895,7 +913,7 @@ public static class CommandBuilder
         Debug.Assert(c.Map != null, $"Player {p} not attached to map to inform of server enter.");
         packet.Write(c.Map.Name);
         packet.Write(c.Player.Id.ToByteArray());
-        
+
         NetworkManager.SendMessage(packet, p.Connection);
         SendUpdatePlayerData(p, true, true, true);
     }
@@ -942,7 +960,7 @@ public static class CommandBuilder
 
     public static void SendRemoveEntity(WorldObject c, Player player, CharacterRemovalReason reason)
     {
-        
+
         var packet = NetworkManager.StartPacket(PacketType.RemoveEntity, 32);
         packet.Write(c.Id);
         packet.Write((byte)reason);
@@ -1264,13 +1282,37 @@ public static class CommandBuilder
         NetworkManager.SendMessage(packet, p.Connection);
     }
 
+    public static void SendVendOpenShop(Player p, Player vendor, string name)
+    {
+        Debug.Assert(vendor.VendingState != null);
+        Debug.Assert(vendor.CartInventory != null);
+
+        var packet = NetworkManager.StartPacket(PacketType.VendingViewStore, 128);
+        var count = vendor.VendingState.SellingItems.Count;
+
+        packet.Write(vendor.Character.Id);
+        packet.Write(name);
+        packet.Write(count);
+
+        foreach (var (bagId, item) in vendor.VendingState.SellingItems)
+        {
+            var price = vendor.VendingState.SellingItemValues[bagId];
+            
+            packet.Write(bagId);
+            item.SerializeWithType(packet);
+            packet.Write(price);
+        }
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+
     public static void SendNpcBeginTrading(Player p, Npc npc, List<NpcTradeItem> set)
     {
         var packet = NetworkManager.StartPacket(PacketType.StartNpcTrade, 128);
-        
+
         packet.Write((byte)set.Count);
-        
-        foreach(var trade in set)
+
+        foreach (var trade in set)
         {
             trade.CombinedItem.SerializeWithType(packet);
             packet.Write(trade.TradeCount);
@@ -1316,7 +1358,7 @@ public static class CommandBuilder
 
         NetworkManager.SendMessage(packet, p.Connection);
     }
-    
+
     public static void SendNpcShowSprite(Player p, string spriteName, int pos)
     {
         var packet = NetworkManager.StartPacket(PacketType.NpcInteraction, 8);
@@ -1348,7 +1390,7 @@ public static class CommandBuilder
         var packet = NetworkManager.StartPacket(PacketType.DropItem, 48);
         item.Serialize(packet);
         packet.Write(isNewDrop);
-        
+
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
@@ -1360,7 +1402,7 @@ public static class CommandBuilder
 
         NetworkManager.SendMessage(packet, p.Connection);
     }
-    
+
     public static void PickUpOrRemoveItemMulti(WorldObject? pickup, GroundItem item)
     {
         var packet = NetworkManager.StartPacket(PacketType.PickUpItem, 32);
@@ -1423,11 +1465,11 @@ public static class CommandBuilder
         item.SerializeWithType(packet);
         packet.Write((short)change);
         packet.Write(p.CartInventory?.BagWeight ?? 0);
-        if(moveType == CartInteractionType.InventoryToCart || moveType == CartInteractionType.CartToInventory)
+        if (moveType == CartInteractionType.InventoryToCart || moveType == CartInteractionType.CartToInventory)
             packet.Write(p.Inventory?.BagWeight ?? 0);
         else
             packet.Write(p.StorageInventory?.BagWeight ?? 0);
-        
+
         NetworkManager.SendMessage(packet, p.Connection);
     }
 
@@ -1435,12 +1477,12 @@ public static class CommandBuilder
     {
         var packet = NetworkManager.StartPacket(PacketType.MemoMapLocation, 96);
 
-        for(var i = 0; i < 4; i++)
+        for (var i = 0; i < 4; i++)
             p.MemoLocations[i].Serialize(packet);
 
         NetworkManager.SendMessage(packet, p.Connection);
     }
-    
+
     public static void SkillFailed(Player p, SkillValidationResult res)
     {
         var packet = NetworkManager.StartPacket(PacketType.SkillError, 24);
@@ -1487,7 +1529,7 @@ public static class CommandBuilder
 
     public static void NotifyNearbyPlayersOfPartyChangeAutoVis(Player p)
     {
-        if(p.Character.Map == null)
+        if (p.Character.Map == null)
             return;
 
         var packet = NetworkManager.StartPacket(PacketType.NotifyPlayerPartyChange, 96);
@@ -1500,7 +1542,7 @@ public static class CommandBuilder
             packet.Write((byte)0);
         else
         {
-            packet.Write((byte)1);  
+            packet.Write((byte)1);
             packet.Write(p.Party.PartyId);
             packet.Write(p.Party.PartyName);
             packet.Write(p.Party.PartyOwner == p.Entity);
@@ -1512,7 +1554,7 @@ public static class CommandBuilder
             //        AddRecipient(partyMember.Connection);
             //}
         }
-        
+
         NetworkManager.SendMessageMulti(packet, recipients);
         ClearRecipients();
     }
@@ -1538,7 +1580,7 @@ public static class CommandBuilder
         }
 
         var packet = NetworkManager.StartPacket(PacketType.AcceptPartyInvite, 256);
-        
+
         packet.Write((byte)(isLoginMessage ? 1 : 0));
         packet.Write(party.PartyId);
         packet.Write(party.PartyName);
@@ -1556,7 +1598,7 @@ public static class CommandBuilder
 
             if (m.TryGet<Player>(out var partyMember))
             {
-                if(partyMember.Character.Map != p.Character.Map || partyMember.Character.Position.DistanceTo(p.Character.Position) > ServerConfig.MaxViewDistance)
+                if (partyMember.Character.Map != p.Character.Map || partyMember.Character.Position.DistanceTo(p.Character.Position) > ServerConfig.MaxViewDistance)
                     AddRecipient(partyMember.Connection);
             }
         }
@@ -1597,7 +1639,7 @@ public static class CommandBuilder
         packet.Write(p.GetStat(CharacterStat.Sp));
         packet.Write(p.GetStat(CharacterStat.MaxSp));
 
-        if(notifyAllMembers)
+        if (notifyAllMembers)
             AddPartyMembers(p, p.Party, false, true);
         else
             AddPartyMembersOutOfViewRange(p, p.Party);
@@ -1661,7 +1703,7 @@ public static class CommandBuilder
         {
             if (m.TryGet<Player>(out var partyMember))
             {
-                if(includeSelf || partyMember.PartyMemberId != memberId) //don't notify the added player, they'll get an AcceptParty packet
+                if (includeSelf || partyMember.PartyMemberId != memberId) //don't notify the added player, they'll get an AcceptParty packet
                     AddRecipient(partyMember.Connection);
             }
         }
@@ -1686,5 +1728,49 @@ public static class CommandBuilder
 
         NetworkManager.SendMessageMulti(packet, recipients);
         ClearRecipients();
+    }
+
+    public static void VendingNotifyOfSale(Player p, int bagId, int change)
+    {
+        if (p.VendingState == null)
+        {
+            ServerLogger.LogWarning($"Call to CommandBuilder.UpdateVendingState failed for player {p.Name} as they do not have a VendingState!");
+            return;
+        }
+
+        var packet = NetworkManager.StartPacket(PacketType.VendingNotifyOfSale);
+
+        packet.Write(bagId);
+        packet.Write(change);
+
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+
+    public static void VendingStart(Player p, string vendName)
+    {
+        if (p.VendingState == null)
+        {
+            ServerLogger.LogWarning($"Call to CommandBuilder.VendingStart failed for player {p.Name} as they do not have a VendingState!");
+            return;
+        }
+
+        var packet = NetworkManager.StartPacket(PacketType.VendingStart);
+
+        packet.Write(vendName);
+        packet.Write(p.VendingState.SellingItems.Count);
+        foreach (var (id, c) in p.VendingState.SellingItems)
+        {
+            var price = p.VendingState.SellingItemValues[id];
+            packet.Write(id); //only need to send the bagId, not the full serialized item, as they have the items in their cart still
+            packet.Write(c.Count);
+            packet.Write(price);
+        }
+        NetworkManager.SendMessage(packet, p.Connection);
+    }
+
+    public static void VendingEnd(Player p)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.VendingStop);
+        NetworkManager.SendMessage(packet, p.Connection);
     }
 }

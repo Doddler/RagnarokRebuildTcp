@@ -426,9 +426,9 @@ MaxLevel = 10
 
 [Vending]
 Icon = "mc_vending"
-Target = "Passive"
+Target = "Self"
 MaxLevel = 10
-SpCost = [10,10,10,10,10,10,10,10,10,10]
+SpCost = [0,0,0,0,0,0,0,0,0,0]
 
 [ItemAppraisal]
 Name = "Weapon Appraisal"
@@ -487,6 +487,7 @@ Icon = "pr_sanctuary"
 Target = "Ground"
 MaxLevel = 10
 SpCost = [15,18,21,24,27,30,33,36,39,42]
+AdjustableLevel = true
 
 [Gloria]
 Name = "Gloria"

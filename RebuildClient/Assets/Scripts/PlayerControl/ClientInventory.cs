@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Assets.Scripts.Network;
 using Assets.Scripts.Sprites;
@@ -209,7 +210,7 @@ namespace Assets.Scripts.PlayerControl
             return BagSlotId;
         }
 
-        public string ProperName()
+        public readonly string ProperName()
         {
             if (Type == ItemType.UniqueItem)
                 return MakeProperName(UniqueItem, ItemData);
@@ -268,7 +269,7 @@ namespace Assets.Scripts.PlayerControl
     
     public class ClientInventory
     {
-        private readonly SortedDictionary<int, InventoryItem> inventoryLookup = new();
+        private SortedDictionary<int, InventoryItem> inventoryLookup = new();
 
         public SortedDictionary<int, InventoryItem> GetInventoryData() => inventoryLookup;
         public Dictionary<int, int> UniqueItemCounts = new();

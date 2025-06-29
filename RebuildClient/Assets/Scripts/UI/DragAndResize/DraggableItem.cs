@@ -1,7 +1,9 @@
 ﻿using System;
 using Assets.Scripts.Network;
+using Assets.Scripts.PlayerControl;
 using Assets.Scripts.SkillHandlers;
 using Assets.Scripts.Sprites;
+using Assets.Scripts.UI.Inventory;
 using RebuildSharedData.Enum;
 using TMPro;
 using UnityEngine;
@@ -19,7 +21,12 @@ namespace Assets.Scripts.UI
         ShopItem,
         StorageItem,
         SocketedItem,
-        CartItem
+        CartItem,
+        VendSetupSource,
+        VendSetupTarget,
+        VendActive,
+        VendShop,
+        VendPurchase
     }
 
     public class DraggableItem : DragItemBase, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
@@ -92,7 +99,11 @@ namespace Assets.Scripts.UI
                     var spCost = "";
                     if (skill.Target != SkillTarget.Passive && skill.SpCost != null && skill.SpCost.Length > 0)
                     {
-                        var lvl = Mathf.Clamp(ItemCount, 1, skill.SpCost.Length);
+                        var lvl = ItemCount;
+                        if (!skill.AdjustableLevel && PlayerState.Instance.KnownSkills.TryGetValue(skill.SkillId, out var knownLevel))
+                            lvl = knownLevel;
+                        lvl = Mathf.Clamp(lvl, 1, skill.SpCost.Length);
+
                         spCost = $" (SP: {skill.SpCost[lvl - 1]})";
                     }
 
@@ -108,7 +119,25 @@ namespace Assets.Scripts.UI
                     var inventory = NetworkManager.Instance.PlayerState.Cart.GetInventoryData();
                     if (!inventory.TryGetValue(ItemId, out var dat))
                         return;
-                    text = dat.ToString();
+                    text = dat.ProperName();
+                }
+                
+                
+                if (Type == DragItemType.VendActive)
+                {
+                    var inventory = NetworkManager.Instance.PlayerState.Cart.GetInventoryData();
+                    var prices = VendingActiveWindow.Instance.ItemPriceList;
+                    if (!inventory.TryGetValue(ItemId, out var dat) || !prices.TryGetValue(ItemId, out var price))
+                        return;
+                    text = $"{dat.ProperName()} : {price:N0}z";
+                }
+
+                if (Type == DragItemType.VendSetupSource)
+                {
+                    var inventory = NetworkManager.Instance.PlayerState.Cart.GetInventoryData();
+                    if (!inventory.TryGetValue(ItemId, out var dat))
+                        return;
+                    text = dat.ProperName();
                 }
 
                 if (Type == DragItemType.Item)

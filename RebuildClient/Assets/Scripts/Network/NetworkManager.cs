@@ -14,6 +14,7 @@ using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
 using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.UI.Hud;
+using Assets.Scripts.UI.Inventory;
 using Assets.Scripts.UI.RefineItem;
 using Assets.Scripts.UI.TitleScreen;
 using Assets.Scripts.Utility;
@@ -1713,7 +1714,7 @@ namespace Assets.Scripts.Network
         {
             var msg = StartMessage();
 
-                msg.Write((byte)PacketType.Skill);
+            msg.Write((byte)PacketType.Skill);
             msg.Write((byte)SkillTarget.Self);
             msg.Write((short)skill);
             msg.Write((byte)lvl);
@@ -1856,6 +1857,54 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
+        public void SubmitVendingPurchase(Dictionary<int, ItemListEntryV2> items)
+        {
+            var msg = StartMessage(PacketType.VendingPurchaseFromStore);
+            
+            msg.Write(items.Count);
+
+            foreach (var (bagId, entry) in items)
+            {
+                msg.Write(bagId);
+                msg.Write(entry.ItemCount);
+            }
+            
+            SendMessage(msg);
+        }
+
+        public void VendingStart(string shopName, Dictionary<int, ItemListEntryV2> entries)
+        {
+            var msg = StartMessage(PacketType.VendingStart);
+            
+            msg.Write(shopName);
+            msg.Write(entries.Count);
+
+            foreach (var (bagId, entry) in entries)
+            {
+                msg.Write(bagId);
+                msg.Write(entry.ItemCount);
+                msg.Write(int.TryParse(entry.InputField.text, out var price) ? price : 0);
+            }
+            
+            SendMessage(msg);
+        }
+
+        public void VendingEnd()
+        {
+            var msg = StartMessage(PacketType.VendingStop);
+            
+            SendMessage(msg);
+        }
+
+        public void VendingOpenStore(int npcId)
+        {
+            var msg = StartMessage(PacketType.VendingViewStore);
+            
+            msg.Write(npcId);
+            
+            SendMessage(msg);
+        }
+        
         public void OrganizeParty(string partyName, int entityId = -1)
         {
             var msg = StartMessage(PacketType.CreateParty);

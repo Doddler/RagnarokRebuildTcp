@@ -59,7 +59,7 @@ namespace Assets.Scripts.UI
 
             window.HasSubmitButtons = true;
             window.HasToggleButton = false;
-            window.ShowItemValues = false;
+            // window.ShowItemValues = false;
             window.OkButton.interactable = false;
             window.OkButton.gameObject.SetActive(true);
             window.CancelButton.gameObject.SetActive(true);

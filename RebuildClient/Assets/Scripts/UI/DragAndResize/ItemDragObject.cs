@@ -14,7 +14,9 @@ namespace Assets.Scripts.UI
         EquipmentWindow = 4,
         ShopWindow = 8,
         StorageWindow = 16,
-        CartWindow = 32
+        CartWindow = 32,
+        VendingSource = 64,
+        VendingTarget = 128
     }
     
     public class ItemDragObject : DragItemBase

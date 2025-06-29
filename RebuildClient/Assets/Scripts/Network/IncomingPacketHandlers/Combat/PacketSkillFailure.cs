@@ -1,4 +1,6 @@
 ﻿using Assets.Scripts.Network.HandlerBase;
+using Assets.Scripts.UI.Inventory;
+using Assets.Scripts.UI.Utility;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using UnityEngine;
@@ -53,9 +55,33 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 case SkillValidationResult.SkillNotKnown:
                     Camera.AppendChatText("<color=#FF7777>Skill failed: Skill not learned or available.</color>");
                     break;
-                
+
                 case SkillValidationResult.CannotTeleportHere:
                     Camera.AppendChatText("<color=#FF7777>You're unable to teleport in this location.</color>");
+                    break;
+                case SkillValidationResult.VendFailedGenericError:
+                    VendingSetupManager.Instance?.ResumeVendWindow();
+                    Camera.AppendChatText("Vending failed.", TextColor.Error);
+                    break;
+                case SkillValidationResult.VendFailedInvalidPrice:
+                    VendingSetupManager.Instance?.ResumeVendWindow();
+                    Camera.AppendChatText("Vending failed: One or more of the prices provided were not valid (max 9,999,999z).", TextColor.Error);
+                    break;
+                case SkillValidationResult.VendFailedItemsNotPreset:
+                    VendingSetupManager.Instance?.ResumeVendWindow();
+                    Camera.AppendChatText("Vending failed: One or more of the items listed could not be found in your cart.", TextColor.Error);
+                    break;
+                case SkillValidationResult.VendFailedNameNotValid:
+                    VendingSetupManager.Instance?.ResumeVendWindow();
+                    Camera.AppendChatText("Vending failed: Store name was not valid.", TextColor.Error);
+                    break;
+                case SkillValidationResult.VendFailedTooCloseToNpc:
+                    VendingSetupManager.Instance?.ResumeVendWindow();
+                    Camera.AppendChatText("Vending failed: Must be a minimum of 3 tiles from any NPCs", TextColor.Error);
+                    break;
+                case SkillValidationResult.VendFailedTooManyItems:
+                    VendingSetupManager.Instance?.ResumeVendWindow();
+                    Camera.AppendChatText("Vending failed: The number of items exceeds the amount allowed by your learned level of vending.", TextColor.Error);
                     break;
                 default:
                     Debug.Log($"Skill failure (not shown to user): {result}");

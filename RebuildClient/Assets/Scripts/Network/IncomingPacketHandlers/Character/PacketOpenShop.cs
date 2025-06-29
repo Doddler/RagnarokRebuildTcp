@@ -32,7 +32,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                 {
                     var id = msg.ReadInt32();
                     var price = msg.ReadInt32();
-                    items.Add(new ShopEntry() { ItemId = id, Cost = price, Count = -1 });
+                    items.Add(new ShopEntry { ItemId = id, Cost = price, Count = -1 });
                 }
 
                 var shop = ShopUI.InitializeShopUI(UiManager.GeneralItemListPrefab, UiManager.PrimaryUserWindowContainer);

@@ -35,7 +35,8 @@ public class UiManager : MonoBehaviour
     public DragTrashBucket TrashBucket;
     public ToastNotificationArea ToastNotificationArea;
     public RightClickMenuWindow RightClickMenuWindow;
-    
+    public VendAndChatManager VendAndChatManager;
+
     public ItemOverlay ItemOverlay;
     public CharacterChat TooltipOverlay;
     public EquipmentWindow EquipmentWindow;
@@ -61,7 +62,7 @@ public class UiManager : MonoBehaviour
 
     public ItemDragObject DragItemObject;
     public ItemObtainedToast ItemObtainedPopup;
-    
+
     public List<Draggable> FloatingDialogBoxes;
     public List<IClosableWindow> WindowStack = new();
 
@@ -94,7 +95,7 @@ public class UiManager : MonoBehaviour
     {
         _instance = this;
     }
-    
+
     public void Initialize()
     {
         CharacterOverlayGroup.SetActive(true);
@@ -107,34 +108,34 @@ public class UiManager : MonoBehaviour
         var emote = EmoteManager.GetComponent<EmoteWindow>();
         emote.ShowWindow();
         emote.HideWindow();
-        
+
         //SkillManager.ShowWindow();
         SkillManager.HideWindow();
-        
+
         ConfigManager.ShowWindow();
         ConfigManager.HideWindow();
 
         canvas = PrimaryUserUIContainer.GetComponent<Canvas>();
-        
+
         ConfigManager.Initialize();
         SkillHotbar.Initialize();
         LoadWindowPositionData();
-        
+
         HelpWindow.HideWindow();
         HelpWindowText.text = ClientDataLoader.Instance.PatchNotes + HelpWindowText.text;
-        
+
         InventoryWindow.ShowWindow();
         //InventoryWindow.HideWindow();
         ItemDescriptionWindow.HideWindow();
         SubDescriptionWindow.HideWindow();
         RightClickMenuWindow.HideWindow();
-        
+
         CartWindow.HideWindow();
-        
+
         PartyPanel.gameObject.SetActive(false);
-        
+
         ActionTextDisplay.EndActionTextDisplay();
-        
+
         TooltipOverlay.gameObject.SetActive(false);
         DropCountConfirmationWindow.gameObject.SetActive(false);
         TextInputWindow.gameObject.SetActive(false);
@@ -157,7 +158,7 @@ public class UiManager : MonoBehaviour
 
         UpdateOverlayPosition();
     }
-    
+
     public void HideTooltip(GameObject src)
     {
         //if a different tooltip took over, we don't want to hide it
@@ -192,7 +193,7 @@ public class UiManager : MonoBehaviour
             hoveredObject = null;
             return;
         }
-        
+
         drag.OnPointerEnter(null);
     }
 
@@ -226,7 +227,7 @@ public class UiManager : MonoBehaviour
 
         if (screenPos.x + width > Screen.width)
             screenPos.x -= width;
-        
+
         TooltipOverlay.transform.position = screenPos;
 
         // Debug.Log($"{screenPos} {initialScreenPos} {width} {height} {GameConfig.Data.MasterUIScale}");
@@ -243,7 +244,7 @@ public class UiManager : MonoBehaviour
     public void SyncFloatingBoxPositionsWithSaveData()
     {
         var positions = GameConfig.Data.WindowPositions;
-        if(positions.Length != FloatingDialogBoxes.Count)
+        if (positions.Length != FloatingDialogBoxes.Count)
             Array.Resize(ref positions, FloatingDialogBoxes.Count);
         for (var i = 0; i < positions.Length; i++)
             positions[i] = FloatingDialogBoxes[i].Target.anchoredPosition;
@@ -254,15 +255,14 @@ public class UiManager : MonoBehaviour
     {
         if (FloatingDialogBoxes == null || FloatingDialogBoxes.Count <= 0)
             return;
-        
+
         var positions = GameConfig.Data.WindowPositions;
-        
+
         if (positions == null)
         {
             Debug.Log($"We have no window positions saved, re-initializing.");
-            
-            
-            
+
+
             positions = new Vector2[FloatingDialogBoxes.Capacity];
             for (var i = 0; i < positions.Length; i++)
                 positions[i] = FloatingDialogBoxes[i].Target.anchoredPosition;
@@ -273,12 +273,12 @@ public class UiManager : MonoBehaviour
             Debug.Log($"We have fewer windows than we expected, time to expand teh array.");
             var oldSize = positions.Length;
             Array.Resize(ref positions, FloatingDialogBoxes.Count);
-            for(var i = oldSize; i < positions.Length; i++)
+            for (var i = oldSize; i < positions.Length; i++)
                 positions[i] = FloatingDialogBoxes[i].Target.anchoredPosition;
         }
 
         // Debug.Log($"{positions.Length} {FloatingDialogBoxes.Count}");
-        
+
         for (var i = 0; i < FloatingDialogBoxes.Count; i++)
         {
             FloatingDialogBoxes[i].Target.anchoredPosition = positions[i];
@@ -321,7 +321,7 @@ public class UiManager : MonoBehaviour
         canChangeSkillLevel = false;
         InventoryDropArea.SetActive(true);
     }
-    
+
     public void StartItemDrag(DragItemBase dragItem)
     {
         Debug.Log($"Starting Item Drag from {dragItem}");
@@ -332,39 +332,51 @@ public class UiManager : MonoBehaviour
         DragItemObject.Origin = ItemDragOrigin.None;
         TrashBucket.gameObject.SetActive(true);
         canChangeSkillLevel = false;
-        if (dragItem.Type == DragItemType.Skill)
+        switch (dragItem.Type)
         {
-            canChangeSkillLevel = ClientDataLoader.Instance.GetSkillData((CharacterSkill)dragItem.ItemId).AdjustableLevel;
-            if (!canChangeSkillLevel)
-                DragItemObject.UpdateCount(0);
-        }
-
-        if (dragItem.Type == DragItemType.Item)
-        {
-            var itemData = ClientDataLoader.Instance.GetItemById(dragItem.ItemId);
-            if(itemData.IsUnique || itemData.ItemClass == ItemClass.Ammo)
-                EquipmentDropArea.SetActive(true);
-            if(StorageUI.Instance != null)
-                StorageUI.Instance.UpdateDropArea(true);
-            if(PlayerState.Instance.HasCart)
-                CartWindow.UpdateDropArea(true);
-        }
-
-        if (dragItem.Type == DragItemType.StorageItem)
-        {
-            InventoryDropArea.SetActive(true);
-            if(PlayerState.Instance.HasCart)
-                CartWindow.UpdateDropArea(true);
-        }
-
-        if (dragItem.Type == DragItemType.CartItem)
-        {
-            InventoryDropArea.SetActive(true);
-            if(StorageUI.Instance != null)
-                StorageUI.Instance.UpdateDropArea(true);
+            case DragItemType.Skill:
+            {
+                canChangeSkillLevel = ClientDataLoader.Instance.GetSkillData((CharacterSkill)dragItem.ItemId).AdjustableLevel;
+                if (!canChangeSkillLevel)
+                    DragItemObject.UpdateCount(0);
+                break;
+            }
+            case DragItemType.Item:
+            {
+                var itemData = ClientDataLoader.Instance.GetItemById(dragItem.ItemId);
+                if (itemData.IsUnique || itemData.ItemClass == ItemClass.Ammo)
+                    EquipmentDropArea.SetActive(true);
+                if (StorageUI.Instance != null)
+                    StorageUI.Instance.UpdateDropArea(true);
+                if (PlayerState.Instance.HasCart)
+                    CartWindow.UpdateDropArea(true);
+                break;
+            }
+            case DragItemType.StorageItem:
+            {
+                InventoryDropArea.SetActive(true);
+                if (PlayerState.Instance.HasCart)
+                    CartWindow.UpdateDropArea(true);
+                break;
+            }
+            case DragItemType.CartItem:
+            {
+                InventoryDropArea.SetActive(true);
+                if (StorageUI.Instance != null)
+                    StorageUI.Instance.UpdateDropArea(true);
+                break;
+            }
+            case DragItemType.VendSetupSource:
+            case DragItemType.VendSetupTarget:
+                VendingSetupManager.Instance.StartDrag(dragItem.Type);
+                break;
+            case DragItemType.VendShop:
+            case DragItemType.VendPurchase:
+                VendingShopViewUI.ActiveTradeWindow.OnStartDrag(dragItem.Type);
+                break;
         }
     }
-    
+
     public bool EndItemDrag(bool allowDrop = true)
     {
         Debug.Log("Ending item drag");
@@ -376,12 +388,14 @@ public class UiManager : MonoBehaviour
         InventoryDropArea.SetActive(false);
         EquipmentDropArea.SetActive(false);
         CartWindow.UpdateDropArea(false);
-        if(StorageUI.Instance != null)
+        if (StorageUI.Instance != null)
             StorageUI.Instance.UpdateDropArea(false);
+        VendingSetupManager.Instance?.HideDropArea();
+        VendingShopViewUI.ActiveTradeWindow?.OnStopDrag();;
 
         if (hoveredDropTarget != null)
         {
-            if(allowDrop)
+            if (allowDrop)
                 hoveredDropTarget.DropItem();
             hoveredDropTarget = null;
             return true;
@@ -406,7 +420,7 @@ public class UiManager : MonoBehaviour
     public bool CloseLastWindow()
     {
         Debug.Log("CloseLastWindow: " + WindowStack.Count);
-        
+
         if (WindowStack.Count == 0)
             return false;
 
@@ -424,8 +438,8 @@ public class UiManager : MonoBehaviour
     {
         if (FloatingDialogBoxes == null)
             return;
-        
-        for(var i = 0; i < FloatingDialogBoxes.Count; i++)
+
+        for (var i = 0; i < FloatingDialogBoxes.Count; i++)
             FloatingDialogBoxes[i].FitWindowIntoPlayArea();
     }
 
@@ -443,23 +457,23 @@ public class UiManager : MonoBehaviour
         {
             SetEnabled(!canvas.enabled);
         }
-        
-        if(Input.GetKeyDown(KeyCode.F10) || Input.GetKeyDown(KeyCode.F12))
+
+        if (Input.GetKeyDown(KeyCode.F10) || Input.GetKeyDown(KeyCode.F12))
             SkillHotbar.ToggleVisibility();
-        
+
         // if(Input.GetKeyDown(KeyCode.O) && (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)))
         //     ConfigManager.ToggleVisibility();
-        
+
         if (!IsDraggingItem && !cameraFollower.InTextBox && !cameraFollower.InItemInputBox && !cameraFollower.IsInNPCInteraction)
         {
             SkillHotbar.UpdateHotkeyPresses();
         }
-        
-        if(IsDraggingItem || cameraFollower.InTextBox)
+
+        if (IsDraggingItem || cameraFollower.InTextBox)
             TooltipOverlay.gameObject.SetActive(false);
-        
+
         UpdateOverlayPosition();
-            
+
         if (IsDraggingItem && canChangeSkillLevel)
         {
             var oldLvl = (float)DragItemObject.ItemCount;
@@ -468,9 +482,8 @@ public class UiManager : MonoBehaviour
             var lvl = oldLvl + Input.GetAxis("Mouse ScrollWheel") * 10f;
             lvl = Mathf.Clamp(lvl, 1, 10);
             var newLevel = Mathf.RoundToInt(lvl);
-            if(newLevel != oldLvl)
+            if (newLevel != oldLvl)
                 DragItemObject.UpdateCount(newLevel);
         }
-
     }
 }

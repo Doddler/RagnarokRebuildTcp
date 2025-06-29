@@ -327,6 +327,7 @@ public class Npc : IEntityAutoReset
             CommandBuilder.SendNpcEndInteraction(player);
         }
     }
+
     public void OptionAdvance(Player player, int result)
     {
         player.NpcInteractionState.InteractionResult = NpcInteractionResult.None;
@@ -1244,6 +1245,16 @@ public class Npc : IEntityAutoReset
         LastTimerUpdate = (timer - 1) / 1000f;
 
         //DebugMessage($"Setting npc {Name} timer from {prevStart} to {TimerStart} (current server time is {Time.ElapsedTime})");
+    }
+
+    public void EndVending()
+    {
+
+    }
+
+    public void StartVendForOwner()
+    {
+
     }
 
     public bool IsStringEmpty(string str) => string.IsNullOrWhiteSpace(str);

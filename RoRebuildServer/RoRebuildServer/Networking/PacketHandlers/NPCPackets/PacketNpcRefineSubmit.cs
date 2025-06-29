@@ -3,7 +3,7 @@ using RebuildSharedData.Networking;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents.Character;
 
-namespace RoRebuildServer.Networking.PacketHandlers.NPC;
+namespace RoRebuildServer.Networking.PacketHandlers.NPCPackets;
 
 [ClientPacketHandler(PacketType.NpcRefineSubmit)]
 public class PacketNpcRefineSubmit : IClientPacketHandler

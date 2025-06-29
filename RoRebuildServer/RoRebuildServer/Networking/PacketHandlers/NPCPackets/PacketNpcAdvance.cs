@@ -1,9 +1,8 @@
 ﻿using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using RoRebuildServer.EntityComponents.Util;
-using RoRebuildServer.Logging;
 
-namespace RoRebuildServer.Networking.PacketHandlers.NPC;
+namespace RoRebuildServer.Networking.PacketHandlers.NPCPackets;
 
 [ClientPacketHandler(PacketType.NpcAdvance)]
 public class PacketNpcAdvance : IClientPacketHandler
@@ -14,6 +13,12 @@ public class PacketNpcAdvance : IClientPacketHandler
 
         if(player == null || !player.IsInNpcInteraction)
             return;
+
+        if (player.NpcInteractionState.InteractionResult == NpcInteractionResult.CurrentlyVending)
+        {
+            player.NpcInteractionState.StopVending();
+            return;
+        }
 
         if (player.NpcInteractionState.InteractionResult != NpcInteractionResult.WaitForContinue &&
             player.NpcInteractionState.InteractionResult != NpcInteractionResult.WaitForRefine)

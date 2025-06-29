@@ -27,7 +27,7 @@ namespace Assets.Scripts.UI
         public ItemListDropZoneV2 DropZone;
         public GameObject ItemListEntryPrefab;
         public Transform ItemListParentBox;
-        public ScrollRect ScrollRect;
+        // public ScrollRect ScrollRect;
         public Button OkButton;
         public Button CancelButton;
         public Toggle ToggleBox;
@@ -37,23 +37,23 @@ namespace Assets.Scripts.UI
         public TextMeshProUGUI OkButtonText;
         public TextMeshProUGUI CancelButtonText;
 
-        public ItemListAcceptFrom AcceptDropsFrom;
-        public ItemListDragSettings ItemListDragSettings;
-        public bool ShowItemValues;
+        // public ItemListAcceptFrom AcceptDropsFrom;
+        // public ItemListDragSettings ItemListDragSettings;
+        // public bool ShowItemValues;
         public bool HasSubmitButtons;
         public bool HasToggleButton;
         
-        [NonSerialized] public List<ItemListEntryV2> ItemListEntries;
+        // [NonSerialized] public List<ItemListEntryV2> ItemListEntries;
         [NonSerialized] public Stack<ItemListEntryV2> UnusedEntries;
-        [NonSerialized] public ItemListEntryV2 Selected;
-        
-        [NonSerialized] public ItemListRole CurrentRole;
-
-        public Action<ItemListEntryV2> OnSelectEntry;
-        public Action<ItemListEntryV2> OnUnselectEntry;
-        public Action<ItemListEntryV2> OnStartDragEntry;
-        public Action<ItemListEntryV2> OnDropEntry;
-        public Func<bool> ValidateData;
+        // [NonSerialized] public ItemListEntryV2 Selected;
+        //
+        // [NonSerialized] public ItemListRole CurrentRole;
+        //
+        // public Action<ItemListEntryV2> OnSelectEntry;
+        // public Action<ItemListEntryV2> OnUnselectEntry;
+        // public Action<ItemListEntryV2> OnStartDragEntry;
+        // public Action<ItemListEntryV2> OnDropEntry;
+        // public Func<bool> ValidateData;
         
         public Action OnPressOk;
         public Action OnPressCancel;

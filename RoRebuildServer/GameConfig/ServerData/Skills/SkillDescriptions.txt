@@ -241,6 +241,9 @@ Consumes 1 sp every [1+SkillLevel] seconds.
 Attempts to take an additional item from a monster. The success rate varies based on how your level, dex, and luck compares to your target. Only one item can be stolen and cannot be used on bosses.
 Success rate: [4 + SkillLevel * 6]% chance.
 
+::BackSlide
+Immediately jump backwards 5 tiles, based on the direction you're currently facing.
+
 //----------------Merchant-------------------
 
 ::EnlargeWeightLimit

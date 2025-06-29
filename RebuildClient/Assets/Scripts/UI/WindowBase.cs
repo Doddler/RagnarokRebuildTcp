@@ -122,6 +122,18 @@ namespace Assets.Scripts.UI
             middle = new Vector2(middle.x, -middle.y);
             rect.anchoredPosition = middle - new Vector2(rect.sizeDelta.x / 2, -rect.sizeDelta.y / 2);
         }
+        
+        
+        public void CenterWindowWithOffset(Vector2 offset)
+        {
+            //center window
+            ((RectTransform)transform).ForceUpdateRectTransforms();
+            var rect = gameObject.GetComponent<RectTransform>();
+            var parentContainer = (RectTransform)gameObject.transform.parent;
+            var middle = parentContainer.rect.size / 2f;
+            middle = new Vector2(middle.x, -middle.y);
+            rect.anchoredPosition = middle - new Vector2(offset.x, -offset.y);
+        }
 
 
         protected void AttachToMainUI()

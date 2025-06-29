@@ -96,7 +96,10 @@ namespace Assets.Scripts.UI
 
             var level = CurrentLevel > data.SpCost.Length ? data.SpCost.Length : CurrentLevel;
             if (level > 0)
-                SPCost.text = CurrentLevel > 0 ? $"Sp: {data.SpCost[level - 1]}" : "";
+            {
+                var spCost = data.SpCost[level - 1];
+                SPCost.text = CurrentLevel > 0 && spCost > 0 ? $"Sp: {spCost}" : "";
+            }
             else
                 SPCost.text = "Sp: 0";
         }

@@ -118,6 +118,12 @@ public enum PacketType : byte
     NotifyPlayerPartyChange,
 
     SkillWithMaskedArea,
+
+    VendingStart,
+    VendingStop,
+    VendingViewStore,
+    VendingNotifyOfSale,
+    VendingPurchaseFromStore,
 }
 
 public enum MessageType : byte

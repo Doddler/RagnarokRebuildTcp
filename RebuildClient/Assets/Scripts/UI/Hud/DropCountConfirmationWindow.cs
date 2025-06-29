@@ -1,5 +1,7 @@
-﻿using Assets.Scripts.Network;
+﻿using System;
+using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
+using Assets.Scripts.UI.Inventory;
 using RebuildSharedData.Enum;
 using TMPro;
 using UnityEngine;
@@ -13,7 +15,10 @@ namespace Assets.Scripts.UI.Hud
         InventoryToStorage,
         StorageToInventory,
         InventoryToCart,
-        CartToInventory
+        CartToInventory,
+        CartToVend,
+        VendToCart,
+        Special
     }
     
     public class DropCountConfirmationWindow : MonoBehaviour
@@ -24,6 +29,7 @@ namespace Assets.Scripts.UI.Hud
         private InventoryItem bagItem;
         private ShopDragData shopData;
         private DropConfirmationType dropType;
+        private Action<int, int> onDrop;
         private bool isShopDrop;
 
         public void Awake()
@@ -73,6 +79,22 @@ namespace Assets.Scripts.UI.Hud
             this.dropType = dropType;
         }
         
+        
+        public void BeginItemDrop(InventoryItem item, string title, Action<int, int> onSuccessEvent)
+        {
+            
+            gameObject.SetActive(true);
+            transform.SetAsLastSibling();
+            bagItem = item;
+            onDrop = onSuccessEvent;
+            ItemDropTitle.text = title;
+            ItemCountInput.text = item.Count.ToString();
+            ItemCountInput.ActivateInputField();
+            CameraFollower.Instance.InItemInputBox = true;
+            dropType = DropConfirmationType.Special;
+        }
+
+        
         public void SubmitDrop()
         {
             if (int.TryParse(ItemCountInput.text, out var count))
@@ -96,6 +118,15 @@ namespace Assets.Scripts.UI.Hud
                         break;
                     case DropConfirmationType.CartToInventory:
                         NetworkManager.Instance.CartItemInteraction(CartInteractionType.CartToInventory, bagItem.Id, count);
+                        break;
+                    case DropConfirmationType.CartToVend:
+                        VendingSetupManager.Instance.FinalizeDropItemOntoRightSide(bagItem.Id, count);
+                        break;
+                    case DropConfirmationType.VendToCart:
+                        VendingSetupManager.Instance.FinalizeDropItemOntoLeftSide(bagItem.Id, count);
+                        break;
+                    case DropConfirmationType.Special:
+                        onDrop(bagItem.Id, count);
                         break;
                 }
             }

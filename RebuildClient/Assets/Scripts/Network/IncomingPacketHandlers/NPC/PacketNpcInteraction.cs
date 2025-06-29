@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Network.HandlerBase;
 using Assets.Scripts.UI;
+using Assets.Scripts.UI.Inventory;
 using Assets.Scripts.UI.RefineItem;
 using RebuildSharedData.Networking;
 using UnityEngine;
@@ -69,6 +70,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers
                         GameObject.Destroy(RefineItemWindow.Instance);
                     if(StorageUI.Instance != null)
                         GameObject.Destroy(StorageUI.Instance);
+                    VendingShopViewUI.ActiveTradeWindow?.CloseShop();
                     break;
                 case NpcInteractionType.NpcOpenRefineWindow:
                     Camera.DialogPanel.GetComponent<DialogWindow>().HideUI();

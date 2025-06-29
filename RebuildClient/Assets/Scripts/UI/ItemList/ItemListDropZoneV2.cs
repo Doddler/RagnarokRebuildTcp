@@ -9,7 +9,7 @@ namespace Assets.Scripts.UI
     {
         public Image HighlightZone;
 
-        public Action OnDropItem;
+        public Action<ItemDragObject> OnDropItem;
         public ItemDragOrigin ValidDragOrigins;
         
 
@@ -53,7 +53,7 @@ namespace Assets.Scripts.UI
             if (obj == null || (obj.Origin & ValidDragOrigins) == 0)
                 return;
 
-            OnDropItem?.Invoke();
+            OnDropItem?.Invoke(obj);
         }
     }
 }

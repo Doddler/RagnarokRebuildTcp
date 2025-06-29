@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Network;
 using Assets.Scripts.UI.Hud;
+using Assets.Scripts.UI.Inventory;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -58,6 +59,9 @@ namespace Assets.Scripts.UI
                     break;
                 case ItemDragOrigin.ShopWindow:
                     ShopUI.Instance.OnDropTrash(obj);
+                    break;
+                case ItemDragOrigin.VendingTarget:
+                    VendingSetupManager.Instance?.DropRightSideItemInTrash(obj.OriginId);
                     break;
             }
         }

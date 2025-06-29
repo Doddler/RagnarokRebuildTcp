@@ -101,10 +101,10 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 var shieldId = msg.ReadInt32();
                 sp = msg.ReadInt32();
                 maxSp = msg.ReadInt32();
-                var inParty = msg.ReadByte() == 1;
                 var partyId = 0;
                 var partyName = "";
-                if (inParty)
+                
+                if(type == CharacterType.Player && msg.ReadByte() == 1)
                 {
                     partyId = msg.ReadInt32();
                     partyName = msg.ReadString();
@@ -186,14 +186,18 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 var name = string.Empty;
                 var displayType = NpcDisplayType.Sprite;
                 var effectType = NpcEffectType.None;
+                var owner = -1;
                 
                 if (type == CharacterType.NPC)
                 {
                     name = msg.ReadString();
-                    interactable = msg.ReadBoolean();
                     displayType = (NpcDisplayType)msg.ReadByte();
+                    interactable = msg.ReadBoolean();
                     effectType = (NpcEffectType)msg.ReadByte();
                     //Debug.Log(name);
+
+                    if (displayType == NpcDisplayType.VendingProxy)
+                        owner = msg.ReadInt32();
                 }
 
                 var monData = new MonsterSpawnParameters()
@@ -211,6 +215,15 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     CharacterStatusEffects = statuses,
                 };
 
+                if (displayType == NpcDisplayType.VendingProxy)
+                {
+                    monData.Name = "Vend Shop";
+                    controllable = ClientDataLoader.Instance.InstantiateEffect(ref monData, NpcEffectType.None);
+                    Network.EntityList.Add(id, controllable);
+                    UiManager.VendAndChatManager.CreateVendDialog(id, owner, controllable.gameObject, name);
+                    return controllable;
+                }
+                
                 if (displayType == NpcDisplayType.Effect)
                 {
                     

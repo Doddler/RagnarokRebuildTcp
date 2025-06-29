@@ -15,6 +15,7 @@ using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
 using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.UI.Hud;
+using Assets.Scripts.UI.Inventory;
 using Assets.Scripts.UI.RefineItem;
 using Assets.Scripts.UI.Utility;
 using Assets.Scripts.Utility;
@@ -282,6 +283,8 @@ namespace Assets.Scripts
         public bool InTextInputBox;
         public bool InYesNoPrompt;
 
+        private ServerControllable rightClickDown;
+
         public void ResetCursor() => isHolding = false;
 
         public void Awake()
@@ -366,6 +369,12 @@ namespace Assets.Scripts
         {
             if (TargetControllable.SpriteAnimator.State == SpriteState.Dead)
                 return false;
+            
+            if (skill == CharacterSkill.Vending)
+            {
+                VendingSetupManager.OpenVendSetup();
+                return false;
+            }
 
             var target = ClientDataLoader.Instance.GetSkillTarget(skill);
             switch (target)
@@ -1068,10 +1077,17 @@ namespace Assets.Scripts
             if (hasItem && showEntityName && mouseTarget.IsAlly)
                 showEntityName = false; //don't show friendly names if you could instead pick up an item
 
-            if (canInteract && mouseTarget.IsAlly && mouseTarget.CharacterType == CharacterType.Player && rightClick)
+            if (canInteract && mouseTarget.IsAlly && mouseTarget.CharacterType == CharacterType.Player)
             {
-                UiManager.Instance.RightClickMenuWindow.RightClickPlayer(mouseTarget);
-                return displayCursor;
+                if (rightClick)
+                {
+                    rightClickDown = mouseTarget;
+                }
+                else if (Input.GetMouseButtonUp(1) && mouseTarget == rightClickDown)
+                {
+                    UiManager.Instance.RightClickMenuWindow.RightClickPlayer(mouseTarget);
+                    return displayCursor;
+                }
             }
 
             if (showEntityName)
@@ -1326,11 +1342,11 @@ namespace Assets.Scripts
             var c = color switch
             {
                 TextColor.Party => "<color=#77FF77>",
-                TextColor.Job => "color=#99CCFF>",
-                TextColor.Skill => "color=#00fbfb>",
-                TextColor.Equipment => "color=#00fbfb>",
-                TextColor.Item => "color=#00fbfb>",
-                TextColor.Error => "color=#ed0000>",
+                TextColor.Job => "<color=#99CCFF>",
+                TextColor.Skill => "<color=#00fbfb>",
+                TextColor.Equipment => "<color=#00fbfb>",
+                TextColor.Item => "<color=#00fbfb>",
+                TextColor.Error => "<color=#ed0000>",
                 _ => ""
             };
 
@@ -2123,7 +2139,7 @@ namespace Assets.Scripts
                 Shader.SetKeyword(smoothPixelKeyword, UseSmoothPixel);
             }
 
-            if (!inInputUI && Input.GetKeyDown(KeyCode.Tab))
+            if (!inInputUI && Input.GetKeyDown(KeyCode.Tab) && VendingSetupManager.Instance == null)
             {
                 var chunks = GameObject.FindObjectsOfType<RoMapChunk>();
                 foreach (var c in chunks)

@@ -891,7 +891,7 @@
         5
       ],
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "Immediately jump backwards 5 tiles, based on the direction you\u0027re currently facing.",
       "InterruptMode": 0
     },
     {
@@ -1034,20 +1034,20 @@
       "SkillId": 59,
       "Icon": "mc_vending",
       "Name": "Vending",
-      "Target": 0,
+      "Target": 5,
       "Type": 0,
       "MaxLevel": 10,
       "SpCost": [
-        10,
-        10,
-        10,
-        10,
-        10,
-        10,
-        10,
-        10,
-        10,
-        10
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
       ],
       "AdjustableLevel": false,
       "Description": null,
@@ -1183,7 +1183,7 @@
         39,
         42
       ],
-      "AdjustableLevel": false,
+      "AdjustableLevel": true,
       "Description": null,
       "InterruptMode": 0
     },

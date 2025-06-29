@@ -7,6 +7,7 @@ using RebuildSharedData.Networking;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Skills;
@@ -146,8 +147,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
 
             var caster = connection.Character;
             var targetEntity = World.Instance.GetEntityById(msg.ReadInt32());
-            var target = targetEntity.GetIfAlive<CombatEntity>();
-            if (target == null || caster == null)
+            if(targetEntity.Type == EntityType.Npc || !targetEntity.TryGet<CombatEntity>(out var target) || caster == null)
                 return;
             
             var skill = (CharacterSkill)msg.ReadByte();

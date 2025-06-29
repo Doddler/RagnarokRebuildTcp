@@ -1,11 +1,10 @@
-﻿using RebuildSharedData.Enum;
-using RebuildSharedData.Networking;
-using System.Diagnostics;
-using Microsoft.EntityFrameworkCore.Metadata;
-using RoRebuildServer.EntityComponents.Items;
+﻿using System.Diagnostics;
+using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
+using RebuildSharedData.Networking;
+using RoRebuildServer.EntityComponents.Items;
 
-namespace RoRebuildServer.Networking.PacketHandlers.NPC;
+namespace RoRebuildServer.Networking.PacketHandlers.NPCPackets;
 
 [ClientPacketHandler(PacketType.StorageInteraction)]
 public class PacketStorageInteraction : IClientPacketHandler

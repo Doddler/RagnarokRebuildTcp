@@ -8,7 +8,8 @@ public enum NpcDisplayType : byte
 {
     Sprite,
     Effect,
-    MaskedEffect
+    MaskedEffect,
+    VendingProxy
 }
 
 public enum NpcEffectType : byte

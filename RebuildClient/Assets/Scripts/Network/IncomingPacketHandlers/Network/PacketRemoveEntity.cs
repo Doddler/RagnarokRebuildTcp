@@ -2,6 +2,7 @@
 using Assets.Scripts.Network.HandlerBase;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI.ConfigWindow;
+using Assets.Scripts.UI.Hud;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using UnityEngine;
@@ -20,6 +21,11 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
             {
                 Debug.LogWarning("Trying to remove entity " + id + ", but it does not exist in scene!");
                 return;
+            }
+
+            if (controllable.CharacterType == CharacterType.NPC)
+            {
+                UiManager.VendAndChatManager.TryRemovingDialogNpc(id);
             }
 
             if (id == State.EntityId)

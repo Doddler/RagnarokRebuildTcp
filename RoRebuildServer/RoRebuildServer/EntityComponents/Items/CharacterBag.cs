@@ -81,6 +81,17 @@ public class CharacterBag : IResettable
         return 0;
     }
 
+
+    public int GetItemCountByBagId(int id)
+    {
+        if (RegularItems.TryGetValue(id, out var regItem))
+            return regItem.Count;
+        if (UniqueItems.ContainsKey(id))
+            return 1;
+        return 0;
+    }
+
+
     public bool TryReset()
     {
         RegularItems.Clear();

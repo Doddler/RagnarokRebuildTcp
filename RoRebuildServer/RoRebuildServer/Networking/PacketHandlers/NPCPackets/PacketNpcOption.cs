@@ -1,7 +1,7 @@
 ﻿using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 
-namespace RoRebuildServer.Networking.PacketHandlers.NPC;
+namespace RoRebuildServer.Networking.PacketHandlers.NPCPackets;
 
 [ClientPacketHandler(PacketType.NpcSelectOption)]
 public class PacketNpcOption : IClientPacketHandler

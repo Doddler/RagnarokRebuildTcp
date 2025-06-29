@@ -626,4 +626,14 @@ public class NpcInteractionState
 
         CommandBuilder.UpdatePlayerFollowerStateAutoVis(Player);
     }
+
+    public void EnterVendingState()
+    {
+
+    }
+
+    public void StopVending()
+    {
+        
+    }
 }

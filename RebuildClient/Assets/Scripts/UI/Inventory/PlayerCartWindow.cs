@@ -11,7 +11,7 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.Inventory
 {
-    public class PlayerCartWindow: WindowBase
+    public class PlayerCartWindow : WindowBase
     {
         public Vector2 UnitSize;
         public RectTransform ItemBoxRoot;
@@ -44,6 +44,12 @@ namespace Assets.Scripts.UI.Inventory
         
         public void OnMoveInventoryItemToCart(int bagSlotId)
         {
+            if (VendingSetupManager.Instance != null)
+            {
+                CameraFollower.Instance.AppendNotice("You can't transfer items with your cart while setting up a vend.");
+                return;
+            }
+            
             Debug.Log($"Moving item to cart: {bagSlotId}");
 
             if (NetworkManager.Instance.PlayerState.Inventory.GetInventoryData().TryGetValue(bagSlotId, out var item))
@@ -57,6 +63,12 @@ namespace Assets.Scripts.UI.Inventory
         
         public void OnMoveCartItemToInventory(int bagSlotId)
         {
+            if (VendingSetupManager.Instance != null)
+            {
+                CameraFollower.Instance.AppendNotice("You can't transfer items with your cart while setting up a vend.");
+                return;
+            }
+            
             Debug.Log($"Moving item to storage: {bagSlotId}");
 
             if (NetworkManager.Instance.PlayerState.Cart.GetInventoryData().TryGetValue(bagSlotId, out var item))
