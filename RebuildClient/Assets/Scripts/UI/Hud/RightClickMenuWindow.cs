@@ -7,6 +7,7 @@ using Assets.Scripts.Utility;
 using RebuildSharedData.Enum;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.Hud
@@ -23,6 +24,7 @@ namespace Assets.Scripts.UI.Hud
         private List<GameObject> activeBoundaries;
 
         private int targetEntityId;
+        private int partyMemberId;
 
         public bool RightClickSelf()
         {
@@ -41,6 +43,48 @@ namespace Assets.Scripts.UI.Hud
             var button = AddEntry($"Leave party");
             button.onClick.AddListener(LeaveParty);
             
+            transform.position = UiManager.Instance.GetScreenPositionOfCursor();
+            
+            ShowWindow();
+            CameraFollower.Instance.ActivePromptType = PromptType.RightClickMenu;
+
+            return true;
+        }
+        
+        public bool RightClickPartyMenu(PointerEventData pointerEvent)
+        {
+            unusedButtons ??= new Stack<Button>();
+            unusedBoundaries ??= new Stack<GameObject>();
+            activeButtons ??= new List<Button>();
+            activeBoundaries ??= new List<GameObject>();
+            
+            if(gameObject.activeInHierarchy)
+                HideWindow();
+            
+            var state = PlayerState.Instance;
+            if (!state.IsInParty || state.PartyLeader != state.PartyMemberId)
+                return false;
+
+            var partyPanelEntry = pointerEvent.pointerEnter.GetComponent<PartyPanelEntry>();
+            if (partyPanelEntry == null)
+                return false;
+
+            var info = partyPanelEntry.PartyMemberInfo;
+
+            if (info.Controllable != null)
+            {
+                RightClickPlayer(info.Controllable);
+                return true;
+            }
+
+            partyMemberId = info.PartyMemberId;
+            //
+            // var button = AddEntry($"Promote {info.PlayerName} to party leader");
+            // button.onClick.AddListener(PromoteToLeader);
+                        
+            var button2 = AddEntry($"Kick {info.PlayerName} from the party");
+            button2.onClick.AddListener(KickFromParty);
+
             transform.position = UiManager.Instance.GetScreenPositionOfCursor();
             
             ShowWindow();
@@ -71,9 +115,14 @@ namespace Assets.Scripts.UI.Hud
                 {
                     if (target.PartyName == state.PartyName)
                     {
-                        return;
-                        var button = AddEntry($"Kick {target.Name} from the party");
-                        //button.onClick.AddListener(() => );
+                        if (!state.PartyMemberIdLookup.TryGetValue(targetEntityId, out partyMemberId))
+                            return;
+                        
+                        var button = AddEntry($"Promote {target.Name} to party leader");
+                        button.onClick.AddListener(PromoteToLeader);
+                        
+                        var button2 = AddEntry($"Kick {target.Name} from the party");
+                        button2.onClick.AddListener(KickFromParty);
                     }
                     else if (string.IsNullOrWhiteSpace(target.PartyName))
                     {
@@ -114,6 +163,22 @@ namespace Assets.Scripts.UI.Hud
         {
             NetworkManager.Instance.PartyInviteById(targetEntityId);
             HideWindow();
+        }
+
+        public void KickFromParty()
+        {
+            if (!PlayerState.Instance.PartyMembers.TryGetValue(partyMemberId, out var info))
+                return;
+            UiManager.Instance.YesNoOptionsWindow.BeginPrompt($"Kick {info.PlayerName} from your party?", "Yes", "No", 
+                () => NetworkManager.Instance.PartyUpdateAction(partyMemberId, PartyClientAction.RemovePlayer), null, false);
+        }
+
+        public void PromoteToLeader()
+        {
+            if (!PlayerState.Instance.PartyMembers.TryGetValue(partyMemberId, out var info))
+                return;
+            UiManager.Instance.YesNoOptionsWindow.BeginPrompt($"Promote {info.PlayerName} to party leader?", "Yes", "No", 
+                () => NetworkManager.Instance.PartyUpdateAction(partyMemberId, PartyClientAction.ChangeLeader), null, false);
         }
 
         public void FormPartyWith()

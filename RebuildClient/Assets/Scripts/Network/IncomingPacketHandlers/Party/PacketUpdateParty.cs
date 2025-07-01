@@ -43,16 +43,23 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Party
                     Camera.AppendChatText($"<color=#77FF77>{existing.PlayerName} has left the party.</color>");
                     break;
                 case PartyUpdateType.ChangeLeader:
-                    var newLeader = msg.ReadInt32();
-                    if (State.PartyMembers.TryGetValue(newLeader, out var leader))
+                    var newLeaderId = msg.ReadInt32();
+                    if (State.PartyMembers.TryGetValue(newLeaderId, out var leader))
                     {
-                        State.PartyLeader = newLeader;
-                        if (newLeader == State.EntityId)
+                        var oldLeaderId = State.PartyLeader;
+                        if (State.PartyMembers.TryGetValue(oldLeaderId, out var oldLeader))
+                            oldLeader.IsLeader = false;
+
+                        leader.IsLeader = true;
+                        State.PartyLeader = newLeaderId;
+                        
+                        if (newLeaderId == State.PartyMemberId)
                             Camera.AppendChatText($"<color=#77FF77>You have been promoted to party leader.</color>");
                         else
                             Camera.AppendChatText($"<color=#77FF77>{leader.PlayerName} has been promoted to party leader.</color>");
                         State.UpdatePlayerName(); //add party leader indicator (or remove it)
-                        UiManager.Instance.PartyPanel.RefreshPartyMember(newLeader);
+                        UiManager.Instance.PartyPanel.RefreshPartyMember(newLeaderId);
+                        UiManager.Instance.PartyPanel.RefreshPartyMember(oldLeaderId);
                     }
                     break;
                 case PartyUpdateType.UpdateMap:

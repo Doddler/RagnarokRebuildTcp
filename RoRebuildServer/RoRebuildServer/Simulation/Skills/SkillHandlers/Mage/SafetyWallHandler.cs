@@ -40,18 +40,22 @@ public class SafetyWallHandler : SkillHandlerBase
         return true;
     }
 
-    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl)
+    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
+        int lvl, bool isIndirect)
     {
-        if (source.Character.Type == CharacterType.Player && (source.Player.Inventory == null || !source.Player.Inventory.HasItem(GemstoneId))) //red gemstone
+        if (!isIndirect && !CheckRequiredGemstone(source, GemstoneId, false))
             return SkillValidationResult.MissingRequiredItem;
 
-        return base.ValidateTarget(source, target, position, lvl);
+        return base.ValidateTarget(source, target, position, lvl, false);
     }
 
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
     {
         var map = source.Character.Map;
         Debug.Assert(map != null);
+
+        if (!isIndirect && !ConsumeGemstoneForSkillWithFailMessage(source, BlueGemstone))
+            return;
 
         if (!position.IsValid() && source.Character.Type == CharacterType.Monster) //monsters will either target pneuma directly on themselves or an ally
             position = target != null ? target.Character.Position : source.Character.Position;

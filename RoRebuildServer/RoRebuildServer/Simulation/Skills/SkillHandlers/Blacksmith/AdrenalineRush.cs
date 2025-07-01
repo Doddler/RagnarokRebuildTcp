@@ -11,13 +11,14 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Blacksmith;
 [SkillHandler(CharacterSkill.AdrenalineRush, SkillClass.Physical, SkillTarget.Self)]
 public class AdrenalineRush : SkillHandlerBase
 {
-    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl)
+    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
+        int lvl, bool isIndirect)
     {
         //useable only with 1h axe, 2h axe, 1h mace, 2h mace
         if (source.Character.Type == CharacterType.Player && (source.Player.WeaponClass < 6 || source.Player.WeaponClass > 9))
             return SkillValidationResult.IncorrectWeapon;
 
-        return base.ValidateTarget(source, target, position, lvl);
+        return base.ValidateTarget(source, target, position, lvl, false);
     }
 
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)

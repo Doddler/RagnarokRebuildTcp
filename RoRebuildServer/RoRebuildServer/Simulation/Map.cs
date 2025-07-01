@@ -1310,6 +1310,45 @@ public class Map
         return false;
     }
 
+    private int flyingTag = -1;
+    public bool DoesAreaOverlapWithTrapsOrCharacters(Area area)
+    {
+        area = area.ClipArea(MapBounds);
+        if (area.IsZero)
+            return false;
+
+        //var chunkEntities = EntityListPool.Get();
+        foreach (var chunk in GetChunkEnumerator(GetChunksForArea(area)))
+        {
+            foreach (var a in chunk.AreaOfEffects)
+            {
+                if (a.Class == AoEClass.Trap && area.Overlaps(a.Area))
+                    return true;
+            }
+
+            foreach (var e in chunk.AllEntities)
+            {
+                if (e.Type != EntityType.Monster && e.Type != EntityType.Player)
+                    continue;
+                if (!e.TryGet<WorldObject>(out var ch))
+                    continue;
+                if (area.Contains(ch.Position) && !ch.AdminHidden)
+                {
+                    if (ch.Type == CharacterType.Monster && ch.Monster.MonsterBase.Tags != null)
+                    {
+                        if (flyingTag == -1)
+                            DataManager.TagToIdLookup.TryGetValue("Flying", out flyingTag);
+                        if (ch.Monster.MonsterBase.Tags.Contains(flyingTag))
+                            continue;
+                    }
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public bool HasAreaOfEffectTypeInArea(Area area, params CharacterSkill[] skills)
     {
         area = area.ClipArea(MapBounds);

@@ -36,8 +36,11 @@ public class DecreaseAgiHandler : SkillHandlerBase
         }
         else
         {
-            source.ApplyCooldownForSupportSkillAction();
-            source.ApplyAfterCastDelay(0.5f);
+            if (!isIndirect)
+            {
+                source.ApplyCooldownForSupportSkillAction();
+                source.ApplyAfterCastDelay(1f);
+            }
 
             var duration = 30 + 10 * lvl; //60s-240s
             if (target.Character.Type == CharacterType.Player)
@@ -47,6 +50,6 @@ public class DecreaseAgiHandler : SkillHandlerBase
             target.AddStatusEffect(status);
         }
 
-        GenericCastAndInformSupportSkill(source, target, CharacterSkill.DecreaseAgility, lvl, ref res);
+        GenericCastAndInformSupportSkill(source, target, CharacterSkill.DecreaseAgility, lvl, ref res, isIndirect);
     }
 }

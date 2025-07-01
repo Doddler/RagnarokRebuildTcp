@@ -15,9 +15,10 @@ public class StoneCurseHandler : SkillHandlerBase
 
     public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 1f;
 
-    private const int GemstoneId = 716;
+    private const int GemstoneId = 716; //red gemstone
 
-    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl)
+    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
+        int lvl, bool isIndirect)
     {
         if (target == null)
             return SkillValidationResult.Failure;
@@ -25,24 +26,16 @@ public class StoneCurseHandler : SkillHandlerBase
         if (target.GetSpecialType() == CharacterSpecialType.Boss)
             return SkillValidationResult.CannotTargetBossMonster;
 
-        if (source.Character.Type == CharacterType.Player && (source.Player.Inventory == null || !source.Player.Inventory.HasItem(GemstoneId))) //blue gemstone
+        if (!isIndirect && !CheckRequiredGemstone(source, GemstoneId, false)) 
             return SkillValidationResult.MissingRequiredItem;
 
-        return base.ValidateTarget(source, target, position, lvl);
+        return base.ValidateTarget(source, target, position, lvl, false);
     }
 
     //failing pre-validation prevents sp from being taken
-    public override bool PreProcessValidation(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
-    {
-        if (source.Character.Type == CharacterType.Player && (source.Player.Inventory == null || !source.Player.Inventory.HasItem(GemstoneId)))
-        {
-            CommandBuilder.SkillFailed(source.Player, SkillValidationResult.MissingRequiredItem);
-            return false;
-        }
-
-        return true;
-    }
-
+    public override bool PreProcessValidation(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect) =>
+        isIndirect || CheckRequiredGemstone(source, GemstoneId, true);
+    
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
     {
         //if (lvl < 0 || lvl > 10)
@@ -57,13 +50,10 @@ public class StoneCurseHandler : SkillHandlerBase
         {
             var success = true;
             var keepGemstone = 300 - lvl * 50;
-            if (!source.CheckLuckModifiedRandomChanceVsTarget(source, keepGemstone, 1000))
+            if (source.Character.Type == CharacterType.Player && !source.CheckLuckModifiedRandomChanceVsTarget(source, keepGemstone, 1000))
             {
-                if (!source.Player.TryRemoveItemFromInventory(GemstoneId, 1, true))
-                {
-                    CommandBuilder.SkillFailed(source.Player, SkillValidationResult.MissingRequiredItem);
+                if (!isIndirect && !ConsumeGemstoneForSkillWithFailMessage(source, GemstoneId))
                     success = false;
-                }
             }
 
             if (success)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Data;
+using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
 using UnityEngine;
 
@@ -86,6 +87,7 @@ namespace Assets.Scripts.UI.Hud
             
             if(!UnusedPanels.TryPop(out var entry))
                 entry = GameObject.Instantiate(PanelTemplate, EntryArea);
+            entry.name = "PartyMember";
             entry.gameObject.SetActive(true);
             entry.Parent = this;
             entry.PartyMemberInfo = info;

@@ -14,7 +14,8 @@ public class AquaBenedictaHandler : SkillHandlerBase
     private const int BottleId = 713;
     private const int HolyWaterId = 523;
 
-    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl)
+    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
+        int lvl, bool isIndirect)
     {
         if (source.Character.Type != CharacterType.Player)
             return SkillValidationResult.Failure; //player only skill
@@ -25,7 +26,7 @@ public class AquaBenedictaHandler : SkillHandlerBase
         if (source.Player.Inventory == null || !source.Player.Inventory.HasItem(BottleId))
             return SkillValidationResult.MissingRequiredItem;
 
-        return base.ValidateTarget(source, target, position, lvl);
+        return base.ValidateTarget(source, target, position, lvl, false);
     }
 
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)

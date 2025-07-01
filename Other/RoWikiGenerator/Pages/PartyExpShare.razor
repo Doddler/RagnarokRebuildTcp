@@ -1,0 +1,50 @@
+﻿@using RebuildSharedData.Enum.EntityStats
+@using RoRebuildServer.Data
+
+<div class="contentzone" style="padding:20px;">
+    <table>
+        <tr>
+            <td valign="top">
+                <p>
+                    While partying, all living party members on the map will gain experience when a monster is killed.
+                    The amount of experience gained starts at the total exp amount for the monster, and decreases with the number of party members that did not contribute to the monster's death.
+                    A player is seen as contributing to a kill if they have either dealt or received damage at some point to the target.
+                </p>
+                <p>
+                    The chart on the right shows the amount of experience you earn when a party member kills a monster, based on the number of non-contributing players.
+                    If all party members have contributed, all players will receive 100% of the monster's exp value.
+                </p>
+            </td>
+            <td width="40%">
+                <table style="border-collapse: collapse" border="1" class="exptable">
+                    <tr>
+                        <th>
+                            <h2 class="subheader">Number of non-contributing members</h2>
+                        </th>
+                        <th>
+                            <h2 class="subheader">EXP Gained</h2>
+                        </th>
+                    </tr>
+
+
+                    @for (var i = 0; i < 10; i++)
+                    {
+                        <tr>
+                            <th>
+                                <h2 class="subheader">@i</h2>
+                            </th>
+                            <td>@((MathF.Pow(0.9f, i)*100).ToString("N0"))%</td>
+                        </tr>
+                    }
+
+
+
+
+
+                </table>
+            </td>
+        </tr>
+    </table>
+
+
+</div>

@@ -825,8 +825,7 @@ namespace Assets.Scripts.Sprites
 
             var obj = new GameObject(type.ToString());
             obj.layer = LayerMask.NameToLayer("Characters");
-            obj.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-
+            
             var control = obj.AddComponent<ServerControllable>();
             control.ClassId = param.ClassId;
             control.CharacterType = CharacterType.NPC;
@@ -838,7 +837,11 @@ namespace Assets.Scripts.Sprites
             control.IsInteractable = false;
 
             control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
-            obj.AddComponent<BillboardObject>();
+            if (type != NpcEffectType.AnkleSnare)
+            {
+                obj.AddComponent<BillboardObject>();
+                obj.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            }
 
             switch (type)
             {
@@ -885,9 +888,30 @@ namespace Assets.Scripts.Sprites
                     SanctuaryEffect.Create(control, true);
                     //DummyGroundEffect.Create(obj, "Sanctuary");
                     break;
+                case NpcEffectType.AnkleSnare:
+                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/AnkleSnare.prefab");
+                    break;
             }
 
             return control;
+        }
+        
+        private void AttachPrefabToControllable(ServerControllable target, string prefabName)
+        {
+            var loader = Addressables.LoadAssetAsync<GameObject>(prefabName);
+            loader.Completed += ah =>
+            {
+                if (target != null && target.gameObject.activeInHierarchy)
+                {
+                    var obj2 = GameObject.Instantiate(ah.Result, target.transform, false);
+                    obj2.transform.localPosition = Vector3.zero;
+
+                    var sprite = obj2.GetComponent<RoSpriteAnimator>();
+                    if (sprite != null)
+                        sprite.Controllable = target;
+                    target.EntityObject = obj2;
+                }
+            };
         }
 
         private ServerControllable PrefabMonster(MonsterClassData mData, ref MonsterSpawnParameters param)

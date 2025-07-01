@@ -443,9 +443,9 @@ public class ItemEquipState
         OnUnEquipUpdateItemSets(AmmoId);
     }
 
-    public bool EquipAmmo(int ammoId, bool isPlayerActive = true, bool unEquipExisting = true)
+    public bool EquipAmmo(int ammoId, bool isPlayerActive = true, bool unEquipExisting = true, bool forceUpdate = false)
     {
-        if (AmmoId == ammoId)
+        if (AmmoId == ammoId && !forceUpdate)
             return true;
 
         if (!DataManager.AmmoInfo.TryGetValue(ammoId, out var ammo))
@@ -682,13 +682,24 @@ public class ItemEquipState
                 return false;
             case CharacterStat.DamageVsTag:
                 if (Player.AttackVersusTag != null &&
-                    Player.AttackVersusTag.TryGetValue(effect.Value, out var existing))
+                    Player.AttackVersusTag.TryGetValue(effect.Value, out var existingAttack))
                 {
-                    var newVal = existing - effect.Change;
+                    var newVal = existingAttack - effect.Change;
                     if (newVal == 0)
                         Player.AttackVersusTag.Remove(effect.Value);
                     else
                         Player.AttackVersusTag[effect.Value] = newVal;
+                }
+                return false;
+            case CharacterStat.ResistVsTag:
+                if (Player.ResistVersusTag != null &&
+                    Player.ResistVersusTag.TryGetValue(effect.Value, out var existingResist))
+                {
+                    var newVal = existingResist - effect.Change;
+                    if (newVal == 0)
+                        Player.ResistVersusTag.Remove(effect.Value);
+                    else
+                        Player.ResistVersusTag[effect.Value] = newVal;
                 }
                 return false;
             case CharacterStat.DoubleAttackChance:
@@ -784,7 +795,7 @@ public class ItemEquipState
 
         if (AmmoId > 0 && DataManager.ItemList.TryGetValue(AmmoId, out var equipInfo))
         {
-            EquipAmmo(AmmoId, true, false);
+            EquipAmmo(AmmoId, true, false, true);
             //equipInfo.Interaction?.OnEquip(Player, Player.CombatEntity, this, new UniqueItem(), EquipSlot.Ammunition);
         }
     }
@@ -918,6 +929,35 @@ public class ItemEquipState
         else
             Player.AttackVersusTag.Add(tagId, change);
     }
+
+
+    public void AddResistVsTag(string tag, int change)
+    {
+        if (!DataManager.TagToIdLookup.TryGetValue(tag, out var tagId))
+        {
+            ServerLogger.LogWarning($"Item attempted to add bonus damage vs tag {tag}, but no monsters with that tag exists.");
+            return;
+        }
+
+        var equipState = new EquipStatChange()
+        {
+            Slot = (int)activeSlotId,
+            Change = change,
+            Value = tagId,
+            Stat = CharacterStat.ResistVsTag
+        };
+
+        equipmentEffects.Add(ref equipState);
+
+        if (Player.ResistVersusTag == null)
+            Player.ResistVersusTag = new Dictionary<int, int>();
+
+        if (Player.ResistVersusTag.TryGetValue(tagId, out var existing))
+            Player.ResistVersusTag[tagId] = existing + change;
+        else
+            Player.ResistVersusTag.Add(tagId, change);
+    }
+
 
     public bool HasLearnedSkill(CharacterSkill skill, int lvl = 1) => Player.MaxLearnedLevelOfSkill(skill) >= lvl;
 

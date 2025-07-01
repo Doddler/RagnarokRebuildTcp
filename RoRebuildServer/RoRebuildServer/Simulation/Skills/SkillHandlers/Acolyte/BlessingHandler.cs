@@ -12,7 +12,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte
     [SkillHandler(CharacterSkill.Blessing, SkillClass.Magic, SkillTarget.Ally)]
     public class BlessingHandler : SkillHandlerBase
     {
-        public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl)
+        public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target,
+            Position position, int lvl, bool isIndirect)
         {
             if (target == null)
                 return SkillValidationResult.InvalidTarget;
@@ -20,7 +21,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte
             if (target.Character.Type == CharacterType.Player && target.IsElementBaseType(CharacterElement.Undead1))
                 return SkillValidationResult.Failure;
 
-            return base.ValidateTarget(source, target, position, lvl);
+            return base.ValidateTarget(source, target, position, lvl, false);
         }
 
         public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
@@ -48,13 +49,13 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte
 
             if (!isIndirect)
             {
-                source.ApplyAfterCastDelay(0.5f);
+                source.ApplyAfterCastDelay(1f);
                 source.ApplyCooldownForSupportSkillAction();
             }
 
             var res = DamageInfo.SupportSkillResult(source.Entity, target.Entity, CharacterSkill.Blessing);
             res.IsIndirect = isIndirect;
-            GenericCastAndInformSupportSkill(source, target, CharacterSkill.Blessing, lvl, ref res);
+            GenericCastAndInformSupportSkill(source, target, CharacterSkill.Blessing, lvl, ref res, isIndirect);
         }
     }
 }

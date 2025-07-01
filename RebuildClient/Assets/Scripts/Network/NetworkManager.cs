@@ -1922,7 +1922,16 @@ namespace Assets.Scripts.Network
 
             SendMessage(msg);
         }
+        
+        public void PartyUpdateAction(int id, PartyClientAction action)
+        {
+            var msg = StartMessage(PacketType.UpdateParty);
+            msg.Write((byte)action);
+            msg.Write(id);
 
+            SendMessage(msg);
+        }
+        
         public void PartyInviteByName(string name)
         {
             var msg = StartMessage(PacketType.InvitePartyMember);

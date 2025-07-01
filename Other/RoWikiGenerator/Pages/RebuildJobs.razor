@@ -1,6 +1,7 @@
 ﻿@using System.Text.RegularExpressions
 @using RebuildSharedData.Enum
 @using RoRebuildServer.Data
+@using RoRebuildServer.Data.Player
 @code
 {
     [Parameter] public Generators.JobModel Model { get; set; }
@@ -15,39 +16,72 @@
 
         return d2.Replace("</color>", "</span>");
     }
+
 }
 
 <div class="contentzone">
     <H2 class="subheader">Skills</H2>
-    @foreach (var (skill, prereqs) in Model.SkillTree.SkillTree)
-    {
-        var data = DataManager.SkillData[skill];
+    <div style="display: flex; flex-direction: row; flex-wrap: wrap">
+        @foreach (var (skill, prereqs) in Model.SkillTree.SkillTree)
+        {
+            var data = DataManager.SkillData[skill];
 
-        if (!WikiData.SkillDesc.TryGetValue(skill, out var skillDesc))
-            skillDesc = "<i>No description</i>";
+            if (!WikiData.SkillDesc.TryGetValue(skill, out var skillDesc))
+                skillDesc = "<i>No description</i>";
 
-        var spCost = Model.GetSpCostStringForSkill(data);
-        var prereq = Model.GetPrereqStringForSkill(skill, prereqs);
-        
-        <div class="skillBox">
+            var spCost = Model.GetSpCostStringForSkill(data);
+            var prereq = Model.GetPrereqStringForSkill(skill, prereqs);
 
-            <h2 class="skillTitle">
-                <img src="../images/rebuilditems/skill_@(data.Icon).png" class="skillTitle" /> @data.Name
-            </h2>
+            <div class="skillBox">
 
-            <div class="skillDesc">
-                <span><b>Max Level: </b> @data.MaxLevel</span><br />
-                <span><b>Prereqs: </b> @prereq</span><br />
-                <span><b>Target: </b> @data.Target</span><br />
-                @if (data.Target != SkillTarget.Passive)
-                {
-                    <span><b>SP Cost: </b> @spCost</span> <br />
-                }
-                @((MarkupString)FixDesc(skillDesc))
+                <h2 class="skillTitle">
+                    <img src="../images/rebuilditems/skill_@(data.Icon).png" class="skillTitle" /> @data.Name
+                </h2>
+
+                <div class="skillDesc">
+                    <span><b>Max Level: </b> @data.MaxLevel</span><br />
+                    <span><b>Prereqs: </b> @prereq</span><br />
+                    <span><b>Target: </b> @data.Target</span><br />
+                    @if (data.Target != SkillTarget.Passive)
+                    {
+                        <span><b>SP Cost: </b> @spCost</span> <br />
+                    }
+                    @((MarkupString)FixDesc(skillDesc))
+                </div>
             </div>
-        </div>
-    }
-
-
-    <div style="clear: both;"></div>
+        }
+    </div>
+    <H2 class="subheader">Stat Bonuses</H2>
+    <table style="border-collapse: collapse" border="1" class="jobtable">
+        <tr>
+            <th><h2 class="subheader">Job</h2></th>
+            <th><h2 class="subheader">STR</h2></th>
+            <th><h2 class="subheader">AGI</h2></th>
+            <th><h2 class="subheader">VIT</h2></th>
+            <th><h2 class="subheader">INT</h2></th>
+            <th><h2 class="subheader">DEX</h2></th>
+            <th><h2 class="subheader">LUK</h2></th>
+        </tr>
+        @{
+            var previousLevel = (new[] { 0, 0, 0, 0, 0, 0 }).AsSpan();
+            var maxJob = 10;
+            if (Model.Info.Id > 0)
+                maxJob = 50;
+        }
+        @for (var i = 0; i < maxJob; i++)
+        {
+            var currentLevel = DataManager.JobBonusTable.AsSpan(Model.Info.Id * 70 * 6 + i * 6, 6);
+            var curLevel = DataManager.ExpChart.ExpRequired[i + 1];
+            <tr>
+                <td><b>@(i + 1)</b></td>
+                @if(previousLevel[0] == currentLevel[0]) { <td>@(currentLevel[0])</td> } else { <td style="background-color: #BBF">@(currentLevel[0])</td> }
+                @if(previousLevel[1] == currentLevel[1]) { <td>@(currentLevel[1])</td> } else { <td style="background-color: #BBF">@(currentLevel[1])</td> }
+                @if(previousLevel[2] == currentLevel[2]) { <td>@(currentLevel[2])</td> } else { <td style="background-color: #BBF">@(currentLevel[2])</td> }
+                @if(previousLevel[3] == currentLevel[3]) { <td>@(currentLevel[3])</td> } else { <td style="background-color: #BBF">@(currentLevel[3])</td> }
+                @if(previousLevel[4] == currentLevel[4]) { <td>@(currentLevel[4])</td> } else { <td style="background-color: #BBF">@(currentLevel[4])</td> }
+                @if(previousLevel[5] == currentLevel[5]) { <td>@(currentLevel[5])</td> } else { <td style="background-color: #BBF">@(currentLevel[5])</td> }
+            </tr>
+            previousLevel = currentLevel;
+        }
+    </table>
 </div>

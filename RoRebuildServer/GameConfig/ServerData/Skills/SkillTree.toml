@@ -16,7 +16,8 @@ Bash = []
 MagnumBreak = [["Bash", 5]]
 Provoke = []
 Endure = [["Provoke", 5]]
-TwoHandQuicken = [["Bash", 10], ["Endure", 5]] #just for testing
+ChargeAttack = [["Bash", 7], ["MagnumBreak", 3]]
+TwoHandQuicken = [["TwoHandSwordMastery", 10], ["Endure", 5]] #just for testing
 
 [Archer]
 JobRank = 1
@@ -27,7 +28,9 @@ VultureEye = [["OwlEye", 3]]
 DoubleStrafe = []
 ArrowShower = [["DoubleStrafe", 10]]
 ImproveConcentration = [["VultureEye", 1]]
-ChargeArrow = [["OwlEye", 10], ["VultureEye", 5]]
+ChargeArrow = [["OwlEye", 5], ["VultureEye", 5]]
+BeastBane = [["OwlEye", 10]]
+AnkleSnare = [["ImproveConcentration", 10], ["BeastBane", 10]]
 
 [Mage]
 JobRank = 1
@@ -46,7 +49,10 @@ NapalmBeat = []
 SoulStrike = [["NapalmBeat", 4]]
 SafetyWall = [["NapalmBeat", 7], ["SoulStrike", 5]]
 StoneCurse = []
-EnergyCoat = [["FireBolt", 3], ["ColdBolt", 3], ["LightningBolt", 3]]
+EarthSpike = [["StoneCurse", 3]]
+HeavensDrive = [["EarthSpike", 3]]
+WaterBall = [["FrostDiver", 7], ["LightningBolt", 3]]
+#EnergyCoat = [["FireBolt", 3], ["ColdBolt", 3], ["LightningBolt", 3]]
 
 [Acolyte]
 JobRank = 1
@@ -69,6 +75,7 @@ Pneuma = [["WarpPortal", 4]]
 HolyLight = [["DemonBane", 5]]
 SignumCrusis = [["DemonBane", 3]]
 AquaBenedicta = []
+Sanctuary = [["DivineProtection", 10], ["Heal", 10], ["Blessing", 10]]
 
 [Thief]
 JobRank = 1
@@ -80,11 +87,11 @@ Envenom = []
 Detoxify = [["Envenom", 3]]
 Steal = []
 Hiding = [["Steal", 5]]
-SandAttack = [["Envenom", 5]]
+#SandAttack = [["Envenom", 5]]
 BackSlide = [["ImproveDodge",5]]
-ThrowStone = []
-#FindStone = [["QuestSkill",1]]
-SonicBlow = [["DoubleAttack", 5],["Envenom",10]]
+#FindStone = []
+SonicBlow = [["DoubleAttack", 5],["Envenom", 7]]
+EnchantPoison = [["Envenom", 10],["Hiding", 3]]
 
 [Merchant]
 JobRank = 1

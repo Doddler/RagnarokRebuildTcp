@@ -235,7 +235,7 @@ public partial class CombatEntity
             {
                 var skillCast = PrepareAutoSpellActivation(effect, this, target);
 
-                if (SkillHandler.ValidateTarget(skillCast, this) == SkillValidationResult.Success)
+                if (SkillHandler.ValidateTarget(skillCast, this, true) == SkillValidationResult.Success)
                     SkillHandler.ExecuteSkill(skillCast, this);
             }
         }
@@ -257,7 +257,7 @@ public partial class CombatEntity
                 var skillCast = PrepareAutoSpellActivation(effect, this, attacker);
                 skillCast.CastTime = res.Time;
 
-                if (SkillHandler.ValidateTarget(skillCast, this) == SkillValidationResult.Success)
+                if (SkillHandler.ValidateTarget(skillCast, this, true) == SkillValidationResult.Success)
                 {
                     Player.IndirectCastQueue.Add(skillCast);
                     Player.IndirectCastQueue.Sort((a, b) => a.CastTime.CompareTo(b.CastTime));

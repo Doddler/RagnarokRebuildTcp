@@ -64,6 +64,8 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
             var skill = (CharacterSkill)msg.ReadInt16();
             var lvl = (int)msg.ReadByte();
 
+            if (connection.Player.IsSkillOnCooldown(skill)) return;
+
             if (!connection.Player.DoesCharacterKnowSkill(skill, lvl))
             {
                 CommandBuilder.SkillFailed(connection.Player, SkillValidationResult.SkillNotKnown);
@@ -106,15 +108,18 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
 
             if (map == null || caster == null)
                 throw new Exception($"Cannot ProcessGroundTargetedSkill, player or map is invalid.");
+
+
+            var skill = (CharacterSkill)msg.ReadByte();
+            var lvl = (int)msg.ReadByte();
             
+            if (connection.Player.IsSkillOnCooldown(skill)) return;
+
             if (!map.WalkData.HasLineOfSight(caster.Position, groundTarget))
             {
                 CommandBuilder.SkillFailed(connection.Player, SkillValidationResult.NoLineOfSight);
                 return;
             }
-            
-            var skill = (CharacterSkill)msg.ReadByte();
-            var lvl = (int)msg.ReadByte();
 
             if (!connection.Player.DoesCharacterKnowSkill(skill, lvl))
             {
@@ -145,6 +150,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
             Debug.Assert(connection.Player != null, "connection.Player != null");
             Debug.Assert(connection.Character != null);
 
+
             var caster = connection.Character;
             var targetEntity = World.Instance.GetEntityById(msg.ReadInt32());
             if(targetEntity.Type == EntityType.Npc || !targetEntity.TryGet<CombatEntity>(out var target) || caster == null)
@@ -152,6 +158,8 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
             
             var skill = (CharacterSkill)msg.ReadByte();
             var lvl = (int)msg.ReadByte();
+
+            if (connection.Player.IsSkillOnCooldown(skill)) return;
 
             if (!connection.Player.DoesCharacterKnowSkill(skill, lvl))
             {

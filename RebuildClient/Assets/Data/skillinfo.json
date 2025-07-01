@@ -556,6 +556,151 @@
     },
     {
       "SkillId": 30,
+      "Icon": "kn_twohandquicken",
+      "Name": "Two-Hand Quicken",
+      "Target": 5,
+      "Type": 0,
+      "MaxLevel": 10,
+      "SpCost": [
+        14,
+        18,
+        22,
+        26,
+        30,
+        34,
+        38,
+        42,
+        46,
+        50
+      ],
+      "AdjustableLevel": false,
+      "Description": "Increases attack speed when using two-handed swords, reducing the delay between attacks by 30%.\r\nDuration: [SkillLevel * 30] seconds.",
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 31,
+      "Icon": "nv_basic",
+      "Name": "CounterAttack",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 32,
+      "Icon": "nv_basic",
+      "Name": "BowlingBash",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 33,
+      "Icon": "nv_basic",
+      "Name": "PecoPecoRiding",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 34,
+      "Icon": "nv_basic",
+      "Name": "CavalierMastery",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 35,
+      "Icon": "nv_basic",
+      "Name": "SpearMastery",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 36,
+      "Icon": "nv_basic",
+      "Name": "Pierce",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 37,
+      "Icon": "nv_basic",
+      "Name": "SpearStab",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 38,
+      "Icon": "nv_basic",
+      "Name": "BrandishSpear",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 39,
+      "Icon": "nv_basic",
+      "Name": "SpearBoomerang",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 40,
+      "Icon": "kn_chargeatk",
+      "Name": "Charge Attack",
+      "Target": 1,
+      "Type": 0,
+      "MaxLevel": 1,
+      "SpCost": [
+        20
+      ],
+      "AdjustableLevel": false,
+      "Description": "Quickly close the gap to a single target, dealing damage and knocking them back. \r\nCast time scales from 0.1s to 0.5s, and cast time from 100% to 500%, depending on the distance traveled. Maximum damage is achieved at 12 tiles.\r\nSkill Range: 14 tiles\r\nRecast time: 5s",
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 41,
       "Icon": "al_heal",
       "Name": "Heal",
       "Target": 2,
@@ -578,7 +723,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 31,
+      "SkillId": 42,
       "Icon": "al_incagi",
       "Name": "Increase Agility",
       "Target": 2,
@@ -601,7 +746,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 32,
+      "SkillId": 43,
       "Icon": "al_decagi",
       "Name": "Decrease Agility",
       "Target": 1,
@@ -624,7 +769,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 33,
+      "SkillId": 44,
       "Icon": "al_blessing",
       "Name": "Blessing",
       "Target": 2,
@@ -647,7 +792,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 34,
+      "SkillId": 45,
       "Icon": "al_demonbane",
       "Name": "Demon Bane",
       "Target": 0,
@@ -659,7 +804,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 35,
+      "SkillId": 46,
       "Icon": "al_dp",
       "Name": "Divine Protection",
       "Target": 0,
@@ -671,7 +816,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 36,
+      "SkillId": 47,
       "Icon": "al_angelus",
       "Name": "Angelus",
       "Target": 5,
@@ -694,7 +839,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 37,
+      "SkillId": 48,
       "Icon": "al_crucis",
       "Name": "Signum Crusis",
       "Target": 5,
@@ -717,7 +862,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 38,
+      "SkillId": 49,
       "Icon": "al_cure",
       "Name": "Cure",
       "Target": 2,
@@ -731,7 +876,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 39,
+      "SkillId": 50,
       "Icon": "al_holywater",
       "Name": "Aqua Benedicta",
       "Target": 5,
@@ -745,7 +890,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 40,
+      "SkillId": 51,
       "Icon": "al_pneuma",
       "Name": "Pneuma",
       "Target": 4,
@@ -759,7 +904,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 41,
+      "SkillId": 52,
       "Icon": "al_ruwach",
       "Name": "Ruwach",
       "Target": 5,
@@ -773,7 +918,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 42,
+      "SkillId": 53,
       "Icon": "al_teleport",
       "Name": "Teleport",
       "Target": 5,
@@ -787,7 +932,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 43,
+      "SkillId": 54,
       "Icon": "al_teleport2",
       "Name": "Return",
       "Target": 5,
@@ -801,7 +946,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 44,
+      "SkillId": 55,
       "Icon": "al_warp",
       "Name": "Warp Portal",
       "Target": 4,
@@ -818,7 +963,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 45,
+      "SkillId": 56,
       "Icon": "al_holylight",
       "Name": "Holy Light",
       "Target": 1,
@@ -832,7 +977,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 46,
+      "SkillId": 57,
       "Icon": "tf_double",
       "Name": "Double Attack",
       "Target": 0,
@@ -844,7 +989,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 47,
+      "SkillId": 58,
       "Icon": "tf_poison",
       "Name": "Envenom",
       "Target": 1,
@@ -867,7 +1012,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 48,
+      "SkillId": 59,
       "Icon": "tf_detoxify",
       "Name": "Detoxify",
       "Target": 2,
@@ -881,7 +1026,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 49,
+      "SkillId": 60,
       "Icon": "tf_backsliding",
       "Name": "Back Slide",
       "Target": 5,
@@ -895,7 +1040,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 50,
+      "SkillId": 61,
       "Icon": "tf_steal",
       "Name": "Steal",
       "Target": 1,
@@ -918,7 +1063,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 51,
+      "SkillId": 62,
       "Icon": "tf_sprinklesand",
       "Name": "Sand Attack",
       "Target": 1,
@@ -932,7 +1077,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 52,
+      "SkillId": 63,
       "Icon": "tf_throwstone",
       "Name": "Stone Fling",
       "Target": 1,
@@ -946,7 +1091,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 53,
+      "SkillId": 64,
       "Icon": "tf_pickstone",
       "Name": "Find Stone",
       "Target": 1,
@@ -960,7 +1105,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 54,
+      "SkillId": 65,
       "Icon": "tf_hiding",
       "Name": "Hiding",
       "Target": 5,
@@ -983,7 +1128,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 55,
+      "SkillId": 66,
       "Icon": "tf_miss",
       "Name": "Improve Dodge",
       "Target": 0,
@@ -995,7 +1140,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 56,
+      "SkillId": 67,
       "Icon": "mc_inccarry",
       "Name": "Enlarge Weight Limit",
       "Target": 0,
@@ -1007,7 +1152,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 57,
+      "SkillId": 68,
       "Icon": "mc_discount",
       "Name": "Discount",
       "Target": 0,
@@ -1019,7 +1164,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 58,
+      "SkillId": 69,
       "Icon": "mc_overcharge",
       "Name": "Overcharge",
       "Target": 0,
@@ -1031,7 +1176,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 59,
+      "SkillId": 70,
       "Icon": "mc_vending",
       "Name": "Vending",
       "Target": 5,
@@ -1054,7 +1199,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 60,
+      "SkillId": 71,
       "Icon": "mc_identify",
       "Name": "Weapon Appraisal",
       "Target": 0,
@@ -1066,7 +1211,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 61,
+      "SkillId": 72,
       "Icon": "mc_mammonite",
       "Name": "Mammonite",
       "Target": 1,
@@ -1089,7 +1234,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 62,
+      "SkillId": 73,
       "Icon": "mc_pushcart",
       "Name": "Push Cart",
       "Target": 0,
@@ -1101,7 +1246,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 63,
+      "SkillId": 74,
       "Icon": "mc_loud",
       "Name": "Crazy Uproar",
       "Target": 5,
@@ -1115,7 +1260,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 64,
+      "SkillId": 75,
       "Icon": "mc_cartrevolution",
       "Name": "Cart Revolution",
       "Target": 1,
@@ -1129,7 +1274,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 65,
+      "SkillId": 76,
       "Icon": "pr_aspersio",
       "Name": "Aspersio",
       "Target": 2,
@@ -1147,7 +1292,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 66,
+      "SkillId": 77,
       "Icon": "pr_benedictio",
       "Name": "Benedictio Sanctissimi Sacramenti",
       "Target": 2,
@@ -1165,7 +1310,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 67,
+      "SkillId": 78,
       "Icon": "pr_sanctuary",
       "Name": "Sanctuary",
       "Target": 4,
@@ -1188,7 +1333,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 68,
+      "SkillId": 79,
       "Icon": "pr_gloria",
       "Name": "Gloria",
       "Target": 5,
@@ -1206,7 +1351,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 69,
+      "SkillId": 80,
       "Icon": "pr_magnificat",
       "Name": "Magnificat",
       "Target": 5,
@@ -1224,7 +1369,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 70,
+      "SkillId": 81,
       "Icon": "pr_impositio",
       "Name": "Impositio Manus",
       "Target": 2,
@@ -1242,7 +1387,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 71,
+      "SkillId": 82,
       "Icon": "pr_kyrie",
       "Name": "Kyrie Eleison",
       "Target": 5,
@@ -1265,7 +1410,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 72,
+      "SkillId": 83,
       "Icon": "pr_lexaeterna",
       "Name": "Lex Aeterna",
       "Target": 1,
@@ -1279,7 +1424,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 73,
+      "SkillId": 84,
       "Icon": "pr_lexdivina",
       "Name": "Lex Divina",
       "Target": 1,
@@ -1302,7 +1447,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 74,
+      "SkillId": 85,
       "Icon": "pr_magnus",
       "Name": "Magnus Exorcismus",
       "Target": 4,
@@ -1325,7 +1470,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 75,
+      "SkillId": 86,
       "Icon": "all_resurrection",
       "Name": "Resurrection",
       "Target": 2,
@@ -1342,7 +1487,7 @@
       "InterruptMode": 1
     },
     {
-      "SkillId": 76,
+      "SkillId": 87,
       "Icon": "pr_strecovery",
       "Name": "Status Recovery",
       "Target": 3,
@@ -1356,7 +1501,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 77,
+      "SkillId": 88,
       "Icon": "pr_suffragium",
       "Name": "Suffragium",
       "Target": 2,
@@ -1370,7 +1515,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 78,
+      "SkillId": 89,
       "Icon": "pr_turnundead",
       "Name": "Turn Undead",
       "Target": 1,
@@ -1393,7 +1538,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 79,
+      "SkillId": 90,
       "Icon": "wz_earthspike",
       "Name": "Earth Spike",
       "Target": 1,
@@ -1411,7 +1556,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 80,
+      "SkillId": 91,
       "Icon": "wz_heavendrive",
       "Name": "Heaven\u0027s Drive",
       "Target": 4,
@@ -1429,7 +1574,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 81,
+      "SkillId": 92,
       "Icon": "wz_firepillar",
       "Name": "Fire Pillar",
       "Target": 4,
@@ -1452,7 +1597,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 82,
+      "SkillId": 93,
       "Icon": "wz_frostnova",
       "Name": "Frost Nova",
       "Target": 5,
@@ -1475,7 +1620,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 83,
+      "SkillId": 94,
       "Icon": "wz_icewall",
       "Name": "Ice Wall",
       "Target": 4,
@@ -1498,7 +1643,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 84,
+      "SkillId": 95,
       "Icon": "wz_jupitel",
       "Name": "Jupitel Thunder",
       "Target": 1,
@@ -1521,7 +1666,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 85,
+      "SkillId": 96,
       "Icon": "wz_vermilion",
       "Name": "Lord of Vermilion",
       "Target": 4,
@@ -1544,7 +1689,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 86,
+      "SkillId": 97,
       "Icon": "wz_meteor",
       "Name": "Meteor Storm",
       "Target": 4,
@@ -1567,7 +1712,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 87,
+      "SkillId": 98,
       "Icon": "wz_quagmire",
       "Name": "Quagmire",
       "Target": 4,
@@ -1585,7 +1730,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 88,
+      "SkillId": 99,
       "Icon": "wz_estimation",
       "Name": "Sense",
       "Target": 1,
@@ -1599,7 +1744,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 89,
+      "SkillId": 100,
       "Icon": "wz_sightrasher",
       "Name": "Sightrasher",
       "Target": 5,
@@ -1622,7 +1767,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 90,
+      "SkillId": 101,
       "Icon": "wz_stormgust",
       "Name": "Storm Gust",
       "Target": 4,
@@ -1645,7 +1790,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 91,
+      "SkillId": 102,
       "Icon": "wz_waterball",
       "Name": "Water Ball",
       "Target": 1,
@@ -1668,71 +1813,265 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 92,
-      "Icon": "bs_adrenaline",
-      "Name": "Adrenaline Rush",
-      "Target": 5,
+      "SkillId": 103,
+      "Icon": "ht_beastbane",
+      "Name": "Beast Bane",
+      "Target": 0,
       "Type": 0,
       "MaxLevel": 10,
-      "SpCost": [
-        20,
-        23,
-        26,
-        29,
-        32,
-        35,
-        38,
-        41,
-        44,
-        47
-      ],
+      "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "Increases attack speed with axes and maces by 60% you and 50% your party members. Lasts [SkillLevel * 30] seconds.",
+      "Description": "Adds \u002B[SkillLevel * 5] weapon attack power when attacking brute and insect type monsters.",
       "InterruptMode": 0
     },
     {
-      "SkillId": 93,
-      "Icon": "kn_twohandquicken",
-      "Name": "Two-Hand Quicken",
-      "Target": 5,
+      "SkillId": 104,
+      "Icon": "nv_basic",
+      "Name": "FalconMastery",
+      "Target": 0,
       "Type": 0,
-      "MaxLevel": 10,
-      "SpCost": [
-        14,
-        18,
-        22,
-        26,
-        30,
-        34,
-        38,
-        42,
-        46,
-        50
-      ],
+      "MaxLevel": 0,
+      "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "Increases attack speed when using two-handed swords by [SkillLevel * 10]%.\r\nDuration: [SkillLevel * 30] seconds.",
+      "Description": null,
       "InterruptMode": 0
     },
     {
-      "SkillId": 94,
-      "Icon": "bs_hammerfall",
-      "Name": "Hammer Fall",
+      "SkillId": 105,
+      "Icon": "nv_basic",
+      "Name": "Detect",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 106,
+      "Icon": "nv_basic",
+      "Name": "BlitzBeat",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 107,
+      "Icon": "nv_basic",
+      "Name": "SteelCrow",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 108,
+      "Icon": "nv_basic",
+      "Name": "LandMine",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 109,
+      "Icon": "nv_basic",
+      "Name": "RemoveTrap",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 110,
+      "Icon": "nv_basic",
+      "Name": "SpringTrap",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 111,
+      "Icon": "nv_basic",
+      "Name": "SkidTrap",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 112,
+      "Icon": "ht_anklesnare",
+      "Name": "Ankle Snare",
       "Target": 4,
       "Type": 0,
       "MaxLevel": 5,
       "SpCost": [
-        10,
-        10,
-        10,
-        10,
-        10
+        12,
+        12,
+        12,
+        12,
+        12
       ],
       "AdjustableLevel": false,
-      "Description": "Strike the earth with a powerful hammer swing that has a [20 \u002B SkillLvl * 10]% chance to stun enemies in a 5x5 area.",
+      "Description": "Sets a trap that when stepped on immobilizes the enemy for [SkillLevel * 4] seconds.\r\nIneffective against enemies that aren\u0027t touching the ground when moving. High agility enemies, bosses, and enemies higher level than you will escape faster.\r\nCannot overlap with another trap or be set next to another player or monster.\r\nIf the trap expires without being triggered the trap item will be returned.\r\nDuration: 50s\r\nUses: \u003Ccolor=#777777\u003E1 Trap\u003C/color\u003E",
       "InterruptMode": 0
     },
     {
-      "SkillId": 95,
+      "SkillId": 113,
+      "Icon": "nv_basic",
+      "Name": "Flasher",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 114,
+      "Icon": "nv_basic",
+      "Name": "FreezingTrap",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 115,
+      "Icon": "nv_basic",
+      "Name": "Sandman",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 116,
+      "Icon": "nv_basic",
+      "Name": "BlastMine",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 117,
+      "Icon": "nv_basic",
+      "Name": "ClaymoreTrap",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 118,
+      "Icon": "nv_basic",
+      "Name": "TalkieBox",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 119,
+      "Icon": "nv_basic",
+      "Name": "PhantasmicArrow",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 120,
+      "Icon": "nv_basic",
+      "Name": "RightHandMastery",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 121,
+      "Icon": "nv_basic",
+      "Name": "LeftHandMastery",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 122,
+      "Icon": "nv_basic",
+      "Name": "KatarMastery",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 123,
+      "Icon": "nv_basic",
+      "Name": "Grimtooth",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 124,
       "Icon": "as_sonicblow",
       "Name": "Sonic Blow",
       "Target": 1,
@@ -1755,7 +2094,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 96,
+      "SkillId": 125,
       "Icon": "as_cloaking",
       "Name": "Cloaking",
       "Target": 5,
@@ -1778,7 +2117,179 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 97,
+      "SkillId": 126,
+      "Icon": "as_enchantpoison",
+      "Name": "Enchant Poison",
+      "Target": 2,
+      "Type": 0,
+      "MaxLevel": 10,
+      "SpCost": [
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20
+      ],
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 127,
+      "Icon": "nv_basic",
+      "Name": "PoisonReact",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 128,
+      "Icon": "nv_basic",
+      "Name": "VenomDust",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 129,
+      "Icon": "nv_basic",
+      "Name": "VenomSplasher",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 130,
+      "Icon": "nv_basic",
+      "Name": "SonicAcceleration",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 131,
+      "Icon": "nv_basic",
+      "Name": "VenomKnife",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 132,
+      "Icon": "bs_adrenaline",
+      "Name": "Adrenaline Rush",
+      "Target": 5,
+      "Type": 0,
+      "MaxLevel": 10,
+      "SpCost": [
+        20,
+        23,
+        26,
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47
+      ],
+      "AdjustableLevel": false,
+      "Description": "Increases attack speed with axes and maces, reducing the delay between attacks by 30% for yourself and 25% for party members. \r\nDuration: [SkillLevel * 30] seconds.",
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 133,
+      "Icon": "bs_hammerfall",
+      "Name": "Hammer Fall",
+      "Target": 4,
+      "Type": 0,
+      "MaxLevel": 5,
+      "SpCost": [
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "AdjustableLevel": false,
+      "Description": "Strike the earth with a powerful hammer swing that has a [20 \u002B SkillLvl * 10]% chance to stun enemies in a 5x5 area.",
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 134,
+      "Icon": "nv_basic",
+      "Name": "WeaponPerfection",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 135,
+      "Icon": "nv_basic",
+      "Name": "SkinTempering",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 136,
+      "Icon": "nv_basic",
+      "Name": "PowerThrust",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 137,
+      "Icon": "nv_basic",
+      "Name": "MaximizePower",
+      "Target": 0,
+      "Type": 0,
+      "MaxLevel": 0,
+      "SpCost": null,
+      "AdjustableLevel": false,
+      "Description": null,
+      "InterruptMode": 0
+    },
+    {
+      "SkillId": 138,
       "Icon": "nv_basic",
       "Name": "Demonstration",
       "Target": 4,
@@ -1790,7 +2301,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 98,
+      "SkillId": 139,
       "Icon": "nv_basic",
       "Name": "Fire Attack",
       "Target": 1,
@@ -1802,7 +2313,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 99,
+      "SkillId": 140,
       "Icon": "nv_basic",
       "Name": "Ice Attack",
       "Target": 1,
@@ -1814,7 +2325,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 100,
+      "SkillId": 141,
       "Icon": "nv_basic",
       "Name": "Water Attack",
       "Target": 1,
@@ -1826,7 +2337,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 101,
+      "SkillId": 142,
       "Icon": "nv_basic",
       "Name": "Wind Attack",
       "Target": 1,
@@ -1838,7 +2349,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 102,
+      "SkillId": 143,
       "Icon": "nv_basic",
       "Name": "Earth Attack",
       "Target": 1,
@@ -1850,7 +2361,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 103,
+      "SkillId": 144,
       "Icon": "nv_basic",
       "Name": "Dark Attack",
       "Target": 1,
@@ -1862,7 +2373,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 104,
+      "SkillId": 145,
       "Icon": "nv_basic",
       "Name": "Holy Attack",
       "Target": 1,
@@ -1874,7 +2385,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 105,
+      "SkillId": 146,
       "Icon": "nv_basic",
       "Name": "Poison Attack",
       "Target": 1,
@@ -1886,7 +2397,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 106,
+      "SkillId": 147,
       "Icon": "nv_basic",
       "Name": "Undead Attack",
       "Target": 1,
@@ -1898,7 +2409,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 107,
+      "SkillId": 148,
       "Icon": "nv_basic",
       "Name": "Immaterial Attack",
       "Target": 1,
@@ -1910,7 +2421,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 108,
+      "SkillId": 149,
       "Icon": "nv_basic",
       "Name": "Critical Slash",
       "Target": 1,
@@ -1922,7 +2433,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 109,
+      "SkillId": 150,
       "Icon": "nv_basic",
       "Name": "Curse",
       "Target": 1,
@@ -1934,7 +2445,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 110,
+      "SkillId": 151,
       "Icon": "nv_basic",
       "Name": "Poison",
       "Target": 1,
@@ -1946,7 +2457,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 111,
+      "SkillId": 152,
       "Icon": "nv_basic",
       "Name": "Sleep",
       "Target": 1,
@@ -1958,7 +2469,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 112,
+      "SkillId": 153,
       "Icon": "nv_basic",
       "Name": "Stun",
       "Target": 1,
@@ -1970,7 +2481,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 113,
+      "SkillId": 154,
       "Icon": "nv_basic",
       "Name": "Blind",
       "Target": 1,
@@ -1982,7 +2493,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 114,
+      "SkillId": 155,
       "Icon": "nv_basic",
       "Name": "Silence",
       "Target": 1,
@@ -1994,7 +2505,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 115,
+      "SkillId": 156,
       "Icon": "nv_basic",
       "Name": "Petrify",
       "Target": 1,
@@ -2006,7 +2517,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 116,
+      "SkillId": 157,
       "Icon": "nv_basic",
       "Name": "Fire Breath",
       "Target": 1,
@@ -2018,7 +2529,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 117,
+      "SkillId": 158,
       "Icon": "nv_basic",
       "Name": "Ice Breath",
       "Target": 1,
@@ -2030,7 +2541,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 118,
+      "SkillId": 159,
       "Icon": "nv_basic",
       "Name": "Wind Breath",
       "Target": 1,
@@ -2042,7 +2553,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 119,
+      "SkillId": 160,
       "Icon": "nv_basic",
       "Name": "Earth Breath",
       "Target": 1,
@@ -2054,7 +2565,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 120,
+      "SkillId": 161,
       "Icon": "nv_basic",
       "Name": "Dark Breath",
       "Target": 1,
@@ -2066,7 +2577,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 121,
+      "SkillId": 162,
       "Icon": "nv_basic",
       "Name": "Holy Breath",
       "Target": 1,
@@ -2078,7 +2589,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 122,
+      "SkillId": 163,
       "Icon": "nv_basic",
       "Name": "Poison Breath",
       "Target": 1,
@@ -2090,7 +2601,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 123,
+      "SkillId": 164,
       "Icon": "nv_basic",
       "Name": "Undead Breath",
       "Target": 1,
@@ -2102,7 +2613,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 124,
+      "SkillId": 165,
       "Icon": "nv_basic",
       "Name": "Immaterial Breath",
       "Target": 1,
@@ -2114,7 +2625,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 125,
+      "SkillId": 166,
       "Icon": "nv_basic",
       "Name": "Self Destruct",
       "Target": 5,
@@ -2126,7 +2637,7 @@
       "InterruptMode": 3
     },
     {
-      "SkillId": 126,
+      "SkillId": 167,
       "Icon": "nv_basic",
       "Name": "Power Up",
       "Target": 5,
@@ -2138,7 +2649,7 @@
       "InterruptMode": 3
     },
     {
-      "SkillId": 127,
+      "SkillId": 168,
       "Icon": "nv_basic",
       "Name": "Speed Up",
       "Target": 5,
@@ -2150,7 +2661,7 @@
       "InterruptMode": 3
     },
     {
-      "SkillId": 128,
+      "SkillId": 169,
       "Icon": "nv_basic",
       "Name": "Call Minion",
       "Target": 0,
@@ -2162,7 +2673,7 @@
       "InterruptMode": 3
     },
     {
-      "SkillId": 129,
+      "SkillId": 170,
       "Icon": "nv_basic",
       "Name": "Recall",
       "Target": 0,
@@ -2174,7 +2685,7 @@
       "InterruptMode": 3
     },
     {
-      "SkillId": 130,
+      "SkillId": 171,
       "Icon": "nv_basic",
       "Name": "Summon Monster",
       "Target": 0,
@@ -2186,7 +2697,7 @@
       "InterruptMode": 3
     },
     {
-      "SkillId": 131,
+      "SkillId": 172,
       "Icon": "nv_basic",
       "Name": "Metamorphosis",
       "Target": 0,
@@ -2198,7 +2709,7 @@
       "InterruptMode": 3
     },
     {
-      "SkillId": 132,
+      "SkillId": 173,
       "Icon": "nv_basic",
       "Name": "Magic Weapon",
       "Target": 5,
@@ -2210,7 +2721,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 133,
+      "SkillId": 174,
       "Icon": "nv_basic",
       "Name": "Blood Drain",
       "Target": 1,
@@ -2222,7 +2733,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 134,
+      "SkillId": 175,
       "Icon": "nv_basic",
       "Name": "Energy Drain",
       "Target": 1,
@@ -2234,7 +2745,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 135,
+      "SkillId": 176,
       "Icon": "nv_basic",
       "Name": "Guided Attacks",
       "Target": 1,
@@ -2246,7 +2757,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 136,
+      "SkillId": 177,
       "Icon": "nv_basic",
       "Name": "Area Attack",
       "Target": 1,
@@ -2258,7 +2769,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 137,
+      "SkillId": 178,
       "Icon": "nv_basic",
       "Name": "Combo Attack",
       "Target": 1,
@@ -2270,7 +2781,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 138,
+      "SkillId": 179,
       "Icon": "nv_basic",
       "Name": "Piercing Attack",
       "Target": 1,
@@ -2282,7 +2793,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 139,
+      "SkillId": 180,
       "Icon": "nv_basic",
       "Name": "Ranged Strike",
       "Target": 1,
@@ -2294,7 +2805,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 140,
+      "SkillId": 181,
       "Icon": "nv_basic",
       "Name": "Dark Strike",
       "Target": 1,
@@ -2306,7 +2817,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 141,
+      "SkillId": 182,
       "Icon": "nv_basic",
       "Name": "Break Armor",
       "Target": 1,
@@ -2318,7 +2829,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 142,
+      "SkillId": 183,
       "Icon": "nv_basic",
       "Name": "Break Weapon",
       "Target": 1,
@@ -2330,7 +2841,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 143,
+      "SkillId": 184,
       "Icon": "nv_basic",
       "Name": "Break Helm",
       "Target": 1,
@@ -2342,7 +2853,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 144,
+      "SkillId": 185,
       "Icon": "nv_basic",
       "Name": "Dark Blessing",
       "Target": 1,
@@ -2354,7 +2865,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 145,
+      "SkillId": 186,
       "Icon": "nv_basic",
       "Name": "Invisible",
       "Target": 5,
@@ -2366,7 +2877,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 146,
+      "SkillId": 187,
       "Icon": "nv_basic",
       "Name": "Smoking",
       "Target": 5,
@@ -2378,7 +2889,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 147,
+      "SkillId": 188,
       "Icon": "nv_basic",
       "Name": "Suicide",
       "Target": 5,
@@ -2390,7 +2901,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 148,
+      "SkillId": 189,
       "Icon": "nv_basic",
       "Name": "Stop",
       "Target": 1,
@@ -2402,7 +2913,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 149,
+      "SkillId": 190,
       "Icon": "nv_basic",
       "Name": "Hallucination",
       "Target": 1,
@@ -2414,7 +2925,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 150,
+      "SkillId": 191,
       "Icon": "nv_basic",
       "Name": "Lick",
       "Target": 1,
@@ -2426,7 +2937,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 151,
+      "SkillId": 192,
       "Icon": "nv_basic",
       "Name": "Emotion",
       "Target": 5,
@@ -2438,7 +2949,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 152,
+      "SkillId": 193,
       "Icon": "nv_basic",
       "Name": "Dark Thunder",
       "Target": 0,
@@ -2450,7 +2961,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 153,
+      "SkillId": 194,
       "Icon": "nv_basic",
       "Name": "Bulwark",
       "Target": 0,
@@ -2462,7 +2973,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 154,
+      "SkillId": 195,
       "Icon": "nv_basic",
       "Name": "Pharaoh\u0027s Curse",
       "Target": 1,
@@ -2474,7 +2985,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 155,
+      "SkillId": 196,
       "Icon": "nv_basic",
       "Name": "Grand Thunderstorm",
       "Target": 5,
@@ -2486,7 +2997,7 @@
       "InterruptMode": 3
     },
     {
-      "SkillId": 156,
+      "SkillId": 197,
       "Icon": "nv_basic",
       "Name": "Reward for Quest",
       "Target": 0,
@@ -2498,7 +3009,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 157,
+      "SkillId": 198,
       "Icon": "nv_basic",
       "Name": "Vampyrism",
       "Target": 5,
@@ -2510,7 +3021,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 158,
+      "SkillId": 199,
       "Icon": "nv_basic",
       "Name": "Snap",
       "Target": 1,
@@ -2522,7 +3033,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 159,
+      "SkillId": 200,
       "Icon": "nv_basic",
       "Name": "HP Cut",
       "Target": 1,
@@ -2534,7 +3045,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 160,
+      "SkillId": 201,
       "Icon": "nv_basic",
       "Name": "Mental Breaker",
       "Target": 1,
@@ -2546,7 +3057,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 161,
+      "SkillId": 202,
       "Icon": "nv_basic",
       "Name": "",
       "Target": 3,
@@ -2558,7 +3069,7 @@
       "InterruptMode": 0
     },
     {
-      "SkillId": 162,
+      "SkillId": 203,
       "Icon": "nv_basic",
       "Name": "NoCast",
       "Target": 0,

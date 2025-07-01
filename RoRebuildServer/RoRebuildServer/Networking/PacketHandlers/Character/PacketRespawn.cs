@@ -47,8 +47,17 @@ public class PacketRespawn : IClientPacketHandler
         }
         else
         {
-            if (ce.GetStat(CharacterStat.Hp) <= 0)
-                ce.SetStat(CharacterStat.Hp, 1);
+            if (ce.GetStat(CharacterStat.FullRevive) > 0)
+            {
+                ce.SetStat(CharacterStat.Hp, ce.GetStat(CharacterStat.MaxHp));
+                ce.RecoverSp(99999); //this will notify the player and party members of the sp update
+            }
+            else
+            {
+                if (ce.GetStat(CharacterStat.Hp) <= 0)
+                    ce.SetStat(CharacterStat.Hp, 1);
+            }
+
             player.ResetRegenTickTime();
         }
 

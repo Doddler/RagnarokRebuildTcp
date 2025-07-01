@@ -19,9 +19,9 @@ public static class InputActionDelay
     public const float FaceDirectionCooldown = 0.10f;
     public const float SitStandCooldown = 0.25f;
     private const float StopActionCooldown = 0.20f;
-    private const float UseItemCooldown = 0.10f;
+    private const float UseItemCooldown = 0.20f;
     private const float PickUpItemCooldown = 0.20f;
-    private const float TeleportCooldown = 0.5f;
+    private const float TeleportCooldown = 0.50f;
 
     public static float CooldownTime(InputActionCooldownType type)
     {

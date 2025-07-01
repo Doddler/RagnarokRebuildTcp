@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
@@ -11,7 +12,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte;
 
-[SkillHandler(CharacterSkill.Angelus, SkillClass.Magic, SkillTarget.Self)]
+[SkillHandler(CharacterSkill.Angelus, SkillClass.Unique, SkillTarget.Self)]
 public class AngelusHandler : SkillHandlerBase
 {
     public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 0.5f;
@@ -49,6 +50,8 @@ public class AngelusHandler : SkillHandlerBase
             if (ally.Character.Map != ch.Map)
                 continue;
             if (!ally.Character.Position.InRange(ch.Position, 14))
+                continue;
+            if (ally.IsMagicImmune())
                 continue;
             ally.AddStatusEffect(status);
             ally.Character.Map?.AddVisiblePlayersAsPacketRecipients(source.Character);

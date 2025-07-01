@@ -22,6 +22,7 @@ using RoRebuildServer.Simulation.Parties;
 using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.Util;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -51,8 +52,11 @@ public class Player : IEntityAutoReset
     [EntityIgnoreNullCheck] public MapMemoLocation[] MemoLocations = new MapMemoLocation[4];
     [EntityIgnoreNullCheck] public List<SkillCastInfo> IndirectCastQueue { get; set; } = null!;
     [EntityIgnoreNullCheck] public Dictionary<int, int>? AttackVersusTag { get; set; }
+    [EntityIgnoreNullCheck] public Dictionary<int, int>? ResistVersusTag { get; set; }
+    [EntityIgnoreNullCheck] public Dictionary<CharacterSkill, double> SkillSpecificCooldowns = new();
     public Dictionary<CharacterSkill, int> LearnedSkills = null!;
     public Dictionary<CharacterSkill, int>? GrantedSkills;
+    
     
     public Dictionary<string, int>? NpcFlags;
     public ItemEquipState Equipment = null!;
@@ -244,6 +248,9 @@ public class Player : IEntityAutoReset
         if(AttackVersusTag != null)
             AttackVersusTag.Clear();
 
+        if (ResistVersusTag != null)
+            ResistVersusTag.Clear();
+
         if (Inventory != null)
             CharacterBag.Return(Inventory);
 
@@ -254,6 +261,7 @@ public class Player : IEntityAutoReset
             CharacterBag.Return(StorageInventory);
 
         IndirectCastQueue.Clear();
+        SkillSpecificCooldowns.Clear();
 
         for (var i = 0; i < MemoLocations.Length; i++)
             MemoLocations[i].MapName = null;
@@ -296,6 +304,7 @@ public class Player : IEntityAutoReset
 
         SetStat(CharacterStat.Level, GetData(PlayerStat.Level));
         Character.DisplayType = CharacterDisplayType.Player;
+        CombatEntity.Faction = 1;
 
         IsAdmin = ServerConfig.DebugConfig.UseDebugMode;
         RecentAttackersList = EntityValueListPool<float>.Get();
@@ -353,6 +362,18 @@ public class Player : IEntityAutoReset
         }
 
         //IsAdmin = true; //for now
+    }
+
+    public bool IsSkillOnCooldown(CharacterSkill skill)
+    {
+        if (SkillSpecificCooldowns.TryGetValue(skill, out var cooldown))
+        {
+            if (cooldown > Time.ElapsedTime)
+                return true;
+            SkillSpecificCooldowns.Remove(skill);
+        }
+
+        return false;
     }
     
     public void WriteCharacterStorageToDatabase()
@@ -831,16 +852,16 @@ public class Player : IEntityAutoReset
             switch (effect)
             {
                 case >= CharacterStat.OnMeleeAttackFirst and <= CharacterStat.OnMeleeAttackLast:
-                    OnMeleeAttackStatusFlags |= (StatusTriggerFlags)(1 << (CharacterStat.OnMeleeAttackLast - effect));
+                    OnMeleeAttackStatusFlags |= (StatusTriggerFlags)(1 << (effect - CharacterStat.OnMeleeAttackFirst));
                     break;
                 case >= CharacterStat.OnRangedAttackFirst and <= CharacterStat.OnRangedAttackLast:
-                    OnMeleeAttackStatusFlags |= (StatusTriggerFlags)(1 << (CharacterStat.OnRangedAttackLast - effect));
+                    OnMeleeAttackStatusFlags |= (StatusTriggerFlags)(1 << (effect - CharacterStat.OnRangedAttackFirst));
                     break;
                 case >= CharacterStat.OnMeleeStatusSelfFirst and <= CharacterStat.OnMeleeStatusSelfLast:
-                    OnMeleeAttackStatusFlags |= (StatusTriggerFlags)(1 << (CharacterStat.OnMeleeStatusSelfLast - effect));
+                    OnMeleeAttackStatusFlags |= (StatusTriggerFlags)(1 << (effect - CharacterStat.OnMeleeStatusSelfFirst));
                     break;
                 case >= CharacterStat.WhenAttackedFirst and <= CharacterStat.WhenAttackedLast:
-                    OnMeleeAttackStatusFlags |= (StatusTriggerFlags)(1 << (CharacterStat.WhenAttackedLast - effect));
+                    OnMeleeAttackStatusFlags |= (StatusTriggerFlags)(1 << (effect - CharacterStat.WhenAttackedFirst));
                     break;
                 case CharacterStat.PureHpDrain:
                 case CharacterStat.HpDrainChance:
@@ -1871,6 +1892,9 @@ public class Player : IEntityAutoReset
             return;
 
         var cast = CombatEntity.QueuedCastingSkill;
+
+        if (IsSkillOnCooldown(cast.Skill)) return;
+
         if (cast.TargetedPosition != Position.Invalid)
         {
             //targeted at the ground
@@ -1945,7 +1969,7 @@ public class Player : IEntityAutoReset
             if (GetStat(CharacterStat.Disabled) > 0 || IsInNpcInteraction)
                 continue; //lose the skill activation
 
-            if (SkillHandler.ValidateTarget(cast, CombatEntity) == SkillValidationResult.Success)
+            if (SkillHandler.ValidateTarget(cast, CombatEntity, true) == SkillValidationResult.Success)
                 SkillHandler.ExecuteSkill(cast, CombatEntity);
         }
     }

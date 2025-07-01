@@ -794,4 +794,12 @@ public class CharacterStatusContainer
                 AddNewStatusEffect(status, true, true);
         }
     }
+
+    public void DeserializeWithoutSave(IBinaryMessageReader br, int count)
+    {
+        for (var i = 0; i < count; i++)
+        {
+            var status = StatusEffectState.Deserialize(br);
+        }
+    }
 }

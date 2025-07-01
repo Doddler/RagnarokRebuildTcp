@@ -2,6 +2,7 @@
 using System.Net.Http.Headers;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
@@ -22,7 +23,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte;
 //Even if they have WaitingOnPortalDestination state, we can tell if they've dismissed the dialog and cast a second time based on the skill target (ground or self).
 //A player's SpecialActionState gets reset if they try to cast a different skill, die, or change maps. This should close the destination dialog on the client.
 
-[SkillHandler(CharacterSkill.WarpPortal, SkillClass.Magic, SkillTarget.Ground)]
+[SkillHandler(CharacterSkill.WarpPortal, SkillClass.Unique, SkillTarget.Ground)]
 public class WarpPortalHandler : SkillHandlerBase
 {
     public override int GetAreaOfEffect(CombatEntity source, Position position, int lvl) => 1;
@@ -45,7 +46,8 @@ public class WarpPortalHandler : SkillHandlerBase
         return base.ShouldSkillCostSp(source);
     }
 
-    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl)
+    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
+        int lvl, bool isIndirect)
     {
         if (source.Character.Type == CharacterType.Player)
         {
@@ -56,14 +58,21 @@ public class WarpPortalHandler : SkillHandlerBase
                 source.Player.SpecialState = SpecialPlayerActionState.None;
             }
 
+            if (!isIndirect && !CheckRequiredGemstone(source, BlueGemstone, false))
+                return SkillValidationResult.MissingRequiredItem;
+
             if (source.Character.Map == null || !position.IsValid() 
                                              || !source.Character.Map.WalkData.IsCellWalkable(position) 
                                              || !position.InRange(source.Character.Position, 12))
                 return SkillValidationResult.InvalidTarget;
         }
 
-        return base.ValidateTarget(source, target, position, lvl);
+        return base.ValidateTarget(source, target, position, lvl, false);
     }
+    
+    //failing pre-validation prevents sp from being taken
+    public override bool PreProcessValidation(CombatEntity source, CombatEntity? target, Position position, int lvl,
+        bool isIndirect) => !isIndirect && CheckRequiredGemstone(source, BlueGemstone);
 
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
     {
@@ -73,6 +82,9 @@ public class WarpPortalHandler : SkillHandlerBase
             CommandBuilder.SkillExecuteAreaTargetedSkillAutoVis(source.Character, position, CharacterSkill.WarpPortal, lvl);
             return;
         }
+
+        if (!isIndirect && !ConsumeGemstoneForSkillWithFailMessage(source, BlueGemstone))
+            return;
 
         var player = source.Player;
         var ch = source.Character;

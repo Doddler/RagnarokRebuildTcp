@@ -35,6 +35,7 @@ namespace Assets.Scripts.Effects
 		BloodDrain,
 		CartRevolution,
 		Detox,
+		EnchantPoison,
 		Endure,
 		Fireball,
 		FrostDiverHit,
@@ -131,6 +132,7 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.BloodDrain, new Assets.Scripts.Effects.EffectHandlers.Skills.BloodDrainEffect());
 			effectHandlers.Add(EffectType.CartRevolution, new Assets.Scripts.Effects.EffectHandlers.Skills.CartRevolutionEffect());
 			effectHandlers.Add(EffectType.Detox, new Assets.Scripts.Effects.EffectHandlers.Skills.DetoxEffect());
+			effectHandlers.Add(EffectType.EnchantPoison, new Assets.Scripts.Effects.EffectHandlers.Skills.EnchantPoisonEffect());
 			effectHandlers.Add(EffectType.Endure, new Assets.Scripts.Effects.EffectHandlers.Skills.EndureEffect());
 			effectHandlers.Add(EffectType.Fireball, new Assets.Scripts.Effects.EffectHandlers.Skills.FireballEffect());
 			effectHandlers.Add(EffectType.FrostDiverHit, new Assets.Scripts.Effects.EffectHandlers.Skills.FrostDiverHitEffect());

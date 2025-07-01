@@ -16,7 +16,6 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
     {
         public override void ReceivePacket(ClientInboundMessage msg)
         {
-            
             var id1 = msg.ReadInt32();
             var id2 = msg.ReadInt32();
 
@@ -64,7 +63,6 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                         //controllable2.Messages.SendHitEffect(controllable, motionTime + arrow.Duration);
                     }
                     //else
-                    
                 }
                 else
                 {
@@ -84,13 +82,13 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                     //controllable.SetAttackAnimationSpeed(motionTime);
                     controllable.PerformBasicAttackMotion();
                 }
-                
-                if(resultType == AttackResult.Miss)
+
+                if (resultType == AttackResult.Miss)
                     controllable.Messages.SendMissEffect(damageTime);
             }
-            
 
-            if (hasTarget)
+
+            if (hasTarget && resultType != AttackResult.InvisibleMiss)
             {
                 if (result.Skill != CharacterSkill.NoCast)
                 {
@@ -105,7 +103,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                             controllable2.Messages.SendHitEffect(controllable, damageTime, hitType);
                     }
                 }
-                
+
                 if (result.Result == AttackResult.LuckyDodge)
                 {
                     controllable2.Messages.SendMessage(EntityMessageType.LuckyDodge, motionTime);
@@ -115,7 +113,9 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 if (dmg > 0)
                 {
                     var dmgSound = ClientSkillHandler.SkillTakesWeaponSound(skill);
-                    controllable2.Messages.SendDamageEvent(controllable, damageTime, dmg, hits, resultType == AttackResult.CriticalDamage, dmgSound, result.Skill != CharacterSkill.Smoking);
+                    if (resultType != AttackResult.Invisible)
+                        controllable2.Messages.SendDamageEvent(controllable, damageTime, dmg, hits, resultType == AttackResult.CriticalDamage, dmgSound,
+                            result.Skill != CharacterSkill.Smoking);
                 }
 
                 //StartCoroutine(DamageEvent(dmg, damageTiming, hits, weaponClass, controllable2));

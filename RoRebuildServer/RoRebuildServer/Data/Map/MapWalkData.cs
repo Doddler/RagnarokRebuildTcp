@@ -236,6 +236,31 @@ public class MapWalkData
         return true;
     }
 
+
+    public bool HasDirectPathAccess(Position pos1, Position pos2)
+    {
+        var x0 = pos1.X;
+        var y0 = pos1.Y;
+        var x1 = pos2.X;
+        var y1 = pos2.Y;
+
+        //algorithm from https://rosettacode.org/wiki/Bitmap/Bresenham%27s_line_algorithm#C.23
+        int dx = Math.Abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+        int dy = Math.Abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+        int err = (dx > dy ? dx : -dy) / 2;
+        for (; ; )
+        {
+            if (x0 == x1 && y0 == y1) break;
+            if (!IsCellWalkable(x0, y0))
+                return false;
+            var e2 = err;
+            if (e2 > -dx) { err -= dy; x0 += sx; }
+            if (e2 < dy) { err += dx; y0 += sy; }
+        }
+
+        return true;
+    }
+
     public MapWalkData(string walkFileName, MapFlags flags)
     {
         var walkPath = ServerConfig.DataConfig.WalkPathData;

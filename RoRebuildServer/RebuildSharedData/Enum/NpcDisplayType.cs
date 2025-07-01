@@ -25,6 +25,7 @@ public enum NpcEffectType : byte
     WaterBall,
     Sanctuary,
     MagnusExorcismus,
+    AnkleSnare,
 
     //custom
     LightOrb,

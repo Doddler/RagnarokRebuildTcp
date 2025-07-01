@@ -374,11 +374,15 @@ public enum CharacterStat
     UninterruptibleCast,
 
     ReverseDefense,
+    FullRevive, //Osiris card
+    NoGemstone,
+    MagicImmunity,
 
     SkillValue, //used to store skill unlocks in ItemEquipState
     AutoSpellOnAttacking,
     AutoSpellWhenAttacked,
     DamageVsTag,
+    ResistVsTag,
     NoEffect,
     CharacterStatsMax,
 }

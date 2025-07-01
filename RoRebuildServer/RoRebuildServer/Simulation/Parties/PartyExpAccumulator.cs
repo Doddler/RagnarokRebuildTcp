@@ -106,7 +106,8 @@ public class PartyExpAccumulator
 
             var earningPlayers = PartySplitCounts[result.Player.Party.PartyId];
             var nonContributors = earningPlayers - result.ContributingPlayers;
-            var rate = 1f - 0.055f * nonContributors; //-5.5% per player that gets exp but didn't contribute to the kill
+            //var rate = 1f - 0.055f * nonContributors; //-5.5% per player that gets exp but didn't contribute to the kill
+            var rate = MathF.Pow(0.92f, nonContributors); //-8% compounding per player
 
             var baseExp = (int)float.Ceiling(result.BaseExp * rate);
             var jobExp = (int)float.Ceiling(result.JobExp * rate);

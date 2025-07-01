@@ -24,7 +24,7 @@ public class PacketUseInventoryItem : IClientPacketHandler
 
         if (!connection.Player.CanPerformCharacterActions())
             return;
-
+        
         var character = connection.Character;
         var player = connection.Player;
 

@@ -1,0 +1,42 @@
+﻿@using RebuildSharedData.Enum.EntityStats
+@using RoRebuildServer.Data
+
+<div class="contentzone" style="padding:20px;">
+    <table style="border-collapse: collapse" border="1" class="exptable">
+        <tr>
+            <th><h2 class="subheader">&nbsp;</h2></th>
+            <th colspan="10">
+                <h2 class="subheader">Attacking Element</h2>
+            </th>
+        </tr>
+        <tr>
+            <th><h2 class="subheader">Defender Element</h2></th>
+            
+            @for (var i = 0; i < 10; i++)
+            {
+                <th>
+                    <h2 class="subheader">@((AttackElement)i)</h2></th>
+            }
+        </tr>
+        @for(var i = 0; i < 40; i++)
+        {
+            var def = (CharacterElement)i;
+            <tr>
+                <th><h2 class="subheader">@(def)</h2></th>
+                @for (var j = 0; j < 10; j++)
+                {
+                    var atk = (AttackElement)j;
+                    
+                    var mod = DataManager.ElementChart.GetAttackModifier(atk, def);
+                    var color = "#FFF";
+                    if (mod < 100) color = "#FBB";
+                    if (mod > 100) color = "#BBF";
+
+                    <td style="background-color: @(color);">@mod</td>
+                }
+            </tr>
+        }
+        
+    </table>
+
+</div>

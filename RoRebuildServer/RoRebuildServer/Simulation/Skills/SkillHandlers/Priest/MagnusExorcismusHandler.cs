@@ -17,9 +17,21 @@ public class MagnusExorcismusHandler : SkillHandlerBase
 {
     public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 15f;
 
+    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
+        int lvl, bool isIndirect)
+    {
+        if (!isIndirect && !CheckRequiredGemstone(source, BlueGemstone, false))
+            return SkillValidationResult.MissingRequiredItem;
+
+        return base.ValidateTarget(source, target, position, lvl, false);
+    }
+
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
     {
         if (source.Character.Map == null)
+            return;
+
+        if (!isIndirect && !ConsumeGemstoneForSkillWithFailMessage(source, BlueGemstone))
             return;
 
         if (target != null)

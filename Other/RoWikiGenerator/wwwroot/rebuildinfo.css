@@ -329,3 +329,9 @@ table.rochart td {
 	text-align: right;
 	padding-right: 5px;
 }
+
+
+.jobtable td {
+	text-align: center;
+	/*padding-right: 5px;*/
+}

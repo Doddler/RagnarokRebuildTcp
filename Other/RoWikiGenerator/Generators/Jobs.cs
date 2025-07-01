@@ -26,21 +26,13 @@ public class JobModel
         var spCost = "N/A";
         if (data.SpCost != null && data.SpCost.Length > 0)
         {
-            var lastCost = data.SpCost[0];
-            spCost = data.SpCost[0].ToString();
-            var multipleCosts = false;
-            for(var i = 1; i < data.SpCost.Length; i++)
-            {
-                spCost += $"/{data.SpCost[i]}";
+            var firstCost = data.SpCost[0];
+            var lastCost = data.SpCost[^1];
 
-                if (data.SpCost[i] != lastCost)
-                    multipleCosts = true;
-            }
-
-            if (!multipleCosts)
-                spCost = $"{data.SpCost[0]} Sp";
+            if (firstCost == lastCost)
+                spCost = $"{firstCost} Sp";
             else
-                spCost += " Sp";
+                spCost = $"{firstCost}~{lastCost} Sp";
         }
 
         return spCost;

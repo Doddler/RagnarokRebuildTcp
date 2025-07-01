@@ -135,10 +135,10 @@ Item("Medusa_Card") { OnEquip: AddStat(ResistStoneStatus, 100); AddStat(AddResis
 Item("Deviace_Card") { OnEquip: AddStat(AddAttackRaceDemihuman, 7); AddStat(AddAttackRaceBeast, 7); AddStat(AddAttackRacePlant, 7); AddStat(AddAttackRaceInsect, 7); }
 Item("Minorous_Card") { OnEquip: AddStat(AddAttackLargeSize, 15); AddStat(AddAttackPower, 5); }
 Item("Nightmare_Card") { OnEquip: AddStat(ResistSleepStatus, 100); AddStat(AddAgi, 1); }
-Item("Golden_Thief_Bug_Card") { OnEquip: } //should add immunity to magic at the cost of +100% SP consumption
+Item("Golden_Thief_Bug_Card") { OnEquip: AddStat(MagicImmunity, 1); AddStat(SpConsumption, 100); }
 Item("Baphomet_Jr._Card") { OnEquip: AddStat(AddAgi, 3); AddStat(AddCrit, 1); }
 Item("Moonlight_Flower_Card") { OnEquip: AddStat(MoveSpeedBonus, 34); }
-Item("Mistress_Card") { OnEquip: } //should remove gemstone cost at the expense of +25% sp cost
+Item("Mistress_Card") { OnEquip: AddStat(NoGemstone, 1); }
 Item("Raydric_Card") { OnEquip: AddStat(AddResistElementNeutral, 20); }
 Item("Dracula_Card") { OnEquip: AddStat(SpDrainChance, 10); AddStat(SpDrainAmount, 5); }
 Item("Orc_Lord_Card") { OnEquip: } //should add reflect 30% of incoming physical damage
@@ -169,7 +169,7 @@ Item("Abyssal_Knight_Card") { OnEquip: AddStat(AddAttackSpecialBoss, 25); }
 Item("Evil_Druid_Card") { OnEquip: SetArmorElement(Undead1); AddStat(AddInt, 1); AddStat(AddDef, 1); }
 Item("Doppelganger_Card") { OnEquip: AddStat(AspdBonus, 10); }
 Item("Orc_Hero_Card") { OnEquip: AddStat(ResistStunStatus, 100); AddStat(AddVit, 3); }
-Item("Osiris_Card") { OnEquip: } //should make it so you revive with 100% hp/sp
+Item("Osiris_Card") { OnEquip: AddStat(FullRevive, 1); }
 Item("Beelzebub_Card") { OnEquip: AddStat(AddCastTime, -30); }
 Item("Maya_Card") { OnEquip: } //should add 50% magic reflect
 Item("Baphomet_Card") { OnEquip: AddStat(AddHit, -10); AutoSpellOnAttack(SplashAttack, 1, 1000); }
@@ -220,7 +220,7 @@ Item("Disguise_Card") { OnEquip: AddStat(WhenAttackedSilence, 30); } //some sile
 Item("Diabolic_Card") { OnEquip: AddStat(SpGainOnKillRaceDemon, 5); }
 Item("Vagabond_Wolf_Card") { OnEquip: AddStat(AddStr, 1); } //should combo with wolf card
 Item("Lava_Golem_Card") { OnEquip: AddDamageVsTag("Golem", 30); } //should add 30% damage vs golem
-Item("Rideword_Card") { OnEquip: AddStat(AddInt, 1); } //should add 1 int 1 mdef for acolytes
+Item("Rideword_Card") { OnEquip: AddStat(AddInt, 1); if(IsBaseJob(JobAcolyte)) { AddStat(AddInt, 1); AddStat(AddMDef, 1); } }
 Item("Raggler_Card") { OnEquip: AddStat(AddStr, 1); AddStat(AddVit, 1); }
 Item("Raydric_Archer_Card") { OnEquip: } //should add chance to get box of grudge when killin demon
 Item("Leib_Olmai_Card") { OnEquip: AddStat(AddResistElementFire, 10); } //should add a chance to get red blood when killing animals
@@ -266,17 +266,17 @@ Item("Spring_Rabbit_Card") { OnEquip: } //meat drop and bonus meat healing
 Item("Sleeper_Card") { OnEquip: } //sleepy box on fish kill
 Item("Cloud_Tower_Manager_Card") { OnEquip: AddStat(AddInt, 1); AddStat(AddMagicAttackPower, 10); AddStat(AddCastTime, -5); }
 Item("Shinobi_Card") { OnEquip: AddStat(AddAgi, 1); AutoSpellWhenAttacked(Cloaking, 5, 100); } //autospell cloaking when attacked
-Item("Mi_Gao_Card") { OnValidate: return false; OnEquip: } //-50% damage from woe guardians...
+Item("Mi_Gao_Card") { OnEquip: AddDamageVsTag("Flying", 20); }
 Item("Hermit_Plant_Card") { OnValidate: return false; OnEquip: } //herb drops from plant and herb healing
 Item("Baby_Leopard_Card") { OnEquip: AddStat(AddLuk, 3); } //should make armor indestructable (for merchant only)
-Item("Anolian_Card") { OnEquip: } //should autospell improved concentration
+Item("Anolian_Card") { OnEquip: var lvl = 2; if(HasLearnedSkill(ImproveConcentration, 10)) lvl = 10; AutoSpellWhenAttacked(ImproveConcentration, lvl, 30); } //should autospell improved concentration
 Item("Christmas_Cookie_Card") { OnEquip: AddStat(AddExpRaceAngel, 10); AddStat(AddResistRaceAngel, -20); }
 Item("Amon_Ra_Card") { OnEquip: AddStat(AddStr, 1); AddStat(AddInt, 1); AddStat(AddDex, 1); AddStat(AddAgi, 1); AddStat(AddLuk, 1); AddStat(AddVit, 1); } //should autospell kyrie
 Item("Owl_Duke_Card") { OnEquip: } //should autospell impositio
 Item("Owl_Baron_Card") { OnEquip: } //should autospell lex aeterna
 Item("Iron_Fist_Card") { OnEquip: AddStat(AddExpRaceFormless, 10); AddStat(AddResistRaceFormless, -20); }
 Item("Arclouse_Card") { OnEquip: if(Refine < 6) {AddStat(AddDef, 2); AddStat(AddMDef, 3);} }
-Item("Archangeling_Card") { OnEquip: AddStat(AddMaxHp, 300); } //should boost hp/sp recovery if your luk is 77 or higher
+Item("Archangeling_Card") { OnEquip: AddStat(AddMaxHp, 300); if(GetStat(Luk) >= 77) { AddStat(AddHpRecoveryPercent, 100); AddStat(AddSpRecoveryPercent, 100); } } //should boost hp/sp recovery if your luk is 77 or higher
 Item("Apocalypse_Card") { OnEquip: AddStat(AddVit, 2); if(Refine > 8) {AddStat(AddMaxHp, 800);} }
 Item("Antonio_Card") { OnEquip: AutoSpellWhenAttacked(Teleport, 1, 500); }
 Item("Alarm_Card") { OnEquip: AddStat(AddMaxHp, 300); AddStat(AddVit, 1); AutoSpellWhenAttacked(Sight, 1, 200); }
@@ -286,13 +286,13 @@ Item("Aster_Card") { OnEquip: AddStat(AddAttackPower, 5); } //should add 30% dam
 Item("Ancient_Mummy_Card") { OnEquip: AutoSpellWhenAttacked(SignumCrusis, 5, 30); }
 Item("Ancient_Worm_Card") { OnEquip: AddStat(AddExpRaceDemon, 10); AddStat(AddResistRaceDemon, -20); }
 Item("Executioner_Card") { OnEquip: AddStat(AddResistLargeSize, 25); AddStat(AddDef, 1); }
-Item("Elder_Card") { OnEquip: } //+40% damage to woe monsters
+Item("Elder_Card") { OnEquip: AddResistVsTag("Flying", 40); }
 Item("Alligator_Card") { OnEquip: AddStat(AddResistRangedAttack, 5); }
 Item("Alice_Card") { OnEquip: AddStat(AddResistSpecialNormal, -40); AddStat(AddResistSpecialBoss, 40); }
 Item("Tyrfing_Card") { OnEquip: AddStat(AddResistMidSize, 25); AddStat(AddDef, 1); }
 Item("Orc_Lady_Card") { OnEquip: AddDamageVsTag("Orc", 30); } //+30% damage against orcs
 Item("Orc_Archer_Card") { OnEquip: } //add panting box when killing human mobs
-Item("Wild_Rose_Card") { OnEquip: AddStat(AddAgi, 1); } //should add 5 perfect dodge for thieves
+Item("Wild_Rose_Card") { OnEquip: AddStat(AddAgi, 1); if(IsBaseJob(JobThief)) { AddStat(PerfectDodge, 5); } }
 Item("Evil_Nymph_Card") { OnEquip: AddStat(AddInt, 1); AddStat(AddMaxSp, 50); }
 Item("Wooden_Golem_Card") { OnEquip: AddStat(AddHpRecoveryPercent, 30); AddStat(AddDef, 1); }
 Item("Wootan_Shooter_Card") { OnEquip: AddStat(AddDef, 1); AddStat(ResistConfusionStatus, 20); }
@@ -315,7 +315,7 @@ Item("Lord_of_The_Dead_Card") { OnEquip: AddStat(OnMeleeAttackCurse, 50); AddSta
 Item("Zealotus_Card") { OnEquip: AddStat(AddLuk, 2); } //autospell throw arrow and musical strike
 Item("Gibbet_Card") { OnEquip: if(Refine < 6) {AddStat(AddMDef, 5);} }
 Item("Earth_Deleter_Card") { OnEquip: AddStat(SpGainOnKill, 10); AddStat(AddSpRecoveryPercent, -100); }
-Item("Geographer_Card") { OnEquip: AutoSpellWhenAttacked(Blessing, 2, 30); } //autospell blessing
+Item("Geographer_Card") { OnEquip: var lvl = 3; if(HasLearnedSkill(Blessing, 10)) lvl = 10; AutoSpellWhenAttacked(Blessing, lvl, 30); } //autospell blessing
 Item("Zipper_Bear_Card") { OnEquip: AddStat(AddAttackPower, 30); } //Should drain SP
 Item("Tengu_Card") { OnEquip: } //get healing items
 Item("Greatest_General_Card") { OnEquip: } //autospell summon spirit sphere

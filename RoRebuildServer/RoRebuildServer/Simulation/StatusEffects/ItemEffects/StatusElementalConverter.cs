@@ -12,6 +12,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.ItemEffects;
 [StatusEffectHandler(CharacterStatusEffect.ElementalConverterWind, StatusClientVisibility.Owner, shareGroup: "ElementalEndow")]
 [StatusEffectHandler(CharacterStatusEffect.ElementalConverterEarth, StatusClientVisibility.Owner, shareGroup: "ElementalEndow")]
 [StatusEffectHandler(CharacterStatusEffect.CursedWater, StatusClientVisibility.Owner, shareGroup: "ElementalEndow")]
+[StatusEffectHandler(CharacterStatusEffect.EnchantPoison, StatusClientVisibility.Owner, shareGroup: "ElementalEndow")]
 public class StatusElementalConverter : StatusEffectBase
 {
     public override StatusUpdateMode UpdateMode => StatusUpdateMode.OnChangeEquipment;
@@ -36,8 +37,12 @@ public class StatusElementalConverter : StatusEffectBase
             CharacterStatusEffect.ElementalConverterWind => 4,
             CharacterStatusEffect.ElementalConverterEarth => 1,
             CharacterStatusEffect.CursedWater => 7,
+            CharacterStatusEffect.EnchantPoison => 5,
             _ => state.Value1
         };
+
+        if (state.Type == CharacterStatusEffect.EnchantPoison)
+            ch.AddStat(CharacterStat.OnMeleeAttackPoison, state.Value3);
 
         ch.SetStat(CharacterStat.EndowAttackElement, state.Value1);
         if (ch.Character.Type == CharacterType.Player)
@@ -46,7 +51,9 @@ public class StatusElementalConverter : StatusEffectBase
 
     public override void OnExpiration(CombatEntity ch, ref StatusEffectState state)
     {
-        if(ch.GetStat(CharacterStat.EndowAttackElement) == state.Value1)
+        if (ch.GetStat(CharacterStat.EndowAttackElement) == state.Value1)
             ch.SetStat(CharacterStat.EndowAttackElement, 0);
+        if (state.Type == CharacterStatusEffect.EnchantPoison)
+            ch.SubStat(CharacterStat.OnMeleeAttackPoison, state.Value3);
     }
 }

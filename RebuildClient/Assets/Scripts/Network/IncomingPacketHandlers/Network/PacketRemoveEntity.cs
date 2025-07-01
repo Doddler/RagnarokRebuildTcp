@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Effects.EffectHandlers.General;
 using Assets.Scripts.Network.HandlerBase;
+using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.UI.Hud;
@@ -87,6 +88,19 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                         else
                             controllable.FadeOutAndVanish(0.1f);
                     }
+                    break;
+                case CharacterRemovalReason.Activation:
+                    if(controllable.EntityObject != null)
+                    {
+                        var effect = controllable.EntityObject.GetComponent<ModelTrigger>();
+                        if (effect != null)
+                        {
+                            controllable.FadeOutAndVanish(msg.ReadFloat());
+                            effect.Activate();
+                            return;
+                        }
+                    }
+                    controllable.FadeOutAndVanish(0.1f);
                     break;
                 default:
                     controllable.FadeOutAndVanish(0.1f);

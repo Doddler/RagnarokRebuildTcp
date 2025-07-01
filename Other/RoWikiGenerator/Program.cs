@@ -1,21 +1,10 @@
-﻿using System.Diagnostics;
-using System.Text;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using RebuildSharedData.Enum;
-using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
-using RoRebuildServer.Data.Map;
-using RoRebuildServer.Data.Monster;
-using RoRebuildServer.Database;
 using RoRebuildServer.Logging;
-using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation;
-using RoRebuildServer.Simulation.Pathfinding;
 using RoWikiGenerator.Generators;
 using RoWikiGenerator.Pages;
 
@@ -119,6 +108,21 @@ public class Program
         }
     }
 
+    static async Task OneShotTemplate<T>(HtmlRenderer htmlRenderer, string title, string filename) where T : IComponent
+
+    {
+
+        var page = await htmlRenderer.Dispatcher.InvokeAsync(async () =>
+        {
+            var output = await htmlRenderer.RenderComponentAsync<T>();
+            return output.ToHtmlString();
+        });
+        var content = await InsertContentIntoTemplate(page, title);
+        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, filename), content);
+
+
+    }
+
     static async Task Main(string[] args)
     {
         //ServerLogger.Log("Ragnarok Rebuild Zone Server, starting up!");
@@ -156,27 +160,30 @@ public class Program
         Maps.PrepareFieldGroupings();
 
         var htmlRenderer = GetRenderer();
-        var mainContent = await htmlRenderer.Dispatcher.InvokeAsync(async () =>
-        {
-            var output = await htmlRenderer.RenderComponentAsync<TopPage>();
-            return output.ToHtmlString();
-        });
+        //var mainContent = await htmlRenderer.Dispatcher.InvokeAsync(async () =>
+        //{
+        //    var output = await htmlRenderer.RenderComponentAsync<TopPage>();
+        //    return output.ToHtmlString();
+        //});
 
-        var content = await InsertContentIntoTemplate(mainContent, "Ragnarok Rebuild Overview");
-        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "index.html"), content);
+        //var content = await InsertContentIntoTemplate(mainContent, "Ragnarok Rebuild Overview");
+        //await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "index.html"), content);
 
-        var expChart = await htmlRenderer.Dispatcher.InvokeAsync(async () =>
-        {
-            var output = await htmlRenderer.RenderComponentAsync<ExpChart>();
-            return output.ToHtmlString();
-        });
-        content = await InsertContentIntoTemplate(expChart, "Ragnarok Rebuild - Exp Chart");
-        await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "ExpChart.html"), content);
+        //var expChart = await htmlRenderer.Dispatcher.InvokeAsync(async () =>
+        //{
+        //    var output = await htmlRenderer.RenderComponentAsync<ExpChart>();
+        //    return output.ToHtmlString();
+        //});
+        //content = await InsertContentIntoTemplate(expChart, "Ragnarok Rebuild - Exp Chart");
+        //await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "ExpChart.html"), content);
 
-
+        await OneShotTemplate<TopPage>(htmlRenderer, "Ragnarok Rebuild Overview", "index.html");
+        await OneShotTemplate<ExpChart>(htmlRenderer, "Ragnarok Rebuild - Exp Chart", "ExpChart.html");
+        await OneShotTemplate<ElementalChart>(htmlRenderer, "Ragnarok Rebuild - Elemental Modifiers", "ElementChart.html");
+        await OneShotTemplate<PartyExpShare>(htmlRenderer, "Ragnarok Rebuild - Party Share Rates", "PartyShare.html");
 
         //monsters
-        content = await InsertContentIntoTemplate(await Monsters.RenderMonsterPage(), "Ragnarok Rebuild Monsters");
+        var content = await InsertContentIntoTemplate(await Monsters.RenderMonsterPage(), "Ragnarok Rebuild Monsters");
         await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "MonsterListFull.html"), content);
 
         //jobs

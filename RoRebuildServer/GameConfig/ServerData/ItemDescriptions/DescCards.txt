@@ -467,7 +467,6 @@ AGI +1
 ::Golden_Thief_Bug_Card //id 4128 - slotted on Shield
 SP Consumption +100%
 Magic Immunity
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.</i></color>
 
 ::Baphomet_Jr._Card //id 4129 - slotted on Garment
 AGI +3, CRIT +1
@@ -478,7 +477,6 @@ Movement Speed +25% (Does not stack with Increase Agi or similar items or skills
 ::Mistress_Card //id 4132 - slotted on Headgear
 SP Consumption +25%
 Reduce Skill Gemstone Requirement by 1 of Each Gemstone
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.</i></color>
 
 ::Raydric_Card //id 4133 - slotted on Garment
 -20% damage from Neutral attacks
@@ -620,7 +618,7 @@ Recover 5 SP/melee kill vs. Insect
 
 ::Nereid_Card //id 4167 - slotted on Weapon
 Recover 5 SP/melee kill vs. Brute
-Lose 5 SP/unequip
+//Lose 5 SP/unequip
 
 ::Dark_Lord_Card //id 4168 - slotted on Boots
 +10% Autospell <color=#0000FF>Meteor Storm 5</color> on receive physical damage
@@ -705,11 +703,10 @@ STR +1
 ::Rideword_Card //id 4185 - slotted on Headgear
 INT +1
 if Acolyte: INT +1, MDEF +1
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.</i></color>
 
 ::Raggler_Card //id 4186 - slotted on Boots
 STR +1, VIT +1
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.</i></color>
+//<color=#BB3333><i>Some or all of this card's effects do not function as expected.</i></color>
 
 ::Raydric_Archer_Card //id 4187 - slotted on Accessory
 +1% chance to find <color=#008080>Box of Resentment</color> on Demon kill
@@ -784,7 +781,6 @@ ATK +15
 +5% Autospell <color=#0000FF>Fireball 3</color> on non-skill attack
 if <color=#0000FF>Fireball 10</color>:
  Autospell <color=#0000FF>Fireball 10</color> instead
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.</i></color>
 
 ::Mini_Demon_Card //id 4204 - slotted on Boots
 +10% EXP from Brute
@@ -907,8 +903,7 @@ AGI +1
 +10% autocast <skill>Cloak 5</skill> when taking physical damage.
 
 ::Mi_Gao_Card //id 4231 - slotted on Shield
--50% damage from WoE Guardians
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.</i></color>
++20% damage against flying or airborn enemies.
 
 ::Hermit_Plant_Card //id 4232 - slotted on Accessory
 +3% chance to find <color=#008080>Red Herb</color>,
@@ -921,10 +916,9 @@ AGI +1
 LUK +3
 
 ::Anolian_Card //id 4234 - slotted on Armor
-+3% Autospell <color=#0000FF>Improve Concentration 1</color> on receive physical damage
++3% Autospell <color=#0000FF>Improve Concentration 2</color> on receive physical damage
 if <color=#0000FF>Improve Concentration 10</color>:
  Autospell <color=#0000FF>Improve Concentration 10</color> instead
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.</i></color>
 
 ::Christmas_Cookie_Card //id 4235 - slotted on Boots
 +10% EXP from Angel
@@ -963,7 +957,6 @@ HP +300
 if bLUK > 76:
  HP Regeneration +100%
  SP Regeneration +100%
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.</i></color>
 
 ::Apocalypse_Card //id 4242 - slotted on Armor
 VIT +2
@@ -1000,9 +993,8 @@ ATK +5
 DEF +1
 -25% damage from Large
 
-::Elder_Card //id 4251 - slotted on Weapon
-+40% physical damage vs. WoE Guardians
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.</i></color>
+::Elder_Card //id 4251 - slotted on Shield
+-40% damage from flying or airborn enemies.
 
 ::Alligator_Card //id 4252 - slotted on Accessory
 -5% damage from range
@@ -1026,7 +1018,6 @@ DEF +1
 AGI +1
 if Thief:
  Perfect Dodge +5
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.</i></color>
 
 ::Evil_Nymph_Card //id 4258 - slotted on Headgear
 SP +50, INT +1
@@ -1126,10 +1117,9 @@ SP Regeneration -100%
 Recover 10 SP/melee kill
 
 ::Geographer_Card //id 4280 - slotted on Armor
-+3% Autospell <color=#0000FF>Blessing 2</color> (self) on receive physical damage
++3% Autospell <color=#0000FF>Blessing 3</color> (self) on receive physical damage
 if <color=#0000FF>Blessing 10</color>:
  Autospell <color=#0000FF>Blessing 10</color> instead
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.</i></color>
 
 ::Zipper_Bear_Card //id 4281 - slotted on Weapon
 ATK +30
@@ -1295,8 +1285,8 @@ if bINT > 76:
 
 ::False_Angel_Card //id 4316 - slotted on Weapon
 Recover 5 SP/melee kill vs. Angel
-Lose 5 SP/unequip
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.</i></color>
+//Lose 5 SP/unequip
+//<color=#BB3333><i>Some or all of this card's effects do not function as expected.</i></color>
 
 ::Mobster_Card //id 4317 - slotted on Weapon
 CRIT damage +15%
@@ -1594,7 +1584,6 @@ FLEE +10
 if Refine > 8:
  FLEE +5
  -5% damage from Neutral attacks
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.</i></color>
 
 ::Lady_Tanee_Card //id 4376 - slotted on Boots
 HP -40%, SP +50%

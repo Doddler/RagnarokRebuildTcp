@@ -11,7 +11,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Archer;
 [SkillHandler(CharacterSkill.ChargeArrow, SkillClass.Physical, SkillTarget.Enemy)]
 public class ChargeArrowHandler : SkillHandlerBase
 {
-    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl) =>
+    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
+        int lvl, bool isIndirect) =>
         ValidateTargetForAmmunitionWeapon(source, target, position, 12, AmmoType.Arrow);
     
     public override int GetSkillRange(CombatEntity source, int lvl)

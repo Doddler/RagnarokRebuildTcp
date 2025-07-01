@@ -16,7 +16,8 @@ public class WaterBallHandler : SkillHandlerBase
 {
     public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => lvl;
 
-    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl)
+    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
+        int lvl, bool isIndirect)
     {
         if (source.Character.Type == CharacterType.Player)
         {
@@ -34,7 +35,7 @@ public class WaterBallHandler : SkillHandlerBase
                 return SkillValidationResult.MustBeStandingInWater;
         }
 
-        return base.ValidateTarget(source, target, position, lvl);
+        return base.ValidateTarget(source, target, position, lvl, false);
     }
 
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)

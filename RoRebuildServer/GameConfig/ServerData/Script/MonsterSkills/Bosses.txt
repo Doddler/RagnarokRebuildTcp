@@ -132,7 +132,7 @@ OnInit:
 StateIdle:
 	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
 StateAny: 
-    TryCast(CallMinion, 1, 10%, 0.7s, 45s)[MinionsDeadFor(20s)] -> CallDefaultMinions();
+    TryCast(CallMinion, 1, 10%, 0.7s, 30s)[MinionsDeadFor(20s)] -> CallDefaultMinions();
 	TryCast(RecallMinion, 1, 100%, 0, 30s);
 StateChase:
 	TryCast(Endure, 1, 50%, 0, 10s)[WasRangedOrMagicAttacked] -> SendEmote(6); //angry
@@ -251,7 +251,7 @@ OnInit:
 	ResummonMinionCount = 2; //resummon if we have 2 or less
 StateIdle:
 	TryCast(Heal, 9999, 100%, 0s, 5s)[HpPercent < 30];
-	TryCast(Teleport, 1, 10%, 0, 15s);
+	TryCast(Teleport, 1, 20%, 0, 15s);
 	TryCast(Teleport, 1, 100%, 0, 5s, IgnoreCooldown)[RudeAttacked];
 	TryCast(CallMinion, 1, 100%, 1.4s, 30s)[MinionCount < 3] -> CallDefaultMinions();
 	TryCast(RecallMinion, 1, 100%, 0, 30s);
@@ -493,9 +493,9 @@ StateChase:
 	TryCast(DecreaseAgility, 10, 20%, 0s, 5s);
 	TryCast(MonsterSnap, 1, 20%, 0.2s, 20s, HideSkillName);
 StateAttacking:
-	TryCast(Vampyrism, 1, 100%, 1.3s, 90s)[HpPercent < 30];
-	TryCast(SpeedUp, 5, 100%, 0.7s, 30s)[HpPercent < 30] -> SendEmote(6);
-	TryCast(DarkAttack, 5, 100%, 0s, 20s)[HpPercent < 80];
+	TryCast(Vampyrism, 1, 100%, 0.8s, 30s)[HpPercent < 30];
+	TryCast(SpeedUp, 5, 100%, 0.5s, 30s)[HpPercent < 30] -> SendEmote(6);
+	TryCast(DarkAttack, 5, 20%, 0s, 5s)[HpPercent < 80];
 	TryCast(BloodDrain, 1, 30%, 0, 0);
 	TryCast(Silence, 5, 20%, 0s, 20s);
 }
@@ -585,6 +585,8 @@ macro MoonlightCombatActions() {
 AltSkillHandler("MOONLIGHT_C1") {
 	OnInit:
 		FlagAsMvp();
+	StateIdle:
+		TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
 	StateAny:
 		TryCast(ColdBolt, 5, 100%, 0.8s, 10s, NoInterrupt | EventOnStartCast) -> SendEmote(29); //gg
 		TryCast(FireBolt, 5, 100%, 0.8s, 10s, NoInterrupt);
@@ -597,6 +599,8 @@ AltSkillHandler("MOONLIGHT_C1") {
 AltSkillHandler("MOONLIGHT_C2") {
 	OnInit:
 		FlagAsMvp();
+	StateIdle:
+		TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
 	StateAttacking:
 		TryCast(Mammonite, 10, 100%, 0, 5s) -> SendEmote(8);
 	OnDie:
@@ -607,6 +611,8 @@ AltSkillHandler("MOONLIGHT_C2") {
 AltSkillHandler("MOONLIGHT_C3") {
 	OnInit:
 		FlagAsMvp();
+	StateIdle:
+		TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
 	StateAny:
 		TryCast(CallMinion, 1, 100%, 2s, 30s, NoInterrupt)[MinionCount < 3] -> SummonMinions(5, "NINE_TAIL");
 		TryCast(Heal, 4999, 100%, 0.7s, 5s)[FindAllyBelowHpPercent(60)];

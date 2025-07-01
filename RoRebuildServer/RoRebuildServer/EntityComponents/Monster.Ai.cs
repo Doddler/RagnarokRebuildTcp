@@ -60,6 +60,9 @@ public partial class Monster
     /// <summary> Checks if an elapsed wait time has passed before a monster is allowed to random move again. </summary>
     private bool InWaitEnd()
     {
+        if (CombatEntity.HasBodyState(BodyStateFlags.Snared))
+            return false;
+
         if (nextMoveUpdate <= Time.ElapsedTimeFloat || MonsterBase.MoveSpeed < 0)
             return true;
 

@@ -18,6 +18,8 @@ public abstract class SkillHandlerBase
     public SkillClass SkillClassification = SkillClass.Unique;
     protected const int DefaultMagicCastRange = 9;
 
+    protected const int BlueGemstone = 717; //blue gemstone
+
     public virtual bool IsAreaTargeted => false;
     public virtual bool UsableWhileHidden => false;
     public virtual bool ShouldSkillCostSp(CombatEntity source) => true;
@@ -44,6 +46,46 @@ public abstract class SkillHandlerBase
             case SkillClass.Magic: return DefaultMagicCastRange;
             default: return -1;
         }
+    }
+
+    public bool ConsumeGemstoneForSkillWithFailMessage(CombatEntity source, int itemId)
+    {
+        if (source.Character.Type != CharacterType.Player)
+            return true;
+
+        if (source.GetStat(CharacterStat.NoGemstone) <= 0 && !source.Player.TryRemoveItemFromInventory(itemId, 1, true))
+        {
+            CommandBuilder.SkillFailed(source.Player, SkillValidationResult.MissingRequiredItem);
+            return false;
+        }
+
+        return true;
+    }
+
+    public bool CheckRequiredGemstone(CombatEntity source, int itemId, bool sendFailMessage = true)
+    {
+        if (source.Character.Type == CharacterType.Player && (source.Player.Inventory == null || !source.Player.Inventory.HasItem(itemId)))
+        {
+            if (source.GetStat(CharacterStat.NoGemstone) > 0)
+                return true;
+
+            if(sendFailMessage)
+                CommandBuilder.SkillFailed(source.Player, SkillValidationResult.MissingRequiredItem);
+            return false;
+        }
+
+        return true;
+    }
+
+    public bool CheckRequiredItem(CombatEntity source, int itemId, bool sendFailMessage = true)
+    {
+        if (source.Character.Type == CharacterType.Player && (source.Player.Inventory == null || !source.Player.Inventory.HasItem(itemId)))
+        {
+            CommandBuilder.SkillFailed(source.Player, SkillValidationResult.MissingRequiredItem);
+            return false;
+        }
+
+        return true;
     }
 
     public SkillValidationResult ValidateTargetForAmmunitionWeapon(CombatEntity source, CombatEntity? target, Position position, int weaponClass, AmmoType ammoType)
@@ -75,6 +117,9 @@ public abstract class SkillHandlerBase
 
             if (target.IsValidAlly(source) || source == target)
                 return SkillValidationResult.Success;
+
+            if (SkillClassification == SkillClass.Magic && target.GetStat(CharacterStat.MagicImmunity) > 0)
+                return SkillValidationResult.TargetImmuneToEffect;
 
             return SkillValidationResult.InvalidTarget;
         }
@@ -120,7 +165,7 @@ public abstract class SkillHandlerBase
         return SkillValidationResult.Failure;
     }
 
-    public virtual SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl) =>
+    public virtual SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect) =>
         StandardValidation(source, target, position);
 
     protected void GenericCastAndInformSelfSkill(WorldObject ch, CharacterSkill skill, int level)
@@ -131,11 +176,14 @@ public abstract class SkillHandlerBase
         CommandBuilder.ClearRecipients();
     }
 
-    protected void GenericCastAndInformSupportSkill(CombatEntity source, CombatEntity? target, CharacterSkill skill, int lvl, ref readonly DamageInfo damage)
+    protected void GenericCastAndInformSupportSkill(CombatEntity source, CombatEntity? target, CharacterSkill skill, int lvl, ref readonly DamageInfo damage, bool isIndirect, bool applyCooldown = false)
     {
         source.Character.Map?.AddVisiblePlayersAsPacketRecipients(source.Character);
         CommandBuilder.SkillExecuteTargetedSkill(source.Character, target?.Character, skill, lvl, damage);
         CommandBuilder.ClearRecipients();
+
+        if (!applyCooldown)
+            return;
 
         if (source.Character.Type == CharacterType.Player)
             source.ApplyCooldownForSupportSkillAction();

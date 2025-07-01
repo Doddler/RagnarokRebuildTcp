@@ -43,10 +43,6 @@ Adds +[SkillLevel * 4] weapon attack power when using a dagger or one-handed swo
 ::TwoHandSwordMastery
 Adds +[SkillLevel * 4] weapon attack power when using two-handed swords.
 
-::TwoHandQuicken
-Increases attack speed when using two-handed swords by [SkillLevel * 10]%.
-Duration: [SkillLevel * 30] seconds.
-
 //----------------Archer-------------------
 
 ::DoubleStrafe
@@ -278,4 +274,30 @@ Psyche yourself up, increasing your STR by 4.
 Strike the earth with a powerful hammer swing that has a [20 + SkillLvl * 10]% chance to stun enemies in a 5x5 area.
 
 ::AdrenalineRush
-Increases attack speed with axes and maces by 60% you and 50% your party members. Lasts [SkillLevel * 30] seconds.
+Increases attack speed with axes and maces, reducing the delay between attacks by 30% for yourself and 25% for party members. 
+Duration: [SkillLevel * 30] seconds.
+
+//----------------Knight-------------------
+
+::TwoHandQuicken
+Increases attack speed when using two-handed swords, reducing the delay between attacks by 30%.
+Duration: [SkillLevel * 30] seconds.
+
+::ChargeAttack
+Quickly close the gap to a single target, dealing damage and knocking them back. 
+Cast time scales from 0.1s to 0.5s, and cast time from 100% to 500%, depending on the distance traveled. Maximum damage is achieved at 12 tiles.
+Skill Range: 14 tiles
+Recast time: 5s
+
+//----------------Knight-------------------
+
+::BeastBane
+Adds +[SkillLevel * 5] weapon attack power when attacking brute and insect type monsters.
+
+::AnkleSnare
+Sets a trap that when stepped on immobilizes the enemy for [SkillLevel * 4] seconds.
+Ineffective against enemies that aren't touching the ground when moving. High agility enemies, bosses, and enemies higher level than you will escape faster.
+Cannot overlap with another trap or be set next to another player or monster.
+If the trap expires without being triggered the trap item will be returned.
+Duration: 50s
+Uses: <color=#777777>1 Trap</color>

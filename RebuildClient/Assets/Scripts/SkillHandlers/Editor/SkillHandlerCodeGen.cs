@@ -7,6 +7,8 @@ using System.Text;
 using RebuildSharedData.Enum;
 using UnityEditor;
 using UnityEditor.Compilation;
+using UnityEngine;
+using WebSocketSharp;
 
 namespace Assets.Scripts.SkillHandlers.Editor
 {
@@ -20,6 +22,7 @@ namespace Assets.Scripts.SkillHandlers.Editor
             var code = new StringBuilder();
 
             code.Append("using Assets.Scripts.SkillHandlers.Handlers;\n\n");
+            
             code.Append("namespace Assets.Scripts.SkillHandlers\n{\n\tpublic static partial class ClientSkillHandler\n\t{\n\t\tstatic ClientSkillHandler()\n\t\t{\n");
             code.Append($"\t\t\thandlers = new SkillHandlerBase[{count}];\n");
 
@@ -37,7 +40,7 @@ namespace Assets.Scripts.SkillHandlers.Editor
                     var attr = type.GetCustomAttribute<SkillHandlerAttribute>();
                     var skill = attr.SkillType;
 
-                    handlers[(int)skill] = $"\t\t\thandlers[{(int)skill}] = new {type.Name}();";
+                    handlers[(int)skill] = $"\t\t\thandlers[{(int)skill}] = new {type.FullName}();";
                     if (attr.RunHandlerWithoutSource)
                         handlers[(int)skill] += $"\n\t\t\thandlers[{(int)skill}].ExecuteWithoutSource = true;";
                 }

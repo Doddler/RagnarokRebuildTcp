@@ -19,11 +19,13 @@ public enum BodyStateFlags : uint
     Cloaking = 1 << 10,
     Silence = 1 << 11,
     Confusion = 1 << 12,
+    Snared = 1 << 13,
 
     AnyHiddenState = Hidden | Cloaking,
     DisablingState = Stunned | Frozen | Petrified | Sleep,
     NoAutoAttack = DisablingState | Hidden | Pacification,
     NoSkillAttack = Silence | DisablingState | Pacification,
+    MoveLocked = Frozen | Petrified | Hidden | Sleep | Stunned | Stopped | Snared,
 }
 
 

@@ -12,7 +12,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Merchant;
 [SkillHandler(CharacterSkill.Mammonite, SkillClass.Physical)]
 public class MammoniteHandler : SkillHandlerBase
 {
-    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl)
+    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
+        int lvl, bool isIndirect)
     {
         if (source.Character.Type == CharacterType.Player &&
             GetMammoniteCost(source.Player, lvl) > source.Player.GetZeny())

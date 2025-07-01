@@ -275,29 +275,47 @@ public partial class CombatEntity
                     rangeMod -= target.GetStat(CharacterStat.AddResistRangedAttack);
 
                 sizeMod -= target.GetStat(CharacterStat.AddResistSmallSize + (int)atkSize);
+
+                if (attackerType == CharacterType.Monster && Character.Monster.MonsterBase.Tags != null)
+                {
+                    if (target.Player.ResistVersusTag != null && target.Player.ResistVersusTag.Count > 0)
+                    {
+                        foreach (var (tag, val) in target.Player.ResistVersusTag)
+                        {
+                            if (Character.Monster.MonsterBase.Tags.Contains(tag))
+                                racialMod -= racialMod * val / 100;
+                        }
+                    }
+                }
             }
 
             if (attackerType == CharacterType.Player && isPhysical) //only players and physical attacks get these bonuses
             {
-                //damage vs tag
+                racialMod += GetStat(CharacterStat.AddAttackRaceFormless + (int)targetRace);
+
+                //damage/resist vs tag
                 if (defenderType == CharacterType.Monster)
                 {
                     var m = target.Character.Monster;
-                    if (m.MonsterBase.Tags != null && Player.AttackVersusTag != null && Player.AttackVersusTag.Count > 0)
+                    if (m.MonsterBase.Tags != null)
                     {
-                        foreach (var (tag, val) in Player.AttackVersusTag)
+                        if (Player.AttackVersusTag != null && Player.AttackVersusTag.Count > 0)
                         {
-                            if (m.MonsterBase.Tags.Contains(tag))
-                                attackMultiplier *= 1 + (val / 100f);
+                            foreach (var (tag, val) in Player.AttackVersusTag)
+                            {
+                                if (m.MonsterBase.Tags.Contains(tag))
+                                    attackMultiplier *= 1 + (val / 100f);
+                            }
                         }
                     }
                 }
-
-                racialMod += GetStat(CharacterStat.AddAttackRaceFormless + (int)targetRace);
-
+                
                 //masteries, demonbane, etc
-                if (target.GetRace() == CharacterRace.Demon || baseElementType == AttackElement.Undead)
+                if (targetRace == CharacterRace.Demon || baseElementType == AttackElement.Undead)
                     addDamage += Player.MaxLearnedLevelOfSkill(CharacterSkill.DemonBane) * 3;
+
+                if (targetRace == CharacterRace.Beast || targetRace == CharacterRace.Insect)
+                    addDamage += Player.MaxLearnedLevelOfSkill(CharacterSkill.BeastBane) * 5;
 
                 addDamage += GetStat(CharacterStat.WeaponMastery);
 
@@ -405,7 +423,8 @@ public partial class CombatEntity
         // Combined damage calculation
         //------------------------------
 
-        var damage = (int)((baseDamage * attackMultiplier * defCut - subDef + addDamage) * (eleMod / 100f) * (racialMod / 100f) * (rangeMod / 100f) * (sizeMod / 100f));
+        //add damage is applied to base damage, but in the original RO it's actually applied after multipliers... maybe revise if it's too strong.
+        var damage = (int)(((baseDamage + addDamage) * attackMultiplier * defCut - subDef) * (eleMod / 100f) * (racialMod / 100f) * (rangeMod / 100f) * (sizeMod / 100f));
         if (damage < 1)
             damage = 1;
 
@@ -438,6 +457,13 @@ public partial class CombatEntity
         if (res == AttackResult.NormalDamage && isCrit)
             res = AttackResult.CriticalDamage;
 
+        if (isMagical && target.Character.Type == CharacterType.Player &&
+            target.GetStat(CharacterStat.MagicImmunity) > 0)
+        {
+            damage = 0;
+            res = AttackResult.InvisibleMiss;
+        }
+
         //---------------------------
         // Finalize damage result
         //---------------------------
@@ -455,7 +481,7 @@ public partial class CombatEntity
             di.Flags |= DamageApplicationFlags.PhysicalDamage;
         if (damage > 0 && flags.HasFlag(AttackFlags.Magical))
             di.Flags |= DamageApplicationFlags.MagicalDamage;
-
+        
         //---------------------------------------
         // On Attack and When Attacked Triggers
         //---------------------------------------

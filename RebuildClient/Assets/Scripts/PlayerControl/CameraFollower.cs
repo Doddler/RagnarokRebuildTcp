@@ -1770,12 +1770,12 @@ namespace Assets.Scripts
                     pointerOverUi = false;
                     selected = null;
                 }
-
-                if (pointerEvent.pointerEnter.name == "Partymember")
-                {
-                    pointerOverUi = false;
-                    selected = null;
-                }
+                //
+                // if (pointerEvent.pointerEnter.name == "Partymember")
+                // {
+                //     pointerOverUi = false;
+                //     selected = null;
+                // }
 
                 if (pointerEvent.pointerEnter.name == "TopLeftCharacterUI")
                 {
@@ -1783,6 +1783,17 @@ namespace Assets.Scripts
                     selected = null;
 
                     if (Input.GetMouseButtonDown(1) && UiManager.Instance.RightClickMenuWindow.RightClickSelf())
+                    {
+                        pointerOverUi = true;
+                    }
+                }
+                
+                if (pointerEvent.pointerEnter.name == "PartyMember")
+                {
+                    pointerOverUi = false;
+                    selected = null;
+                    
+                    if (Input.GetMouseButtonDown(1) && UiManager.Instance.RightClickMenuWindow.RightClickPartyMenu(pointerEvent))
                     {
                         pointerOverUi = true;
                     }

@@ -20,8 +20,7 @@ public class DetoxifyHandler : SkillHandlerBase
             target.AddStatusEffect(status);
         }
 
-        source.ApplyCooldownForSupportSkillAction();
         var res = DamageInfo.SupportSkillResult(source.Entity, target.Entity, CharacterSkill.Detoxify);
-        GenericCastAndInformSupportSkill(source, target, CharacterSkill.Detoxify, lvl, ref res);
+        GenericCastAndInformSupportSkill(source, target, CharacterSkill.Detoxify, lvl, ref res, isIndirect, true);
     }
 }

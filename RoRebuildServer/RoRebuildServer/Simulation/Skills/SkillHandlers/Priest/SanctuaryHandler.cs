@@ -27,11 +27,28 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Priest;
 [SkillHandler(CharacterSkill.Sanctuary, SkillClass.Magic, SkillTarget.Ground)]
 public class SanctuaryHandler : SkillHandlerBase
 {
+    
+
     public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 5f;
+    
+    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    {
+        if (!isIndirect && !CheckRequiredGemstone(source, BlueGemstone, false))
+            return SkillValidationResult.MissingRequiredItem;
+
+        return base.ValidateTarget(source, target, position, lvl, false);
+    }
+
+    //failing pre-validation prevents sp from being taken
+    public override bool PreProcessValidation(CombatEntity source, CombatEntity? target, Position position, int lvl,
+        bool isIndirect) => isIndirect || CheckRequiredGemstone(source, BlueGemstone);
 
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
     {
         if (source.Character.Map == null)
+            return;
+            
+        if (!isIndirect && !ConsumeGemstoneForSkillWithFailMessage(source, BlueGemstone))
             return;
 
         if (target != null)

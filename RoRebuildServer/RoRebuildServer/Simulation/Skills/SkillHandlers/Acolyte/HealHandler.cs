@@ -12,7 +12,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte;
 [SkillHandler(CharacterSkill.Heal, SkillClass.Magic, SkillTarget.Any)]
 public class HealHandler : SkillHandlerBase
 {
-    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl)
+    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
+        int lvl, bool isIndirect)
     {
         if (target == null)
             return SkillValidationResult.InvalidTarget;

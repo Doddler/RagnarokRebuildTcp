@@ -117,6 +117,9 @@ Your physical attacks deal earth property damage.
 ::CursedWater
 Your physical attacks deal dark property damage.
 
+::EnchantPoison
+Your physical attacks deal poison property damage and has a chance to poison.
+
 ::DarkBlessing
 When this effect expires you will be reduced to 1 HP.
 

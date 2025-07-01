@@ -8,5 +8,6 @@ public enum CharacterRemovalReason : byte
     Dead,
     Metamorphosis,
     Recall,
-    Refresh
+    Refresh,
+    Activation
 }

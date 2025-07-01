@@ -14,7 +14,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Swordsman;
 [SkillHandler(CharacterSkill.Provoke, SkillClass.Unique, SkillTarget.Enemy)]
 public class ProvokeHandler : SkillHandlerBase
 {
-    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl)
+    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
+        int lvl, bool isIndirect)
     {
         if (target == null || target.IsElementBaseType(CharacterElement.Undead1))
             return SkillValidationResult.Failure;

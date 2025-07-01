@@ -222,6 +222,34 @@ Target = "Passive"
 MaxLevel = 10
 
 #----------------------------------
+# Knight
+#----------------------------------
+
+[TwoHandQuicken]
+Name = "Two-Hand Quicken"
+Icon = "kn_twohandquicken"
+Target = "Self"
+MaxLevel = 10
+SpCost = [14,18,22,26,30,34,38,42,46,50]
+
+[CounterAttack]
+[BowlingBash]
+[PecoPecoRiding]
+[CavalierMastery]
+[SpearMastery]
+[Pierce]
+[SpearStab]
+[BrandishSpear]
+[SpearBoomerang]
+
+[ChargeAttack]
+Name = "Charge Attack"
+Icon = "kn_chargeatk"
+Target = "Enemy"
+MaxLevel = 1
+SpCost = [20]
+
+#----------------------------------
 # Acolyte
 #----------------------------------
 
@@ -665,30 +693,49 @@ Target = "Enemy"
 MaxLevel = 5 #a player could copy level 10, but max learnable is 5
 SpCost = [15,20,20,25,25,25,25,25,25,25]
 
+
 #----------------------------------
-# Other skills
+# Hunter
 #----------------------------------
 
-[AdrenalineRush]
-Name = "Adrenaline Rush"
-Icon = "bs_adrenaline"
-Target = "Self"
+[BeastBane]
+Name = "Beast Bane"
+Icon = "ht_beastbane"
+Target = "Passive"
 MaxLevel = 10
-SpCost = [20,23,26,29,32,35,38,41,44,47]
 
-[TwoHandQuicken]
-Name = "Two-Hand Quicken"
-Icon = "kn_twohandquicken"
-Target = "Self"
-MaxLevel = 10
-SpCost = [14,18,22,26,30,34,38,42,46,50]
+[FalconMastery]
+[Detect]
+[BlitzBeat]
+[SteelCrow]
+[LandMine]
+[RemoveTrap]
+[SpringTrap]
+[SkidTrap]
 
-[HammerFall]
-Name = "Hammer Fall"
-Icon = "bs_hammerfall"
+[AnkleSnare]
+Name = "Ankle Snare"
+Icon = "ht_anklesnare"
 Target = "Ground"
 MaxLevel = 5
-SpCost = [10,10,10,10,10]
+SpCost = [12, 12, 12, 12, 12]
+
+[Flasher]
+[FreezingTrap]
+[Sandman]
+[BlastMine]
+[ClaymoreTrap]
+[TalkieBox]
+[PhantasmicArrow]
+
+#----------------------------------
+# Assassin
+#----------------------------------
+
+[RightHandMastery]
+[LeftHandMastery]
+[KatarMastery]
+[Grimtooth]
 
 [SonicBlow]
 Name = "Sonic Blow"
@@ -702,6 +749,47 @@ Target = "Self"
 Icon = "as_cloaking"
 MaxLevel = 10
 SpCost = [15,15,15,15,15,15,15,15,15,15]
+
+[EnchantPoison]
+Name = "Enchant Poison"
+Icon = "as_enchantpoison"
+Target = "Ally"
+MaxLevel = 10
+SpCost = [20,20,20,20,20,20,20,20,20,20]
+
+[PoisonReact]
+[VenomDust]
+[VenomSplasher]
+[SonicAcceleration]
+[VenomKnife]
+
+
+#----------------------------------
+# Blacksmith
+#----------------------------------
+
+[AdrenalineRush]
+Name = "Adrenaline Rush"
+Icon = "bs_adrenaline"
+Target = "Self"
+MaxLevel = 10
+SpCost = [20,23,26,29,32,35,38,41,44,47]
+
+[HammerFall]
+Name = "Hammer Fall"
+Icon = "bs_hammerfall"
+Target = "Ground"
+MaxLevel = 5
+SpCost = [10,10,10,10,10]
+
+[WeaponPerfection]
+[SkinTempering]
+[PowerThrust]
+[MaximizePower]
+
+#----------------------------------
+# Other skills
+#----------------------------------
 
 [Demonstration]
 Target = "Ground"

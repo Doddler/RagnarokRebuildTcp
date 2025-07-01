@@ -19,7 +19,7 @@ public class VampyrismStatus : StatusEffectBase
         if (info.Damage > 0)
         {
             var res2 = DamageInfo.SupportSkillResult(ch.Entity, ch.Entity, CharacterSkill.BloodDrain);
-            res2.Damage = -info.Damage / 2;
+            res2.Damage = -info.Damage;
             res2.Time = Time.ElapsedTimeFloat + res2.AttackMotionTime + 0.8f;
             res2.Result = AttackResult.Heal;
 

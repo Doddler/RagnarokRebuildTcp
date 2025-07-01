@@ -6,6 +6,7 @@ using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.Skills.SkillHandlers;
 using RoRebuildServer.Simulation.Util;
 
@@ -52,7 +53,7 @@ namespace RoRebuildServer.Simulation.Skills
             {
                 var handler = (SkillHandlerBase)Activator.CreateInstance(type)!;
                 var attr = type.GetCustomAttribute<MonsterSkillHandlerAttribute>();
-                if(attr == null) continue;
+                if (attr == null) continue;
                 var skill = attr.SkillType;
                 if (skill == CharacterSkill.None)
                     continue; //you can disable a handler by setting it's skill to None
@@ -90,13 +91,13 @@ namespace RoRebuildServer.Simulation.Skills
             return true;
         }
 
-        public static SkillValidationResult ValidateTarget(SkillCastInfo info, CombatEntity src)
+        public static SkillValidationResult ValidateTarget(SkillCastInfo info, CombatEntity src, bool isIndirect = false)
         {
             CombatEntity? target = info.TargetEntity.GetIfAlive<CombatEntity>();
 
             var handler = handlers[(int)info.Skill];
             if (handler != null)
-                return handler.ValidateTarget(src, target, info.TargetedPosition, info.Level);
+                return handler.ValidateTarget(src, target, info.TargetedPosition, info.Level, false);
 
             return SkillValidationResult.Failure;
         }
@@ -105,7 +106,7 @@ namespace RoRebuildServer.Simulation.Skills
         {
             var handler = handlers[(int)skill];
             if (handler != null)
-                return handler.ValidateTarget(src, target, pos, lvl);
+                return handler.ValidateTarget(src, target, pos, lvl, false);
 
             return SkillValidationResult.Failure;
         }
@@ -136,12 +137,12 @@ namespace RoRebuildServer.Simulation.Skills
             if (handler != null)
             {
                 var range = handler.GetSkillRange(src, level);
-                if(range < 0)
+                if (range < 0)
                     return src.GetEffectiveStat(CharacterStat.Range);
 
                 if (src.HasBodyState(BodyStateFlags.Blind))
                     return int.Min(range, ServerConfig.MaxAttackRangeWhileBlind);
-                
+
                 return range;
             }
 
@@ -165,8 +166,18 @@ namespace RoRebuildServer.Simulation.Skills
                     if (!handler.PreProcessValidation(src, target, info.TargetedPosition, info.Level, info.IsIndirect))
                         return false;
 
-                    if(info.Skill != CharacterSkill.Cloaking && info.Skill != CharacterSkill.Hiding)
+                    if (target != null && target.Character.Type == CharacterType.Player
+                                       && skillAttributes[(int)info.Skill].SkillClassification == SkillClass.Magic
+                                       && target.GetStat(CharacterStat.MagicImmunity) > 0)
+                    {
+                        if(src.Character.Type == CharacterType.Player)
+                            CommandBuilder.SkillFailed(src.Player, SkillValidationResult.TargetImmuneToEffect);
+                        return false;
+                    }
+
+                    if (info.Skill != CharacterSkill.Cloaking && info.Skill != CharacterSkill.Hiding)
                         src.UpdateHidingStateAfterAttack();
+
                     handler.Process(src, target, info.TargetedPosition, info.Level, info.IsIndirect);
                     return true;
                 }

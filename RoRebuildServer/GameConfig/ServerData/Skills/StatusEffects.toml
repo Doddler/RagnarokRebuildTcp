@@ -190,6 +190,14 @@ Icon = "아드레날린러쉬"
 CanDispel = true
 CanDisable = true
 
+[AnkleSnare]
+[EnchantPoison]
+Name = "Enchant Poison"
+Type = "Buff"
+Icon = "인찬트포이즌"
+CanDispel = true
+CanDisable = true
+
 #----------------------------------
 # Item Buffs
 #----------------------------------

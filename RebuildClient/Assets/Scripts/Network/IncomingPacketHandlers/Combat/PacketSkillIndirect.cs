@@ -22,6 +22,13 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             var hasSource = Network.EntityList.TryGetValue(id1, out var attacker);
             var hasTarget = Network.EntityList.TryGetValue(id2, out var target);
             
+                        
+            if (result == AttackResult.InvisibleMiss)
+            {
+                hasTarget = false;
+                target = null;
+            }
+
             var attack = new AttackResultData()
             {
                 Skill = skill,

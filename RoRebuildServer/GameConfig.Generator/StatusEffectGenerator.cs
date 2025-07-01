@@ -31,6 +31,7 @@ namespace GameConfig.Generator
                         srcOut.AppendLine($"\t{obj.Key},");
                     }
 
+                    srcOut.AppendLine("\tStatusEffectMax,");
                     srcOut.AppendLine("}");
                     return srcOut.ToString();
                 });

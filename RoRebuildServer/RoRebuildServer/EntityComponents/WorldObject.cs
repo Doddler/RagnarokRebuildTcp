@@ -538,11 +538,9 @@ public class WorldObject : IEntityAutoReset
 
         if (Type != CharacterType.NPC)
         {
-            if (CombatEntity.HasBodyState(BodyStateFlags.Stopped))
+            if ((CombatEntity.BodyState & BodyStateFlags.MoveLocked) > 0)
                 return false;
             if(CombatEntity.GetStat(CharacterStat.MoveSpeedBonus) < -100)
-                return false;
-            if (CombatEntity.HasBodyState(BodyStateFlags.Hidden))
                 return false;
         }
 

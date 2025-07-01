@@ -27,7 +27,7 @@ namespace RoRebuildServer.Database.Utility;
 
 public static class PlayerDataDbHelper
 {
-    public const int CurrentPlayerSaveVersion = 5;
+    public const int CurrentPlayerSaveVersion = 6;
     
     public static void PackPlayerSummaryData(int[] buffer, Player p)
     {
@@ -237,7 +237,8 @@ public static class PlayerDataDbHelper
 
         //status effects
         var effectPos = (int)ms.Position;
-        bw.Write((byte)0); //size, we'll update this later
+        bw.Write((byte)0); //size, we'll update this later as we don't know which status effects we're actually saving
+        bw.Write((short)CharacterStatusEffect.StatusEffectMax);
         var len = player.CombatEntity.StatusContainer?.Serialize(bw) ?? 0;
         decompressedSize = (int)ms.Position;
 
@@ -313,8 +314,7 @@ public static class PlayerDataDbHelper
         else
             player.LearnedSkills = DbHelper.ReadDictionaryWithEnumStringKeys<CharacterSkill>(br) ?? new Dictionary<CharacterSkill, int>();
         player.NpcFlags = DbHelper.ReadDictionary(br);
-        if(saveVersion == CurrentPlayerSaveVersion) //if we're upgrading to a new save version, we won't restore status effects (as their IDs might have changed)
-            player.CombatEntity.TryDeserializeStatusContainer(br);
+        player.CombatEntity.TryDeserializeStatusContainer(br, saveVersion);
 
         for (var i = 0; i < 4; i++)
         {

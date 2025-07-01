@@ -1307,6 +1307,18 @@
       "SoundFile": "priest_magnus",
       "Offset": 1,
       "PrefabName": ""
+    },
+    {
+      "Id": 110,
+      "Name": "AnkleSnare",
+      "ImportEffect": false,
+      "Billboard": false,
+      "IsLooping": false,
+      "StrFile": "",
+      "Sprite": "",
+      "SoundFile": "",
+      "Offset": 0,
+      "PrefabName": "Assets/Prefabs/AnkleSnare.prefab"
     }
   ]
 }

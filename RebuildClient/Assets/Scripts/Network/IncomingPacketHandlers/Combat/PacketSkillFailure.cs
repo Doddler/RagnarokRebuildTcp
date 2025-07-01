@@ -55,7 +55,13 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 case SkillValidationResult.SkillNotKnown:
                     Camera.AppendChatText("<color=#FF7777>Skill failed: Skill not learned or available.</color>");
                     break;
-
+                case SkillValidationResult.TrapTooClose:
+                    Camera.AppendChatText("<color=#FF7777>Skill failed: Too close to another trap, player, or monster.</color>");
+                    break;
+                case SkillValidationResult.TargetImmuneToEffect:
+                    Camera.AppendChatText("<color=#FF7777>Skill failed: The target's equipment blocks this skill.</color>");
+                    break;
+                        
                 case SkillValidationResult.CannotTeleportHere:
                     Camera.AppendChatText("<color=#FF7777>You're unable to teleport in this location.</color>");
                     break;

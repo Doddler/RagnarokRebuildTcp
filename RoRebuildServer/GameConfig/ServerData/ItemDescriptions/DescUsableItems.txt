@@ -41,7 +41,7 @@ Recover<color=#008000> 75~115</color> HP
 Recover<color=#008000> 15~30</color> SP
 
 ::Green_Herb //511
-<color=#808080>A bitter green herb which can counteract the effect of some poisons.<color>
+<desc>A bitter green herb which can counteract the effect of some poisons.</desc>
 Cures: <color=#800000>Poison</color>
 
 ::Apple //512
@@ -361,13 +361,13 @@ Channelled: <color=#777777>Being hit while casting will interrupt the skill, but
 <color=#808080>A disposable, miniature blast furnace that can be easily carried and is consumed when forging metals.</color>
 
 ::Iron_Hammer //613
-<color=#808080>A disposable steel hammer that is is used to forge <color=#000088>Lv 1 Weapons<color=#808080>.</color>
+<desc>A disposable steel hammer that is is used to forge <color=#000088>Lv 1 Weapons</color>.</desc>
 
 ::Golden_Hammer //614
-<color=#808080>A disposable gold hammer that is is used to forge <color=#000088>Lv 2 Weapons<color=#808080>.</color>
+<desc>A disposable gold hammer that is is used to forge <color=#000088>Lv 2 Weapons</color>.</desc>
 
 ::Oridecon_Hammer //615
-<color=#808080>A disposable oridecon hammer that is used to forge <color=#000088>Lv 3 Weapons<color=#808080>.</color>
+<desc>A disposable oridecon hammer that is used to forge <color=#000088>Lv 3 Weapons</color>.</desc>
 
 ::Old_Card_Album //616
 <color=#808080>An antique album which contains an unknown card.</color>
@@ -461,17 +461,17 @@ Contains a random item.
 
 ::Concentration_Potion //645
 <color=#808080>A potent tonic that stimulates concentration.</color>
-Increases attack speed by 10% for 30 minutes.
+Increases attack speed, reducing the delay between your attacks by 10% for 30 minutes.
 
 ::Awakening_Potion //656 - [Properties] block starts the property section early, allows weight to be appended without extra line spacing
 <color=#808080>A special tonic that combats drowsiness.</color>
-Increases attack speed by 15% for 30 minutes.
+Increases attack speed, reducing the delay between your attacks by 15% for 30 minutes.
 [Properties]Useable by: <color=#777777>All jobs except acolyte</color>
 Required Level: <color=#777777>40</color>
 
 ::Berserk_Potion //657 - [Properties] block starts the property section early, allows weight to be appended without extra line spacing
 <color=#808080>A powerful tonic that amplifies quickness.</color>
-Increases attack speed by 20% for 30 minutes.
+Increases attack speed, reducing the delay between your attacks by 20% for 30 minutes.
 [Properties]Useable by: <color=#777777>Swordsman, Merchant, Mage</color>
 Required Level: <color=#777777>85</color>
 

@@ -946,7 +946,7 @@ public static class CommandBuilder
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
-    public static void SendRemoveEntityMulti(WorldObject c, CharacterRemovalReason reason)
+    public static void SendRemoveEntityMulti(WorldObject c, CharacterRemovalReason reason, float value = -1)
     {
         if (!HasRecipients())
             return;
@@ -954,6 +954,7 @@ public static class CommandBuilder
         var packet = NetworkManager.StartPacket(PacketType.RemoveEntity, 32);
         packet.Write(c.Id);
         packet.Write((byte)reason);
+        packet.Write(value);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }

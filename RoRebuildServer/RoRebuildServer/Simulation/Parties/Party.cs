@@ -158,6 +158,7 @@ public class Party
 
             //offline player
             PartyMemberInfo.Remove(memberId);
+            PlayerIdToMemberId.Remove(member.PlayerId);
             CommandBuilder.NotifyPartyOfChange(this, memberId, PartyUpdateType.RemovePlayer);
 
             if (PartyMemberInfo.Count == 0)

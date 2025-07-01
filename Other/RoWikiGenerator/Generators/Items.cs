@@ -23,7 +23,6 @@ using RoRebuildServer.Data.Player;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Monsters;
 using RoRebuildServer.Logging;
-using RoRebuildServer.Networking.PacketHandlers.NPC;
 using RoWikiGenerator.Pages;
 
 namespace RoWikiGenerator.Generators;

@@ -33,7 +33,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Archer
             foreach (var e in targetList)
             {
                 if (e.TryGet<CombatEntity>(out var nearbyEnemy))
-                    nearbyEnemy.RemoveStatusOfTypeIfExists(CharacterStatusEffect.Hiding);
+                    nearbyEnemy.RemoveStatusOfGroupIfExists("Hiding");
             }
 
             CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(ch, CharacterSkill.ImproveConcentration, lvl, isIndirect);

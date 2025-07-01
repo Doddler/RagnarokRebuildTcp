@@ -804,6 +804,32 @@ public class Npc : IEntityAutoReset
         //OnMobKill();
     }
 
+
+    public void ActivateAndHide(float duration)
+    {
+        var chara = Entity.Get<WorldObject>();
+
+        if (chara.AdminHidden)
+            return; //npc already hidden
+
+        if (chara.Map == null)
+            throw new Exception($"Npc {FullName} attempting to execute ActivateAndHide, but the npc is not currently attached to a map.");
+
+        chara.AdminHidden = true;
+
+        using var notifyList = EntityListPool.Get();
+
+        var visible = chara.GetVisiblePlayerList();
+        if (visible == null)
+            return;
+        foreach (var e in visible)
+            notifyList.Add(e);
+        CommandBuilder.AddRecipients(notifyList);
+        CommandBuilder.SendRemoveEntityMulti(chara, CharacterRemovalReason.Activation, duration);
+        CommandBuilder.ClearRecipients();
+    }
+
+
     public void HideFromView()
     {
         var chara = Entity.Get<WorldObject>();

@@ -66,6 +66,7 @@ public partial class CombatEntity : IEntityAutoReset
     public void ResetSkillCooldowns() => skillCooldowns.Clear();
 
     public bool IsInSkillDamageCooldown(CharacterSkill skill) => damageCooldowns.TryGetValue(skill, out var t) && t > Time.ElapsedTimeFloat;
+    public bool IsMagicImmune() => GetStat(CharacterStat.MagicImmunity) > 0;
 
     public void SetSkillDamageCooldown(CharacterSkill skill, float cooldown) => damageCooldowns[skill] = Time.ElapsedTimeFloat + cooldown;
     public void ResetSkillDamageCooldowns() => damageCooldowns.Clear();
@@ -218,7 +219,7 @@ public partial class CombatEntity : IEntityAutoReset
 
         return success;
     }
-    
+
     public void RemoveStatusOfGroupIfExists(string groupName)
     {
         if (statusContainer == null || statusContainer.TotalStatusEffectCount == 0) //that last one fixes an unfortunate issue where attempting to remove an existing status while adding a status breaks things
@@ -255,16 +256,32 @@ public partial class CombatEntity : IEntityAutoReset
         }
     }
 
-    public void TryDeserializeStatusContainer(IBinaryMessageReader br)
+    public void TryDeserializeStatusContainer(IBinaryMessageReader br, int saveVersion)
     {
         var count = (int)br.ReadByte();
         if (count == 0)
             return;
 
+        //Because status effects are serialized by id, we'll have a problem if the status effect ids ever change.
+        //If the number of server status effects changes then, the player's status effect state is discarded.
+        //We still need to deserialize though, as there's data after this we still need to load, but we won't use it.
+        //At some point changing it to serializing by status name would prevent this limitation.
+
+        var discardState = false;
+        if (saveVersion >= 6) 
+        {
+            var totalEffects = (int)br.ReadInt16();
+            if (totalEffects > (int)CharacterStatusEffect.StatusEffectMax)
+                discardState = true;
+        }
+
         statusContainer = StatusEffectPoolManager.BorrowStatusContainer();
         statusContainer.Owner = this;
-
-        statusContainer.Deserialize(br, count);
+        
+        if (!discardState)
+            statusContainer.Deserialize(br, count);
+        else
+            statusContainer.DeserializeWithoutSave(br, count);
     }
 
     public bool CanPerformIndirectActions()
@@ -279,7 +296,7 @@ public partial class CombatEntity : IEntityAutoReset
     {
         if (!CanTeleport())
         {
-            if(Character.Type == CharacterType.Player)
+            if (Character.Type == CharacterType.Player)
                 CommandBuilder.SkillFailed(Character.Player, SkillValidationResult.CannotTeleportHere);
             return false;
         }
@@ -417,7 +434,7 @@ public partial class CombatEntity : IEntityAutoReset
                 break;
             case CharacterStat.Def:
                 stat += GetStat(CharacterStat.AddDef);
-                if(Character.Type == CharacterType.Player)
+                if (Character.Type == CharacterType.Player)
                     stat += GetStat(CharacterStat.EquipmentRefineDef);
                 stat = stat * (100 + GetStat(CharacterStat.AddDefPercent)) / 100;
                 break;
@@ -604,7 +621,7 @@ public partial class CombatEntity : IEntityAutoReset
 
         return (BodyState & BodyStateFlags.AnyHiddenState) > 0;
     }
-    
+
     //Same as IsValidTarget, but can't see cloaked targets
     public bool CanBeTargeted(CombatEntity? source, bool canHarmAllies = false, bool canTargetHidden = false)
     {
@@ -1169,14 +1186,14 @@ public partial class CombatEntity : IEntityAutoReset
         }
 
         var hasSpCost = Character.Type == CharacterType.Player && CastingSkill.ItemSource <= 0;
-        
+
         if (hasSpCost && !Player.HasSpForSkill(CastingSkill.Skill, CastingSkill.Level))
         {
             CommandBuilder.SkillFailed(Player, SkillValidationResult.InsufficientSp);
             return;
         }
 
-        var spCost = hasSpCost ? Player.GetSpCostForSkill(CastingSkill.Skill, CastingSkill.Level) : 0; 
+        var spCost = hasSpCost ? Player.GetSpCostForSkill(CastingSkill.Skill, CastingSkill.Level) : 0;
         var hasExecuted = false;
         if (CastingSkill.ItemSource > 0 && Character.Type == CharacterType.Player)
         {
@@ -1276,7 +1293,7 @@ public partial class CombatEntity : IEntityAutoReset
 
         return GameRandom.NextInclusive(0, outOf * 10) < realChance;
     }
-    
+
     /// <summary>
     /// Test to see if this character is able to hit the enemy.
     /// </summary>
@@ -1382,7 +1399,7 @@ public partial class CombatEntity : IEntityAutoReset
             (req.MinAtk, req.MaxAtk) = CalculateAttackPowerRange(isMagic);
 
         statusContainer?.OnPreCalculateCombatResult(target, ref req);
-        
+
         return CalculateCombatResultUsingSetAttackPower(target, req);
     }
 
@@ -1563,10 +1580,10 @@ public partial class CombatEntity : IEntityAutoReset
             DamageQueue.RemoveAt(0);
 
             ApplyQueuedCombatResult(ref di);
-            if(di.Damage > 0)
+            if (di.Damage > 0)
                 hasResult = true;
         }
-        if(hasResult && Character.Type == CharacterType.Player && Player.Party != null)
+        if (hasResult && Character.Type == CharacterType.Player && Player.Party != null)
             CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(Player, false); //notify party members out of sight
 
     }

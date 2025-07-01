@@ -25,6 +25,12 @@ public class AreaOfEffectPoolPolicy : IPooledObjectPolicy<AreaOfEffect>
     }
 }
 
+public enum AoEClass
+{
+    None,
+    Trap
+}
+
 public class AreaOfEffect
 {
     public Entity SourceEntity = Entity.Null;
@@ -35,6 +41,7 @@ public class AreaOfEffect
 
     public TargetingInfo TargetingInfo = new();
     public AoeType Type = AoeType.Inactive;
+    public AoEClass Class = AoEClass.None;
     public CharacterSkill SkillSource;
 
     public double NextTick = float.MaxValue;
@@ -84,6 +91,7 @@ public class AreaOfEffect
         SourceEntity = Entity.Null;
         IsActive = false;
         IsMaskedArea = false;
+        Class = AoEClass.None;
 
         if(TouchingEntities != null)
             EntityListPool.Return(TouchingEntities);

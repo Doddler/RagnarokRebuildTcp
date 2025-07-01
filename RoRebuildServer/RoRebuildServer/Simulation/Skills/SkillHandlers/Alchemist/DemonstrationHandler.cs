@@ -21,12 +21,13 @@ public class DemonstrationHandler : SkillHandlerBase
     public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 1f;
     public override int GetSkillRange(CombatEntity source, int lvl) => 9;
 
-    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl)
+    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
+        int lvl, bool isIndirect)
     {
         if (source.Character.Type == CharacterType.Player && source.Character.Position.SquareDistance(position) < 3)
             return SkillValidationResult.TooClose;
 
-        return base.ValidateTarget(source, target, position, lvl);
+        return base.ValidateTarget(source, target, position, lvl, false);
     }
 
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
