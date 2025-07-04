@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Numerics;
 using Microsoft.VisualBasic;
 using RebuildSharedData.ClientTypes;
@@ -788,7 +789,7 @@ public static class CommandBuilder
 
     public static void SendAllMapImportantEntities(Player p, EntityList mapImportantEntities)
     {
-        var packet = NetworkManager.StartPacket(PacketType.UpdateMinimapMarker, 64);
+        var packet = NetworkManager.StartPacket(PacketType.UpdateMapImportantEntityTracking, 64);
 
         mapImportantEntities.ClearInactive();
         packet.Write((short)mapImportantEntities.Count);
@@ -798,6 +799,8 @@ public static class CommandBuilder
             packet.Write(chara.Id);
             packet.Write(chara.Position);
             packet.Write((byte)chara.DisplayType);
+            if(chara.DisplayType == CharacterDisplayType.Effect)
+                packet.Write(chara.Type == CharacterType.NPC && chara.Npc.ParamString != null ? chara.Npc.ParamString : chara.Name);
         }
 
         NetworkManager.SendMessage(packet, p.Connection);
@@ -805,24 +808,28 @@ public static class CommandBuilder
 
     public static void SendUpdateMapImportantEntityMulti(WorldObject o)
     {
-        var packet = NetworkManager.StartPacket(PacketType.UpdateMinimapMarker, 32);
+        var packet = NetworkManager.StartPacket(PacketType.UpdateMapImportantEntityTracking, 32);
 
         packet.Write((short)1);
         packet.Write(o.Id);
         packet.Write(o.Position);
         packet.Write((byte)o.DisplayType);
+        if (o.DisplayType == CharacterDisplayType.Effect)
+            packet.Write(o.Type == CharacterType.NPC && o.Npc.ParamString != null ? o.Npc.ParamString : o.Name);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
     public static void SendRemoveMapImportantEntityMulti(WorldObject o)
     {
-        var packet = NetworkManager.StartPacket(PacketType.UpdateMinimapMarker, 32);
+        var packet = NetworkManager.StartPacket(PacketType.UpdateMapImportantEntityTracking, 32);
 
         packet.Write((short)1);
         packet.Write(o.Id);
         packet.Write(Position.Zero);
-        packet.Write((byte)CharacterDisplayType.None);
+        packet.Write((byte)o.DisplayType);
+        if (o.DisplayType == CharacterDisplayType.Effect)
+            packet.Write(o.Type == CharacterType.NPC && o.Npc.ParamString != null ? o.Npc.ParamString : o.Name);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }

@@ -24,12 +24,12 @@ Trader("aldeba_in", "Weapon Dealer", "1_M_03", 28, 54, N) {
 	SellItem("Gladius");
 	SellItem("Damascus");
 }
-
+/*
 Trader("aldeba_in", "Weapon Dealer", "4_M_06", 22, 47, S) {
 	SellItem("Town_Sword");
 	SellItem("Cinquedea");
 }
-
+*/
 Trader("aldeba_in", "Armor Dealer", "4W_F_01", 20, 60, N) {
 	SellItem("Helm");
 	SellItem("Buckler");
@@ -41,7 +41,7 @@ Trader("aldeba_in", "Armor Dealer", "4W_F_01", 20, 60, N) {
 	SellItem("Full_Plate");
 	SellItem("Manteau");
 	SellItem("Boots");
-	SellItem("Novice_Armlet");
+	//SellItem("Novice_Armlet");
 	SellItem("Belt");
 }
 

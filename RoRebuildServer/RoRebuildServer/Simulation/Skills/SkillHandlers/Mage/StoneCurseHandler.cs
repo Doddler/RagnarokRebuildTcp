@@ -41,7 +41,7 @@ public class StoneCurseHandler : SkillHandlerBase
         //if (lvl < 0 || lvl > 10)
         //    lvl = 10;
 
-        if (target == null || !target.IsValidTarget(source) || source.Player.Inventory == null)
+        if (target == null || !target.IsValidTarget(source))
             return;
 
         var res = DamageInfo.SupportSkillResult(source.Entity, target.Entity, CharacterSkill.StoneCurse);

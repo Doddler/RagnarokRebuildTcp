@@ -66,7 +66,7 @@ public enum PacketType : byte
     ApplySkillPoint,
     ApplyStatPoints,
     ChangeTargetableState,
-    UpdateMinimapMarker,
+    UpdateMapImportantEntityTracking,
     ApplyStatusEffect,
     RemoveStatusEffect,
     SocketEquipment,

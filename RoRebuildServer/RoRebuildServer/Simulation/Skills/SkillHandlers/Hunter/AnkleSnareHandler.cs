@@ -35,7 +35,7 @@ public class AnkleSnareEvent : TrapBaseEvent
 
     public override bool TriggerTrap(Npc npc, CombatEntity src, CombatEntity target, int skillLevel)
     {
-        if (IsFlying(target))
+        if (target.IsFlying() && ServerConfig.OperationConfig.FliersIgnoreTraps)
             return false;
 
         var srcLevel = src.GetStat(CharacterStat.Level);

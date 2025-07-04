@@ -57,12 +57,12 @@ Trader("geffen_in", "Weapon Dealer", "1_M_01", 30, 178, S) {
 	SellItem("Staff");
 	SellItem("Arc_Wand");
 }
-
+/*
 Trader("geffen_in", "Weapon Dealer", "4_M_02", 22, 171, E) {
 	SellItem("Town_Sword");
 	SellItem("Cinquedea");
 }
-
+*/
 Trader("geffen_in", "Trader", "1_F_01", 74, 144, N) {
 	SellItem("Scell");
 	SellItem("Garlet");

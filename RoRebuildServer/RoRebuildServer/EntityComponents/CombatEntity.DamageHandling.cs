@@ -309,12 +309,12 @@ public partial class CombatEntity
                         }
                     }
                 }
-                
+
                 //masteries, demonbane, etc
                 if (targetRace == CharacterRace.Demon || baseElementType == AttackElement.Undead)
                     addDamage += Player.MaxLearnedLevelOfSkill(CharacterSkill.DemonBane) * 3;
 
-                if (targetRace == CharacterRace.Beast || targetRace == CharacterRace.Insect)
+                if (targetRace == CharacterRace.Beast || targetRace == CharacterRace.Insect || target.IsFlying())
                     addDamage += Player.MaxLearnedLevelOfSkill(CharacterSkill.BeastBane) * 5;
 
                 addDamage += GetStat(CharacterStat.WeaponMastery);
@@ -481,7 +481,7 @@ public partial class CombatEntity
             di.Flags |= DamageApplicationFlags.PhysicalDamage;
         if (damage > 0 && flags.HasFlag(AttackFlags.Magical))
             di.Flags |= DamageApplicationFlags.MagicalDamage;
-        
+
         //---------------------------------------
         // On Attack and When Attacked Triggers
         //---------------------------------------
@@ -653,7 +653,7 @@ public partial class CombatEntity
 
                 if (di.Source.Type == EntityType.Player && di.Source.TryGet<Player>(out var player))
                 {
-                    if((player.OnAttackTriggerFlags & (AttackEffectTriggers.HpOnKill | AttackEffectTriggers.SpOnKill)) > 0)
+                    if ((player.OnAttackTriggerFlags & (AttackEffectTriggers.HpOnKill | AttackEffectTriggers.SpOnKill)) > 0)
                         player.CombatEntity.TriggerOnKillEffects(this);
                 }
 

@@ -32,6 +32,12 @@ namespace Assets.Scripts.PlayerControl
             {
                 switch (s)
                 {
+                    //skill colors:
+                    //overthrust - 250/150/150
+                    //twohandquicken - 200/200/0
+                    //spearquicken - 200/200/0
+                    //energycoat - 180/180/250
+                    
                     case CharacterStatusEffect.Bulwark:
                     case CharacterStatusEffect.EnergyCoat:
                         if(priority < 0)
@@ -123,6 +129,10 @@ namespace Assets.Scripts.PlayerControl
                     SleepEffect.AttachSleepEffect(controllable);
                     break;
                 case CharacterStatusEffect.TwoHandQuicken:
+                    //color now set via UpdateColorForStatus
+                    RoSpriteTrailManager.Instance.AttachTrailToEntity(controllable);
+                    break;
+                case CharacterStatusEffect.EnergyCoat:
                     //color now set via UpdateColorForStatus
                     RoSpriteTrailManager.Instance.AttachTrailToEntity(controllable);
                     break;
@@ -255,6 +265,9 @@ namespace Assets.Scripts.PlayerControl
                     controllable.EndEffectOfType(EffectType.Petrifying);
                     break;
                 case CharacterStatusEffect.TwoHandQuicken:
+                    RoSpriteTrailManager.Instance.RemoveTrailFromEntity(controllable);
+                    break;
+                case CharacterStatusEffect.EnergyCoat:
                     RoSpriteTrailManager.Instance.RemoveTrailFromEntity(controllable);
                     break;
                 case CharacterStatusEffect.Frozen:

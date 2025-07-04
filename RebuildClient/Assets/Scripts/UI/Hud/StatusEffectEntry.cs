@@ -1,4 +1,5 @@
 ﻿using System;
+using Assets.Scripts.Network;
 using Assets.Scripts.Sprites;
 using RebuildSharedData.Enum;
 using TMPro;
@@ -8,14 +9,14 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.Hud
 {
-    public class StatusEffectEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class StatusEffectEntry : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
         public Image StatusIcon;
         public TextMeshProUGUI RemainingTime;
         
         [NonSerialized] public CharacterStatusEffect StatusEffect;
         [NonSerialized] public float Expiration;
-        [NonSerialized] public bool NeedsUpdate;
+        [NonSerialized] public bool CanCancel;
 
         private int secondsRemaining;
 
@@ -54,7 +55,10 @@ namespace Assets.Scripts.UI.Hud
             
             if (data != null)
             {
-                UiManager.Instance.ShowTooltip(gameObject, data.Description);
+                var desc = data.Description;
+                if (CanCancel)
+                    desc += "\n<size=-6>(Shift-Right Click to Remove)";
+                UiManager.Instance.ShowTooltip(gameObject, desc);
                 return;
             }
         }
@@ -67,6 +71,16 @@ namespace Assets.Scripts.UI.Hud
         public void OnDestroy()
         {
             UiManager.Instance.HideTooltip(gameObject); //will do nothing if this isn't the actively hovered object
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            if(eventData.button == PointerEventData.InputButton.Right && (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
+            {
+                var status = ClientDataLoader.Instance.GetStatusEffect((int)StatusEffect);
+                if(status.CanDisable)
+                    NetworkManager.Instance.SendRemoveStatusEffect(StatusEffect);
+            }
         }
     }
 }

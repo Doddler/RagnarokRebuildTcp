@@ -52,6 +52,8 @@ namespace Assets.Scripts.UI.Hud
             newEffect.Expiration = expiration;
             newEffect.UpdateTime();
             newEffect.StatusIcon.sprite = icon;
+            if (statusInfo.CanDisable)
+                newEffect.CanCancel = true;
             
             StatusEffects.Add(newEffect);
             StatusEffectLookup.Add(status, newEffect);

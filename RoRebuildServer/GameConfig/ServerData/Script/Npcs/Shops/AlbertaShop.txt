@@ -61,14 +61,15 @@ Trader("alberta_in", "Armor Dealer", "4W_F_01", 180, 15, N) {
 	SellItem("Coat");
 	SellItem("Padded_Armor");
 	SellItem("Chain_Mail");
-	SellItem("Novice_Armlet");
+	//SellItem("Novice_Armlet");
 }
 
+/*
 Trader("alberta_in", "Weapon Dealer", "4_KID01", 175, 97, S) {
 	SellItem("Town_Sword");
 	SellItem("Cinquedea");
 }
-
+*/
 Trader("alb2trea", "Tool Dealer", "4_M_01", 87, 65, SE) {
 	SellItem("Arrow");
 	SellItem("Silver_Arrow");

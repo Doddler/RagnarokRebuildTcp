@@ -52,7 +52,7 @@ StoneCurse = []
 EarthSpike = [["StoneCurse", 3]]
 HeavensDrive = [["EarthSpike", 3]]
 WaterBall = [["FrostDiver", 7], ["LightningBolt", 3]]
-#EnergyCoat = [["FireBolt", 3], ["ColdBolt", 3], ["LightningBolt", 3]]
+EnergyCoat = [["FireBolt", 3], ["ColdBolt", 3], ["LightningBolt", 3]]
 
 [Acolyte]
 JobRank = 1
@@ -75,6 +75,7 @@ Pneuma = [["WarpPortal", 4]]
 HolyLight = [["DemonBane", 5]]
 SignumCrusis = [["DemonBane", 3]]
 AquaBenedicta = []
+Resurrection = [["DivineProtection", 7],["Cure", 1]]
 Sanctuary = [["DivineProtection", 10], ["Heal", 10], ["Blessing", 10]]
 
 [Thief]

@@ -42,6 +42,7 @@ public class NpcInteractionState
     public bool AllowDiscount { get; set; }
     public string? CurrentShopCategory;
 
+    public string PlayerName => Player?.Name ?? "(Unknown Player)";
 
     public void Reset()
     {

@@ -64,6 +64,7 @@ public class Npc : IEntityAutoReset
     public double LastTimerUpdate;
     public double TimerStart;
 
+    private bool touchDisabled;
     public bool HasTouch;
     public bool HasInteract;
     public bool TimerActive;
@@ -73,6 +74,7 @@ public class Npc : IEntityAutoReset
     public NpcPathHandler? NpcPathHandler;
 
     private string? currentSignalTarget;
+    
 
     //private SkillCastInfo? skillInfo;
 
@@ -157,6 +159,7 @@ public class Npc : IEntityAutoReset
         DisplayType = NpcDisplayType.Sprite;
         EffectType = NpcEffectType.None;
         ExpireEventWithoutOwner = false;
+        touchDisabled = false;
     }
 
     public bool TryGetAreaOfEffect([NotNullWhen(returnValue: true)] out AreaOfEffect? aoe)
@@ -384,6 +387,14 @@ public class Npc : IEntityAutoReset
 
     }
 
+    public void RegisterMapWideEffect(string name)
+    {
+        ParamString = name;
+        Character.IsImportant = true;
+        Character.DisplayType = CharacterDisplayType.Effect;
+        Character.Map?.RegisterImportantEntity(Character);
+    }
+
     public void RegisterAsWarpNpc()
     {
         Character.IsImportant = true;
@@ -396,6 +407,12 @@ public class Npc : IEntityAutoReset
         Character.IsImportant = true;
         Character.DisplayType = CharacterDisplayType.Kafra;
         Character.Map?.RegisterImportantEntity(Character);
+    }
+
+    public void UnregisterImportant()
+    {
+        Character.Map?.RemoveImportantEntity(Character);
+        Character.IsImportant = false;
     }
 
     public void SetPlayerAppearance(int level, string job, string gender, int head, int hair, string top, string mid, string bottom)
@@ -541,6 +558,35 @@ public class Npc : IEntityAutoReset
         }
 
         return m;
+    }
+
+    public void DescendSummonMonster(string name, int x, int y, int width = 0, int height = 0, int facing = -1, string? aiType = null)
+    {
+        Debug.Assert(Character.Map != null, $"Npc {Character.Name} cannot summon mobs {name} nearby, it is not currently attached to a map.");
+
+        var monsterDef = DataManager.MonsterCodeLookup[name];
+
+        var area = Area.CreateAroundPoint(new Position(x, y), width, height);
+
+        //for (var i = 0; i < count; i++)
+        //{
+        var minion = World.Instance.CreateMonster(Character.Map, monsterDef, area, null, false);
+        var minionMonster = minion.Get<Monster>();
+        minionMonster.ResetAiUpdateTime();
+        if (IsOwnerAlive)
+            minionMonster.SetMaster(Owner); //these monsters have masters but are not minions of the parent
+
+        EnsureMobListCreated();
+        Mobs!.Add(minion);
+
+        if (facing >= 0)
+            minionMonster.Character.FacingDirection = (Direction)facing;
+
+        Character.Map.AddEntityWithEvent(ref minion, CreateEntityEventType.Descend, Character.Position);
+
+        if(!string.IsNullOrWhiteSpace(aiType))
+            minionMonster.ChangeAiSkillHandler(aiType);
+        //}
     }
 
     public void TossSummonMonster(int count, string name, int width = 0, int height = 0, int offsetX = 0, int offsetY = 0)
@@ -854,6 +900,32 @@ public class Npc : IEntityAutoReset
         CommandBuilder.ClearRecipients();
     }
 
+    public void DisableTouchArea()
+    {
+        var chara = Entity.Get<WorldObject>();
+        if (chara.Map == null)
+            return;
+
+        touchDisabled = true;
+
+        if (HasTouch && AreaOfEffect != null)
+            chara.Map.RemoveAreaOfEffect(AreaOfEffect);
+    }
+
+    public void EnableTouchArea()
+    {
+        var chara = Entity.Get<WorldObject>();
+        if (chara.Map == null || !touchDisabled)
+            return;
+
+        if (HasTouch && AreaOfEffect != null)
+            chara.Map.CreateAreaOfEffect(AreaOfEffect);
+        else
+        {
+            ServerLogger.LogWarning($"Attempting to call EnableTouchArea on npc {chara.Npc.FullName}, but it does not have an area of effect!");
+        }
+    }
+
     public void RevealToPlayers()
     {
         var chara = Entity.Get<WorldObject>();
@@ -893,6 +965,8 @@ public class Npc : IEntityAutoReset
 
         if (HasTouch && AreaOfEffect != null)
             chara.Map.RemoveAreaOfEffect(AreaOfEffect);
+
+        touchDisabled = true;
     }
 
     public void ShowNpc(string? name = null)
@@ -919,6 +993,8 @@ public class Npc : IEntityAutoReset
 
         if (HasTouch && AreaOfEffect != null)
             chara.Map.CreateAreaOfEffect(AreaOfEffect);
+
+        touchDisabled = false;
     }
 
     public void ChangeNpcClass(string className)
@@ -972,6 +1048,17 @@ public class Npc : IEntityAutoReset
         World.Instance.SetGlobalSignal(signalName, Entity);
     }
 
+    public void SendGlobalSignal(string signalName, string signalValue)
+    {
+        World.Instance.MainThreadActions.Push(() =>
+        {
+            if (World.Instance.GetGlobalSignalTarget(signalName).TryGet<Npc>(out var npc))
+                npc.OnSignal(npc, signalValue);
+            else
+                ServerLogger.LogWarning($"SendGlobalSignal (from {npc}) could not find a signal recipient for the signal {signalName}.");
+        });
+    }
+
     public void SignalMyEvents(string signal, int value1 = 0, int value2 = 0, int value3 = 0, int value4 = 0)
     {
         var events = Character.Events;
@@ -1003,6 +1090,19 @@ public class Npc : IEntityAutoReset
 
         var npc = destNpc.Get<Npc>();
         npc.OnSignal(this, signal, value1, value2, value3, value4);
+    }
+
+
+    public void MapWideMessage(string msg, string name = "", bool playNotice = false)
+    {
+        var chara = Entity.Get<WorldObject>();
+
+        if (chara.Map == null)
+            return;
+
+        CommandBuilder.AddRecipients(chara.Map.Players);
+        CommandBuilder.SendServerMessage(msg, name, playNotice);
+        CommandBuilder.ClearRecipients();
     }
 
     public void ServerWideMessage(string msg, string name = "Server", bool playNotice = false)
@@ -1303,5 +1403,10 @@ public class Npc : IEntityAutoReset
         CommandBuilder.SendServerMessage(message);
         CommandBuilder.ClearRecipients();
 #endif
+    }
+
+    public void ServerLog(string message)
+    {
+        ServerLogger.Log(message);
     }
 }

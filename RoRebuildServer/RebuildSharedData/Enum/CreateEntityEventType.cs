@@ -9,6 +9,7 @@ namespace RebuildSharedData.Enum
         Normal,
         EnterServer,
         Warp,
-        Toss
+        Toss,
+        Descend
     };
 }

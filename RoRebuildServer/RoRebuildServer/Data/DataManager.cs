@@ -16,6 +16,7 @@ using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.Logging;
 using RoRebuildServer.ScriptSystem;
 using RoRebuildServer.Simulation.Skills.SkillHandlers.Mage;
+using RoRebuildServer.Simulation.StatusEffects.Setup;
 using RoRebuildServer.Simulation.Util;
 using RoServerScript;
 
@@ -275,6 +276,9 @@ public static class DataManager
 
         var t6 = Time.SampleDiagnosticsSubTime();
         ServerConfigScriptManager.UpdateItemValue(ItemList);
+
+        var statusData = loader.GetStatusEffectData();
+        StatusEffectHandler.LoadStatusEffectData(statusData);
 
         var postTime = Time.SampleDiagnosticsTime();
 

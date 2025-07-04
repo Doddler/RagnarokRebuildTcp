@@ -51,6 +51,7 @@ namespace Assets.Scripts.Network
         public TextMeshProUGUI LoadingText;
         public Dictionary<int, ServerControllable> EntityList = new Dictionary<int, ServerControllable>();
         public Dictionary<int, GroundItem> GroundItemList = new Dictionary<int, GroundItem>();
+        public Dictionary<string, GameObject> MapEffects = new Dictionary<string, GameObject>();
         public int PlayerId;
         public NetQueue<ClientInboundMessage> InboundMessages = new NetQueue<ClientInboundMessage>(30);
         public NetQueue<ClientOutgoingMessage> OutboundMessages = new NetQueue<ClientOutgoingMessage>(30);
@@ -1953,6 +1954,14 @@ namespace Assets.Scripts.Network
         {
             var msg = StartMessage(PacketType.UpdateParty);
             msg.Write((byte)PartyClientAction.LeaveParty);
+            
+            SendMessage(msg);
+        }
+
+        public void SendRemoveStatusEffect(CharacterStatusEffect status)
+        {
+            var msg = StartMessage(PacketType.RemoveStatusEffect);
+            msg.Write((int)status);
             
             SendMessage(msg);
         }

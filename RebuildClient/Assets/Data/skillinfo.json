@@ -444,7 +444,7 @@
         30
       ],
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "Creates a barrier that consumes sp to reduce physical damage.\r\nWhen your SP is full the barrier reduces damage by 30% at the cost of 3% of your SP. The damage reduction and SP cost both decrease by a percentage equal to the percent of SP you have.\r\nThe barrier ends automatically if run out of SP.\r\nCast Time: 0.5s\r\nDuration: 5 minutes",
       "InterruptMode": 0
     },
     {
@@ -1270,7 +1270,7 @@
         12
       ],
       "AdjustableLevel": false,
-      "Description": "Strikes a target with your cart, dealing [150 \u002B Weight / 80]% damage to all enemies in a 3x3 area and knocking them away 2 tiles.",
+      "Description": "Strikes a target with your cart, dealing [150 \u002B CartWeight / 80]% damage to all enemies in a 3x3 area and knocking them away 2 tiles.",
       "InterruptMode": 0
     },
     {
@@ -1329,7 +1329,7 @@
         42
       ],
       "AdjustableLevel": true,
-      "Description": null,
+      "Description": "Creates a sanctuary that continually heals anyone (including monsters) standing within it. The effect will end after activating [6 \u002B SkillLevel * 2] times.\r\nDemon or undead property monsters entering will instead take holy damage equal to half the heal amount, be knocked back, and consume 2 activations.\r\nLevels 1-7: Heals [SkillLevel * 100]hp\r\nLevels 8-10: Heals 777hp\r\nDuration: [1 \u002B SkillLevel * 3]s\r\nCatalyst: \u003Ccolor=#777777\u003E1 Blue Gemstone\u003C/color\u003E",
       "InterruptMode": 0
     },
     {
@@ -1552,7 +1552,7 @@
         20
       ],
       "AdjustableLevel": true,
-      "Description": null,
+      "Description": "Deals [SkillLevel] hits at 100% earth element magic damage to a single target.\r\nCasting is only interrupted by high damage and skill attacks.\r\nCast Time: [0.6 \u002B SkillLevel * 0.4]s\r\nAfter Cast Delay: 1s",
       "InterruptMode": 0
     },
     {
@@ -1570,7 +1570,7 @@
         44
       ],
       "AdjustableLevel": true,
-      "Description": null,
+      "Description": "Deals [SkillLevel] hits at 100% earth element magic damage to all enemies in a 5x5 area. Capable of hitting hidden and burrowed enemies.\r\nCast Time: [1 \u002B SkillLevel * 0.5]s\r\nAfter Cast Delay: 1s",
       "InterruptMode": 0
     },
     {
@@ -1809,7 +1809,7 @@
         25
       ],
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "Pulls water from the surrounding area to strike a single target multiple times for [1 \u002B SkillLevel * 30]% water element magic damage.\r\nThe number of projectiles is equal to the amount of tiles that contain water in an area around the caster. If no nearby tiles contain water, the skill will fail.\r\nLevel 1: Max 1 projectile (1x1 area)\r\nLevel 2-3: Max 9 projectiles (3x3 area)\r\nLevel 4-5: Max 25 projectiles (5x5 area)\r\nCast Time: [SkillLevel]s",
       "InterruptMode": 0
     },
     {
@@ -1821,7 +1821,7 @@
       "MaxLevel": 10,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "Adds \u002B[SkillLevel * 5] weapon attack power when attacking brute and insect type monsters.",
+      "Description": "Adds \u002B[SkillLevel * 5] weapon attack power when attacking flying, brute and insect type monsters.",
       "InterruptMode": 0
     },
     {
@@ -2136,7 +2136,7 @@
         20
       ],
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "Enchant the weapon or yourself or an ally to deal poison property damage. Also adds a [2 \u002B SkillLevel]% chance to poison the enemy when performing melee attacks.\r\nUnequipping or swapping weapons will cause the effect to end early.\r\nDuration: [15 \u002B SkillLevel * 15]s",
       "InterruptMode": 0
     },
     {

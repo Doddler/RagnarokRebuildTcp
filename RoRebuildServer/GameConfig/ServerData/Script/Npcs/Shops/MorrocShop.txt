@@ -131,10 +131,11 @@ Trader("morocc_in", "Armor Dealer", "1_M_MERCHANT", 141, 60, N) {
 	SellItem("Mantle");
 	SellItem("Coat");
 	SellItem("Thief_Clothes");
-	SellItem("Novice_Armlet");
+	//SellItem("Novice_Armlet");
 }
-
+/*
 Trader("morocc_in", "Weapon Dealer", "4W_M_03", 132, 57, N) {
 	SellItem("Town_Sword");
 	SellItem("Cinquedea");
 }
+*/

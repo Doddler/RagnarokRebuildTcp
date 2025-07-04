@@ -141,6 +141,13 @@ Catalyst: <color=#777777>1 Red Gemstone</color>. The chance of consuming a gemst
 ::Sight
 Conjure a magic flame that reveals hidden monsters and players in a 7x7 area around you. Lasts for 10 seconds.
 
+::EnergyCoat
+Creates a barrier that consumes sp to reduce physical damage.
+When your SP is full the barrier reduces damage by 30% at the cost of 3% of your SP. The damage reduction and SP cost both decrease by a percentage equal to the percent of SP you have.
+The barrier ends automatically if run out of SP.
+Cast Time: 0.5s
+Duration: 5 minutes
+
 //----------------Acolyte-------------------
 
 ::Heal
@@ -224,9 +231,6 @@ Poison Effect: Target takes half the damage dealt by envenom every 2 seconds, an
 Success rate: [50 + SkillLevel * 5]% chance.
 Duration: [4 + SkillLevel * 2] seconds (with a minimum of 10s).
 
-::SonicBlow
-Deals 8 hits at [50 + SkillLevel * 5]% to a single target, with a +50% increase to accuracy.
-
 ::Hiding
 Hide below ground to avoid detection. Insect, demon, and boss monsters can see through the skill.
 SP recovery rate is reduced by 100% while hiding, but HP recovery increases by 50%.
@@ -262,20 +266,13 @@ Obtain a better deal when buying items from the NPC, reducing the cost of goods 
 Some shops cannot be discounted. Decreases the zeny cost of Mammonite.
 
 ::CartRevolution
-Strikes a target with your cart, dealing [150 + Weight / 80]% damage to all enemies in a 3x3 area and knocking them away 2 tiles.
+Strikes a target with your cart, dealing [150 + CartWeight / 80]% damage to all enemies in a 3x3 area and knocking them away 2 tiles.
 
 ::ItemAppraisal
 A keen eye unlocks the hidden potential of weapons, increasing your weapon attack power by +[SkillLevel * WeaponLevel * 2].
 
 ::CrazyUproar
 Psyche yourself up, increasing your STR by 4.
-
-::HammerFall
-Strike the earth with a powerful hammer swing that has a [20 + SkillLvl * 10]% chance to stun enemies in a 5x5 area.
-
-::AdrenalineRush
-Increases attack speed with axes and maces, reducing the delay between attacks by 30% for yourself and 25% for party members. 
-Duration: [SkillLevel * 30] seconds.
 
 //----------------Knight-------------------
 
@@ -289,10 +286,31 @@ Cast time scales from 0.1s to 0.5s, and cast time from 100% to 500%, depending o
 Skill Range: 14 tiles
 Recast time: 5s
 
-//----------------Knight-------------------
+//----------------Wizard-------------------
+
+::EarthSpike
+Deals [SkillLevel] hits at 100% earth element magic damage to a single target.
+Casting is only interrupted by high damage and skill attacks.
+Cast Time: [0.6 + SkillLevel * 0.4]s
+After Cast Delay: 1s
+
+::HeavensDrive
+Deals [SkillLevel] hits at 100% earth element magic damage to all enemies in a 5x5 area. Capable of hitting hidden and burrowed enemies.
+Cast Time: [1 + SkillLevel * 0.5]s
+After Cast Delay: 1s
+
+::WaterBall
+Pulls water from the surrounding area to strike a single target multiple times for [1 + SkillLevel * 30]% water element magic damage.
+The number of projectiles is equal to the amount of tiles that contain water in an area around the caster. If no nearby tiles contain water, the skill will fail.
+Level 1: Max 1 projectile (1x1 area)
+Level 2-3: Max 9 projectiles (3x3 area)
+Level 4-5: Max 25 projectiles (5x5 area)
+Cast Time: [SkillLevel]s
+
+//----------------Hunter-------------------
 
 ::BeastBane
-Adds +[SkillLevel * 5] weapon attack power when attacking brute and insect type monsters.
+Adds +[SkillLevel * 5] weapon attack power when attacking flying, brute and insect type monsters.
 
 ::AnkleSnare
 Sets a trap that when stepped on immobilizes the enemy for [SkillLevel * 4] seconds.
@@ -301,3 +319,32 @@ Cannot overlap with another trap or be set next to another player or monster.
 If the trap expires without being triggered the trap item will be returned.
 Duration: 50s
 Uses: <color=#777777>1 Trap</color>
+
+//----------------Priest-------------------
+
+::Sanctuary
+Creates a sanctuary that continually heals anyone (including monsters) standing within it. The effect will end after activating [6 + SkillLevel * 2] times.
+Demon or undead property monsters entering will instead take holy damage equal to half the heal amount, be knocked back, and consume 2 activations.
+Levels 1-7: Heals [SkillLevel * 100]hp
+Levels 8-10: Heals 777hp
+Duration: [1 + SkillLevel * 3]s
+Catalyst: <color=#777777>1 Blue Gemstone</color>
+
+//----------------Assassin-------------------
+
+::SonicBlow
+Deals 8 hits at [50 + SkillLevel * 5]% to a single target, with a +50% increase to accuracy.
+
+::EnchantPoison
+Enchant the weapon or yourself or an ally to deal poison property damage. Also adds a [2 + SkillLevel]% chance to poison the enemy when performing melee attacks.
+Unequipping or swapping weapons will cause the effect to end early.
+Duration: [15 + SkillLevel * 15]s
+
+//----------------Blacksmith-------------------
+
+::HammerFall
+Strike the earth with a powerful hammer swing that has a [20 + SkillLvl * 10]% chance to stun enemies in a 5x5 area.
+
+::AdrenalineRush
+Increases attack speed with axes and maces, reducing the delay between attacks by 30% for yourself and 25% for party members. 
+Duration: [SkillLevel * 30] seconds.

@@ -150,15 +150,15 @@ Trader("prt_in", "Armor Dealer", "1_M_02", 172, 132, N) {
 	SellItem("Coat");
 	SellItem("Padded_Armor");
 	SellItem("Chain_Mail");
-	SellItem("Novice_Armlet");
+	//SellItem("Novice_Armlet");
 	SellItem("Belt");
 }
-
+/*
 Trader("prt_in", "Weapon Dealer", "1_F_01", 164, 140, S) {
 	SellItem("Town_Sword");
 	SellItem("Cinquedea");
 }
-
+*/
 Trader("prt_monk", "Weapon Dealer", "4_F_JOB_BLACKSMITH", 135, 263, SE) {
 	SellItem("Waghnak");
 	SellItem("Knuckle_Dusters");

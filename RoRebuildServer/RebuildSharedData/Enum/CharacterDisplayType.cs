@@ -14,6 +14,7 @@ namespace RebuildSharedData.Enum
         Portal,
         WarpNpc,
         Kafra,
+        Effect,
         TalkNpc
     }
 }

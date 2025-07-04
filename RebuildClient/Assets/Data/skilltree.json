@@ -298,6 +298,23 @@
               "Level": 3
             }
           ]
+        },
+        {
+          "Skill": 23,
+          "Prerequisites": [
+            {
+              "Skill": 11,
+              "Level": 3
+            },
+            {
+              "Skill": 12,
+              "Level": 3
+            },
+            {
+              "Skill": 16,
+              "Level": 3
+            }
+          ]
         }
       ]
     },

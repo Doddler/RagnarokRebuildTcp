@@ -112,3 +112,58 @@ OnClick:
         case 0: MoveTo("alberta", 192, 169);
     }
 }
+
+//--------------------------------------------------------------
+// Refining
+//--------------------------------------------------------------
+
+Npc("alberta_in", "Fredrik", "4_M_03", 28, 58, N)
+{
+OnClick:
+    FocusNpc();
+	Dialog(Name, "I'm " + Name + ", the Armsmith.\nI can refine all kinds of weapons, armor and equipment, so let me know if you want me to refine something.");
+	Option("Refine Gear", "Cancel");
+	if(result > 0)
+		return;
+
+	OpenRefineDialog();
+}
+
+
+Npc("alberta_in", "Xenophon", "4_M_02", 21, 63, SE) {
+	AddTradedItem(CreateTradedItem("Oridecon").Requires("Rough_Oridecon",5));
+	AddTradedItem(CreateTradedItem("Elunium").Requires("Rough_Elunium",5));
+OnClick:
+	FocusNpc();
+	if(InventoryItemCount > MaxItemCount - 1) {
+		Dialog(Name, "Whoa, you sure are carrying a lot! Come back when you have a few less items on you.");
+		return;
+	}
+	Dialog(Name, "I can purify your Rough Oridecon or Rough Elunium stones. I'll need 5 Rough stones to make 1 pure one for you.");
+	Option("Trade", "Cancel");
+	if(result == 0) StartItemTrade();
+}
+
+Npc("alberta_in", "Kahlamanlith", "4_M_04", 13, 71, SW) {
+	SellItem("Phracon");
+	SellItem("Emveretarcon");
+OnClick:
+	FocusNpc();
+	if(HasJobType("Merchant"))
+		Dialog(Name, "I sell 2 kinds of Metal for tempering weaponry.\nI have <color=#007777>Phracon<color=#000000> for Level 1 Weapons," +
+					" and <color=#007777>Emveretarcon<color=#000000> for Level 2 Weapons. No discounts though, sorry.");
+	else
+		Dialog(Name, "I sell 2 kinds of Metal for tempering weaponry.\nI have <color=#007777>Phracon<color=#000000> for Level 1 Weapons," +
+		            " and <color=#007777>Emveretarcon<color=#000000> for Level 2 Weapons.");
+	
+	Option("Buy ores", "Cancel");
+	if(result == 0)
+		OpenShop(false); //false makes the shop not apply discount
+}
+
+Npc("alberta_in", "Repair Man", "4_M_04", 31, 65, S)
+{
+OnClick:
+    FocusNpc();
+	Dialog(Name, "Normally I'd help you out if you needed your gear repaired, but for some reason nothing ever breaks! You guys sure do have it lucky.");
+}

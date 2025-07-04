@@ -41,7 +41,7 @@ Npc("alberta", "Turtle Island Scholar", "2_M_MOLGENSTEIN", 248, 89, S) { }
 //Npc("alberta_in", "Armor Dealer", "4W_F_01", 180, 15, N) { }
 Npc("alberta_in", "Chad", "1_M_03", 20, 183, N) { }
 Npc("alberta_in", "Cherokee", "1_M_01", 122, 53, S) { }
-Npc("alberta_in", "Fredrik", "4_M_03", 28, 58, N) { }
+//Npc("alberta_in", "Fredrik", "4_M_03", 28, 58, N) { }
 Npc("alberta_in", "Gate Keeper", "4_M_01", 26, 146, S) { }
 Npc("alberta_in", "Grampa", "2_M_PHARMACIST", 29, 140, S) { }
 Npc("alberta_in", "Grandpa Pharmacist", "1_M_PUBMASTER", 16, 28, S) { }
@@ -50,7 +50,7 @@ Npc("alberta_in", "Guarnien", "4W_M_02", 70, 51, SE) { }
 Npc("alberta_in", "Guild Staff", "1_M_SMITH", 174, 22, NW) { }
 Npc("alberta_in", "Inn Employee", "1_M_INNKEEPER", 32, 142, SW) { }
 //Npc("alberta_in", "Item Collector", "1_F_MERCHANT_02", 165, 96, N) { }
-Npc("alberta_in", "Kahlamanlith", "4_M_04", 13, 71, SW) { }
+//Npc("alberta_in", "Kahlamanlith", "4_M_04", 13, 71, SW) { }
 Npc("alberta_in", "Louitz", "4_M_02", 133, 55, SW) { }
 Npc("alberta_in", "Maid", "4_F_JPN", 154, 171, SE) { }
 Npc("alberta_in", "Merchant Guildsman", "4_M_01", 28, 29, W) { }
@@ -58,13 +58,13 @@ Npc("alberta_in", "Merchant", "4_M_04", 53, 43, E) { }
 Npc("alberta_in", "Monster Tamer", "4_M_TELEPORTER", 173, 76, S) { }
 Npc("alberta_in", "Peculiar-looking Steward", "4_M_MANAGER", 114, 178, SE) { }
 Npc("alberta_in", "PVP Narrator", "4_M_02", 22, 146, S) { }
-Npc("alberta_in", "Repair Man", "4_M_04", 31, 65, S) { }
+//Npc("alberta_in", "Repair Man", "4_M_04", 31, 65, S) { }
 Npc("alberta_in", "Stylist", "4_F_02", 55, 142, NE) { }
 //Npc("alberta_in", "Tool Dealer", "1_F_MERCHANT_01", 182, 97, N) { }
 Npc("alberta_in", "Wealthy-looking Merchant", "1_M_SIGNMCNT", 125, 101, SE) { }
 //Npc("alberta_in", "Weapon Dealer", "1_M_03", 188, 21, N) { }
 //Npc("alberta_in", "Weapon Dealer", "4_KID01", 175, 97, S) { }
-Npc("alberta_in", "Xenophon", "4_M_02", 21, 63, SE) { }
+//Npc("alberta_in", "Xenophon", "4_M_02", 21, 63, SE) { }
 Npc("alde_dun03", "Doorkeeper", "4W_F_01", 264, 16, S) { }
 Npc("alde_gld", "GM_TBT", "4_F_RACING", 5, 5, SE) { }
 Npc("alde_gld", "Luina Castle 1", "GUILD_FLAG", 45, 87, N) { }
@@ -683,8 +683,8 @@ Npc("morocc", "Traveler", "4W_M_03", 273, 79, S) { }
 Npc("morocc", "Uncle Morroc", "1_M_02", 277, 213, S) { }
 Npc("morocc", "Whichebain", "4_F_JOB_ASSASSIN", 27, 112, S) { }
 Npc("morocc", "Zaka", "4W_M_03", 201, 30, S) { }
-Npc("morocc_in", "Abdul", "4W_M_03", 72, 32, E) { }
-Npc("morocc_in", "Aragham", "4W_M_03", 73, 38, E) { }
+//Npc("morocc_in", "Abdul", "4W_M_03", 72, 32, E) { }
+//Npc("morocc_in", "Aragham", "4W_M_03", 73, 38, E) { }
 //Npc("morocc_in", "Armor Dealer", "1_M_MERCHANT", 141, 60, N) { }
 Npc("morocc_in", "Bankley", "4W_M_01", 12, 156, SW) { }
 Npc("morocc_in", "Employee", "1_F_01", 146, 179, N) { }
@@ -698,9 +698,9 @@ Npc("morocc_in", "Marius", "1_M_WIZARD", 76, 163, S) { }
 Npc("morocc_in", "Old Scholar Tyus", "4_M_JOB_WIZARD", 116, 101, SW) { }
 Npc("morocc_in", "Pierce", "4_M_ORIENT02", 142, 100, S) { }
 Npc("morocc_in", "PVP Narrator", "4_M_02", 144, 138, S) { }
-Npc("morocc_in", "Repair Man", "4W_M_03", 71, 41, S) { }
+//Npc("morocc_in", "Repair Man", "4W_M_03", 71, 41, S) { }
 Npc("morocc_in", "Rogue", "1_M_SIGNROGUE", 115, 154, SE) { }
-Npc("morocc_in", "Sade", "4W_M_03", 63, 32, E) { }
+//Npc("morocc_in", "Sade", "4W_M_03", 63, 32, E) { }
 Npc("morocc_in", "Student", "4_M_04", 140, 102, S) { }
 //Npc("morocc_in", "Weapon Dealer", "1_M_MERCHANT", 141, 67, N) { }
 //Npc("morocc_in", "Weapon Dealer", "4W_M_03", 132, 57, N) { }
@@ -803,10 +803,10 @@ Npc("payg_cas05", "Greenwood Castle 5", "GUILD_FLAG", 57, 271, N) { }
 Npc("payg_cas05", "Greenwood Castle 5", "GUILD_FLAG", 62, 271, N) { }
 Npc("payg_cas05", "Kafra Service", "4_F_KAFRA1", 276, 227, NW) { }
 Npc("payg_cas05", "Najarf", "1_M_JOBTESTER", 277, 249, SW) { }
-Npc("payon", "Antonio", "4_M_ORIENT01", 144, 173, SE) { }
-Npc("payon", "Antonio", "4_M_ORIENT01", 144, 173, SE) { }
+//Npc("payon", "Antonio", "4_M_ORIENT01", 144, 173, SE) { }
+//Npc("payon", "Antonio", "4_M_ORIENT01", 144, 173, SE) { }
 Npc("payon", "Bard", "1_M_BARD", 181, 172, SW) { }
-Npc("payon", "Begnahd", "4_M_ORIENT01", 145, 178, SW) { }
+//Npc("payon", "Begnahd", "4_M_ORIENT01", 145, 178, SW) { }
 Npc("payon", "Bulletin Board", "2_BULLETIN_BOARD", 178, 108, N) { }
 //Npc("payon", "Chef Assistant", "4_M_ORIENT02", 206, 119, SE) { }
 Npc("payon", "Friar", "4_F_SISTER", 79, 171, S) { }
@@ -824,7 +824,7 @@ Npc("payon", "Grout'he Tuccok", "1_M_02", 182, 132, SW) { }
 Npc("payon", "Guardsman", "4_M_PAY_SOLDIER", 158, 246, SW) { }
 Npc("payon", "Guide", "4_M_PAY_SOLDIER", 162, 67, S) { }
 Npc("payon", "Hagin", "1_F_ORIENT_04", 154, 170, SW) { }
-Npc("payon", "Hakhim", "4_M_ORIENT01", 137, 178, SE) { }
+//Npc("payon", "Hakhim", "4_M_ORIENT01", 137, 178, SE) { }
 Npc("payon", "Heavy Drinker", "2_M_PHARMACIST", 210, 110, NW) { }
 Npc("payon", "Jade", "4_M_SAGE_A", 173, 238, SE) { }
 Npc("payon", "Jason", "4_M_ORIENT01", 103, 63, SW) { }
@@ -835,7 +835,7 @@ Npc("payon", "Moohyun", "4_M_ROGUE", 215, 102, SW) { }
 Npc("payon", "Neko Neko", "4_F_JOB_ASSASSIN", 115, 131, SW) { }
 //Npc("payon", "Pet Groomer", "4_F_TELEPORTER", 177, 131, S) { }
 Npc("payon", "Phoenix", "4_M_MONK", 157, 141, SE) { }
-Npc("payon", "Repair Man", "4_M_ORIENT01", 143, 165, NE) { }
+//Npc("payon", "Repair Man", "4_M_ORIENT01", 143, 165, NE) { }
 Npc("payon", "Rice Cake Boy", "4_M_ORIENT01", 209, 127, SW) { }
 Npc("payon", "RuRumuni", "4W_M_03", 91, 77, S) { }
 Npc("payon", "Smile Assistance", "4_F_03", 186, 104, SE) { }
@@ -1027,7 +1027,7 @@ Npc("prt_in", "Nami", "1_F_01", 234, 133, S) { }
 Npc("prt_in", "Prontera Knight Member", "1_M_YOUNGKNIGHT", 73, 87, S) { }
 Npc("prt_in", "PVP Narrator", "4_M_02", 56, 140, S) { }
 Npc("prt_in", "Recruiter", "8W_SOLDIER", 88, 105, W) { }
-Npc("prt_in", "Repair Man", "4_M_04", 63, 54, W) { }
+//Npc("prt_in", "Repair Man", "4_M_04", 63, 54, W) { }
 Npc("prt_in", "Shevild", "4_M_03", 173, 24, W) { }
 Npc("prt_in", "Simon Mayace", "1_ETC_01", 82, 98, SW) { }
 Npc("prt_in", "Sir Andrew Syloc", "1_M_YOUNGKNIGHT", 75, 107, S) { }

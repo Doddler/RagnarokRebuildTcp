@@ -3,6 +3,9 @@ ServerConfig("ItemAdjustments") {
 OnLoadDropData:
 	//if you want to use drop rates as provided in the db, remove this block or replace with return rate;
 	
+	if(type == Etc && subType == "Quest")
+		return rate;
+
 	if(type == Etc && subType == "Refine")
 	 	rate *= 2; //refine item drop chance is doubled flat out
 

@@ -18,6 +18,7 @@ using RebuildSharedData.Util;
 using System.Runtime.CompilerServices;
 using RoRebuildServer.ScriptSystem;
 using System.Runtime.InteropServices;
+using RoRebuildServer.Data.Monster;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -302,6 +303,17 @@ public partial class CombatEntity : IEntityAutoReset
         }
 
         return true;
+    }
+
+    public bool IsFlying()
+    {
+        switch (Character.Type)
+        {
+            case CharacterType.Monster:
+                return (Character.Monster.MonsterBase.SpecialFlags & MonsterSpecialFlags.Flying) > 0;
+        }
+
+        return false;
     }
 
     [ScriptUseable]

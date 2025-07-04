@@ -254,8 +254,8 @@
     },
     {
       "StatusEffect": 29,
-      "Name": null,
-      "Description": "\u003Ccolor=#FFA300\u003EEnergyCoat\u003C/color\u003E\nDamage taken is reduced at the cost of SP. The higher your SP pool the greater the damage reduction and SP cost.",
+      "Name": "Energy Coat",
+      "Description": "\u003Ccolor=#FFA300\u003EEnergy Coat\u003C/color\u003E\nDamage taken is reduced at the cost of SP. The higher your SP pool the greater the damage reduction and SP cost.",
       "Type": "Buff",
       "Icon": "\uC5D0\uB108\uC9C0\uCF54\uD2B8",
       "CanDispel": true,
@@ -291,7 +291,7 @@
     {
       "StatusEffect": 33,
       "Name": "Adrenaline Rush",
-      "Description": null,
+      "Description": "\u003Ccolor=#FFA300\u003EAdrenaline Rush\u003C/color\u003E\nAttack speed with axes and maces increased. Ends early if you switch to another weapon type.",
       "Type": "Buff",
       "Icon": "\uC544\uB4DC\uB808\uB0A0\uB9B0\uB7EC\uC26C",
       "CanDispel": true,
@@ -309,7 +309,7 @@
     {
       "StatusEffect": 35,
       "Name": "Enchant Poison",
-      "Description": null,
+      "Description": "\u003Ccolor=#FFA300\u003EEnchant Poison\u003C/color\u003E\nYour physical attacks deal poison property damage and has a chance to poison.",
       "Type": "Buff",
       "Icon": "\uC778\uCC2C\uD2B8\uD3EC\uC774\uC98C",
       "CanDispel": true,

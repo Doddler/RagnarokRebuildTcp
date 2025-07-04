@@ -1,0 +1,15 @@
+
+
+Npc("geffen", "Fountain", "CLEAR_NPC", 120, 47, N)
+{
+	//allows aqua benedicta to cast next to the fountain
+	MakeGroundTileWater(115, 47); //W
+	MakeGroundTileWater(115, 48);
+	MakeGroundTileWater(119, 52); //N
+	MakeGroundTileWater(120, 52); 
+	MakeGroundTileWater(124, 47); //E
+	MakeGroundTileWater(124, 48);
+	MakeGroundTileWater(119, 43); //S
+	MakeGroundTileWater(120, 43);
+	HideNpc();
+}

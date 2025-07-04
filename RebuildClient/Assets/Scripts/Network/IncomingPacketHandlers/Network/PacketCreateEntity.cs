@@ -33,6 +33,14 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 arc.Init(control.transform, startPos, Vector3.zero, dist/2f, dist/10f);
             }
 
+            if (eventType == CreateEntityEventType.Descend)
+            {
+                var spr = control.SpriteAnimator.gameObject;
+                spr.transform.localPosition = new Vector3(0, 20f, 0);
+                var lt = LeanTween.moveLocalY(spr, 0, 0.5f);
+                lt.setEaseOutQuad();
+            }
+
             if (eventType == CreateEntityEventType.EnterServer || eventType == CreateEntityEventType.Warp)
             {
                 if (control.IsMainCharacter || control.IsHidden)

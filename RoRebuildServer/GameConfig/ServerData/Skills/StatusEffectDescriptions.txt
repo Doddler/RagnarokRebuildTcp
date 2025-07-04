@@ -94,6 +94,9 @@ Hidden enemies nearby will take damage and be revealed.
 ::Detoxify
 The next poisoning attack will fail and deal half damage.
 
+::AdrenalineRush
+Attack speed with axes and maces increased. Ends early if you switch to another weapon type.
+
 ::IncreasedMoveSpeed
 Your move speed is increased.
 

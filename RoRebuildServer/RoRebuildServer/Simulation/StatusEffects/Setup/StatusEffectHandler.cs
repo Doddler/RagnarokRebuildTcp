@@ -5,7 +5,9 @@ using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.Skills.SkillHandlers;
 using System.Reflection;
 using RebuildSharedData.Data;
+using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents.Util;
+using RebuildSharedData.ClientTypes;
 
 namespace RoRebuildServer.Simulation.StatusEffects.Setup;
 
@@ -13,6 +15,8 @@ public static class StatusEffectHandler
 {
     private static StatusEffectBase[] handlers;
     private static StatusEffectHandlerAttribute[] attributes;
+    private static bool[] canCancelEffect;
+    private static bool[] canDispellEffect;
 
     private static StatusUpdateMode[] updateModes;
 
@@ -21,6 +25,7 @@ public static class StatusEffectHandler
     public static string GetShareGroup(CharacterStatusEffect status) => attributes[(int)status].ShareGroup;
     public static bool HasFlag(CharacterStatusEffect status, StatusEffectFlags flag) => attributes[(int)status].Flags.HasFlag(flag);
     public static float GetDefaultDuration(CharacterStatusEffect type) => handlers[(int)type].Duration;
+    public static bool CanCancelStatusEffect(CharacterStatusEffect status) => canCancelEffect[(int)status];
 
     static StatusEffectHandler()
     {
@@ -28,6 +33,8 @@ public static class StatusEffectHandler
         handlers = new StatusEffectBase[count];
         attributes = new StatusEffectHandlerAttribute[count];
         updateModes = new StatusUpdateMode[count];
+        canCancelEffect = new bool[count];
+        canDispellEffect = new bool[count];
             
         foreach (var type in Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsClass && t.GetCustomAttributes<StatusEffectHandlerAttribute>().Any()))
         {
@@ -52,6 +59,15 @@ public static class StatusEffectHandler
                 handlers[i] = new StatusEffectBase();
                 attributes[i] = new StatusEffectHandlerAttribute((CharacterStatusEffect)i, StatusClientVisibility.None);
             }
+        }
+    }
+
+    public static void LoadStatusEffectData(Dictionary<CharacterStatusEffect, StatusEffectData> data)
+    {
+        foreach (var status in data)
+        {
+            canCancelEffect[(int)status.Key] = status.Value.CanDisable;
+            canDispellEffect[(int)status.Key] = status.Value.CanDispel;
         }
     }
 

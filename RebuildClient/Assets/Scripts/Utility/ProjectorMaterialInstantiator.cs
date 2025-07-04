@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Utility
 {
+    [ExecuteInEditMode]
     public class ProjectorMaterialInstantiator : MonoBehaviour
     {
         public Material Material;

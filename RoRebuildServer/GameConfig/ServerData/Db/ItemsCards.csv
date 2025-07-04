@@ -228,7 +228,7 @@ Id,Code,Name,Price,Weight,EquipableSlot,Prefix,Postfix,Sprite
 4228,Sleeper_Card,Sleeper Card,20,10,Accessory,,of Siesta,이름없는카드
 4229,Cloud_Tower_Manager_Card,Cloud Tower Manager Card,20,10,Headgear,,of Torment,이름없는카드
 4230,Shinobi_Card,Shinobi Card,20,10,Accessory,Coward's,,이름없는카드
-4231,Mi_Gao_Card,Mi Gao Card,20,10,Shield,Charging,,이름없는카드
+4231,Mi_Gao_Card,Mi Gao Card,20,10,Weapon,Grounding,,이름없는카드
 4232,Hermit_Plant_Card,Hermit Plant Card,20,10,Accessory,Refreshing,,이름없는카드
 4233,Baby_Leopard_Card,Baby Leopard Card,20,10,Armor,Lucky Fluke,,이름없는카드
 4234,Anolian_Card,Anolian Card,20,10,Armor,,of Clarity,이름없는카드
@@ -248,7 +248,7 @@ Id,Code,Name,Price,Weight,EquipableSlot,Prefix,Postfix,Sprite
 4248,Ancient_Mummy_Card,Ancient Mummy Card,20,10,Shield,Shining Cross,,이름없는카드
 4249,Ancient_Worm_Card,Ancient Worm Card,20,10,Boots,Witch Doctor's,,이름없는카드
 4250,Executioner_Card,Executioner Card,20,10,Shield,Anti-Large,,이름없는카드
-4251,Elder_Card,Elder Card,20,10,Weapon,Invasion,,이름없는카드
+4251,Elder_Card,Elder Card,20,10,Shield,Anti-Air,,이름없는카드
 4252,Alligator_Card,Alligator Card,20,10,Accessory,Four Leaf Clover,,이름없는카드
 4253,Alice_Card,Alice Card,20,10,Shield,,of Royal Guard,이름없는카드
 4254,Tyrfing_Card,Tyrfing Card,20,10,Shield,Anti-Medium,,이름없는카드

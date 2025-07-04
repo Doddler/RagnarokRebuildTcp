@@ -161,6 +161,7 @@ CanDispel = false
 CanDisable = true
 
 [EnergyCoat]
+Name = "Energy Coat"
 Type = "Buff"
 Icon = "에너지코트"
 CanDispel = true

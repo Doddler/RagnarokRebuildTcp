@@ -75,7 +75,7 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[56] = new PacketApplySkillPoint(); //ApplySkillPoint
 			handlers[57] = new InvalidPacket(); //ApplyStatPoints
 			handlers[58] = new PacketChangeTargetableState(); //ChangeTargetableState
-			handlers[59] = new PacketUpdateMinimapMarker(); //UpdateMinimapMarker
+			handlers[59] = new PacketUpdateMapImportantEntityTracking(); //UpdateMapImportantEntityTracking
 			handlers[60] = new PacketApplyStatusEffect(); //ApplyStatusEffect
 			handlers[61] = new PacketRemoveStatusEffect(); //RemoveStatusEffect
 			handlers[62] = new PacketSocketEquipment(); //SocketEquipment

@@ -1310,12 +1310,13 @@ public class Map
         return false;
     }
 
-    private int flyingTag = -1;
     public bool DoesAreaOverlapWithTrapsOrCharacters(Area area)
     {
         area = area.ClipArea(MapBounds);
         if (area.IsZero)
             return false;
+
+        var ignoreFliers = ServerConfig.OperationConfig.FliersIgnoreTraps;
 
         //var chunkEntities = EntityListPool.Get();
         foreach (var chunk in GetChunkEnumerator(GetChunksForArea(area)))
@@ -1334,13 +1335,8 @@ public class Map
                     continue;
                 if (area.Contains(ch.Position) && !ch.AdminHidden)
                 {
-                    if (ch.Type == CharacterType.Monster && ch.Monster.MonsterBase.Tags != null)
-                    {
-                        if (flyingTag == -1)
-                            DataManager.TagToIdLookup.TryGetValue("Flying", out flyingTag);
-                        if (ch.Monster.MonsterBase.Tags.Contains(flyingTag))
-                            continue;
-                    }
+                    if (ignoreFliers && ch.CombatEntity.IsFlying())
+                        continue;
                     return true;
                 }
             }

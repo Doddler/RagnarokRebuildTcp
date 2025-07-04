@@ -34,7 +34,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[20] = new Assets.Scripts.SkillHandlers.Handlers.SafetyWallHandler();
 			handlers[21] = new Assets.Scripts.SkillHandlers.Handlers.StoneCurseHandler();
 			handlers[22] = new Assets.Scripts.SkillHandlers.Handlers.SightHandler();
-			handlers[23] = new DefaultSkillHandler();
+			handlers[23] = new Assets.Scripts.SkillHandlers.Handlers.EnergyCoatHandler();
 			handlers[24] = new Assets.Scripts.SkillHandlers.Handlers.DoubleStrafeHandler();
 			handlers[25] = new Assets.Scripts.SkillHandlers.Handlers.ChargeArrowHandler();
 			handlers[26] = new Assets.Scripts.SkillHandlers.Handlers.ArrowShowerHandler();

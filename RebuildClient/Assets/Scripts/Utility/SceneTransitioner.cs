@@ -226,7 +226,7 @@ namespace Assets.Scripts.Utility
 			else
 				MinimapController.Instance.LoadMinimap(newScene, type);
 
-			if (newMap.Code == "yuno")
+			if (newMap.Code == "yuno" || newMap.Code == "que_qsch01")
 				CameraFollower.Instance.Camera.backgroundColor = new Color(0.6352f, 0.8039f, 0.9882f);
 			else
 				CameraFollower.Instance.Camera.backgroundColor = Color.black;

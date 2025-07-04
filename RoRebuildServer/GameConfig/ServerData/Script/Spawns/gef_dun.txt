@@ -25,7 +25,7 @@ MapConfig("gef_dun01")
 	CreateSpawn("JAKK", 50);
 	CreateSpawn("NIGHTMARE", 2, %(189, 58, 10, 24), 15000);
 	
-	CreateSpawn("TIRFING", 1, 20m, 10m);
+	CreateSpawn("TIRFING", 1, 20m, 10m, Boss);
 	CreateSpawn("DRACULA", 1, 1h, 10m, MVP);
 
 	CreateSpawn("BLUE_PLANT", 1, %(234, 121, 0, 0), 30m, 90m);

@@ -14,7 +14,7 @@ public class HeavensDriveHandler : SkillHandlerBase
 {
     public override int GetAreaOfEffect(CombatEntity source, Position position, int lvl) => 2; //range 2 = 5x5
 
-    public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 1.5f + lvl * 0.5f;
+    public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 1f + lvl * 0.5f;
     
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
     {

@@ -70,14 +70,14 @@ Trader("payon_in01", "Armor Dealer", "1_F_ORIENT_02", 7, 119, W) {
 	SellItem("Mantle");
 	SellItem("Coat");
 	SellItem("Tights");
-	SellItem("Novice_Armlet");
+	//SellItem("Novice_Armlet");
 }
-
+/*
 Trader("payon_in01", "Weapon Dealer", "4_F_KID2", 5, 129, E) {
 	SellItem("Town_Sword");
 	SellItem("Cinquedea");
 }
-
+*/
 Trader("payon_in02", "Tool Dealer", "1_F_ORIENT_01", 87, 34, N) {
 	SellItem("Arrow");
 	SellItem("Silver_Arrow");

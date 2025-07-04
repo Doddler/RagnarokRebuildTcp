@@ -67,7 +67,7 @@ Morroc Field 19,moc_fild19,moc_fild19.walk,Field,CanMemo,37.mp3
 "Morroc, the Desert Oasis",morocc,morocc.walk,Town,CanMemo,11.mp3
 Morroc Castle,moc_castle,moc_castle.walk,Indoor,None,11.mp3
 Morroc Indoors,morocc_in,morocc_in.walk,Indoor,None,11.mp3
-Morroc Pyramids,moc_ruins,moc_ruins.walk,None,CanMemo,11.mp3
+Morroc Pyramids,moc_ruins,moc_ruins.walk,Town,CanMemo,11.mp3
 Pyramids 1F,moc_pryd01,moc_pryd01.walk,Dungeon,None,22.mp3
 Pyramids 2F,moc_pryd02,moc_pryd02.walk,Dungeon,None,22.mp3
 Pyramids 3F,moc_pryd03,moc_pryd03.walk,Dungeon,None,22.mp3

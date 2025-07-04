@@ -479,7 +479,7 @@
     {
       "Code": "moc_ruins",
       "Name": "Morroc Pyramids",
-      "MapMode": 0,
+      "MapMode": 1,
       "CanMemo": true,
       "Music": "11.mp3"
     },

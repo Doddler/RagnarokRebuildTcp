@@ -11,6 +11,7 @@ public class ServerOperationConfig
     public string? AdminifyPasscode { get; set; }
     public bool RemapDropRates { get; set; }
     public bool GuaranteeMvpDrops { get; set; } = true;
+    public bool FliersIgnoreTraps { get; set; } = true;
     public float EtcItemValueMultiplier { get; set; }
     public List<string> ActiveEvents { get; set; } = new();
 }

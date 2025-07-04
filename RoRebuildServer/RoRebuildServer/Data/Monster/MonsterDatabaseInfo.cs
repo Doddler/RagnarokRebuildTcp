@@ -2,6 +2,14 @@
 
 namespace RoRebuildServer.Data.Monster;
 
+[Flags]
+public enum MonsterSpecialFlags
+{
+    None = 0,
+    Flying = 1 << 0
+
+}
+
 public class MonsterDatabaseInfo
 {
     public int Id { get; set; }
@@ -36,4 +44,5 @@ public class MonsterDatabaseInfo
     public List<MonsterSpawnMinions>? Minions { get; set; }
     public float MoveSpeed { get; set; }
     public HashSet<int>? Tags { get; set; }
+    public MonsterSpecialFlags SpecialFlags { get; set; }
 }

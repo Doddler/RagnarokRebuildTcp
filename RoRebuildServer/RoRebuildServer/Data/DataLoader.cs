@@ -963,12 +963,15 @@ internal class DataLoader
                 continue;
 
             HashSet<int>? tags = null;
+            var flags = MonsterSpecialFlags.None;
             if (!string.IsNullOrWhiteSpace(monster.Tags))
             {
                 tags = new HashSet<int>();
                 var s = monster.Tags.Split(',');
                 foreach (var tag in s)
                 {
+                    if (tag == "Flying")
+                        flags |= MonsterSpecialFlags.Flying;
                     if (tagLookup.TryGetValue(tag, out var tagId))
                         tags.Add(tagId);
                     else
@@ -1013,7 +1016,8 @@ internal class DataLoader
                 AiType = (MonsterAiType)Enum.Parse(typeof(MonsterAiType), monster.MonsterAi),
                 Special = monster.Special,
                 Name = monster.Name,
-                Tags = tags
+                Tags = tags,
+                SpecialFlags = flags
             });
         }
 
@@ -1179,6 +1183,27 @@ internal class DataLoader
         }
 
         return data;
+    }
+
+    public Dictionary<CharacterStatusEffect, StatusEffectData> GetStatusEffectData()
+    {
+        var path = Path.Combine(ServerConfig.DataConfig.DataPath, @"Skills/StatusEffects.toml");
+        var options = new TomlModelOptions() { ConvertPropertyName = name => name, ConvertFieldName = name => name, IncludeFields = true };
+        var statusData = Toml.ToModel<Dictionary<string, StatusEffectData>>(File.ReadAllText(path, Encoding.UTF8), null, options);
+        var statusOut = new Dictionary<CharacterStatusEffect, StatusEffectData>();
+
+        foreach (var data in statusData)
+        {
+            if (!Enum.TryParse<CharacterStatusEffect>(data.Key, out var status))
+            {
+                ServerLogger.LogWarning($"Could not match status effect name {data.Key} to an existing type.");
+                continue;
+            }
+
+            statusOut.Add(status, data.Value);
+        }
+
+        return statusOut;
     }
 
     public ReadOnlyDictionary<int, int> CreateFlippedLookupTable(ReadOnlyDictionary<int, int> orig)

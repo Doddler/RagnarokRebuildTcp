@@ -1,15 +1,12 @@
-﻿Npc("prontera", "Fountain", "CLEAR_NPC", 156, 200, N)
-{
-	MakeGroundTileWater(156, 200); //allows aqua benedicta to cast next to the fountain
-	HideNpc();
-}
 
-//prontera blacksmiths
-Npc("prt_in", "Hollgrehenn", "4_M_03", 63, 60, N)
-{
+//--------------------------------------------------------------
+// Refining
+//--------------------------------------------------------------
+
+Npc("morocc_in", "Aragham", "4W_M_03", 73, 38, W) {
 OnClick:
     FocusNpc();
-	Dialog(Name, "I'm Holgrehenn, the Armsmith.\nI can refine all kinds of weapons, armor and equipment, so let me know if you want me to refine something.");
+	Dialog(Name, "I'm " + Name + ", the Armsmith.\nI can refine all kinds of weapons, armor and equipment, so let me know if you want me to refine something.");
 	Option("Refine Gear", "Cancel");
 	if(result > 0)
 		return;
@@ -17,7 +14,7 @@ OnClick:
 	OpenRefineDialog();
 }
 
-Npc("prt_in", "Dietrich", "4_M_02", 63, 69, SW) { 
+Npc("morocc_in", "Abdul", "4W_M_03", 72, 32, W) {
 	AddTradedItem(CreateTradedItem("Oridecon").Requires("Rough_Oridecon",5));
 	AddTradedItem(CreateTradedItem("Elunium").Requires("Rough_Elunium",5));
 OnClick:
@@ -31,7 +28,7 @@ OnClick:
 	if(result == 0) StartItemTrade();
 }
 
-Npc("prt_in", "Vurewell", "4_M_04", 56, 68, SE) { 
+Npc("morocc_in", "Sade", "4W_M_03", 63, 32, E) {
 	SellItem("Phracon");
 	SellItem("Emveretarcon");
 OnClick:
@@ -48,10 +45,7 @@ OnClick:
 		OpenShop(false); //false makes the shop not apply discount
 }
 
-
-
-Npc("prt_in", "Repair Man", "4_M_04", 63, 54, W)
-{
+Npc("morocc_in", "Repair Man", "4W_M_03", 71, 41, S) {
 OnClick:
     FocusNpc();
 	Dialog(Name, "Normally I'd help you out if you needed your gear repaired, but for some reason nothing ever breaks! You guys sure do have it lucky.");
