@@ -26,7 +26,7 @@ public class ThunderStormHandler : SkillHandlerBase
         return 1.5f + lvl * 0.5f;
     }
 
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect, bool isItemSource)
     {
         var map = source.Character.Map;
         Debug.Assert(map != null);

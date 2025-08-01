@@ -3164,7 +3164,7 @@
       "SpriteName": "randgris.spr",
       "Offset": 0,
       "ShadowSize": 0.5,
-      "Size": 1,
+      "Size": 1.4,
       "AttackTiming": 0.504,
       "Color": "#FFFFFFFF"
     },
@@ -3496,6 +3496,72 @@
       "ShadowSize": 0.5,
       "Size": 1,
       "AttackTiming": 0.288,
+      "Color": "#FFFFFFFF"
+    },
+    {
+      "Id": 6016,
+      "Code": "SUCCUBUS",
+      "Name": "Succubus",
+      "SpriteName": "succubus.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1,
+      "AttackTiming": 0.576,
+      "Color": "#FFFFFFFF"
+    },
+    {
+      "Id": 6017,
+      "Code": "INCUBUS",
+      "Name": "Incubus",
+      "SpriteName": "incubus.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1,
+      "AttackTiming": 0.42,
+      "Color": "#FFFFFFFF"
+    },
+    {
+      "Id": 6018,
+      "Code": "OBSERVATION",
+      "Name": "Dame of Sentinel",
+      "SpriteName": "observation.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1,
+      "AttackTiming": 0.3,
+      "Color": "#FFFFFFFF"
+    },
+    {
+      "Id": 6019,
+      "Code": "RETRIBUTION",
+      "Name": "Baroness of Retribution",
+      "SpriteName": "retribution.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1,
+      "AttackTiming": 0.24,
+      "Color": "#FFFFFFFF"
+    },
+    {
+      "Id": 6020,
+      "Code": "SOLACE",
+      "Name": "Dame of Sentinel",
+      "SpriteName": "solace.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1,
+      "AttackTiming": 0.384,
+      "Color": "#FFFFFFFF"
+    },
+    {
+      "Id": 6021,
+      "Code": "SHELTER",
+      "Name": "Mistress of Shelter",
+      "SpriteName": "shelter.spr",
+      "Offset": 0,
+      "ShadowSize": 0.5,
+      "Size": 1,
+      "AttackTiming": 0.24,
       "Color": "#FFFFFFFF"
     },
     {

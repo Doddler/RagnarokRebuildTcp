@@ -13,16 +13,17 @@ public class StopHandler : SkillHandlerBase
     public override int GetSkillRange(CombatEntity source, int lvl) => 2;
 
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
-        int lvl, bool isIndirect)
+        int lvl, bool isIndirect, bool isItemSource)
     {
         if (source.HasBodyState(BodyStateFlags.Stopped) || target == null || !target.IsValidTarget(source) ||
             target.HasBodyState(BodyStateFlags.Stopped))
             return SkillValidationResult.Failure;
 
-        return base.ValidateTarget(source, target, position, lvl, false);
+        return base.ValidateTarget(source, target, position, lvl, false, false);
     }
 
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         if (target == null)
             return;

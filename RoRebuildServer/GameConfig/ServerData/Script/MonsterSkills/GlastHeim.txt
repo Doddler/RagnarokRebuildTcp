@@ -56,6 +56,19 @@ StateAttacking:
 	TryCast(BloodDrain, 1, 5%, 0, 5s) -> SendEmote(2); //whistle
 }
 
+SkillHandler("WIND_GHOST") {
+StateIdle:
+	TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(29); //heh
+StateChase:
+	TryCast(LightningBolt, 5, 5%, 1.5s, 5s, EasyInterrupt) -> SendEmote(6); //angry
+	TryCast(JupitelThunder, 3, 5%, 1.5s, 5s, EasyInterrupt) -> SendEmote(6); //angry
+StateAttacking:
+	TryCast(LightningBolt, 5, 5%, 1.5s, 5s, EasyInterrupt) -> SendEmote(6); //angry
+	TryCast(MagicalAttack, 1, 5%, 1s, 5s, NoInterrupt) -> SendEmote(9); //...
+	TryCast(UndeadAttack, 1, 20%, 0s, 5s);
+	TryCast(JupitelThunder, 3, 5%, 1.5s, 5s, EasyInterrupt) -> SendEmote(6); //angry
+}
+
 SkillHandler("HUNTER_FLY") {
 StateIdle:
 	TryCast(Teleport, 1, 5%, 0, 5s);

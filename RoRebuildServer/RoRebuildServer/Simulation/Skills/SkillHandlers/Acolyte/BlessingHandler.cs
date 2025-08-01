@@ -13,7 +13,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte
     public class BlessingHandler : SkillHandlerBase
     {
         public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target,
-            Position position, int lvl, bool isIndirect)
+            Position position, int lvl, bool isIndirect, bool isItemSource)
         {
             if (target == null)
                 return SkillValidationResult.InvalidTarget;
@@ -21,10 +21,11 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte
             if (target.Character.Type == CharacterType.Player && target.IsElementBaseType(CharacterElement.Undead1))
                 return SkillValidationResult.Failure;
 
-            return base.ValidateTarget(source, target, position, lvl, false);
+            return base.ValidateTarget(source, target, position, lvl, false, false);
         }
 
-        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl,
+            bool isIndirect, bool isItemSource)
         {
             if (target == null)
             {

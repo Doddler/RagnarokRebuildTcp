@@ -20,7 +20,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Thief
             owner.SubStat(CharacterStat.AddFlee, lvl * 3);
         }
 
-        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl,
+            bool isIndirect, bool isItemSource)
         {
             throw new Exception($"Passive skill ImproveDodge should not be called as a usable skill.");
         }

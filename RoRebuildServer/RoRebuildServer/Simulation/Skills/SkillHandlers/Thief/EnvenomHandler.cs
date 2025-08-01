@@ -13,7 +13,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Thief
     [SkillHandler(CharacterSkill.Envenom, SkillClass.Physical, SkillTarget.Enemy)]
     public class EnvenomHandler : SkillHandlerBase
     {
-        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl,
+            bool isIndirect, bool isItemSource)
         {
             if (target == null)
                 return;

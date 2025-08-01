@@ -67,6 +67,7 @@ public class Map
     private int ChunkSize { get; set; } = 8;
 
     public bool CanTeleport;
+    public bool CanMonstersTeleport;
 
     public void AddPlayerVisibility(WorldObject player, WorldObject observer)
     {
@@ -545,6 +546,8 @@ public class Map
 
         if (ch.AdminHidden)
         {
+            if (ch.Type == CharacterType.Monster)
+                return; //moving monster
             CommandBuilder.AddRecipient(entity);
             CommandBuilder.SendStartMoveEntityMulti(ch);
             CommandBuilder.ClearRecipients();
@@ -992,6 +995,23 @@ public class Map
         //}
     }
 
+    public bool CheckIfNpcNearby(WorldObject character, int distance)
+    {
+        foreach (Chunk c in GetChunkEnumeratorAroundPosition(character.Position, distance))
+        {
+            foreach (var e in c.AllEntities)
+            {
+                if (e.Type != EntityType.Npc)
+                    continue;
+                
+                if (e.TryGet<Npc>(out var npc) && npc.DisplayType == NpcDisplayType.Sprite && !npc.IsEvent && character.Position.DistanceTo(npc.Character.Position) <= distance)
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
     public bool QuickCheckPlayersNearby(WorldObject character, int distance)
     {
         if (PlayerCount == 0) return false;
@@ -1039,6 +1059,38 @@ public class Map
                 {
                     if (checkLineOfSight && !WalkData.HasLineOfSight(position, ch.Position))
                         continue;
+                    if (hasList)
+                        list!.Add(p);
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+
+
+    public int GatherPlayersInArea(Area area, EntityList? list, bool checkImmunity = false)
+    {
+        var hasList = list != null;
+        var count = 0;
+        var chunkArea = GetChunksForArea(area);
+        foreach (Chunk c in GetChunkEnumerator(chunkArea))
+        {
+            foreach (var p in c.Players)
+            {
+                var ch = p.Get<WorldObject>();
+                if (!ch.IsActive)
+                    continue;
+
+                if (checkImmunity)
+                {
+                    if (ch.IsTargetImmune || ch.State == CharacterState.Dead)
+                        continue;
+                }
+
+                if (area.Contains(ch.Position))
+                {
                     if (hasList)
                         list!.Add(p);
                     count++;
@@ -1717,7 +1769,8 @@ public class Map
         Instance = instance;
         Flags = DataManager.GetFlagsForMap(name);
 
-        CanTeleport = canTeleport & (Flags & MapFlags.NoTeleport) == 0;
+        CanTeleport = canTeleport & (Flags & (MapFlags.NoTeleport | MapFlags.NoTeleportEvenMonsters)) == 0;
+        CanMonstersTeleport = canTeleport & (Flags & MapFlags.NoTeleportEvenMonsters) == 0;
 
         WalkData = new MapWalkData(walkData, Flags);
 

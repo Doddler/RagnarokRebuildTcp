@@ -1544,6 +1544,22 @@ namespace Assets.Scripts.Network
 
             SendMessage(msg);
         }
+        
+        public void SendAdminCreateEvent(string eventName, int v1, int v2, int v3, int v4)
+        {
+            var msg = StartMessage(PacketType.AdminCharacterAction);
+
+            msg.Write((int)AdminCharacterAction.CreateEvent);
+            msg.Write(eventName);
+            msg.Write(v1);
+            msg.Write(v2);
+            msg.Write(v3);
+            msg.Write(v4);
+            msg.Write("");
+
+            SendMessage(msg);
+        }
+
 
         public void SendAdminKillMobAction(bool clearMap)
         {

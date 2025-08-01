@@ -1319,6 +1319,30 @@
       "SoundFile": "",
       "Offset": 0,
       "PrefabName": "Assets/Prefabs/AnkleSnare.prefab"
+    },
+    {
+      "Id": 111,
+      "Name": "ExaflareMaster",
+      "ImportEffect": false,
+      "Billboard": false,
+      "IsLooping": false,
+      "StrFile": "",
+      "Sprite": "",
+      "SoundFile": "",
+      "Offset": 0,
+      "PrefabName": "Assets/Effects/Custom/Exaflare/ExaFlare.prefab"
+    },
+    {
+      "Id": 112,
+      "Name": "ExaflareSub",
+      "ImportEffect": false,
+      "Billboard": false,
+      "IsLooping": false,
+      "StrFile": "",
+      "Sprite": "",
+      "SoundFile": "",
+      "Offset": 0,
+      "PrefabName": "Assets/Effects/Custom/Exaflare/1sAoEMarker.prefab"
     }
   ]
 }

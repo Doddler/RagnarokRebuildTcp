@@ -29,7 +29,6 @@ public class PacketVendingViewStore : IClientPacketHandler
 
         connection.Player.AddInputActionDelay(InputActionCooldownType.Click);
 
-
         var targetNpc = World.Instance.GetEntityById(id);
 
         if (targetNpc.Type != EntityType.Npc)
@@ -42,6 +41,9 @@ public class PacketVendingViewStore : IClientPacketHandler
         var npc = targetNpc.Get<Npc>();
 
         if (!npc.Owner.TryGet<Player>(out var vendor) || vendor.VendingState == null)
+            return;
+
+        if (player.Character.Map != npc.Character.Map || !npc.Character.IsPlayerVisible(player.Entity))
             return;
 
         npc.OnInteract(connection.Player);

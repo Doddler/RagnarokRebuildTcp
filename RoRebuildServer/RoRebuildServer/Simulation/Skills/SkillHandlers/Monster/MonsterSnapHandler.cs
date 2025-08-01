@@ -12,7 +12,8 @@ public class MonsterSnapHandler : SkillHandlerBase
 {
     public override int GetSkillRange(CombatEntity source, int lvl) => lvl == 1 ? 14 : 21;
 
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         var map = source.Character.Map;
 

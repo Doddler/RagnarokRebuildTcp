@@ -12,14 +12,15 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Knight;
 public class TwoHandQuickenHandler : SkillHandlerBase
 {
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
-        int lvl, bool isIndirect)
+        int lvl, bool isIndirect, bool isItemSource)
     {
         if (source.Character.Type == CharacterType.Player && source.Player.WeaponClass != 3)
             return SkillValidationResult.IncorrectWeapon;
-        return base.ValidateTarget(source, target, position, lvl, false);
+        return base.ValidateTarget(source, target, position, lvl, false, false);
     }
 
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         source.ApplyCooldownForSupportSkillAction();
 

@@ -1061,6 +1061,11 @@ MATK +15%
 ATK + 3000, MATK + 3000
 All Stats + 50
 
+::Gamemaster's_Bow //id 1744 - Bow
+<desc>It fucking slaps</desc>
+ATK + 2000, MATK + 2000
+All Stats + 80
+
 ::Rod //id 1601 - Rod
 <desc>A simple magic wand.</desc>
 MATK +15%

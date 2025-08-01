@@ -23,9 +23,8 @@ public class ResurrectionHandler : SkillHandlerBase
             _ => 6f
         };
     }
-
-    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
-        int lvl, bool isIndirect)
+    
+    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect, bool isItemSource)
     {
         if (target == null || source == target || target.Character.Type != CharacterType.Player || target.Character.State != CharacterState.Dead)
             return SkillValidationResult.Failure;
@@ -33,16 +32,28 @@ public class ResurrectionHandler : SkillHandlerBase
         if (!UsableWhileHidden && source.HasBodyState(BodyStateFlags.Hidden))
             return SkillValidationResult.Failure;
 
+        if (!isIndirect && !isItemSource && !CheckRequiredGemstone(source, BlueGemstone, false))
+            return SkillValidationResult.MissingRequiredItem;
+
         return SkillValidationResult.Success; //we skip the standard validation rules because it will check if the target is alive
     }
 
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    
+    //failing pre-validation prevents sp from being taken
+    public override bool PreProcessValidation(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect, bool isItemSource) =>
+        isIndirect || isItemSource || CheckRequiredGemstone(source, BlueGemstone, true);
+
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         if (target == null || target.Character.State != CharacterState.Dead)
             return;
 
         var ch = source.Character;
         if (ch.Map == null || ch.Map != target.Character.Map)
+            return;
+
+        if (!isIndirect && !isItemSource && !ConsumeGemstoneForSkillWithFailMessage(source, BlueGemstone))
             return;
 
         source.ApplyCooldownForSupportSkillAction();
@@ -57,25 +68,7 @@ public class ResurrectionHandler : SkillHandlerBase
             _ => 10,
         };
 
-        var maxHp = target.GetStat(CharacterStat.MaxHp);
-        
-        if (target.GetStat(CharacterStat.FullRevive) > 0)
-        {
-            target.SetStat(CharacterStat.Hp, maxHp);
-            target.SetStat(CharacterStat.Sp, target.GetStat(CharacterStat.MaxSp));
-        }
-        else
-        {
-            var resHp = maxHp * hpPercent / 100;
-            if (resHp <= 0)
-                resHp = 1;
-
-
-            target.SetStat(CharacterStat.Hp, resHp);
-        }
-
-        target.Character.ResetState(true);
-        target.Character.SetSpawnImmunity();
+        target.Player.Revive(hpPercent);
 
         var di = DamageInfo.EmptyResult(source.Entity, target.Entity);
 

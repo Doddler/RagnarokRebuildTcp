@@ -15,6 +15,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             var id2 = msg.ReadInt32();
             var pos = msg.ReadPosition();
             var damage = msg.ReadInt32();
+            var time = msg.ReadFloat();
             var skill = (CharacterSkill)msg.ReadByte();
             var hitCount = msg.ReadByte();
             var result = (AttackResult)msg.ReadByte();
@@ -37,7 +38,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 Damage = damage,
                 HitCount = hitCount,
                 MotionTime = 0,
-                DamageTiming = 0,
+                DamageTiming = time,
                 Target = target
             };
             
@@ -55,7 +56,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 ClientSkillHandler.OnHitEffect(target, ref attack);
 
                 if(hitCount > 0 && result != AttackResult.Miss && result != AttackResult.Invisible)
-                    target.Messages.SendDamageEvent(attacker, 0, damage, hitCount, result == AttackResult.CriticalDamage);
+                    target.Messages.SendDamageEvent(attacker, time, damage, hitCount, result == AttackResult.CriticalDamage);
             }
 
         }

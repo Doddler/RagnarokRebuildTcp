@@ -10,7 +10,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Other
     [SkillHandler(CharacterSkill.FirstAid, SkillClass.None, SkillTarget.Self)]
     public class FirstAid : SkillHandlerBase
     {
-        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl,
+            bool isIndirect, bool isItemSource)
         {
             var maxHp = source.GetEffectiveStat(CharacterStat.MaxHp);
             var healValue = maxHp / 100;

@@ -14,7 +14,7 @@ public enum DamageApplicationFlags : byte
     UpdatePosition = 4,
     SkipOnHitTriggers = 8,
     PhysicalDamage = 16,
-    MagicalDamage = 32
+    MagicalDamage = 32,
 }
 
 public struct DamageInfo

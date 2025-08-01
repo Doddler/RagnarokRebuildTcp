@@ -9,7 +9,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Thief;
 [SkillHandler(CharacterSkill.Detoxify, SkillClass.Physical, SkillTarget.Ally)]
 public class DetoxifyHandler : SkillHandlerBase
 {
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         if (target == null)
             return;

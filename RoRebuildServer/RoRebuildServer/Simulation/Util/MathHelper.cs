@@ -9,6 +9,9 @@ namespace RoRebuildServer.Simulation.Util
         private static readonly float[] BoostTable;
         private static readonly float[] DefTable;
 
+        public const float Deg2Rad = 0.017453292f;
+        public const float Rad2Deg = 57.29578f;
+
         static MathHelper()
         {
             ResistTable = new float[1000];

@@ -182,6 +182,12 @@ StateMovingToItem:
 	TryCast(SpeedUp, 1, 10%, 0, 10s);
 }
 
+SkillHandler("TAROU") {
+StateAttacking:
+	TryCast(DarkAttack, 1, 5%, 0s, 5s);
+    TryCast(Poison, 1, 5%, 0.8s, 5s, NoInterrupt);
+}
+
 //custom, weaker version of cramp
 SkillHandler("STITCH") {
 StateAttacking:

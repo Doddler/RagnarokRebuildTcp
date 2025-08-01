@@ -27,7 +27,8 @@ public class ArrowShowerHandler : SkillHandlerBase
 
     //new arrow shower is 5x5
     //it deals up to 250% on the target cell, then falls off to 200% at 1 tile away and 150% at 2 tiles
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         var map = source.Character.Map;
         Debug.Assert(map != null);

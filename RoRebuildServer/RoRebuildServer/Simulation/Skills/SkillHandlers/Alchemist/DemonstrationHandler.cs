@@ -22,15 +22,16 @@ public class DemonstrationHandler : SkillHandlerBase
     public override int GetSkillRange(CombatEntity source, int lvl) => 9;
 
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
-        int lvl, bool isIndirect)
+        int lvl, bool isIndirect, bool isItemSource)
     {
         if (source.Character.Type == CharacterType.Player && source.Character.Position.SquareDistance(position) < 3)
             return SkillValidationResult.TooClose;
 
-        return base.ValidateTarget(source, target, position, lvl, false);
+        return base.ValidateTarget(source, target, position, lvl, false, false);
     }
 
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         var map = source.Character.Map;
         Debug.Assert(map != null);

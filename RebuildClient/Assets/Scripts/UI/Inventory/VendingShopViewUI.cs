@@ -76,7 +76,7 @@ namespace Assets.Scripts.UI.Inventory
             else
             {
                 var item = itemList[bagId];
-                UiManager.Instance.DropCountConfirmationWindow.BeginItemDrop(item.Item, $"Move {item.Item.ProperName()}", FinalizeDropItemOntoLeftSide);
+                UiManager.Instance.DropCountConfirmationWindow.BeginItemDrop(item.Item, $"Move {item.Item.ProperName()}", FinalizeDropItemOntoLeftSide, leftEntry.ItemCount);
             }
         }
         
@@ -95,9 +95,12 @@ namespace Assets.Scripts.UI.Inventory
         
         public void FinalizeDropItemOntoLeftSide(int bagId, int count)
         {
+            if (count <= 0)
+                return;
+            
             var rightItem = rightEntries[bagId];
 
-            count = Mathf.Clamp(count, 0, rightItem.ItemCount);
+            count = Mathf.Clamp(count, 1, rightItem.ItemCount);
             var leftCount = count;
 
             if (leftEntries.TryGetValue(bagId, out var entry))
@@ -109,7 +112,7 @@ namespace Assets.Scripts.UI.Inventory
             {
                 entry = LeftWindow.GetNewEntry();
 
-                entry.Assign(DragItemType.VendPurchase, rightItem.Sprite, rightItem.ItemId, leftCount);
+                entry.Assign(DragItemType.VendShop, rightItem.Sprite, rightItem.ItemId, leftCount);
                 entry.UniqueEntryId = rightItem.UniqueEntryId;
                 entry.ItemName.text = rightItem.ItemName.text;
                 entry.RightText.gameObject.SetActive(true);
@@ -127,7 +130,12 @@ namespace Assets.Scripts.UI.Inventory
             var newCount = rightItem.ItemCount - count;
 
             if (newCount > 0)
+            {
+                var item = itemList[bagId];
+                var price = item.Price * newCount;
                 rightItem.UpdateCount(newCount);
+                rightItem.RightText.text = $"{price:N0}z";
+            }
             else
             {
                 RightWindow.ReturnItemListEntry(rightItem);
@@ -139,9 +147,12 @@ namespace Assets.Scripts.UI.Inventory
 
         public void FinalizeDropItemOntoRightSide(int bagId, int count)
         {
+            if (count <= 0)
+                return;
+            
             var leftItem = leftEntries[bagId];
-
-            count = Mathf.Clamp(count, 0, leftItem.ItemCount);
+            
+            count = Mathf.Clamp(count, 1, leftItem.ItemCount);
             var rightCount = count;
 
             if (rightEntries.TryGetValue(bagId, out var entry))

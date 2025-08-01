@@ -12,10 +12,11 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Archer
     public class DoubleStrafeHandler : SkillHandlerBase
     {
         public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target,
-            Position position, int lvl, bool isIndirect) =>
+            Position position, int lvl, bool isIndirect, bool isItemSource) =>
             ValidateTargetForAmmunitionWeapon(source, target, position, 12, AmmoType.Arrow);
         
-        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl,
+            bool isIndirect, bool isItemSource)
         {
             lvl = lvl.Clamp(1, 10);
 

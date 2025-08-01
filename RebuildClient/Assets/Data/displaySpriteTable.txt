@@ -79,6 +79,7 @@ Gakkung_Bow_	1714
 Hunter_Bow	1718
 Rudra_Bow	1720
 Hunter_Bow_	1718
+Gamemaster's_Bow	1720
 Waghnak	1801
 Waghnak_	1801
 Knuckle_Dusters	1803

@@ -65,6 +65,8 @@ Item("Claytos_Earth_Armor") { OnEquip: SetArmorElement(Earth1); }
 Item("Claytos_Earth_Armor_") { OnEquip: SetArmorElement(Earth1); }
 Item("Goibne's_Armor") { OnEquip: AddStat(AddVit, 2); AddStat(AddMaxHpPercent, 10); }
 Item("Valkyrian_Armor") { OnEquip: AddStat(AddStr, 1); AddStat(AddInt, 1); AddStat(AddVit, 1); AddStat(AddDex, 1); AddStat(AddAgi, 1); AddStat(AddLuk, 1); }
+Item("Valkyrian_Shoes") { OnEquip: AddStat(AddMaxHpPercent, 3); AddStat(AddMaxSpPercent, 3); }
+Item("Valkyrian_Manteau") { OnEquip: AddStat(AddFlee, 5); AddStat(AddResistRangedAttack, 5); }
 Item("Ninja_Suit_") { OnEquip: AddStat(AddAgi, 1); }
 Item("Robe_of_Cast_") { OnEquip: AddStat(AddCastTime, -3); }
 Item("Meteo_Plate_Armor") { OnEquip: AddStat(ResistStunStatus, 30); AddStat(ResistFreezeStatus, 30); }
@@ -323,6 +325,17 @@ OnEquip:
 	AddStat(AddDex, 50); 
 	AddStat(AddAgi, 50); 
 	AddStat(AddLuk, 50); 
+}
+Item("Gamemaster's_Bow") { 
+OnEquip: 
+	AddStat(AddAttackPower, 2000);
+	AddStat(AddMagicAttackPower, 2000);
+	AddStat(AddStr, 80);
+	AddStat(AddInt, 80);
+	AddStat(AddVit, 80);
+	AddStat(AddDex, 80);
+	AddStat(AddAgi, 80);
+	AddStat(AddLuk, 80);
 }
 Item("Rod") { OnEquip: AddStat(AddMagicAttackPercent, 15); }
 Item("Rod_") { OnEquip: AddStat(AddMagicAttackPercent, 15); }

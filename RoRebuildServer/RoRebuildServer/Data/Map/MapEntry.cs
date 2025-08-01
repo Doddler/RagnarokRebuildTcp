@@ -38,8 +38,9 @@ public enum MapFlags {
     None = 0,
     CanMemo = 1 << 1,
     NoTeleport = 1 << 2,
-    NoMiniMap = 1 << 3,
-    NoLogOut = 1 << 4,
-    NoWater = 1 << 5,
-    AllWater = 1 << 6
+    NoTeleportEvenMonsters = 1 << 3,
+    NoMiniMap = 1 << 4,
+    NoLogOut = 1 << 5,
+    NoWater = 1 << 6,
+    AllWater = 1 << 7
 }

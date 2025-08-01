@@ -41,7 +41,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Merchant
             owner.Player.PlayerFollower &= ~PlayerFollower.AnyCart;
         }
 
-        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl,
+            bool isIndirect, bool isItemSource)
         {
             throw new NotImplementedException();
         }

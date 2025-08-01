@@ -826,6 +826,7 @@ HP +100
 
 ::Valkyrian_Shoes //id 2421 - Boots 
 <desc>A pair of shoes worn by the Valkyries, Odin's battle maidens.</desc>
+HP +3%, SP +3%
 
 ::High_Fashion_Sandals //id 2422 - Boots 
 <desc>Jeweled, golden strapped sandals that offer casual, yet fashionable, comfort.</desc>
@@ -967,16 +968,7 @@ MDEF +1
 
 ::Valkyrian_Manteau //id 2524 - Garment 
 <desc>A manteau worn by the Valkyries, Odin's battle maidens.</desc>
-Indestructible
-if Acolyte, Mage, Archer:
- Perfect Dodge +(5 + 2*Refine)
-if Swordman, Merchant, Thief:
- Reflect +(5 + 2*Refine)% melee damage
-<color=#800080>Set Bonus</color>
- <color=#008080>Valkyrie Helm [1]</color>
- <color=#008080>Valkyrie Armor [1]</color>
- <color=#008080>Valkyrie Shoes [1]</color>
- STR, VIT, INT, DEX, AGI, LUK +1
+ FLEE +5, -5% damage from range
 
 ::Ancient_Cape_ //id 2525 - Garment 
 <desc>A fancy cape fashioned after those worn by genteel marquises of a bygone age.</desc>

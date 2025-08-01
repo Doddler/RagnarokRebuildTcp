@@ -4157,6 +4157,10 @@
       "Description": "\u003Ccolor=#808080\u003EExpedition Report Vol.4 which details the internal investigation.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
+      "Code": "Okolnir_Key",
+      "Description": "\u003Ccolor=#808080\u003EA key used to open the way to the realm of Okolnir.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EThe Valkyrie can use 3 of these keys to open a portal to Okolnir, a challenge dungeon available for all players to join. Once activated there will be a server wide announcement and a 5 minute wait until the portal opens.\nValkyrie spawn conditions: At least one player has reached level 85 and 8 unique MVPs have been defeated.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E0\u003C/color\u003E"
+    },
+    {
       "Code": "Sword",
       "Description": "\u003Ccolor=#808080\u003EA basic sword.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ESword\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E25\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E50\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E1\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E2\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ENovice, Swordsman, Merchant, Thief\u003C/color\u003E"
     },
@@ -5511,6 +5515,10 @@
     {
       "Code": "Glorious_Bow",
       "Description": "CRIT damage \u002B(2*Refine)%\n\u002B20% DEF ignore vs. Demi-Human\n\u002B55% physical damage vs. Demi-Human\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003EBow\u003C/color\u003E\nDurability: \u003Ccolor=#777777\u003EUnbreakable\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E100\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E80\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EArcher, Thief, Rogue\u003C/color\u003E"
+    },
+    {
+      "Code": "Gamemaster\u0027s_Bow",
+      "Description": "\u003Ccolor=#808080\u003EIt fucking slaps\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EATK \u002B 2000, MATK \u002B 2000\nAll Stats \u002B 80\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003EBow\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E200\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E48\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EArcher (Excluding Bard/Dancer), Rogue, Stalker\u003C/color\u003E"
     },
     {
       "Code": "Waghnak",
@@ -6894,7 +6902,7 @@
     },
     {
       "Code": "Valkyrian_Armor",
-      "Description": "\u003Ccolor=#808080\u003EA set of shining armor worn by the Valkyries, Odin\u0027s battle maidens.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ESTR, VIT, INT, DEX, AGI, LUK \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EBody\u003C/color\u003E\nDurability: \u003Ccolor=#777777\u003EUnbreakable\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E6\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E280\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ETranscended First Job\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA set of shining armor worn by the Valkyries, Odin\u0027s battle maidens.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ESTR, VIT, INT, DEX, AGI, LUK \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EBody\u003C/color\u003E\nDurability: \u003Ccolor=#777777\u003EUnbreakable\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E6\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E280\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
     },
     {
       "Code": "Ninja_Suit_",
@@ -7074,7 +7082,7 @@
     },
     {
       "Code": "Valkyrian_Shoes",
-      "Description": "\u003Ccolor=#808080\u003EA pair of shoes worn by the Valkyries, Odin\u0027s battle maidens.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EFootgear\u003C/color\u003E\nDurability: \u003Ccolor=#777777\u003EUnbreakable\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E50\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ETranscended First Job\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA pair of shoes worn by the Valkyries, Odin\u0027s battle maidens.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EHP \u002B3%, SP \u002B3%\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EFootgear\u003C/color\u003E\nDurability: \u003Ccolor=#777777\u003EUnbreakable\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E50\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
     },
     {
       "Code": "High_Fashion_Sandals",
@@ -7226,7 +7234,7 @@
     },
     {
       "Code": "Valkyrian_Manteau",
-      "Description": "\u003Ccolor=#808080\u003EA manteau worn by the Valkyries, Odin\u0027s battle maidens.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EIndestructible\nif Acolyte, Mage, Archer:\n Perfect Dodge \u002B(5 \u002B 2*Refine)\nif Swordman, Merchant, Thief:\n Reflect \u002B(5 \u002B 2*Refine)% melee damage\n\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E\n \u003Ccolor=#008080\u003EValkyrie Helm [1]\u003C/color\u003E\n \u003Ccolor=#008080\u003EValkyrie Armor [1]\u003C/color\u003E\n \u003Ccolor=#008080\u003EValkyrie Shoes [1]\u003C/color\u003E\n STR, VIT, INT, DEX, AGI, LUK \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nDurability: \u003Ccolor=#777777\u003EUnbreakable\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E3\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E50\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ETranscended First Job\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA manteau worn by the Valkyries, Odin\u0027s battle maidens.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003E FLEE \u002B5, -5% damage from range\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EGarment\u003C/color\u003E\nDurability: \u003Ccolor=#777777\u003EUnbreakable\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E3\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E50\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
     },
     {
       "Code": "Ancient_Cape_",
@@ -8178,7 +8186,7 @@
     },
     {
       "Code": "Valkyrian_Helm",
-      "Description": "\u003Ccolor=#808080\u003EAn ornate, winged helmet worn by the Valkyries, Odin\u0027s battle maidens.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EMDEF \u002B5\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Top)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E5\u003C/color\u003E\nMagic Defense: \u003Ccolor=#777777\u003E5\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E100\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ETranscended First Job\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EAn ornate, winged helmet worn by the Valkyries, Odin\u0027s battle maidens.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EMDEF \u002B5\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EHeadgear (Top)\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E5\u003C/color\u003E\nMagic Defense: \u003Ccolor=#777777\u003E5\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E100\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EAll Jobs Excluding Novice\u003C/color\u003E"
     },
     {
       "Code": "Beret",

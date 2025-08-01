@@ -19,12 +19,12 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Mage;
 public class FirewallHandler : SkillHandlerBase
 {
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
-        int lvl, bool isIndirect)
+        int lvl, bool isIndirect, bool isItemSource)
     {
         if (source.Character.Type == CharacterType.Player && source.Character.CountEventsOfType("FirewallBaseEvent") >= 3)
             return SkillValidationResult.CannotCreateMore;
 
-        return base.ValidateTarget(source, target, position, lvl, false);
+        return base.ValidateTarget(source, target, position, lvl, false, false);
     }
 
     public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl)
@@ -35,7 +35,8 @@ public class FirewallHandler : SkillHandlerBase
         return 2.15f - lvl * 0.15f;
     }
 
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         Debug.Assert(source.Character.Map != null);
 

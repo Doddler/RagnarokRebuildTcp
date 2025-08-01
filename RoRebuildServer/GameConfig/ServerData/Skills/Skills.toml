@@ -239,7 +239,15 @@ SpCost = [14,18,22,26,30,34,38,42,46,50]
 [SpearMastery]
 [Pierce]
 [SpearStab]
+
 [BrandishSpear]
+Name = "Brandish Spear"
+Icon = "kn_brandishspear"
+Target = "Enemy"
+MaxLevel = 10
+SpCost = [12,12,12,12,12,12,12,12,12,12]
+
+
 [SpearBoomerang]
 
 [ChargeAttack]
@@ -1049,6 +1057,18 @@ Target = "Enemy"
 [NoEffectAttack]
 Name = ""
 Target = "Any"
+
+
+#EVENT
+
+[RollingThunder]
+Name = "Rolling Thunder"
+InterruptMode = "NoInterrupt"
+Target = "Self"
+
+[EarthShaker]
+Name = "Earth Shaker"
+Target = "Self"
 
 [NoCast]
 #use when you want the enemy to trigger something without the player knowing

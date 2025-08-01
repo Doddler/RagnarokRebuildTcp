@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers.General;
 using Assets.Scripts.Effects.EffectHandlers.Skills;
+using Assets.Scripts.Effects.EffectHandlers.Skills.Custom;
 using Assets.Scripts.Effects.EffectHandlers.StatusEffects;
+using Assets.Scripts.Effects.PrimitiveData;
 using Assets.Scripts.Misc;
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
@@ -213,6 +215,10 @@ namespace Assets.Scripts.PlayerControl
                 case CharacterStatusEffect.Stop:
                     controllable.AttachEffect(RoSpriteEffect.AttachSprite(controllable, "Assets/Sprites/Effects/스톱.spr", 0.65f));
                     break;
+                case CharacterStatusEffect.SpecialTarget:
+                    var effect = SpecialTargetMarkerEffect.Create(controllable, duration);
+                    controllable.AttachEffect(effect);
+                    break;
             }
         }
 
@@ -311,6 +317,13 @@ namespace Assets.Scripts.PlayerControl
                     break;
                 case CharacterStatusEffect.Stop:
                     controllable.EndEffectOfType(EffectType.RoSprite, "Assets/Sprites/Effects/스톱.spr");
+                    break;
+                case CharacterStatusEffect.SpecialTarget:
+                    var targeter = controllable.DetachExistingEffectOfType(EffectType.SpecialTargetMarker);
+                    if(targeter != null)
+                        ((SpecialMarkerData)targeter.EffectData).IsEnding = true;
+                    var cast = controllable.DetachExistingEffectOfType(EffectType.CastLockOn);
+                    cast?.SetRemainingDurationByFrames(30);
                     break;
             }
         }

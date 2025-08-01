@@ -368,13 +368,15 @@ public class MonsterSkillAiState(Monster monsterIn)
         if (ch.AdminHidden || ch.Map == null)
             return;
 
+        ch.StopMovingImmediately();
         ch.Map.RemoveEntity(ref ch.Entity, CharacterRemovalReason.OutOfSight, false);
         ch.AdminHidden = true;
-
+        ch.QueuedAction = QueuedAction.None;
+        
         monster.PreviousAiState = monster.CurrentAiState;
         monster.CurrentAiState = MonsterAiState.StateHidden;
         monster.UpdateStateChangeTime();
-
+        
         monster.CombatEntity.ClearDamageQueue();
     }
 
@@ -926,6 +928,23 @@ public class MonsterSkillAiState(Monster monsterIn)
         return false;
     }
 
+    public void CreateEventOnTarget(string eventName, int value1, int value2 = 0, int value3 = 0, int value4 = 0, string? valueString = null)
+    {
+        var chara = monster.Character;
+        if (chara.Map == null)
+            throw new Exception($"Npc {chara.Name} attempting to create event, but the monster is not currently attached to a map.");
+
+        var pos = chara.Position;
+        if (monster.Target.TryGet<WorldObject>(out var target))
+            pos = target.Position;
+
+        var eventObj = World.Instance.CreateEvent(monster.Entity, chara.Map, eventName, pos, value1, value2, value3, value4, valueString);
+        eventObj.Get<Npc>().Owner = monster.Entity;
+        Events ??= EntityListPool.Get();
+        Events.ClearInactive();
+        Events.Add(eventObj);
+    }
+
     public void CreateEvent(string eventName, string? valueString = null) => CreateEvent(eventName, monster.Character.Position, 0, 0, 0, 0, valueString);
     public void CreateEvent(string eventName, Position pos, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, 0, 0, 0, 0, valueString);
     public void CreateEvent(string eventName, Position pos, int value1, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, value1, 0, 0, 0, valueString);
@@ -949,6 +968,23 @@ public class MonsterSkillAiState(Monster monsterIn)
         Events ??= EntityListPool.Get();
         Events.ClearInactive();
         Events.Add(eventObj);
+    }
 
+
+    public void SignalNpc(string npcName, string signal, int value1 = 0, int value2 = 0, int value3 = 0, int value4 = 0)
+    {
+        var chara = monster.Character;
+
+        if (chara.Map == null)
+            throw new Exception($"Monster {chara.Name} attempting to signal npc {npcName}, but the npc is not currently attached to a map.");
+
+        if (!chara.Map.Instance.NpcNameLookup.TryGetValue(npcName, out var destNpc) || !destNpc.IsAlive())
+        {
+            ServerLogger.LogWarning($"Npc {chara.Name} attempted to signal npc {npcName}, but that npc could not be found.");
+            return;
+        }
+
+        var npc = destNpc.Get<Npc>();
+        npc.OnSignal(chara, signal, value1, value2, value3, value4);
     }
 }

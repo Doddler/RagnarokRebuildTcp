@@ -65,7 +65,8 @@ internal static class Monsters
 
         var monsters = DataManager.MonsterIdLookup.Select(m => m.Value)
             //.OrderBy(m => m.Level).ThenBy(m => m.Name).ToList();
-            .Where(m => m.Code != "VALKYRIE" && m.Code != "RANDGRIS" && m.Code != "ICE_TITAN").OrderBy(m => m.Exp + (m.Exp == 0 ? 99000000 : 0)).ToList();
+            .Where(m => m.Code != "VALKYRIE" && m.Code != "RANDGRIS" && m.Code != "ICE_TITAN" && m.Id < 6016).OrderBy(m => m.Exp + (m.Exp == 0 ? 99000000 : 0)).ToList();
+        
 
         var model = new MonsterModel()
         {

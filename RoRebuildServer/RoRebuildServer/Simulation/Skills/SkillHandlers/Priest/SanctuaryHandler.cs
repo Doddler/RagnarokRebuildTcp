@@ -31,19 +31,21 @@ public class SanctuaryHandler : SkillHandlerBase
 
     public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 5f;
     
-    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
+        int lvl, bool isIndirect, bool isItemSource)
     {
         if (!isIndirect && !CheckRequiredGemstone(source, BlueGemstone, false))
             return SkillValidationResult.MissingRequiredItem;
 
-        return base.ValidateTarget(source, target, position, lvl, false);
+        return base.ValidateTarget(source, target, position, lvl, false, false);
     }
 
     //failing pre-validation prevents sp from being taken
     public override bool PreProcessValidation(CombatEntity source, CombatEntity? target, Position position, int lvl,
-        bool isIndirect) => isIndirect || CheckRequiredGemstone(source, BlueGemstone);
+        bool isIndirect, bool isItemSource) => isIndirect || CheckRequiredGemstone(source, BlueGemstone);
 
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         if (source.Character.Map == null)
             return;

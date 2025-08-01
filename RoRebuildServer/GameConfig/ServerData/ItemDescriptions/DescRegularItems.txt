@@ -2253,3 +2253,7 @@
 ::Expedition_Report_Vol4 //11016
 <color=#808080>Expedition Report Vol.4 which details the internal investigation.</color>
 
+::Okolnir_Key
+<desc>A key used to open the way to the realm of Okolnir.</desc>
+The Valkyrie can use 3 of these keys to open a portal to Okolnir, a challenge dungeon available for all players to join. Once activated there will be a server wide announcement and a 5 minute wait until the portal opens.
+Valkyrie spawn conditions: At least one player has reached level 85 and 8 unique MVPs have been defeated.

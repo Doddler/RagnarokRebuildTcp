@@ -30,6 +30,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                     else
                     {
                         var name = msg.ReadString();
+                        if (Network.MapEffects.ContainsKey(name))
+                            return; //already added
                         var go = GameObject.Instantiate(Resources.Load<GameObject>(name));
                         if (go == null)
                             Debug.LogError($"Could not load mapimportantentity effect by name of {name}");

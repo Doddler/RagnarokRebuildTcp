@@ -12,7 +12,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Swordsman
     [SkillHandler(CharacterSkill.Bash, SkillClass.Physical)]
     public class BashHandler : SkillHandlerBase
     {
-        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl,
+            bool isIndirect, bool isItemSource)
         {
             lvl = lvl.Clamp(1, 10);
             

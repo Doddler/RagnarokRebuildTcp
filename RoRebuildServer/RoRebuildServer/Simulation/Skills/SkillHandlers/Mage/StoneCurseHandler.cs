@@ -18,7 +18,7 @@ public class StoneCurseHandler : SkillHandlerBase
     private const int GemstoneId = 716; //red gemstone
 
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
-        int lvl, bool isIndirect)
+        int lvl, bool isIndirect, bool isItemSource)
     {
         if (target == null)
             return SkillValidationResult.Failure;
@@ -29,14 +29,14 @@ public class StoneCurseHandler : SkillHandlerBase
         if (!isIndirect && !CheckRequiredGemstone(source, GemstoneId, false)) 
             return SkillValidationResult.MissingRequiredItem;
 
-        return base.ValidateTarget(source, target, position, lvl, false);
+        return base.ValidateTarget(source, target, position, lvl, false, false);
     }
 
     //failing pre-validation prevents sp from being taken
-    public override bool PreProcessValidation(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect) =>
-        isIndirect || CheckRequiredGemstone(source, GemstoneId, true);
+    public override bool PreProcessValidation(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect, bool isItemSource) =>
+        isIndirect || isItemSource || CheckRequiredGemstone(source, GemstoneId, true);
     
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect, bool isItemSource)
     {
         //if (lvl < 0 || lvl > 10)
         //    lvl = 10;
@@ -52,7 +52,7 @@ public class StoneCurseHandler : SkillHandlerBase
             var keepGemstone = 300 - lvl * 50;
             if (source.Character.Type == CharacterType.Player && !source.CheckLuckModifiedRandomChanceVsTarget(source, keepGemstone, 1000))
             {
-                if (!isIndirect && !ConsumeGemstoneForSkillWithFailMessage(source, GemstoneId))
+                if (!isIndirect && !isItemSource && !ConsumeGemstoneForSkillWithFailMessage(source, GemstoneId))
                     success = false;
             }
 

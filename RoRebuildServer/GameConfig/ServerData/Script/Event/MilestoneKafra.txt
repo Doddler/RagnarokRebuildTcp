@@ -1,0 +1,80 @@
+//@Kafra("prt_fild08", 158, 362, S, "Kafra Staff", "Kafra Defolty - Kafra Employee", "4_F_KAFRA1", "kafra_01", "South of Prontera", "south of Prontera", KafraTeleportListProntera);
+
+#event "MilestoneEvent" //this disables this file if MilestoneEvent is not set in OperationConfig section of appsettings
+
+macro TeleportCase(%map, %x, %y, %zeny)
+{
+	if(GetZeny() < %zeny)
+	{
+		//Dialog(name, "Sorry, you currently don't have enough zeny to use this teleport.");
+		//return;
+	}
+	//DropZeny(%zeny);
+	MoveTo(%map, %x, %y);
+	return;
+}
+
+Npc("prt_fild08", "Kafra Staff", "4_F_KAFRA1", 158, 362, S) 
+{
+	RegisterAsKafra();
+	RegisterGlobalSignal("MilestoneKafra");
+	HideNpc();
+	localstr name = "Kafra Defolty - Kafra Employee";
+OnSignal:
+	if(Signal == "RevealOnServerUp") ShowNpc();	else StartTimer(1s);
+OnTimer 20s:
+	ShowNpc();
+	PlayEffectAtMyLocation("PuffOfSmoke");
+OnTimer 22s:
+	ServerWideMessage("<color=#FF99FF>The Kafra Staff Defolty has joined the camp south of Prontera!</color>", "", true);
+	StopTimer();
+OnClick:
+	FocusNpc();
+	ShowSprite("kafra_01", right);
+	Dialog(name, "Welcome to the Kafra Corporation~ The Kafra Services are always here to support you. So how can I be of service today?");
+	string cartOption = "";
+	if(HasLearnedSkill(PushCart, 1) && !HasCart) cartOption = "Rent Push Cart";
+	Option("Save", "Use Storage", "Teleport Service", cartOption, "Cancel");
+	switch(Result) 	
+	{
+	case 0:
+		SaveSpawnPoint("South of Prontera");
+		Dialog(name, "Your Respawn Point has been saved south of Prontera. Thank you for using the Kafra Service.");
+		return;
+	case 1:
+		if(GetLearnedLevelOfSkill("BasicMastery") < 5)
+		{
+			Dialog(name, "Sorry, only adventurers with level 5 or higher in Basic Mastery are allowed to access Kafra storage. Please come back when you have a few more levels.");
+			return;
+		}
+		ReleaseFocus();
+		OpenStorage();
+		return;
+	case 2:
+		Dialog(name, "Please choose your destination.");
+		Option("Izlude", "Geffen", "Payon", "Morroc", "Orc Dungeon", "Alberta", "Cancel" );
+		switch(Result)
+		{
+			case 0: @TeleportCase("izlude", 91, 105, 600);
+			case 1: @TeleportCase("geffen", 120, 39, 1200);
+			case 2: @TeleportCase("payon", 161, 58, 1200);
+			case 3: @TeleportCase("morocc", 156, 46, 1200);
+			case 4: @TeleportCase("gef_fild10", 52, 326, 1700);
+			case 5: @TeleportCase("alberta", 117, 56, 1000);
+		}
+	case 3:
+		Dialog(name, "The fee to rent a push cart is 850 zeny. Is that alright?");
+		Option("Yes", "No");
+		switch(Result)
+		{
+		case 0:
+			if(GetZeny() < 850)
+			{
+				Dialog(name, "Oh dear, you don't have enough money. Please come back when you have at least 850 zeny.");
+				return;
+			}
+			DropZeny(850);
+			EquipPushCart();
+		}
+	}
+}

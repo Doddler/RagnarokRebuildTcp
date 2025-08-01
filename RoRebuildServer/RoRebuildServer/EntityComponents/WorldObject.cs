@@ -130,7 +130,7 @@ public class WorldObject : IEntityAutoReset
     public bool HasMoveInProgress => WalkPath != null && WalkPath.Length > 0;
     public void SetSpawnImmunity(float time = 5f) => SpawnImmunity = Time.ElapsedTimeFloat + time;
     public void ResetSpawnImmunity() => SpawnImmunity = -1f;
-    public bool IsTargetImmune => SpawnImmunity > Time.ElapsedTimeFloat;
+    public bool IsTargetImmune => !IsActive || SpawnImmunity > Time.ElapsedTimeFloat;
     public bool IsAtDestination => !IsMoving || TargetPosition == Position;
 
     public bool StateCanSit => State == CharacterState.Idle || State == CharacterState.Sitting;

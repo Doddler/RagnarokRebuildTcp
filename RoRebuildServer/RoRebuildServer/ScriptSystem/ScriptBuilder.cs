@@ -969,14 +969,14 @@ public class ScriptBuilder
         if (section == "OnSignal")
         {
 
-            StartIndentedBlockLine().AppendLine($"public override void {section}(Npc npc, Npc srcNpc, string signal, int value1, int value2, int value3, int value4)");
+            StartIndentedBlockLine().AppendLine($"public override void {section}(Npc npc, WorldObject src, string signal, int value1, int value2, int value3, int value4)");
             OpenScope();
 
             UseStateMachine = false;
             UseLocalStorage = true;
 
             LoadFunctionSource(typeof(Npc), "npc");
-            additionalVariables.Add("Src", "SrcNpc");
+            additionalVariables.Add("Src", "src");
             additionalVariables.Add("Signal", "signal");
             additionalVariables.Add("Value1", "value1");
             additionalVariables.Add("Value2", "value2");

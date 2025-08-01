@@ -16,7 +16,8 @@ public class CloakingHandler : SkillHandlerBase
         return !source.HasStatusEffectOfType(CharacterStatusEffect.Cloaking);
     }
 
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         var ch = source.Character;
 

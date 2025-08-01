@@ -18,7 +18,7 @@ public abstract class SkillHandlerTrap : SkillHandlerBase
     protected virtual int CatalystCount() => 1;
 
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
-        int lvl, bool isIndirect)
+        int lvl, bool isIndirect, bool isItemSource)
     {
         if (source.Character.Type == CharacterType.Player)
         {
@@ -31,12 +31,13 @@ public abstract class SkillHandlerTrap : SkillHandlerBase
             }
         }
 
-        return base.ValidateTarget(source, target, position, lvl, false);
+        return base.ValidateTarget(source, target, position, lvl, false, false);
     }
 
     //pre-validation occurs after the cast bar and is the last chance for a skill to fail.
     //Default validation will make sure we have LoS and the cell is valid
-    public override bool PreProcessValidation(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override bool PreProcessValidation(CombatEntity source, CombatEntity? target, Position position, int lvl,
+        bool isIndirect, bool isItemSource)
     {
         var map = source.Character.Map;
         Debug.Assert(map != null);
@@ -64,7 +65,8 @@ public abstract class SkillHandlerTrap : SkillHandlerBase
         return true;
     }
 
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         var map = source.Character.Map;
         Debug.Assert(map != null);

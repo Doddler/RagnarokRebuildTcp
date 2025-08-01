@@ -157,6 +157,7 @@ Expedition_Report_Vol1	Morroc_Tracing_Log
 Expedition_Report_Vol2	Morroc_Tracing_Log
 Expedition_Report_Vol3	Morroc_Tracing_Log
 Expedition_Report_Vol4	Morroc_Tracing_Log
+Okolnir_Key	Golden_Key
 Sword_	Sword
 Falchion_	Falchion
 Blade_	Blade

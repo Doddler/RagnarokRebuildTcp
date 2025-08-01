@@ -178,6 +178,9 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
                                                      targetType == SkillTarget.Any))
                 isValidTarget = true;
 
+            if (skill == CharacterSkill.Resurrection && target.Character.State == CharacterState.Dead)
+                isValidTarget = true;
+
             if (!isValidTarget)
             {
                 ServerLogger.LogWarning($"Player '{connection.Character.Name}' is incorrectly trying to target '{target.Character.Name}' with the skill {skill}.");

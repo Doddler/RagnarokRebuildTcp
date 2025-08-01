@@ -83,7 +83,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                     break;
                 case SkillValidationResult.VendFailedTooCloseToNpc:
                     VendingSetupManager.Instance?.ResumeVendWindow();
-                    Camera.AppendChatText("Vending failed: Must be a minimum of 3 tiles from any NPCs", TextColor.Error);
+                    Camera.AppendChatText("Vending failed: Your shop cannot be within 4 tiles of an NPC.", TextColor.Error);
                     break;
                 case SkillValidationResult.VendFailedTooManyItems:
                     VendingSetupManager.Instance?.ResumeVendWindow();

@@ -18,11 +18,12 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Wizard;
 [SkillHandler(CharacterSkill.LordOfVermilion, SkillClass.Magic, SkillTarget.Ground)]
 public class LordOfVermilionHandler : SkillHandlerBase
 {
-    public override int GetAreaOfEffect(CombatEntity source, Position position, int lvl) => 4;
+    public override int GetAreaOfEffect(CombatEntity source, Position position, int lvl) => lvl <= 10 ? 6 : 8;
 
     public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 15.5f - 0.5f * lvl;
 
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         var map = source.Character.Map;
         Debug.Assert(map != null);
@@ -78,8 +79,10 @@ public class LordOfVermilionObjectEvent : NpcBehaviorBase
             TargetingType = TargetingType.Enemies
         };
 
+        var size = npc.ValuesInt[0] <= 10 ? 6 : 8;
+
         var aoe = World.Instance.GetNewAreaOfEffect();
-        aoe.Init(npc.Character, Area.CreateAroundPoint(npc.Character.Position, 6), AoeType.DamageAoE, targeting, 3.5f, 0.1f, 0, 0);
+        aoe.Init(npc.Character, Area.CreateAroundPoint(npc.Character.Position, size), AoeType.DamageAoE, targeting, 3.5f, 0.1f, 0, 0);
         aoe.CheckStayTouching = true;
         aoe.SkillSource = CharacterSkill.LordOfVermilion;
 
@@ -110,7 +113,7 @@ public class LordOfVermilionObjectEvent : NpcBehaviorBase
         if (!target.IsValidTarget(src) || target.IsInSkillDamageCooldown(CharacterSkill.LordOfVermilion))
             return;
 
-        var ratio = 0.8f + 0.2f * npc.ValuesInt[0];
+        var ratio = 0.8f + 0.2f * int.Clamp(npc.ValuesInt[0], 1, 10);
 
         var res = src.CalculateCombatResult(target, ratio, 1, AttackFlags.Magical, CharacterSkill.LordOfVermilion, AttackElement.Wind);
         res.AttackMotionTime = 0;

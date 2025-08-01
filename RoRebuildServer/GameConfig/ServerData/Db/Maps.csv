@@ -270,3 +270,4 @@ The Hall of Honor,valkyrie,valkyrie.walk,None,None,09.mp3
 Admin Room 1,sec_in01,sec_in01.walk,None,None,21.mp3
 Admin Room 2,sec_in02,sec_in02.walk,None,None,21.mp3
 Admin Room 3,sec_pri,sec_pri.walk,None,None,42.mp3
+Okolnir,que_qsch01,que_qsch01.walk,None,NoTeleportEvenMonsters,ToS-3rdWave.flac

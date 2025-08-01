@@ -1,0 +1,484 @@
+#event "MilestoneEvent" //this disables this file if MilestoneEvent is not set in OperationConfig section of appsettings
+
+//-----------------------------------
+//Valkyrie NPC and Okolnir Entrance
+//-----------------------------------
+
+Npc("prt_fild08", "Valkyrie", "4_F_VALKYRIE", 133, 340, SE)
+{
+	local okolnir = 0;
+	RegisterGlobalSignal("MilestoneValkyrie");
+	HideNpc();
+OnSignal:
+	if(Signal == "RevealOnServerUp")
+		ShowNpc();
+	if(Signal == "Open")
+		okolnir = 2;
+	if(Signal == "Close")
+	{
+		okolnir = 3;
+		SignalNpc("#okolnirentrance", "Close"); //close signal will come from global handler, but we'll send this signal locally
+	}
+	if(Signal == "ReOpen")
+	{
+		okolnir = 0;
+	}
+	if(Signal == "Reveal")
+		StartTimer(1s);
+OnTimer 20s:
+	ShowNpc();
+	PlayEffectAtMyLocation("PuffOfSmoke");
+OnTimer 22s:
+	ServerWideMessage("<color=#FF99FF>The Valkyrie has joined the camp south of Prontera!</color>", "", true);
+	StopTimer();
+OnClick:
+	FocusNpc();
+	string openOption = "";
+
+	if(okolnir == 1)
+	{
+		Dialog(Name, "The door to okolnir will open shortly, please be patient. Once the portal is open all players will be able to enter freely until it is cleared.");
+		return;
+	}
+	if(okolnir == 2)
+	{
+		Dialog(Name, "The door to okolnir is open. Good luck.");
+	}
+	if(okolnir == 3)
+	{
+		Dialog(Name, "Congratulations on clearing the okolnir challenge dungeon. There's a delay of about 5 minutes after a clear before you can try again.");
+		return;
+	}
+	if(okolnir == 0)
+	{
+		if(GetItemCount("Okolnir_Key") >= 3)
+		{
+			Dialog(Name, "You have the three keys required to open the door to Okolnir. Are you interested in opening the portal?");
+			openOption = "Open the Portal";
+		}
+		else
+		{
+			Dialog(Name, "Welcome adventurer. I can grant you access to the relam of Okolnir, if you can prove your worth.");
+		}
+	}
+
+	Option(openOption, "Explain Okolnir", "Cancel")
+	switch(result)
+	{
+		case 0:
+			Dialog(Name, "The Okolnir challenge dungeon is not easy, and there is no limit to the number of participants. If you would prefer to wait until more players are available to enter that might be best.");
+			Dialog(Name, "If you choose to proceed all online players will be notified, and the portal will open up here 5 minutes later. Anyone can enter, and the portal will stay open until the final objective is complete.");
+			Option("Proceed", "Cancel");
+			if(result == 0)
+			{
+				ServerWideMessage("<color=#FF99FF>The player " + PlayerName + " is opening the portal to Okolnir!</color>", "", true);
+				SignalNpc("#okolnirentrance", "Open");
+				okolnir = 1;
+			}
+		case 1:
+			Dialog(Name, "Okolnir is a challenge event available for all players to participate in. One player must have 3 Okolnir keys in your possession before the door will open.");
+			Dialog(Name, "The door will remain open until the event is cleared, or the server goes offline. When opening the door there will be a 5 minute warning sent to all players so they can gather to participate.");
+	}
+}
+
+
+Npc("prt_fild08", "#okolnirentrance", "WARP", 131, 338, SE, 1, 1)
+{
+	HideNpc();
+OnSignal:
+	if(Signal == "Open")
+		StartTimer(1s);
+	if(Signal == "Close")
+		HideNpc();
+	if(Signal == "OpenImmediately")
+	{
+		SignalNpc("Valkyrie", "Open");
+		StopTimer();
+	}
+OnTimer 5s:
+	ServerWideMessage("<color=#FF99FF>Okolnir is a challenge event all players can participate in. The portal will appear next to the Valkyrie south of prontera in 5 minutes.</color>", "", true);
+OnTimer 50s:
+	SendGlobalSignal("OkolnirReset", "Reset");
+OnTimer 300s:
+	ShowNpc();
+	StopTimer();
+	ServerWideMessage("<color=#FF99FF>The portal to Okolnir is now open!</color>", "", true);
+	SignalNpc("Valkyrie", "Open");
+OnTouch:
+	MoveTo("que_qsch01", 58, 305);
+}
+
+Warp("que_qsch01", "firstexit", 58, 299, 1, 1, "prt_fild08", 160, 353);
+
+
+//----------------------------
+//challenge dungeon Okolnir
+//----------------------------
+
+Npc("que_qsch01", "#OkolnirRestart", "CLEAR_NPC", 5, 5, S)
+{
+	RegisterGlobalSignal("OkolnirReset");
+OnSignal:
+	SignalNpc("#Zone1Spawner", "Reset");
+	SignalNpc("#Zone2Spawner", "Reset");
+	SignalNpc("#Zone3Spawner", "Reset");
+	SignalNpc("#Zone4Spawner", "Reset");
+	SignalNpc("#Zone5Spawner", "Reset");
+	SignalNpc("#warphome", "Open");
+	MoveAllPlayersToMap("prt_fild08", 160, 353);
+	ServerLog("Okolnir event is reset!");
+}
+
+Npc("que_qsch01", "#Zone1Spawner", "CLEAR_NPC", 68, 325, SE, 3, 7)
+{
+	HideFromView();
+OnSignal:
+	EnableTouchArea();
+	KillMyMobs();
+OnTouch:
+	SummonMobs(14, "BAPHOMET_", 107, 261, 21, 56);
+	SummonMobs(8, "INCUBUS", 107, 261, 21, 56);
+	SummonMobs(8, "SUCCUBUS", 107, 261, 21, 56);
+	SummonMobs(2, "DEVILING", 116, 240, 5, 5);
+	DisableTouchArea();
+	ServerLog("Okolnir trail spawner 1 activated.");
+}
+
+Npc("que_qsch01", "#Zone2Spawner", "CLEAR_NPC", 102, 223, SE, 4, 7)
+{
+	HideFromView();
+OnSignal:
+	EnableTouchArea();
+	KillMyMobs();
+OnTouch:
+	SummonMobs(15, "NINE_TAIL", 74, 151, 10, 64);
+	SummonMobs(6, "AM_MUT", 74, 151, 10, 64);
+	SummonMobs(6, "SKELETON_GENERAL", 74, 151, 10, 64);
+	SummonMobs(1, "CAT_O_NINE_TAIL", 71, 163, 5, 5);
+	SummonMobs(1, "MOONLIGHT", 72, 122, 5, 5);
+	DisableTouchArea();
+	ServerLog("Okolnir trail spawner 2 activated.");
+}
+
+Npc("que_qsch01", "#Zone3Spawner", "CLEAR_NPC", 77, 108, SE, 8, 4)
+{
+	HideFromView();
+OnSignal:
+	EnableTouchArea();
+	KillMyMobs();
+OnTouch:
+	SummonMobs(12, "ANOLIAN", 123, 83, 39, 12);
+	SummonMobs(2, "MOBSTER", 123, 83, 39, 12);
+	SummonMobs(6, "MEDUSA", 123, 83, 39, 12);
+	SummonMobs(1, "MUTANT_DRAGON", 112, 79, 5, 5);
+	SummonMobs(1, "GRYPHON", 146, 79, 5, 5);
+	DisableTouchArea();
+	ServerLog("Okolnir trail spawner 3 activated.");
+}
+
+Npc("que_qsch01", "#Zone4Spawner", "CLEAR_NPC", 154, 81, SE, 2, 9)
+{
+	HideFromView();
+OnSignal:
+	EnableTouchArea();
+	KillMyMobs();
+OnTouch:
+	SummonMobs(4, "WANDER_MAN", 184, 132, 15, 41);
+	SummonMobs(4, "KHALITZBURG", 184, 132, 15, 41);
+	SummonMobs(8, "RAYDRIC", 184, 132, 15, 41);
+	SummonMobs(8, "RAYDRIC_ARCHER", 184, 132, 15, 41);
+	SummonMobs(3, "KNIGHT_OF_ABYSS", 184, 153, 15, 19);
+	SummonMobs(1, "CHIMERA", 184, 153, 15, 19);
+	DisableTouchArea();
+
+	ServerLog("Okolnir trail spawner 4 activated.");
+}
+
+Npc("que_qsch01", "#Zone5Spawner", "CLEAR_NPC", 174, 163, SE, 5, 9)
+{
+	HideFromView();
+OnSignal:
+	EnableTouchArea();
+	KillMyMobs();
+OnTouch:
+	SummonMobs(8, "SASQUATCH", 149, 170, 13, 6);
+	SummonMobs(4, "LEIB_OLMAI", 149, 170, 13, 6);
+	SummonMobs(1, "EDDGA", 142, 172, 1, 1);
+	DisableTouchArea();
+	ServerLog("Okolnir trail spawner 5 activated.");
+	StartTimer(5s); //we do both timer and on kill event, you know, just in case
+OnTimer 10s:
+	if(MobCount == 0)
+	{
+        SignalNpc("#warptomid", "Reveal");
+		StopTimer();
+	}
+	ResetTimer();
+OnMobKill:
+	ServerLog("Okolnir trail spawner 5 mob killed. Current active: " + MobCount);
+    if(MobCount == 0)
+	{
+        SignalNpc("#warptomid", "Reveal");
+		StopTimer();
+	}
+}
+
+//Warp("que_qsch01", "warptomid", 132, 171, 1, 1, "que_qsch01", 114, 164);
+
+Npc("que_qsch01", "#warptomid", "WARP", 132, 171, SE, 1, 1)
+{
+	HideNpc();
+OnSignal:
+	if(Signal == "Reveal")
+	{
+		ShowNpc();
+		SignalNpc("#CenterAngelStage","Start");
+		SignalNpc("#warphome", "Hide");
+	}
+	if(Signal == "Hide")
+		HideNpc();
+OnTouch:
+	MoveTo("que_qsch01", 114, 164);
+}
+
+//%(132, 134, 16, 14)
+Npc("que_qsch01", "#CenterAngelStage", "CLEAR_NPC", 5, 5, SE, 1, 1)
+{
+	HideFromView();
+	local step = 0;
+OnSignal:
+	if(Signal == "Start")
+	{
+		SummonMobs(3, "OBSERVATION", 132, 134, 16, 14);
+		SummonMobs(3, "RETRIBUTION", 132, 134, 16, 14);
+		SummonMobs(3, "SOLACE", 132, 134, 16, 14);
+		SummonMobs(3, "SHELTER", 132, 134, 16, 14);
+		MoveLockAllMyMonsters(%(132, 136, 16, 16));
+		ServerLog("Center area event has activated.");
+		step = 1;
+	}
+
+	if(Signal == "NextStep" && step == 1)
+	{
+		ServerLog("Angels killed, starting valkyrie phase.");
+		step = 2;
+		return;
+	}
+
+	if(Signal == "Stop")
+	{
+		step = 0;
+		KillMyMobs();
+		StopTimer();
+	}
+
+	StartTimer(5s); //we do both timer and on kill event, you know, just in case
+OnTimer 20s:
+	if(MobCount == 0)
+	{
+        SignalNpc("#CenterStageValkyrie", "Start");
+		StopTimer();
+	}
+	ResetTimer();
+OnMobKill:
+	ServerLog("Center area mob killed. Current active: " + MobCount);
+    if(MobCount == 0)
+	{
+        SignalNpc("#CenterStageValkyrie", "Start");
+		StopTimer();
+	}
+}
+
+Npc("que_qsch01", "#CenterStageValkyrie", "CLEAR_NPC", 5, 5, SE, 1, 1)
+{
+	HideFromView();
+	local step = 0;
+OnSignal:
+	if(Signal == "Start")
+	{
+		DescendSummonMonster("VALKYRIE", 125, 142, 0, 0, NW, "EVENT_VALKYRIE");
+		DescendSummonMonster("VALKYRIE", 138, 142, 0, 0, NE, "EVENT_VALKYRIE");
+		DescendSummonMonster("VALKYRIE", 125, 129, 0, 0, SW, "EVENT_VALKYRIE");
+		DescendSummonMonster("VALKYRIE", 138, 129, 0, 0, SE, "EVENT_VALKYRIE");
+		MoveLockAllMyMonsters(%(132, 136, 16, 16));
+		ServerLog("Center area event has activated.");
+		step = 1;
+	}
+
+	if(Signal == "Stop")
+	{
+		step = 0;
+		KillMyMobs();
+		StopTimer();
+	}
+
+	if(Signal == "NextStep" && step == 1)
+	{
+		ServerLog("Valkyrie's killed, starting randgris phase.");
+		step = 2;
+		return;
+	}
+
+	StartTimer(5s); //we do both timer and on kill event, you know, just in case
+OnTimer 20s:
+	if(MobCount == 0)
+	{
+        SignalNpc("#FinalValkyrieStage", "Start");
+		StopTimer();
+	}
+	ResetTimer();
+OnMobKill:
+	ServerLog("Center area stage 2 mob killed. Current active: " + MobCount);
+    if(MobCount == 0)
+	{
+        SignalNpc("#FinalValkyrieStage", "Start");
+		StopTimer();
+	}
+}
+
+Npc("que_qsch01", "#FinalValkyrieStage", "CLEAR_NPC", 132, 135, SE, 1, 1)
+{
+	HideFromView();
+OnSignal:
+	if(Signal == "Start")
+	{
+		RegisterMapWideEffect("OkolnirUnsafeZone");
+		MapWideMessage("The area around the center platform has become unsafe!");
+		StartTimer(1s);
+	}
+	
+	if(Signal == "End")
+	{
+		UnregisterImportant();
+		KillMyMobs();
+		EndAllEvents();
+	}
+
+	if(Signal == "Fail")
+	{
+		ServerLog("A full wipe of the randgris phase has occured.");
+	}
+OnTimer 2s:
+	CreateEvent("OkolnirDamageZone", 5, 5, "", false);
+OnTimer 8s:
+	//activate dangerzone
+	MapWideMessage("Valkyrie Randgris joins the battle!");
+OnTimer 10s:
+	DescendSummonMonster("RANDGRIS", 132, 135, 0, 0, S, "EVENT_RANDGRIS");
+	MoveLockAllMyMonsters(%(132, 136, 16, 16));
+	StopTimer();
+OnMobKill:
+	ServerLog("Center final stage mob killed. Current active: " + MobCount);
+    if(MobCount == 0)
+	{
+        //SignalNpc("#CenterAngelStage", "NextStep");
+		StopTimer();
+		EndAllEvents();
+		UnregisterImportant();
+		SignalNpc("#warphome", "Open");
+		SignalNpc("#ReopenTimer", "Start");
+		SendGlobalSignal("MilestoneValkyrie", "Close");
+		if(GetGlobalInt("OkolnirFirstClear") > 1)
+			MapWideMessage("The Okolnir event has been cleared!");
+	}
+}
+
+Npc("que_qsch01", "#warphome", "WARP", 149, 105, SE, 1, 1)
+{
+OnSignal:
+	if(Signal == "Open")
+		ShowNpc();
+	else
+		HideNpc();
+OnTouch:
+	MoveTo("prt_fild08", 137, 333);
+}
+
+Npc("que_qsch01", "#VictorySpeachHandler", "CLEAR_NPC", 5, 5, SE)
+{
+	HideFromView();
+	RegisterGlobalSignal("OkolnirFirstClear");
+OnSignal:
+	StartTimer();
+//OnTimer 5s:
+	//ServerWideMessage("<color=#FF99FF>The Okolnir challenge dungeon has been cleared!</color>", "", true);
+OnTimer 15s:
+	ServerWideMessage("<color=#FF99FF>A thanks to all participants of the Rangarok Rebuild test, I hope everyone has enjoyed their time here.</color>", "", true);
+OnTimer 28s:
+	ServerWideMessage("<color=#FF99FF>The Okolnir event represents the final challenge prepared for the test, but the server will continue until the end of the test duration. The event can be re-started by talking to the Valkyrie with 3 keys.</color>", "", true);
+OnTimer 42s:
+	ServerWideMessage("<color=#FF99FF>I'd love to hear your feedback about what you like and disliked about the test. Thanks again everyone!</color>", "", true);
+	SetGlobalInt("OkolnirFirstClear", 2);
+	StopTimer();
+}
+
+Npc("que_qsch01", "#ReopenTimer", "CLEAR_NPC", 5, 5, SE)
+{
+OnSignal:
+	StartTimer();
+OnTimer 300s:
+	StopTimer();
+	SendGlobalSignal("MilestoneValkyrie", "ReOpen");
+}
+
+Npc("que_qsch01", "#RandgrisHelper", "CLEAR_NPC", 5, 6, SE)
+{
+OnSignal:
+	if(Signal == "Spawn")
+	{
+		DescendSummonMonster(Src, "VALKYRIE", 127, 136, 0, 0, W, "EVENT_VALKYRIE");
+		DescendSummonMonster(Src, "VALKYRIE", 136, 136, 0, 0, E, "EVENT_VALKYRIE");
+	}
+	if(Signal == "Die")
+	{
+		KillMyMobs();
+	}
+}
+
+event OkolnirLootEvent {
+	StartTimer(100);
+OnTimer 1000:
+	EndEvent();
+}
+
+//----------------------------
+// Combat AI related
+//----------------------------
+
+//caster clone AI
+AltSkillHandler("EVENT_VALKYRIE") {
+	OnInit:
+		FlagAsMvp();
+		Cast(NoCast, 10, 8s, 5s, EasyInterrupt | HideCastBar | HideSkillName);
+	StateIdle:
+		TryCast(Heal, 9999, 100%, 0s, 5s)[HpPercent < 60];
+	StateChase:
+		TryCast(Heal, 4999, 100%, 0.7s, 15s)[FindAllyBelowHpPercent(60)];
+	StateAttacking:
+		TryCast(Heal, 4999, 100%, 0.7s, 15s)[FindAllyBelowHpPercent(60)];
+		TryCast(SonicBlow, 1, 5%, 1s, 10s);
+		TryCast(JupitelThunder, 3, 2%, 2s, 10s);
+}
+
+AltSkillHandler("EVENT_RANDGRIS") {
+	OnInit:
+		FlagAsMvp();
+		Cast(NoCast, 10, 2s, 5s, EasyInterrupt | HideCastBar | HideSkillName);
+	StateChase:
+		TryCast(CallMinion, 1, 100%, 2.5s, 0s, NoInterrupt)[HpPercent < 55 && IsNamedEventOffCooldown("SummonMinions")] -> {
+			SignalNpc("#RandgrisHelper", "Spawn");
+			SetEventCooldown("SummonMinions", -1);
+		}
+		TryCast(EarthShaker, 1, 20%, 4s, 15s, NeverInterrupt | EventOnStartCast)[HpPercent < 95]  -> CreateEventOnTarget("EarthShakerCastEvent", 1 + (100 - HpPercent) / 25);
+		TryCast(RollingThunder, 1, 20%, 3s, 20s, NeverInterrupt | EventOnStartCast)[HpPercent < 90]  -> CreateEventOnTarget("ExaflareControlEvent", 1 + (100 - HpPercent) / 25);
+		TryCast(LordOfVermilion, 11, 10%, 3.5s, 25s);
+	StateAttacking:
+		TryCast(EarthShaker, 1, 20%, 4s, 15s, NeverInterrupt | EventOnStartCast)[HpPercent < 95]  -> CreateEventOnTarget("EarthShakerCastEvent", 1 + (100 - HpPercent) / 25);
+		TryCast(RollingThunder, 1, 20%, 3s, 20s, NeverInterrupt | EventOnStartCast)[HpPercent < 90] -> CreateEventOnTarget("ExaflareControlEvent", 1 + (100 - HpPercent) / 25);
+		TryCast(LordOfVermilion, 11, 5%, 3.5s, 25s);
+		TryCast(SonicBlow, 1, 5%, 1s, 10s);
+		TryCast(TwoHandQuicken, 1, 100%, 0, 120s)[HpPercent < 30];
+		TryCast(PowerUp, 1, 100%, 0.7s, 30s)[HpPercent < 30];
+	OnDie:
+		SignalNpc("#RandgrisHelper", "Die");
+}

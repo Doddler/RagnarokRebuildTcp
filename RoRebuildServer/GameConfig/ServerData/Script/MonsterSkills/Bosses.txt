@@ -178,13 +178,13 @@ OnInit:
 StateAny:
 	TryCast(RecallMinion, 1, 100%, 0, 30s);
 StateIdle: 
-	TryCast(CallMinion, 1, 25%, 0.3s, 20s, NoInterrupt)[MinionCount < 5] -> SummonMinions(2, "DARK_ILLUSION");
+	TryCast(CallMinion, 1, 25%, 0.3s, 60s, NoInterrupt)[MinionCount < 3] -> SummonMinions(1, "DARK_ILLUSION");
 	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
 StateChase: 
-    TryCast(CallMinion, 1, 100%, 0.3s, 20s, NoInterrupt)[MinionsDeadFor(40s)] -> SummonMinions(1, "DARK_ILLUSION");
+    TryCast(CallMinion, 1, 100%, 0.3s, 60s, NoInterrupt)[MinionsDeadFor(40s)] -> SummonMinions(1, "DARK_ILLUSION");
 	TryCast(FireWall, 10, 20%, 0.5s, 5s, NoInterrupt);
 StateAttacking:
-	TryCast(CallMinion, 1, 100%, 0.3s, 20s, NoInterrupt)[MinionsDeadFor(40s)] -> SummonMinions(1, "DARK_ILLUSION");
+	TryCast(CallMinion, 1, 100%, 0.3s, 60s, NoInterrupt)[MinionsDeadFor(40s)] -> SummonMinions(1, "DARK_ILLUSION");
 	TryCast(Bash, 10, 20%, 0, 5s);
 }
 

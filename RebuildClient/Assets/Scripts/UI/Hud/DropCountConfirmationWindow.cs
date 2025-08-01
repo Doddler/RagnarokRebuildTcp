@@ -80,7 +80,7 @@ namespace Assets.Scripts.UI.Hud
         }
         
         
-        public void BeginItemDrop(InventoryItem item, string title, Action<int, int> onSuccessEvent)
+        public void BeginItemDrop(InventoryItem item, string title, Action<int, int> onSuccessEvent, int maxItems = -1)
         {
             
             gameObject.SetActive(true);
@@ -88,7 +88,10 @@ namespace Assets.Scripts.UI.Hud
             bagItem = item;
             onDrop = onSuccessEvent;
             ItemDropTitle.text = title;
-            ItemCountInput.text = item.Count.ToString();
+            if(maxItems == -1)
+                ItemCountInput.text = item.Count.ToString();
+            else
+                ItemCountInput.text = maxItems.ToString();
             ItemCountInput.ActivateInputField();
             CameraFollower.Instance.InItemInputBox = true;
             dropType = DropConfirmationType.Special;

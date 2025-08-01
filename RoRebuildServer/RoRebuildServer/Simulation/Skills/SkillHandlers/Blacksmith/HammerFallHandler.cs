@@ -19,7 +19,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Blacksmith
         //casting range is 2, unless a monster uses it, they can use it up to 7 tiles away
         public override int GetSkillRange(CombatEntity source, int lvl) => source.Character.Type == CharacterType.Monster ? 7 : 2;
 
-        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl,
+            bool isIndirect, bool isItemSource)
         {
             if (!position.IsValid())
                 return;

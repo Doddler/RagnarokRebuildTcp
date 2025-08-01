@@ -109,3 +109,5 @@
 108,AdrenalineRush,FALSE,FALSE,TRUE,,,,0,,
 109,MagnusExorcismus,TRUE,TRUE,FALSE,magnus,,priest_magnus,1,,
 110,AnkleSnare,FALSE,FALSE,FALSE,,,,0,Assets/Prefabs/AnkleSnare.prefab,
+111,ExaflareMaster,FALSE,FALSE,FALSE,,,,0,Assets/Effects/Custom/Exaflare/ExaFlare.prefab,
+112,ExaflareSub,FALSE,FALSE,FALSE,,,,0,Assets/Effects/Custom/Exaflare/1sAoEMarker.prefab,

@@ -62,13 +62,13 @@ public class PacketAdminServerAction : IClientPacketHandler
 
             if (chara.Map.Instance.NpcNameLookup.TryGetValue(signalName, out var localEntity) && localEntity.TryGet<Npc>(out var npc))
             {
-                npc.OnSignal(npc, signalValue);
+                npc.OnSignal(npc.Character, signalValue);
                 return;
             }
 
             if (World.Instance.GetGlobalSignalTarget(signalName).TryGet<Npc>(out npc))
             {
-                npc.OnSignal(npc, signalValue);
+                npc.OnSignal(npc.Character, signalValue);
                 return;
             }
 

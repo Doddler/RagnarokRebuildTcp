@@ -13,9 +13,9 @@ Id,Code,Name,Price,Weight,Usage,Sprite
 712,Flower,Flower,2,10,None,꽃
 713,Empty_Bottle,Empty Bottle,6,20,Catalyst,빈병
 714,Emperium,Emperium,2,1000,None,엠펠리움
-715,Yellow_Gemstone,Yellow Gemstone,250,30,Catalyst,옐로우젬스톤
-716,Red_Gemstone,Red Gemstone,250,30,Catalyst,레드젬스톤
-717,Blue_Gemstone,Blue Gemstone,250,30,Catalyst,블루젬스톤
+715,Yellow_Gemstone,Yellow Gemstone,600,30,Catalyst,옐로우젬스톤
+716,Red_Gemstone,Red Gemstone,400,30,Catalyst,레드젬스톤
+717,Blue_Gemstone,Blue Gemstone,500,30,Catalyst,블루젬스톤
 718,Garnet,Garnet,6000,100,HighValue,검붉은보석
 719,Amethyst,Amethyst,6000,100,HighValue,보라색보석
 720,Aquamarine,Aquamarine,6000,100,HighValue,하늘색보석
@@ -46,8 +46,8 @@ Id,Code,Name,Price,Weight,Usage,Sprite
 745,Wedding_Bouquet,Wedding Bouquet,12000,50,None,부케
 746,Glass_Bead,Glass Bead,1400,50,None,유리구슬
 747,Crystal_Mirror,Crystal Mirror,15000,50,None,수정거울
-748,Witherless_Rose,Witherless Rose,55000,10,None,시들지않는장미
-749,Frozen_Rose,Frozen Rose,35000,10,None,얼음장미
+748,Witherless_Rose,Witherless Rose,35000,10,HighValue,시들지않는장미
+749,Frozen_Rose,Frozen Rose,55000,10,HighValue,얼음장미
 750,Baphomet_Doll,Baphomet Doll,18000,100,None,바포메트인형
 751,Osiris_Doll,Osiris Doll,14000,100,None,오시리스인형
 752,Rocker_Doll,Rocker Doll,4000,100,None,메뚜기인형
@@ -216,7 +216,7 @@ Id,Code,Name,Price,Weight,Usage,Sprite
 1062,Jack_o'_Pumpkin,Jack o' Pumpkin,374,10,None,호박머리
 1063,Fang,Fang,680,10,None,날카로운송곳니
 1064,Reins,Reins,802,10,None,말고삐
-1065,Trap,Trap,100,10,None,트랩
+1065,Trap,Trap,140,10,Catalyst,트랩
 1066,Fine-Grained_Trunk,Fine-Grained Trunk,2,10,None,궁수전직나무
 1067,Solid_Trunk,Solid Trunk,2,10,None,궁수전직나무
 1068,Barren_Trunk,Barren Trunk,2,10,None,궁수전직나무
@@ -750,3 +750,4 @@ Id,Code,Name,Price,Weight,Usage,Sprite
 11014,Expedition_Report_Vol2,Expedition Report Vol2,0,10,None,고대언어문서
 11015,Expedition_Report_Vol3,Expedition Report Vol3,0,10,None,고대언어문서
 11016,Expedition_Report_Vol4,Expedition Report Vol4,0,10,None,고대언어문서
+11500,Okolnir_Key,Okolnir Key,30000,0,Quest,황금열쇠

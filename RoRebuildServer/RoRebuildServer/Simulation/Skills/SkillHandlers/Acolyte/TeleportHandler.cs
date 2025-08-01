@@ -9,16 +9,17 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte
     public class TeleportHandler : SkillHandlerBase
     {
         public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target,
-            Position position, int lvl, bool isIndirect)
+            Position position, int lvl, bool isIndirect, bool isItemSource)
         {
             if (!source.CanTeleport())
                 return SkillValidationResult.CannotTeleportHere;
             if (source.HasBodyState(BodyStateFlags.Snared))
                 return SkillValidationResult.TeleportBlocked;
-            return base.ValidateTarget(source, target, position, lvl, false);
+            return base.ValidateTarget(source, target, position, lvl, false, false);
         }
 
-        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl,
+            bool isIndirect, bool isItemSource)
         {
             //if (source.Character.Type == CharacterType.Player && lvl == 2)
             //{

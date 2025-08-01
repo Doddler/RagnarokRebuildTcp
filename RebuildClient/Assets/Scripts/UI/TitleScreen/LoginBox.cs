@@ -25,7 +25,7 @@ namespace Assets.Scripts.UI.TitleScreen
         public GameObject ServerSection;
         public Toggle RememberLoginToggle;
         public Button SubmitButton;
-        
+
         public List<Button> Tabs;
 
         private int currentTab = 0;
@@ -38,22 +38,21 @@ namespace Assets.Scripts.UI.TitleScreen
         private const string TokenLoginPass = "Token!!WoW!Such_Pass";
 
         public bool IsSetToStorePasswordToken => RememberLoginToggle.isOn;
-        
+
         void Awake()
         {
-            
         }
 
         public void Init()
         {
             StartCoroutine(StartEvent());
         }
-        
+
         private IEnumerator StartEvent()
         {
-            #if !UNITY_EDITOR
+#if !UNITY_EDITOR
             ServerInputBox.text = "wss://roserver.dodsrv.com/ws";
-            #endif
+#endif
             UsernameBox.text = PlayerPrefs.GetString("LoginUsername", "");
             if (!string.IsNullOrWhiteSpace(GameConfig.Data?.SavedLoginToken) && !string.IsNullOrWhiteSpace(UsernameBox.text) && UsernameBox.text != "ID")
             {
@@ -67,17 +66,17 @@ namespace Assets.Scripts.UI.TitleScreen
 
         public void ReturnFocus()
         {
-            if(currentTab == 0 || currentTab == 1)
+            if (currentTab == 0 || currentTab == 1)
                 EventSystem.current.SetSelectedGameObject(UsernameBox.gameObject);
-            if(currentTab == 2)
+            if (currentTab == 2)
                 EventSystem.current.SetSelectedGameObject(ServerInputBox.gameObject);
         }
-        
+
         public void ChangeTabs(int id)
         {
             if (id == currentTab)
                 return;
-            
+
             Tabs[0].interactable = id != 0;
             Tabs[1].interactable = id != 1;
             Tabs[2].interactable = id != 2;
@@ -85,7 +84,7 @@ namespace Assets.Scripts.UI.TitleScreen
             if (currentTab == 0)
             {
                 loginUserName = UsernameBox.text;
-                loginPassword = PasswordBox.text; 
+                loginPassword = PasswordBox.text;
             }
 
             if (currentTab == 1)
@@ -145,7 +144,7 @@ namespace Assets.Scripts.UI.TitleScreen
             var password = PasswordBox.text;
 
             AudioManager.Instance.PlaySystemSound(Parent.ButtonSound); //button sound
-            
+
             if (currentTab == 0)
             {
                 var requestToken = RememberLoginToggle.isOn;
@@ -157,6 +156,7 @@ namespace Assets.Scripts.UI.TitleScreen
                         NetworkManager.Instance.TitleScreen.LogInError($"Stored user password unavailable, please input your password normally.");
                         return;
                     }
+
                     NetworkManager.Instance.StartConnectWithRegularLogin(url, username, login, true, requestToken);
                 }
                 else
@@ -173,9 +173,9 @@ namespace Assets.Scripts.UI.TitleScreen
                     NetworkManager.Instance.TitleScreen.LogInError($"Please use a different password.");
                     return;
                 }
-                
+
                 var repeat = PasswordRepeatBox.text;
-                if(password != repeat)
+                if (password != repeat)
                     NetworkManager.Instance.TitleScreen.LogInError($"Passwords do not match between the password and verification boxes.");
                 else
                 {
@@ -198,7 +198,7 @@ namespace Assets.Scripts.UI.TitleScreen
                 EventSystem.current.SetSelectedGameObject(ServerInputBox.gameObject);
                 return;
             }
-            
+
             var current = EventSystem.current.currentSelectedGameObject;
             var id = 0;
             if (current == UsernameBox.gameObject) id = 1;
@@ -221,10 +221,9 @@ namespace Assets.Scripts.UI.TitleScreen
                 if (id > 2) id = 1;
             }
 
-            if(id == 1) EventSystem.current.SetSelectedGameObject(UsernameBox.gameObject);
-            if(id == 2) EventSystem.current.SetSelectedGameObject(PasswordBox.gameObject);
-            if(id == 3) EventSystem.current.SetSelectedGameObject(PasswordRepeatBox.gameObject);
-
+            if (id == 1) EventSystem.current.SetSelectedGameObject(UsernameBox.gameObject);
+            if (id == 2) EventSystem.current.SetSelectedGameObject(PasswordBox.gameObject);
+            if (id == 3) EventSystem.current.SetSelectedGameObject(PasswordRepeatBox.gameObject);
         }
 
         // Update is called once per frame
@@ -232,9 +231,14 @@ namespace Assets.Scripts.UI.TitleScreen
         {
             if (Input.GetKeyDown(KeyCode.Tab))
                 HandleTabKey();
-            
+
+#if(UNITY_EDITOR)
+            if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.F1))
+                ServerInputBox.text = "wss://roserver.dodsrv.com/ws";
+#else
             if(Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.F1))
                 ServerInputBox.text = "ws://127.0.0.1:5000/ws";
+#endif
 
             if (currentTab == 0)
             {
@@ -244,7 +248,7 @@ namespace Assets.Scripts.UI.TitleScreen
                 var isOk = !string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password);
                 if (SubmitButton.interactable != isOk)
                     SubmitButton.interactable = isOk;
-                if(isOk && (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)))
+                if (isOk && (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)))
                     AttemptLogin();
             }
 
@@ -257,7 +261,7 @@ namespace Assets.Scripts.UI.TitleScreen
                 var isOk = !string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password) && !string.IsNullOrWhiteSpace(repeat);
                 if (SubmitButton.interactable != isOk)
                     SubmitButton.interactable = isOk;
-                if(isOk && (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)))
+                if (isOk && (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)))
                     AttemptLogin();
             }
             //

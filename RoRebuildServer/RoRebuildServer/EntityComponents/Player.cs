@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Numerics;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
@@ -362,6 +363,48 @@ public class Player : IEntityAutoReset
         }
 
         //IsAdmin = true; //for now
+    }
+
+    public void Revive(int hpPercent)
+    {
+        if (Character.State != CharacterState.Dead)
+            return;
+
+        var maxHp = GetStat(CharacterStat.MaxHp);
+
+        if (GetStat(CharacterStat.FullRevive) > 0)
+        {
+            SetStat(CharacterStat.Hp, maxHp);
+            SetStat(CharacterStat.Sp, GetStat(CharacterStat.MaxSp));
+        }
+        else
+        {
+            var resHp = maxHp * hpPercent / 100;
+            resHp = int.Clamp(resHp, 1, maxHp);
+
+            SetStat(CharacterStat.Hp, resHp);
+        }
+
+        Character.ResetState(true);
+        Character.SetSpawnImmunity();
+
+        //if (VendingState != null && Character.Events != null)
+        //{
+        //    if (!VendingState.VendProxy.TryGet<Npc>(out var npc) || npc.DisplayType != NpcDisplayType.VendingProxy)
+        //        return;
+
+        //    npc.OnInteract(this);
+
+        //}
+    }
+
+    public void Respawn()
+    {
+        if (VendingState != null)
+        {
+
+        }
+        ReturnToSavePoint();
     }
 
     public bool IsSkillOnCooldown(CharacterSkill skill)
@@ -1221,9 +1264,10 @@ public class Player : IEntityAutoReset
 
         if (regen > 0)
         {
-            Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
-            CommandBuilder.SendHealSingle(this, regen, HealType.None);
-            CommandBuilder.ClearRecipients();
+            //Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
+            //CommandBuilder.SendHealSingle(this, regen, HealType.None);
+            CommandBuilder.SendHealMultiAutoVis(Character, regen, HealType.None);
+            //CommandBuilder.ClearRecipients();
 
             if (Party != null)
                 CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(this, false); //only update those out of range
@@ -1278,6 +1322,16 @@ public class Player : IEntityAutoReset
 
         if (Character.State == CharacterState.Dead)
             return; //we're already dead!
+
+        if (NpcInteractionState.InteractionResult == NpcInteractionResult.CurrentlyVending)
+        {
+            if (NpcInteractionState.NpcEntity.TryGet<Npc>(out var npc))
+            {
+                CommandBuilder.VendingEnd(this);
+                npc.EndEvent();
+                NpcInteractionState.CancelInteraction();
+            }
+        }
 
         ClearTarget();
         EndNpcInteractions();

@@ -10,7 +10,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Monster;
 [SkillHandler(CharacterSkill.MagicalAttack, SkillClass.Magic, SkillTarget.Enemy)]
 public class MagicalAttackHandler : SkillHandlerBase
 {
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         if (target == null)
             return;

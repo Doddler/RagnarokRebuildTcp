@@ -1,0 +1,392 @@
+//
+//Milestone event: once certain milestones are reached, npcs are added to the camp south of prontera
+//
+//Once someone reaches level 10 : Unlock Kafra Staff
+//Once someone reaches level 20 : Unlock Ranch Vendor (meat, milk, etc)
+//Once someone reaches level 30 : Unlock General Vendor (fly wings, arrows)
+//Once someone reaches level 40 : Unlocks Alchemist (Potions)
+//Once someone reaches level 55 : Unlocks Fletcher (Arrow Quivers)
+//Once someone reaches level 70 : Unlock Apothecary (Turns herbs into potions)
+//Once someone reaches level 80 : Unlock Scholar (scrolls)
+//Once 5 minibosses are killed: Unlock headgear crafting
+//Once 8 minibosses are killed: Unlock weapon crafting
+//Once 2 MVPs are killed: Unlock high level weapon crafting
+//Once 8 MVPs are killed and someone reaches level 85 : Unlock Valkyrie and Okolnir challenge dungeon
+
+#event "MilestoneEvent" //this disables this file if MilestoneEvent is not set in OperationConfig section of appsettings
+
+Npc("prt_fild08", "MVP Milestones", "2_BULLETIN_BOARD", 149, 356, SE, 1, 1) 
+{
+	localstr boardInfo = "";
+
+OnClick:
+	boardInfo = GetGlobalString("MvpMilestones");
+	if(IsStringEmpty(boardInfo))
+	{
+		Dialog("Message Board", "No MVP bosses have been killed yet.\nThe first player to kill a boss will have their name recorded here. When an MVP is killed for the first time, all logged in players will receive a bonus.");
+	}
+	else
+	{
+			DialogBig("First Kill Achievements for MVP Bosses", boardInfo);
+	}
+}
+
+Npc("prt_fild08", "Miniboss Milestones", "2_BULLETIN_BOARD", 147, 356, SE, 1, 1) 
+{
+	localstr boardInfo = "";
+
+OnClick:
+	boardInfo = GetGlobalString("MinibossMilestones");
+	if(IsStringEmpty(boardInfo))
+	{
+		Dialog("Message Board", "No minibosses have been killed yet.\nThe first player to kill a boss will have their name recorded here. When a miniboss is killed for the first time, all logged in players will receive a bonus.");
+	}
+	else
+	{
+			DialogBig("First Kill Achievements for Mini Bosses", boardInfo);
+	}
+}
+
+Npc("prt_fild08", "Leveling Milestones", "2_BULLETIN_BOARD", 145, 356, SE, 1, 1) 
+{
+	localstr boardInfo = "";
+
+OnClick:
+	Option("Top 10 Player Levels", "First to Level Achievements", "Cancel");
+	switch(Result) {
+	case 0:
+		boardInfo = GetGlobalString("Top10List");
+		Dialog("Top 10 Highest Level Players", boardInfo);
+	case 1:
+		boardInfo = GetGlobalString("LevelMilestones");
+		if(IsStringEmpty(boardInfo))
+			Dialog("Message Board", "No player has reached a leveling milestone yet. The first player to reach specific levels will have their name recorded here.\nMilestone levels are every 10 levels, 95, and level 99.");
+		else
+			Dialog("First to Level Achievements", boardInfo);
+	
+	}
+}
+
+//for this macro to work, you need to put it at the end of the init section
+macro EventRevealedNpc(%signalName, %npcName) {
+	RegisterGlobalSignal(%signalName);
+	HideNpc();
+OnSignal:
+	if(Signal == "RevealOnServerUp")
+		ShowNpc();
+	else
+		StartTimer(1s);
+OnTimer 20s:
+	ShowNpc();
+	PlayEffectAtMyLocation("PuffOfSmoke");
+OnTimer 22s:
+	ServerWideMessage("<color=#FF99FF>The " + %npcName + " has joined the camp south of Prontera!</color>", "", true);
+	StopTimer();
+}
+
+macro Main_Gauche(%stone) {	AddItemToTradeSet("Daggers", CreateCraftedItem("Main_Gauche").Socket(%stone).Requires(%stone).Requires("Resin", 25).Requires("Iron", 8).Costs(2000)); }
+macro Stiletto(%stone) { AddItemToTradeSet("Daggers", CreateCraftedItem("Stiletto").Socket(%stone).Requires(%stone).Requires("Reptile_Tongue", 25).Requires("Steel", 6).Costs(10000)); }
+macro Gladius(%stone) { AddItemToTradeSet("Daggers", CreateCraftedItem("Gladius").Socket(%stone).Requires(%stone).Requires("Ant_Jaw",25).Requires("Oridecon", 2).Requires("Steel", 10).Costs(20000)); }
+macro Damascus(%stone) { AddItemToTradeSet("Daggers", CreateCraftedItem("Damascus").Socket(%stone).Requires(%stone).Requires("Broken_Sword",10).Requires("Oridecon", 4).Requires("Steel", 12).Costs(20000)); }
+
+macro Blade(%stone) { AddItemToTradeSet("Swords", CreateCraftedItem("Blade").Socket(%stone).Requires(%stone).Requires("Tooth_of_Bat", 15).Requires("Iron", 10).Costs(2000)); }
+macro Ring_Pommel_Saber(%stone) { AddItemToTradeSet("Swords", CreateCraftedItem("Ring_Pommel_Saber").Socket(%stone).Requires(%stone).Requires("Mantis_Scythe", 25).Requires("Steel", 8).Costs(10000)); }
+macro Tsurugi(%stone) { AddItemToTradeSet("Swords", CreateCraftedItem("Tsurugi").Socket(%stone).Requires(%stone).Requires("Fang",15).Requires("Oridecon", 2).Requires("Steel", 12).Costs(20000)); }
+macro Flamberge(%stone) { AddItemToTradeSet("Swords", CreateCraftedItem("Flamberge").Socket(%stone).Requires(%stone).Requires("Evil_Horn",10).Requires("Oridecon", 4).Requires("Steel",14).Costs(20000)); }
+
+macro Katana(%stone) { AddItemToTradeSet("2HSwords", CreateCraftedItem("Katana").Socket(%stone).Requires(%stone).Requires("Earthworm_Peeling", 10).Requires("Iron", 12).Costs(2000)); }
+macro Bastard_Sword(%stone) { AddItemToTradeSet("2HSwords", CreateCraftedItem("Bastard_Sword").Socket(%stone).Requires(%stone).Requires("Dokebi_Horn",25).Requires("Steel", 10).Costs(10000)); }
+macro Broad_Sword(%stone) { AddItemToTradeSet("2HSwords", CreateCraftedItem("Broad_Sword").Socket(%stone).Requires(%stone).Requires("Short_Daenggie",25).Requires("Oridecon", 3).Requires("Steel", 14).Costs(20000)); }
+macro Claymore(%stone) { AddItemToTradeSet("2HSwords", CreateCraftedItem("Claymore").Socket(%stone).Requires(%stone).Requires("Cracked_Diamond",2).Requires("Oridecon", 6).Requires("Steel", 16).Costs(20000)); }
+
+macro Battle_Axe(%stone) { AddItemToTradeSet("Axes", CreateCraftedItem("Battle_Axe").Socket(%stone).Requires(%stone).Requires("Orcish_Voucher",30).Requires("Iron", 10).Costs(2000)); }
+macro Hammer(%stone) { AddItemToTradeSet("Axes", CreateCraftedItem("Hammer").Socket(%stone).Requires(%stone).Requires("Orc's_Fang",25).Requires("Steel", 10).Costs(10000)); }
+macro Buster(%stone) { AddItemToTradeSet("Axes", CreateCraftedItem("Buster").Socket(%stone).Requires(%stone).Requires("Zenorc's_Fang", 25).Requires("Oridecon", 2).Requires("Steel", 12).Costs(20000)); }
+macro Two_Handed_Axe(%stone) { AddItemToTradeSet("Axes", CreateCraftedItem("Two-Handed_Axe").Socket(%stone).Requires(%stone).Requires("Ogre_Tooth",15).Requires("Oridecon", 4).Requires("Steel", 16).Costs(20000)); }
+
+macro Mace(%stone) { AddItemToTradeSet("Maces", CreateCraftedItem("Mace").Socket(%stone).Requires(%stone).Requires("Skel-Bone",20).Requires("Iron", 10).Costs(2000)); }
+macro Chain(%stone) { AddItemToTradeSet("Maces", CreateCraftedItem("Chain").Socket(%stone).Requires(%stone).Requires("Lantern",15).Requires("Steel", 10).Costs(10000)); }
+macro Sword_Mace(%stone) { AddItemToTradeSet("Maces", CreateCraftedItem("Sword_Mace").Socket(%stone).Requires(%stone).Requires("Worn_Out_Prison_Uniform", 10).Requires("Oridecon",2).Requires("Steel", 12).Costs(20000)); }
+
+macro Pike(%stone) { AddItemToTradeSet("Spears", CreateCraftedItem("Pike").Socket(%stone).Requires(%stone).Requires("Moth_Dust",10).Requires("Iron", 12).Costs(2000)); }
+macro Partizan(%stone) { AddItemToTradeSet("Spears", CreateCraftedItem("Partizan").Socket(%stone).Requires(%stone).Requires("Tail_of_Steel_Scorpion",25).Requires("Steel", 10).Costs(10000)); }
+macro Lance(%stone) { AddItemToTradeSet("Spears", CreateCraftedItem("Lance").Socket(%stone).Requires(%stone).Requires("Peco_Peco_Feather", 10).Requires("Oridecon", 4).Costs(20000)); }
+
+macro FourElements(%weapon) {
+	@%weapon("Flame_Heart"); @%weapon("Mystic_Frozen");	@%weapon("Rough_Wind");	@%weapon("Great_Nature");
+}
+
+Npc("prt_fild08", "Blacksmith Guildsman#MilestoneSmith", "4_F_JOB_BLACKSMITH", 158, 371, SW, 1, 1)
+{
+	localstr name = "Mitmair";
+
+	AddItemToTradeSet("Ore", CreateTradedItem("Iron").Requires("Iron_Ore", 5).Costs(100));
+	AddItemToTradeSet("Ore", CreateTradedItem("Steel").Requires("Iron", 5).Requires("Coal", 1).Costs(100));
+	AddItemToTradeSet("Ore", CreateTradedItem("Flame_Heart").Requires("Red_Blood", 10).Costs(100));
+	AddItemToTradeSet("Ore", CreateTradedItem("Mystic_Frozen").Requires("Crystal_Blue", 10).Costs(100));
+	AddItemToTradeSet("Ore", CreateTradedItem("Rough_Wind").Requires("Wind_of_Verdure", 10).Costs(100));
+	AddItemToTradeSet("Ore", CreateTradedItem("Great_Nature").Requires("Green_Live", 10).Costs(100));
+	AddItemToTradeSet("Ore", CreateTradedItem("Gold").Requires("Burnt_Tree", 5).Requires("Coal", 5).Requires("Fine_Sand", 5).Requires("Rough_Elunium", 3).Requires("Rough_Oridecon", 3).Costs(10000));
+
+	@FourElements(Main_Gauche); @FourElements(Stiletto); @FourElements(Gladius); @FourElements(Damascus);
+	@FourElements(Blade); @FourElements(Ring_Pommel_Saber); @FourElements(Tsurugi); @FourElements(Flamberge);
+	@FourElements(Katana); @FourElements(Bastard_Sword); @FourElements(Broad_Sword); @FourElements(Claymore);
+	@FourElements(Battle_Axe); @FourElements(Hammer); @FourElements(Buster); @FourElements(Two_Handed_Axe);
+	@FourElements(Mace); @FourElements(Chain); @FourElements(Sword_Mace);
+	@FourElements(Pike); @FourElements(Partizan); @FourElements(Lance);
+
+	@EventRevealedNpc("MilestoneSmith", "blacksmith guildsman Mitmair"); //this must be at the end of the init section to work!
+OnClick:
+	FocusNpc();
+	Dialog(name, "Mitmair's the name, blacksmith by trade. I heard there were interesting things going on here so I made the trip, and I can't say I've been disappointed.");
+	Dialog(name, "Seeing as there aren't any other blacksmiths around I thought I'd offer my services. If you need an elemental weapon crafted then I'm your girl.");
+	Dialog(name, "What do you say? You need something made?");
+
+	Option("Refine Ore", "Craft Dagger", "Craft Sword", "Craft 2-Handed Sword", "Craft Spear", "Craft Axe", "Craft Mace", "Cancel");
+	
+	switch(result)
+	{
+		case 0: StartItemTrade("Ore"); return;
+		case 1: StartItemTrade("Daggers"); return;
+		case 2: StartItemTrade("Swords"); return;
+		case 3: StartItemTrade("2HSwords"); return;
+		case 4: StartItemTrade("Spears"); return;
+		case 5: StartItemTrade("Axes"); return;
+		case 6: StartItemTrade("Maces"); return;
+		case 7:
+			Dialog(name, "Do come back if you need anything made!");
+			return;
+	}
+}
+
+//prontera trader
+Npc("prt_fild08", "Ranch Vendor", "4_F_01", 150, 350, NE, 1, 1) {
+	SellItem("Milk");
+	SellItem("Apple");
+	SellItem("Banana");
+	SellItem("Carrot");
+	SellItem("Potato");
+	SellItem("Pumpkin");
+	SellItem("Meat");
+	SellItem("Monster's_Feed");
+	@EventRevealedNpc("MilestoneRanchVendor", "friendly ranch vendor Mary"); //this must be at the end of the init section to work!
+OnClick:
+	FocusNpc();
+	Option("Buy", "Sell", "Cancel");
+	switch(Result)
+	{
+		case 0: OpenShop();
+		case 1: StartSellToNpc();
+		case 2: StartItemTrade();
+	}
+}
+
+Npc("prt_fild08", "General Vendor", "8_F", 151, 347, NE, 1, 1) {
+	SellItem("Arrow");
+	SellItem("Silver_Arrow");
+	SellItem("Fire_Arrow");
+	SellItem("Fly_Wing");
+	SellItem("Butterfly_Wing");
+	SellItem("Yggdrasil_Leaf");
+	SellItem("Trap");
+	@EventRevealedNpc("MilestoneGeneralVendor", "general vendor Ipore"); //this must be at the end of the init section to work!
+OnClick:
+	FocusNpc();
+	Option("Buy", "Sell", "Cancel");
+	switch(Result)
+	{
+		case 0: OpenShop();
+		case 1: StartSellToNpc();
+		case 2: StartItemTrade();
+	}
+}
+
+Trader("prt_fild08", "Flower Girl", "4W_KID", 176, 370, SW) {
+	SellItem("Flower");
+	SellItem("Fancy_Flower", 4000);
+}
+
+Npc("prt_fild08", "Diligent Alchemist", "4_M_ALCHE_C", 145, 346, SW, 1, 1)
+{
+	SellItem("Red_Potion");
+	SellItem("Orange_Potion");
+	SellItem("Yellow_Potion");
+	SellItem("White_Potion");
+	SellItem("Green_Potion");
+	SellItem("Concentration_Potion");
+	SellItem("Awakening_Potion");
+	SellItem("Berserk_Potion");
+	SellItem("Blue_Gemstone");
+	SellItem("Red_Gemstone");
+	SellItem("Yellow_Gemstone");
+	@EventRevealedNpc("MilestoneAlchemist", "diligent alchemist Gregory"); //this must be at the end of the init section to work!
+OnClick:
+	FocusNpc();
+	Option("Buy", "Sell", "Cancel");
+	switch(Result)
+	{
+		case 0: OpenShop();
+		case 1: StartSellToNpc();
+		case 2: StartItemTrade();
+	}
+}
+
+Npc("prt_fild08", "Shady Alchemist", "4_M_ALCHE_B", 139, 361, SW)
+{
+	AddTradedItem(CreateTradedItem("Green_Potion", 10).Requires("Green_Herb", 5).Requires("Empty_Bottle", 2).Costs(100));
+	AddTradedItem(CreateTradedItem("Red_Potion", 10).Requires("Red_Herb", 5).Requires("Empty_Bottle", 2).Costs(100));
+	AddTradedItem(CreateTradedItem("Yellow_Potion", 10).Requires("Yellow_Herb", 5).Requires("Empty_Bottle", 2).Costs(550));
+	AddTradedItem(CreateTradedItem("White_Potion", 10).Requires("White_Herb", 5).Requires("Empty_Bottle", 2).Costs(1200));
+	AddTradedItem(CreateTradedItem("Blue_Potion", 10).Requires("Blue_Herb", 5).Requires("Empty_Bottle", 2).Costs(2400));
+	AddTradedItem(CreateTradedItem("Glittering_Orb", 1).Requires("Star_Dust", 3).Requires("Star_Crumb", 3).Costs(400));
+	AddTradedItem(CreateTradedItem("Anodyne", 10).Requires("Alcohol", 2).Requires("Ment", 1).Requires("Empty_Bottle", 5));
+	AddTradedItem(CreateTradedItem("Aloevera", 10).Requires("Karvodailnirol", 2).Requires("Aloe", 1).Requires("Empty_Bottle", 5));
+	AddTradedItem(CreateTradedItem("Cursed_Water", 10).Requires("Detrimindexta", 1).Requires("Memento", 1).Requires("Empty_Bottle", 5));
+	
+	@EventRevealedNpc("MilestoneMixer", "shady alchemist Melkaba"); //this must be at the end of the init section to work!
+OnClick:
+	FocusNpc();
+	StartItemTrade();
+}
+
+Npc("prt_fild08", "Expert Fletcher", "4_F_JOB_HUNTER", 143, 342, NE)
+{
+	AddTradedItem(CreateTradedItem("Quiver", 1).Requires("Trunk", 5).Costs(50));
+	AddTradedItem(CreateTradedItem("Silver_Arrow_Quiver", 1).Requires("Trunk", 5).Requires("Phracon", 5).Costs(100));
+	AddTradedItem(CreateTradedItem("Fire_Arrow_Quiver", 1).Requires("Trunk", 5).Requires("Resin", 5).Costs(100));
+	AddTradedItem(CreateTradedItem("Fire_Arrow_Quiver", 4).Requires("Trunk", 20).Requires("Red_Blood", 1).Costs(100));
+	AddTradedItem(CreateTradedItem("Iron_Arrow_Quiver", 1).Requires("Trunk", 5).Requires("Iron", 1).Costs(100));
+	AddTradedItem(CreateTradedItem("Steel_Arrow_Quiver", 3).Requires("Trunk", 15).Requires("Steel", 2).Costs(100));
+	AddTradedItem(CreateTradedItem("Oridecon_Arrow_Quiver", 2).Requires("Trunk", 10).Requires("Oridecon", 1).Costs(100));
+	AddTradedItem(CreateTradedItem("Wind_Arrow_Quiver", 1).Requires("Trunk", 5).Requires("Wind_of_Verdure", 1).Costs(100));
+	AddTradedItem(CreateTradedItem("Stone_Arrow_Quiver", 1).Requires("Trunk", 5).Requires("Green_Live", 1).Costs(100));
+	AddTradedItem(CreateTradedItem("Crystal_Arrow_Quiver", 1).Requires("Trunk", 5).Requires("Crystal_Blue", 1).Costs(100));
+	AddTradedItem(CreateTradedItem("Shadow_Arrow_Quiver", 1).Requires("Trunk", 5).Requires("Little_Evil_Wing", 1).Costs(100));
+	AddTradedItem(CreateTradedItem("Immaterial_Arrow_Quiver", 2).Requires("Trunk", 10).Requires("Amulet", 1).Costs(100));
+	
+	AddTradedItem(CreateTradedItem("Trunk", 1).Requires("Barren_Trunk", 3).Costs(15));
+	AddTradedItem(CreateTradedItem("Trunk", 1).Requires("Solid_Trunk", 2).Costs(15));
+	AddTradedItem(CreateTradedItem("Trunk", 1).Requires("Fine-Grained_Trunk", 1).Costs(15));
+
+	SellItem("Trunk", 120);
+	SellItem("Quiver", 800);
+	SellItem("Silver_Arrow_Quiver", 2000);
+	SellItem("Fire_Arrow_Quiver", 2000);
+	//SellItem("Wind_Arrow_Quiver", 4000);
+	//SellItem("Stone_Arrow_Quiver", 4000);
+	//SellItem("Crystal_Arrow_Quiver", 4000);
+	//SellItem("Shadow_Arrow_Quiver", 4000);
+	//SellItem("Immaterial_Arrow_Quiver", 4000);
+
+	@EventRevealedNpc("MilestoneFletcher", "expert fletcher Seisner"); //this must be at the end of the init section to work!
+OnClick:
+	FocusNpc();
+	Option("Buy", "Sell", "Trade", "Cancel");
+	switch(Result)
+	{
+		case 0: OpenShop();
+		case 1: StartSellToNpc();
+		case 2: StartItemTrade();
+	}
+}
+
+Npc("prt_fild08", "Master Scholar", "4_M_SAGE_C", 141, 370, SE)
+{
+	AddTradedItem(CreateTradedItem("Elemental_Converter_Earth", 5).Requires("Horn", 6).Requires("Green_Live", 2).Requires("Blank_Scroll", 5).Costs(2000));
+	AddTradedItem(CreateTradedItem("Elemental_Converter_Fire", 5).Requires("Scorpion_Tail", 6).Requires("Red_Blood", 2).Requires("Blank_Scroll", 5).Costs(2000));
+	AddTradedItem(CreateTradedItem("Elemental_Converter_Water", 5).Requires("Snail's_Shell", 6).Requires("Crystal_Blue", 2).Requires("Blank_Scroll", 5).Costs(2000));
+	AddTradedItem(CreateTradedItem("Elemental_Converter_Wind", 5).Requires("Rainbow_Shell", 6).Requires("Wind_of_Verdure", 2).Requires("Blank_Scroll", 5).Costs(2000));
+
+	AddTradedItem(CreateTradedItem("Blessing_Scroll", 3).Requires("Holy_Water", 1).Requires("Witch_Starsand", 5).Requires("Blank_Scroll", 3).Costs(2000));
+	AddTradedItem(CreateTradedItem("Increase_Agi_Scroll", 3).Requires("Holy_Water", 1).Requires("Witch_Starsand", 5).Requires("Blank_Scroll", 3).Costs(2000));
+
+	AddTradedItem(CreateTradedItem("Red_Blood", 10).Requires("Flame_Heart").Costs(100));
+	AddTradedItem(CreateTradedItem("Crystal_Blue", 10).Requires("Mystic_Frozen").Costs(100));
+	AddTradedItem(CreateTradedItem("Wind_of_Verdure", 10).Requires("Rough_Wind").Costs(100));
+	AddTradedItem(CreateTradedItem("Green_Live", 10).Requires("Great_Nature").Costs(100));
+
+	SellItem("Blank_Scroll");
+
+	@EventRevealedNpc("MilestoneScholar", "master scholar Mischna"); //this must be at the end of the init section to work!
+OnClick:
+	FocusNpc();
+	Option("Buy", "Sell", "Trade", "Cancel");
+	switch(Result)
+	{
+		case 0: OpenShop();
+		case 1: StartSellToNpc();
+		case 2: StartItemTrade();
+	}
+}
+
+Npc("prt_fild08", "Apprentice Hat-Maker", "4_F_KHELLY", 150, 368, NE)
+{
+	AddTradedItem(CreateTradedItem("Mr._Smile").Requires("Clover", 10).Requires("Fluff", 10).Requires("Jellopy", 10));
+	AddTradedItem(CreateTradedItem("Sakkat").Requires("Trunk", 120));
+	AddTradedItem(CreateTradedItem("Opera_Masque").Requires("Iron", 20).Requires("Singing_Plant", 1).Costs(5000));
+	AddTradedItem(CreateTradedItem("Binoculars").Requires("Geek_Glasses", 1).Requires("Steel", 45).Costs(50000));
+	AddTradedItem(CreateTradedItem("Welding_Mask").Requires("Steel", 25).Costs(2000));
+	AddTradedItem(CreateTradedItem("Bunny_Band").Requires("Kitty_Band", 1).Requires("Soft_Fluff", 60).Requires("Pearl", 1).Requires("Four_Leaf_Clover", 1));
+	AddTradedItem(CreateTradedItem("Decorative_Mushroom").Requires("Mushroom_Spore", 100));
+	AddTradedItem(CreateTradedItem("Alarm_Mask").Requires("Needle_of_Alarm", 100));
+	AddTradedItem(CreateTradedItem("Red_Bandana").Requires("Iron", 20).Requires("Cracked_Diamond", 1).Costs(3500));
+	AddTradedItem(CreateTradedItem("Feather_Bonnet").Requires("Romantic_Gent", 1).Requires("Bird_Feather", 45).Costs(500));
+	AddTradedItem(CreateTradedItem("Blush").Requires("Alice's_Apron", 10));
+	AddTradedItem(CreateTradedItem("Chef_Hat").Requires("Dragon_Scale", 15).Requires("Soft_Fluff", 30).Requires("Piece_of_Cake", 10));
+	AddTradedItem(CreateTradedItem("Decorative_Golden_Bell").Requires("Golden_Bell").Requires("Gold").Costs(20000));
+	AddTradedItem(CreateTradedItem("Crown_of_Ancient_Queen").Requires("Queen's_Hair_Ornament").Requires("Gold").Costs(20000));
+	AddTradedItem(CreateTradedItem("Crown_of_Mistress").Requires("Coronet").Requires("Gold").Costs(40000));
+	AddTradedItem(CreateTradedItem("Angel_Wing_Ears").Requires("Angel_Wing").Requires("Elven_Ears"));
+	AddTradedItem(CreateTradedItem("Evil_Wing_Ears").Requires("Evil_Wing").Requires("Elven_Ears"));
+	AddTradedItem(CreateTradedItem("Party_Hat").Requires("Santa_Hat").Requires("Oil_Paper", 1).Requires("Slick_Paper", 1));
+	AddTradedItem(CreateTradedItem("Straw_Hat").Requires("Sakkat").Requires("Piece_of_Bamboo", 20));
+	AddTradedItem(CreateTradedItem("Sea_Otter_Hat").Requires("Raccoon_Hat").Requires("Smokie_Leaf"));
+	AddTradedItem(CreateTradedItem("Blue_Fish").Requires("Rotten_Fish").Requires("Rotten_Scale", 30).Requires("Fish_Tail", 5).Requires("Sticky_Mucus", 10));
+	AddTradedItem(CreateTradedItem("Kitsune_Mask").Requires("Nine_Tails", 99));
+	AddTradedItem(CreateTradedItem("Hahoe_Mask").Requires("Cactus_Needle", 25).Requires("Mane", 25).Requires("Brigan", 5));
+	AddTradedItem(CreateTradedItem("Mage_Hat").Requires("Wizard_Hat").Requires("Dragon_Scale", 25).Requires("Mould_Powder", 15).Requires("Elder_Willow_Card"));
+	AddTradedItem(CreateTradedItem("Magician_Hat").Requires("Wizard_Hat").Requires("Ancient_Lips", 35).Requires("Solid_Shell", 35));
+	AddTradedItem(CreateTradedItem("Sunday_Hat").Requires("Hat").Requires("Cap").Requires("Fabric", 50).Requires("Soft_Feather", 5));
+	AddTradedItem(CreateTradedItem("Drooping_Cat").Requires("Circlet_").Requires("Old_Broom"));
+	AddTradedItem(CreateTradedItem("Boy's_Cap").Requires("Tiger_Footskin"));
+	AddTradedItem(CreateTradedItem("Deviruchi_Hat").Requires("Little_Evil_Horn", 50).Requires("Talon_of_Griffon"));
+	AddTradedItem(CreateTradedItem("Bao_Bao").Requires("Silk_Ribbon").Requires("Heroic_Emblem"));
+	@EventRevealedNpc("MilestoneHeadgear", "apprentice hat-maker Elly"); //this must be at the end of the init section to work!
+OnClick:
+	FocusNpc();
+	StartItemTrade();
+}
+
+Npc("prt_fild08", "Black Market Exchange", "4_F_JOB_ASSASSIN", 152, 377, S)
+{
+	AddTradedItem(CreateTradedItem("Rudra_Bow").Requires("Muscovite").Requires("Peridot").Requires("Rose_Quartz").Requires("Illusion_Flower").Requires("Gold", 2).Costs(50000));
+	AddTradedItem(CreateTradedItem("Ice_Pick").Requires("Biotite").Requires("Muscovite").Requires("Phlogopite").Requires("Chivalry_Emblem", 2).Requires("Gold", 2).Costs(50000));
+	AddTradedItem(CreateTradedItem("Combat_Knife").Requires("Agate").Requires("Citrin").Requires("Muscovite").Requires("Tongue", 15).Requires("Gold", 2).Costs(50000));
+	AddTradedItem(CreateTradedItem("Byeol-ungeom").Requires("Agate").Requires("Citrin").Requires("Muscovite").Requires("Necklace_of_Wisdom", 2).Requires("Gold", 2).Costs(50000));
+	AddTradedItem(CreateTradedItem("Schweizersabel").Requires("Citrin").Requires("Phlogopite").Requires("Pyroxene").Requires("Izidor").Requires("Gold", 2).Costs(50000));
+	AddTradedItem(CreateTradedItem("Guillotine").Requires("Agate").Requires("Peridot").Requires("Turquoise").Requires("Animal_Gore", 3).Requires("Gold", 2).Costs(50000));
+	AddTradedItem(CreateTradedItem("Exorciser").Requires("Phlogopite").Requires("Pyroxene").Requires("Turquoise").Requires("Hand_of_God").Requires("Gold", 2).Costs(50000));
+	AddTradedItem(CreateTradedItem("Excalibur").Requires("Biotite").Requires("Rose_Quartz").Requires("Turquoise").Requires("Silver_Knife_of_Chastity").Requires("Gold", 2).Costs(50000));
+	AddTradedItem(CreateTradedItem("Executioner").Requires("Amulet").Requires("Bloody_Edge").Requires("Necklace_of_Oblivion").Requires("Executioner's_Mitten").Costs(50000));
+	AddTradedItem(CreateTradedItem("Mistilteinn").Requires("Emperium").Requires("Foolishness_of_the_Blind").Requires("Loki's_Whispers").Requires("Mother's_Nightmare").Requires("Young_Twig"));
+	AddTradedItem(CreateTradedItem("Tyrfing").Requires("Emperium").Requires("Peridot").Requires("Contract_in_Shadow").Requires("Blade_Lost_in_Darkness").Costs(50000));
+	AddTradedItem(CreateTradedItem("Hat_of_the_Sun_God").Requires("Rose_Quartz").Requires("Biotite").Requires("Pyroxene").Requires("Gold", 2).Costs(100000));
+	AddTradedItem(CreateTradedItem("Orc_Hero_Helm").Requires("Heroic_Emblem", 3).Requires("Jellopy", 50).Requires("Orcish_Voucher", 150).Costs(50000));
+	AddTradedItem(CreateTradedItem("Valkyrian_Helm").Requires("Valhalla's_Flower").Requires("Angel_Wing").Requires("Gemstone"));
+	@EventRevealedNpc("MilestoneHighLevelWeapons", "black market trader Wickebine Tres"); //this must be at the end of the init section to work!
+OnClick:
+	FocusNpc();
+	StartItemTrade();
+}
+
+/*
+Trader("prt_fild08", "Test NPC", "1_F_MARIA", 176, 359, SW) {
+	AddTradedItem(CreateTradedItem("Sakkat").Requires("Trunk", 80));
+	AddTradedItem(CreateTradedItem("Bunny_Band").Requires("Kitty_Band", 1).Requires("Soft_Fluff", 60).Requires("Pearl", 1).Requires("Four_Leaf_Clover", 1));
+	AddTradedItem(CreateTradedItem("Angel_Wing_Ears").Requires("Angel_Wing", 1).Requires("Elven_Ears", 1));
+	AddTradedItem(CreateTradedItem("Evil_Wing_Ears").Requires("Evil_Wing", 1).Requires("Elven_Ears", 1));
+OnClick:
+	FocusNpc();
+	StartItemTrade();
+}
+*/

@@ -8,7 +8,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Other;
 [SkillHandler(CharacterSkill.NoEffectAttack, SkillClass.Unique, SkillTarget.Any)]
 public class NoEffectAttackHandler : SkillHandlerBase
 {
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         var ch = source.Character;
 

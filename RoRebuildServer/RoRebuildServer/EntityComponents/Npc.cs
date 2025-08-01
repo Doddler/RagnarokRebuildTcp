@@ -21,6 +21,7 @@ using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation;
+using RoRebuildServer.Simulation.Items;
 using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.Util;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -42,6 +43,7 @@ public class Npc : IEntityAutoReset
 
     public AreaOfEffect? AreaOfEffect;
 
+    public EntityList? TargetList;
     public EntityList? Mobs;
     public int MobCount => Mobs?.Count ?? 0;
 
@@ -154,7 +156,10 @@ public class Npc : IEntityAutoReset
 
         if (Mobs != null)
             EntityListPool.Return(Mobs);
+        if(TargetList != null)
+            EntityListPool.Return(TargetList);
         Mobs = null;
+        TargetList = null;
 
         DisplayType = NpcDisplayType.Sprite;
         EffectType = NpcEffectType.None;
@@ -377,9 +382,9 @@ public class Npc : IEntityAutoReset
             Character.Map?.Instance.NpcNameLookup.Remove(currentSignalTarget);
     }
 
-    public void OnSignal(Npc srcNpc, string signal, int value1 = 0, int value2 = 0, int value3 = 0, int value4 = 0)
+    public void OnSignal(WorldObject src, string signal, int value1 = 0, int value2 = 0, int value3 = 0, int value4 = 0)
     {
-        Behavior.OnSignal(this, srcNpc, signal, value1, value2, value3, value4);
+        Behavior.OnSignal(this, src, signal, value1, value2, value3, value4);
     }
 
     public void RevealAvatar(string name)
@@ -558,6 +563,34 @@ public class Npc : IEntityAutoReset
         }
 
         return m;
+    }
+
+
+    public void DescendSummonMonster(WorldObject owner, string name, int x, int y, int width = 0, int height = 0, int facing = -1, string? aiType = null)
+    {
+        Debug.Assert(Character.Map != null, $"Npc {Character.Name} cannot summon mobs {name} nearby, it is not currently attached to a map.");
+
+        var monsterDef = DataManager.MonsterCodeLookup[name];
+
+        var area = Area.CreateAroundPoint(new Position(x, y), width, height);
+
+        //for (var i = 0; i < count; i++)
+        //{
+        var minion = World.Instance.CreateMonster(Character.Map, monsterDef, area, null, false);
+        var minionMonster = minion.Get<Monster>();
+        minionMonster.ResetAiUpdateTime();
+        minionMonster.SetMaster(owner.Entity);
+
+        EnsureMobListCreated();
+        Mobs!.Add(minion);
+
+        if (facing >= 0)
+            minionMonster.Character.FacingDirection = (Direction)facing;
+
+        Character.Map.AddEntityWithEvent(ref minion, CreateEntityEventType.Descend, Character.Position);
+
+        if (!string.IsNullOrWhiteSpace(aiType))
+            minionMonster.ChangeAiSkillHandler(aiType);
     }
 
     public void DescendSummonMonster(string name, int x, int y, int width = 0, int height = 0, int facing = -1, string? aiType = null)
@@ -1053,7 +1086,7 @@ public class Npc : IEntityAutoReset
         World.Instance.MainThreadActions.Push(() =>
         {
             if (World.Instance.GetGlobalSignalTarget(signalName).TryGet<Npc>(out var npc))
-                npc.OnSignal(npc, signalValue);
+                npc.OnSignal(npc.Character, signalValue);
             else
                 ServerLogger.LogWarning($"SendGlobalSignal (from {npc}) could not find a signal recipient for the signal {signalName}.");
         });
@@ -1071,7 +1104,7 @@ public class Npc : IEntityAutoReset
             if (!evt.IsAlive())
                 continue;
             var npc = events[i].Get<Npc>();
-            npc.OnSignal(this, signal, value1, value2, value3, value4);
+            npc.OnSignal(npc.Character, signal, value1, value2, value3, value4);
         }
     }
 
@@ -1089,7 +1122,7 @@ public class Npc : IEntityAutoReset
         }
 
         var npc = destNpc.Get<Npc>();
-        npc.OnSignal(this, signal, value1, value2, value3, value4);
+        npc.OnSignal(npc.Character, signal, value1, value2, value3, value4);
     }
 
 
@@ -1371,6 +1404,48 @@ public class Npc : IEntityAutoReset
         LastTimerUpdate = (timer - 1) / 1000f;
 
         //DebugMessage($"Setting npc {Name} timer from {prevStart} to {TimerStart} (current server time is {Time.ElapsedTime})");
+    }
+
+    public void MoveLockAllMyMonsters(Area area)
+    {
+        if (MobCount <= 0)
+            return;
+        foreach (var m in Mobs)
+        {
+            if (m.TryGet<Monster>(out var monster))
+            {
+                monster.LockMovementToSpawn = true;
+                monster.MoveLockZone = area;
+            }
+        }
+    }
+
+    public void MoveAllPlayersToMap(string map, int x, int y)
+    {
+        if (Character.Map == null)
+            return;
+
+        foreach (var ch in Character.Map.Players)
+        {
+            if (!ch.TryGet<Player>(out var player))
+                continue;
+
+            player.WarpPlayer(map, x, y, 1, 1, false);
+        }
+    }
+
+    public void DropItemNearby(string itemName, int count, int width, int height)
+    {
+        if (!DataManager.ItemIdByName.TryGetValue(itemName, out var itemId))
+        {
+            ServerLogger.LogWarning($"Npc {FullName} could not create ground drop item {itemName} as that item could not be found.");
+            return;
+        }
+
+        var area = Area.CreateAroundPoint(Character.Position, width, height);
+        
+        var item = new GroundItem(area.RandomInArea(), itemId, count);
+        Character.Map?.DropGroundItem(ref item);
     }
 
     public void EndVending()

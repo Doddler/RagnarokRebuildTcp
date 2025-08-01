@@ -16,8 +16,9 @@ namespace Assets.Scripts.SkillHandlers.Handlers
         
         public override void StartSkillCasting(ServerControllable src, Vector2Int target, int lvl, float castTime)
         {
+            var size = lvl <= 10 ? 6 : 8;
             HoldStandbyMotionForCast(src, castTime);
-            CreateGroundTargetCircle(src, target, 6, castTime);
+            CreateGroundTargetCircle(src, target, size, castTime);
             src.AttachEffect(CastEffect.Create(castTime, src.gameObject, AttackElement.Wind));
         }
 

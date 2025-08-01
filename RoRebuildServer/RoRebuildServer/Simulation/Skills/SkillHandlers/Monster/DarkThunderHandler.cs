@@ -20,7 +20,8 @@ public class DarkThunderHandler : SkillHandlerBase
         return 2f + lvl * 0.5f;
     }
 
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         var hitCount = lvl + 2;
         var knockBack = int.Clamp(hitCount, 3, 12);

@@ -12,7 +12,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Assassin;
 [SkillHandler(CharacterSkill.EnchantPoison, SkillClass.Physical, SkillTarget.Ally)]
 public class EnchantPoisonHandler : SkillHandlerBase
 {
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         if (target == null)
             return;

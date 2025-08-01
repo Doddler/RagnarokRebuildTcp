@@ -25537,7 +25537,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2088088635}
   m_Direction: 2
   m_Value: 1.0000012
-  m_Size: 0.9401848
+  m_Size: 0.9401847
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -42164,7 +42164,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1006908613
 RectTransform:
   m_ObjectHideFlags: 0
@@ -42180,9 +42180,9 @@ RectTransform:
   - {fileID: 841027056}
   m_Father: {fileID: 2093357072}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 67.5, y: 0}
   m_SizeDelta: {x: 70, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1006908614
@@ -50140,8 +50140,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2000122720}
   m_HandleRect: {fileID: 2000122719}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 1
+  m_Value: 1.0000007
+  m_Size: 0.55382216
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -63587,7 +63587,31 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Welcome to Ragnarok Rebuild!
+  m_text: 'Welcome to Ragnarok Rebuild!
+
+    f
+
+    f
+
+    f
+
+    f
+
+    f
+
+    f
+
+    f
+
+    f
+
+    f
+
+    f
+
+    f
+
+    f'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f526b3b4777a17244865df0c27c65fbf, type: 2}
   m_sharedMaterial: {fileID: 6918503600881707298, guid: f526b3b4777a17244865df0c27c65fbf,

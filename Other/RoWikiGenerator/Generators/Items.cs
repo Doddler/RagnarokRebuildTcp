@@ -75,7 +75,7 @@ public class Items
     public static void RegisterItemSource(MonsterDatabaseInfo monster, MonsterDropData.MonsterDropEntry dropEntry)
     {
         var data = DataManager.GetItemInfoById(dropEntry.Id);
-        if (data == null || monster.Code == "RANDGRIS" || monster.Code == "ICE_TITAN")
+        if (data == null || monster.Code == "ICE_TITAN")
             return;
 
         if (!AvailableItems.TryGetValue(dropEntry.Id, out var itemEntry))

@@ -19,7 +19,8 @@ public class NapalmBeatHandler : SkillHandlerBase
         return 1.2f - lvl * 0.1f;
     }
 
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         if (target == null || !target.IsValidTarget(source))
             return;

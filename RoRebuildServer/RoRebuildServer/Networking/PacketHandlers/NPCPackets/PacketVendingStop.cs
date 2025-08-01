@@ -1,6 +1,7 @@
 ﻿using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using RoRebuildServer.EntityComponents;
+using RoRebuildServer.EntitySystem;
 
 namespace RoRebuildServer.Networking.PacketHandlers.NPCPackets;
 
@@ -20,6 +21,17 @@ public class PacketVendingStop : IClientPacketHandler
                 npc.EndEvent();
 
             player.EndNpcInteractions();
+            if(player.VendingState != null)
+                player.VendingState.VendProxy = Entity.Null;
+        }
+        else
+        {
+            if (player.VendingState != null)
+            {
+                if(player.VendingState.VendProxy.TryGet<Npc>(out var npc))
+                    npc.EndEvent();
+                player.VendingState.VendProxy = Entity.Null;
+            }
         }
 
         if (player.NpcInteractionState.InteractionResult == NpcInteractionResult.WaitForVendShop)

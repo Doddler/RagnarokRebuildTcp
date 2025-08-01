@@ -561,9 +561,9 @@ public partial class Monster
 
         timeOfStartChase = float.MaxValue;
 
-        if (LockMovementToSpawn && SpawnRule != null)
+        if (LockMovementToSpawn && !MoveLockZone.IsZero)
         {
-            if (FindRandomMoveTargetInArea(SpawnRule.SpawnArea, Character.Position, 9, 10))
+            if (FindRandomMoveTargetInArea(MoveLockZone, Character.Position, 9, 10))
                 return true;
         }
 

@@ -16,7 +16,8 @@ public class LickHandler : SkillHandlerBase
 {
     public override int GetSkillRange(CombatEntity source, int lvl) => 2;
 
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         lvl = lvl.Clamp(1, 5);
         if (target == null || !target.IsValidTarget(source))

@@ -11,7 +11,8 @@ public class StunAttackHandler : SkillHandlerBase
 {
     public override int GetSkillRange(CombatEntity source, int lvl) => 7;
 
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         if (target == null)
             return;

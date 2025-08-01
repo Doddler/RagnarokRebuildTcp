@@ -1609,6 +1609,13 @@
       "MapMode": 0,
       "CanMemo": false,
       "Music": "42.mp3"
+    },
+    {
+      "Code": "que_qsch01",
+      "Name": "Okolnir",
+      "MapMode": 0,
+      "CanMemo": false,
+      "Music": "ToS-3rdWave.flac"
     }
   ]
 }

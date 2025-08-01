@@ -13,7 +13,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Merchant;
 public class MammoniteHandler : SkillHandlerBase
 {
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
-        int lvl, bool isIndirect)
+        int lvl, bool isIndirect, bool isItemSource)
     {
         if (source.Character.Type == CharacterType.Player &&
             GetMammoniteCost(source.Player, lvl) > source.Player.GetZeny())
@@ -22,7 +22,8 @@ public class MammoniteHandler : SkillHandlerBase
         return StandardValidation(source, target, position);
     }
 
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         lvl = lvl.Clamp(1, 10);
 

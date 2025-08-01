@@ -16,7 +16,8 @@ public class HeavensDriveHandler : SkillHandlerBase
 
     public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 1f + lvl * 0.5f;
     
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         var map = source.Character.Map;
         Debug.Assert(map != null);

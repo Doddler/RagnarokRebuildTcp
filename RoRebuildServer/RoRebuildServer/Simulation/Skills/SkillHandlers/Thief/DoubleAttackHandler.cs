@@ -19,7 +19,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Thief
             owner.SubStat(CharacterStat.DoubleAttackChance, 5 * lvl);
         }
 
-        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl,
+            bool isIndirect, bool isItemSource)
         {
             throw new NotImplementedException();
         }

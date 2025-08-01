@@ -515,6 +515,8 @@ namespace Assets.Scripts.Sprites
             if (!isInitialized)
                 Initialize();
 
+            var state = PlayerState.Instance;
+
             var pData = playerClassLookup[0]; //novice
             if (playerClassLookup.TryGetValue(param.ClassId, out var lookupData))
                 pData = lookupData;
@@ -553,7 +555,7 @@ namespace Assets.Scripts.Sprites
             control.Level = param.Level;
             control.WeaponClass = param.WeaponClass;
             control.PartyName = param.PartyName;
-            control.IsPartyMember = param.PartyId > 0 && param.PartyId == PlayerState.Instance.PartyId;
+            control.IsPartyMember = param.PartyId > 0 && param.PartyId == state.PartyId;
 
             bodySprite.Controllable = control;
             if (param.State == CharacterState.Moving)
@@ -604,15 +606,19 @@ namespace Assets.Scripts.Sprites
             if (control.IsMainCharacter)
             {
                 CameraFollower.Instance.CharacterDetailBox.CharacterJob.text = pData.Name;
-                PlayerState.Instance.PlayerName = control.Name;
-                PlayerState.Instance.UpdatePlayerName();
+                state.PlayerName = control.Name;
+                state.UpdatePlayerName();
                 CameraFollower.Instance.CharacterDetailBox.BaseLvlDisplay.text = $"Base Lv. {control.Level}";
             }
 
             control.Init();
 
-            if (param.PartyId == PlayerState.Instance.PartyId)
-                PlayerState.Instance.AssignPartyMemberControllable(control.Id, control);
+            if (param.PartyId == state.PartyId)
+            {
+                state.AssignPartyMemberControllable(control.Id, control);
+                if(state.PartyMemberIdLookup.TryGetValue(control.Id, out var partyMemberId) && UiManager.Instance.PartyPanel.PartyEntryLookup.TryGetValue(partyMemberId, out var panel))
+                    panel.ClearAllStatusEffects(); //we will re-assign them right after
+            }
 
             if (param.CharacterStatusEffects != null)
                 foreach (var (s, duration) in param.CharacterStatusEffects)
@@ -811,9 +817,9 @@ namespace Assets.Scripts.Sprites
             AddressableUtility.LoadRoSpriteData(go, "Assets/Sprites/Misc/emotion.spr", emote.OnFinishLoad);
         }
 
-        public ServerControllable InstantiateEffect(ref MonsterSpawnParameters param, NpcEffectType type)
+        public ServerControllable InstantiateEffect(ref MonsterSpawnParameters param, NpcEffectType type, bool ignoreTypeCheck = false)
         {
-            if (type == NpcEffectType.None)
+            if (type == NpcEffectType.None && !ignoreTypeCheck)
             {
                 Debug.LogError($"Attempting to instantiate effect with type None!");
                 return null;

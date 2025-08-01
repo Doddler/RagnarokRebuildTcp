@@ -26,15 +26,15 @@ public abstract class SkillHandlerBase
     public virtual float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 0f;
     public virtual int GetAreaOfEffect(CombatEntity source, Position position, int lvl) => 0;
 
-    public virtual bool PreProcessValidation(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect) => true;
-    public abstract void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect);
+    public virtual bool PreProcessValidation(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect, bool isItemSource) => true;
+    public abstract void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect, bool isItemSource);
     public virtual void NpcProcess(Npc source, CombatEntity? target, Position position, int lvl) { }
 
 
     public float GetCastTime(CombatEntity source, CombatEntity? target, int lvl) => GetCastTime(source, target, Position.Invalid, lvl);
     public float GetCastTime(CombatEntity source, Position position, int lvl) => GetCastTime(source, null, position, lvl);
-    public void Process(CombatEntity source, Position position, int lvl, bool isIndirect = false) => Process(source, null, position, lvl, isIndirect);
-    public void Process(CombatEntity source, CombatEntity target, int lvl, bool isIndirect = false) => Process(source, target, Position.Invalid, lvl, isIndirect);
+    public void Process(CombatEntity source, Position position, int lvl, bool isIndirect = false) => Process(source, null, position, lvl, isIndirect, false);
+    public void Process(CombatEntity source, CombatEntity target, int lvl, bool isIndirect = false) => Process(source, target, Position.Invalid, lvl, isIndirect, false);
     public virtual void ApplyPassiveEffects(CombatEntity owner, int lvl) { }
     public virtual void RemovePassiveEffects(CombatEntity owner, int lvl) { }
     public virtual void RefreshPassiveEffects(CombatEntity owner, int lvl) { }
@@ -165,7 +165,7 @@ public abstract class SkillHandlerBase
         return SkillValidationResult.Failure;
     }
 
-    public virtual SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect) =>
+    public virtual SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect, bool isItemSource) =>
         StandardValidation(source, target, position);
 
     protected void GenericCastAndInformSelfSkill(WorldObject ch, CharacterSkill skill, int level)

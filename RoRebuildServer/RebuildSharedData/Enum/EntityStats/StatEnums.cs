@@ -373,6 +373,7 @@ public enum CharacterStat
     SpConsumption,
     UninterruptibleCast,
 
+    KnockbackImmune,
     ReverseDefense,
     FullRevive, //Osiris card
     NoGemstone,

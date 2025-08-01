@@ -25,7 +25,8 @@ public class ComboAttackHandler : SkillHandlerBase
     //level 10: 11 hits @ 0.45x = 5x
     //actual damage will vary as def/vit is applied per hit
     
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         lvl = lvl.Clamp(1, 10);
 

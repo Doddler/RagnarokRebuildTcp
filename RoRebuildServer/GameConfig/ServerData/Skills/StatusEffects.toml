@@ -331,6 +331,9 @@ CanDisable = false
 
 [Invisible]
 
+[Vulnerability] #for special events
+[SpecialTarget] #for special events
+
 #----------------------------------
 # Utility Effects
 #----------------------------------

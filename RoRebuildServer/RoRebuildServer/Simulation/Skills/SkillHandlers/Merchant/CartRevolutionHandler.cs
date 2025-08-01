@@ -16,15 +16,16 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Merchant
         public override int GetSkillRange(CombatEntity source, int lvl) => 1;
 
         public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target,
-            Position position, int lvl, bool isIndirect)
+            Position position, int lvl, bool isIndirect, bool isItemSource)
         {
             if (source.Character.Type == CharacterType.Player && !source.Player.HasCart)
                 return SkillValidationResult.CartRequired;
 
-            return base.ValidateTarget(source, target, position, lvl, false);
+            return base.ValidateTarget(source, target, position, lvl, false, false);
         }
 
-        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl,
+            bool isIndirect, bool isItemSource)
         {
             if (target == null || !target.IsTargetable || source.Character.Map == null)
                 return;

@@ -79,7 +79,14 @@
                                     </span><br/>
  *@
                                     <span span="float: left">
-                                        <a href="MonsterListFull.html#@(monster)">Dropped by @(DataManager.MonsterCodeLookup[monster].Name)</a>
+                                        @if (monster == "RANDGRIS")
+                                        {
+                                            <span>Dropped by ????</span>
+                                        }
+                                        else
+                                        {
+                                            <a href="MonsterListFull.html#@(monster)">Dropped by @(DataManager.MonsterCodeLookup[monster].Name)</a>
+                                        }
                                     </span>
                                     <span style="float: right">@(drop.Chance / 100f)%</span>
                                     <br style="clear:both" />

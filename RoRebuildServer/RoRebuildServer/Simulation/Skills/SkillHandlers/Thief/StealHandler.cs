@@ -15,7 +15,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Thief;
 public class StealHandler : SkillHandlerBase
 {
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
-        int lvl, bool isIndirect)
+        int lvl, bool isIndirect, bool isItemSource)
     {
         if (target == null)
             return SkillValidationResult.InvalidTarget;
@@ -29,10 +29,11 @@ public class StealHandler : SkillHandlerBase
         if (target.HasStatusEffectOfType(CharacterStatusEffect.StolenFrom))
             return SkillValidationResult.ItemAlreadyStolen;
 
-        return base.ValidateTarget(source, target, position, lvl, false);
+        return base.ValidateTarget(source, target, position, lvl, false, false);
     }
 
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         Debug.Assert(target != null);
         Debug.Assert(target.Character.Type == CharacterType.Monster);

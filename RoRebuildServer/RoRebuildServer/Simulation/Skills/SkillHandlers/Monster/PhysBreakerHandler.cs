@@ -10,7 +10,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Monster;
 [SkillHandler(CharacterSkill.PhysBreaker, SkillClass.Magic)]
 public class PhysBreakerHandler : SkillHandlerBase
 {
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         if (target == null || !target.IsValidTarget(source))
             return;

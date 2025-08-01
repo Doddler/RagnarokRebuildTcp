@@ -13,7 +13,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte;
 public class HealHandler : SkillHandlerBase
 {
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
-        int lvl, bool isIndirect)
+        int lvl, bool isIndirect, bool isItemSource)
     {
         if (target == null)
             return SkillValidationResult.InvalidTarget;
@@ -32,7 +32,8 @@ public class HealHandler : SkillHandlerBase
         return SkillValidationResult.InvalidTarget;
     }
 
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         if (target == null || target.Character.State == CharacterState.Dead)
             return;

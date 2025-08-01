@@ -881,7 +881,7 @@ namespace Assets.Scripts.Network
             return null;
         }
 
-        //detach an existing effect of a specific type. For safety, we delete any others as they'll probably be here forever otherwise.
+        //detach an existing effect of a specific type. For safety, we delete any others of the same type as they'll probably be here forever otherwise.
         public Ragnarok3dEffect DetachExistingEffectOfType(EffectType type)
         {
             if (EffectList == null || EffectList.Count == 0)

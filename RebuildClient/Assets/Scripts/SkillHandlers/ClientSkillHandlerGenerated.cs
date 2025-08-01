@@ -6,7 +6,7 @@ namespace Assets.Scripts.SkillHandlers
 	{
 		static ClientSkillHandler()
 		{
-			handlers = new SkillHandlerBase[204];
+			handlers = new SkillHandlerBase[206];
 			handlers[0] = new DefaultSkillHandler();
 			handlers[1] = new DefaultSkillHandler();
 			handlers[2] = new Assets.Scripts.SkillHandlers.Handlers.FirstAidHandler();
@@ -222,7 +222,9 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[200] = new DefaultSkillHandler();
 			handlers[201] = new DefaultSkillHandler();
 			handlers[202] = new DefaultSkillHandler();
-			handlers[203] = new DefaultSkillHandler();
+			handlers[203] = new Assets.Scripts.SkillHandlers.Handlers.Event.RollingThunderHandler();
+			handlers[204] = new Assets.Scripts.SkillHandlers.Handlers.Event.EarthShakerHandler();
+			handlers[205] = new DefaultSkillHandler();
 		}
 	}
 }

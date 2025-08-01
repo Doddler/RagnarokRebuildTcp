@@ -9,7 +9,8 @@ public class SwordMasteryHandler : SkillHandlerBase
 {
     //weapon specific mastery skills are handled under mastery bonus in CombatEntity
         
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         throw new NotImplementedException();
     }

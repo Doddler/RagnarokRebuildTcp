@@ -126,6 +126,7 @@ public class World
             var player = ch.Player;
             player.EndNpcInteractions();
             player.SaveCharacterToData();
+            player.Character.OnDeathCleanupEvents();
             var req = new SaveCharacterRequest(player);
             RoDatabase.EnqueueDbRequest(req);
         }
@@ -133,10 +134,16 @@ public class World
         if (ch.Type == CharacterType.NPC)
         {
             var npc = ch.Npc;
-
+            
             npc.RemoveAreaOfEffect();
             npc.RemoveSignal();
             npc.EndAllEvents();
+
+            if (npc.Owner.TryGet<WorldObject>(out var owner))
+            {
+                owner.Events?.Remove(ref npc.Entity);
+                owner.Events?.ClearInactive();
+            }
 
         }
 

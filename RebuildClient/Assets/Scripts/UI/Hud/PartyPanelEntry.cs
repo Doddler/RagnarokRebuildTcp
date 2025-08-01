@@ -150,6 +150,18 @@ namespace Assets.Scripts.UI.Hud
                 AddStatusEffect(status, duration);
             }
         }
+
+        private void ReScaleDebuffArea()
+        {
+            var scale = DebuffArea.transform.childCount switch
+            {
+                <= 6 => 0.45f,
+                7 => 0.4f,
+                >= 8 => 0.35f
+            };
+
+            DebuffArea.gameObject.transform.localScale = new Vector3(scale, scale, scale);
+        }
         
         public void AddStatusEffect(CharacterStatusEffect status, float time)
         {
@@ -188,8 +200,9 @@ namespace Assets.Scripts.UI.Hud
             
             statusEffects.Add(newEffect);
             statusEffectLookup.Add(status, newEffect);
-        
+
             DebuffArea.gameObject.SetActive(true);
+            ReScaleDebuffArea();
         }
 
         public void RemoveStatusEffect(CharacterStatusEffect status)
@@ -202,6 +215,7 @@ namespace Assets.Scripts.UI.Hud
             unusedStatusEffects.Push(existing.gameObject);
             
             DebuffArea.gameObject.SetActive(statusEffects.Count > 0);
+            ReScaleDebuffArea();
         }
 
         public void ClearAllStatusEffects()
@@ -214,6 +228,7 @@ namespace Assets.Scripts.UI.Hud
 
             statusEffects.Clear();
             statusEffectLookup.Clear();
+            DebuffArea.gameObject.SetActive(false);
         }
 
         public void Update()

@@ -226,7 +226,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 if (displayType == NpcDisplayType.VendingProxy)
                 {
                     monData.Name = "Vend Shop";
-                    controllable = ClientDataLoader.Instance.InstantiateEffect(ref monData, NpcEffectType.None);
+                    controllable = ClientDataLoader.Instance.InstantiateEffect(ref monData, NpcEffectType.None, true);
                     Network.EntityList.Add(id, controllable);
                     UiManager.VendAndChatManager.CreateVendDialog(id, owner, controllable.gameObject, name);
                     return controllable;

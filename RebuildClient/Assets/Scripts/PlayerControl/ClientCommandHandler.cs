@@ -441,6 +441,17 @@ namespace PlayerControl
 
                     NetworkManager.Instance.SendAdminStatusAdd(status, len, v1, v2, v3, v4);
                 }
+                
+                if (s[0] == "/event" && s.Length > 2)
+                {
+                    var name = s[1];
+                    var v1 = s.Length >= 3 && int.TryParse(s[2], out var v) ? v : 0;
+                    var v2 = s.Length >= 4 && int.TryParse(s[3], out v) ? v : 0;
+                    var v3 = s.Length >= 5 && int.TryParse(s[4], out v) ? v : 0;
+                    var v4 = s.Length >= 6 && int.TryParse(s[5], out v) ? v : 0;
+
+                    NetworkManager.Instance.SendAdminCreateEvent(name, v1, v2, v3, v4);
+                }
 
                 if (s[0] == "/reloadscript" || s[0] == "/scriptreload")
                 {

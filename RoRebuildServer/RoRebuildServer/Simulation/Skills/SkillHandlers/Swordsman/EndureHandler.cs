@@ -9,7 +9,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Swordsman;
 [SkillHandler(CharacterSkill.Endure, SkillClass.None, SkillTarget.Self)]
 public class EndureHandler : SkillHandlerBase
 {
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         if (!source.TryGetStatusContainer(out var s)
             || !s.TryGetExistingStatus(CharacterStatusEffect.Endure, out var existing)

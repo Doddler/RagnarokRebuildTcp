@@ -12,7 +12,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Mage
     {
         public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 0.8f;
 
-        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl,
+            bool isIndirect, bool isItemSource)
         {
             if (lvl < 0 || lvl > 10)
                 lvl = 10;

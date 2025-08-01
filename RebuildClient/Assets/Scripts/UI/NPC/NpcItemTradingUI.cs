@@ -317,12 +317,14 @@ namespace Assets.Scripts.UI
             CountUpButton.interactable = false;
             CountDownButton.interactable = false;
             LeftWindow.HasSubmitButtons = false;
-            LeftWindow.OnPressCancel = OnCancel; //the button isn't active but it'll trigger if we press escape with the window in focus
+            LeftWindow.OnPressCancel = OnCancel;
+            LeftWindow.OnCloseWindow = OnCancel;
             RightWindow.OkButtonText.text = "Trade";
             RightWindow.HasSubmitButtons = true;
             RightWindow.OkButton.interactable = false;
             RightWindow.OnPressOk = OnSubmitTrade;
             RightWindow.OnPressCancel = OnCancel;
+            RightWindow.OnCloseWindow = OnCancel;
             RightWindow.InfoAreaText.text = "";
             
             LeftWindow.Init();

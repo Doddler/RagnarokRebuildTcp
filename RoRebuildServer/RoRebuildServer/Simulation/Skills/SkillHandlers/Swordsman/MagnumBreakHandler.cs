@@ -13,7 +13,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Swordsman;
 [SkillHandler(CharacterSkill.MagnumBreak, SkillClass.Physical, SkillTarget.Self)]
 public class MagnumBreakHandler : SkillHandlerBase
 {
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         var map = source.Character.Map;
         Debug.Assert(map != null);

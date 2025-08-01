@@ -15,12 +15,12 @@ Id,Code,Name,Attack,Range,Slot,Price,Weight,Type,Position,Property,MinLvl,Rank,E
 1120,Tsurugi_,Tsurugi,130,1,2,51000,1200,Sword,MainHand,Neutral,27,3,SwordUser1stJob,Yes,Yes,츠루기,1119
 1122,Ring_Pommel_Saber,Ring Pommel Saber,100,1,2,24000,900,Sword,MainHand,Neutral,14,2,SwordUser1stJob,Yes,Yes,환두태도,1122
 1123,Haedonggum,Haedonggum,120,1,1,50000,900,Sword,MainHand,Neutral,27,3,SwordUser1stJob,Yes,Yes,해동검,1123
-1124,Orcish_Sword,Orcish Sword,90,1,0,20,800,Sword,MainHand,Neutral,5,3,SwordUser,Yes,No,오키쉬소드,
+1124,Orcish_Sword,Orcish Sword,90,1,1,20,800,Sword,MainHand,Neutral,5,3,SwordUser,Yes,No,오키쉬소드,
 1125,Ring_Pommel_Saber_,Ring Pommel Saber,100,1,3,24000,900,Sword,MainHand,Neutral,14,2,SwordUser1stJob,Yes,Yes,환두태도,1122
 1126,Saber,Saber,115,1,2,49000,1000,Sword,MainHand,Neutral,27,3,SwordUser1stJob,Yes,Yes,세이버,1126
 1127,Saber_,Saber,115,1,3,49000,1000,Sword,MainHand,Neutral,27,3,SwordUser1stJob,Yes,Yes,세이버,
 1128,Haedonggum_,Haedonggum,120,1,2,50000,900,Sword,MainHand,Neutral,27,3,SwordUser1stJob,Yes,Yes,해동검,1123
-1129,Flamberge,Flamberge,150,1,0,60000,1500,Sword,MainHand,Neutral,27,3,Swordsman2ndJob,Yes,Yes,프람베르그,
+1129,Flamberge,Flamberge,150,1,0,60000,1500,Sword,MainHand,Neutral,55,3,Swordsman,Yes,Yes,프람베르그,
 1130,Nagan,Nagan,120,1,0,20,500,Sword,MainHand,Neutral,40,4,SwordUser1stJob,Yes,Yes,네이건,
 1131,Ice_Falchion,Ice Falchion,100,1,0,20,600,Sword,MainHand,Water,40,4,SwordUser1stJob,Yes,Yes,아이스팔시온,
 1132,Edge,Edge,115,1,0,20,700,Sword,MainHand,Neutral,40,4,SwordUser1stJob,Yes,Yes,엣지,
@@ -50,7 +50,7 @@ Id,Code,Name,Attack,Range,Slot,Price,Weight,Type,Position,Property,MinLvl,Rank,E
 1160,Broad_Sword,Broad Sword,140,1,1,65000,2000,2HSword,BothHands,Neutral,33,3,Swordsman,Yes,No,브로드소드,1160
 1161,Balmung,Balmung,250,1,0,20,1000,2HSword,BothHands,Holy,48,4,AllJobs,Yes,No,발뭉,
 1162,Broad_Sword_,Broad Sword,140,1,2,65000,2000,2HSword,BothHands,Neutral,33,3,Swordsman,Yes,No,브로드소드,1160
-1163,Claymore,Claymore,180,1,0,74000,2500,2HSword,BothHands,Neutral,33,3,Swordsman2ndJob,Yes,Yes,크레이모어,
+1163,Claymore,Claymore,180,1,0,74000,2500,2HSword,BothHands,Neutral,55,3,Swordsman,Yes,Yes,크레이모어,
 1164,Muramasa,Muramasa,155,1,0,20,1000,2HSword,BothHands,Neutral,48,4,Swordsman,Yes,Yes,무라마사,
 1165,Masamune,Masamune,200,1,0,20,1000,2HSword,BothHands,Neutral,48,4,Swordsman,Yes,Yes,마사무네,
 1166,Dragon_Slayer,Dragon Slayer,150,1,0,20,1300,2HSword,BothHands,Neutral,48,4,Swordsman,Yes,Yes,드래곤슬레이어,
@@ -59,7 +59,7 @@ Id,Code,Name,Attack,Range,Slot,Price,Weight,Type,Position,Property,MinLvl,Rank,E
 1169,Executioner,Executioner,155,1,0,20,2200,2HSword,BothHands,Dark,48,4,Swordsman,Yes,Yes,액서큐셔너,
 1170,Katzbalger,Katzbalger,175,1,0,20,2000,2HSword,BothHands,Neutral,48,4,Swordsman,Yes,Yes,카츠발게르,
 1171,Zweihander_,Zweihander,200,1,2,20,2200,2HSword,BothHands,Neutral,48,4,Swordsman,Yes,Yes,즈바이핸더,
-1172,Claymore_,Claymore,180,1,2,74000,2500,2HSword,BothHands,Neutral,33,3,Swordsman2ndJob,Yes,Yes,크레이모어,
+1172,Claymore_,Claymore,180,1,2,74000,2500,2HSword,BothHands,Neutral,55,3,Swordsman,Yes,Yes,크레이모어,
 1175,Atlas_Weapon,Atlas Weapon,200,1,1,10000,3500,2HSword,BothHands,Neutral,55,4,JC_080,Yes,Yes,아트로스의흉기,
 1176,Muscle_Cutter,Muscle Cutter,160,1,2,10000,2200,2HSword,BothHands,Neutral,55,4,JC_080,Yes,Yes,근육절단기,
 1178,Schweizersabel_,Schweizersabel,160,1,2,20,1600,2HSword,BothHands,Wind,48,4,Swordsman,Yes,Yes,슈바이체르샤벨,
@@ -141,7 +141,7 @@ Id,Code,Name,Attack,Range,Slot,Price,Weight,Type,Position,Property,MinLvl,Rank,E
 1302,Axe_,Axe,38,1,4,500,800,Axe,MainHand,Neutral,3,1,AxeUser,Yes,No,액스,
 1304,Orcish_Axe,Orcish Axe,75,1,0,20,1500,Axe,MainHand,Neutral,3,3,AxeUser,Yes,No,오키쉬액스,
 1305,Cleaver,Cleaver,140,1,0,20,120,Axe,MainHand,Neutral,44,4,SwordsmanMerchant,Yes,No,클리버,
-1306,War_Axe,War Axe,140,1,1,20,4200,Axe,MainHand,Neutral,76,3,Merchant2ndJob,Yes,No,워액스,
+1306,War_Axe,War Axe,140,1,1,20,4200,Axe,MainHand,Neutral,76,3,Merchant,Yes,No,워액스,
 1307,Windhawk,Windhawk,115,1,0,18000,1500,Axe,MainHand,Wind,14,2,SwordUser1stJob,Yes,No,윈드호크,
 1309,Orcish_Axe_,Orcish Axe,75,1,4,20,1500,Axe,MainHand,Neutral,3,3,AxeUser,Yes,No,오키쉬액스,
 1310,Glorious_Cleaver,Glorious Cleaver,130,1,0,20,0,Axe,MainHand,Neutral,80,4,SwordsmanMerchant,Yes,No,클리버,
@@ -238,7 +238,7 @@ Id,Code,Name,Attack,Range,Slot,Price,Weight,Type,Position,Property,MinLvl,Rank,E
 1526,Slash,Slash,145,1,0,20,1000,Mace,MainHand,Neutral,40,4,Acolyte,Yes,No,슬래쉬,
 1527,Quadrille,Quadrille,165,1,0,20,900,Mace,MainHand,Neutral,40,4,Acolyte,Yes,No,쿼드릴,
 1528,Grand_Cross,Grand Cross,140,1,0,20,1500,Mace,MainHand,Holy,40,4,Acolyte,Yes,No,그랜드크로스,
-1529,Iron_Driver,Iron Driver,155,2,0,20,3000,Mace,MainHand,Neutral,78,3,Acolyte2ndJob,Yes,No,아이언드라이버,1529
+1529,Iron_Driver,Iron Driver,155,2,0,20,3000,Mace,MainHand,Neutral,78,3,Acolyte,Yes,No,아이언드라이버,1529
 1530,Mjolnir,Mjolnir,250,1,0,20,6000,Mace,MainHand,Wind,95,4,SwordsmanMerchant,No,No,묘르닐,
 1531,Wrench,Wrench,115,1,0,20,2500,Mace,MainHand,Neutral,55,3,Acolyte,Yes,No,스패너,1531
 1532,Stunner_,Stunner,140,1,2,60000,2000,Mace,MainHand,Neutral,27,3,Acolyte,Yes,No,스터너,
@@ -324,11 +324,11 @@ Id,Code,Name,Attack,Range,Slot,Price,Weight,Type,Position,Property,MinLvl,Rank,E
 1719,Roguemaster's_Bow,Roguemaster's Bow,75,11,0,20,500,Bow,BothHands,Neutral,48,4,ThiefGroup,Yes,Yes,도둑의활,
 1720,Rudra_Bow,Rudra Bow,150,5,0,20,1200,Bow,BothHands,Holy,48,4,ArcherRogue,Yes,Yes,루드라의활,1720
 1721,Repeating_Crossbow,Repeating Crossbow,95,9,1,89000,2000,Bow,BothHands,Neutral,65,3,ThiefHunter,Yes,Yes,리피팅크로스,
-1722,Ballista,Ballista,145,5,0,124000,3500,Bow,BothHands,Neutral,77,4,Archer2ndJob,Yes,Yes,발리스타,
+1722,Ballista,Ballista,145,5,0,124000,3500,Bow,BothHands,Neutral,77,4,Archer,Yes,Yes,발리스타,
 1723,Luna_Bow,Luna Bow,100,5,2,20,2000,Bow,BothHands,Neutral,30,3,Hunter,Yes,Yes,루나보우,
 1724,Dragon_Wing,Dragon Wing,100,5,0,20,1200,Bow,BothHands,Neutral,60,4,ArcherThief,Yes,Yes,드래곤윙,
 1726,Hunter_Bow_,Hunter Bow,125,5,1,64000,1500,Bow,BothHands,Neutral,33,3,Hunter,Yes,Yes,헌터보우,1718
-1727,Ballista_,Ballista,145,5,1,124000,3500,Bow,BothHands,Neutral,77,4,Archer2ndJob,Yes,Yes,발리스타,
+1727,Ballista_,Ballista,145,5,1,124000,3500,Bow,BothHands,Neutral,77,4,Archer,Yes,Yes,발리스타,
 1730,Burning_Bow,Burning Bow,95,5,1,10000,1400,Bow,BothHands,Neutral,55,3,ArcherRogue,Yes,Yes,불타는활,
 1731,Frozen_Bow,Frozen Bow,100,5,1,10000,1400,Bow,BothHands,Neutral,55,3,ArcherRogue,Yes,Yes,냉각의활,
 1732,Earthen_Bow,Earthen Bow,105,5,1,10000,1400,Bow,BothHands,Neutral,55,3,ArcherRogue,Yes,Yes,대지의활,
@@ -338,6 +338,7 @@ Id,Code,Name,Attack,Range,Slot,Price,Weight,Type,Position,Property,MinLvl,Rank,E
 1739,Valorous_Cross_Bow,Valorous Cross Bow,100,5,0,20,0,Bow,BothHands,Neutral,80,3,ArcherThief,Yes,No,크로스보우,
 1741,Cursed_Lyre,Cursed Lyre,125,5,1,20,1250,Bow,BothHands,Neutral,80,4,JC_085,Yes,Yes,커즈드라이어,
 1743,Glorious_Bow,Glorious Bow,100,5,0,20,0,Bow,BothHands,Neutral,80,4,ArcherThief,Yes,No,헌터보우,
+1744,Gamemaster's_Bow,Gamemaster's Bow,200,5,0,20,10,Bow,BothHands,Neutral,48,4,ArcherRogue,Yes,Yes,루드라의활,1720
 1801,Waghnak,Waghnak,30,1,3,8000,400,Knuckle,MainHand,Neutral,1,1,Acolyte2ndJob,Yes,Yes,바그낙,1801
 1802,Waghnak_,Waghnak,30,1,4,8000,400,Knuckle,MainHand,Neutral,1,1,Acolyte2ndJob,Yes,Yes,바그낙,1801
 1803,Knuckle_Dusters,Knuckle Dusters,50,1,2,25000,450,Knuckle,MainHand,Neutral,12,2,Acolyte2ndJob,Yes,Yes,너클더스터,1803

@@ -112,6 +112,7 @@ public partial class Monster : IEntityAutoReset
     private const int InventorySize = 20;
     
     public bool LockMovementToSpawn;
+    public Area MoveLockZone;
     public bool GivesExperience;
     public bool IsAiActive;
 
@@ -251,6 +252,7 @@ public partial class Monster : IEntityAutoReset
         inventoryIndex = 0;
         TotalDamageReceived?.Dispose();
         TotalDamageReceived = null;
+        MoveLockZone = Area.Zero;
 
         Target = Entity.Null;
     }
@@ -276,6 +278,7 @@ public partial class Monster : IEntityAutoReset
         if (SpawnRule != null)
         {
             LockMovementToSpawn = SpawnRule.LockToSpawn;
+            MoveLockZone = SpawnRule.SpawnArea;
         }
 
         //if (Character.ClassId >= 4000 && spawnEntry == null)

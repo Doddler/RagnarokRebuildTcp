@@ -24,7 +24,7 @@ public class ChargeAttackHandler : SkillHandlerBase
     }
 
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
-        int lvl, bool isIndirect)
+        int lvl, bool isIndirect, bool isItemSource)
     {
         if (target == null)
             return SkillValidationResult.InvalidTarget;
@@ -32,10 +32,11 @@ public class ChargeAttackHandler : SkillHandlerBase
         if (!source.Character.Map?.WalkData.HasDirectPathAccess(source.Character.Position, target.Character.Position) ?? true)
             return SkillValidationResult.NoLineOfSight;
 
-        return base.ValidateTarget(source, target, position, lvl, false);
+        return base.ValidateTarget(source, target, position, lvl, false, false);
     }
 
-    public override bool PreProcessValidation(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override bool PreProcessValidation(CombatEntity source, CombatEntity? target, Position position, int lvl,
+        bool isIndirect, bool isItemSource)
     {
         if (target == null)
             return false;
@@ -43,7 +44,8 @@ public class ChargeAttackHandler : SkillHandlerBase
         return source.Character.Map?.WalkData.HasDirectPathAccess(source.Character.Position, target.Character.Position) ?? false;
     }
 
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         lvl = lvl.Clamp(1, 10);
         var map = source.Character.Map;

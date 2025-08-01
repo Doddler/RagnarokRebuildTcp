@@ -11,7 +11,8 @@ public class EnergyCoatHandler : SkillHandlerBase
 {
     public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 5f;
 
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.EnergyCoat, 300f);
         source.AddStatusEffect(status);

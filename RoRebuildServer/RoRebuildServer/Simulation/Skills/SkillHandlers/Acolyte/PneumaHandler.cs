@@ -18,7 +18,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte;
 [SkillHandler(CharacterSkill.Pneuma, SkillClass.Magic, SkillTarget.Ground)]
 public class PneumaHandler : SkillHandlerBase
 {
-    public override bool PreProcessValidation(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override bool PreProcessValidation(CombatEntity source, CombatEntity? target, Position position, int lvl,
+        bool isIndirect, bool isItemSource)
     {
         var map = source.Character.Map;
         Debug.Assert(map != null);
@@ -37,7 +38,7 @@ public class PneumaHandler : SkillHandlerBase
         return true;
     }
 
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect, bool isItemSource)
     {
         var map = source.Character.Map;
         Debug.Assert(map != null);

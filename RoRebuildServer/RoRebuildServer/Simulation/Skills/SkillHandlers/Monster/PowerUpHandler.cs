@@ -10,7 +10,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Monster;
 [SkillHandler(CharacterSkill.PowerUp, SkillClass.Magic, SkillTarget.Self)]
 public class PowerUpHandler : SkillHandlerBase
 {
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         var ch = source.Character;
 

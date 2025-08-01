@@ -9,7 +9,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Monster;
 [SkillHandler(CharacterSkill.Vampyrism, SkillClass.Magic, SkillTarget.Self)]
 public class VampyrismHandler :SkillHandlerBase
 {
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         source.ApplyCooldownForSupportSkillAction();
 

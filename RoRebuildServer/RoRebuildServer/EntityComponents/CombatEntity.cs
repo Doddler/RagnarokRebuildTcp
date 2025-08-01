@@ -205,7 +205,7 @@ public partial class CombatEntity : IEntityAutoReset
         else
             statusContainer.AddPendingStatusEffect(state, replaceExisting, delay);
     }
-
+    
     [ScriptUseable]
     public bool RemoveStatusOfTypeIfExists(CharacterStatusEffect type)
     {
@@ -219,6 +219,28 @@ public partial class CombatEntity : IEntityAutoReset
         }
 
         return success;
+    }
+
+    public StatusEffectState AddOrStackStatusEffect(CharacterStatusEffect type, float duration, int maxStacks = 16)
+    {
+        if (statusContainer == null)
+        {
+            statusContainer = StatusEffectPoolManager.BorrowStatusContainer();
+            statusContainer.Owner = this;
+        }
+
+        if (statusContainer.TryGetExistingStatus(type, out var status))
+        {
+            if(status.Value4 < maxStacks)
+                status.Value4++;
+            status.Expiration = Time.ElapsedTime + duration;
+        }
+        else
+            status = StatusEffectState.NewStatusEffect(type, duration, 0, 0, 0, 1);
+
+        statusContainer.AddNewStatusEffect(status);
+
+        return status;
     }
 
     public void RemoveStatusOfGroupIfExists(string groupName)
@@ -291,7 +313,7 @@ public partial class CombatEntity : IEntityAutoReset
     }
 
     [ScriptUseable]
-    public bool CanTeleport() => Character.Map?.CanTeleport ?? false;
+    public bool CanTeleport() => Character.Type == CharacterType.Player ? Character.Map?.CanTeleport ?? false : Character.Map?.CanMonstersTeleport ?? false;
     [ScriptUseable]
     public bool CanTeleportWithError()
     {
@@ -740,7 +762,7 @@ public partial class CombatEntity : IEntityAutoReset
 
         var spCost = hasSpCost ? Player.GetSpCostForSkill(CastingSkill.Skill, CastingSkill.Level) : 0;
 
-        var validationResult = SkillHandler.ValidateTarget(CastingSkill, this);
+        var validationResult = SkillHandler.ValidateTarget(CastingSkill, this, CastingSkill.IsIndirect, CastingSkill.ItemSource > 0);
         if (validationResult != SkillValidationResult.Success)
         {
             if (Character.Type == CharacterType.Player)
@@ -1128,7 +1150,7 @@ public partial class CombatEntity : IEntityAutoReset
             }
         }
 
-        var res = SkillHandler.ValidateTarget(skillInfo, this);
+        var res = SkillHandler.ValidateTarget(skillInfo, this, false, itemSrc > 0);
 
         if (res == SkillValidationResult.Success)
         {

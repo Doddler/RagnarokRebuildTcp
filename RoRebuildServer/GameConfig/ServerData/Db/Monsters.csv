@@ -286,8 +286,8 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4283,TAO_GUNKA,Tao Gunka,70,168704,4,61,72,112,47,48,946,1157,2,24,24,121491,79625,10,12,Large,Demon,Neutral3,1020,144,288,150,Boss,AiAggressive,384,tao_gunka.spr,0,0.5,1,#FFFFFFFF,Golem
 4284,TARGET_DUMMY,Target Dummy,1,100000,1,20,20,1,1,1,1,1,0,20,20,0,0,10,12,Large,Formless,Neutral4,1001,1,1000,-1,Boss,AiPlant,0,barricade.spr,0,-1,1,#FFFFFFFF,
 4285,TEST_DRONE,Test Drone,1,100000,1,20,20,1,1,1,8,9,1,20,20,0,0,10,12,Small,Formless,Dark3,1000,500,1000,150,Normal,AiHyperPacifist,216,constant.spr,0,0.5,1,#FFFFFFFF,Flying
-4286,RANDGRIS,Valkyrie Randgris,99,1010367,132,113,100,112,37,193,1011,1236,3,21,32,831711,647977,10,12,Large,Angel,Holy1,576,480,576,100,Boss,AiAggressive,504,randgris.spr,0,0.5,1,#FFFFFFFF,Flying
-4287,VALKYRIE,Valkyrie,99,105215,102,148,77,97,33,88,774,946,3,22,33,202257,156961,10,12,Large,Angel,Holy1,576,480,576,100,Boss,AiAggressive,504,g_randgris.spr,0,0.5,1,#FFFFFFFF,
+4286,RANDGRIS,Valkyrie Randgris,99,673578,132,113,100,112,22,113,1011,1236,3,21,32,824351,642532,12,15,Large,Angel,Holy1,576,480,576,100,Boss,AiAggressive,504,randgris.spr,0,0.5,1.4,#FFFFFFFF,Flying
+4287,VALKYRIE,Valkyrie,99,78911,102,148,77,97,19,88,774,946,3,22,33,193064,150195,12,15,Large,Angel,Holy1,576,480,576,100,Boss,AiAggressive,504,g_randgris.spr,0,0.5,1,#FFFFFFFF,
 4288,IRON_FIST,Iron Fist,43,2692,28,29,29,53,34,15,285,348,1,17,12,1931,1277,5,12,Medium,Insect,Neutral3,1500,1000,500,200,Normal,AiAggressiveSense,384,iron_fist.spr,0,0.5,1,#FFFFFFFF,
 4289,SHINOBI,Kabuki Ninja,69,10503,57,28,28,77,56,34,546,911,2,17,24,10325,6905,10,12,Medium,Demihuman,Dark3,1003,336,1152,150,Normal,AiAggressive,480,shinobi.spr,0,0.5,1,#FFFFFFFF,
 4290,KAPHA,Kappa,51,6877,40,20,42,52,30,45,423,517,3,17,22,4216,2418,10,12,Medium,Aquatic,Water1,2012,672,1728,165,Normal,AiAggressive,576,kapha.spr,0,0.5,1,#FFFFFFFF,
@@ -317,3 +317,9 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 6013,FUNGUS,Fungus,36,2762,20,1,25,37,20,1,171,209,1,0,0,789,364,10,12,Medium,Plant,Poison2,1472,288,672,180,Normal,AiAggressive,528,fungus.spr,0,0.5,1,#FFFFFFFF,Fungus
 6014,DEATHSPORE,Deathspore,42,18664,33,1,36,55,25,1,481,588,1,0,0,6700,3049,10,12,Medium,Plant,Poison4,1272,288,672,170,Boss,AiAggressive,528,deathspore.spr,0,0.5,1,#FFFFFFFF,Fungus
 6015,SANTA_PORING,Santa Poring,10,250,5,7,8,11,4,4,20,23,1,2,2,24,12,10,12,Medium,Plant,Holy1,1872,480,672,400,Normal,AiLooter,288,poring_.spr,0,0.5,1,#FFFFFFFF,
+6016,SUCCUBUS,Succubus,85,17899,85,80,69,95,51,40,1145,1400,2,29,27,25404,17060,10,12,Medium,Demon,Dark3,1306,288,1056,155,Normal,AiStandardBoss,576,succubus.spr,0,0.5,1,#FFFFFFFF,
+6017,INCUBUS,Incubus,75,13971,75,70,61,84,45,35,906,1107,2,26,24,16364,10562,10,12,Medium,Demon,Dark3,850,336,600,165,Normal,AiStandardBoss,420,incubus.spr,0,0.5,1,#FFFFFFFF,
+6018,OBSERVATION,Dame of Sentinel,81,21737,64,92,78,99,50,55,1074,1313,2,28,35,26681,22643,10,12,Medium,Angel,Neutral4,432,360,480,100,Boss,AiStandardBoss,300,observation.spr,0,0.5,1,#FFFFFFFF,
+6019,RETRIBUTION,Baroness of Retribution,79,20434,64,94,79,100,51,55,1067,1304,2,26,34,22909,18397,10,12,Medium,Angel,Dark3,360,360,480,120,Boss,AiStandardBoss,240,retribution.spr,0,0.5,1,#FFFFFFFF,
+6020,SOLACE,Dame of Sentinel,77,17372,64,80,79,95,48,50,992,1213,2,25,29,17672,13362,10,12,Medium,Angel,Holy3,576,360,420,180,Boss,AiStandardBoss,384,solace.spr,0,0.5,1,#FFFFFFFF,
+6021,SHELTER,Mistress of Shelter,80,28756,74,107,86,109,53,63,1170,1430,2,28,36,34276,25960,10,12,Medium,Angel,Holy3,432,360,420,160,Boss,AiStandardBoss,240,shelter.spr,0,0.5,1,#FFFFFFFF,

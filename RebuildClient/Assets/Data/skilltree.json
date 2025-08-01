@@ -452,6 +452,19 @@
           "Prerequisites": []
         },
         {
+          "Skill": 86,
+          "Prerequisites": [
+            {
+              "Skill": 46,
+              "Level": 7
+            },
+            {
+              "Skill": 49,
+              "Level": 1
+            }
+          ]
+        },
+        {
           "Skill": 78,
           "Prerequisites": [
             {

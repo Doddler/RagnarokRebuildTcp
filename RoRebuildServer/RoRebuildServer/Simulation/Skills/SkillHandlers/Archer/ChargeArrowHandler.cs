@@ -12,7 +12,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Archer;
 public class ChargeArrowHandler : SkillHandlerBase
 {
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
-        int lvl, bool isIndirect) =>
+        int lvl, bool isIndirect, bool isItemSource) =>
         ValidateTargetForAmmunitionWeapon(source, target, position, 12, AmmoType.Arrow);
     
     public override int GetSkillRange(CombatEntity source, int lvl)
@@ -25,7 +25,8 @@ public class ChargeArrowHandler : SkillHandlerBase
 
     public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 0.8f;
 
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         if (target == null || !target.IsValidTarget(source))
             return;

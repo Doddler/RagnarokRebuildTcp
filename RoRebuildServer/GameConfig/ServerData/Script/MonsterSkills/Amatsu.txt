@@ -10,3 +10,33 @@ StateIdle:
 	TryCast(Teleport, 1, 100%, 0s, 5s)[RudeAttacked];
 	TryCast(Cloaking, 1, 5%, 0.2s, 5s);
 }
+
+SkillHandler("THE_PAPER") {
+StateAngry:
+	TryCast(ComboAttack, 2, 5%, 0.7s, 5s, NoInterrupt) -> SendEmote(6); //angry
+StateAttacking:
+	TryCast(ComboAttack, 2, 5%, 0.7s, 5s, NoInterrupt) -> SendEmote(6); //angry
+}
+
+SkillHandler("TENGU") {
+StateRandomMove:
+	TryCast(NoCast, 1, 20%, 0s, 5s) -> SendEmote(6); //angry
+StateChase:
+	TryCast(Provoke, 10, 20%, 0.6s, 30s, NoInterrupt) -> SendEmote(23); //shock
+	TryCast(Stun, 3, 5%, 1.5s, 5s) -> SendEmote(6); //angry
+StateFollow:
+	TryCast(Provoke, 10, 20%, 0.6s, 30s, NoInterrupt) -> SendEmote(23); //shock
+	TryCast(Stun, 3, 5%, 1.5s, 5s) -> SendEmote(6); //angry
+StateAngry:
+	TryCast(Provoke, 10, 20%, 0.6s, 30s, NoInterrupt) -> SendEmote(23); //shock
+	TryCast(FireAttack, 5, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
+	TryCast(EarthSpike, 1, 5%, 0s, 5s) -> SendEmote(6); //angry
+	TryCast(EarthSpike, 2, 5%, 0s, 5s) -> SendEmote(6); //angry
+	TryCast(EarthSpike, 3, 5%, 0s, 5s) -> SendEmote(6); //angry
+StateAttacking:
+	TryCast(Provoke, 10, 20%, 0.6s, 30s, NoInterrupt) -> SendEmote(23); //shock
+	TryCast(FireAttack, 5, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
+	TryCast(EarthSpike, 1, 5%, 0s, 5s) -> SendEmote(6); //angry
+	TryCast(EarthSpike, 2, 5%, 0s, 5s) -> SendEmote(6); //angry
+	TryCast(EarthSpike, 3, 5%, 0s, 5s) -> SendEmote(6); //angry
+}

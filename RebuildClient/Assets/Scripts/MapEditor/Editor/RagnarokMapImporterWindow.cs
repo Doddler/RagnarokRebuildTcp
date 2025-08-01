@@ -242,6 +242,22 @@ namespace Assets.Scripts.MapEditor.Editor
                     Debug.LogWarning($"[Debug] ▶ 초보자_남 sprite detected at altPath: {altPath}");
                 }
 
+                if (path.Contains("BodyFemale") || path.Contains("BodyMale"))
+                {
+                    if (altPath.EndsWith("_0.spr") || altPath.EndsWith("_1.spr") || altPath.EndsWith("_2.spr") || altPath.EndsWith("_3.spr") ||
+                        altPath.EndsWith("_4.spr") || altPath.EndsWith("_5.spr"))
+                        continue;
+                }
+
+                if (path.Contains("Imported/Weapons"))
+                {
+                    if (!path.Contains("Novice") && !path.Contains("Swordsman") && !path.Contains("Mage") && !path.Contains("Acolyte") &&
+                        !path.Contains("Merchant") && !path.Contains("Thief") && !path.Contains("Archer"))
+                    {
+                        continue;
+                    }
+                }
+
                 if ((path.Contains("Monsters") &&
                      monsters.Items.All(m => m.SpriteName.Replace(".spr", "") != fName.ToLowerInvariant()))
                     || !path.Contains("Imported"))

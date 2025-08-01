@@ -553,6 +553,7 @@ public static class CommandBuilder
         packet.Write(target.Id);
         packet.Write(caster.Position);
         packet.Write(di.DisplayDamage);
+        packet.Write(di.Time - Time.ElapsedTimeFloat);
         packet.Write((byte)di.AttackSkill);
         packet.Write((byte)di.HitCount);
         packet.Write((byte)di.Result);

@@ -47,7 +47,7 @@ public class WarpPortalHandler : SkillHandlerBase
     }
 
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
-        int lvl, bool isIndirect)
+        int lvl, bool isIndirect, bool isItemSource)
     {
         if (source.Character.Type == CharacterType.Player)
         {
@@ -67,14 +67,15 @@ public class WarpPortalHandler : SkillHandlerBase
                 return SkillValidationResult.InvalidTarget;
         }
 
-        return base.ValidateTarget(source, target, position, lvl, false);
+        return base.ValidateTarget(source, target, position, lvl, false, false);
     }
     
     //failing pre-validation prevents sp from being taken
     public override bool PreProcessValidation(CombatEntity source, CombatEntity? target, Position position, int lvl,
-        bool isIndirect) => !isIndirect && CheckRequiredGemstone(source, BlueGemstone);
+        bool isIndirect, bool isItemSource) => !isIndirect && CheckRequiredGemstone(source, BlueGemstone);
 
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         //monster and npc cast warp portal does nothing on its own
         if (source.Character.Type != CharacterType.Player)

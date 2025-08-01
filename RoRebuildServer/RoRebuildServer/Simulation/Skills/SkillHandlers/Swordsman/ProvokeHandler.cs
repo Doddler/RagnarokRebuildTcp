@@ -15,7 +15,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Swordsman;
 public class ProvokeHandler : SkillHandlerBase
 {
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
-        int lvl, bool isIndirect)
+        int lvl, bool isIndirect, bool isItemSource)
     {
         if (target == null || target.IsElementBaseType(CharacterElement.Undead1))
             return SkillValidationResult.Failure;
@@ -25,7 +25,8 @@ public class ProvokeHandler : SkillHandlerBase
 
     public override int GetSkillRange(CombatEntity source, int lvl) => 9;
 
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         if (target == null)
             return;

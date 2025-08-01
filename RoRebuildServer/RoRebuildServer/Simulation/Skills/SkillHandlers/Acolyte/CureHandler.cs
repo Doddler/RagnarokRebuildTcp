@@ -11,7 +11,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte;
 [SkillHandler(CharacterSkill.Cure, SkillClass.Magic, SkillTarget.Ally)]
 public class CureHandler : SkillHandlerBase
 {
-    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect)
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
+        bool isItemSource)
     {
         if (target == null)
         {

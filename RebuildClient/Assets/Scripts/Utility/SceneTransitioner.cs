@@ -225,9 +225,13 @@ namespace Assets.Scripts.Utility
 				MinimapController.Instance.gameObject.SetActive(false);
 			else
 				MinimapController.Instance.LoadMinimap(newScene, type);
+			
+			CameraFollower.Instance.EffectCache.Clear();
+			NetworkManager.Instance.MapEffects.Clear();
+			UiManager.Instance.VendAndChatManager.RemoveAllDialogNpcs();
 
 			if (newMap.Code == "yuno" || newMap.Code == "que_qsch01")
-				CameraFollower.Instance.Camera.backgroundColor = new Color(0.6352f, 0.8039f, 0.9882f);
+				CameraFollower.Instance.Camera.backgroundColor = new Color(0.6352f, 0.8039f, 0.9882f); //gotta do something better here...
 			else
 				CameraFollower.Instance.Camera.backgroundColor = Color.black;
 

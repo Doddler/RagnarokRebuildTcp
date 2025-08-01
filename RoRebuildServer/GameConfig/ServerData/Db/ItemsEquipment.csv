@@ -181,7 +181,7 @@ Id,Code,Name,Defense,MagicDef,Slot,Price,Weight,Type,Position,Property,MinLvl,Eq
 2353,Odin's_Blessing,Odin's Blessing,6,0,1,30000,2500,Armor,,,65,AllExceptNovice,Yes,Yes,오딘의축복,
 2354,Goibne's_Armor,Goibne's Armor,7,0,0,50000,3500,Armor,,,54,AllExceptNovice,Yes,Yes,게브네이의갑옷,
 2355,Angel's_Protection,Angel's Protection,4,1000,1,10000,600,Armor,,,40,NoviceGroup,Yes,Yes,천사의가호,
-2357,Valkyrian_Armor,Valkyrian Armor,6,0,1,0,2800,Armor,,,1,Trans1stJob,Yes,No,발키리의갑옷,
+2357,Valkyrian_Armor,Valkyrian Armor,6,0,1,0,2800,Armor,,,1,AllExceptNovice,Yes,No,발키리의갑옷,
 2359,Ninja_Suit_,Ninja Suit,7,3,1,20,1500,Armor,,,50,StealthGroup,Yes,Yes,닌자슈츠,
 2360,Robe_of_Cast_,Robe of Cast,5,4,1,124800,1100,Armor,,,75,Mage2ndPlusLinker,Yes,Yes,캐스팅의로브,
 2364,Meteo_Plate_Armor,Meteo Plate Armor,10,3,1,10000,3000,Armor,,,55,JC_089,Yes,Yes,메테오플레이트,
@@ -226,7 +226,7 @@ Id,Code,Name,Defense,MagicDef,Slot,Price,Weight,Type,Position,Property,MinLvl,Eq
 2418,Vidar's_Boots,Vidar's Boots,4,0,0,30000,650,Boots,,,65,AllExceptNovice,Yes,Yes,비다르의부츠,
 2419,Goibne's_Greaves,Goibne's Greaves,4,3,0,30000,700,Boots,,,54,AllExceptNovice,Yes,Yes,게브네이의군화,
 2420,Angel's_Reincarnation,Angel's Reincarnation,2,0,1,10000,300,Boots,,,25,NoviceGroup,Yes,Yes,천사의재래,
-2421,Valkyrian_Shoes,Valkyrian Shoes,4,0,1,0,500,Boots,,,1,Trans1stJob,Yes,No,발키리의슈즈,
+2421,Valkyrian_Shoes,Valkyrian Shoes,4,0,1,0,500,Boots,,,1,AllExceptNovice,Yes,No,발키리의슈즈,
 2422,High_Fashion_Sandals,High Fashion Sandals,2,10,1,24000,200,Boots,,,40,CasterGroup,Yes,Yes,고급샌들,
 2423,Variant_Shoes,Variant Shoes,3,1,0,10000,500,Boots,,,85,Trans1stJob,Yes,Yes,배리언트슈즈,
 2424,Tidal_Shoes,Tidal Shoes,3,0,1,10000,300,Boots,,,55,Trans1stJob,Yes,Yes,타이달슈즈,
@@ -264,9 +264,9 @@ Id,Code,Name,Defense,MagicDef,Slot,Price,Weight,Type,Position,Property,MinLvl,Eq
 2521,Angel's_Cardigan,Angel's Cardigan,2,0,1,10000,400,Garment,,,20,NoviceGroup,Yes,Yes,천사의온기,
 2522,Undershirt,Undershirt,2,1,0,20000,150,Garment,,,1,AllJobs,Yes,Yes,런닝셔츠,
 2523,Undershirt_,Undershirt,2,1,1,20000,150,Garment,,,1,AllJobs,Yes,Yes,런닝셔츠,
-2524,Valkyrian_Manteau,Valkyrian Manteau,3,0,1,0,500,Garment,,,1,Trans1stJob,Yes,No,발키리의망토,
+2524,Valkyrian_Manteau,Valkyrian Manteau,3,0,1,0,500,Garment,,,1,AllExceptNovice,Yes,No,발키리의망토,
 2525,Ancient_Cape_,Ancient Cape,2,0,1,82000,600,Garment,,,40,AllExceptNovice,Yes,Yes,옛영주의망토,
-2527,Dragon_Breath,Dragon Breath,4,0,1,10000,600,Garment,,,48,Trans1stJob,Yes,Yes,드래곤의숨결,
+2527,Dragon_Breath,Dragon Breath,4,0,1,10000,600,Garment,,,48,AllExceptNovice,Yes,Yes,드래곤의숨결,
 2528,Wool_Scarf,Wool Scarf,3,4,1,10000,500,Garment,,,55,Trans1stJob,Yes,Yes,울스카프,
 2529,Rider_Insignia,Rider Insignia,4,0,0,10000,500,Garment,,,55,Trans1stJob,Yes,Yes,라이더휘장,
 2530,Rider_Insignia_,Rider Insignia,4,0,1,10000,500,Garment,,,55,Trans1stJob,Yes,Yes,라이더휘장,
@@ -391,7 +391,7 @@ Id,Code,Name,Defense,MagicDef,Slot,Price,Weight,Type,Position,Property,MinLvl,Eq
 5018,Feather_Bonnet,Feather Bonnet,4,0,0,20,300,Headgear,Top,,0,ArcherGroup,Yes,Yes,깃털모자,깃털모자
 5019,Corsair,Corsair,5,0,0,20,500,Headgear,Top,,0,AllExceptNovice,Yes,Yes,커세어,커세어
 5021,Grief_for_Greed,Grief for Greed,4,0,0,20,1200,Headgear,Top,,38,Merchant,Yes,Yes,돈잃은자의마음,돈잃은자의마음
-5022,Hat_of_the_Sun_God,Hat of the Sun God,4,0,0,20,2400,Headgear,TopMid,,0,SecondJob,Yes,Yes,태양신의모자,태양신의모자
+5022,Hat_of_the_Sun_God,Hat of the Sun God,4,0,0,20,2400,Headgear,TopMid,,55,AllExceptNovice,Yes,Yes,태양신의모자,태양신의모자
 5023,Parcel_Hat,Parcel Hat,0,0,0,20,1000,Headgear,Top,,0,Merchant,Yes,Yes,보따리모,보따리모
 5024,Cake_Hat,Cake Hat,1,0,0,20,1000,Headgear,Top,,0,AllJobs,Yes,Yes,케이크모자,케이크모자
 5025,Helm_of_Angel,Helm of Angel,5,3,0,20,1600,Headgear,Top,,74,SecondJob,Yes,Yes,천사의투구,천사의투구
@@ -459,7 +459,7 @@ Id,Code,Name,Defense,MagicDef,Slot,Price,Weight,Type,Position,Property,MinLvl,Eq
 5091,Decorative_Golden_Bell,Decorative Golden Bell,2,0,0,20,200,Headgear,TopMid,,35,AllExceptNovice,Yes,Yes,대형금방울,대형금방울
 5092,Coif,Coif,5,0,0,150000,300,Headgear,TopMid,,65,PriestAssassin,Yes,Yes,수녀모자,수녀모자
 5093,Coif_,Coif,5,0,1,150000,300,Headgear,TopMid,,65,PriestAssassin,Yes,Yes,수녀모자,수녀모자
-5094,Orc_Hero_Helm,Orc Hero Helm,5,0,0,500000,900,Headgear,TopMid,,55,AllExceptNovice,Yes,Yes,오크히어로투구,오크히어로투구
+5094,Orc_Hero_Helm,Orc Hero Helm,5,0,0,200000,900,Headgear,TopMid,,55,AllExceptNovice,Yes,Yes,오크히어로투구,오크히어로투구
 5096,Assassin_Mask,Assassin Mask,0,0,0,20,100,Headgear,Bottom,,70,PriestAssassin,No,Yes,어새신마스크,어새신마스크
 5097,Holiday_Hat,Holiday Hat,0,0,0,0,400,Headgear,Top,,0,AllJobs,Yes,Yes,꼬깔모자_,꼬깔모자
 5104,Dark_Blinder,Dark Blinder,0,0,0,20,100,Headgear,Mid,,0,AllExceptNovice,No,Yes,검은눈가리개,검은눈가리개
@@ -502,7 +502,7 @@ Id,Code,Name,Defense,MagicDef,Slot,Price,Weight,Type,Position,Property,MinLvl,Eq
 5168,Bongun_Hat_,Bongun Hat,5,0,1,20,300,Headgear,All,,0,AllJobs,No,Yes,본건모자,본건모자
 5169,Bride_Mask,Bride Mask,4,0,1,30000,500,Headgear,TopMid,,40,AllJobs,Yes,Yes,각시탈,각시탈
 5170,Feather_Beret,Feather Beret,1,1,0,30000,600,Headgear,Top,,0,AllExceptNovice,Yes,Yes,깃털베레모,깃털베레모
-5171,Valkyrian_Helm,Valkyrian Helm,5,5,1,100000,1000,Headgear,Top,,0,Trans1stJob,Yes,Yes,발키리투구,발키리투구
+5171,Valkyrian_Helm,Valkyrian Helm,5,5,1,100000,1000,Headgear,Top,,0,AllExceptNovice,Yes,Yes,발키리투구,발키리투구
 5172,Beret,Beret,0,0,0,30000,700,Headgear,Top,,0,AllJobs,No,Yes,베레모,베레모
 5173,Magistrate_Hat,Magistrate Hat,3,0,1,30000,400,Headgear,Top,,60,AllJobs,Yes,Yes,사또모자,사또모자
 5174,Ayam,Ayam,3,0,1,30000,400,Headgear,Top,,60,AllJobs,Yes,Yes,아얌,아얌

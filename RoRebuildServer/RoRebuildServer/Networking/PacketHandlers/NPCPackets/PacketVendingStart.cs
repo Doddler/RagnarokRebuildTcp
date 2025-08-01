@@ -42,6 +42,12 @@ public class PacketVendingStart : IClientPacketHandler
             CommandBuilder.SkillFailed(player, SkillValidationResult.VendFailedNameNotValid);
             return;
         }
+
+        if (map.CheckIfNpcNearby(character, 4))
+        {
+            CommandBuilder.SkillFailed(player, SkillValidationResult.VendFailedTooCloseToNpc);
+            return;
+        }
         
         player.VendingState ??= new VendingState();
         var vend = player.VendingState;
@@ -107,6 +113,8 @@ public class PacketVendingStart : IClientPacketHandler
         proxy.RevealToPlayers();
 
         proxy.OnInteract(player);
+
+        vend.VendProxy = proxy.Entity;
 
         CommandBuilder.VendingStart(player, vendName);
     }

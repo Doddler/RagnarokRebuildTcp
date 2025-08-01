@@ -57,6 +57,8 @@ namespace Assets.Scripts.Effects
 		WaterBallAttack,
 		WaterBallRise,
 		Sanctuary,
+		EarthShaker,
+		SpecialTargetMarker,
 		ArcherArrow,
 		CastHolyEffect,
 		ColdHit,
@@ -154,6 +156,8 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.WaterBallAttack, new Assets.Scripts.Effects.EffectHandlers.Skills.WaterBallAttackEffect());
 			effectHandlers.Add(EffectType.WaterBallRise, new Assets.Scripts.Effects.EffectHandlers.Skills.WaterBallRiseEffect());
 			effectHandlers.Add(EffectType.Sanctuary, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.SanctuaryEffect());
+			effectHandlers.Add(EffectType.EarthShaker, new Assets.Scripts.Effects.EffectHandlers.Skills.Custom.EarthShakerEffect());
+			effectHandlers.Add(EffectType.SpecialTargetMarker, new Assets.Scripts.Effects.EffectHandlers.Skills.Custom.SpecialTargetMarkerEffect());
 			effectHandlers.Add(EffectType.ArcherArrow, new Assets.Scripts.Effects.EffectHandlers.General.ArcherArrow());
 			effectHandlers.Add(EffectType.CastHolyEffect, new Assets.Scripts.Effects.EffectHandlers.General.CastHolyEffect());
 			effectHandlers.Add(EffectType.ColdHit, new Assets.Scripts.Effects.EffectHandlers.General.ColdHitEffect());

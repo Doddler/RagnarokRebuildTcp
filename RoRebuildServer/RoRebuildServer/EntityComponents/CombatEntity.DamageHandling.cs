@@ -10,6 +10,8 @@ using RoRebuildServer.Data.Monster;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Util;
+using static System.Net.Mime.MediaTypeNames;
+using Microsoft.AspNetCore.Mvc;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -87,6 +89,171 @@ public partial class CombatEntity
         return (atk1, atk2);
     }
 
+    public DamageInfo CalculateDamageTakenFromAnonymousSource(AttackRequest req)
+    {
+        var di = DamageInfo.EmptyResult(Entity.Null, Entity);
+        di.Result = AttackResult.NormalDamage;
+
+        var baseDamage = GameRandom.Next(req.MinAtk, req.MaxAtk);
+        var eleMod = GetElementalReductionForReceivedAttack(null, req.Element, true);
+        var (defCut, subDef) = GetDefenseReductionForReceivedAttack(null, 0, req.Flags);
+
+        //simplified damage calculation for sourceless attacks. We don't get race, size, and element modifiers since we won't have those.
+        var damage = (int)((baseDamage * req.AttackMultiplier * defCut - subDef) * (eleMod / 100f));
+
+        if (damage < 1)
+            damage = 1;
+
+        di.Damage = damage;
+        di.HitCount = (byte)req.HitCount;
+        di.IsIndirect = true;
+        di.AttackSkill = req.SkillSource;
+
+        return di;
+    }
+
+    public int GetElementalReductionForReceivedAttack(CombatEntity? attacker, AttackElement attackElement, bool ignoreGhostArmor = false)
+    {
+        var eleMod = 100;
+
+        var defenderElement = GetElement();
+        var baseElementType = GetAttackTypeForDefenderElement(defenderElement);
+        //if (!evade && !flags.HasFlag(AttackFlags.NoElement) && attackElement != AttackElement.Special)
+        {
+            //attacks made with AttackElement.None will take the attacker's weapon element or arrow element for bows. Monsters just default neutral.
+            if (attackElement == AttackElement.None)
+            {
+                //ghost armor has no effect on monster attacks if they are launched with AttackElement None (explicitly neutral attacks are still reduced)
+                if (defenderElement == CharacterElement.Ghost1 && ignoreGhostArmor)
+                    defenderElement = CharacterElement.Neutral1;
+
+                attackElement = AttackElement.Neutral;
+                if (attacker != null && attacker.Character.Type == CharacterType.Player)
+                {
+                    attackElement = attacker.Player.Equipment.WeaponElement;
+                    if (attacker.Player.WeaponClass == 12) //bows
+                    {
+                        var arrowElement = Player.Equipment.AmmoElement;
+                        if (arrowElement != AttackElement.None && arrowElement != AttackElement.Neutral)
+                            attackElement = arrowElement;
+                    }
+
+                    var overrideElement = (AttackElement)GetStat(CharacterStat.EndowAttackElement);
+                    if (overrideElement > 0)
+                        attackElement = overrideElement;
+                }
+            }
+
+            //defender reduction
+            if (Character.Type == CharacterType.Player)
+                eleMod -= GetStat(CharacterStat.AddResistElementNeutral + (int)attackElement);
+
+            //attacker bonus
+            if (attacker != null && attacker.Character.Type == CharacterType.Player)
+                eleMod += attacker.GetStat(CharacterStat.AddAttackElementNeutral + (int)baseElementType);
+
+            //combine bonus with actual elemental chart lookup
+            if (defenderElement != CharacterElement.None)
+                eleMod = eleMod * DataManager.ElementChart.GetAttackModifier(attackElement, defenderElement) / 100;
+        }
+
+        return eleMod;
+    }
+
+    public (float, int) GetDefenseReductionForReceivedAttack(CombatEntity? attacker, int attackerPenalty, AttackFlags flags, int defMod = 100, int mDefMod = 100)
+    {
+        var isPhysical = flags.HasFlag(AttackFlags.Physical);
+        var isMagical = flags.HasFlag(AttackFlags.Magical);
+
+        var defCut = 1f;
+        var subDef = 0;
+        var vit = GetEffectiveStat(CharacterStat.Vit);
+        //physical defense
+        if (!flags.HasFlag(AttackFlags.IgnoreDefense))
+        {
+            if (isPhysical)
+            {
+                //armor def.
+                var def = GetEffectiveStat(CharacterStat.Def);
+
+                //soft def
+                if (!flags.HasFlag(AttackFlags.IgnoreSubDefense))
+                {
+                    if (Character.Type == CharacterType.Player)
+                    {
+                        //this formula is weird, but it is official
+                        //your vit defense is a random number between 80% (30% of which steps up every 10 vit)
+                        //you also gain a random bonus that kicks in at 46 def and increases at higher values
+                        var vit30Percent = 3 * vit / 10;
+                        var vitRng = vit * vit / 150 - vit30Percent;
+                        if (vitRng < 1) vitRng = 1;
+                        subDef = (vit30Percent + GameRandom.NextInclusive(0, 20000) % vitRng + vit / 2);
+
+                        //attacker penalty (players only)
+                        if (attackerPenalty > 0)
+                        {
+                            def -= 5 * def * attackerPenalty / 100;
+                            subDef -= 5 * subDef * attackerPenalty / 100;
+                        }
+
+                        if (def < 0) def = 0;
+                        if (subDef < 0) subDef = 0;
+                    }
+                    else
+                    {
+                        //monsters vit defense is also weird
+                        var vitRng = (vit / 20) * (vit / 20);
+                        if (vitRng <= 0)
+                            subDef = vit;
+                        else
+                            subDef = vit + GameRandom.NextInclusive(0, 20000) % vitRng;
+                    }
+
+
+                    subDef = subDef * (100 + GetStat(CharacterStat.AddSoftDefPercent)) / 100;
+                }
+                
+                if ((flags & AttackFlags.ReverseDefense) > 0 || attacker?.GetStat(CharacterStat.ReverseDefense) > 0)
+                {
+                    defCut = (def + subDef) * (defMod / 100f) / 100f;
+                    subDef = 0;
+                }
+                else
+                {
+                    //convert def to damage reduction %
+                    defCut = MathHelper.DefValueLookup(def);
+
+                    if (def >= 200)
+                        subDef = 999999;
+                    else if (defMod != 100)
+                    {
+                        defCut = defCut * defMod / 100;
+                        subDef = subDef * defMod / 100;
+                    }
+                }
+            }
+
+            //magic defense
+            if (isMagical)
+            {
+                var mDef = GetEffectiveStat(CharacterStat.MDef);
+                defCut = MathHelper.DefValueLookup(mDef); //for now players have different def calculations
+                if (!flags.HasFlag(AttackFlags.IgnoreSubDefense))
+                    subDef = GetEffectiveStat(CharacterStat.Int) + vit / 2;
+
+                if (mDef >= 200)
+                    subDef = 999999;
+                else if (mDefMod != 100)
+                {
+                    defCut = defCut * mDefMod / 100;
+                    subDef = subDef * mDefMod / 100;
+                }
+            }
+        }
+
+        return (defCut, subDef);
+    }
+
     public DamageInfo CalculateCombatResultUsingSetAttackPower(CombatEntity target, AttackRequest req)
     {
         var atk1 = req.MinAtk;
@@ -103,6 +270,9 @@ public partial class CombatEntity
         var attackerPenalty = isPhysical ? target.GetAttackerPenalty(Entity) : 0; //players have defense and evasion penalized when attacked by 2 or more enemies
 
         var targetRace = target.GetRace();
+
+        //if(attackElement == AttackElement.None && isPhysical && attackerType == CharacterType.Player)
+        //    attackElement = Character.Player.Equipment.WeaponElement
 
 #if DEBUG
         if (!target.IsValidTarget(this, flags.HasFlag(AttackFlags.CanHarmAllies), true))
@@ -206,43 +376,46 @@ public partial class CombatEntity
 
         var eleMod = 100;
         if (!evade && !flags.HasFlag(AttackFlags.NoElement) && attackElement != AttackElement.Special)
-        {
-            //attacks made with AttackElement.None will take the attacker's weapon element or arrow element for bows. Monsters just default neutral.
-            if (attackElement == AttackElement.None)
-            {
-                //ghost armor has no effect on monster attacks if they are launched with AttackElement None (explicitly neutral attacks are still reduced)
-                if (defenderElement == CharacterElement.Ghost1 && attackerType == CharacterType.Monster && target.Character.Type == CharacterType.Player)
-                    defenderElement = CharacterElement.Neutral1;
+            eleMod = target.GetElementalReductionForReceivedAttack(this, attackElement,
+                attackerType == CharacterType.Monster && target.Character.Type == CharacterType.Player);
 
-                attackElement = AttackElement.Neutral;
-                if (Character.Type == CharacterType.Player)
-                {
-                    attackElement = Player.Equipment.WeaponElement;
-                    if (Player.WeaponClass == 12) //bows
-                    {
-                        var arrowElement = Player.Equipment.AmmoElement;
-                        if (arrowElement != AttackElement.None && arrowElement != AttackElement.Neutral)
-                            attackElement = arrowElement;
-                    }
+        //{
+        //    //attacks made with AttackElement.None will take the attacker's weapon element or arrow element for bows. Monsters just default neutral.
+        //    if (attackElement == AttackElement.None)
+        //    {
+        //        //ghost armor has no effect on monster attacks if they are launched with AttackElement None (explicitly neutral attacks are still reduced)
+        //        if (defenderElement == CharacterElement.Ghost1 && attackerType == CharacterType.Monster && target.Character.Type == CharacterType.Player)
+        //            defenderElement = CharacterElement.Neutral1;
 
-                    var overrideElement = (AttackElement)GetStat(CharacterStat.EndowAttackElement);
-                    if (overrideElement > 0)
-                        attackElement = overrideElement;
-                }
-            }
+        //        attackElement = AttackElement.Neutral;
+        //        if (Character.Type == CharacterType.Player)
+        //        {
+        //            attackElement = Player.Equipment.WeaponElement;
+        //            if (Player.WeaponClass == 12) //bows
+        //            {
+        //                var arrowElement = Player.Equipment.AmmoElement;
+        //                if (arrowElement != AttackElement.None && arrowElement != AttackElement.Neutral)
+        //                    attackElement = arrowElement;
+        //            }
 
-            //defender reduction
-            if (defenderType == CharacterType.Player)
-                eleMod -= target.GetStat(CharacterStat.AddResistElementNeutral + (int)attackElement);
+        //            var overrideElement = (AttackElement)GetStat(CharacterStat.EndowAttackElement);
+        //            if (overrideElement > 0)
+        //                attackElement = overrideElement;
+        //        }
+        //    }
 
-            //attacker bonus
-            if (attackerType == CharacterType.Player)
-                eleMod += GetStat(CharacterStat.AddAttackElementNeutral + (int)baseElementType);
+        //    //defender reduction
+        //    if (defenderType == CharacterType.Player)
+        //        eleMod -= target.GetStat(CharacterStat.AddResistElementNeutral + (int)attackElement);
 
-            //combine bonus with actual elemental chart lookup
-            if (defenderElement != CharacterElement.None)
-                eleMod = eleMod * DataManager.ElementChart.GetAttackModifier(attackElement, defenderElement) / 100;
-        }
+        //    //attacker bonus
+        //    if (attackerType == CharacterType.Player)
+        //        eleMod += GetStat(CharacterStat.AddAttackElementNeutral + (int)baseElementType);
+
+        //    //combine bonus with actual elemental chart lookup
+        //    if (defenderElement != CharacterElement.None)
+        //        eleMod = eleMod * DataManager.ElementChart.GetAttackModifier(attackElement, defenderElement) / 100;
+        //}
 
         //---------------------------------------------------
         // Range, Race and Size Modifiers and Mastery Bonus
@@ -341,83 +514,87 @@ public partial class CombatEntity
         var defCut = 1f;
         var subDef = 0;
         var vit = target.GetEffectiveStat(CharacterStat.Vit);
+
+        
+
         //physical defense
         if (!flags.HasFlag(AttackFlags.IgnoreDefense))
-        {
-            if (isPhysical)
-            {
-                //armor def.
-                var def = target.GetEffectiveStat(CharacterStat.Def);
+            (defCut, subDef) = target.GetDefenseReductionForReceivedAttack(this, attackerPenalty, flags, defMod, 100);
+        //{
+        //    if (isPhysical)
+        //    {
+        //        //armor def.
+        //        var def = target.GetEffectiveStat(CharacterStat.Def);
 
-                //soft def
-                if (!flags.HasFlag(AttackFlags.IgnoreSubDefense))
-                {
-                    if (target.Character.Type == CharacterType.Player)
-                    {
-                        //this formula is weird, but it is official
-                        //your vit defense is a random number between 80% (30% of which steps up every 10 vit)
-                        //you also gain a random bonus that kicks in at 46 def and increases at higher values
-                        var vit30Percent = 3 * vit / 10;
-                        var vitRng = vit * vit / 150 - vit30Percent;
-                        if (vitRng < 1) vitRng = 1;
-                        subDef = (vit30Percent + GameRandom.NextInclusive(0, 20000) % vitRng + vit / 2);
+        //        //soft def
+        //        if (!flags.HasFlag(AttackFlags.IgnoreSubDefense))
+        //        {
+        //            if (target.Character.Type == CharacterType.Player)
+        //            {
+        //                //this formula is weird, but it is official
+        //                //your vit defense is a random number between 80% (30% of which steps up every 10 vit)
+        //                //you also gain a random bonus that kicks in at 46 def and increases at higher values
+        //                var vit30Percent = 3 * vit / 10;
+        //                var vitRng = vit * vit / 150 - vit30Percent;
+        //                if (vitRng < 1) vitRng = 1;
+        //                subDef = (vit30Percent + GameRandom.NextInclusive(0, 20000) % vitRng + vit / 2);
 
-                        //attacker penalty (players only)
-                        if (attackerPenalty > 0)
-                        {
-                            def -= 5 * def * attackerPenalty / 100;
-                            subDef -= 5 * subDef * attackerPenalty / 100;
-                        }
+        //                //attacker penalty (players only)
+        //                if (attackerPenalty > 0)
+        //                {
+        //                    def -= 5 * def * attackerPenalty / 100;
+        //                    subDef -= 5 * subDef * attackerPenalty / 100;
+        //                }
 
-                        if (def < 0) def = 0;
-                        if (subDef < 0) subDef = 0;
-                    }
-                    else
-                    {
-                        //monsters vit defense is also weird
-                        var vitRng = (vit / 20) * (vit / 20);
-                        if (vitRng <= 0)
-                            subDef = vit;
-                        else
-                            subDef = vit + GameRandom.NextInclusive(0, 20000) % vitRng;
-                    }
+        //                if (def < 0) def = 0;
+        //                if (subDef < 0) subDef = 0;
+        //            }
+        //            else
+        //            {
+        //                //monsters vit defense is also weird
+        //                var vitRng = (vit / 20) * (vit / 20);
+        //                if (vitRng <= 0)
+        //                    subDef = vit;
+        //                else
+        //                    subDef = vit + GameRandom.NextInclusive(0, 20000) % vitRng;
+        //            }
 
 
-                    subDef = subDef * (100 + target.GetStat(CharacterStat.AddSoftDefPercent)) / 100;
-                }
+        //            subDef = subDef * (100 + target.GetStat(CharacterStat.AddSoftDefPercent)) / 100;
+        //        }
 
-                if ((flags & AttackFlags.ReverseDefense) > 0 || GetStat(CharacterStat.ReverseDefense) > 0)
-                {
-                    defCut = (def + subDef) * (defMod / 100f) / 100f;
-                    subDef = 0;
-                }
-                else
-                {
-                    //convert def to damage reduction %
-                    defCut = MathHelper.DefValueLookup(def);
+        //        if ((flags & AttackFlags.ReverseDefense) > 0 || GetStat(CharacterStat.ReverseDefense) > 0)
+        //        {
+        //            defCut = (def + subDef) * (defMod / 100f) / 100f;
+        //            subDef = 0;
+        //        }
+        //        else
+        //        {
+        //            //convert def to damage reduction %
+        //            defCut = MathHelper.DefValueLookup(def);
 
-                    if (def >= 200)
-                        subDef = 999999;
-                    else if (defMod != 100)
-                    {
-                        defCut = defCut * defMod / 100;
-                        subDef = subDef * defMod / 100;
-                    }
-                }
-            }
+        //            if (def >= 200)
+        //                subDef = 999999;
+        //            else if (defMod != 100)
+        //            {
+        //                defCut = defCut * defMod / 100;
+        //                subDef = subDef * defMod / 100;
+        //            }
+        //        }
+        //    }
 
-            //magic defense
-            if (isMagical)
-            {
-                var mDef = target.GetEffectiveStat(CharacterStat.MDef);
-                defCut = MathHelper.DefValueLookup(mDef); //for now players have different def calculations
-                if (!flags.HasFlag(AttackFlags.IgnoreSubDefense))
-                    subDef = target.GetEffectiveStat(CharacterStat.Int) + vit / 2;
+        //    //magic defense
+        //    if (isMagical)
+        //    {
+        //        var mDef = target.GetEffectiveStat(CharacterStat.MDef);
+        //        defCut = MathHelper.DefValueLookup(mDef); //for now players have different def calculations
+        //        if (!flags.HasFlag(AttackFlags.IgnoreSubDefense))
+        //            subDef = target.GetEffectiveStat(CharacterStat.Int) + vit / 2;
 
-                if (mDef >= 200)
-                    subDef = 999999;
-            }
-        }
+        //        if (mDef >= 200)
+        //            subDef = 999999;
+        //    }
+        //}
 
         //------------------------------
         // Combined damage calculation
@@ -428,21 +605,25 @@ public partial class CombatEntity
         if (damage < 1)
             damage = 1;
 
-        var lvCut = 1f;
-        if (target.Character.Type == CharacterType.Monster)
-        {
-            //players deal 1.5% less damage per level they are below a monster, to a max of -90%
-            lvCut -= 0.015f * (targetLevel - srcLevel);
-            lvCut = float.Clamp(lvCut, 0.1f, 1f);
-        }
-        else
-        {
-            //monsters deal 0.25% less damage per level they are below the player, to a max of -50%
-            lvCut -= 0.0025f * (targetLevel - srcLevel);
-            lvCut = float.Clamp(lvCut, 0.5f, 1f);
-        }
 
-        damage = (int)(lvCut * damage);
+        if (Character.Map?.Name != "que_qsch01") //take this out and make something real at some point...
+        {
+            var lvCut = 1f;
+            if (target.Character.Type == CharacterType.Monster)
+            {
+                //players deal 1.5% less damage per level they are below a monster, to a max of -90%
+                lvCut -= 0.015f * (targetLevel - srcLevel);
+                lvCut = float.Clamp(lvCut, 0.1f, 1f);
+            }
+            else
+            {
+                //monsters deal 0.25% less damage per level they are below the player, to a max of -50%
+                lvCut -= 0.0025f * (targetLevel - srcLevel);
+                lvCut = float.Clamp(lvCut, 0.5f, 1f);
+            }
+
+            damage = (int)(lvCut * damage);
+        }
 
         if (damage < 1)
             damage = 1;
@@ -568,6 +749,11 @@ public partial class CombatEntity
             if (Character.IsMoving)
                 sendMove = true;
         }
+
+        //no knockback for vendors
+        if (knockback > 0 && Character.Type == CharacterType.Player && Character.Player.IsInNpcInteraction && Character.Player.VendingState != null &&
+            Character.Player.VendingState.SellingItems.Count > 0)
+            knockback = 0;
 
         Character.AddMoveLockTime(delayTime);
 

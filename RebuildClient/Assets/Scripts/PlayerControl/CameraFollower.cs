@@ -1556,6 +1556,7 @@ namespace Assets.Scripts
             if (EffectCache.TryGetValue(effect, out var prefab) && prefab != null)
             {
                 var obj2 = GameObject.Instantiate(prefab, outputObj.transform, false);
+                obj2.SetActive(true);
                 obj2.transform.localPosition = new Vector3(0, asset.Offset, 0);
                 if (asset.Billboard)
                     obj2.AddComponent<BillboardObject>();
@@ -1577,6 +1578,9 @@ namespace Assets.Scripts
                     obj2.AddComponent<BillboardObject>();
 
                 outputObj.AddComponent<RemoveWhenChildless>();
+                
+                if (facing != 0)
+                    obj2.transform.localRotation = Quaternion.AngleAxis(45 * facing, Vector3.up);
 
                 EffectCache[asset.Id] = ah.Result;
             };
@@ -1847,6 +1851,16 @@ namespace Assets.Scripts
                     TextBoxInputField.text = lastMessage;
                     if (lastMessage != null)
                         TextBoxInputField.caretPosition = lastMessage.Length;
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.Slash))
+            {
+                if (!InItemInputBox && !InTextInputBox && !InTextBox && TextBoxInputField.text == "")
+                {
+                    TextBoxInputField.text = "/";
+                    TextBoxInputField.ActivateInputField();
+                    TextBoxInputField.caretPosition = 1;
                 }
             }
 
