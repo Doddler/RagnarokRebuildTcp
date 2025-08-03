@@ -42,6 +42,9 @@ namespace Assets.Scripts.UI
         {
             if (!CanDrag)
                 return;
+
+            if (!IsValidItemType(UIManager.DragItemObject))
+                return;
             
             HighlightImage.SetActive(true);
             
@@ -56,12 +59,23 @@ namespace Assets.Scripts.UI
             if (!CanDrag)
                 return;
             
+            
+            if (!IsValidItemType(UIManager.DragItemObject))
+                return;
+            
             HighlightImage.SetActive(false);
             
             if (UIManager.IsDraggingItem)
             {
                 UIManager.UnregisterDragTarget(this);
             }
+        }
+
+        private bool IsValidItemType(ItemDragObject dragObject)
+        {
+            if (dragObject.Type == DragItemType.Item || dragObject.Type == DragItemType.Skill)
+                return true;
+            return false;
         }
 
         public void DropItem()
@@ -80,7 +94,7 @@ namespace Assets.Scripts.UI
                 }
             }
 
-            if (dragObject.Type != DragItemType.Equipment && dragObject.Type != DragItemType.ShopItem) //we can't accept a drag from the equipment window
+            if (IsValidItemType(dragObject))
             {
                 DragItem.gameObject.SetActive(true);
                 DragItem.Assign(dragObject);

@@ -219,6 +219,7 @@ Npc("prt_fild08", "Diligent Alchemist", "4_M_ALCHE_C", 145, 346, SW, 1, 1)
 	SellItem("Blue_Gemstone");
 	SellItem("Red_Gemstone");
 	SellItem("Yellow_Gemstone");
+	SellItem("Authoritative_Badge");
 	@EventRevealedNpc("MilestoneAlchemist", "diligent alchemist Gregory"); //this must be at the end of the init section to work!
 OnClick:
 	FocusNpc();
@@ -262,6 +263,7 @@ Npc("prt_fild08", "Expert Fletcher", "4_F_JOB_HUNTER", 143, 342, NE)
 	AddTradedItem(CreateTradedItem("Stone_Arrow_Quiver", 1).Requires("Trunk", 5).Requires("Green_Live", 1).Costs(100));
 	AddTradedItem(CreateTradedItem("Crystal_Arrow_Quiver", 1).Requires("Trunk", 5).Requires("Crystal_Blue", 1).Costs(100));
 	AddTradedItem(CreateTradedItem("Shadow_Arrow_Quiver", 1).Requires("Trunk", 5).Requires("Little_Evil_Wing", 1).Costs(100));
+	AddTradedItem(CreateTradedItem("Rusty_Arrow_Quiver", 2).Requires("Trunk", 10).Requires("Poison_Spore", 5).Costs(100));
 	AddTradedItem(CreateTradedItem("Immaterial_Arrow_Quiver", 2).Requires("Trunk", 10).Requires("Amulet", 1).Costs(100));
 	
 	AddTradedItem(CreateTradedItem("Trunk", 1).Requires("Barren_Trunk", 3).Costs(15));
@@ -292,10 +294,10 @@ OnClick:
 
 Npc("prt_fild08", "Master Scholar", "4_M_SAGE_C", 141, 370, SE)
 {
-	AddTradedItem(CreateTradedItem("Elemental_Converter_Earth", 5).Requires("Horn", 6).Requires("Green_Live", 2).Requires("Blank_Scroll", 5).Costs(2000));
-	AddTradedItem(CreateTradedItem("Elemental_Converter_Fire", 5).Requires("Scorpion_Tail", 6).Requires("Red_Blood", 2).Requires("Blank_Scroll", 5).Costs(2000));
-	AddTradedItem(CreateTradedItem("Elemental_Converter_Water", 5).Requires("Snail's_Shell", 6).Requires("Crystal_Blue", 2).Requires("Blank_Scroll", 5).Costs(2000));
-	AddTradedItem(CreateTradedItem("Elemental_Converter_Wind", 5).Requires("Rainbow_Shell", 6).Requires("Wind_of_Verdure", 2).Requires("Blank_Scroll", 5).Costs(2000));
+	AddTradedItem(CreateTradedItem("Elemental_Converter_Earth", 3).Requires("Horn", 6).Requires("Green_Live", 1).Requires("Blank_Scroll", 3).Costs(2000));
+	AddTradedItem(CreateTradedItem("Elemental_Converter_Fire", 3).Requires("Scorpion_Tail", 6).Requires("Red_Blood", 1).Requires("Blank_Scroll", 3).Costs(2000));
+	AddTradedItem(CreateTradedItem("Elemental_Converter_Water", 3).Requires("Snail's_Shell", 6).Requires("Crystal_Blue", 1).Requires("Blank_Scroll", 3).Costs(2000));
+	AddTradedItem(CreateTradedItem("Elemental_Converter_Wind", 3).Requires("Rainbow_Shell", 6).Requires("Wind_of_Verdure", 1).Requires("Blank_Scroll", 3).Costs(2000));
 
 	AddTradedItem(CreateTradedItem("Blessing_Scroll", 3).Requires("Holy_Water", 1).Requires("Witch_Starsand", 5).Requires("Blank_Scroll", 3).Costs(2000));
 	AddTradedItem(CreateTradedItem("Increase_Agi_Scroll", 3).Requires("Holy_Water", 1).Requires("Witch_Starsand", 5).Requires("Blank_Scroll", 3).Costs(2000));

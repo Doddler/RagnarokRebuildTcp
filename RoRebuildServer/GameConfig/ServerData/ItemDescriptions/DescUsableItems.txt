@@ -521,39 +521,63 @@ Recover 10% HP
 
 ::Quiver //12004
 <color=#808080>A quiver that contains 500 arrows.</color>
+[Properties]Arrow Attack: 25
+Arrow Property: <color=#0000FF>Neutral</color>
 
 ::Iron_Arrow_Quiver //12005
 <color=#808080>A quiver that contains 500 iron arrows.</color>
+[Properties]Arrow Attack: 30
+Arrow Property: <color=#0000FF>Neutral</color>
 
 ::Steel_Arrow_Quiver //12006
 <color=#808080>A quiver that contains 500 steel arrows.</color>
+[Properties]Arrow Attack: 40
+Arrow Property: <color=#0000FF>Neutral</color>
 
 ::Oridecon_Arrow_Quiver //12007
 <color=#808080>A quiver that contains 500 oridecon arrows.</color>
+[Properties]Arrow Attack: 50
+Arrow Property: <color=#0000FF>Neutral</color>
 
 ::Fire_Arrow_Quiver //12008
 <color=#808080>A quiver that contains 500 fire arrows.</color>
+[Properties]Arrow Attack: 30
+Arrow Property: <color=#0000FF>Fire</color>
 
 ::Silver_Arrow_Quiver //12009
 <color=#808080>A quiver that contains 500 silver arrows.</color>
+[Properties]Arrow Attack: 30
+Arrow Property: <color=#0000FF>Holy</color>
 
 ::Wind_Arrow_Quiver //12010
 <color=#808080>A quiver that contains 500 wind arrows.</color>
+[Properties]Arrow Attack: 30
+Arrow Property: <color=#0000FF>Wind</color>
 
 ::Stone_Arrow_Quiver //12011
 <color=#808080>A quiver that contains 500 stone arrows.</color>
+[Properties]Arrow Attack: 30
+Arrow Property: <color=#0000FF>Earth</color>
 
 ::Crystal_Arrow_Quiver //12012
 <color=#808080>A quiver that contains 500 crystal arrows.</color>
+[Properties]Arrow Attack: 30
+Arrow Property: <color=#0000FF>Water</color>
 
 ::Shadow_Arrow_Quiver //12013
 <color=#808080>A quiver that contains 500 shadow arrows.</color>
+[Properties]Arrow Attack: 30
+Arrow Property: <color=#0000FF>Shadow</color>
 
 ::Immaterial_Arrow_Quiver //12014
 <color=#808080>A quiver that contains 500 immaterial arrows.</color>
+[Properties]Arrow Attack: 30
+Arrow Property: <color=#0000FF>Ghost</color>
 
 ::Rusty_Arrow_Quiver //12015
 <color=#808080>A quiver that contains 500 rusty arrows.</color>
+[Properties]Arrow Attack: 30
+Arrow Property: <color=#0000FF>Poison</color>
 
 ::Speed_Potion //12016
 Move Quickly for 5 seconds

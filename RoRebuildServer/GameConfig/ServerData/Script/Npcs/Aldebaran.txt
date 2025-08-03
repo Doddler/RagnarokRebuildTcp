@@ -9,3 +9,75 @@ OnClick:
     if(Result == 0)
         MoveTo("xmas_fild01", 83, 72);
 }
+
+
+
+Npc("alde_dun03", "Doorkeeper", "4W_F_01", 264, 16, S) {
+    localstr name = "Doorkeeper Jaye"
+OnClick:
+    FocusNpc();
+    Dialog(name, "I hope you're enjoying the great attraction of Al de Baran, the great Kinaichi Rancario clock tower! The fourth basement floor is out of bounds for guests, so I'll have to ask you to turn back.");
+    Option("About the clock tower", "About B4F", "Enter B4F", "Cancel");
+    switch(Result)
+    {
+    case 0:
+        Dialog(name, "Legends say that long, long ago, the three great alchemists founded this town of Al de Baran as a way to preserve the art of alchemy.");
+        Dialog(name, "The purpose of this grand tower was built to serve as a vault of knowledge, created using an advanced fusion of magic, alchemy and science.");
+        Dialog(name, "Sadly, in the ages since we've lost the means to control the tower and the constructs that manage it, so be sure to keep in mind just how dangerous this place can be.");
+        break;
+    case 1:
+        Dialog(name, "The deep basement served both as a storage for magic tools and weaponry, and a dumping ground for materials. To keep looters out, the ancient alchemists sealed it's entrance with powerful alchemy.");
+        Dialog(name, "If you want to enter, you'll need to get a key from one of those dangerous constructs here in the tower.");
+        Dialog(name, "The keys are themselves are enchanted with alchemy and will lose their power after a single use. That means each key can be used only once to allow one person in.");
+        Dialog(name, "If you do happen to find a key, you'll be qualified to access the lowest floor. Let me know and I can help you open the door. Good luck...");
+        break;
+    case 2:
+        if(GetItemCount("Key_of_Underground") > 0)
+        {
+            Dialog(name, "Hm, just as I thought, you really are someone special. with this key you are qualified to enter, so let me open the door for you. Good luck!");
+            TakeItem("Key_of_Underground");
+            MoveTo("alde_dun04", 79, 267);
+            return;
+        }
+        Dialog(name, "I'm sorry, without a key of the underground, you aren't qualified to enter this door.");
+        break;
+    case 3:
+        Dialog(name, "The constructs of the three great alchemists are wandering aobut, so please be careful. And try not to vandilize or break anything while you're here. Thanks.");
+        break;
+    }
+ }
+
+Npc("c_tower3", "Doorkeeper", "4_M_02", 10, 249, S) {
+    localstr name = "Doorkeeper Riku"
+OnClick:
+    FocusNpc();
+    Dialog(name, "I hope you're enjoying the great attraction of Al de Baran, the great Kinaichi Rancario clock tower! The fourth floor is out of bounds for guests, so I'll have to ask you to turn back.");
+    Option("About the clock tower", "About 4F", "Enter 4F", "Cancel");
+    switch(Result)
+    {
+    case 0:
+        Dialog(name, "Legends say that long, long ago, the three great alchemists founded this town of Al de Baran as a way to preserve the art of alchemy.");
+        Dialog(name, "The purpose of this grand tower was built to serve as a vault of knowledge, created using an advanced fusion of magic, alchemy and science.");
+        Dialog(name, "Sadly, in the ages since we've lost the means to control the tower and the constructs that manage it, so be sure to keep in mind just how dangerous this place can be.");
+        break;
+    case 1:
+        Dialog(name, "To safeguard the sensitive equipment and mechanisms of the top-most floor, the ancient alchemists sealed it's entrance with powerful alchemy.");
+        Dialog(name, "If you want to enter, you'll need to get a key from one of those dangerous constructs here in the tower.");
+        Dialog(name, "The keys are themselves are enchanted with alchemy and will lose their power after a single use. That means each key can be used only once to allow one person in.");
+        Dialog(name, "If you do happen to find a key, you'll be qualified to access the upper floor. Let me know and I can help you open the door. Good luck...");
+        break;
+    case 2:
+        if(GetItemCount("Key_of_Clock_Tower") > 0)
+        {
+            Dialog(name, "Hm, just as I thought, you really are someone special. with this key you are qualified to enter, so let me open the door for you. Good luck!");
+            TakeItem("Key_of_Clock_Tower");
+            MoveTo("c_tower4", 185, 44);
+            return;
+        }
+        Dialog(name, "I'm sorry, without a key of the clock tower, you aren't qualified to enter this door.");
+        break;
+    case 3:
+        Dialog(name, "The constructs of the three great alchemists are wandering aobut, so please be careful. And try not to vandilize or break anything while you're here. Thanks.");
+        break;
+    }
+ }

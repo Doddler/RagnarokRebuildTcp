@@ -53,30 +53,35 @@ public class PartyExpAccumulator
                     continue;
                 if (p.Character.Map != player.Character.Map || p.Character.State == CharacterState.Dead || !p.Character.IsActive)
                     continue;
-                //if (p.Character.Position.DistanceTo(player.Character.Position) > 60)
-                //    continue;
-                var difference = Math.Abs(player.CharacterLevel - p.CharacterLevel);
-                if (difference > 15)
-                    continue;
-                if (difference > 10)
-                {
-                    var rate = 100 / (difference - 9);
-                    baseExp = baseExp * rate / 100;
-                    jobExp = jobExp * rate / 100;
-                    if (baseExp == 0 && jobExp == 0)
-                        continue;
-                }
-                Results.Add(p.Entity, new ExpResult(p, baseExp, jobExp));
+
+                var (b, j) = GetLevelModifiedExp(player.CharacterLevel, p.CharacterLevel, baseExp, jobExp);
+                if(b > 0 || j > 0)
+                    Results.Add(p.Entity, new ExpResult(p, b, j));
             }
             else
             {
-                if (Math.Abs(player.CharacterLevel - existing.Player.CharacterLevel) > 10)
+                var (b, j) = GetLevelModifiedExp(player.CharacterLevel, existing.Player.CharacterLevel, baseExp, jobExp);
+                if (b <= 0 && j <= 0)
                     continue;
-                existing.BaseExp += baseExp;
-                existing.JobExp += jobExp;
+                existing.BaseExp += b;
+                existing.JobExp += j;
                 existing.ContributingPlayers++;
             }
         }
+    }
+
+    private (int, int) GetLevelModifiedExp(int srcLevel, int targetLevel, int baseExp, int jobExp)
+    {
+        var difference = Math.Abs(srcLevel - targetLevel);
+        if (difference > 15)
+            return (0, 0);
+        if (difference <= 10)
+            return (baseExp, jobExp);
+        var rate = 100 / (difference - 9);
+        baseExp = baseExp * rate / 100;
+        jobExp = jobExp * rate / 100;
+
+        return (baseExp, jobExp);
     }
 
     private void CountPlayersInEachParty()

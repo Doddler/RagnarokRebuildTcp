@@ -65,7 +65,7 @@ Npc("alberta_in", "Wealthy-looking Merchant", "1_M_SIGNMCNT", 125, 101, SE) { }
 //Npc("alberta_in", "Weapon Dealer", "1_M_03", 188, 21, N) { }
 //Npc("alberta_in", "Weapon Dealer", "4_KID01", 175, 97, S) { }
 //Npc("alberta_in", "Xenophon", "4_M_02", 21, 63, SE) { }
-Npc("alde_dun03", "Doorkeeper", "4W_F_01", 264, 16, S) { }
+//Npc("alde_dun03", "Doorkeeper", "4W_F_01", 264, 16, S) { }
 Npc("alde_gld", "GM_TBT", "4_F_RACING", 5, 5, SE) { }
 Npc("alde_gld", "Luina Castle 1", "GUILD_FLAG", 45, 87, N) { }
 Npc("alde_gld", "Luina Castle 1", "GUILD_FLAG", 51, 87, N) { }
@@ -292,7 +292,7 @@ Npc("arena_room", "party", "4_NFWISP", 196, 5, SW) { }
 Npc("arena_room", "Teleporter", "1_M_JOBTESTER", 105, 93, SE) { }
 Npc("arena_room", "Vendigos", "4W_M_01", 94, 93, SE) { }
 Npc("beach_dun3", "Nigiboran", "4_M_BIBI", 30, 220, S) { }
-Npc("c_tower3", "Doorkeeper", "4_M_02", 10, 249, S) { }
+//Npc("c_tower3", "Doorkeeper", "4_M_02", 10, 249, S) { }
 Npc("cmd_fild04", "Daeguro", "4_F_KID2", 267, 137, S) { }
 Npc("cmd_fild04", "Ziyaol", "4_M_SEAMAN", 248, 86, S) { }
 Npc("cmd_fild04", "Zyosegirl", "4_F_04", 188, 74, S) { }

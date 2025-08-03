@@ -133,7 +133,7 @@ public partial class CombatEntity
                     attackElement = attacker.Player.Equipment.WeaponElement;
                     if (attacker.Player.WeaponClass == 12) //bows
                     {
-                        var arrowElement = Player.Equipment.AmmoElement;
+                        var arrowElement = attacker.Player.Equipment.AmmoElement;
                         if (arrowElement != AttackElement.None && arrowElement != AttackElement.Neutral)
                             attackElement = arrowElement;
                     }

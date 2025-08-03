@@ -558,51 +558,51 @@
     },
     {
       "Code": "Quiver",
-      "Description": "\u003Ccolor=#808080\u003EA quiver that contains 500 arrows.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E25\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA quiver that contains 500 arrows.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EArrow Attack: 25\nArrow Property: \u003Ccolor=#0000FF\u003ENeutral\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E25\u003C/color\u003E"
     },
     {
       "Code": "Iron_Arrow_Quiver",
-      "Description": "\u003Ccolor=#808080\u003EA quiver that contains 500 iron arrows.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E25\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA quiver that contains 500 iron arrows.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EArrow Attack: 30\nArrow Property: \u003Ccolor=#0000FF\u003ENeutral\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E25\u003C/color\u003E"
     },
     {
       "Code": "Steel_Arrow_Quiver",
-      "Description": "\u003Ccolor=#808080\u003EA quiver that contains 500 steel arrows.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E25\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA quiver that contains 500 steel arrows.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EArrow Attack: 40\nArrow Property: \u003Ccolor=#0000FF\u003ENeutral\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E25\u003C/color\u003E"
     },
     {
       "Code": "Oridecon_Arrow_Quiver",
-      "Description": "\u003Ccolor=#808080\u003EA quiver that contains 500 oridecon arrows.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E25\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA quiver that contains 500 oridecon arrows.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EArrow Attack: 50\nArrow Property: \u003Ccolor=#0000FF\u003ENeutral\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E25\u003C/color\u003E"
     },
     {
       "Code": "Fire_Arrow_Quiver",
-      "Description": "\u003Ccolor=#808080\u003EA quiver that contains 500 fire arrows.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E25\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA quiver that contains 500 fire arrows.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EArrow Attack: 30\nArrow Property: \u003Ccolor=#0000FF\u003EFire\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E25\u003C/color\u003E"
     },
     {
       "Code": "Silver_Arrow_Quiver",
-      "Description": "\u003Ccolor=#808080\u003EA quiver that contains 500 silver arrows.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E25\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA quiver that contains 500 silver arrows.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EArrow Attack: 30\nArrow Property: \u003Ccolor=#0000FF\u003EHoly\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E25\u003C/color\u003E"
     },
     {
       "Code": "Wind_Arrow_Quiver",
-      "Description": "\u003Ccolor=#808080\u003EA quiver that contains 500 wind arrows.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E25\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA quiver that contains 500 wind arrows.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EArrow Attack: 30\nArrow Property: \u003Ccolor=#0000FF\u003EWind\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E25\u003C/color\u003E"
     },
     {
       "Code": "Stone_Arrow_Quiver",
-      "Description": "\u003Ccolor=#808080\u003EA quiver that contains 500 stone arrows.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E25\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA quiver that contains 500 stone arrows.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EArrow Attack: 30\nArrow Property: \u003Ccolor=#0000FF\u003EEarth\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E25\u003C/color\u003E"
     },
     {
       "Code": "Crystal_Arrow_Quiver",
-      "Description": "\u003Ccolor=#808080\u003EA quiver that contains 500 crystal arrows.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E25\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA quiver that contains 500 crystal arrows.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EArrow Attack: 30\nArrow Property: \u003Ccolor=#0000FF\u003EWater\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E25\u003C/color\u003E"
     },
     {
       "Code": "Shadow_Arrow_Quiver",
-      "Description": "\u003Ccolor=#808080\u003EA quiver that contains 500 shadow arrows.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E25\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA quiver that contains 500 shadow arrows.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EArrow Attack: 30\nArrow Property: \u003Ccolor=#0000FF\u003EShadow\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E25\u003C/color\u003E"
     },
     {
       "Code": "Immaterial_Arrow_Quiver",
-      "Description": "\u003Ccolor=#808080\u003EA quiver that contains 500 immaterial arrows.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E25\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA quiver that contains 500 immaterial arrows.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EArrow Attack: 30\nArrow Property: \u003Ccolor=#0000FF\u003EGhost\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E25\u003C/color\u003E"
     },
     {
       "Code": "Rusty_Arrow_Quiver",
-      "Description": "\u003Ccolor=#808080\u003EA quiver that contains 500 rusty arrows.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EWeight: \u003Ccolor=#777777\u003E25\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA quiver that contains 500 rusty arrows.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EArrow Attack: 30\nArrow Property: \u003Ccolor=#0000FF\u003EPoison\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E25\u003C/color\u003E"
     },
     {
       "Code": "Speed_Potion",

@@ -672,9 +672,11 @@ public class NetworkManager
         using var ms = new MemoryStream(buffer);
         using var bw = new BinaryWriter(ms);
 
+        var bytes = Encoding.UTF8.GetBytes(sb.ToString());
+
         bw.Write((byte)PacketType.ConnectionDenied);
-        bw.Write((short)sb.Length);
-        bw.Write(Encoding.UTF8.GetBytes(sb.ToString()));
+        bw.Write((short)bytes.Length);
+        bw.Write(bytes);
 
         var data = new ArraySegment<byte>(buffer, 0, (int)ms.Position);
 
@@ -691,9 +693,11 @@ public class NetworkManager
         using var ms = new MemoryStream(buffer);
         using var bw = new BinaryWriter(ms);
 
+        var bytes = Encoding.UTF8.GetBytes(message);
+
         bw.Write((byte)PacketType.ConnectionDenied);
-        bw.Write((short)message.Length);
-        bw.Write(Encoding.UTF8.GetBytes(message));
+        bw.Write((short)bytes.Length);
+        bw.Write(bytes);
 
         var data = new ArraySegment<byte>(buffer, 0, (int)ms.Position);
 
