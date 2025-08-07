@@ -480,5 +480,6 @@ AltSkillHandler("EVENT_RANDGRIS") {
 		TryCast(TwoHandQuicken, 1, 100%, 0, 120s)[HpPercent < 30];
 		TryCast(PowerUp, 1, 100%, 0.7s, 30s)[HpPercent < 30];
 	OnDie:
+		CallSpecialMonsterEvent("OkolnirEnd");
 		SignalNpc("#RandgrisHelper", "Die");
 }

@@ -130,7 +130,7 @@ public partial class Monster : IEntityAutoReset
     public Entity RudeAttacker;
 
     public EntityValueList<int>? TotalDamageReceived;
-
+    
     //private WorldObject searchTarget = null!;
 
     private float deadTimeout;

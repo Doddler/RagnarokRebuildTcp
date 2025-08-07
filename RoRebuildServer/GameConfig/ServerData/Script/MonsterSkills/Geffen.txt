@@ -100,7 +100,11 @@ StateAttacking:
 
 SkillHandler("ORC_ARCHER") {
 StateIdle:
-    TryCast(DoubleStrafe, 5, 5%, 1, 5s, NoInterrupt);
+    TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(5); //idea
+    TryCast(AnkleSnare, 5, 5%, 0, 5s) -> SendEmote(29); //heh
+StateAttacking:
+    TryCast(ArrowShower, 1, 20%, 1s, 5s)[CountEnemiesNearTarget(2) >= 2] -> SendEmote(6);
+    TryCast(EarthAttack, 2, 5%, 0.5s, 5s, NoInterrupt);
 }
 
 SkillHandler("ZENORC") {
@@ -160,9 +164,20 @@ SkillHandler("SUCCUBUS") {
 StateIdle:
     TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
 StateAttacking:
-	TryCast(Blind, 3, 5%, 0, 5s);
-	TryCast(Curse, 3, 5%, 0.8s, 5s, NoInterrupt);
-	TryCast(GhostAttack, 5, 5%, 0, 5s);
+	TryCast(Blind, 5, 5%, 0, 5s);
+	TryCast(BloodDrain, 1, 20%, 0, 5s) -> SendEmote(3);
+	TryCast(DarkAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(3);
+}
+
+SkillHandler("INCUBUS") {
+StateIdle:
+    TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
+StateChase:
+	TryCast(DarkStrike, 9, 5%, 0.7s, 5s, NoInterrupt) -> SendEmote(29); //heh
+StateAttacking:
+	TryCast(Blind, 5, 5%, 0, 5s);
+	TryCast(DarkAttack, 2, 5%, 0s, 5s, NoInterrupt);
+	TryCast(DarkStrike, 9, 5%, 0.7s, 5s, NoInterrupt) -> SendEmote(29); //heh
 }
 
 SkillHandler("PETIT") {

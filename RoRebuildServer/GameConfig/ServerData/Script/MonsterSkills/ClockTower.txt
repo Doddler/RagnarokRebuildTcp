@@ -113,3 +113,23 @@ StateAttacking:
 	TryCast(Stop, 1, 5%, 0.5s, 5s, NoInterrupt);
 	TryCast(Silence, 3, 5%, 0.7s, 5s, NoInterrupt);
 }
+
+SkillHandler("TIRFING") {
+StateIdle:
+	TryCast(NoCast, 3, 20%, 0, 5s) -> SendEmote(29); //heh
+StateAttacking:
+	TryCast(SonicBlow, 10, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(18); //lol
+	TryCast(DarkAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
+	TryCast(PiercingAttack, 3, 5%, 0, 5s) -> SendEmote(6); //angry
+}
+
+SkillHandler("MYSTELTAINN") {
+StateAttacking:
+	TryCast(DarkAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
+	TryCast(GuidedAttack, 1, 5%, 1s, 20s, NoInterrupt) -> SendEmote(29); //heh
+}
+
+SkillHandler("EXECUTIONER") {
+StateAttacking:
+	TryCast(DarkAttack, 1, 20%, 0s, 5s);
+}

@@ -11,6 +11,7 @@ using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Hunter;
 
+[MonsterSkillHandler(CharacterSkill.AnkleSnare, SkillClass.Physical, SkillTarget.Trap)]
 [SkillHandler(CharacterSkill.AnkleSnare, SkillClass.Physical, SkillTarget.Ground)]
 public class AnkleSnareHandler : SkillHandlerTrap
 {

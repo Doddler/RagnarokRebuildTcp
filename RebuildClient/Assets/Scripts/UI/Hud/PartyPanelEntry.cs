@@ -196,6 +196,8 @@ namespace Assets.Scripts.UI.Hud
             newEffect.Expiration = expiration;
             newEffect.UpdateTime();
             newEffect.StatusIcon.sprite = icon;
+            newEffect.CanCancel = false;
+            newEffect.IsPartyMember = true;
             
             
             statusEffects.Add(newEffect);

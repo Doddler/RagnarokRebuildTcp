@@ -16,8 +16,8 @@ namespace Assets.Scripts.SkillHandlers.Handlers.Hunter
                 src.SpriteAnimator.ChangeMotion(SpriteMotion.PickUp);
                 src.SpriteAnimator.State = SpriteState.Idle;
             }
-            else
-                src.PerformSkillMotion();
+            // else
+            //     src.PerformSkillMotion();
         }
     }
 }

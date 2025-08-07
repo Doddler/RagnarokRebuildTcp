@@ -1683,6 +1683,12 @@ namespace Assets.Scripts
             }
         }
 
+        public void SetSmoothPixel(bool use)
+        {
+            UseSmoothPixel = use;
+            Shader.SetKeyword(smoothPixelKeyword, UseSmoothPixel);
+        }
+
         public static void SetErrorUiText(string text)
         {
             Dispatcher.RunOnMainThread(() =>
@@ -1801,6 +1807,12 @@ namespace Assets.Scripts
                     {
                         pointerOverUi = true;
                     }
+                }
+
+                if (pointerEvent.pointerEnter.name == "BuffTemplate(Clone)" && !Input.GetMouseButtonDown(1))
+                {
+                    pointerOverUi = false;
+                    selected = null;
                 }
             }
 
@@ -1962,6 +1974,9 @@ namespace Assets.Scripts
 
             if (!inInputUI && Input.GetKeyDown(KeyCode.A))
                 UiManager.Instance.StatusWindow.ToggleVisibility();
+            
+            if (!inInputUI && Input.GetKeyDown(KeyCode.D))
+                UiManager.Instance.EmoteManager.GetComponent<WindowBase>().ToggleVisibility();
 
             //remove the flag to enable cinemachine recording on this
 #if UNITY_EDITOR
@@ -2154,17 +2169,17 @@ namespace Assets.Scripts
 
             if (!inInputUI && Input.GetKeyDown(KeyCode.T))
                 NetworkManager.Instance.RandomTeleport();
+            //
+            // if (!inInputUI && Input.GetKeyDown(KeyCode.F3))
+            //     UseTTFDamage = !UseTTFDamage;
+            //
+            // if (Input.GetKeyDown(KeyCode.F4))
+            // {
+            //     UseSmoothPixel = !UseSmoothPixel;
+            //     Shader.SetKeyword(smoothPixelKeyword, UseSmoothPixel);
+            // }
 
-            if (!inInputUI && Input.GetKeyDown(KeyCode.F3))
-                UseTTFDamage = !UseTTFDamage;
-
-            if (Input.GetKeyDown(KeyCode.F4))
-            {
-                UseSmoothPixel = !UseSmoothPixel;
-                Shader.SetKeyword(smoothPixelKeyword, UseSmoothPixel);
-            }
-
-            if (!inInputUI && Input.GetKeyDown(KeyCode.Tab) && VendingSetupManager.Instance == null)
+            if (!inInputUI && Input.GetKeyDown(KeyCode.Tab) && VendingSetupManager.Instance == null && GameConfig.Data.AllowTabToShowWalkTable)
             {
                 var chunks = GameObject.FindObjectsOfType<RoMapChunk>();
                 foreach (var c in chunks)
@@ -2215,6 +2230,7 @@ namespace Assets.Scripts
         private void OnApplicationQuit()
         {
             SaveCurrentCameraSettings();
+            GameConfig.SaveConfig();
         }
     }
 }

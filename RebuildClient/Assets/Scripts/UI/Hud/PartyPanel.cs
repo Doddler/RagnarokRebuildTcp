@@ -22,14 +22,14 @@ namespace Assets.Scripts.UI.Hud
         {
             if(HoverEntry != null)
                 HoverEntry.SkillTargetHover.gameObject.SetActive(true);
-            CanvasGroup.blocksRaycasts = true;
+            //CanvasGroup.blocksRaycasts = true;
         }
 
         public void EndSkillOnCursor()
         {
             if(HoverEntry != null)
                 HoverEntry.SkillTargetHover.gameObject.SetActive(false);
-            CanvasGroup.blocksRaycasts = false;
+            //CanvasGroup.blocksRaycasts = false;
         }
 
         public void OnChangeMaps()

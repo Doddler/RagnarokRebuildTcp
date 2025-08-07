@@ -17,6 +17,7 @@ namespace Assets.Scripts.UI.Hud
         [NonSerialized] public CharacterStatusEffect StatusEffect;
         [NonSerialized] public float Expiration;
         [NonSerialized] public bool CanCancel;
+        [NonSerialized] public bool IsPartyMember;
 
         private int secondsRemaining;
 
@@ -51,6 +52,9 @@ namespace Assets.Scripts.UI.Hud
             if (UiManager.Instance.IsDraggingItem)
                 return;
 
+            if (IsPartyMember && !Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift))
+                return;
+
             var data = ClientDataLoader.Instance.GetStatusEffect((int)StatusEffect);
             
             if (data != null)
@@ -78,7 +82,7 @@ namespace Assets.Scripts.UI.Hud
             if(eventData.button == PointerEventData.InputButton.Right && (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
             {
                 var status = ClientDataLoader.Instance.GetStatusEffect((int)StatusEffect);
-                if(status.CanDisable)
+                if(status.CanDisable && CanCancel)
                     NetworkManager.Instance.SendRemoveStatusEffect(StatusEffect);
             }
         }

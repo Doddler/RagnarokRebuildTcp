@@ -11,7 +11,8 @@ namespace RebuildSharedData.Enum
         Ally,
         Any,
         Ground,
-        Self
+        Self,
+        Trap
     }
 
     public enum SkillPreferredTarget : byte

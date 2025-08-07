@@ -21,6 +21,12 @@ StateAttacking:
 	TryCast(EarthAttack, 1, 5%, 0.5s, 5s);
 }
 
+SkillHandler("SNAKE") {
+StateAttacking:
+	TryCast(EarthAttack, 1, 20%, 0s, 5s);
+	TryCast(Poison, 2, 5%, 0.8s, 5s, NoInterrupt);
+}
+
 SkillHandler("VAGABOND_WOLF") {
 OnInit:
 	ResummonMinionCount = 3; //resummon if we have 3 or less
@@ -134,16 +140,15 @@ StateAttacking:
     TryCast(EarthAttack, 1, 20%, 0s, 5s);
 }
 
-///TODO: Dokebi should use andrenaline rush instead of 2hq, but that's not implemented yet
 SkillHandler("DOKEBI") {
 StateRandomMove:
 	TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(2); //whistle
 StateChase:
-	TryCast(AdrenalineRush, 5, 5%, 1.5s, 1m, HideSkillName) -> SendEmote(6); //angry
+	TryCast(AdrenalineRush, 5, 5%, 1.5s, 1m, NoInterrupt) -> SendEmote(6); //angry
 StateAttacking:
 	TryCast(DarkAttack, 1, 20%, 0, 5s);
 	TryCast(Mammonite, 5, 5%, 0.8s, 5s) -> SendEmote(8); //$
-	TryCast(AdrenalineRush, 5, 5%, 1.5s, 5s, HideSkillName);
+	TryCast(AdrenalineRush, 5, 5%, 1.5s, 5s, NoInterrupt);
 }
 
 SkillHandler("ZOMBIE") {
@@ -170,8 +175,8 @@ SkillHandler("SOHEE") {
 StateRandomMove:
 	TryCast(NoCast, 1, 20%, 0, 10s) -> SendEmote(28); //sob
 StateAttacking:
-	TryCast(Stop, 1, 5%, 0, 5s) -> SendEmote(9); //...
-	TryCast(Suicide, 1, 5%, 0, 5s)[HpPercent < 80];
+	TryCast(Stop, 1, 5%, 0, 30s) -> SendEmote(9); //...
+	TryCast(Suicide, 1, 3%, 0, 5s)[HpPercent < 80];
 	TryCast(WaterAttack, 3, 5%, 0.5s, 5s) -> SendEmote(6); //angry
 }
 

@@ -22,6 +22,15 @@ StateAttacking:
 	TryCast(WaterAttack, 1, 5%, 0s, 5s) -> SendEmote(6); //angry
 }
 
+SkillHandler("NERAID") {
+StateIdle:
+    @ResumeAiState(5%, AiStandardBoss, 0); //!
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+StateAttacking:
+	TryCast(EarthAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
+}
+
 SkillHandler("CRAB") {
 StateAttacking:
 	TryCast(WaterAttack, 1, 20%, 0s, 5s);
@@ -36,6 +45,13 @@ SkillHandler("GRYPHON") {
 StateAttacking:
 	TryCast(CriticalAttack, 1, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
 	TryCast(WindAttack, 1, 20%, 0s, 5s);
+}
+
+
+SkillHandler("MEGALITH") {
+StateIdle:
+	TryCast(Teleport, 1, 5%, 0s, 15s);
+	TryCast(NoCast, 1, 20%, 0s, 5s) -> SendEmote(9);
 }
 
 SkillHandler("GALAPAGO") {
@@ -71,4 +87,28 @@ StateChase:
 StateAttacking:
     TryCast(WaterBall, 3, 5%, 1.5s, 5s, EasyInterrupt) -> SendEmote(6); //angry
 	TryCast(WaterAttack, 1, 20%, 0s, 5s);
+}
+
+SkillHandler("STALACTIC_GOLEM") {
+StateIdle:
+    @ResumeAiState(20%, AiPassiveSense, 9); //...
+StateChase:
+	TryCast(Endure, 1, 50%, 0, 10s)[WasRangedOrMagicAttacked] -> SendEmote(6);
+StateAttacking:
+	TryCast("SwitchToAggressive", 1, 100%, 0, 30s, HiddenCast) -> {
+        ChangeAiClass(AiAggressive, false);
+		SendEmote(6); //angry
+	}
+	TryCast(Stun, 4, 5%, 1.5s, 5s, NoInterrupt) -> SendEmote(6); //angry    
+}
+
+SkillHandler("MEDUSA") {
+StateIdle:
+    @ResumeAiState(10%, AiStandardBoss, 6); //angry
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+	TryCast(Petrify, 5, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(3); //heart
+StateAttacking:
+    TryCast(StoneCurse, 10, 5%, 1.5s, 5s, NoInterrupt) -> SendEmote(3); //heart
+	TryCast(Petrify, 5, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(3); //heart
 }

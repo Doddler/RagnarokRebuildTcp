@@ -505,6 +505,35 @@ public class MonsterSkillAiState(Monster monsterIn)
                 ce.CastInterruptionMode = CastInterruptionMode.InterruptOnKnockback;
         }
 
+        if (skillTarget == SkillTarget.Trap)
+        {
+            var pos = Position.Zero;
+            var area = Area.CreateAroundPoint(ce.Character.Position, 2);
+            
+            var map = ce.Character.Map!;
+            var hasTile = false;
+
+            for (var i = 0; i < 5; i++)
+            {
+                pos = Position.RandomPosition(area);
+                if (pos == ce.Character.Position)
+                    continue;
+                var tile = Area.CreateAroundPoint(pos, 0);
+                if (!map.WalkData.IsCellWalkable(pos) || map.DoesAreaOverlapWithTrapsOrCharacters(tile))
+                    continue;
+                hasTile = true;
+                break;
+            }
+
+            if (!hasTile)
+                return false;
+
+            if (!ce.AttemptStartGroundTargetedSkill(pos, skill, level, castTime / 1000f, castFlags))
+                return SkillFail();
+            ce.SetSkillCooldown(skill, delay + castTime);
+            return SkillSuccess();
+        }
+
         if (skillTarget == SkillTarget.Ground)
         {
             var pos = Position.Zero;
@@ -986,5 +1015,14 @@ public class MonsterSkillAiState(Monster monsterIn)
 
         var npc = destNpc.Get<Npc>();
         npc.OnSignal(chara, signal, value1, value2, value3, value4);
+    }
+
+    public void CallSpecialMonsterEvent(string signalName)
+    {
+        if(DataManager.NpcManager.MonsterSpecialDeathEvent.TryGetValue(signalName, out var specialEvent))
+        {
+            if(specialEvent != null)
+                specialEvent(monster);
+        }
     }
 }

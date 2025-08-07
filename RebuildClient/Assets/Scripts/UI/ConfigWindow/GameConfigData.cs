@@ -53,6 +53,10 @@ namespace Assets.Scripts.UI.ConfigWindow
         public bool ShowJobExpPercent = true;
         //visuals
         public bool UseSmoothPixel = true;
+
+        public bool UseUnfilteredSprites = false;
+        public bool UseSpriteBasedDamageNumbers = false;
+        public bool AllowTabToShowWalkTable = false;
         
         //storage
         public Vector2 StoragePosition = Vector2.zero;

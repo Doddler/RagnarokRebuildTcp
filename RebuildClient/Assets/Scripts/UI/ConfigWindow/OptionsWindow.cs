@@ -40,6 +40,7 @@ namespace Assets.Scripts.UI.ConfigWindow
             InitializeAudio();
             InitializeCharacterOptions();
             InitializeUISettings();
+            InitializeDisplayOptions();
             isInitialized = true;
             //RefreshGameSettings();
             
@@ -73,12 +74,8 @@ namespace Assets.Scripts.UI.ConfigWindow
         private new void OnDestroy()
         {
             base.OnDestroy();
-            OnApplicationQuit(); //yeah...
-        }
-
-        private void OnApplicationQuit()
-        {
             GameConfig.SaveConfig();
         }
+
     }
 }

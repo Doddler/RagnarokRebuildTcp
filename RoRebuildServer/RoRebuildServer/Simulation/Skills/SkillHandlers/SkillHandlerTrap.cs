@@ -30,7 +30,7 @@ public abstract class SkillHandlerTrap : SkillHandlerBase
                     return SkillValidationResult.MissingRequiredItem;
             }
         }
-
+        
         return base.ValidateTarget(source, target, position, lvl, false, false);
     }
 
@@ -41,7 +41,7 @@ public abstract class SkillHandlerTrap : SkillHandlerBase
     {
         var map = source.Character.Map;
         Debug.Assert(map != null);
-
+        
         //we check the cell here because it could have changed since regular validation via ice wall, script, etc.
         if (!map.WalkData.IsCellWalkable(position))
         {
@@ -70,7 +70,7 @@ public abstract class SkillHandlerTrap : SkillHandlerBase
     {
         var map = source.Character.Map;
         Debug.Assert(map != null);
-
+        
         if (source.Character.Type == CharacterType.Player && !source.Player.TryRemoveItemFromInventory(Catalyst(), CatalystCount(), true))
             return;
 

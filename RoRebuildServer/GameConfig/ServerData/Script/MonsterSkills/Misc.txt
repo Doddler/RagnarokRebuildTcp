@@ -32,11 +32,6 @@ StateAttacking:
 	TryCast(TwoHandQuicken, 10, 1000, 0, 3m)[HpPercent < 99];
 }
 
-SkillHandler("TIRFING") {
-StateAttacking:
-	TryCast(SonicBlow, 10, 5%, 0.8s, 5s) -> SendEmote(18); //lol
-}
-
 SkillHandler("PECOPECO") {
 StateChase:
 	TryCast(NoCast, 1, 20%, 0s, 5s) -> SendEmote(6); //angry

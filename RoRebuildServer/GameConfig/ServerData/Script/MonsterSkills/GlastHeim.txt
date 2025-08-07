@@ -116,18 +116,18 @@ StateAttacking:
 
 macro JokerStateSwap() {
 	TryCast(NoCast, 10, 1%, 0.8s, 60s) -> {
-		var i = Random(0, 4);
-		if(i == 4) {
+		var i = Random(0, 5); //random is inclusive
+		if(i == 5) {
 			if(Random(0, 4) == 3)
-				ChangeAiClass(AiHyperPacifist); //4% chance
+				ChangeAiClass(AiHyperPacifist); //~4% chance
 			else
-				i = Random(0, 3);
+				i = Random(0, 4);
 		}
-		if(i == 0) ChangeAiClass(AiPassive); //24%
-		if(i == 1) ChangeAiClass(AiPassiveSense); //24%
-		if(i == 2) ChangeAiClass(AiAssist); //24%
-		if(i == 3) ChangeAiClass(AiAggressive); //24%
-		//remember to stick looter in here when loot exists
+		if(i == 0) ChangeAiClass(AiPassive); //19%
+		if(i == 1) ChangeAiClass(AiPassiveSense); //19%
+		if(i == 2) ChangeAiClass(AiAssist); //19%
+		if(i == 3) ChangeAiClass(AiLooter); //19%
+		if(i == 4) ChangeAiClass(AiAggressive); //19%
 	}
 }
 
@@ -243,11 +243,6 @@ StateAttacking:
     TryCast(UndeadAttack, 3, 5%, 0, 5s, NoInterrupt | HideSkillName);
 }
 
-SkillHandler("EXECUTIONER") {
-StateAttacking:
-	TryCast(DarkAttack, 1, 5%, 0, 5s);
-}
-
 SkillHandler("KHALITZBURG") {
 StateIdle:
 	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
@@ -285,8 +280,8 @@ SkillHandler("CHIMERA") {
 StateIdle:
 	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
 StateAttacking:
-	TryCast(SplashAttack, 1, 20%, 0.3s, 5s, NoInterrupt)[CountEnemiesNearTarget(2) >= 2] -> SendEmote(9); //...
 	TryCast(FireAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
+	TryCast(SplashAttack, 1, 20%, 0.3s, 5s, NoInterrupt)[CountEnemiesNearTarget(2) >= 2] -> SendEmote(9); //...
 	TryCast(HeavensDrive, 5, 5%, 1.2s, 5s) -> SendEmote(6); //angry
 }
 

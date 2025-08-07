@@ -1,4 +1,10 @@
-
+SkillHandler("MARIN") {
+StateMovingToItem:
+	TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(2);
+StateAttacking:
+	TryCast(FrostDiver, 5, 5%, 1s, 5s);
+	TryCast(WaterAttack, 1, 20%, 0, 5s);
+}
 
 SkillHandler("COOKIE") {
 StateAny:
@@ -20,6 +26,18 @@ StateChase:
 StateAttacking:
 	TryCast(HolyAttack, 1, 5%, 0.5s, 5s, NoInterrupt);
 	TryCast(ColdBolt, 3, 5%, 1.5s, 5s) -> SendEmote(21); //nice
+}
+
+SkillHandler("MYSTCASE") {
+StateIdle:
+	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
+StateRandomMove:
+	TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(3); //heart
+StateChase:
+	TryCast(Hallucination, 1, 5%, 0.5s, 5s) -> SendEmote(6); //angry
+StateAttacking:
+	TryCast(Hallucination, 1, 5%, 0.5s, 5s) -> SendEmote(6); //angry
+	TryCast(Mammonite, 5, 5%, 0.8s, 5s, NoInterrupt) -> SendEmote(8); //$
 }
 
 SkillHandler("CHEPET") {

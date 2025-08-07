@@ -17,6 +17,7 @@ public class NpcBehaviorManager
 {
     public Dictionary<string, List<NpcSpawnDefinition>> NpcSpawnsForMaps { get; } = new();
     public Dictionary<string, NpcBehaviorBase> EventBehaviorLookup { get; } = new();
+    public Dictionary<string, Action<Monster>> MonsterSpecialDeathEvent { get; } = new();
 
     public void RegisterNpc(string name, string map, string? signalName, int spriteId, int x, int y, Direction facing, int w, int h, bool hasInteract, bool hasTouch, NpcBehaviorBase behavior)
     {
@@ -49,5 +50,11 @@ public class NpcBehaviorManager
     public void RegisterEvent(string name, NpcBehaviorBase behavior)
     {
         EventBehaviorLookup.Add(name, behavior);
+    }
+
+
+    public void RegisterSpecialDeathEvent(string name, Action<Monster> action)
+    {
+        MonsterSpecialDeathEvent.Add(name, action);
     }
 }

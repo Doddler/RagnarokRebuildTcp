@@ -17,6 +17,13 @@ StateAttacking:
 	TryCast(WindAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
 }
 
+SkillHandler("MUKA") {
+StateAttacking:
+	TryCast(EarthAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6);
+	TryCast(PiercingAttack, 3, 5%, 0s, 5s, NoInterrupt) -> SendEmote(6);
+	TryCast(SplashAttack, 1, 20%, 0.3s, 5s, NoInterrupt)[CountEnemiesNearTarget(2) >= 2];
+}
+
 SkillHandler("DRAGON_FLY") {
 OnInit:
 	ResummonMinionCount = 0; //resummon if we have 0 minions
@@ -70,6 +77,16 @@ StateChase:
     @GiveUpChase(2%, AiPassive, 7); //grumpy
 StateAttacking:
 	TryCast(FireAttack, 1, 20%, 0, 5s);
+}
+
+SkillHandler("METALLER") {
+StateRandomMove:
+    TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(2); //whistle
+StateChase:
+	TryCast(Silence, 3, 5%, 0.7s, 5s, NoInterrupt) -> SendEmote(2); //whistle
+StateAttacking:
+	TryCast(Silence, 3, 5%, 0.7s, 5s, NoInterrupt) -> SendEmote(2); //whistle
+	TryCast(FireAttack, 1, 20%, 0s, 5s);
 }
 
 SkillHandler("ZEROM") {
