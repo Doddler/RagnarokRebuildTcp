@@ -10,8 +10,6 @@ OnClick:
         MoveTo("xmas_fild01", 83, 72);
 }
 
-
-
 Npc("alde_dun03", "Doorkeeper", "4W_F_01", 264, 16, S) {
     localstr name = "Doorkeeper Jaye"
 OnClick:
@@ -45,7 +43,7 @@ OnClick:
         Dialog(name, "The constructs of the three great alchemists are wandering aobut, so please be careful. And try not to vandilize or break anything while you're here. Thanks.");
         break;
     }
- }
+}
 
 Npc("c_tower3", "Doorkeeper", "4_M_02", 10, 249, S) {
     localstr name = "Doorkeeper Riku"

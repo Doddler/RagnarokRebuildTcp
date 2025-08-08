@@ -9,6 +9,26 @@
 
 macro BardAboutRebuild()
 {
+	Dialog(name, "Welcome to the second public test for Ragnarok Rebuild! If you're new here, you should check out the information site over at " +
+				 "http:/dodsrv.com/ragnarok/db/ as it has all the info on what's on offer this time.");
+
+	Dialog(name, "This test is a little less cheaty than last time, if you were around for that you'll be a little sad at the loss of the warp command. " +
+				 "The difficulty is also a little higher because of the new skills and adjusted exp chart, but it's not by much.");
+
+	Dialog(name, "On the other hand, a lot more things work, you should be able to enjoy almost all the 1st job skills, and even some 2nd job skills. " +
+				 "Partying is in, so now you need to be in a party together to share exp. The way exp share works, it's probably best to always play in groups.");
+
+	Dialog(name, "I haven't removed the ability to reset stats or skills, and you can even change your character's job freely without losing base or job levels, " +
+				 "so feel free to experiment however you like. Sadly there's no player-to-player trading yet... but vending is in, so you can use a merchant to sell goods.");
+
+	Dialog(name, "There's also this camp here that's new, it's a specially made for this test. As players on the server level up and kill hard monsters, " +
+				 "new npcs will join that offer different services. There's also a special final server-wide challenge that unlocks after players are strong enough to kill mvps.");
+
+	ShowSprite("bard_eland02", right);
+
+	Dialog(name, "I'm always happy to hear feedback, so if you have a fun time during the test consider dropping by or giving me a shout on twitter under @RoDoddler, " +
+				 "or this time there's even a public discord where you can offer feedback report issues, or just hang out The invite url is: https://discord.gg/sEpPKsPPpd. Have fun!");
+/*
 	Dialog(name, "Ragnarok Rebuild is a remake of sorts, the whole thing including the client and server were built from the ground up. "
 			+ "It's not completely faithful to the original, but it should still feel pretty familiar if you've played before.");
 
@@ -31,6 +51,7 @@ Dialog(name, "It's a bit rough out there, harder than the last test, but you sho
 
 	Dialog(name, "Be sure to let me know on the @RoDoddler twitter account if you get up to anything fun, or just want to offer feedback."
 			+ "I don't get notifications for direct messages so make sure to reply to one of the threads. :)");
+			*/
 }
 
 macro BardChangeJob()
@@ -168,13 +189,13 @@ macro BardRandomizeAppearance()
 {
 	ShowSprite("bard_eland01", right);
 	Dialog(name, "You want to randomize your appearance? Sure, what exactly do you want to change?");
-	Option("Change Gender", "Randomize Hair", "Randomize Both", "Cancel");
+	Option("Change Gender", "Randomize Hair Style", "Randomize Hair Color", "Cancel");
 
 	switch(result)
 	{
 		case 0: ReleaseFocus(); ChangePlayerGender();
 		case 1: ReleaseFocus(); ChangePlayerHairToRandom();
-		case 2: ReleaseFocus(); ChangePlayerAppearanceToRandom();
+		case 2: ReleaseFocus(); ChangePlayerHairColorToRandom();
 		case 3: 
 			Dialog(name, "No pressure, just let me know if you change your mind.");
 			return;
@@ -332,7 +353,7 @@ Npc("prt_fild08", "Adventuring Bard", "1_M_BARD", 153, 357, SE, 1, 1)  //175, 37
 		result = 0;
 		while(result < 3)
 		{
-			Option("About Rebuild", "Job change", "Skill reset", "Stat reset", "Change appearance", "Send me somewhere", "Cancel");
+			Option("About Rebuild", "Job change", "Skill reset", "Stat reset", "Change appearance", "Cancel");
 			switch(result) 
 			{
 				case 0: @BardAboutRebuild();
@@ -340,7 +361,7 @@ Npc("prt_fild08", "Adventuring Bard", "1_M_BARD", 153, 357, SE, 1, 1)  //175, 37
 				case 2: @BardSkillReset();
 				case 3: @BardStatReset();
 				case 4: @BardRandomizeAppearance();
-				case 5: @BardWarps();
+				//case 5: @BardWarps();
 				//case 5: @FullCharacterReset();
 			}
 		}

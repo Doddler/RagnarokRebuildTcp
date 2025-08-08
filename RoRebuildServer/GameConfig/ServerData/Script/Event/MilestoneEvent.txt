@@ -328,7 +328,7 @@ Npc("prt_fild08", "Apprentice Hat-Maker", "4_F_KHELLY", 150, 368, NE)
 	AddTradedItem(CreateTradedItem("Opera_Masque").Requires("Iron", 20).Requires("Singing_Plant", 1).Costs(5000));
 	AddTradedItem(CreateTradedItem("Binoculars").Requires("Geek_Glasses", 1).Requires("Steel", 45).Costs(50000));
 	AddTradedItem(CreateTradedItem("Welding_Mask").Requires("Steel", 25).Costs(2000));
-	AddTradedItem(CreateTradedItem("Bunny_Band").Requires("Kitty_Band", 1).Requires("Soft_Fluff", 60).Requires("Pearl", 1).Requires("Four_Leaf_Clover", 1));
+	AddTradedItem(CreateTradedItem("Bunny_Band").Requires("Kitty_Band", 1).Requires("Soft_Fluff", 20).Requires("Pearl", 1).Requires("Four_Leaf_Clover", 1));
 	AddTradedItem(CreateTradedItem("Decorative_Mushroom").Requires("Mushroom_Spore", 100));
 	AddTradedItem(CreateTradedItem("Alarm_Mask").Requires("Needle_of_Alarm", 100));
 	AddTradedItem(CreateTradedItem("Red_Bandana").Requires("Iron", 20).Requires("Cracked_Diamond", 1).Costs(3500));
@@ -350,7 +350,7 @@ Npc("prt_fild08", "Apprentice Hat-Maker", "4_F_KHELLY", 150, 368, NE)
 	AddTradedItem(CreateTradedItem("Magician_Hat").Requires("Wizard_Hat").Requires("Ancient_Lips", 35).Requires("Solid_Shell", 35));
 	AddTradedItem(CreateTradedItem("Sunday_Hat").Requires("Hat").Requires("Cap").Requires("Fabric", 50).Requires("Soft_Feather", 5));
 	AddTradedItem(CreateTradedItem("Drooping_Cat").Requires("Circlet_").Requires("Old_Broom"));
-	AddTradedItem(CreateTradedItem("Boy's_Cap").Requires("Tiger_Footskin"));
+	AddTradedItem(CreateTradedItem("Boy's_Cap").Requires("Tiger_Footskin").Costs(20000));
 	AddTradedItem(CreateTradedItem("Deviruchi_Hat").Requires("Little_Evil_Horn", 50).Requires("Talon_of_Griffon"));
 	AddTradedItem(CreateTradedItem("Bao_Bao").Requires("Silk_Ribbon").Requires("Heroic_Emblem"));
 	@EventRevealedNpc("MilestoneHeadgear", "apprentice hat-maker Elly"); //this must be at the end of the init section to work!

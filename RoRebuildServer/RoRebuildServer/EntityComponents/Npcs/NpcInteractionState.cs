@@ -268,6 +268,14 @@ public class NpcInteractionState
     {
         if (Player == null || Player.Character.Map == null) return;
         Player.SetData(PlayerStat.Head, GameRandom.NextInclusive(0, 28));
+        //Player.SetData(PlayerStat.HairId, GameRandom.NextInclusive(0, 8));
+        Player.Character.Map.RefreshEntity(Player.Character);
+        Player.UpdateStats();
+    }
+
+    public void ChangePlayerHairColorToRandom()
+    {
+        Player.SetData(PlayerStat.HairId, GameRandom.NextInclusive(0, 8));
         Player.Character.Map.RefreshEntity(Player.Character);
         Player.UpdateStats();
     }

@@ -565,7 +565,7 @@ public partial class CombatEntity : IEntityAutoReset
         var curHp = GetStat(CharacterStat.Hp);
         var maxHp = GetStat(CharacterStat.MaxHp);
         var chVit = GetEffectiveStat(CharacterStat.Vit);
-        hp += hp * chVit / 100;
+        hp += hp * chVit / 50;
 
         if (curHp + hp > maxHp)
             hp = maxHp - curHp;
@@ -598,7 +598,7 @@ public partial class CombatEntity : IEntityAutoReset
         var curSp = GetStat(CharacterStat.Sp);
         var maxSp = GetStat(CharacterStat.MaxSp);
         var chInt = GetEffectiveStat(CharacterStat.Int);
-        sp += sp * chInt / 100;
+        sp += sp * chInt / 50;
 
         if (curSp + sp > maxSp)
             sp = maxSp - curSp;

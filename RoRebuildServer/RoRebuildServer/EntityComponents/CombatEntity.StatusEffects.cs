@@ -488,7 +488,7 @@ public partial class CombatEntity
     {
         if (target.HasBodyState(BodyStateFlags.DisablingState) || target.HasStatusEffectOfType(CharacterStatusEffect.Petrifying) || target.GetSpecialType() == CharacterSpecialType.Boss)
             return false;
-
+        
         var mdef = target.GetEffectiveStat(CharacterStat.MDef);
         var luk = target.GetEffectiveStat(CharacterStat.Luk);
 
