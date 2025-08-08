@@ -1345,13 +1345,25 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
-        public void SendSay(string text, bool isShout = false)
+        public void SendSay(string text, PlayerChatType type)
         {
+            if (type == PlayerChatType.Shout && GameConfig.Data.HideShoutChat)
+            {
+                CameraFollower.AppendError("You can't send a shout chat message while you have shout chat disabled in the options.");
+                return;
+            }
+            
             var msg = StartMessage();
+
+            if (type == PlayerChatType.Say && text.StartsWith("%"))
+            {
+                type = PlayerChatType.Party;
+                text = text.Substring(1);
+            }
 
             msg.Write((byte)PacketType.Say);
             msg.Write(text);
-            msg.Write(isShout);
+            msg.Write((byte)type);
 
             SendMessage(msg);
         }

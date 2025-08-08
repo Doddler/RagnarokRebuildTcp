@@ -78,7 +78,7 @@ namespace RoRebuildServer.EntityComponents.Npcs
         public void Say(string text)
         {
             Npc.Character.Map!.AddVisiblePlayersAsPacketRecipients(Npc.Character);
-            CommandBuilder.SendSayMulti(Npc.Character, Npc.Character.Name, text, false);
+            CommandBuilder.SendSayMulti(Npc.Character, Npc.Character.Name, text, PlayerChatType.Say);
             CommandBuilder.ClearRecipients();
         }
 

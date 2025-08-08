@@ -176,12 +176,23 @@ namespace Assets.Scripts.UI
             {
                 if (NetworkManager.Instance.PlayerState.Storage.GetInventoryData().TryGetValue(bagId, out var item))
                 {
-                    if (item.Count == 1)
-                        NetworkManager.Instance.SendMoveStorageItem(bagId, 1, false);
+                    if (item.ItemData.IsUnique || item.Count == 1 || Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+                        NetworkManager.Instance.SendMoveStorageItem(bagId, item.Count, false);
                     else
                         UiManager.Instance.DropCountConfirmationWindow.BeginItemDrop(item, DropConfirmationType.StorageToInventory);
                 }
             }
+        }
+        
+        private void OnRightClick(ItemListEntryV2 entry)
+        {
+            if (PlayerState.Instance.HasCart && (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)))
+            {
+                OnMoveItemToInventory(entry.UniqueEntryId);
+                return;
+            }
+
+            UiManager.Instance.ItemDescriptionWindow.ShowItemDescription(entry.ItemId);
         }
 
         private void RefreshItemCount()
@@ -244,6 +255,11 @@ namespace Assets.Scripts.UI
             entry.CanDrag = true;
             entry.DragOrigin = ItemDragOrigin.StorageWindow;
             entry.EventDoubleClick = OnDoubleClickItem;
+            entry.EventOnRightClick = (itemId) =>
+            {
+                if(itemList.TryGetValue(itemId, out var item))
+                    OnRightClick(item);
+            };
             
             // entry.ImageDisplayGroup.transform.localPosition += new Vector3(5, 0, 0);
             // entry.ItemName.transform.localPosition += new Vector3(10, 0, 0);

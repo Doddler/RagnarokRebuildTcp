@@ -57,6 +57,7 @@ namespace Assets.Scripts.UI.ConfigWindow
         public bool UseUnfilteredSprites = false;
         public bool UseSpriteBasedDamageNumbers = false;
         public bool AllowTabToShowWalkTable = false;
+        public bool HideShoutChat = false;
         
         //storage
         public Vector2 StoragePosition = Vector2.zero;

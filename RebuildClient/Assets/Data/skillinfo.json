@@ -9,7 +9,7 @@
       "MaxLevel": 8,
       "SpCost": null,
       "AdjustableLevel": false,
-      "Description": "Basic adventuring techniques that unlock various features based on your skill level. You will need to master this skill and reach job level 10 before you can change jobs.\r\nLevel 1: Use emotes\r\nLevel 2: Use sit (/sit or insert)\r\nLevel 3: Enables trading (not implemented)\r\nLevel 4: Join a party\r\nLevel 5: Use Kafra item storage\r\nLevel 6: Create a party\r\nLevel 7: Use shout chat\r\nLevel 8: Use Kafra zeny storage (not implemented)",
+      "Description": "Basic adventuring techniques that unlock various features based on your skill level. You will need to master this skill and reach job level 10 before you can change jobs.\r\nLevel 1: Use emotes\r\nLevel 2: Use sit (/sit or insert)\r\nLevel 3: Enables trading (not implemented)\r\nLevel 4: Join a party\r\nLevel 5: Use Kafra item storage\r\nLevel 6: Create a party\r\nLevel 7: Use shout chat (/shout)\r\nLevel 8: Use Kafra zeny storage (not implemented)",
       "InterruptMode": 0
     },
     {
@@ -23,7 +23,7 @@
         4
       ],
       "AdjustableLevel": false,
-      "Description": "Heal\u0027s yourself by either 5 HP or 1% of your max HP, whichever is higher.",
+      "Description": "Heal\u0027s yourself by either 5 HP or 2% of your max HP, whichever is higher.",
       "InterruptMode": 0
     },
     {
@@ -707,7 +707,7 @@
         20
       ],
       "AdjustableLevel": false,
-      "Description": "Quickly close the gap to a single target, dealing damage and knocking them back. \r\nCast time scales from 0.1s to 0.5s, and cast time from 100% to 500%, depending on the distance traveled. Maximum damage is achieved at 12 tiles.\r\nSkill Range: 14 tiles\r\nRecast time: 5s",
+      "Description": "Quickly close the gap to a single target, dealing damage and knocking them back. \r\nCast time scales from 0.1s to 0.5s, and damage from 100% to 500%, depending on the distance traveled. Maximum damage is achieved at 12 tiles.\r\nSkill Range: 14 tiles\r\nRecast time: 5s",
       "InterruptMode": 0
     },
     {
@@ -1206,7 +1206,7 @@
         0
       ],
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "Allows you to open up a shop to sell items to other players. You can sell a total of [2 \u002B SkillLevel] items at a time. \r\nShops cannot be created within 3 tiles of an NPC. If you get an npc too close error when there is no obvious npc nearby, it could be a hidden NPC.\r\nAt present you will need to remain online for your shop to stay open.",
       "InterruptMode": 0
     },
     {
@@ -1494,7 +1494,7 @@
         60
       ],
       "AdjustableLevel": false,
-      "Description": null,
+      "Description": "Revives 1 dead player. Player returns to life with 10% Max Hp at level 1, increasing 20% per level up to 80% at level 5.\r\nCast Time: [8 - SkillLvl * 2]s\r\nCatalyst: \u003Ccolor=#777777\u003E1 Blue Gemstone\u003C/color\u003E",
       "InterruptMode": 1
     },
     {

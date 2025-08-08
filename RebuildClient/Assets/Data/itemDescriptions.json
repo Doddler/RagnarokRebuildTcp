@@ -7454,7 +7454,7 @@
     },
     {
       "Code": "Shinobi_Sash",
-      "Description": "\u003Ccolor=#808080\u003EAm embroidered sash with a mysterious power that was owned by a renowned ninja.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ESTR \u002B1, AGI \u002B1, MDEF \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E1\u003C/color\u003E\nMagic Defense: \u003Ccolor=#777777\u003E1\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E30\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E30\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EThief, Ninja\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EAm embroidered sash with a mysterious power that was owned by a renowned ninja.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003ESTR \u002B1, AGI \u002B1, MDEF \u002B1\n\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E\n \u003Ccolor=#008080\u003ENinja Suit\u003C/color\u003E\nHP \u002B300, Sp Consumption -20%\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E1\u003C/color\u003E\nMagic Defense: \u003Ccolor=#777777\u003E1\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E30\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E30\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EThief, Ninja\u003C/color\u003E"
     },
     {
       "Code": "Bloodied_Shackle_Ball",
@@ -7462,7 +7462,7 @@
     },
     {
       "Code": "Armor_Charm",
-      "Description": "\u003Ccolor=#808080\u003EA mysterious, ancient artifact that can endow armor with great defensive power.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EHP \u002B50, DEF \u002B1\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E100\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Merchant, Thief\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA mysterious, ancient artifact that can endow armor with great defensive power.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EHP \u002B50, DEF \u002B1\n\u003Ccolor=#800080\u003ESet Bonus\u003C/color\u003E\n \u003Ccolor=#008080\u003EPadded Armor\u003C/color\u003E\nHP \u002B150, DEF \u002B5\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EType: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nDefense: \u003Ccolor=#777777\u003E0\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E100\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003ESwordsman, Merchant, Thief\u003C/color\u003E"
     },
     {
       "Code": "Laboratory_Permit",

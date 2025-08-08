@@ -23,6 +23,8 @@ internal class ZoneWorker : BackgroundService
 #if DEBUG
     public static bool IsMainThread;
 #endif
+    private bool isSafeExit = true;
+    private Exception failureReason;
 
     public ZoneWorker(ILogger<ZoneWorker> logger, IServiceProvider services, IHostApplicationLifetime appLifetime)
     {
@@ -162,6 +164,8 @@ internal class ZoneWorker : BackgroundService
                 return;
 
             ServerLogger.LogError("Server threw exception!" + Environment.NewLine + e);
+            failureReason = e;
+            isSafeExit = false;
         }
 
         if(worldCancellation.IsCancellationRequested)
@@ -185,5 +189,8 @@ internal class ZoneWorker : BackgroundService
         logger.LogInformation("Server is now shut down!");
         logger.LogInformation("=======================================================================================");
         logger.LogInformation("=======================================================================================");
+
+        if (!isSafeExit)
+            throw failureReason; //this will cause the application to terminate in failure, which should trigger the service to be restarted.
     }
 }

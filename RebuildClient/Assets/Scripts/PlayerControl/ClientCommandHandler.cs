@@ -73,21 +73,35 @@ namespace PlayerControl
                 if (text.StartsWith("/sh "))
                 {
                     var msg = text.Substring(4);
-                    NetworkManager.Instance.SendSay(msg, true);
+                    NetworkManager.Instance.SendSay(msg, PlayerChatType.Shout);
                     return;
                 }
 
                 if (text.StartsWith("/s "))
                 {
                     var msg = text.Substring(3);
-                    NetworkManager.Instance.SendSay(msg, true);
+                    NetworkManager.Instance.SendSay(msg, PlayerChatType.Shout);
                     return;
                 }
 
                 if (text.StartsWith("/shout "))
                 {
                     var msg = text.Substring(7);
-                    NetworkManager.Instance.SendSay(msg, true);
+                    NetworkManager.Instance.SendSay(msg, PlayerChatType.Shout);
+                    return;
+                }
+                
+                if (text.StartsWith("/p "))
+                {
+                    var msg = text.Substring(3);
+                    NetworkManager.Instance.SendSay(msg, PlayerChatType.Party);
+                    return;
+                }
+
+                if (text.StartsWith("/party "))
+                {
+                    var msg = text.Substring(7);
+                    NetworkManager.Instance.SendSay(msg, PlayerChatType.Party);
                     return;
                 }
 
@@ -652,7 +666,7 @@ namespace PlayerControl
                     cameraFollower.AppendChatText("<color=yellow>Error</color>: Text too long.");
                 }
                 else
-                    NetworkManager.Instance.SendSay(text);
+                    NetworkManager.Instance.SendSay(text, PlayerChatType.Say);
                 //AppendChatText(text);
             }
         }

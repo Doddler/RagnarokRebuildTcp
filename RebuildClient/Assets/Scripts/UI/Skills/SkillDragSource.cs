@@ -32,7 +32,7 @@ namespace Assets.Scripts.UI
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (eventData.clickCount != 2)
+            if (eventData.clickCount < 2 && eventData.clickCount % 2 != 0)
                 return;
             if(CameraFollower.Instance.PressSkillButton((CharacterSkill)ItemId, ItemCount))
                 Entry.HighlightSkillBox();

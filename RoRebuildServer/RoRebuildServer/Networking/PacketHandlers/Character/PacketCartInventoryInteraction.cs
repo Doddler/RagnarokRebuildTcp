@@ -31,7 +31,7 @@ public class PacketCartInventoryInteraction : IClientPacketHandler
         var cartAction = (CartInteractionType)msg.ReadByte();
 
         if (player.Inventory == null || count <= 0) return;
-        if (!player.DoesCharacterKnowSkill(CharacterSkill.PushCart, 1))
+        if (!player.DoesCharacterKnowSkill(CharacterSkill.PushCart, 1) || !player.HasCart)
             return;
 
         switch (cartAction)

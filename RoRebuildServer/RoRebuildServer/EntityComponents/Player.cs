@@ -1442,9 +1442,14 @@ public class Player : IEntityAutoReset
             SetData(PlayerStat.JobLevel, 1); //only reset job if they're changing from novice. Will need to change later.
             SetData(PlayerStat.JobExp, 0);
         }
+        else
+            CombatEntity.StatusContainer?.RemoveAll();
 
         if (Character.ClassId < 100) //we don't want to override special character classes like GameMaster
             Character.ClassId = newJobId;
+
+        PlayerFollower &= ~PlayerFollower.AnyCart;
+        SetData(PlayerStat.PushCart, 0);
 
         Equipment.UnequipAllItems();
         UpdateStats();

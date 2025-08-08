@@ -838,12 +838,12 @@ public static class CommandBuilder
     public static void SendServerMessage(string text, string name = "Server", bool playNoticeSound = false)
     {
         var packet = NetworkManager.StartPacket(PacketType.Say, 364);
+        var type = playNoticeSound ? PlayerChatType.Notice : PlayerChatType.Say;
 
         packet.Write(-1);
         packet.Write(text);
         packet.Write(name);
-        packet.Write(false);
-        packet.Write(playNoticeSound);
+        packet.Write((byte)type);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
@@ -871,7 +871,7 @@ public static class CommandBuilder
     }
 
 
-    public static void SendSayMulti(WorldObject? c, string name, string text, bool isShout)
+    public static void SendSayMulti(WorldObject? c, string name, string text, PlayerChatType type)
     {
         if (!HasRecipients())
             return;
@@ -884,8 +884,7 @@ public static class CommandBuilder
             packet.Write(c.Id);
         packet.Write(text);
         packet.Write(name);
-        packet.Write(isShout);
-        packet.Write(false);
+        packet.Write((byte)type);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }

@@ -45,7 +45,7 @@ public class Instance
                 ServerLogger.LogError($"Instance {instanceDetails.Name} could not create map {mapId} as it was not found in the map data table.");
                 continue;
             }
-            
+
             var map = new Map(world, this, md.Code, md.WalkData, md.MapMode != "Indoor");
             Maps.Add(map);
             MapNameLookup.Add(md.Code, map);
@@ -84,33 +84,52 @@ public class Instance
         Entities.ClearInactive();
     }
 
+    private static int ExceptionCount = 0;
+
     public void Update()
     {
         DoRemovals(); //this happens a frame late, but it's done to catch removals added after update is called
 
         var players = 0;
-
-        foreach (var map in Maps)
+#if !DEBUG
+        try
+#endif
         {
-            map.Update();
-            players += map.PlayerCount;
-        }
-
-        if (players == 0)
-        {
-            if (nextUpdate > Time.ElapsedTimeFloat)
-                return;
-            nextUpdate = Time.ElapsedTimeFloat + 2f;
-        }
-
-        foreach (var entity in Entities)
-        {
-            if (entity.IsAlive())
+            foreach (var map in Maps)
             {
-                var chara = entity.Get<WorldObject>();
-                if(chara.IsActive || chara.Type == CharacterType.Monster)
-                    chara.Update();
+                map.Update();
+                players += map.PlayerCount;
+            }
+
+            if (players == 0)
+            {
+                if (nextUpdate > Time.ElapsedTimeFloat)
+                    return;
+                nextUpdate = Time.ElapsedTimeFloat + 2f;
+            }
+
+            foreach (var entity in Entities)
+            {
+                if (entity.IsAlive())
+                {
+                    var chara = entity.Get<WorldObject>();
+                    if (chara.IsActive || chara.Type == CharacterType.Monster)
+                        chara.Update();
+                }
             }
         }
+#if !DEBUG
+        catch (Exception e)
+        {
+            ServerLogger.LogError($"Map instance {Name} generated a fatal exception! (exception limit {ExceptionCount}/10)\n{e}");
+            var count = Interlocked.Increment(ref ExceptionCount);
+            if (count > 10)
+            {
+                ServerLogger.LogError(
+                    "Exception suppression level reached, throwing exception. This will kill the server.");
+                throw e;
+            }
+        }
+#endif
     }
 }

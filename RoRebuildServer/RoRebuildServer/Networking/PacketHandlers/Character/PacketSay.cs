@@ -16,21 +16,38 @@ public class PacketSay : IClientPacketHandler
             return;
 
         var text = msg.ReadString();
-        var isShout = msg.ReadBoolean();
+        var type = (PlayerChatType)msg.ReadByte();
+        //var isShout = msg.ReadBoolean();
         if (text.Length > 140)
         {
             CommandBuilder.SendRequestFailed(connection.Player!, ClientErrorType.RequestTooLong);
             return;
         }
 
+        if (type < 0 || type >= PlayerChatType.Notice)
+            return;
+
 #if DEBUG
-        if(isShout)
+        if(type == PlayerChatType.Shout)
             ServerLogger.Log($"Shout chat message from [{connection.Player!.Name}]: {text}");
         else
             ServerLogger.Log($"Chat message from [{connection.Player!.Name}]: {text}");
 #endif
+        if (type == PlayerChatType.Party)
+        {
+            var p = connection.Player;
+            if (p.Party == null)
+            {
+                CommandBuilder.ErrorMessage(p, "Cannot send chat to party when you aren't in a party.");
+                return;
+            }
 
-        if (isShout)
+            CommandBuilder.AddRecipients(p.Party.OnlineMembers);
+            CommandBuilder.SendSayMulti(connection.Character, p.Character.Name, text, PlayerChatType.Party);
+            return;
+        }
+
+        if (type == PlayerChatType.Shout)
         {
             if (connection.Player!.MaxLearnedLevelOfSkill(CharacterSkill.BasicMastery) < 7)
             {
@@ -50,7 +67,7 @@ public class PacketSay : IClientPacketHandler
         else
             CommandBuilder.AddRecipients(map.Players); //send to everyone on the map
         //map.AddVisiblePlayersAsPacketRecipients(connection.Character);
-        CommandBuilder.SendSayMulti(connection.Character, connection.Character!.Name, text, isShout);
+        CommandBuilder.SendSayMulti(connection.Character, connection.Character!.Name, text, type);
         CommandBuilder.ClearRecipients();
     }
 

@@ -8,12 +8,14 @@ namespace Assets.Scripts.UI.ConfigWindow
         public Toggle SpriteFilteringToggle;
         public Toggle UseSpriteBasedDamageNumbersToggle;
         public Toggle AllowTabToShowWalkTableToggle;
+        public Toggle HideShoutChatToggle;
         
         public void UpdateDisplayOptions()
         {
             GameConfig.Data.UseUnfilteredSprites = !SpriteFilteringToggle.isOn;
             GameConfig.Data.UseSpriteBasedDamageNumbers = UseSpriteBasedDamageNumbersToggle.isOn;
             GameConfig.Data.AllowTabToShowWalkTable = AllowTabToShowWalkTableToggle.isOn;
+            GameConfig.Data.HideShoutChat = HideShoutChatToggle.isOn;
 
             CameraFollower.Instance.UseTTFDamage = !GameConfig.Data.UseSpriteBasedDamageNumbers;
             CameraFollower.Instance.SetSmoothPixel(!GameConfig.Data.UseUnfilteredSprites);
@@ -27,6 +29,7 @@ namespace Assets.Scripts.UI.ConfigWindow
             SpriteFilteringToggle.isOn = !GameConfig.Data.UseUnfilteredSprites;
             UseSpriteBasedDamageNumbersToggle.isOn = GameConfig.Data.UseSpriteBasedDamageNumbers;
             AllowTabToShowWalkTableToggle.isOn = GameConfig.Data.AllowTabToShowWalkTable;
+            HideShoutChatToggle.isOn = GameConfig.Data.HideShoutChat;
         }
     }
 }

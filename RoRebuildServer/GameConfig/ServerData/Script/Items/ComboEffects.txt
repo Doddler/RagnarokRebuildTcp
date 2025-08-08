@@ -21,5 +21,11 @@ ComboItem("CrabSet", "Crab_Card", "Aster_Card", "Shellfish_Card") { OnEquip: Add
 
 ComboItem("OrcArcherSet", "Orc_Archer_Bow", "Steel_Arrow") { OnEquip: AddStat(AddAttackRangedAttack, 50); }
 
+//other
+ComboItem("ArmorCharmSet", "Padded_Armor", "Armor_Charm") { OnEquip: AddStat(AddMaxHp, 150); AddStat(AddDef, 5); }
+ComboItem("ArmorCharmSet2", "Padded_Armor_", "Armor_Charm") { OnEquip: AddStat(AddMaxHp, 150); AddStat(AddDef, 5); }
+ComboItem("ShinobiSashSet", "Ninja_Suit", "Shinobi_Sash") { OnEquip: AddStat(AddMaxHp, 300); AddStat(SpConsumption, -30); }
+ComboItem("ShinobiSashSet2", "Ninja_Suit_", "Shinobi_Sash") { OnEquip: AddStat(AddMaxHp, 300); AddStat(SpConsumption, -30); }
+
 //custom
 ComboItem("OrcHeroSet", "Orc_Hero_Helm", "Orcish_Sword") { OnEquip: AutoSpellOnAttack(GrandThunderstorm, 1, 30); AddStat(AddMagicAttackPower, 120); }

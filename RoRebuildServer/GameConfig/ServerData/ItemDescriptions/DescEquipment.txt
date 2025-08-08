@@ -1182,6 +1182,9 @@ CRIT +6
 ::Shinobi_Sash //id 2654 - Accessory 
 <desc>Am embroidered sash with a mysterious power that was owned by a renowned ninja.</desc>
 STR +1, AGI +1, MDEF +1
+<color=#800080>Set Bonus</color>
+ <color=#008080>Ninja Suit</color>
+HP +300, Sp Consumption -20%
 
 ::Bloodied_Shackle_Ball //id 2655 - Accessory 
 <desc>A heavy steel ball that kept prisoners from escaping, however some prisoners managed to weaponize it.</desc>
@@ -1189,6 +1192,9 @@ STR +1, AGI +1, MDEF +1
 ::Armor_Charm //id 2656 - Accessory 
 <desc>A mysterious, ancient artifact that can endow armor with great defensive power.</desc>
 HP +50, DEF +1
+<color=#800080>Set Bonus</color>
+ <color=#008080>Padded Armor</color>
+HP +150, DEF +5
 
 ::Laboratory_Permit //id 2657 - Accessory 
 <desc>A pass for Regenschirm Laboratory employees that allows lab access.</desc>

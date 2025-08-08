@@ -7,11 +7,11 @@ Level 3: Enables trading (not implemented)
 Level 4: Join a party
 Level 5: Use Kafra item storage
 Level 6: Create a party
-Level 7: Use shout chat
+Level 7: Use shout chat (/shout)
 Level 8: Use Kafra zeny storage (not implemented)
 
 ::FirstAid
-Heal's yourself by either 5 HP or 1% of your max HP, whichever is higher.
+Heal's yourself by either 5 HP or 2% of your max HP, whichever is higher.
 
 //----------------Swordsman-------------------
 
@@ -212,6 +212,12 @@ Create holy water. Consumes an empty bottle. You must have water within 2 tiles 
 Strikes a designated target with holy property magic at 100% magic attack.
 Cast Time: 1s
 
+::Resurrection
+Revives 1 dead player. Player returns to life with 10% Max Hp at level 1, increasing 20% per level up to 80% at level 5.
+Cast Time: [8 - SkillLvl * 2]s
+Catalyst: <color=#777777>1 Blue Gemstone</color>
+
+
 //----------------Thief-------------------
 
 ::DoubleAttack
@@ -274,6 +280,11 @@ A keen eye unlocks the hidden potential of weapons, increasing your weapon attac
 ::CrazyUproar
 Psyche yourself up, increasing your STR by 4.
 
+::Vending
+Allows you to open up a shop to sell items to other players. You can sell a total of [2 + SkillLevel] items at a time. 
+Shops cannot be created within 3 tiles of an NPC. If you get an npc too close error when there is no obvious npc nearby, it could be a hidden NPC.
+At present you will need to remain online for your shop to stay open.
+
 //----------------Knight-------------------
 
 ::TwoHandQuicken
@@ -282,7 +293,7 @@ Duration: [SkillLevel * 30] seconds.
 
 ::ChargeAttack
 Quickly close the gap to a single target, dealing damage and knocking them back. 
-Cast time scales from 0.1s to 0.5s, and cast time from 100% to 500%, depending on the distance traveled. Maximum damage is achieved at 12 tiles.
+Cast time scales from 0.1s to 0.5s, and damage from 100% to 500%, depending on the distance traveled. Maximum damage is achieved at 12 tiles.
 Skill Range: 14 tiles
 Recast time: 5s
 

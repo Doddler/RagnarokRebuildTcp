@@ -14,7 +14,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Other
             bool isIndirect, bool isItemSource)
         {
             var maxHp = source.GetEffectiveStat(CharacterStat.MaxHp);
-            var healValue = maxHp / 100;
+            var healValue = maxHp / 50;
             if (healValue < 5)
                 healValue = 5;
 

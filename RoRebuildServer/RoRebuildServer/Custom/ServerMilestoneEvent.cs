@@ -163,6 +163,7 @@ public class ServerMilestoneEvent : ServerConfigScriptHandlerBase
 
     private static HashSet<int> firstAchievementLevels = [10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99];
 
+    private Object rankListLock = new();
 
     public override void PostServerStartEvent()
     {
@@ -375,19 +376,30 @@ public class ServerMilestoneEvent : ServerConfigScriptHandlerBase
     public void OnLevelUp(Player player)
     {
         var level = player.GetData(PlayerStat.Level);
-        if (topTenLevels.Count < 10 || level > topTenLevels[^1].Level)
-            AddPlayerToTop10(player, level);
 
-        if (firstAchievementLevels.Contains(level) && !firstLevelAchievements.ContainsKey(level))
-            SetPlayerAsFirstToLevel(player, level);
+        var addToTop10 = topTenLevels.Count < 10 || level > topTenLevels[^1].Level;
+        var isAchievementLevel = firstAchievementLevels.Contains(level) && !firstLevelAchievements.ContainsKey(level);
+        var isHighestPlayer = level > highestLevelPlayer;
 
-        if (level < highestLevelPlayer)
+        if (!addToTop10 && !isAchievementLevel && !isHighestPlayer)
             return;
 
-        highestLevelPlayer = level;
-        ScriptGlobalManager.SetInt("HighestLevelPlayer", highestLevelPlayer);
+        lock (rankListLock)
+        {
+            if (addToTop10)
+                AddPlayerToTop10(player, level);
 
-        CheckAndRevealForLevelRank(false);
+            if (isAchievementLevel)
+                SetPlayerAsFirstToLevel(player, level);
+
+            if (level < highestLevelPlayer)
+                return;
+
+            highestLevelPlayer = level;
+            ScriptGlobalManager.SetInt("HighestLevelPlayer", highestLevelPlayer);
+
+            CheckAndRevealForLevelRank(false);
+        }
     }
 
     private void SetPlayerAsFirstToLevel(Player player, int level)

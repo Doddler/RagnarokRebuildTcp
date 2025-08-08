@@ -313,7 +313,7 @@ public partial class CombatEntity
 
             //should double crit for katar here
 
-            //counter crit: 0.2% per luck, 0.67% per level
+            //counter crit: 0.2% per luck, 0.067% per level
             var counterCrit = target.GetEffectiveStat(CharacterStat.Luck) / 5 * 10 + targetLevel * 2 / 3;
 
             if (target.HasBodyState(BodyStateFlags.Sleep) || CheckLuckModifiedRandomChanceVsTarget(target, critRate - counterCrit, 1000))
