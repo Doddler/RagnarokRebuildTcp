@@ -90,6 +90,17 @@ public partial class Monster : IEntityAutoReset
     private Entity Master;
     public EntityList? Children;
 
+    //private Entity target;
+    //public Entity Target
+    //{
+    //    get => target;
+    //    set {
+    //        if(DebugLogging && value != target)
+    //            ServerLogger.Log($"Monster changed target!\n{Environment.StackTrace}");
+    //        target = value;
+    //    }
+    //}
+
     public int ChildCount => Children?.Count ?? 0;
 
     private WorldObject? targetCharacter => Target.GetIfAlive<WorldObject>();
@@ -131,6 +142,7 @@ public partial class Monster : IEntityAutoReset
 
     public EntityValueList<int>? TotalDamageReceived;
     
+
     //private WorldObject searchTarget = null!;
 
     private float deadTimeout;

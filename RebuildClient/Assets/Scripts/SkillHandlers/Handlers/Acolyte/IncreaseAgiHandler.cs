@@ -15,6 +15,9 @@ namespace Assets.Scripts.SkillHandlers.Handlers
         {
             HoldStandbyMotionForCast(src, castTime);
             src.AttachEffect(CastEffect.Create(castTime, src.gameObject, AttackElement.Holy));
+            
+            if(target != null)
+                target.AttachEffect(CastLockOnEffect.Create(castTime, target.gameObject));
         }
         
         public override void ExecuteSkillTargeted(ServerControllable src, ref AttackResultData attack)

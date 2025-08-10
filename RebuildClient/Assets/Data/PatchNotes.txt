@@ -1,6 +1,14 @@
 {
   "Items": [
     {
+      "Date": "2025-08-10 Update",
+      "Desc": "\u003Ci\u003EServer Side Fixes\u003C/i\u003E\r\n- Save points should now work correctly.\r\n- Fixed npc trades consuming multiple sets of items, but only giving you one item in return.\r\n- Fixed adrenaline rush affecting bows and having infinite range.\r\n- Offensive heal now correctly requires line of sight.\r\n- Fixed ghost property attacks having a higher modifier against neutral than expected.\r\n- Fixed higher levels of stone curse having increased chance to consume red gemstones instead of decreased.\r\n- Fixed a potential server crash when targeting a player with a support skill at the same moment they change maps.\r\n- Changed bloody edge drop rate to be in line with other items required for the high level weapon trade npc.\r\n- Fixed warp potal having only melee range.\r\n\r\n\u003Ci\u003EClient Side Fixes\u003C/i\u003E\r\n- Fixed npc trade UI \u002B/- buttons not working, and the cost not reflecting the amount selected."
+    },
+    {
+      "Date": "2025-08-09 Update",
+      "Desc": "*Server Side Fixes\r\n- Timeout on connections increased, hopefully that means less disconnecting on map changes.\r\n- Fixed an issue where monsters would always change target to an attacker regardless of AI type or range.\r\n- Fixed warp portal taking 2 gemstones.\r\n- Fixed waterball not working on a bunch of maps.\r\n- Fixed soul strike\u0027s cooldown time being calculated incorrectly.\r\n- Fixed pasana critting for way more than it should.\r\n- Fixed dex and vit job bonuses being swapped.\r\n- Ankle snares placed by monsters will no longer yield a trap item when expiring.\r\n- Using the teleport skill will no longer cancel it\u0027s own spawn immunity effect.\r\n- Fixed an issue where the client could report it was ready too early when changing maps, potentially causing issues.\r\n- The login screen shold no longer tell you \u0022cannot connect to server\u0022 if the server provided a reason (such as incorrect password.)\r\n- Izlude and north prontera should now work as valid spawn locations. Still debugging why aldebaran and archer village spawns have issues.\r\n\r\nClient Side Fixes (you\u0027ll need to re-download the client if you use pc)\r\n- Fixed the hallucination effect applying to anyone that can see the player with the status effect.\r\n- Fixed the /heh command being bound to the wrong emote.\r\n- You can no longer soft lock your character by closing a vend shop with the ESC key."
+    },
+    {
       "Date": "2025-08-08 - Open Test Begins (Client version 8)",
       "Desc": "The full details of what is and isn\u0027t available can be found at http://dodsrv.com/ragnarok/db/. Watch this space for fixes.\r\nNote for PC client users: You may be required to download new builds periodically if updates require client fixes."
     }

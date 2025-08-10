@@ -1,7 +1,7 @@
 MapConfig("treasure01")
 {
 	CreateSpawn("KUKRE", 15, 120000, 60000);
-	CreateSpawn("KUKRE", 5, %(21, 165, 5, 9));
+	CreateSpawn("KUKRE", 5, %(21, 165, 5, 9), 10s, 20s);
 	CreateSpawn("WHISPER", 2);
 	CreateSpawn("WHISPER", 5, 120000, 60000);
 	CreateSpawn("WHISPER", 3, %(155, 140, 50, 50), 120000, 60000);

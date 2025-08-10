@@ -353,6 +353,7 @@ public partial class CombatEntity : IEntityAutoReset
 
         RemoveStatusOfGroupIfExists("StopGroup");
 
+        ClearDamageQueue();
         Character.ResetState();
         Character.SetSpawnImmunity();
         Character.Map.TeleportEntity(ref Entity, Character, pos);
@@ -1229,6 +1230,7 @@ public partial class CombatEntity : IEntityAutoReset
 
         var spCost = hasSpCost ? Player.GetSpCostForSkill(CastingSkill.Skill, CastingSkill.Level) : 0;
         var hasExecuted = false;
+        var hasImmunity = Character.IsTargetImmune;
         if (CastingSkill.ItemSource > 0 && Character.Type == CharacterType.Player)
         {
             if (Player.TryRemoveItemFromInventory(CastingSkill.ItemSource, 1))
@@ -1247,7 +1249,8 @@ public partial class CombatEntity : IEntityAutoReset
 
         CastingSkill.Clear();
         QueuedCastingSkill.Clear();
-        Character.ResetSpawnImmunity();
+        if(hasImmunity && CastingSkill.Skill != CharacterSkill.Teleport)
+            Character.ResetSpawnImmunity();
     }
 
     public CharacterRace GetRace()

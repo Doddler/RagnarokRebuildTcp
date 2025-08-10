@@ -58,7 +58,7 @@ OnClick:
 		}
 		else
 		{
-			Dialog(Name, "Welcome adventurer. I can grant you access to the relam of Okolnir, if you can prove your worth.");
+			Dialog(Name, "Welcome adventurer. I can grant you access to the realm of Okolnir, if you can prove your worth.");
 		}
 	}
 
@@ -71,12 +71,13 @@ OnClick:
 			Option("Proceed", "Cancel");
 			if(result == 0)
 			{
+				TakeItem("Okolnir_Key", 3);
 				ServerWideMessage("<color=#FF99FF>The player " + PlayerName + " is opening the portal to Okolnir!</color>", "", true);
 				SignalNpc("#okolnirentrance", "Open");
 				okolnir = 1;
 			}
 		case 1:
-			Dialog(Name, "Okolnir is a challenge event available for all players to participate in. One player must have 3 Okolnir keys in your possession before the door will open.");
+			Dialog(Name, "Okolnir is a challenge event available for all players to participate in. One player must have 3 Okolnir keys to open the door.");
 			Dialog(Name, "The door will remain open until the event is cleared, or the server goes offline. When opening the door there will be a 5 minute warning sent to all players so they can gather to participate.");
 	}
 }
@@ -249,10 +250,10 @@ Npc("que_qsch01", "#CenterAngelStage", "CLEAR_NPC", 5, 5, SE, 1, 1)
 OnSignal:
 	if(Signal == "Start")
 	{
-		SummonMobs(3, "OBSERVATION", 132, 134, 16, 14);
-		SummonMobs(3, "RETRIBUTION", 132, 134, 16, 14);
-		SummonMobs(3, "SOLACE", 132, 134, 16, 14);
-		SummonMobs(3, "SHELTER", 132, 134, 16, 14);
+		SummonMobs(6, "OBSERVATION", 132, 134, 16, 14);
+		SummonMobs(6, "RETRIBUTION", 132, 134, 16, 14);
+		SummonMobs(6, "SOLACE", 132, 134, 16, 14);
+		SummonMobs(6, "SHELTER", 132, 134, 16, 14);
 		MoveLockAllMyMonsters(%(132, 136, 16, 16));
 		ServerLog("Center area event has activated.");
 		step = 1;
@@ -407,7 +408,7 @@ OnTimer 15s:
 OnTimer 28s:
 	ServerWideMessage("<color=#FF99FF>The Okolnir event represents the final challenge prepared for the test, but the server will continue until the end of the test duration. The event can be re-started by talking to the Valkyrie with 3 keys.</color>", "", true);
 OnTimer 42s:
-	ServerWideMessage("<color=#FF99FF>I'd love to hear your feedback about what you like and disliked about the test. Thanks again everyone!</color>", "", true);
+	ServerWideMessage("<color=#FF99FF>I'd love to hear your feedback about what you like and disliked about the test. Thanks again for joining and giving this a try!</color>", "", true);
 	SetGlobalInt("OkolnirFirstClear", 2);
 	StopTimer();
 }
@@ -478,7 +479,7 @@ AltSkillHandler("EVENT_RANDGRIS") {
 		TryCast(LordOfVermilion, 11, 5%, 3.5s, 25s);
 		TryCast(SonicBlow, 1, 5%, 1s, 10s);
 		TryCast(TwoHandQuicken, 1, 100%, 0, 120s)[HpPercent < 30];
-		TryCast(PowerUp, 1, 100%, 0.7s, 30s)[HpPercent < 30];
+		TryCast(PowerUp, 2, 100%, 0.7s, 30s)[HpPercent < 30];
 	OnDie:
 		CallSpecialMonsterEvent("OkolnirEnd");
 		SignalNpc("#RandgrisHelper", "Die");

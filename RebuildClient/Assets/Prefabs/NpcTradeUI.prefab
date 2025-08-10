@@ -331,10 +331,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 9138430674005767826}
-        m_TargetAssemblyTypeName: Assets.Scripts.UI.Stats.StatsWindow, Assembly-CSharp
-        m_MethodName: 
-        m_Mode: 3
+      - m_Target: {fileID: 7022136130596210689}
+        m_TargetAssemblyTypeName: Assets.Scripts.UI.NpcItemTradingUI, Assembly-CSharp
+        m_MethodName: CountUp
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -545,10 +545,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 9138430674005767826}
-        m_TargetAssemblyTypeName: Assets.Scripts.UI.Stats.StatsWindow, Assembly-CSharp
-        m_MethodName: 
-        m_Mode: 3
+      - m_Target: {fileID: 7022136130596210689}
+        m_TargetAssemblyTypeName: Assets.Scripts.UI.NpcItemTradingUI, Assembly-CSharp
+        m_MethodName: CountDown
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

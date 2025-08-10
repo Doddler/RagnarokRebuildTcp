@@ -27,6 +27,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte;
 public class WarpPortalHandler : SkillHandlerBase
 {
     public override int GetAreaOfEffect(CombatEntity source, Position position, int lvl) => 1;
+    public override int GetSkillRange(CombatEntity source, int lvl) => 9;
 
     public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl)
     {
@@ -83,14 +84,17 @@ public class WarpPortalHandler : SkillHandlerBase
             CommandBuilder.SkillExecuteAreaTargetedSkillAutoVis(source.Character, position, CharacterSkill.WarpPortal, lvl);
             return;
         }
-
-        if (!isIndirect && !ConsumeGemstoneForSkillWithFailMessage(source, BlueGemstone))
-            return;
-
+        
         var player = source.Player;
         var ch = source.Character;
         var map = source.Character.Map!;
 
+        if (player.SpecialState == SpecialPlayerActionState.WaitingOnPortalDestination)
+        {
+            if (!isIndirect && !ConsumeGemstoneForSkillWithFailMessage(source, BlueGemstone))
+                return;
+        }
+        
         if (player.SpecialState == SpecialPlayerActionState.WaitingOnPortalDestination)
         {
             //the player has selected a destination, which is a second cast of warp portal

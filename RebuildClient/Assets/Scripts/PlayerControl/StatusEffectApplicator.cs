@@ -88,7 +88,7 @@ namespace Assets.Scripts.PlayerControl
 
             UpdateColorForStatus(controllable);
             
-            Debug.Log($"Character {controllable.DisplayName} gained status {status}");
+            // Debug.Log($"Character {controllable.DisplayName} gained status {status}");
 
             if (controllable.CharacterType == CharacterType.Player && PlayerState.Instance.IsInParty &&
                 PlayerState.Instance.PartyMemberIdLookup.TryGetValue(controllable.Id, out var partyMemberId))
@@ -185,7 +185,8 @@ namespace Assets.Scripts.PlayerControl
 
                     break;
                 case CharacterStatusEffect.Hallucination:
-                    CameraFollower.Instance.GetComponent<ScreenEffectHandler>().StartHallucination();
+                    if(controllable.IsMainCharacter)
+                        CameraFollower.Instance.GetComponent<ScreenEffectHandler>().StartHallucination();
                     break;
                 case CharacterStatusEffect.Sight:
                     if(!isNewEntity)
@@ -228,7 +229,7 @@ namespace Assets.Scripts.PlayerControl
             
             UpdateColorForStatus(controllable);
 
-            Debug.Log($"Character {controllable.DisplayName} loses status {status}");
+            // Debug.Log($"Character {controllable.DisplayName} loses status {status}");
             
             if (controllable.CharacterType == CharacterType.Player && PlayerState.Instance.IsInParty &&
                 PlayerState.Instance.PartyMemberIdLookup.TryGetValue(controllable.Id, out var partyMemberId))
@@ -290,7 +291,8 @@ namespace Assets.Scripts.PlayerControl
                         CameraFollower.Instance.IsBlindActive = false;
                     break;
                 case CharacterStatusEffect.Hallucination:
-                    CameraFollower.Instance.GetComponent<ScreenEffectHandler>().EndHallucination();
+                    if(controllable.IsMainCharacter)
+                        CameraFollower.Instance.GetComponent<ScreenEffectHandler>().EndHallucination();
                     break;
                 case CharacterStatusEffect.Sight:
                     var effect = controllable.DetachExistingEffectOfType(EffectType.Sight);

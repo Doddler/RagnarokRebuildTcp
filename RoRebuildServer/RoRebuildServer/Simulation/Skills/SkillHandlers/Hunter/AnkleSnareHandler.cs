@@ -30,6 +30,9 @@ public class AnkleSnareEvent : TrapBaseEvent
     
     public override void OnNaturalExpiration(Npc npc)
     {
+        if (npc.Owner.TryGet<WorldObject>(out var owner) && owner.Type != CharacterType.Player)
+            return;
+
         var item = new GroundItem(npc.Character.Position, 1065, 1);
         npc.Character.Map?.DropGroundItem(ref item);
     }

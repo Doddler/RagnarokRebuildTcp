@@ -89,6 +89,14 @@ namespace Assets.Scripts.UI
             CountDownButton.interactable = curCount > 1;
 
             CountText.text = curCount.ToString();
+
+            var cost = currentTrade.ZenyCost * curCount;
+            
+            if (cost > 0)
+                RightWindow.InfoAreaText.text = $"Cost: {cost:N0}z";
+            else
+                RightWindow.InfoAreaText.text = "";
+
         }
 
         public void OnSubmitTrade()

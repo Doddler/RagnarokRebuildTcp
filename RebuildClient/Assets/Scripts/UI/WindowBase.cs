@@ -59,6 +59,9 @@ namespace Assets.Scripts.UI
 
         public void ToggleVisibility()
         {
+            if (UiManager.Instance.IsDraggingItem)
+                UiManager.Instance.EndItemDrag(false);
+            
             if (gameObject.activeInHierarchy)
                 HideWindow();
             else

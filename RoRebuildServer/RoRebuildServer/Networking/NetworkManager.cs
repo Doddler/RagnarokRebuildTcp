@@ -169,8 +169,8 @@ public class NetworkManager
             }
         }
 
-        if (clientTimeoutTime < 10)
-            clientTimeoutTime = 10;
+        if (clientTimeoutTime < 20)
+            clientTimeoutTime = 20;
 
         IsRunning = true;
         IsServerOpen = true;
@@ -185,6 +185,12 @@ public class NetworkManager
         for (var i = 0; i < players.Count; i++)
         {
             DisconnectPlayer(players[i]);
+        }
+
+        while (disconnectList.Reader.TryRead(out var dc))
+        {
+            ServerLogger.Log($"[Network] Player {dc.Entity} has disconnected, removing from world.");
+            DisconnectPlayer(dc);
         }
     }
 
@@ -556,6 +562,14 @@ public class NetworkManager
 #endif
     }
 
+    public static void TriggerAllCancellations()
+    {
+        foreach (var con in ConnectionLookup)
+        {
+            con.Value.CancellationSource.Cancel();
+        }
+    }
+
     public static void SendMessage(OutboundMessage message, NetworkConnection connection)
     {
         if (message.Clients.Count == 0 || !message.Clients.Contains(connection))
@@ -702,6 +716,7 @@ public class NetworkManager
         var data = new ArraySegment<byte>(buffer, 0, (int)ms.Position);
 
         await socket.SendAsync(data, WebSocketMessageType.Binary, true, CancellationToken.None);
+        await Task.Delay(200); //we risk closing the socket before the error message is actually sent, so delay 0.2s
         await socket.CloseAsync(WebSocketCloseStatus.ProtocolError, "Disconnected", CancellationToken.None);
 
         ArrayPool<byte>.Shared.Return(buffer);
@@ -923,6 +938,9 @@ public class NetworkManager
             inboundChannel.Enqueue(inMsg);
 #endif
         }
+
+        if(playerConnection.Player != null)
+            playerConnection.Player.WriteCharacterToDatabase();
 
         playerConnection.Status = ConnectionStatus.Disconnected;
         ConnectedAccounts.Remove(userId, out var _);

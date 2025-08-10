@@ -151,7 +151,7 @@ macro BardSkillReset()
 	}
 	else
 	{
-		Dialog(name, "You're looking to reest your skills are you? I can reset all of your skill points you used, except those put into your novice skills. Are you sure you want to?");
+		Dialog(name, "You're looking to reset your skills are you? I can reset all of your skill points you used, except those put into your novice skills. Are you sure you want to?");
 		Option("Reset Skills", "No thanks");
 
 		if(result == 0)
@@ -171,7 +171,7 @@ macro BardStatReset()
 {
 	ShowSprite("bard_eland01", right);
 
-	Dialog(name, "You're looking to reest your stat points are you? I can reset all of your stats back to level 1 for you to reapply your points. How about it?");
+	Dialog(name, "You're looking to reset your stat points are you? I can reset all of your stats back to level 1 for you to reapply your points. How about it?");
 	Option("Reset Stats", "No thanks");
 
 	if(result == 0)

@@ -864,9 +864,9 @@ internal class DataLoader
                     {
                         case "str": tempTable[0] += 1; break;
                         case "agi": tempTable[1] += 1; break;
-                        case "vit": tempTable[2] += 1; break;
+                        case "dex": tempTable[2] += 1; break;
                         case "int": tempTable[3] += 1; break;
-                        case "dex": tempTable[4] += 1; break;
+                        case "vit": tempTable[4] += 1; break;
                         case "luk": tempTable[5] += 1; break;
                         case "0": break;
                         default: throw new Exception($"Unexpected stat value {stat} when loading job {jobName} on JobStatBonuses.csv!");

@@ -138,7 +138,7 @@ public partial class CombatEntity
                             attackElement = arrowElement;
                     }
 
-                    var overrideElement = (AttackElement)GetStat(CharacterStat.EndowAttackElement);
+                    var overrideElement = (AttackElement)attacker.GetStat(CharacterStat.EndowAttackElement);
                     if (overrideElement > 0)
                         attackElement = overrideElement;
                 }
@@ -867,11 +867,14 @@ public partial class CombatEntity
         }
 
         //monster short circuit to attacking if the attacker is in melee range
-        if (Character.Type == CharacterType.Monster && Character.State == CharacterState.Idle)
+        if (Character.Type == CharacterType.Monster && Character.Monster.CurrentAiState != MonsterAiState.StateAttacking)
         {
-            Character.Monster.Target = di.Source;
-            if (Character.Monster.InAttackRange())
+            if (di.Source.TryGet<WorldObject>(out var src) &&
+                src.Position.DistanceTo(Character.Position) <= Character.Monster.MonsterBase.Range)
+            {
+                Character.Monster.Target = di.Source;
                 Character.Monster.CurrentAiState = MonsterAiState.StateAttacking;
+            }
         }
 
         if (oldPosition != Character.Position)

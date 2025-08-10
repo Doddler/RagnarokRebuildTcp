@@ -508,9 +508,10 @@ public class NpcInteractionState
         if (newItem.Type == ItemType.UniqueItem)
             newItem.UniqueItem.UniqueId = Guid.NewGuid();
         else
-            newItem.UniqueItem.Count = (short)(newItem.UniqueItem.Count * tradeCount);
+            newItem.Count = (short)(newItem.Count * tradeCount);
         Player.CreateItemInInventory(newItem);
         CommandBuilder.SendServerEvent(Player, ServerEvent.TradeSuccess);
+        CommandBuilder.SendUpdateZeny(Player);
     }
 
     public void StartSellToNpc()

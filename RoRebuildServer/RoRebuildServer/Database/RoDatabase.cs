@@ -269,6 +269,8 @@ public static class RoDatabase
             await Task.Delay(100);
         }
         ServerLogger.Log("Database queue is clear.");
+
+        
     }
 
     public static async Task Shutdown()

@@ -49,7 +49,13 @@ public class Player : IEntityAutoReset
 
     [EntityIgnoreNullCheck] public NpcInteractionState NpcInteractionState = new();
     [EntityIgnoreNullCheck] public int[] CharData = new int[(int)PlayerStat.PlayerStatsMax];
-    [EntityIgnoreNullCheck] public SavePosition SavePosition { get; set; } = new();
+
+    [EntityIgnoreNullCheck]
+    public SavePosition SavePosition
+    {
+        get; 
+        set;
+    } = new();
     [EntityIgnoreNullCheck] public MapMemoLocation[] MemoLocations = new MapMemoLocation[4];
     [EntityIgnoreNullCheck] public List<SkillCastInfo> IndirectCastQueue { get; set; } = null!;
     [EntityIgnoreNullCheck] public Dictionary<int, int>? AttackVersusTag { get; set; }
@@ -57,7 +63,6 @@ public class Player : IEntityAutoReset
     [EntityIgnoreNullCheck] public Dictionary<CharacterSkill, double> SkillSpecificCooldowns = new();
     public Dictionary<CharacterSkill, int> LearnedSkills = null!;
     public Dictionary<CharacterSkill, int>? GrantedSkills;
-    
     
     public Dictionary<string, int>? NpcFlags;
     public ItemEquipState Equipment = null!;
@@ -1084,6 +1089,7 @@ public class Player : IEntityAutoReset
         var area = SavePosition.Area;
         if (!World.Instance.TryGetWorldMapByName(savePoint, out var targetMap))
         {
+            ServerLogger.LogWarning($"Could not return player {Name} to save point {savePoint}.");
             if (!World.Instance.TryGetWorldMapByName(ServerConfig.EntryConfig.Map, out targetMap))
                 return;
             position = ServerConfig.EntryConfig.Position;
@@ -1244,6 +1250,9 @@ public class Player : IEntityAutoReset
         var regen = (maxHp / 50 + vit / 5) * (200 + vit) / 200;
         regen = regen * hpAddPercent / 100;
 
+        if (Character.State == CharacterState.Sitting)
+            regen *= 2;
+        
         var hpRegenSkill = MaxLearnedLevelOfSkill(CharacterSkill.IncreasedHPRecovery);
         if (hpRegenSkill > 0 && hp < maxHp)
         {
@@ -1251,9 +1260,6 @@ public class Player : IEntityAutoReset
             regen += plusHpRegen;
             CommandBuilder.SendImprovedRecoveryValue(this, plusHpRegen, 0);
         }
-        
-        if (Character.State == CharacterState.Sitting)
-            regen *= 2;
         
         if (regen < 1) regen = 1;
 
@@ -1286,8 +1292,11 @@ public class Player : IEntityAutoReset
         var regen = 1 + (maxSp / 100 + chInt / 6) * (200 + chInt) / 200;
         //var regen = maxSp / 100 + chInt / 5; //original formula
 
-        if (chInt > 120) regen += chInt - 120;
+        if (chInt >= 120) regen += chInt / 2 - 56;
         regen = regen * spAddPercent / 100;
+
+        if (Character.State == CharacterState.Sitting)
+            regen *= 2;
 
         var spRegenSkill = MaxLearnedLevelOfSkill(CharacterSkill.IncreaseSPRecovery);
         if (spRegenSkill > 0 && sp < maxSp)
@@ -1296,10 +1305,7 @@ public class Player : IEntityAutoReset
             regen += plusSpRegen;
             CommandBuilder.SendImprovedRecoveryValue(this, 0, plusSpRegen);
         }
-
-        if (Character.State == CharacterState.Sitting)
-            regen *= 2;
-
+        
         if (regen < 1)
             regen = 1;
 
@@ -1462,7 +1468,11 @@ public class Player : IEntityAutoReset
     public void SaveSpawnPoint(string spawnName)
     {
         if (DataManager.SavePoints.TryGetValue(spawnName, out var spawnPosition))
+        {
+            ServerLogger.Log($"Player setting spawn point to {spawnName} (map {spawnPosition.MapName})");
             SavePosition = spawnPosition;
+            WriteCharacterToDatabase(); //save the new point
+        }
         else
             ServerLogger.LogError($"Npc script attempted to set spawn position to \"{spawnName}\", but that spawn point was not defined.");
     }
@@ -1988,6 +1998,13 @@ public class Player : IEntityAutoReset
             //targeted at an enemy
             if (CombatEntity.QueuedCastingSkill.TargetEntity.TryGet<WorldObject>(out var targetCharacter))
             {
+                if (targetCharacter.Map != Character.Map)
+                {
+                    Character.QueuedAction = QueuedAction.None;
+                    Target = Entity.Null;
+                    return;
+                }
+
                 var isValid = true;
                 var canAttack = CombatEntity.CanAttackTarget(targetCharacter, CombatEntity.QueuedCastingSkill.Range);
                 if (Character.State == CharacterState.Moving && canAttack)

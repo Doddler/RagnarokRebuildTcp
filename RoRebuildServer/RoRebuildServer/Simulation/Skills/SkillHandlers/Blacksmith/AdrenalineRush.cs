@@ -40,7 +40,9 @@ public class AdrenalineRush : SkillHandlerBase
                     continue;
                 if (!partyMember.CombatEntity.IsValidAlly(source, true))
                     continue;
-                if (partyMember.Player.WeaponClass < 6 || source.Player.WeaponClass > 9)
+                if (!source.Character.Position.InRange(partyMember.Position, 14))
+                    continue;
+                if (partyMember.Player.WeaponClass < 6 || partyMember.Player.WeaponClass > 9)
                     continue;
 
                 status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.AdrenalineRush, lvl * 30, 25);

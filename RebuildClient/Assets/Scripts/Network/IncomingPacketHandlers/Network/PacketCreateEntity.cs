@@ -79,7 +79,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     var duration = msg.ReadFloat();
                     statuses.Add(status, duration);
                     
-                    Debug.Log($"{classId} has a status effect! {status}");
+                    //Debug.Log($"{classId} has a status effect! {status}");
 
                     if (id == Network.PlayerId)
                         StatusEffectPanel.Instance.AddStatusEffect(status, duration);

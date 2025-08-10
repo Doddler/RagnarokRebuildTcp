@@ -907,6 +907,17 @@ public class World
         return Entity.Null;
     }
 
+    public void PanicSaveAllCharacters()
+    {
+        foreach(var (guid, entity) in playerList)
+        {
+            if (entity.TryGet<Player>(out var player))
+            {
+                player.WriteCharacterToDatabase();
+            }
+        }
+    }
+
     private int GetNextEntityId()
     {
         nextEntityId++;

@@ -293,6 +293,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: Assets.Scripts.UI.Inventory.VendingShopViewUI, Assembly-CSharp
       objectReference: {fileID: 0}
+    - target: {fileID: 7783244261296909373, guid: 8951fbefcb42b3c40910fe1ac3f927f3,
+        type: 3}
+      propertyPath: CanCloseWithEscape
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9206773151220915749, guid: 8951fbefcb42b3c40910fe1ac3f927f3,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -552,6 +557,11 @@ PrefabInstance:
     - target: {fileID: 7732091657352750551, guid: 8951fbefcb42b3c40910fe1ac3f927f3,
         type: 3}
       propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7783244261296909373, guid: 8951fbefcb42b3c40910fe1ac3f927f3,
+        type: 3}
+      propertyPath: CanCloseWithEscape
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9206773151220915749, guid: 8951fbefcb42b3c40910fe1ac3f927f3,

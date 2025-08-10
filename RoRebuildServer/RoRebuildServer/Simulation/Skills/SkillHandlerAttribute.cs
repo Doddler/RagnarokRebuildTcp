@@ -62,6 +62,18 @@ public abstract class SkillHandlerBase
         return true;
     }
 
+
+    public void ConsumeGemstone(CombatEntity source, int itemId)
+    {
+        if (source.Character.Type != CharacterType.Player)
+            return;
+
+        if (source.GetStat(CharacterStat.NoGemstone) <= 0)
+            source.Player.TryRemoveItemFromInventory(itemId, 1, true);
+
+        return;
+    }
+
     public bool CheckRequiredGemstone(CombatEntity source, int itemId, bool sendFailMessage = true)
     {
         if (source.Character.Type == CharacterType.Player && (source.Player.Inventory == null || !source.Player.Inventory.HasItem(itemId)))

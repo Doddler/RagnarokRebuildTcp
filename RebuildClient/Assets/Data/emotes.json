@@ -160,7 +160,7 @@
       "X": 8,
       "Y": -3,
       "Size": 1,
-      "Commands": "laugh/lol"
+      "Commands": "lol/heh"
     },
     {
       "Id": 19,
@@ -259,7 +259,7 @@
       "X": 8,
       "Y": -3,
       "Size": 1,
-      "Commands": "gg/heh"
+      "Commands": "gg"
     },
     {
       "Id": 30,

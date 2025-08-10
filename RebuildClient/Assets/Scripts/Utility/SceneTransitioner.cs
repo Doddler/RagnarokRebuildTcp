@@ -188,8 +188,6 @@ namespace Assets.Scripts.Utility
 
 		private void FinishSceneChange()
 		{
-			finishCallback();
-			
 			UiManager.Instance.SetEnabled(true);
 			
             var newMap = mapEntries.FirstOrDefault(m => m.Code == newScene);
@@ -248,7 +246,13 @@ namespace Assets.Scripts.Utility
 					CameraFollower.Instance.SetCameraMode(CameraMode.Normal);
 			}
 			
+			EffectPool.ClearPrimitiveDataPools();
+			Resources.UnloadUnusedAssets();
+			System.GC.Collect();
+			
 			CameraFollower.Instance.ResetCursor();
+			
+			CameraFollower.Instance.DelayedExecuteAction(finishCallback, 0.01f);
 		}
 
 		// private void FinishSceneChange(AsyncOperation op)
@@ -258,10 +262,6 @@ namespace Assets.Scripts.Utility
 
 		private IEnumerator WaitAndStartFade()
 		{
-			EffectPool.ClearPrimitiveDataPools();
-			Resources.UnloadUnusedAssets();
-			System.GC.Collect();
-
 			yield return null;
 			yield return null;
 

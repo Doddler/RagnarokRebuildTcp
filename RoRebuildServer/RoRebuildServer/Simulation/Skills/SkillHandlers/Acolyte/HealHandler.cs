@@ -23,7 +23,7 @@ public class HealHandler : SkillHandlerBase
         if (target.Character.Type == CharacterType.Monster)
         {
             if (target.Character.Type == CharacterType.Monster && target.IsElementBaseType(CharacterElement.Undead1))
-                return SkillValidationResult.Success;
+                return StandardValidation(source, target, position);
         }
 
         if (target.Character.Type == CharacterType.Player && target.IsElementBaseType(CharacterElement.Undead1))

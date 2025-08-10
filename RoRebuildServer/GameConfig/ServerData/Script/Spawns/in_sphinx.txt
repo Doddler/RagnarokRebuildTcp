@@ -24,7 +24,7 @@ MapConfig("in_sphinx3")
 	CreateSpawn("REQUIEM", 80);
 	CreateSpawn("MARDUK", 30, %(119, 160, 110, 70));
 	CreateSpawn("PASANA", 2, %(20, 153, 10, 76), 5m);
-	CreateSpawn("MIMIC", 2, %(20, 153, 10, 76), 10m, 5m);
+	//CreateSpawn("MIMIC", 2, %(20, 153, 10, 76), 10m, 5m);
 	CreateSpawn("MIMIC", 3, 10m, 5m);
 	
 }

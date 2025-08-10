@@ -21,7 +21,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
             if (attack.Target == null)
                 return;
             
-            Debug.Log("Heal: " + attack.Damage);
+            // Debug.Log("Heal: " + attack.Damage);
             
             switch (-attack.Damage)
             {

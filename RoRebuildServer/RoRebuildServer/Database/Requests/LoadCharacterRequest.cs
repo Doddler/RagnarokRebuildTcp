@@ -58,7 +58,7 @@ public class LoadCharacterRequest : IDbRequest
         Name = character;
         Map = string.Empty;
         Position = Position.Invalid;
-        SavePosition = null!;
+        SavePosition = new SavePosition();
         EquipState = null;
     }
 

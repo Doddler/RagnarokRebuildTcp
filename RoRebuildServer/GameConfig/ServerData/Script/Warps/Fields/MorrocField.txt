@@ -102,3 +102,5 @@ Warp("moc_fild18", "morrocfieldwarp0100", 382, 305, 2, 4, "moc_fild17", 33, 300)
 Warp("moc_fild19", "morrocfieldwarp0101", 71, 170, 8, 2, "moc_ruins", 71, 19);
 Warp("moc_fild19", "morrocfieldwarp102", 98, 99, 1, 1, "in_sphinx1", 288, 9);
 Warp("moc_fild19", "morrocfieldwarp103", 169, 107, 1, 4, "morocc", 27, 164);
+
+Warp("in_moc_16", "assassin_guild_escape", 18, 9, 1, 1, "moc_fild16", 206, 293);

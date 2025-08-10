@@ -168,6 +168,8 @@ internal class ZoneWorker : BackgroundService
             isSafeExit = false;
         }
 
+        NetworkManager.TriggerAllCancellations();
+        
         if(worldCancellation.IsCancellationRequested)
             logger.LogCritical("The server has left the main processing loop due to an admin initiated shutdown.");
         else
@@ -179,6 +181,8 @@ internal class ZoneWorker : BackgroundService
     {
         logger.LogInformation("Server shutting down at: {time}", DateTimeOffset.Now);
 
+        await NetworkManager.ScanAndDisconnect();
+        
         NetworkManager.Shutdown();
         //network manager shutdown should queue all players to save, so now we wait for save to finish
         await RoDatabase.Shutdown();

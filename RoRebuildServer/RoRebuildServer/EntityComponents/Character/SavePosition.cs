@@ -3,7 +3,7 @@ using RoRebuildServer.Data;
 
 namespace RoRebuildServer.EntityComponents.Character
 {
-    public class SavePosition
+    public struct SavePosition
     {
         public string MapName { get; set; } = null!;
         public Position Position { get; set; }

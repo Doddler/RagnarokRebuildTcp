@@ -26,7 +26,7 @@ public class StoneCurseHandler : SkillHandlerBase
         if (target.GetSpecialType() == CharacterSpecialType.Boss)
             return SkillValidationResult.CannotTargetBossMonster;
 
-        if (!isIndirect && !CheckRequiredGemstone(source, GemstoneId, false)) 
+        if (!isIndirect && !isItemSource && !CheckRequiredGemstone(source, GemstoneId, false)) 
             return SkillValidationResult.MissingRequiredItem;
 
         return base.ValidateTarget(source, target, position, lvl, false, false);
@@ -48,19 +48,16 @@ public class StoneCurseHandler : SkillHandlerBase
 
         if (source.TryPetrifyTarget(target, 350 + lvl * 30, 4f))
         {
-            var success = true;
-            var keepGemstone = 300 - lvl * 50;
-            if (source.Character.Type == CharacterType.Player && !source.CheckLuckModifiedRandomChanceVsTarget(source, keepGemstone, 1000))
+            //var success = true;
+            var keepGemstone = 200 + lvl * 50;
+            if (source.Character.Type == CharacterType.Player && GameRandom.NextInclusive(0, 1000) > keepGemstone)
             {
-                if (!isIndirect && !isItemSource && !ConsumeGemstoneForSkillWithFailMessage(source, GemstoneId))
-                    success = false;
+                if (!isIndirect && !isItemSource)
+                    ConsumeGemstone(source, GemstoneId);
             }
 
-            if (success)
-            {
-                res.Result = AttackResult.Success;
-                source.ApplyCooldownForSupportSkillAction();
-            }
+            res.Result = AttackResult.Success;
+            source.ApplyCooldownForSupportSkillAction();
         }
 
         CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.StoneCurse, lvl, res, isIndirect);
