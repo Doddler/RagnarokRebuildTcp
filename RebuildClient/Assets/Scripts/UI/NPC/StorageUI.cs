@@ -243,7 +243,7 @@ namespace Assets.Scripts.UI
         private void AddItem(InventoryItem item)
         {
             var entry = ItemWindow.GetNewEntry();
-            var sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(item.ItemData.Sprite);
+            var sprite = ClientDataLoader.Instance.GetIconAtlasSprite(item.ItemData.Sprite);
             if(item.Type == ItemType.RegularItem)
                 entry.Assign(DragItemType.StorageItem, sprite, item.Id, item.Count);
             else

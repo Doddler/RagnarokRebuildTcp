@@ -75,7 +75,7 @@ namespace Assets.Scripts.UI
             var id = 0;
             foreach (var item in validCandidates)
             {
-                var sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(item.ItemData.Sprite);
+                var sprite = ClientDataLoader.Instance.GetIconAtlasSprite(item.ItemData.Sprite);
                 var entry = window.GetNewEntry();
                 entry.Assign(DragItemType.None, sprite, item.BagSlotId, item.Count);
                 entry.UniqueEntryId = id;

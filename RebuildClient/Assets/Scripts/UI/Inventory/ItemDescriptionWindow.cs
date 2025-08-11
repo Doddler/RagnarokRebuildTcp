@@ -90,7 +90,7 @@ namespace Assets.Scripts.UI.Inventory
                     {
                         if (!ClientDataLoader.Instance.TryGetItemById(slot, out var socketed))
                             socketed = item; //lol
-                        var sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(socketed.Sprite);
+                        var sprite = ClientDataLoader.Instance.GetIconAtlasSprite(socketed.Sprite);
                         CardSocketEntries[i].Assign(DragItemType.SocketedItem, sprite, socketed.Id, 1);
                     }
                     else

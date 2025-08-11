@@ -252,7 +252,7 @@ namespace Assets.Scripts.UI.Inventory
             {
                 var entry = LeftWindow.GetNewEntry();
 
-                var sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(item.Item.ItemData.Sprite);
+                var sprite = ClientDataLoader.Instance.GetIconAtlasSprite(item.Item.ItemData.Sprite);
                 entry.Assign(DragItemType.VendShop, sprite, item.Item.Id, item.Item.Count);
                 entry.UniqueEntryId = bagId;
                 entry.ItemName.text = item.Item.ProperName();

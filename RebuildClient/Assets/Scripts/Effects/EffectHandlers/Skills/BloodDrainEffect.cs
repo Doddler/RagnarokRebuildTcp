@@ -10,7 +10,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
         public static Ragnarok3dEffect Create(ServerControllable src, ServerControllable target, int projectileCount, Color color, float delay)
         {
             var mat = EffectSharedMaterialManager.GetMaterial(EffectMaterialType.ParticleAlphaBlend);
-            var sprite = EffectSharedMaterialManager.GetParticleSpriteAtlas().GetSprite("particle1");
+            var sprite = EffectSharedMaterialManager.GetParticleSprite("particle1");
             mat.mainTexture = sprite.texture;
             projectileCount = Mathf.Clamp(projectileCount, 1, 5);
             

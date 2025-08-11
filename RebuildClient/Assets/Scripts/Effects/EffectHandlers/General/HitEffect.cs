@@ -93,8 +93,8 @@ namespace Assets.Scripts.Effects.EffectHandlers
                 var skillAtlas = Resources.Load<SpriteAtlas>("SkillAtlas");
                 lensSprite = new Sprite[2];
                 //lensSprite[0] = skillAtlas.GetSprite("testarrow"); //lens1
-                lensSprite[0] = skillAtlas.GetSprite("lens1"); //lens1
-                lensSprite[1] = skillAtlas.GetSprite("lens2"); //lens2
+                lensSprite[0] = EffectSharedMaterialManager.GetAtlasSprite(skillAtlas, "lens1"); //lens1
+                lensSprite[1] = EffectSharedMaterialManager.GetAtlasSprite(skillAtlas, "lens2"); //lens2
             }
 
             AudioManager.Instance.OneShotSoundEffect(target.Id, $"ef_hit2.ogg", target.transform.position);

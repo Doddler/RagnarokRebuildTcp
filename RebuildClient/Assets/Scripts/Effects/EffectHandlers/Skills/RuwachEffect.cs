@@ -63,7 +63,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
 
                     var offset = new Vector3(Mathf.Sin(angle * Mathf.Deg2Rad) * dist, 10 / 5f, Mathf.Cos(angle * Mathf.Deg2Rad) * dist);
 
-                    data.Sprite = EffectSharedMaterialManager.GetParticleSpriteAtlas().GetSprite("particle2");
+                    data.Sprite = EffectSharedMaterialManager.GetParticleSprite("particle2");
                     data.Size = new Vector2(3f, 3f);
                     data.ScalingSpeed = -new Vector2(6, 6);
                     data.Alpha = 250;

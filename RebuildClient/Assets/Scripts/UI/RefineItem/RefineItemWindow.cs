@@ -135,7 +135,7 @@ namespace Assets.Scripts.UI.RefineItem
 
         private void AddItemToSelectList(int id, InventoryItem item, PlayerState state)
         {
-            var sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(item.ItemData.Sprite);
+            var sprite = ClientDataLoader.Instance.GetIconAtlasSprite(item.ItemData.Sprite);
             var entry = selectWindow.GetNewEntry();
             entry.Assign(DragItemType.None, sprite, item.BagSlotId, item.Count);
             entry.UniqueEntryId = id;
@@ -178,7 +178,7 @@ namespace Assets.Scripts.UI.RefineItem
         public void SelectOre(int id)
         {
             var item = ClientDataLoader.Instance.GetItemById(id);
-            var sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(item.Sprite);
+            var sprite = ClientDataLoader.Instance.GetIconAtlasSprite(item.Sprite);
             SelectedOre.Assign(DragItemType.None, sprite, id, 1);
             if (state.Inventory.GetItemCount(SelectedOre.ItemId) <= 0)
                 SelectedOre.ItemName.text = $"<color=#B44E38>{item.Name} (Missing)";
@@ -198,7 +198,7 @@ namespace Assets.Scripts.UI.RefineItem
             }
             
             var item = ClientDataLoader.Instance.GetItemById(itemType);
-            var sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(item.Sprite);
+            var sprite = ClientDataLoader.Instance.GetIconAtlasSprite(item.Sprite);
 
             SelectedCatalyst.Assign(DragItemType.None, sprite, itemType, 1);
             if (state.Inventory.TryFindCatalystCapableItem(itemType, targetItem.BagSlotId, out var catalyst))

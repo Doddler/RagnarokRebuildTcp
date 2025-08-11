@@ -939,8 +939,8 @@ public class NetworkManager
 #endif
         }
 
-        if(playerConnection.Player != null)
-            playerConnection.Player.WriteCharacterToDatabase();
+        //if(playerConnection.Player != null && playerConnection.Player.HasEnteredServer)
+        //    playerConnection.Player.WriteCharacterToDatabase();
 
         playerConnection.Status = ConnectionStatus.Disconnected;
         ConnectedAccounts.Remove(userId, out var _);

@@ -52,6 +52,7 @@ namespace Assets.Scripts.Editor
             sprites.Add(ImportEffectTexture("texture/effect/super4.bmp", "super4"));
             sprites.Add(ImportEffectTexture("texture/effect/super5.bmp", "super5"));
             sprites.Add(ImportEffectTexture("texture/effect/ac_center2.tga", "ac_center2"));
+            sprites.Add(ImportEffectTexture("texture/effect/alpha_down.tga", "alpha_down"));
             sprites.Add(ImportEffectTexture("texture/effect/endure.tga", "endure"));
             sprites.Add(ImportEffectTexture("texture/effect/pok1.tga", "pok1"));
             sprites.Add(ImportEffectTexture("texture/effect/pok3.tga", "pok3"));
@@ -102,6 +103,9 @@ namespace Assets.Scripts.Editor
             var srcPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, texName);
             var fName = Path.GetFileNameWithoutExtension(outName);
             var destPath = Path.Combine($"Assets/Textures/{dir}/{fName}.png");
+            
+            if(!File.Exists(srcPath))
+                Debug.LogWarning($"Source texture {srcPath} not found!");
 
             if (keepExisting && File.Exists(destPath))
                 return AssetDatabase.LoadAssetAtPath<Sprite>(destPath);

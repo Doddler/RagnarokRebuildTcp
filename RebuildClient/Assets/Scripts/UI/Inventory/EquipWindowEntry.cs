@@ -26,7 +26,7 @@ namespace Assets.Scripts.UI.Inventory
         {
             InventoryItem = item;
             ItemId = item.ItemData.Id;
-            Sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(item.ItemData.Sprite);
+            Sprite = ClientDataLoader.Instance.GetIconAtlasSprite(item.ItemData.Sprite);
             Image.sprite = Sprite;
             Image.rectTransform.sizeDelta = Sprite.rect.size * 2;
             ItemName.text = item.ProperName();

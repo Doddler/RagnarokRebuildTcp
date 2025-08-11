@@ -57,7 +57,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
                 prim.CreateParts(4);
 
                 var dat = prim.GetPrimitiveData<ParticleOrbitData>();
-                dat.Sprite = EffectSharedMaterialManager.GetParticleSpriteAtlas().GetSprite("particle1");
+                dat.Sprite = EffectSharedMaterialManager.GetParticleSprite("particle1");
 
                 dat.Radius = 7;
                 dat.GravitySpeed = 2f;

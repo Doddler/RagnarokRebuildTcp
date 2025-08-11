@@ -160,7 +160,7 @@ namespace Assets.Scripts.UI
                 var entry = selectWindow.GetNewEntry();
                 
                 var data = ClientDataLoader.Instance.GetItemById(itemId);
-                var sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(data.Sprite);
+                var sprite = ClientDataLoader.Instance.GetIconAtlasSprite(data.Sprite);
                 entry.Assign(DragItemType.None, sprite, itemId, 1);
                 entry.ItemName.text = item.ProperName();
                 entry.RightText.text = "";
@@ -253,7 +253,7 @@ namespace Assets.Scripts.UI
                 var entry = RightWindow.GetNewEntry();
                 
                 var data = ClientDataLoader.Instance.GetItemById(req.Id);
-                var sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(data.Sprite);
+                var sprite = ClientDataLoader.Instance.GetIconAtlasSprite(data.Sprite);
                 entry.Assign(DragItemType.None, sprite, req.Id, req.Count);
                 
                 entry.ItemName.text = InventoryItem.MakeProperName(req, data);
@@ -345,7 +345,7 @@ namespace Assets.Scripts.UI
 
                 var entry = LeftWindow.GetNewEntry();
                 
-                var sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(trade.Item.ItemData.Sprite);
+                var sprite = ClientDataLoader.Instance.GetIconAtlasSprite(trade.Item.ItemData.Sprite);
                 entry.Assign(DragItemType.None, sprite, trade.Item.Id, trade.Item.Count);
                 entry.UniqueEntryId = i;
                 entry.ItemName.text = trade.Item.ProperName();

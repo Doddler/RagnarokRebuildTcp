@@ -66,7 +66,7 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
                     continue;
 
                 var a = (int)Mathf.Clamp(p.Alpha, 0, 255);
-                var sprite = dat.Atlas.GetSprite(dat.SpriteNames[p.Flags[0]]);
+                var sprite = EffectSharedMaterialManager.GetAtlasSprite(dat.Atlas, dat.SpriteNames[p.Flags[0]]);
                 
                 // Debug.Log($"ParticleUp primitive {i} (active {p.Active}): {sprite.name} {p.Position} {p.Distance} {p.Alpha}");
                 

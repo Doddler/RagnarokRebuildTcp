@@ -47,7 +47,7 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
                 var id = 0;
                 if(data.SpriteList.Length > 1)
                     id = Mathf.FloorToInt(primitive.CurrentPos / (1f / data.FrameTime)) % data.SpriteList.Length;
-                var sprite = data.Atlas.GetSprite(data.SpriteList[id]);
+                var sprite = EffectSharedMaterialManager.GetAtlasSprite(data.Atlas, data.SpriteList[id]);
 
                 primitive.Material.mainTexture = sprite.texture;
                 primitive.AddTexturedSpriteQuad(sprite, Vector3.zero, data.Width, data.Height, c, data.Angle * Mathf.Deg2Rad);

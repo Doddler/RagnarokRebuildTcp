@@ -38,7 +38,7 @@ namespace Assets.Scripts.Network
             item.ItemId = id;
             item.Count = count;
             item.ItemType = ItemType.RegularItem;
-            item.Sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(data.Sprite);
+            item.Sprite = ClientDataLoader.Instance.GetIconAtlasSprite(data.Sprite);
             item.ItemName = data.Slots == 0 ? data.Name : $"{data.Name} [{data.Slots}]";
             item.EntityId = entityId;
 

@@ -34,7 +34,7 @@ namespace Assets.Scripts.UI.Hud
             if (chatOnly)
                 return;
             
-            Icon.sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(inventoryItem.ItemData.Sprite);
+            Icon.sprite = ClientDataLoader.Instance.GetIconAtlasSprite(inventoryItem.ItemData.Sprite);
             Icon.rectTransform.sizeDelta = Icon.sprite.rect.size * 2;
             Text.text = obtainedText;
             

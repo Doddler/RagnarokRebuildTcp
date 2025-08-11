@@ -84,6 +84,7 @@ namespace Assets.Scripts.Effects
         private static Dictionary<string, Material> projectileMaterials;
         private static Dictionary<string, RoSpriteData> projectileSprites = new();
         private static Dictionary<string, AsyncOperationHandle<RoSpriteData>> loadingSprites = new();
+        private static Dictionary<SpriteAtlas, Dictionary<string, Sprite>> cachedAtlasSprites = new();
         private static readonly int Offset = Shader.PropertyToID("_Offset");
 
         public static void PrepareEffectSprite(string spriteName)
@@ -121,6 +122,22 @@ namespace Assets.Scripts.Effects
             return true;
         }
 
+        public static Sprite GetAtlasSprite(SpriteAtlas atlas, string name)
+        {
+            if (!cachedAtlasSprites.TryGetValue(atlas, out var cachedSprites))
+            {
+                cachedSprites = new();
+                cachedAtlasSprites.Add(atlas, cachedSprites);
+            }
+            
+            if (cachedSprites.TryGetValue(name, out var sprite))
+                return sprite;
+
+            sprite = atlas.GetSprite(name);
+            cachedSprites.Add(name, sprite);
+            return sprite;
+        }
+
         public static Material GetProjectileMaterial(string sprite)
         {
             projectileMaterials ??= new Dictionary<string, Material>();
@@ -155,6 +172,16 @@ namespace Assets.Scripts.Effects
                 particleAtlas = Resources.Load<SpriteAtlas>("Particles");
 
             return particleAtlas;
+        }
+
+        public static Sprite GetParticleSprite(string name)
+        {
+            return GetAtlasSprite(GetParticleSpriteAtlas(), name);
+        }
+
+        public static Sprite GetSkillEffectSprite(string name)
+        {
+            return GetAtlasSprite(SpriteAtlas, name);
         }
 
         private static Texture2D GetOrLoadEffectTexture(EffectTextureType type, bool persistTexture = true)

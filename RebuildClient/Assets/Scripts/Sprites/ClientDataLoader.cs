@@ -93,6 +93,8 @@ namespace Assets.Scripts.Sprites
         private readonly List<string> validMonsterClasses = new();
         private readonly List<string> validMonsterCodes = new();
 
+        public Sprite GetIconAtlasSprite(string name) => EffectSharedMaterialManager.GetAtlasSprite(ItemIconAtlas, name);
+
         // private static int EffectClassId = 3999;
 
         private bool isInitialized;

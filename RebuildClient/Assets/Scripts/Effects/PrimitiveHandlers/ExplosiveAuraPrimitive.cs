@@ -70,7 +70,7 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
                     var color = new Color(data.Color.r, data.Color.g, data.Color.b, Mathf.Clamp01(p.Heights[s + 1] / 255f));
                     var angle = p.Heights[s + 2];
                     var height = p.Heights[s + 3];
-                    var sprite = data.Atlas.GetSprite(spriteNames[spriteId]);
+                    var sprite = EffectSharedMaterialManager.GetAtlasSprite(data.Atlas, spriteNames[spriteId]);
                     var spriteFlip = spriteId == 0 || spriteId == 2 ? -1 : 1; //sprites 0 and 2 face left, the rest face right
 
                     var offset = new Vector3(Mathf.Sin(angle * Mathf.Deg2Rad) * dist, height, Mathf.Cos(angle * Mathf.Deg2Rad) * dist);

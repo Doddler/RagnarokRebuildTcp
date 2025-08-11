@@ -225,7 +225,7 @@ namespace Assets.Scripts.UI.Inventory
             leftItem.Count = count;
             entry = SaleItemWindow.GetNewEntry();
 
-            var sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(leftItem.ItemData.Sprite);
+            var sprite = ClientDataLoader.Instance.GetIconAtlasSprite(leftItem.ItemData.Sprite);
 
             entry.Assign(DragItemType.VendSetupTarget, sprite, leftItem.BagSlotId, count);
             entry.DragOrigin = ItemDragOrigin.VendingTarget;

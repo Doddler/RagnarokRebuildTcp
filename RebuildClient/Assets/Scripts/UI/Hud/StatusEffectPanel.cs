@@ -33,7 +33,7 @@ namespace Assets.Scripts.UI.Hud
                 return;
             }
 
-            var icon = ClientDataLoader.Instance.ItemIconAtlas.GetSprite($"status_{status}");
+            var icon = ClientDataLoader.Instance.GetIconAtlasSprite($"status_{status}");
             if (icon == null)
             {
                 Debug.LogWarning($"Status effect {status} could not find icon!");

@@ -69,6 +69,8 @@ public class BuildTool : IActiveBuildTargetChanged
         if (Directory.Exists("Build/RagnarokRebuild"))
             Directory.Delete("Build/RagnarokRebuild", true);
         
+        File.WriteAllText("Build/PC/version.txt", $"{DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}");
+        
         //the double folder name is dumb but we want the zip file to have a folder in it so it's gotta be done
         Directory.CreateDirectory("Build/RagnarokRebuild/RagnarokRebuild");
         foreach (var path in Directory.GetFiles("Build/PC"))

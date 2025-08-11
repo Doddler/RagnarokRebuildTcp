@@ -292,7 +292,7 @@ namespace Assets.Scripts.UI
                 {
                     var skillData = ClientDataLoader.Instance.GetSkillData((CharacterSkill)data[i].ItemId);
                     var spriteName = ClientDataLoader.Instance.GetSkillData((CharacterSkill)data[i].ItemId).Icon;
-                    var sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(spriteName);
+                    var sprite = ClientDataLoader.Instance.GetIconAtlasSprite(spriteName);
                     if (sprite != null)
                     {
                         HotBarEntries[i].DragItem.gameObject.SetActive(true);
@@ -312,7 +312,7 @@ namespace Assets.Scripts.UI
                             if (PlayerState.Instance.Inventory.UniqueItemIdToBagId.TryGetValue(guid, out var bagId) &&
                                 PlayerState.Instance.Inventory.TryGetInventoryItem(bagId, out var inventoryItem))
                             {
-                                var equipSprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(inventoryItem.ItemData.Sprite);
+                                var equipSprite = ClientDataLoader.Instance.GetIconAtlasSprite(inventoryItem.ItemData.Sprite);
                                 HotBarEntries[i].DragItem.gameObject.SetActive(true);
                                 HotBarEntries[i].DragItem.Assign(DragItemType.Item, equipSprite, bagId, 1);
                                 HotBarEntries[i].DragItem.OriginId = i;
@@ -328,7 +328,7 @@ namespace Assets.Scripts.UI
                     if (!ClientDataLoader.Instance.TryGetItemById(data[i].ItemId, out var item))
                         continue;
 
-                    var sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(item.Sprite);
+                    var sprite = ClientDataLoader.Instance.GetIconAtlasSprite(item.Sprite);
                     if (sprite != null)
                     {
                         HotBarEntries[i].DragItem.gameObject.SetActive(true);

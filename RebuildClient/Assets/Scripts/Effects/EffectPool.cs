@@ -47,6 +47,7 @@ namespace Assets.Scripts.Effects
             var m = new Mesh();
             #if DEBUG
             m.name = $"Mesh {meshCount++}";
+            // Debug.Log($"Create mesh {m.name}");
             #endif
             return m;
         }
@@ -66,6 +67,8 @@ namespace Assets.Scripts.Effects
             if (builderPool.Count > 0)
                 return builderPool.Pop();
 
+            // Debug.Log("Creating new mesh builder");
+            
             return new MeshBuilder();
         }
 

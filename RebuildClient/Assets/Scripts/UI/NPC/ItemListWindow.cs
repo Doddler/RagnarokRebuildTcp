@@ -224,7 +224,7 @@ namespace Assets.Scripts.UI
             }
 
             var spriteName = ClientDataLoader.Instance.GetItemById(addItem.ItemId).Sprite;
-            var sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(spriteName);
+            var sprite = ClientDataLoader.Instance.GetIconAtlasSprite(spriteName);
 
             var adjustValue = addItem.Cost - addItem.Cost * ItemAdjustValue / 100;
             
@@ -267,7 +267,7 @@ namespace Assets.Scripts.UI
         {
             //unlike the other overload, this one is only used initially because it pulls directly from the inventory
             var spriteName = addItem.ItemData.Sprite;
-            var sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(spriteName);
+            var sprite = ClientDataLoader.Instance.GetIconAtlasSprite(spriteName);
             
             ItemListEntry listEntry = null;
             

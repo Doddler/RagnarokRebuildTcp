@@ -38,7 +38,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
 
                 var offset = VectorHelper.RandomPositionInCylinder(2f, 6f) / 5f;
 
-                data.Sprite = EffectSharedMaterialManager.GetParticleSpriteAtlas().GetSprite("particle2");
+                data.Sprite = EffectSharedMaterialManager.GetParticleSprite("particle2");
                 data.Size = new Vector2(3f, 3f);
                 data.ScalingSpeed = Vector3.zero;
                 data.Alpha = 0;

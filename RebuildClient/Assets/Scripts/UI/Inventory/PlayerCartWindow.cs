@@ -133,11 +133,11 @@ namespace Assets.Scripts.UI.Inventory
                 }
 
                 var itemEntry = entryList[activeEntryCount];
-                var sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite(item.ItemData.Sprite);
+                var sprite = ClientDataLoader.Instance.GetIconAtlasSprite(item.ItemData.Sprite);
                 if (sprite == null)
                 {
                     Debug.LogWarning($"Failed to load sprite {item.ItemData.Sprite} for item {item.ItemData.Name}");
-                    sprite = ClientDataLoader.Instance.ItemIconAtlas.GetSprite("Apple");
+                    sprite = ClientDataLoader.Instance.GetIconAtlasSprite("Apple");
                 }
 
                 itemEntry.DragItem.Assign(DragItemType.CartItem, sprite, bagEntry.Key, item.Count);
