@@ -472,11 +472,11 @@ AltSkillHandler("EVENT_RANDGRIS") {
 		}
 		TryCast(EarthShaker, 1, 20%, 4s, 15s, NeverInterrupt | EventOnStartCast)[HpPercent < 95]  -> CreateEventOnTarget("EarthShakerCastEvent", 1 + (100 - HpPercent) / 25);
 		TryCast(RollingThunder, 1, 20%, 3s, 20s, NeverInterrupt | EventOnStartCast)[HpPercent < 90]  -> CreateEventOnTarget("ExaflareControlEvent", 1 + (100 - HpPercent) / 25);
-		TryCast(LordOfVermilion, 11, 10%, 3.5s, 25s);
+		TryCast(LordOfVermilion, 11, 10%, 3.5s, 25s, RandomTarget);
 	StateAttacking:
 		TryCast(EarthShaker, 1, 20%, 4s, 15s, NeverInterrupt | EventOnStartCast)[HpPercent < 95]  -> CreateEventOnTarget("EarthShakerCastEvent", 1 + (100 - HpPercent) / 25);
 		TryCast(RollingThunder, 1, 20%, 3s, 20s, NeverInterrupt | EventOnStartCast)[HpPercent < 90] -> CreateEventOnTarget("ExaflareControlEvent", 1 + (100 - HpPercent) / 25);
-		TryCast(LordOfVermilion, 11, 5%, 3.5s, 25s);
+		TryCast(LordOfVermilion, 11, 5%, 3.5s, 25s, RandomTarget);
 		TryCast(SonicBlow, 1, 5%, 1s, 10s);
 		TryCast(TwoHandQuicken, 1, 100%, 0, 120s)[HpPercent < 30];
 		TryCast(PowerUp, 2, 100%, 0.7s, 30s)[HpPercent < 30];

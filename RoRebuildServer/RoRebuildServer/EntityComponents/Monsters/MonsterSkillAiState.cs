@@ -547,7 +547,7 @@ public class MonsterSkillAiState(Monster monsterIn)
                 if (target != null && target.CombatEntity.IsHiddenTo(ce))
                     target = null;
 
-                if (target == null)
+                if (target == null || flags.HasFlag(MonsterSkillAiFlags.RandomTarget))
                 {
                     using var list = EntityListPool.Get();
                     monster.Character.Map?.GatherEnemiesInRange(monster.Character, range, list, true, true);

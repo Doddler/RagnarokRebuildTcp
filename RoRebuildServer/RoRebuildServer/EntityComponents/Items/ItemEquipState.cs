@@ -75,7 +75,7 @@ public class ItemEquipState
     private readonly HeadgearPosition[] headgearMultiSlotInfo = new HeadgearPosition[3];
     private bool isTwoHandedWeapon;
     private static int[] attackPerRefine = [2, 3, 5, 7];
-    private static int[] overRefineLevel = [8, 7, 6, 5];
+    private static int[] overRefineLevel = [7, 6, 5, 4];
     private static int[] overRefineAttackBonus = [3, 5, 8, 14];
     private int nextId = 0;
     private int nextComboSlotId = 100;
@@ -501,14 +501,15 @@ public class ItemEquipState
             }
             else
             {
+                Player.WeaponClass = weapon.WeaponClass;
+                WeaponLevel = weapon.WeaponLevel - 1;
+
                 var refBonus = item.Refine * attackPerRefine[WeaponLevel];
                 var overRefBonus = 0;
                 var overRefine = item.Refine - overRefineLevel[WeaponLevel];
-                if (overRefine >= 0)
-                    overRefBonus = item.Refine * overRefineAttackBonus[WeaponLevel];
+                if (overRefine > 0)
+                    overRefBonus = overRefine * overRefineAttackBonus[WeaponLevel];
 
-                Player.WeaponClass = weapon.WeaponClass;
-                WeaponLevel = weapon.WeaponLevel;
                 WeaponAttackPower = weapon.Attack;
                 MinRefineAtkBonus = refBonus;
                 MaxRefineAtkBonus = refBonus + overRefBonus;

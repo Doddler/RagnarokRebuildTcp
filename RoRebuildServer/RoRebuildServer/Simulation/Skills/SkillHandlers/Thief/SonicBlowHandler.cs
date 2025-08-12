@@ -23,7 +23,7 @@ public class SonicBlowHandler : SkillHandlerBase
         var ch = source.Character;
         lvl = lvl.Clamp(1, 10);
 
-        var attack = new AttackRequest(CharacterSkill.SonicBlow, 0.5f + 0.05f * lvl, 8, AttackFlags.Physical, AttackElement.None);
+        var attack = new AttackRequest(CharacterSkill.SonicBlow, 0.5f + 0.05f * lvl, 8, AttackFlags.Physical | AttackFlags.CanCrit, AttackElement.None);
         attack.AccuracyRatio = 150;
         
         //var res = source.CalculateCombatResult(target, 0.5f + 0.05f * lvl, 1, AttackFlags.Physical, CharacterSkill.SonicBlow);
@@ -40,7 +40,6 @@ public class SonicBlowHandler : SkillHandlerBase
 
         if (ch.Type == CharacterType.Monster)
             ch.Monster.AddDelay(1f);
-
 
         //res.HitCount = 8;
         res.AttackMotionTime = 0.4f;

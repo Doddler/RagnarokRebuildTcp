@@ -355,7 +355,8 @@ public partial class CombatEntity : IEntityAutoReset
 
         ClearDamageQueue();
         Character.ResetState();
-        Character.SetSpawnImmunity();
+        if(Character.Type == CharacterType.Player)
+            Character.SetSpawnImmunity();
         Character.Map.TeleportEntity(ref Entity, Character, pos);
         if (Character.Type == CharacterType.Player)
             CommandBuilder.SendExpGain(Player, 0); //update their exp
@@ -957,6 +958,7 @@ public partial class CombatEntity : IEntityAutoReset
 
             IsCasting = true;
             CastingTime = Time.ElapsedTimeFloat + castTime;
+            ApplyCooldownForAttackAction();
 
             Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
             CommandBuilder.StartCastGroundTargetedMulti(Character, target, skillInfo.Skill, skillInfo.Level, skillInfo.Range, castTime, flags);
@@ -1055,6 +1057,7 @@ public partial class CombatEntity : IEntityAutoReset
 
             IsCasting = true;
             CastingTime = Time.ElapsedTimeFloat + castTime;
+            ApplyCooldownForAttackAction();
 
             Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
             var clientSkill = skillInfo.Skill;
@@ -1185,6 +1188,7 @@ public partial class CombatEntity : IEntityAutoReset
 
                 IsCasting = true;
                 CastingTime = Time.ElapsedTimeFloat + castTime;
+                ApplyCooldownForAttackAction();
 
                 Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
                 CommandBuilder.StartCastMulti(Character, target.Character, skillInfo.Skill, skillInfo.Level, castTime, flags);
@@ -1469,7 +1473,7 @@ public partial class CombatEntity : IEntityAutoReset
             return;
         }
 
-        var attackMotionTime = GetTiming(TimingStat.AttackMotionTime); //time for actual weapon strike to occur
+        var attackMotionTime = GetTiming(TimingStat.AttackMotionTime) / 2f; //time for actual weapon strike to occur
         var delayTime = GetTiming(TimingStat.AttackDelayTime); //time before you can attack again
 
         if (delayTime > maxCooldownTime)
@@ -1478,12 +1482,13 @@ public partial class CombatEntity : IEntityAutoReset
         //if (attackMotionTime > delayTime)
         //    delayTime = attackMotionTime;
 
-        if (Character.AttackCooldown + Time.DeltaTime + 0.005d < Time.ElapsedTime)
+        //if (Character.AttackCooldown + Time.DeltaTime + 0.005d < Time.ElapsedTime)
+        if(Time.ElapsedTime + delayTime > Character.AttackCooldown)
             Character.AttackCooldown = Time.ElapsedTime + delayTime; //they are consecutively attacking
-        else
-            Character.AttackCooldown += delayTime;
+        //else
+        //    Character.AttackCooldown += delayTime;
 
-        Character.AddMoveLockTime(attackMotionTime * 0.5f); //the actual animation is 6 frames instead of 9 for skill casting
+        Character.AddMoveLockTime(attackMotionTime); //the actual animation is 6 frames instead of 9 for skill casting
     }
 
     public void ApplyCooldownForAttackAction(float maxMotionTime = 4f)
@@ -1595,6 +1600,9 @@ public partial class CombatEntity : IEntityAutoReset
         //monster skill cooldowns should start where a cast is cancelled, but since we set it to delay + cast time, we refund the extra time
         if (Character.Type == CharacterType.Monster && CastTimeRemaining > 0)
             RefundSkillCooldownTime(CastingSkill.Skill, CastTimeRemaining);
+
+        Character.AttackCooldown = 0;
+        Character.MoveLockTime = 0;
 
         IsCasting = false;
         if (!Character.HasVisiblePlayers())

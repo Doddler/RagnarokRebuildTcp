@@ -303,6 +303,7 @@ public class CharacterBag : IResettable
         UniqueItemBagIds.Remove(existing.UniqueId);
         UniqueItems.Remove(bagIndex);
         UsedSlots--;
+        BagWeight -= DataManager.GetWeightForItem(existing.Id);
         return true;
     }
 

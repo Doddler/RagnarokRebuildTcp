@@ -1,6 +1,25 @@
+::2025-08-12 Update
+<i>Server Side Changes</i>
+- Fixed all weapons counting as level 1 for the purpose of refine bonuses, as well as overrefine being calculated incorrectly.
+- Holy light, pneuma and blessing have no cast delay.
+- Sonic blow can now crit (!).
+- Monsters no longer get spawn immunity when teleporting.
+
 ::2025-08-11 Update
-Server Side Fixes
+<i>Server Side Fixes</i>
+- Changed how attack delay works after casting magic. Let me know if this feels ok.
+- Fixed your weight not decreasing when an equipment item is consumed via trade or refine.
+- Poison will no longer somehow increase your defense each time it wears off.
+- Increased the effective area of sanctuary.
+- Fixed an issue where a character couldn't log in if they logged out with active status effects and no items in their inventory.
+- Fixed an issue where players wouldn't receive a reward for the okolnir event unless they directly damaged the final boss.
+- From this point on there should be no rollbacks if the server goes down.
+
+<i>Client Side Fixes</i>
+- Fixed client lockup when changing maps after being on that map for a while.
 - Fixed cast lock on effect not showing for increase agi.
+- Fixed endure effect being broken.
+- Assulter now correctly called Assaulter.
 
 ::2025-08-10 Update
 <i>Server Side Fixes</i>

@@ -64,13 +64,13 @@ SkillHandler("ANGRY_TARGET_DUMMY") {
 	//TryCast(FrostDiver, 10, 100%, 2s, 20s);
 	//TryCast(StoneCurse, 300, 100%, 2s, 20s);
 
-
+	TryCast(HammerFall, 5, 100%, 0, 8s);
 	
 	//TryCast(LordOfVermilion, 10, 100%, 0.7s, 15s);
-	TryCast(Heal, 9999, 50%, 0, 3s);
-	TryCast(Hiding, 3, 50%, 0, 3s);
-	TryCast(IncreaseAgility, 10, 50%, 0, 3s);
-	TryCast(Teleport, 1, 50%, 0, 3s);
+	//TryCast(Heal, 9999, 50%, 0, 3s);
+	//TryCast(Hiding, 3, 50%, 0, 3s);
+	//TryCast(IncreaseAgility, 10, 50%, 0, 3s);
+	//TryCast(Teleport, 1, 50%, 0, 3s);
 	
 	//TryCast(Hiding, 3, 100%, 0, 10s)[IsHiding];
 	//TryCast(Demonstration, 1, 100%, 1000, 5s);

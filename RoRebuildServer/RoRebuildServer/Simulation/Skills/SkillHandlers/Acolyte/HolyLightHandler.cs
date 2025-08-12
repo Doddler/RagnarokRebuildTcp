@@ -20,7 +20,7 @@ public class HolyLightHandler : SkillHandlerBase
             return;
 
         var res = source.CalculateCombatResult(target, 1, 1, AttackFlags.Magical, CharacterSkill.HolyLight, AttackElement.Holy);
-        source.ApplyCooldownForAttackAction(target);
+        //source.ApplyCooldownForAttackAction(target);
         source.ExecuteCombatResult(res, false);
 
         CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.HolyLight, lvl, res);

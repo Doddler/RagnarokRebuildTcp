@@ -27,7 +27,7 @@ public class OkolnirEventBattle : INpcLoader
         DataManager.NpcManager.RegisterSpecialDeathEvent("OkolnirEnd", OnOkolnirEnd);
     }
 
-    record OkolnirDamageList(Entity Entity, int Damage);
+    record OkolnirDamageList(Player Player, int Damage);
     
     private static void OnOkolnirEnd(Monster boss)
     {
@@ -38,23 +38,40 @@ public class OkolnirEventBattle : INpcLoader
             return;
 
         var list = new List<OkolnirDamageList>(boss.TotalDamageReceived.Count);
+        var hashes = new HashSet<int>();
 
         var maxChance = 10;
         foreach (var (entity, dmg) in boss.TotalDamageReceived)
-            list.Add(new OkolnirDamageList(entity, dmg));
+        {
+            if (entity.TryGet<Player>(out var player))
+            {
+                hashes.Add(player.Character.Id);
+                list.Add(new OkolnirDamageList(player, dmg));
+            }
+        }
+        
+        var count = 0;
+        list.Sort((a, b) => b.Damage.CompareTo(a.Damage));
+
+        //we're gonna give the rewards to everyone, even if they didn't damage the boss, but they'll come after
+        foreach (var nearby in boss.Character.Map.Players)
+        {
+            if (!nearby.TryGet<Player>(out var player))
+                continue;
+            if (hashes.Contains(player.Character.Id))
+                continue;
+            list.Add(new OkolnirDamageList(player, 1));
+        }
 
         CommandBuilder.AddRecipients(boss.Character.Map.Players);
         CommandBuilder.SendServerMessage("You have received an item reward for your contribution to the event.", "", false);
         CommandBuilder.ClearRecipients();
 
-        var count = 0;
-        list.Sort((a,b) => b.Damage.CompareTo(a.Damage));
         foreach (var d in list)
         {
-            if (!d.Entity.TryGet<Player>(out var player))
-                continue;
-
             var max = 10 + count * 10;
+            if (d.Damage == 1)
+                max += 50;
             var rnd = GameRandom.Next(0, max);
             var item = rnd switch
             {
@@ -71,7 +88,7 @@ public class OkolnirEventBattle : INpcLoader
             //fifth damage contributor: 30% oca, 10% gold, 40% opb, 10% obb
             //...10th damage contributor: 15% oca, 5% gold, 20% opb, 60% obb
 
-            player.CreateItemInInventory(new ItemReference(item, 1));
+            d.Player.CreateItemInInventory(new ItemReference(item, 1));
         }
 
     }

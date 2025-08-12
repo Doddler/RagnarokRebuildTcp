@@ -20,6 +20,7 @@ using RoRebuildServer.Database.Requests;
 using RoRebuildServer.Database.Utility;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
@@ -495,6 +496,8 @@ public class World
         player.CartInventory = req.Cart;
         if (req.EquipState != null)
             player.Equipment = req.EquipState;
+        if (req.EquipState == null)
+            player.Equipment = new ItemEquipState();
         player.CharacterSlot = req.CharacterSlot;
         player.Party = req.Party;
 

@@ -28,7 +28,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
 
             if (!map.TryGetGroundItemByDropId(id, out var item))
             {
-                ServerLogger.LogWarning($"Player {player.Character.Name} trying to pick up item {id} but it does not currently exist on map {map.Name}.");
+                //ServerLogger.LogWarning($"Player {player.Character.Name} trying to pick up item {id} but it does not currently exist on map {map.Name}.");
                 CommandBuilder.RemoveDropItemForSinglePlayerByGroundId(id, player); //remove the item for the client, it shouldn't exist
                 return;
             }

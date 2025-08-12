@@ -331,7 +331,7 @@ public class Player : IEntityAutoReset
             ServerLogger.LogError($"Player {this} initialized with one or more stats set to 0, something must have gone wrong loading their data.");
 
         //if this is their first time logging in, they get a free Knife
-        var isNewCharacter = GetData(PlayerStat.Status) == 0 || Inventory == null;
+        var isNewCharacter = GetData(PlayerStat.Status) == 0 || (Inventory == null && GetData(PlayerStat.Level) <= 3);
         if (GetData(PlayerStat.Level) <= 1 && GetData(PlayerStat.Job) == 0 
             && Equipment.GetEquipmentIdBySlot(EquipSlot.Weapon) <= 0 && Equipment.GetEquipmentIdBySlot(EquipSlot.Body) <= 0)
             isNewCharacter = true;

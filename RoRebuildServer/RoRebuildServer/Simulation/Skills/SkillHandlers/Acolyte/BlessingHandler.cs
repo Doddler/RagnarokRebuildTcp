@@ -50,7 +50,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte
 
             if (!isIndirect)
             {
-                source.ApplyAfterCastDelay(1f);
+                source.ApplyAfterCastDelay(0.5f);
                 source.ApplyCooldownForSupportSkillAction();
             }
 

@@ -87,7 +87,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
 
         public override void OnExpiration(CombatEntity ch, ref StatusEffectState state)
         {
-            var defPenalty = ch.GetSpecialType() == CharacterSpecialType.Boss ? -10 : -25;
+            var defPenalty = (ch.Character.Type == CharacterType.Player || ch.GetSpecialType() == CharacterSpecialType.Boss) ? -10 : -25;
 
             ch.SubStat(CharacterStat.AddVit, state.Value3);
             ch.SubStat(CharacterStat.AddDefPercent, defPenalty);

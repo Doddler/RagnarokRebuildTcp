@@ -50,7 +50,7 @@ public class PneumaHandler : SkillHandlerBase
         
         var e = World.Instance.CreateEvent(source.Entity, map, "PneumaObjectEvent", position, lvl, 0, 0, 0, null);
         ch.AttachEvent(e);
-        source.ApplyCooldownForSupportSkillAction();
+        //source.ApplyCooldownForSupportSkillAction();
 
         if (!isIndirect)
             CommandBuilder.SkillExecuteAreaTargetedSkillAutoVis(ch, position, CharacterSkill.Pneuma, lvl);

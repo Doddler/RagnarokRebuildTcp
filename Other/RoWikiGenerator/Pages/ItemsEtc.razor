@@ -39,8 +39,8 @@
             <tbody>
                 @foreach (Items.RegularItemEntry entry in entries)
                 {
-                    if (entry.item.Code == "Okolnir_Key")
-                        continue;
+                    @* if (entry.item.Code == "Okolnir_Key")
+                        continue; *@
                     var itemSprite = entry.item.Code;
                     if (@Items.SharedIcons.TryGetValue(itemSprite, out var copy))
                         itemSprite = copy;
@@ -62,14 +62,14 @@
                                     </span><br/>
  *@
                                     <span span="float: left">
-                                        @if (monster == "RANDGRIS")
+@*                                         @if (monster == "RANDGRIS")
                                         {
                                             <span>Dropped by ????</span>
                                         }
                                         else
-                                        {
+                                        { *@
                                             <a href="MonsterListFull.html#@(monster)">Dropped by @(DataManager.MonsterCodeLookup[monster].Name)</a>
-                                        }
+                                        @* } *@
                                     </span>
                                     <span style="float: right">@(drop.Chance / 100f)%</span>
                                     <br style="clear:both" />

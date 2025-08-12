@@ -193,7 +193,7 @@ public class SanctuaryObjectEvent : NpcBehaviorBase
         };
 
         var aoe = World.Instance.GetNewAreaOfEffect();
-        aoe.Init(npc.Character, Area.CreateAroundPoint(npc.Character.Position, 0), AoeType.SpecialEffect, targeting, 1 + 3 * param1, 0.1f, 0, 0);
+        aoe.Init(npc.Character, Area.CreateAroundPoint(npc.Character.Position, 1), AoeType.SpecialEffect, targeting, 1 + 3 * param1, 0.1f, 0, 0);
         aoe.TriggerOnFirstTouch = true;
         aoe.CheckStayTouching = true; //if they die or something in the aoe and lose their status we want to give it back promptly
         aoe.SkillSource = CharacterSkill.Sanctuary;
