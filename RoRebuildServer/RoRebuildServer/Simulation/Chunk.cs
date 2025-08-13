@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using RebuildSharedData.Data;
-using RebuildSharedData.Enum;
+﻿using RebuildSharedData.Enum;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;

@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace RoRebuildServer.EntityComponents.Character;
+﻿namespace RoRebuildServer.EntityComponents.Character;
 
 [Flags]
 public enum BodyStateFlags : uint

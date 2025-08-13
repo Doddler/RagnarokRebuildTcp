@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using Assets.Scripts.UI;
-using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class SkillTooltipArea : UIBehaviour, IPointerEnterHandler, IPointerExitHandler

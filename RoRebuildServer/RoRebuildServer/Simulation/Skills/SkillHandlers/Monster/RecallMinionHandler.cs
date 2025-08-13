@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
-using RoRebuildServer.Data;
 using RoRebuildServer.Data.Monster;
 //using RoRebuildServer.Data.Monster;
 using RoRebuildServer.EntityComponents;

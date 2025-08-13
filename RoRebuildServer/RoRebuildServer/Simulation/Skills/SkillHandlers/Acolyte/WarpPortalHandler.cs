@@ -1,16 +1,11 @@
-﻿using System.Diagnostics;
-using System.Net.Http.Headers;
-using RebuildSharedData.Data;
+﻿using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
-using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
-using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
-using RoRebuildServer.Simulation.Skills.SkillHandlers.Mage;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte;
 

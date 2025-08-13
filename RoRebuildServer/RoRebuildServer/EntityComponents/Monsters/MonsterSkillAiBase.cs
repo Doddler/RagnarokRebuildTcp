@@ -1,6 +1,4 @@
-﻿using RebuildSharedData.Enum;
-using RoRebuildServer.Data.Monster;
-using RoRebuildServer.Logging;
+﻿using RoRebuildServer.Data.Monster;
 
 namespace RoRebuildServer.EntityComponents.Monsters;
 

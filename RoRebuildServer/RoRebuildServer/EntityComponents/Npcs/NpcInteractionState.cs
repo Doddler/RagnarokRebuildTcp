@@ -1,25 +1,14 @@
 ﻿using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
-using RebuildSharedData.Util;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
-using static System.Net.Mime.MediaTypeNames;
-using System.Xml.Linq;
-using Microsoft.Extensions.Options;
 using RoRebuildServer.Data;
-using RoRebuildServer.EntityComponents.Character;
-using RoRebuildServer.Simulation;
-using System;
 using System.Diagnostics;
-using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum.EntityStats;
-using RoRebuildServer.Data.Scripting;
 using RoRebuildServer.Database.Requests;
 using RoRebuildServer.EntityComponents.Items;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using RoRebuildServer.Database;
-using System.Numerics;
 
 namespace RoRebuildServer.EntityComponents.Npcs;
 
@@ -538,10 +527,11 @@ public class NpcInteractionState
         if (Player == null)
             return;
 
-        Player.Character.StopMovingImmediately();
-
         var ch = Player.Character;
-        var ce = Player.CombatEntity;
+        //var ce = Player.CombatEntity;
+
+        ch.StopMovingImmediately();
+        //ch.StopSitting(); //handled by WarpPlayer now
 
         if (ch.Map == null)
             return;

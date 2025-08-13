@@ -18,7 +18,7 @@ public class PacketNpcClick : IClientPacketHandler
         var character = connection.Character;
 
         if (character == null || connection.Player == null
-            || character.State == CharacterState.Sitting
+            //|| character.State == CharacterState.Sitting
             || character.State == CharacterState.Dead
             || character.Player.IsInNpcInteraction)
             return;

@@ -1,5 +1,4 @@
-﻿using System.Runtime.Intrinsics.X86;
-using RebuildSharedData.Enum;
+﻿using RebuildSharedData.Enum;
 using RebuildSharedData.Util;
 using RoRebuildServer.Simulation.Util;
 
@@ -61,7 +60,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.Setup
             if(Expiration < float.MaxValue)
                 bw.Write((float)(Expiration - Time.ElapsedTime));
             else
-                bw.Write(0);
+                bw.Write((float)0);
             bw.Write(Value1);
             bw.Write(Value2);
             bw.Write(Value3);

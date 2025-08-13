@@ -1,5 +1,4 @@
-﻿using System.Resources;
-using RebuildSharedData.Enum;
+﻿using RebuildSharedData.Enum;
 
 namespace RoRebuildServer.EntityComponents.Npcs
 {

@@ -5,7 +5,6 @@ using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.Serialization;
 using Object = System.Object;
 
 namespace Assets.Scripts.Effects

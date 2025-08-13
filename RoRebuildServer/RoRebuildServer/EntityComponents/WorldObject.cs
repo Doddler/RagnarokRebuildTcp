@@ -1,23 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
-using RoRebuildServer.Data;
-using RoRebuildServer.Database.Domain;
 using RoRebuildServer.EntityComponents.Character;
-using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Pathfinding;
-using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.Util;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -428,6 +422,14 @@ public class WorldObject : IEntityAutoReset
             Events = null;
             return;
         }
+    }
+
+    public void StopSitting()
+    {
+        if (Type == CharacterType.Player || State != CharacterState.Sitting)
+            return;
+
+        SitStand(false);
     }
     
     public void SitStand(bool isSitting)

@@ -2,7 +2,6 @@
 using RoRebuildServer.EntityComponents.Util;
 using System.Diagnostics;
 using RoRebuildServer.EntityComponents;
-using RoRebuildServer.Logging;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character
 {

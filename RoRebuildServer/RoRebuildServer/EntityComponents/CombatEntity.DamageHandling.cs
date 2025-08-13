@@ -10,8 +10,6 @@ using RoRebuildServer.Data.Monster;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Util;
-using static System.Net.Mime.MediaTypeNames;
-using Microsoft.AspNetCore.Mvc;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -212,10 +210,12 @@ public partial class CombatEntity
 
                     subDef = subDef * (100 + GetStat(CharacterStat.AddSoftDefPercent)) / 100;
                 }
+
+                def = def * defMod / 100;
                 
                 if ((flags & AttackFlags.ReverseDefense) > 0 || attacker?.GetStat(CharacterStat.ReverseDefense) > 0)
                 {
-                    defCut = (def + subDef) * (defMod / 100f) / 100f;
+                    defCut = (def + subDef) / 100f;
                     subDef = 0;
                 }
                 else
@@ -227,7 +227,7 @@ public partial class CombatEntity
                         subDef = 999999;
                     else if (defMod != 100)
                     {
-                        defCut = defCut * defMod / 100;
+                        //defCut = defCut * defMod / 100;
                         subDef = subDef * defMod / 100;
                     }
                 }

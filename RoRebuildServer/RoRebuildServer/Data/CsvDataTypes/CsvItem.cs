@@ -1,10 +1,5 @@
-﻿using CsvHelper.Configuration;
-using CsvHelper.TypeConversion;
-using CsvHelper;
-using RebuildSharedData.Enum;
+﻿using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
-using System.Text.Json.Nodes;
-using System.Text.Json;
 using CsvHelper.Configuration.Attributes;
 
 namespace RoRebuildServer.Data.CsvDataTypes;

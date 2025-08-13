@@ -1,6 +1,5 @@
 ﻿using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
-using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 
 namespace RoRebuildServer.EntityComponents.Npcs;

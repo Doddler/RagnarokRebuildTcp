@@ -2,12 +2,8 @@
 using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
-using Assets.Scripts.UI.Hud;
 using Assets.Scripts.UI.Inventory;
-using RebuildSharedData.Enum;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Assets.Scripts.UI
 {

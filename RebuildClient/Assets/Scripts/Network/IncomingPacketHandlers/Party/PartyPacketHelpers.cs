@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Assets.Scripts.Data;
+﻿using Assets.Scripts.Data;
 
 namespace Assets.Scripts.Network.IncomingPacketHandlers.Party
 {

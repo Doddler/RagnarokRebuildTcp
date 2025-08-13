@@ -1,9 +1,6 @@
 ﻿using System;
-using Assets.Scripts.Network;
-using Assets.Scripts.PlayerControl;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Assets.Scripts.UI.Hud
 {

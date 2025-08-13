@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.Network.HandlerBase;
 using RebuildSharedData.Networking;
-using UnityEditor;
 
 namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
 {

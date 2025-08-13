@@ -3,9 +3,7 @@ using System.Diagnostics;
 using RebuildSharedData.Enum;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Items;
-using Wintellect.PowerCollections;
 using RebuildSharedData.Enum.EntityStats;
-using System.Numerics;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;
 

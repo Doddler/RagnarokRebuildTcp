@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.PlayerControl;
-using UnityEngine;
 
 namespace Assets.Scripts.Network.HandlerBase
 {

@@ -1,10 +1,8 @@
 ﻿using RebuildSharedData.Networking;
 using System.Diagnostics;
-using System.Runtime.InteropServices.JavaScript;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
-using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.Logging;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;

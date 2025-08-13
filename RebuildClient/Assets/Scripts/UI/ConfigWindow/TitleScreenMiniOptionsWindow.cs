@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using Assets.Scripts.UI.TitleScreen;
-using Assets.Scripts.Utility;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.ConfigWindow

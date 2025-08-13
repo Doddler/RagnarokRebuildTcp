@@ -1,8 +1,6 @@
 ﻿using RebuildSharedData.Networking;
 using System.Diagnostics;
 using RoRebuildServer.Simulation;
-using RoRebuildServer.EntityComponents;
-using RoRebuildServer.Simulation.Parties;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Party;
 

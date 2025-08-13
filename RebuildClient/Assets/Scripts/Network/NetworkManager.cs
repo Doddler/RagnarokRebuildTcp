@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers;
@@ -14,7 +13,6 @@ using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
 using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.UI.Hud;
-using Assets.Scripts.UI.Inventory;
 using Assets.Scripts.UI.RefineItem;
 using Assets.Scripts.UI.TitleScreen;
 using Assets.Scripts.Utility;
@@ -31,9 +29,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.AddressableAssets.ResourceLocators;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.ResourceManagement.ResourceLocations;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 namespace Assets.Scripts.Network
 {

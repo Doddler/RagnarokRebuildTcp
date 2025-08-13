@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
-using Assets.Scripts.UI.TitleScreen;
 using RebuildSharedData.Data;
-using RebuildSharedData.Enum;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI

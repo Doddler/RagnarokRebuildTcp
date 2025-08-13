@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Net;
 using System.Text;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers.General;
 using Assets.Scripts.MapEditor;
-using Assets.Scripts.Misc;
 using Assets.Scripts.Network.Messaging;
 using Assets.Scripts.Objects;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.SkillHandlers;
 using Assets.Scripts.Sprites;
-using Assets.Scripts.UI;
 using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.UI.Hud;
 using Assets.Scripts.Utility;
@@ -24,7 +21,6 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.Assertions;
 using UnityEngine.Rendering;
-using UnityEngine.Serialization;
 using HitEffect = Assets.Scripts.Effects.EffectHandlers.HitEffect;
 using Random = UnityEngine.Random;
 

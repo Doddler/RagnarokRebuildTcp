@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.Objects;
-using Assets.Scripts.UI.ConfigWindow;
 using UnityEngine;
 
 namespace Assets.Scripts.Effects.EffectHandlers.Skills

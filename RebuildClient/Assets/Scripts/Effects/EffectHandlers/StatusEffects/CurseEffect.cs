@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.Network;
 using Assets.Scripts.Sprites;
-using RebuildSharedData.Enum;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;

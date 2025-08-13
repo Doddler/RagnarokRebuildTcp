@@ -1,13 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading;
+﻿using System.Diagnostics;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Networking;
-using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Util;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace RoRebuildServer.EntityComponents.Npcs
 {

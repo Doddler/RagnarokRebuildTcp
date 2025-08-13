@@ -1,9 +1,7 @@
 ﻿using System.Diagnostics;
 using RebuildSharedData.Data;
-using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RebuildSharedData.Networking;
-using RoRebuildServer.EntityComponents.Character;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Admin;
 

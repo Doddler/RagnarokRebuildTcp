@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.Scripts.Utility;
 using JetBrains.Annotations;
-using RebuildSharedData.Enum;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Assets.Scripts.UI.ConfigWindow
 {

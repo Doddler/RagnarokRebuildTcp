@@ -1,9 +1,4 @@
-﻿using System.IO;
-using Assets.Editor;
-using Assets.Scripts;
-using UnityEditor;
-using UnityEditor.AssetImporters;
-using UnityEngine;
+﻿
 //
 // public class LayerCurveSet
 // {

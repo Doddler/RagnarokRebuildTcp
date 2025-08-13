@@ -1,11 +1,8 @@
 ﻿using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
-using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents;
-using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.Util;
-using System.Numerics;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Merchant;
 

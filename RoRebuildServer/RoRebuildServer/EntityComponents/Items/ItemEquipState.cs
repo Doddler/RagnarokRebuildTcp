@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
@@ -7,13 +6,10 @@ using RebuildSharedData.Util;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.CsvDataTypes;
 using RoRebuildServer.Data.Player;
-using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
 using RoRebuildServer.Simulation.Util;
-using Wintellect.PowerCollections;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RoRebuildServer.EntityComponents.Items;
 

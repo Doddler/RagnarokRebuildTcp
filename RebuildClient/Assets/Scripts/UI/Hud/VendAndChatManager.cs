@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Assets.Scripts.PlayerControl;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using Utility;
 
 namespace Assets.Scripts.UI.Hud
 {

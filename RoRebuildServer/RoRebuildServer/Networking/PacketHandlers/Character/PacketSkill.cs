@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Numerics;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
@@ -11,7 +10,6 @@ using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Skills;
-using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character
 {

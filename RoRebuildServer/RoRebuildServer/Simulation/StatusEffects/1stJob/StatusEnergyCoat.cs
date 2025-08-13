@@ -3,7 +3,6 @@ using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Util;
-using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Simulation.StatusEffects._1stJob;

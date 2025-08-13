@@ -1,19 +1,15 @@
 ﻿using System.Reflection;
 using System.Text;
-using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
-using RoRebuildServer.Data.ServerConfigScript;
 using RoRebuildServer.EntityComponents;
-using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntityComponents.Monsters;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Logging;
-using static System.Collections.Specialized.BitVector32;
 using static System.Globalization.CultureInfo;
 
 namespace RoRebuildServer.ScriptSystem;

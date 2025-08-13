@@ -3,7 +3,6 @@ using Assets.Scripts.Network.HandlerBase;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI.ConfigWindow;
-using Assets.Scripts.UI.Hud;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using UnityEngine;

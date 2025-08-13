@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Assets.Scripts;
-using Assets.Scripts.Data;
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using Assets.Scripts.PlayerControl;
@@ -14,8 +13,6 @@ using Assets.Scripts.UI.Stats;
 using RebuildSharedData.Enum;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 public class UiManager : MonoBehaviour
 {

@@ -1,5 +1,4 @@
-﻿using RebuildSharedData.Data;
-using RebuildSharedData.Enum;
+﻿using RebuildSharedData.Enum;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Simulation.StatusEffects.Setup;

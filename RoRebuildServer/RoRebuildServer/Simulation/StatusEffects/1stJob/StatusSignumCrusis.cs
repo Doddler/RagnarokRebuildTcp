@@ -1,8 +1,6 @@
-﻿using RebuildSharedData.Data;
-using RebuildSharedData.Enum;
+﻿using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents;
-using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Simulation.StatusEffects._1stJob;

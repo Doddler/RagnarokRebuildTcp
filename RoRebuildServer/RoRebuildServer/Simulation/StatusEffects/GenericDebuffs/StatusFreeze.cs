@@ -3,7 +3,6 @@ using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
-using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
 {

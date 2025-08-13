@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RoRebuildServer.Database.Domain;
-using RoRebuildServer.Simulation.Parties;
 
 namespace RoRebuildServer.Database;
 

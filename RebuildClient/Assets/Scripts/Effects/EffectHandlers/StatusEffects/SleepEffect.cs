@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.Network;
-using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
 using RebuildSharedData.Enum;
 using UnityEngine;

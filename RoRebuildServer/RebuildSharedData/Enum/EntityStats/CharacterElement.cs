@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace RebuildSharedData.Enum.EntityStats;
+﻿namespace RebuildSharedData.Enum.EntityStats;
 
 public enum CharacterElement : byte
 {

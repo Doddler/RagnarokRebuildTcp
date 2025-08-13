@@ -5,7 +5,6 @@ using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Simulation;
-using System.Numerics;
 
 namespace RoRebuildServer.Networking.PacketHandlers.NPCPackets;
 

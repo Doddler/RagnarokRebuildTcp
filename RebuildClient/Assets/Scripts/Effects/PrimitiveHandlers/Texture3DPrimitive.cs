@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.Effects.PrimitiveData;
-using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
 using UnityEngine;
 

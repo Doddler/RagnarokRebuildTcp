@@ -1,10 +1,7 @@
 ﻿using Assets.Scripts.Network.HandlerBase;
 using Assets.Scripts.PlayerControl;
-using Assets.Scripts.Sprites;
-using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
-using UnityEngine;
 
 namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
 {

@@ -3,15 +3,10 @@ using System.Globalization;
 using System.Text;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
-using RebuildSharedData.Enum;
 using RebuildSharedData.Util;
-using RoRebuildServer.EntityComponents.Items;
-using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Logging;
 using RoServerScript;
 using static RoServerScript.RoScriptParser;
-using Microsoft.AspNetCore.Components.Forms;
-using RoRebuildServer.Data;
 
 namespace RoRebuildServer.ScriptSystem;
 

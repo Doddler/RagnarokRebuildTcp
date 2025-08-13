@@ -8,7 +8,6 @@ using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using System.Diagnostics;
-using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Priest;
 

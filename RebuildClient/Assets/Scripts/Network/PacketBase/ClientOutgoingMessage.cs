@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text;
 using Lidgren.Network;
-using RebuildSharedData.Data;
 using RebuildSharedData.Networking;
 using UnityEngine;
 using Debug = System.Diagnostics.Debug;

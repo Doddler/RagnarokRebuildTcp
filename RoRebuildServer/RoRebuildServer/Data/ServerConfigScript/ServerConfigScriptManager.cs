@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.Reflection;
-using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.Data.Player;

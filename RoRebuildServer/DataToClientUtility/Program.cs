@@ -1,14 +1,10 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Dynamic;
+﻿using System.Dynamic;
 using System.Globalization;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Nodes;
 using CsvHelper;
 using CsvHelper.Configuration;
 using Dahomey.Json;
-using Microsoft.Extensions.Options;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
@@ -16,9 +12,6 @@ using RebuildSharedData.Util;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.CsvDataTypes;
 using RoRebuildServer.Data.Map;
-using RoRebuildServer.Data.Player;
-using RoRebuildServer.EntityComponents.Monsters;
-using RoRebuildServer.Logging;
 using Tomlyn;
 
 namespace DataToClientUtility;

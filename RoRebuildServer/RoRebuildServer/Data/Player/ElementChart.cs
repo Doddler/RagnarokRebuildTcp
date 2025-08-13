@@ -1,5 +1,4 @@
-﻿using System;
-using RebuildSharedData.Enum.EntityStats;
+﻿using RebuildSharedData.Enum.EntityStats;
 
 namespace RoRebuildServer.Data.Player;
 

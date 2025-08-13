@@ -1,9 +1,7 @@
-﻿using System;
-using Assets.Scripts.Effects.PrimitiveData;
+﻿using Assets.Scripts.Effects.PrimitiveData;
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
-using Cinemachine.Utility;
 using UnityEngine;
 
 namespace Assets.Scripts.Effects.EffectHandlers.Skills

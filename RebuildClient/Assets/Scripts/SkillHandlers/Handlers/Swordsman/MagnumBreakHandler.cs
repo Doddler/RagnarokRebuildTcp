@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Effects.EffectHandlers;
-using Assets.Scripts.Effects.EffectHandlers.Skills;
+﻿using Assets.Scripts.Effects.EffectHandlers.Skills;
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using RebuildSharedData.Enum;

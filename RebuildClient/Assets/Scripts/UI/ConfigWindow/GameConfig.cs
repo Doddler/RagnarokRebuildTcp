@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
-using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
 using UnityEngine;
-using UnityEngine.Windows;
 using File = System.IO.File;
 
 namespace Assets.Scripts.UI.ConfigWindow

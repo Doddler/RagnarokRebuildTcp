@@ -2,7 +2,6 @@
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents;
-using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.Util;
 

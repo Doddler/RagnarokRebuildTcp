@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Assets.Editor;
 using Assets.Scripts.MapEditor.Editor;
 using Assets.Scripts.Sprites;
 using RebuildSharedData.ClientTypes;
 using UnityEditor;
-using UnityEditor.AssetImporters;
 using UnityEditor.U2D;
 using UnityEngine;
 using UnityEngine.U2D;

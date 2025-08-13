@@ -1,5 +1,4 @@
-﻿using RebuildSharedData.Config;
-using RebuildSharedData.Enum;
+﻿using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;

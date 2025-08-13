@@ -3,16 +3,13 @@ using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Networking;
-using RoRebuildServer.Simulation.StatusEffects.Setup;
-using System;
-using RoRebuildServer.EntityComponents.Character;
-using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Thief
 {
     [SkillHandler(CharacterSkill.Envenom, SkillClass.Physical, SkillTarget.Enemy)]
     public class EnvenomHandler : SkillHandlerBase
     {
+        public override int GetSkillRange(CombatEntity source, int lvl) => 2;
         public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl,
             bool isIndirect, bool isItemSource)
         {

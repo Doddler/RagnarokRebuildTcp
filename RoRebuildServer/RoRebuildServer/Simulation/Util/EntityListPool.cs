@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.ObjectPool;
 using RoRebuildServer.EntitySystem;
-using System;
 using System.Runtime.CompilerServices;
 
 namespace RoRebuildServer.Simulation.Util;

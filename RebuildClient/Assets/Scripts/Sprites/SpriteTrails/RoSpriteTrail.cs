@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using Assets.Scripts.MapEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.Serialization;
 
 namespace Assets.Scripts.Sprites
 {

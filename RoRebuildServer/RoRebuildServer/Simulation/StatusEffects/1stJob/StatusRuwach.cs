@@ -8,7 +8,6 @@ using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents.Character;
-using RoRebuildServer.Networking;
 
 namespace RoRebuildServer.Simulation.StatusEffects._1stJob;
 

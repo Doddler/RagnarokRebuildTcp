@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Threading;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
@@ -14,6 +13,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Thief;
 [SkillHandler(CharacterSkill.Steal, SkillClass.Unique, SkillTarget.Enemy)]
 public class StealHandler : SkillHandlerBase
 {
+    public override int GetSkillRange(CombatEntity source, int lvl) => 1;
+
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
         int lvl, bool isIndirect, bool isItemSource)
     {

@@ -4,9 +4,6 @@ using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
-using RoRebuildServer.Database.Domain;
-using RoRebuildServer.EntitySystem;
-using RoRebuildServer.Simulation.Util;
 using RoRebuildServer.Networking;
 
 namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs

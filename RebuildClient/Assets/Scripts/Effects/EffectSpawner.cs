@@ -3,7 +3,6 @@ using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Effects.EffectHandlers.Environment;
 using Assets.Scripts.Network;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Assets.Scripts.Effects
 {

@@ -4,7 +4,6 @@ using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using UnityEngine;
 #if UNITY_EDITOR
-using UnityEditor;
 using UnityEditor.Recorder;
 using UnityEditor.Recorder.Examples;
 using UnityEditor.Recorder.Input;

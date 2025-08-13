@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace RebuildSharedData.ClientTypes;
+﻿namespace RebuildSharedData.ClientTypes;
 
 #pragma warning disable CS8618 //disable warning for nullable fields
 

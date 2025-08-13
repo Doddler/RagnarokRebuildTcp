@@ -1,6 +1,4 @@
-﻿using Assets.Scripts.Network;
-using Assets.Scripts.Objects;
-using Assets.Scripts.Sprites;
+﻿using Assets.Scripts.Sprites;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;

@@ -1,22 +1,16 @@
 ﻿using RoRebuildServer.EntityComponents;
-using System.Numerics;
 using RoRebuildServer.EntityComponents.Items;
 using System.Buffers;
 using RebuildSharedData.Util;
 using RoRebuildServer.Logging;
 using System.Diagnostics;
 using K4os.Compression.LZ4;
-using K4os.Compression.LZ4.Encoders;
-using RebuildSharedData.ClientTypes;
 using RoRebuildServer.Database.Requests;
-using System;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum.EntityStats;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
 using RoRebuildServer.Database.Domain;
-using RoRebuildServer.Simulation.StatusEffects.Setup;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RoRebuildServer.Database.Utility;
 

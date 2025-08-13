@@ -107,7 +107,7 @@ public class EarthShakerSkillEvent : NpcBehaviorBase
                     if (!target.CanBeTargeted(owner, false, true))
                         continue;
 
-                    CommandBuilder.SkillExecuteAreaTargetedSkillAutoVis(owner.Character, target.Character.Position, CharacterSkill.EarthShaker, 1);
+                    CommandBuilder.SkillExecuteAreaTargetedSkillAutoVis(owner.Character, target.Character.Position, CharacterSkill.EarthShaker, 1); //visual effect
 
                     var res = owner.CalculateCombatResult(target, 1.5f, 1, AttackFlags.Magical, CharacterSkill.EarthAttack, AttackElement.Earth);
                     res.AttackMotionTime = 0;
@@ -117,7 +117,7 @@ public class EarthShakerSkillEvent : NpcBehaviorBase
                     //CommandBuilder.SkillExecuteTargetedSkillAutoVis(owner.Character, target.Character, CharacterSkill.EarthShaker, 1, res);
                     
                     owner.ExecuteCombatResult(res, false);
-                    CommandBuilder.SkillExecuteIndirectAutoVisibility(owner.Character, target.Character, res);
+                    CommandBuilder.SkillExecuteIndirectAutoVisibility(owner.Character, target.Character, res); //damage to targeted player
 
                     var offset = target.Character.Position - owner.Character.Position;
                     var angle = (MathF.Atan2(offset.X, offset.Y) * MathHelper.Rad2Deg) % 360;
@@ -144,7 +144,7 @@ public class EarthShakerSkillEvent : NpcBehaviorBase
                         res.IsIndirect = true;
                         
                         owner.ExecuteCombatResult(res, false);
-                        CommandBuilder.SkillExecuteIndirectAutoVisibility(owner.Character, potentialTarget.Character, res);
+                        CommandBuilder.SkillExecuteIndirectAutoVisibility(owner.Character, potentialTarget.Character, res); //damage to player in cone
                     }
                 }
             }

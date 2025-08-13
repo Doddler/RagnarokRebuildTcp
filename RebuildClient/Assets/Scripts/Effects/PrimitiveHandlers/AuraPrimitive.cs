@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 namespace Assets.Scripts.Effects.PrimitiveHandlers
 {

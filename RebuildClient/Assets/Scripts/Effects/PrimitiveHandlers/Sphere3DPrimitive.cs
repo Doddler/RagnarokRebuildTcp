@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using Assets.Scripts.Effects.PrimitiveData;
+﻿using Assets.Scripts.Effects.PrimitiveData;
 using Assets.Scripts.Utility;
 using UnityEngine;
 

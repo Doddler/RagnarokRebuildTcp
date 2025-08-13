@@ -8,7 +8,6 @@ using Assets.Scripts.UI.ConfigWindow;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.U2D;

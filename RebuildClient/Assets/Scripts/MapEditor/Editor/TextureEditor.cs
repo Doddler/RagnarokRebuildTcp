@@ -1,9 +1,7 @@
 ﻿using System.IO;
 using System.Text;
 using UnityEditor;
-using UnityEditor.U2D;
 using UnityEngine;
-using UnityEngine.U2D;
 
 namespace Assets.Scripts.MapEditor.Editor
 {

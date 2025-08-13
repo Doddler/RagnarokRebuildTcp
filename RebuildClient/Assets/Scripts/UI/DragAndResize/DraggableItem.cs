@@ -1,14 +1,11 @@
 ﻿using System;
 using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
-using Assets.Scripts.SkillHandlers;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI.Inventory;
 using RebuildSharedData.Enum;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace Assets.Scripts.UI
 {

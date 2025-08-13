@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using RebuildSharedData.Enum;
+﻿using RebuildSharedData.Enum;
 
 namespace RebuildSharedData.Data;
 

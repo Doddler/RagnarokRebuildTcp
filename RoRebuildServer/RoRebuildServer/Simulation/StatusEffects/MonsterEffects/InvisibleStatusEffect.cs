@@ -1,9 +1,7 @@
 ﻿using RebuildSharedData.Enum;
-using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
-using RoRebuildServer.EntityComponents.Util;
 
 namespace RoRebuildServer.Simulation.StatusEffects.MonsterEffects;
 

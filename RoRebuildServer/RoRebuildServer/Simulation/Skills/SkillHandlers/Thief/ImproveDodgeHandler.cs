@@ -1,9 +1,7 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using RebuildSharedData.Data;
+﻿using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents;
-using RoRebuildServer.EntityComponents.Character;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Thief
 {

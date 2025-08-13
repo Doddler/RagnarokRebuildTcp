@@ -1,6 +1,5 @@
 ﻿using RebuildSharedData.Networking;
 using System.Diagnostics;
-using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
 

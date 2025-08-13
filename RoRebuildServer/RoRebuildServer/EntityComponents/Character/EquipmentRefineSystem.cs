@@ -3,8 +3,6 @@ using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.Networking;
-using Wintellect.PowerCollections;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RoRebuildServer.EntityComponents.Character;
 

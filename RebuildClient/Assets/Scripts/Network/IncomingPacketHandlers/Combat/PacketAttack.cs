@@ -1,9 +1,7 @@
-﻿using Assets.Scripts.Effects.EffectHandlers;
-using Assets.Scripts.Effects.EffectHandlers.General;
+﻿using Assets.Scripts.Effects.EffectHandlers.General;
 using Assets.Scripts.Network.HandlerBase;
 using Assets.Scripts.Network.Messaging;
 using Assets.Scripts.SkillHandlers;
-using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;

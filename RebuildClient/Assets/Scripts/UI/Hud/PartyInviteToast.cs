@@ -2,7 +2,6 @@
 using Assets.Scripts.Network;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.UI.Hud
 {

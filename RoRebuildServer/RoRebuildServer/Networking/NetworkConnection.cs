@@ -1,5 +1,4 @@
 ﻿using System.Net.WebSockets;
-using System.Runtime.CompilerServices;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Database.Requests;
 using RoRebuildServer.EntityComponents;

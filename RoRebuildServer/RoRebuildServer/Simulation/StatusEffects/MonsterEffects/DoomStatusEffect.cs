@@ -2,7 +2,6 @@
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace RoRebuildServer.Simulation.StatusEffects.MonsterEffects;
 

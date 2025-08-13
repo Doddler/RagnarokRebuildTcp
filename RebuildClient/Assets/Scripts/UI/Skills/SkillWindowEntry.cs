@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI

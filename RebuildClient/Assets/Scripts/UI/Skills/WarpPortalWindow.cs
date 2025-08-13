@@ -167,7 +167,7 @@ namespace Assets.Scripts.UI
             var state = PlayerState.Instance;
             for (var i = 0; i < 4; i++)
             {
-                if (i > skillLevel)
+                if (i >= skillLevel)
                 {
                     WarpEntryButtons[i].gameObject.SetActive(false);
                     continue;

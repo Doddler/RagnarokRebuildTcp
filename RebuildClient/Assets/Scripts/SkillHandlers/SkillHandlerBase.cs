@@ -2,7 +2,6 @@
 using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Network;
 using JetBrains.Annotations;
-using RebuildSharedData.Enum;
 using UnityEngine;
 
 namespace Assets.Scripts.SkillHandlers

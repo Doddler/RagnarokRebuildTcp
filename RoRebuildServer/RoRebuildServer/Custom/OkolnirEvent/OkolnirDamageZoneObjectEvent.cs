@@ -46,7 +46,7 @@ public class OkolnirDamageZoneObjectEvent : NpcBehaviorBase
                 var status = player.CombatEntity.AddOrStackStatusEffect(CharacterStatusEffect.Vulnerability, 90, 99);
 
                 var res = ch.CombatEntity.PrepareTargetedSkillResult(ch.CombatEntity, CharacterSkill.FireAttack);
-                res.Damage = hp * (5 + status.Value4) / 150;
+                res.Damage = hp * (5 + status.Value4) / 150; //damage starts at 3.3% max HP, increases by 0.67% every tick (twice per second)
                 res.HitCount = 1;
                 res.AttackPosition = ch.Position;
                 res.Time = 0;

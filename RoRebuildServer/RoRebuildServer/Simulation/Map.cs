@@ -1,15 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Metrics;
-using System.Numerics;
-using System.Threading;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
-using RoRebuildServer.Database.Domain;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
@@ -18,7 +13,6 @@ using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.Items;
 using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Util;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace RoRebuildServer.Simulation;
 

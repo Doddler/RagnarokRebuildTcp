@@ -1,6 +1,4 @@
 ﻿using Assets.Scripts.Network.HandlerBase;
-using Assets.Scripts.SkillHandlers;
-using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using UnityEngine;
 

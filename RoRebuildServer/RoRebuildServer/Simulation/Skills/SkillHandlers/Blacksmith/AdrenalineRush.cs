@@ -3,7 +3,6 @@ using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Networking;
-using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Blacksmith;

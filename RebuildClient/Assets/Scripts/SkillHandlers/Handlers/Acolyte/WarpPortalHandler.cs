@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers;
-using Assets.Scripts.Effects.EffectHandlers.General;
 using Assets.Scripts.Network;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;

@@ -7,8 +7,6 @@ using System.Text;
 using RebuildSharedData.Enum;
 using UnityEditor;
 using UnityEditor.Compilation;
-using UnityEngine;
-using WebSocketSharp;
 
 namespace Assets.Scripts.SkillHandlers.Editor
 {

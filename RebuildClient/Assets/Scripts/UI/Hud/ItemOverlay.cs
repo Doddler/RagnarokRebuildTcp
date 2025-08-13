@@ -1,5 +1,4 @@
-﻿using System;
-using Assets.Scripts.Network;
+﻿using Assets.Scripts.Network;
 using Assets.Scripts.UI.ConfigWindow;
 using TMPro;
 using UnityEngine;

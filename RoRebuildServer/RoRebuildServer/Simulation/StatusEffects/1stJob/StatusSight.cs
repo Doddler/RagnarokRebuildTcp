@@ -4,11 +4,8 @@ using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntityComponents;
-using RoRebuildServer.EntityComponents.Character;
-using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
-using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Simulation.StatusEffects._1stJob;
 

@@ -1,6 +1,5 @@
 ﻿using RebuildSharedData.Networking;
 using RoRebuildServer.EntityComponents.Util;
-using RoRebuildServer.Logging;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;
 

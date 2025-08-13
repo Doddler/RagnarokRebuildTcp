@@ -1,17 +1,11 @@
-﻿using System;
-using System.Buffers;
+﻿using System.Buffers;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading;
-using System.Xml.Linq;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.Monster;
-using RoRebuildServer.Data.Player;
 using RoRebuildServer.Data.Scripting;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
@@ -24,7 +18,6 @@ using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Items;
 using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.Util;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace RoRebuildServer.EntityComponents;
 

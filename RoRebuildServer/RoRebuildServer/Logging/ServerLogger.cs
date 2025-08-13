@@ -1,9 +1,6 @@
 ﻿using System.Diagnostics;
 using RoRebuildServer.Data;
 using Serilog;
-using Serilog.Context;
-using Serilog.Core;
-using Serilog.Sinks.SystemConsole.Themes;
 using ILogger = Serilog.ILogger;
 
 namespace RoRebuildServer.Logging;

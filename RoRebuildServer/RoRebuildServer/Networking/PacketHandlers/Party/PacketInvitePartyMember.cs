@@ -1,5 +1,4 @@
-﻿using RebuildSharedData.Enum;
-using RebuildSharedData.Networking;
+﻿using RebuildSharedData.Networking;
 using System.Diagnostics;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Simulation;

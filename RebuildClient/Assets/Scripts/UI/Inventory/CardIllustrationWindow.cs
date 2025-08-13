@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Sprites;
-using Assets.Scripts.Utility;
+﻿using Assets.Scripts.Utility;
 using RebuildSharedData.ClientTypes;
 using TMPro;
 using UnityEngine;

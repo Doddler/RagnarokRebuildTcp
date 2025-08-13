@@ -5,8 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Assets.Scripts.Network.HandlerBase;
-using Assets.Scripts.SkillHandlers;
-using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using UnityEditor;
 using UnityEditor.Compilation;

@@ -1,18 +1,10 @@
-﻿using System;
-using System.Buffers;
-using System.Diagnostics;
-using System.Drawing;
-using System.Numerics;
+﻿using System.Buffers;
 using RebuildSharedData.Data;
-using RebuildSharedData.Enum;
 using RebuildSharedData.Util;
-using RebuildZoneServer.Networking;
 using RoRebuildServer.Database.Domain;
 using RoRebuildServer.Database.Utility;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
-using RoRebuildServer.EntityComponents.Items;
-using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Database.Requests;

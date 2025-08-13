@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.Network;
-using Assets.Scripts.Objects;
 using RebuildSharedData.Enum;
 
 namespace Assets.Scripts.SkillHandlers.Handlers

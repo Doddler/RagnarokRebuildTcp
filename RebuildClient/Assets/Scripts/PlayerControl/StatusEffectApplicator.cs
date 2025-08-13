@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers.General;
 using Assets.Scripts.Effects.EffectHandlers.Skills;

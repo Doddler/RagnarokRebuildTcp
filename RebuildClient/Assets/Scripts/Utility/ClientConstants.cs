@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.Objects;
-using UnityEngine;
 using Utility;
 
 namespace Assets.Scripts.Utility

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace RebuildSharedData.Enum
+﻿namespace RebuildSharedData.Enum
 {
     public enum ItemType : byte
     {

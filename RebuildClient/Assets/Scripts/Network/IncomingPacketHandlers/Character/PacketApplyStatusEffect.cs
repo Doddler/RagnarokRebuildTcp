@@ -1,12 +1,8 @@
-﻿using Assets.Scripts.Effects.EffectHandlers.StatusEffects;
-using Assets.Scripts.Misc;
-using Assets.Scripts.Network.HandlerBase;
+﻿using Assets.Scripts.Network.HandlerBase;
 using Assets.Scripts.PlayerControl;
-using Assets.Scripts.Sprites;
 using Assets.Scripts.UI.Hud;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
-using UnityEngine;
 
 namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
 {

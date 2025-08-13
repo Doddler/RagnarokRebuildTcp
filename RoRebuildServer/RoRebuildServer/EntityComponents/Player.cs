@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Numerics;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
@@ -23,7 +22,6 @@ using RoRebuildServer.Simulation.Parties;
 using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.Util;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -269,8 +267,7 @@ public class Player : IEntityAutoReset
         IndirectCastQueue.Clear();
         SkillSpecificCooldowns.Clear();
 
-        for (var i = 0; i < MemoLocations.Length; i++)
-            MemoLocations[i].MapName = null;
+        Array.Clear(MemoLocations);
 
         Inventory = null;
         CartInventory = null;
@@ -1856,6 +1853,7 @@ public class Player : IEntityAutoReset
         AddInputActionDelay(InputActionCooldownType.Teleport);
         Character.ResetState();
         Character.SetSpawnImmunity();
+        Character.StopSitting();
 
         CombatEntity.ClearDamageQueue();
         CombatEntity.RemoveStatusOfGroupIfExists("StopGroup");

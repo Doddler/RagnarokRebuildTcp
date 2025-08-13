@@ -1,7 +1,6 @@
 ﻿using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Effects.EffectHandlers.Skills;
 using Assets.Scripts.Network.HandlerBase;
-using Assets.Scripts.Sprites;
 using RebuildSharedData.Networking;
 using UnityEngine;
 

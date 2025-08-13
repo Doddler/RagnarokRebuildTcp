@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using RebuildSharedData.Enum;
+﻿using RebuildSharedData.Enum;
 
 namespace RebuildSharedData.ClientTypes;
 

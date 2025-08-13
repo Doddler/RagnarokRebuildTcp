@@ -1,12 +1,7 @@
 ﻿using System.Diagnostics;
-using System.Xml.Linq;
-using K4os.Compression.LZ4;
 using Microsoft.EntityFrameworkCore;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
-using RebuildSharedData.Networking;
-using RebuildSharedData.Util;
-using RoRebuildServer.Database.Domain;
 using RoRebuildServer.Database.Utility;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;

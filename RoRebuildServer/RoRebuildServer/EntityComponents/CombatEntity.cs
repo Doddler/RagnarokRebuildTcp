@@ -282,9 +282,7 @@ public partial class CombatEntity : IEntityAutoReset
     public void TryDeserializeStatusContainer(IBinaryMessageReader br, int saveVersion)
     {
         var count = (int)br.ReadByte();
-        if (count == 0)
-            return;
-
+        
         //Because status effects are serialized by id, we'll have a problem if the status effect ids ever change.
         //If the number of server status effects changes then, the player's status effect state is discarded.
         //We still need to deserialize though, as there's data after this we still need to load, but we won't use it.
@@ -297,6 +295,9 @@ public partial class CombatEntity : IEntityAutoReset
             if (totalEffects > (int)CharacterStatusEffect.StatusEffectMax)
                 discardState = true;
         }
+
+        if (count == 0)
+            return;
 
         statusContainer = StatusEffectPoolManager.BorrowStatusContainer();
         statusContainer.Owner = this;
@@ -1326,6 +1327,14 @@ public partial class CombatEntity : IEntityAutoReset
 
         var attackerLuck = GetEffectiveStat(CharacterStat.Luck);
         var targetLuck = target.GetEffectiveStat(CharacterStat.Luck);
+
+        //cap monster luck to only ever exceed player luck by 100. Jokers were having too good of a time.
+        if (Character.Type == CharacterType.Monster && target.Character.Type == CharacterType.Player && attackerLuck > targetLuck + 100)
+            attackerLuck = targetLuck + 100;
+        if (Character.Type == CharacterType.Player && target.Character.Type == CharacterType.Monster && attackerLuck + 100 < targetLuck)
+            targetLuck = attackerLuck + 100;
+
+
         if (targetLuck < 0 || target == this) targetLuck = 0; //note: self targeted chances count as though the target has 0 luck
 
         var realChance = chance * 10 * (attackerLuck + luckMod) / (targetLuck + luckMod);

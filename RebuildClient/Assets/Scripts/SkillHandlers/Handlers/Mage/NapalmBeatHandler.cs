@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.Effects.EffectHandlers;
-using Assets.Scripts.Effects.EffectHandlers.General;
 using Assets.Scripts.Network;
 using JetBrains.Annotations;
 using RebuildSharedData.Enum;

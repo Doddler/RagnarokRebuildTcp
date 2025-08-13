@@ -1,36 +1,24 @@
 ﻿using System.Collections.ObjectModel;
 using System.Globalization;
-using System.IO;
-using System.Numerics;
 using System.Reflection;
 using System.Text;
-using Antlr4.Runtime.Tree.Xpath;
 using CsvHelper;
 using CsvHelper.Configuration;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.Extensions.Options;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
-using RebuildSharedData.Extensions;
-using RoRebuildServer.Data.Config;
 using RoRebuildServer.Data.CsvDataTypes;
 using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.Data.Player;
 using RoRebuildServer.Data.ServerConfigScript;
-using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntityComponents.Monsters;
 using RoRebuildServer.EntityComponents.Npcs;
-using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
-using RoRebuildServer.ScriptSystem;
-using RoRebuildServer.Simulation;
 using Tomlyn;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RoRebuildServer.Data;
 

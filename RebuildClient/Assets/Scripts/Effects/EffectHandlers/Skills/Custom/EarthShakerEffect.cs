@@ -1,5 +1,4 @@
-﻿using System;
-using Assets.Scripts.Effects.PrimitiveData;
+﻿using Assets.Scripts.Effects.PrimitiveData;
 using Assets.Scripts.Objects;
 using UnityEngine;
 using Random = UnityEngine.Random;

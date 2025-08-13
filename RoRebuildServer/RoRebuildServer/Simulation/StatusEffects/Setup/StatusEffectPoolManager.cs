@@ -1,5 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using Microsoft.Extensions.ObjectPool;
 using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Simulation.StatusEffects.Setup;

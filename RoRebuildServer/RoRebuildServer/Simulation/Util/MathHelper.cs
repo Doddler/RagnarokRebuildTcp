@@ -1,7 +1,4 @@
-﻿using RebuildSharedData.Data;
-using System;
-
-namespace RoRebuildServer.Simulation.Util
+﻿namespace RoRebuildServer.Simulation.Util
 {
     public static class MathHelper
     {

@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Net;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
 // using UnityEditor.Sprites;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.UI;
 
 namespace Assets.Scripts.Effects
 {

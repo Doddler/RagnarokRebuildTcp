@@ -4,7 +4,6 @@ using System.Text;
 using Lidgren.Network;
 using RebuildSharedData.Data;
 using RebuildSharedData.Util;
-using RoRebuildServer.Logging;
 
 namespace RoRebuildServer.Networking;
 

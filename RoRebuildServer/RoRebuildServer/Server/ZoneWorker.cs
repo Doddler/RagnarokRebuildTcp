@@ -3,7 +3,6 @@ using System.Runtime;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.Scripting;
 using RoRebuildServer.Database;
-using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation;

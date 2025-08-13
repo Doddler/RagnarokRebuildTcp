@@ -6,7 +6,6 @@ using Assets.Scripts.UI.ConfigWindow;
 using RebuildSharedData.Util;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.TitleScreen
 {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace RebuildSharedData.Enum;
+﻿namespace RebuildSharedData.Enum;
 
 //if we were cool we'd generate this automatically from Jobs.csv
 

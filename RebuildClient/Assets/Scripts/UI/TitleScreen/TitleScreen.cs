@@ -5,8 +5,6 @@ using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 

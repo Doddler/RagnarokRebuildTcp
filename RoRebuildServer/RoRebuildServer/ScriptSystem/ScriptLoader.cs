@@ -2,16 +2,9 @@
 using RoRebuildServer.Logging;
 using System.Diagnostics;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Text.Json;
 using Serilog.Events;
 using Serilog;
-using Serilog.Configuration;
-using Serilog.Core;
-using Serilog.Formatting;
-using ILogger = Serilog.ILogger;
-using System.Globalization;
 
 namespace RoRebuildServer.ScriptSystem;
 

@@ -3,10 +3,7 @@ using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildZoneServer.Networking;
 using RoRebuildServer.Data;
-using RoRebuildServer.Data.Monster;
-using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
-using RoRebuildServer.EntityComponents.Monsters;
 using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Simulation.Items;

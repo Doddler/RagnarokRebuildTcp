@@ -7,7 +7,6 @@ using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
 using RoRebuildServer.Simulation.Util;
-using System.Threading;
 using RebuildSharedData.Enum.EntityStats;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Admin;

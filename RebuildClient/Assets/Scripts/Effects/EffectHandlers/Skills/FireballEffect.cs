@@ -1,8 +1,6 @@
 ﻿using Assets.Scripts.Effects.EffectHandlers.General;
-using Assets.Scripts.Effects.PrimitiveData;
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
-using Assets.Scripts.Sprites;
 using UnityEngine;
 
 namespace Assets.Scripts.Effects.EffectHandlers.Skills

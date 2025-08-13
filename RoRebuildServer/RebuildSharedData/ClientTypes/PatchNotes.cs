@@ -1,9 +1,4 @@
-﻿using RebuildSharedData.Enum;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace RebuildSharedData.ClientTypes;
+﻿namespace RebuildSharedData.ClientTypes;
 
 [Serializable]
 public class PatchNotes

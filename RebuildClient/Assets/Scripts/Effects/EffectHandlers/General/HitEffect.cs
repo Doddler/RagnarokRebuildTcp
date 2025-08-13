@@ -4,7 +4,6 @@ using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.U2D;
 
 namespace Assets.Scripts.Effects.EffectHandlers

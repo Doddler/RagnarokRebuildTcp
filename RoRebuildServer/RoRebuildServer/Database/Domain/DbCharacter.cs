@@ -1,9 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
-using Microsoft.EntityFrameworkCore;
 using RebuildSharedData.Config;
-using RebuildSharedData.Enum;
 
 namespace RoRebuildServer.Database.Domain;
 

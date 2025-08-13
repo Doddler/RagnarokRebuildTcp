@@ -2,7 +2,6 @@
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.MapEditor.Editor
 {

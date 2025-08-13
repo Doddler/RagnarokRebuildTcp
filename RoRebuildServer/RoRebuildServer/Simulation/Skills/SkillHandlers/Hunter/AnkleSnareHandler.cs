@@ -1,12 +1,9 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using RebuildSharedData.Enum;
+﻿using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
-using RoRebuildServer.Database.Domain;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.Simulation.Items;
-using RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Hunter;

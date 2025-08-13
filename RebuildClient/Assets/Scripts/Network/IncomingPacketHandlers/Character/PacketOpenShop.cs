@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Assets.Scripts.Network.HandlerBase;
-using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
 using RebuildSharedData.Networking;
 using UnityEngine;

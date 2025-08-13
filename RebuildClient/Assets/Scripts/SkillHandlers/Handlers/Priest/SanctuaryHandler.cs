@@ -1,7 +1,5 @@
 ﻿using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Network;
-using Assets.Scripts.Objects;
-using Assets.Scripts.Sprites;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using UnityEngine;

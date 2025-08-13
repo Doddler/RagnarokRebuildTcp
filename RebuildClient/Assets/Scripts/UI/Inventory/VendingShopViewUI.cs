@@ -2,7 +2,6 @@
 using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
-using Assets.Scripts.UI.Hud;
 using TMPro;
 using UnityEngine;
 

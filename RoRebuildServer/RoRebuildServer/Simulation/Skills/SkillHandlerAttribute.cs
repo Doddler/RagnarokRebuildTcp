@@ -5,7 +5,6 @@ using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
-using RoRebuildServer.EntityComponents.Monsters;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Networking;
 

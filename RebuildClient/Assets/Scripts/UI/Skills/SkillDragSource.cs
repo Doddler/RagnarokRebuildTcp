@@ -1,6 +1,4 @@
-﻿using System;
-using RebuildSharedData.Enum;
-using UnityEngine;
+﻿using RebuildSharedData.Enum;
 using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.UI

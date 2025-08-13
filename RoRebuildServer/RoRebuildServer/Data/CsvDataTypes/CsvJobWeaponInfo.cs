@@ -1,6 +1,4 @@
-﻿using CsvHelper;
-
-namespace RoRebuildServer.Data.CsvDataTypes;
+﻿namespace RoRebuildServer.Data.CsvDataTypes;
 
 public class CsvJobWeaponInfo
 { 

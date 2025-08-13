@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Effects.PrimitiveData;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.Effects.PrimitiveHandlers
 {

@@ -6,11 +6,8 @@ using RoRebuildServer.Simulation.Util;
 using RebuildSharedData.Enum.EntityStats;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Networking;
-using System;
-using Microsoft.EntityFrameworkCore;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Logging;
-using RoRebuildServer.Simulation.Pathfinding;
 
 namespace RoRebuildServer.Custom.OkolnirEvent;
 
@@ -75,8 +72,7 @@ public class ExaflareControlEvent : NpcBehaviorBase
             }
             else
             {
-
-                var pos = npc.Character.Position;
+                var pos = npc.Character.Position; //first set will always be the boss's current target
                 if (npc.ValuesInt[1] > 0)
                 {
                     pos = new Position(GameRandom.NextInclusive(westX, eastX), GameRandom.Next(southY, northY));

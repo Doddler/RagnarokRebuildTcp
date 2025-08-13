@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Assets.Scripts.Utility;
-using UnityEngine;
+﻿using Assets.Scripts.Utility;
 
 namespace Assets.Scripts.Network.Messaging
 {

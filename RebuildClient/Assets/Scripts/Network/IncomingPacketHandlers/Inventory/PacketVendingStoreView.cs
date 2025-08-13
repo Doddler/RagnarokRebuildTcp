@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Network.HandlerBase;
 using Assets.Scripts.PlayerControl;
-using Assets.Scripts.UI;
 using Assets.Scripts.UI.Inventory;
 using RebuildSharedData.Networking;
-using UnityEngine;
 
 namespace Assets.Scripts.Network.IncomingPacketHandlers
 {

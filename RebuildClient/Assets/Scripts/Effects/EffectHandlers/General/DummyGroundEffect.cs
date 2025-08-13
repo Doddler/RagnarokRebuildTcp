@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Network;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
 namespace Assets.Scripts.Effects.EffectHandlers.General

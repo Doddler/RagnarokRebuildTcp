@@ -1,7 +1,6 @@
 ﻿using Assets.Scripts.Network;
 using Assets.Scripts.Sprites;
 using RebuildSharedData.Enum.EntityStats;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.ConfigWindow

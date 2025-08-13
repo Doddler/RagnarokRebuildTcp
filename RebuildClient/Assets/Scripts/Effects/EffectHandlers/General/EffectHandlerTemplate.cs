@@ -1,6 +1,4 @@
 ﻿using Assets.Scripts.Network;
-using Assets.Scripts.Sprites;
-using UnityEngine;
 
 namespace Assets.Scripts.Effects.EffectHandlers.General
 {

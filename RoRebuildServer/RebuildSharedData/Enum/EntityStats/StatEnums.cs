@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace RebuildSharedData.Enum.EntityStats;
+﻿namespace RebuildSharedData.Enum.EntityStats;
 
 
 public enum PlayerStat
@@ -439,5 +435,6 @@ public static class PlayerClientStatusDef
         CharacterStat.AddCrit,
         CharacterStat.PerfectDodge,
         CharacterStat.WeightCapacity,
+        //CharacterStat.AddSoftDefPercent //add this later, but it'll force a packet revision update
     };
 }

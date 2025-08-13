@@ -4,7 +4,6 @@ using Assets.Scripts.Network;
 using JetBrains.Annotations;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
-using UnityEngine;
 
 namespace Assets.Scripts.SkillHandlers.Handlers.Event
 {

@@ -1,9 +1,7 @@
-﻿using System;
-using Assets.Scripts.Network;
+﻿using Assets.Scripts.Network;
 using Assets.Scripts.Sprites;
 using RebuildSharedData.Enum;
 using TMPro;
-using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.UI.Inventory

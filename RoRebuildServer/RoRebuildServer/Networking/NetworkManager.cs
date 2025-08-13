@@ -1,7 +1,5 @@
-﻿using System;
-using System.Buffers;
+﻿using System.Buffers;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.WebSockets;
 using System.Reflection;
@@ -10,20 +8,14 @@ using System.Threading.Channels;
 using Lidgren.Network;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.ObjectPool;
-using Microsoft.VisualBasic;
-using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using RebuildZoneServer.Networking;
 using RoRebuildServer.Data;
 using RoRebuildServer.Database;
-using RoRebuildServer.Database.Requests;
-using RoRebuildServer.EntityComponents;
-using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Util;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 #pragma warning disable CS8618 //non nullable member is uninitialized
 

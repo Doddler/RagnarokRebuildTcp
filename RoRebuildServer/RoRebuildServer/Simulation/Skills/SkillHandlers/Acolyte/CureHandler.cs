@@ -4,7 +4,6 @@ using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Logging;
-using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte;
 

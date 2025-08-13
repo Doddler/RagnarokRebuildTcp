@@ -1,8 +1,6 @@
 ﻿using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents.Npcs;
-using RoRebuildServer.Simulation.Skills.SkillHandlers.Priest;
-using System.Numerics;
 using RoRebuildServer.Simulation.Pathfinding;
 
 namespace RoRebuildServer.EntityComponents.Items;

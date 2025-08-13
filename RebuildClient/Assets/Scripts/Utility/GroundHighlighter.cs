@@ -1,5 +1,4 @@
-﻿using System;
-using Assets.Scripts.MapEditor;
+﻿using Assets.Scripts.MapEditor;
 using Assets.Scripts.Network;
 using UnityEngine;
 

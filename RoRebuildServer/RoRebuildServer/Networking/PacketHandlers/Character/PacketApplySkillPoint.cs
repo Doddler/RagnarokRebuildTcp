@@ -3,9 +3,7 @@ using RebuildSharedData.Enum.EntityStats;
 using RebuildSharedData.Networking;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.CsvDataTypes;
-using RoRebuildServer.Database.Domain;
 using RoRebuildServer.EntityComponents;
-using RoRebuildServer.EntityComponents.Character;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character
 {

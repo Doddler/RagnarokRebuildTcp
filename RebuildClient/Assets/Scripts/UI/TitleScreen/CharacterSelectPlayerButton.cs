@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Network;
-using Assets.Scripts.Sprites;
+﻿using Assets.Scripts.Sprites;
 using RebuildSharedData.Util;
 using TMPro;
 using UnityEngine;

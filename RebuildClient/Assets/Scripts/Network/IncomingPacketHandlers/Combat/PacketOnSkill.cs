@@ -1,5 +1,4 @@
 ﻿using System;
-using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Network.HandlerBase;
 using Assets.Scripts.Network.Messaging;
 using Assets.Scripts.SkillHandlers;

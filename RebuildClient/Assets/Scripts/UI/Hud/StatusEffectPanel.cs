@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Assets.Scripts.Sprites;
 using RebuildSharedData.Enum;
 using UnityEngine;
-using Utility;
 
 namespace Assets.Scripts.UI.Hud
 {

@@ -1,7 +1,4 @@
 ﻿using RebuildSharedData.Networking;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using K4os.Compression.LZ4;
 
 namespace RebuildSharedData.Util;

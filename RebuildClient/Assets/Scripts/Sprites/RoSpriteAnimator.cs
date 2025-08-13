@@ -7,7 +7,6 @@ using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.Serialization;
 
 namespace Assets.Scripts.Sprites
 {

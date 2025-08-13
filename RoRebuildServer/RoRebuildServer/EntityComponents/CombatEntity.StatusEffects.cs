@@ -9,7 +9,6 @@ using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.ScriptSystem;
 using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Skills;
-using System.Diagnostics;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -103,7 +102,6 @@ public partial class CombatEntity
                 if (chance > 0 && GameRandom.Next(0, 100) < chance)
                     RecoverSp(res.Damage * res.HitCount * GetStat(CharacterStat.SpDrainAmount) / 100);
 
-
                 var pureDrain = GetStat(CharacterStat.PureSpDrain);
                 if (pureDrain > 0)
                     RecoverSp(res.Damage * res.HitCount * pureDrain / 1000);
@@ -131,7 +129,7 @@ public partial class CombatEntity
                     HealHp(val, true);
             }
 
-            if ((attackTriggerFlags & AttackEffectTriggers.HpOnAttack) > 0)
+            if ((attackTriggerFlags & AttackEffectTriggers.SpOnAttack) > 0)
             {
                 var val = GetStat(CharacterStat.SpGainOnAttack);
                 if (val > 0)

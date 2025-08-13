@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace RebuildSharedData.Data
+﻿namespace RebuildSharedData.Data
 {
     public struct FloatPosition : IEquatable<FloatPosition>
     {

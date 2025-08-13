@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Data;
-using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
 using UnityEngine;
 

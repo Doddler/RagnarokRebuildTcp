@@ -1,7 +1,6 @@
 ﻿using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data.Monster;
-using RoRebuildServer.Logging;
 
 namespace RoRebuildServer.Data.Map;
 

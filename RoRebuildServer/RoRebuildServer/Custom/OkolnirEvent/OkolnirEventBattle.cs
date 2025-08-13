@@ -1,15 +1,8 @@
-﻿using Microsoft.Net.Http.Headers;
-using RebuildSharedData.Data;
+﻿using RebuildSharedData.Data;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.EntityComponents;
-using RoRebuildServer.Simulation.Util;
-using Tomlyn.Syntax;
-using RoRebuildServer.Database.Domain;
-using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Networking;
-using System.Xml.Linq;
-using System;
 using RoRebuildServer.EntityComponents.Items;
 
 namespace RoRebuildServer.Custom.OkolnirEvent;
@@ -71,7 +64,7 @@ public class OkolnirEventBattle : INpcLoader
         {
             var max = 10 + count * 10;
             if (d.Damage == 1)
-                max += 50;
+                max += 50; //no damage contribution lowers grade of rewards
             var rnd = GameRandom.Next(0, max);
             var item = rnd switch
             {

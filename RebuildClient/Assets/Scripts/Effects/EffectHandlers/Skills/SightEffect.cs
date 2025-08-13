@@ -1,9 +1,6 @@
 ﻿using Assets.Scripts.Effects.PrimitiveData;
 using Assets.Scripts.Network;
-using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
-using Assets.Scripts.UI.ConfigWindow;
-using Assets.Scripts.Utility;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
