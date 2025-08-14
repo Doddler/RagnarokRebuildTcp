@@ -130,6 +130,8 @@ public class Player : IEntityAutoReset
     }
     private float regenHpTickTime { get; set; }
     private float regenSpTickTime { get; set; }
+    private bool isSittingHpTick;
+    private bool isSittingSpTick;
 
     private const float HpRegenTickTime = 6f;
     private const float SpRegenTickTime = 6f;
@@ -276,6 +278,9 @@ public class Player : IEntityAutoReset
         EntityValueListPool<float>.Return(RecentAttackersList);
         RecentAttackersList = null!;
         VendingState = null;
+
+        isSittingHpTick = false;
+        isSittingSpTick = false;
 
         if (Party != null)
         {
@@ -1199,6 +1204,15 @@ public class Player : IEntityAutoReset
             SkillHandler.RefreshPassiveEffects(skill.Key, CombatEntity, skill.Value);
     }
 
+    public void UpdateSitStatus(bool isSitting)
+    {
+        if (!isSitting)
+        {
+            isSittingHpTick = false;
+            isSittingSpTick = false;
+        }
+    }
+
     private void UpdateRegenTick()
     {
         switch (Character.State)
@@ -1248,8 +1262,15 @@ public class Player : IEntityAutoReset
         regen = regen * hpAddPercent / 100;
 
         if (Character.State == CharacterState.Sitting)
-            regen *= 2;
-        
+        {
+            if (isSittingHpTick)
+                regen *= 2;
+            else
+                isSittingHpTick = true; //first hp tick when sitting isn't doubled. Prevents sitting quickly to catch the tick bonus.
+        }
+        else
+            isSittingHpTick = false;
+
         var hpRegenSkill = MaxLearnedLevelOfSkill(CharacterSkill.IncreasedHPRecovery);
         if (hpRegenSkill > 0 && hp < maxHp)
         {
@@ -1293,7 +1314,14 @@ public class Player : IEntityAutoReset
         regen = regen * spAddPercent / 100;
 
         if (Character.State == CharacterState.Sitting)
-            regen *= 2;
+        {
+            if (isSittingSpTick)
+                regen *= 2;
+            else
+                isSittingSpTick = true;
+        }
+        else
+            isSittingSpTick = false;
 
         var spRegenSkill = MaxLearnedLevelOfSkill(CharacterSkill.IncreaseSPRecovery);
         if (spRegenSkill > 0 && sp < maxSp)
@@ -1631,7 +1659,7 @@ public class Player : IEntityAutoReset
         }
 
         var targetCharacter = Target.Get<WorldObject>();
-        if (!targetCharacter.IsActive || targetCharacter.Map != Character.Map)
+        if (!targetCharacter.IsActive || targetCharacter.Map != Character.Map || targetCharacter.CombatEntity.HasFatalDamageQueued())
         {
             AutoAttackLock = false;
             return;

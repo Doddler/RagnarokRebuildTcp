@@ -24,7 +24,7 @@ MapConfig("cmd_fild02")
 	CreateSpawn("CORNUTUS", 10, %(279, 78, 100, 20), 60000);
 	CreateSpawn("SHELLFISH", 35);
 	CreateSpawn("SHELLFISH", 5, %(93, 82, 40, 80), 180000);
-	CreateSpawn("MOBSTER", 1);
+	CreateSpawn("MOBSTER", 3);
 	CreateSpawn("FUR_SEAL", 25, %(200, 130, 150, 40));
 	CreateSpawn("FUR_SEAL", 2, %(93, 82, 40, 80), 180000);
 	CreateSpawn("GALAPAGO", 20);

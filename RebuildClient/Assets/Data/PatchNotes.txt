@@ -1,6 +1,18 @@
 {
   "Items": [
     {
+      "Date": "2025-08-14 Update",
+      "Desc": "\u003Ci\u003EServer Side Changes\u003C/i\u003E\r\n- Auto-attack lock will automatically disengage if the monster has fatal damage queued.\r\n- Cards that provide resistance and bonus damage against bosses now work.\r\n- Autocast sight no longer triggers an attack cooldown.\r\n- You can no longer pick up items while sitting.\r\n- When sitting you now get double the hp/sp amount on the second and subsequent regen ticks.\r\n- Made some changes to the okolnir challenge.\r\n  * The monsters in okolnir are randomized between runs.\r\n  * Lowered mdef on the valkyries a little to be a bit more fair to casters.\r\n  * The final boss is tuned a bit harder (but not quite as hard as the hotfixed version.)\r\n\r\n\u003Ci\u003EClient Side Changes\u003C/i\u003E\r\n- Fixed an issue where sometimes the targeting area for a player or monster could extend way below their screen position."
+    },
+    {
+      "Date": "2025-08-13 Update",
+      "Desc": "\u003Ci\u003EServer Side Changes\u003C/i\u003E\r\n- Most monsters should be more willing to switch targets when hit (or provoked) when chasing. Some monsters remain intentionally sticky to the first attacker.\r\n- Defense ignoring weapons and attacks no longer deal 0 damage. Whoops.\r\n- Fixed SP gain on attack effects not working correctly.\r\n- Fixed Fire Brand not granting or auto-casting Fire Bolt.\r\n- Level 1 and 2 elemental weapons are now a bit easier to craft.\r\n- It\u0027s no longer possible to dodge attacks while stunned or frozen.\r\n- As funny as it was, monsters can no longer crit with sonic blow.\r\n- Healing staff now works."
+    },
+    {
+      "Date": "2025-08-12 Update",
+      "Desc": "\u003Ci\u003EServer Side Changes\u003C/i\u003E\r\n- Fixed all weapons counting as level 1 for the purpose of refine bonuses, as well as the over-refine bonus being calculated very wrong.\r\n- Fixed an issue where warp portal memo locations could be lost in certain circumstances when saving your character data.\r\n- You can now talk to NPCs while sitting.\r\n- Holy light, pneuma and blessing have no cast delay.\r\n- Steal and Envenom can no longer be used at range with a bow.\r\n- Just for fun, sonic blow can now crit.\r\n- Monsters no longer get spawn immunity when teleporting.\r\n- Garm has gained a few skills.\r\n- Dark Illusion now shows up on the minimap in GH church.\r\n- Baby Garm also shows up on the minimap.\r\n- Megaliths in Tao Gunka\u0027s mob will no longer use teleport."
+    },
+    {
       "Date": "2025-08-11 Update",
       "Desc": "\u003Ci\u003EServer Side Fixes\u003C/i\u003E\r\n- Changed how attack delay works after casting magic. Let me know if this feels ok.\r\n- Fixed your weight not decreasing when an equipment item is consumed via trade or refine.\r\n- Poison will no longer somehow increase your defense each time it wears off.\r\n- Increased the effective area of sanctuary.\r\n- Fixed an issue where a character couldn\u0027t log in if they logged out with active status effects and no items in their inventory.\r\n- Fixed an issue where players wouldn\u0027t receive a reward for the okolnir event unless they directly damaged the final boss.\r\n- From this point on there should be no rollbacks if the server goes down.\r\n\r\n\u003Ci\u003EClient Side Fixes\u003C/i\u003E\r\n- Fixed client lockup when changing maps after being on that map for a while.\r\n- Fixed cast lock on effect not showing for increase agi.\r\n- Fixed endure effect being broken.\r\n- Assulter now correctly called Assaulter."
     },

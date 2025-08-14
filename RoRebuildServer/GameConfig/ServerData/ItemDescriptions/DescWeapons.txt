@@ -77,7 +77,7 @@ INT +3
 <desc>A formal decorative sword imbued with water.</desc>
 MATK +80
 Enables use of <skill>Cold Bolt 3</skill>.
-+5% chance to autocast <skill>Cold Bolt 3</skill> on melee attack.
++10% chance to autocast <skill>Cold Bolt 3</skill> on melee attack.
 +5% chance of <status>Freeze</status> on physical attack.
 
 ::Edge //id 1132 - Sword
@@ -89,7 +89,7 @@ Enables use of <skill>Cold Bolt 3</skill>.
 <desc>A formal decorative sword imbued with fire.</desc>
 MATK +80
 Enables use of <skill>Fire Bolt 3</skill>.
-+5% chance to autocast <skill>Fire Bolt 3</skill> on physical attack.
++10% chance to autocast <skill>Fire Bolt 3</skill> on physical attack.
 
 ::Caesar's_Sword //id 1134 - Sword
 <desc>A sword that looks like a pair of giant scissors.</desc>

@@ -66,7 +66,8 @@ public class FireBallHandler : SkillHandlerBase
             CommandBuilder.AttackMulti(source.Character, blastTarget, res, false);
         }
 
-        source.ApplyCooldownForAttackAction(position);
+        if(!isIndirect)
+            source.ApplyCooldownForAttackAction(position);
         CommandBuilder.ClearRecipients();
     }
 }

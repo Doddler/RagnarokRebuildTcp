@@ -76,6 +76,8 @@ namespace Assets.Scripts.Sprites
 				}
 			}
 
+
+
 			var xSize = max.x - min.x;
 			var ySize = max.y - min.y;
 			var xBoost = 0.1f;
@@ -94,10 +96,16 @@ namespace Assets.Scripts.Sprites
 			if (ySize < 1f)
 				yBoost += 0.1f;
 
-
 			min -= new Vector2(xBoost, yBoost);
 			max += new Vector2(xBoost, yBoost);
-
+			
+			if (min.y < -0.3f)
+				min.y = -0.3f;
+			if (max.y < min.y)
+				max.y = min.y;
+			
+			// Debug.Log($"{spriteData.Name} Action:{currentActionIndex} Frame:{currentFrame} Min:{min} Max:{max}");
+			
 			outVertices.Add(new Vector3(min.x, max.y));
 			outVertices.Add(new Vector3(max.x, max.y));
 			outVertices.Add(new Vector3(min.x, min.y));

@@ -20,6 +20,6 @@ MapConfig("xmas_dun02")
 	CreateSpawn("CRUISER", 35);
 	CreateSpawn("MYSTCASE", 50);
 	CreateSpawn("KNIGHT_OF_WINDSTORM", 1, 3600000, 7200000, MVP);
-	CreateSpawn("GARM_BABY", 1, 1800000);
+	CreateSpawn("GARM_BABY", 1, 1800000, Boss);
 	CreateSpawn("COOKIE", 20);
 }

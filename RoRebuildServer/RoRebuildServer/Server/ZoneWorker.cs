@@ -167,6 +167,16 @@ internal class ZoneWorker : BackgroundService
             isSafeExit = false;
         }
 
+        if (!NetworkManager.IsServerOpen)
+        {
+            CommandBuilder.AddAllPlayersAsRecipients();
+            if(isSafeExit)
+                CommandBuilder.SendServerMessage("The server is now shutting down, you will be disconnected shortly.");
+            else
+                CommandBuilder.SendServerMessage("The server is shutting down due to an internal error.");
+            CommandBuilder.ClearRecipients();
+        }
+
         NetworkManager.TriggerAllCancellations();
         
         if(worldCancellation.IsCancellationRequested)

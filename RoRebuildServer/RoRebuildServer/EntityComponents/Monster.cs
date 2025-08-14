@@ -127,7 +127,12 @@ public partial class Monster : IEntityAutoReset
     public MonsterAiState OverrideTargetState;
     public CharacterSkill LastDamageSourceType;
     public int LastAttackRange;
-    public bool WasAttacked;
+
+    public bool WasAttacked
+    {
+        get; 
+        set;
+    }
     public bool WasRudeAttacked;
     public bool LastAttackPhysical;
     public bool WasMagicLocked;
@@ -203,9 +208,12 @@ public partial class Monster : IEntityAutoReset
             else
                 LastAttackRange = 0;
             ResetAiUpdateTime();
-            Character.StopMovingImmediately();
+            if(CurrentAiState != MonsterAiState.StateAttacking && (di.Flags & DamageApplicationFlags.NoHitLock) == 0)
+                Character.StopMovingImmediately();
             WasAttacked = true;
+            Character.LastAttacked = di.Source;
             LastAttackPhysical = di.Flags.HasFlag(DamageApplicationFlags.PhysicalDamage);
+            DirectlyTriggerStateUpdate(MonsterInputCheck.InAttacked);
         }
 
         if (!hasSrc)
@@ -830,7 +838,8 @@ public partial class Monster : IEntityAutoReset
 
     private void ResetFlagsAfterSkillHandler()
     {
-        WasAttacked = false;
+        if(WasAttacked)
+            WasAttacked = false;
         WasRudeAttacked = false;
         WasMagicLocked = false;
         Character.LastAttacked = Entity.Null;
@@ -991,6 +1000,33 @@ public partial class Monster : IEntityAutoReset
 
                 if (!Character.HasVisiblePlayers())
                     nextAiUpdate += 0.5f;
+            }
+        }
+    }
+
+    private void DirectlyTriggerStateUpdate(MonsterInputCheck check)
+    {
+        foreach (var entry in aiEntries)
+        {
+            if (entry.InputState != CurrentAiState)
+                continue;
+
+            if (entry.InputCheck == check)
+            {
+                if (InputStateCheck(entry.InputCheck) && OutputStateCheck(entry.OutputCheck))
+                {
+                    PreviousAiState = CurrentAiState;
+                    CurrentAiState = entry.OutputState;
+                    timeofLastStateChange = Time.ElapsedTimeFloat;
+
+                    //some AI state actions can short circuit the output directly to a target state (particularly chase -> attacking)
+                    if (OverrideTargetState == MonsterAiState.StateAny)
+                        continue;
+                    CurrentAiState = OverrideTargetState;
+                    OverrideTargetState = MonsterAiState.StateAny;
+                }
+
+                return;
             }
         }
     }

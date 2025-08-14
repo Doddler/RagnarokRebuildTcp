@@ -52,6 +52,8 @@ public static class ScriptUtilityFunctions
 
     public static int Random(int max) => GameRandom.Next(max);
     public static int Random(int min, int max) => GameRandom.Next(min, max);
+    public static int RandomInclusive(int max) => GameRandom.NextInclusive(max);
+    public static int RandomInclusive(int min, int max) => GameRandom.NextInclusive(min, max);
 
     public static int DeterministicRandom(int seed, int max)
     {

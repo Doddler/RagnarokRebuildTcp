@@ -84,36 +84,44 @@ OnTimer 22s:
 	StopTimer();
 }
 
-macro Main_Gauche(%stone) {	AddItemToTradeSet("Daggers", CreateCraftedItem("Main_Gauche").Socket(%stone).Requires(%stone).Requires("Resin", 25).Requires("Iron", 8).Costs(2000)); }
-macro Stiletto(%stone) { AddItemToTradeSet("Daggers", CreateCraftedItem("Stiletto").Socket(%stone).Requires(%stone).Requires("Reptile_Tongue", 25).Requires("Steel", 6).Costs(10000)); }
-macro Gladius(%stone) { AddItemToTradeSet("Daggers", CreateCraftedItem("Gladius").Socket(%stone).Requires(%stone).Requires("Ant_Jaw",25).Requires("Oridecon", 2).Requires("Steel", 10).Costs(20000)); }
-macro Damascus(%stone) { AddItemToTradeSet("Daggers", CreateCraftedItem("Damascus").Socket(%stone).Requires(%stone).Requires("Broken_Sword",10).Requires("Oridecon", 4).Requires("Steel", 12).Costs(20000)); }
+macro Main_Gauche(%stone, %socket, %count) {	AddItemToTradeSet("Daggers", CreateCraftedItem("Main_Gauche").Socket(%stone).Requires(%socket, %count).Requires("Resin", 25).Requires("Iron", 8).Costs(2000)); }
+macro Stiletto(%stone, %socket, %count) { AddItemToTradeSet("Daggers", CreateCraftedItem("Stiletto").Socket(%stone).Requires(%socket, %count).Requires("Reptile_Tongue", 25).Requires("Steel", 6).Costs(10000)); }
+macro Gladius(%stone, %socket, %count) { AddItemToTradeSet("Daggers", CreateCraftedItem("Gladius").Socket(%stone).Requires(%socket, %count).Requires("Ant_Jaw",25).Requires("Oridecon", 1).Requires("Steel", 8).Costs(20000)); }
+macro Damascus(%stone, %socket, %count) { AddItemToTradeSet("Daggers", CreateCraftedItem("Damascus").Socket(%stone).Requires(%socket, %count).Requires("Broken_Sword",10).Requires("Oridecon", 4).Requires("Steel", 12).Costs(20000)); }
 
-macro Blade(%stone) { AddItemToTradeSet("Swords", CreateCraftedItem("Blade").Socket(%stone).Requires(%stone).Requires("Tooth_of_Bat", 15).Requires("Iron", 10).Costs(2000)); }
-macro Ring_Pommel_Saber(%stone) { AddItemToTradeSet("Swords", CreateCraftedItem("Ring_Pommel_Saber").Socket(%stone).Requires(%stone).Requires("Mantis_Scythe", 25).Requires("Steel", 8).Costs(10000)); }
-macro Tsurugi(%stone) { AddItemToTradeSet("Swords", CreateCraftedItem("Tsurugi").Socket(%stone).Requires(%stone).Requires("Fang",15).Requires("Oridecon", 2).Requires("Steel", 12).Costs(20000)); }
-macro Flamberge(%stone) { AddItemToTradeSet("Swords", CreateCraftedItem("Flamberge").Socket(%stone).Requires(%stone).Requires("Evil_Horn",10).Requires("Oridecon", 4).Requires("Steel",14).Costs(20000)); }
+macro Blade(%stone, %socket, %count) { AddItemToTradeSet("Swords", CreateCraftedItem("Blade").Socket(%stone).Requires(%socket, %count).Requires("Tooth_of_Bat", 15).Requires("Iron", 10).Costs(2000)); }
+macro Ring_Pommel_Saber(%stone, %socket, %count) { AddItemToTradeSet("Swords", CreateCraftedItem("Ring_Pommel_Saber").Socket(%stone).Requires(%socket, %count).Requires("Mantis_Scythe", 25).Requires("Steel", 8).Costs(10000)); }
+macro Tsurugi(%stone, %socket, %count) { AddItemToTradeSet("Swords", CreateCraftedItem("Tsurugi").Socket(%stone).Requires(%socket, %count).Requires("Fang",15).Requires("Oridecon", 2).Requires("Steel", 12).Costs(20000)); }
+macro Flamberge(%stone, %socket, %count) { AddItemToTradeSet("Swords", CreateCraftedItem("Flamberge").Socket(%stone).Requires(%socket, %count).Requires("Evil_Horn",10).Requires("Oridecon", 4).Requires("Steel",14).Costs(20000)); }
 
-macro Katana(%stone) { AddItemToTradeSet("2HSwords", CreateCraftedItem("Katana").Socket(%stone).Requires(%stone).Requires("Earthworm_Peeling", 10).Requires("Iron", 12).Costs(2000)); }
-macro Bastard_Sword(%stone) { AddItemToTradeSet("2HSwords", CreateCraftedItem("Bastard_Sword").Socket(%stone).Requires(%stone).Requires("Dokebi_Horn",25).Requires("Steel", 10).Costs(10000)); }
-macro Broad_Sword(%stone) { AddItemToTradeSet("2HSwords", CreateCraftedItem("Broad_Sword").Socket(%stone).Requires(%stone).Requires("Short_Daenggie",25).Requires("Oridecon", 3).Requires("Steel", 14).Costs(20000)); }
-macro Claymore(%stone) { AddItemToTradeSet("2HSwords", CreateCraftedItem("Claymore").Socket(%stone).Requires(%stone).Requires("Cracked_Diamond",2).Requires("Oridecon", 6).Requires("Steel", 16).Costs(20000)); }
+macro Katana(%stone, %socket, %count) { AddItemToTradeSet("2HSwords", CreateCraftedItem("Katana").Socket(%stone).Requires(%socket, %count).Requires("Earthworm_Peeling", 10).Requires("Iron", 12).Costs(2000)); }
+macro Bastard_Sword(%stone, %socket, %count) { AddItemToTradeSet("2HSwords", CreateCraftedItem("Bastard_Sword").Socket(%stone).Requires(%socket, %count).Requires("Dokebi_Horn",25).Requires("Steel", 10).Costs(10000)); }
+macro Broad_Sword(%stone, %socket, %count) { AddItemToTradeSet("2HSwords", CreateCraftedItem("Broad_Sword").Socket(%stone).Requires(%socket, %count).Requires("Short_Daenggie",25).Requires("Oridecon", 3).Requires("Steel", 14).Costs(20000)); }
+macro Claymore(%stone, %socket, %count) { AddItemToTradeSet("2HSwords", CreateCraftedItem("Claymore").Socket(%stone).Requires(%socket, %count).Requires("Cracked_Diamond",2).Requires("Oridecon", 6).Requires("Steel", 16).Costs(20000)); }
 
-macro Battle_Axe(%stone) { AddItemToTradeSet("Axes", CreateCraftedItem("Battle_Axe").Socket(%stone).Requires(%stone).Requires("Orcish_Voucher",30).Requires("Iron", 10).Costs(2000)); }
-macro Hammer(%stone) { AddItemToTradeSet("Axes", CreateCraftedItem("Hammer").Socket(%stone).Requires(%stone).Requires("Orc's_Fang",25).Requires("Steel", 10).Costs(10000)); }
-macro Buster(%stone) { AddItemToTradeSet("Axes", CreateCraftedItem("Buster").Socket(%stone).Requires(%stone).Requires("Zenorc's_Fang", 25).Requires("Oridecon", 2).Requires("Steel", 12).Costs(20000)); }
-macro Two_Handed_Axe(%stone) { AddItemToTradeSet("Axes", CreateCraftedItem("Two-Handed_Axe").Socket(%stone).Requires(%stone).Requires("Ogre_Tooth",15).Requires("Oridecon", 4).Requires("Steel", 16).Costs(20000)); }
+macro Battle_Axe(%stone, %socket, %count) { AddItemToTradeSet("Axes", CreateCraftedItem("Battle_Axe").Socket(%stone).Requires(%socket, %count).Requires("Orcish_Voucher",30).Requires("Iron", 10).Costs(2000)); }
+macro Hammer(%stone, %socket, %count) { AddItemToTradeSet("Axes", CreateCraftedItem("Hammer").Socket(%stone).Requires(%socket, %count).Requires("Orc's_Fang",25).Requires("Steel", 10).Costs(10000)); }
+macro Buster(%stone, %socket, %count) { AddItemToTradeSet("Axes", CreateCraftedItem("Buster").Socket(%stone).Requires(%socket, %count).Requires("Zenorc's_Fang", 25).Requires("Oridecon", 2).Requires("Steel", 12).Costs(20000)); }
+macro Two_Handed_Axe(%stone, %socket, %count) { AddItemToTradeSet("Axes", CreateCraftedItem("Two-Handed_Axe").Socket(%stone).Requires(%socket, %count).Requires("Ogre_Tooth",15).Requires("Oridecon", 4).Requires("Steel", 16).Costs(20000)); }
 
-macro Mace(%stone) { AddItemToTradeSet("Maces", CreateCraftedItem("Mace").Socket(%stone).Requires(%stone).Requires("Skel-Bone",20).Requires("Iron", 10).Costs(2000)); }
-macro Chain(%stone) { AddItemToTradeSet("Maces", CreateCraftedItem("Chain").Socket(%stone).Requires(%stone).Requires("Lantern",15).Requires("Steel", 10).Costs(10000)); }
-macro Sword_Mace(%stone) { AddItemToTradeSet("Maces", CreateCraftedItem("Sword_Mace").Socket(%stone).Requires(%stone).Requires("Worn_Out_Prison_Uniform", 10).Requires("Oridecon",2).Requires("Steel", 12).Costs(20000)); }
+macro Mace(%stone, %socket, %count) { AddItemToTradeSet("Maces", CreateCraftedItem("Mace").Socket(%stone).Requires(%socket, %count).Requires("Skel-Bone",20).Requires("Iron", 10).Costs(2000)); }
+macro Chain(%stone, %socket, %count) { AddItemToTradeSet("Maces", CreateCraftedItem("Chain").Socket(%stone).Requires(%socket, %count).Requires("Lantern",15).Requires("Steel", 10).Costs(10000)); }
+macro Sword_Mace(%stone, %socket, %count) { AddItemToTradeSet("Maces", CreateCraftedItem("Sword_Mace").Socket(%stone).Requires(%socket, %count).Requires("Worn_Out_Prison_Uniform", 10).Requires("Oridecon",2).Requires("Steel", 12).Costs(20000)); }
 
-macro Pike(%stone) { AddItemToTradeSet("Spears", CreateCraftedItem("Pike").Socket(%stone).Requires(%stone).Requires("Moth_Dust",10).Requires("Iron", 12).Costs(2000)); }
-macro Partizan(%stone) { AddItemToTradeSet("Spears", CreateCraftedItem("Partizan").Socket(%stone).Requires(%stone).Requires("Tail_of_Steel_Scorpion",25).Requires("Steel", 10).Costs(10000)); }
-macro Lance(%stone) { AddItemToTradeSet("Spears", CreateCraftedItem("Lance").Socket(%stone).Requires(%stone).Requires("Peco_Peco_Feather", 10).Requires("Oridecon", 4).Costs(20000)); }
+macro Pike(%stone, %socket, %count) { AddItemToTradeSet("Spears", CreateCraftedItem("Pike").Socket(%stone).Requires(%socket, %count).Requires("Moth_Dust",10).Requires("Iron", 12).Costs(2000)); }
+macro Partizan(%stone, %socket, %count) { AddItemToTradeSet("Spears", CreateCraftedItem("Partizan").Socket(%stone).Requires(%socket, %count).Requires("Tail_of_Steel_Scorpion",25).Requires("Steel", 10).Costs(10000)); }
+macro Lance(%stone, %socket, %count) { AddItemToTradeSet("Spears", CreateCraftedItem("Lance").Socket(%stone).Requires(%socket, %count).Requires("Peco_Peco_Feather", 10).Requires("Oridecon", 4).Costs(20000)); }
+
+macro FourElementsEz(%weapon) {
+	@%weapon("Flame_Heart", "Red_Blood", 1); @%weapon("Mystic_Frozen", "Crystal_Blue", 1);	@%weapon("Rough_Wind", "Wind_of_Verdure", 1);	@%weapon("Great_Nature", "Green_Live", 1);
+}
+
+macro FourElementsMid(%weapon) {
+	@%weapon("Flame_Heart", "Red_Blood", 5); @%weapon("Mystic_Frozen", "Crystal_Blue", 5);	@%weapon("Rough_Wind", "Wind_of_Verdure", 5);	@%weapon("Great_Nature", "Green_Live", 5);
+}
 
 macro FourElements(%weapon) {
-	@%weapon("Flame_Heart"); @%weapon("Mystic_Frozen");	@%weapon("Rough_Wind");	@%weapon("Great_Nature");
+	@%weapon("Flame_Heart", "Flame_Heart", 1); @%weapon("Mystic_Frozen", "Mystic_Frozen", 1);	@%weapon("Rough_Wind", "Rough_Wind", 1);	@%weapon("Great_Nature", "Great_Nature", 1);
 }
 
 Npc("prt_fild08", "Blacksmith Guildsman#MilestoneSmith", "4_F_JOB_BLACKSMITH", 158, 371, SW, 1, 1)
@@ -128,12 +136,12 @@ Npc("prt_fild08", "Blacksmith Guildsman#MilestoneSmith", "4_F_JOB_BLACKSMITH", 1
 	AddItemToTradeSet("Ore", CreateTradedItem("Great_Nature").Requires("Green_Live", 10).Costs(100));
 	AddItemToTradeSet("Ore", CreateTradedItem("Gold").Requires("Burnt_Tree", 5).Requires("Coal", 5).Requires("Fine_Sand", 5).Requires("Rough_Elunium", 3).Requires("Rough_Oridecon", 3).Costs(10000));
 
-	@FourElements(Main_Gauche); @FourElements(Stiletto); @FourElements(Gladius); @FourElements(Damascus);
-	@FourElements(Blade); @FourElements(Ring_Pommel_Saber); @FourElements(Tsurugi); @FourElements(Flamberge);
-	@FourElements(Katana); @FourElements(Bastard_Sword); @FourElements(Broad_Sword); @FourElements(Claymore);
-	@FourElements(Battle_Axe); @FourElements(Hammer); @FourElements(Buster); @FourElements(Two_Handed_Axe);
-	@FourElements(Mace); @FourElements(Chain); @FourElements(Sword_Mace);
-	@FourElements(Pike); @FourElements(Partizan); @FourElements(Lance);
+	@FourElementsEz(Main_Gauche); @FourElementsMid(Stiletto); @FourElementsMid(Gladius); @FourElements(Damascus);
+	@FourElementsEz(Blade); @FourElementsMid(Ring_Pommel_Saber); @FourElements(Tsurugi); @FourElements(Flamberge);
+	@FourElementsEz(Katana); @FourElementsMid(Bastard_Sword); @FourElements(Broad_Sword); @FourElements(Claymore);
+	@FourElementsEz(Battle_Axe); @FourElementsMid(Hammer); @FourElements(Buster); @FourElements(Two_Handed_Axe);
+	@FourElementsEz(Mace); @FourElementsMid(Chain); @FourElements(Sword_Mace);
+	@FourElementsEz(Pike); @FourElementsMid(Partizan); @FourElements(Lance);
 
 	@EventRevealedNpc("MilestoneSmith", "blacksmith guildsman Mitmair"); //this must be at the end of the init section to work!
 OnClick:

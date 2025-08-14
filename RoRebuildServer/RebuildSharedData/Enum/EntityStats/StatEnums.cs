@@ -375,6 +375,8 @@ public enum CharacterStat
     NoGemstone,
     MagicImmunity,
 
+    AddHealingPower,
+
     SkillValue, //used to store skill unlocks in ItemEquipState
     AutoSpellOnAttacking,
     AutoSpellWhenAttacked,

@@ -62,3 +62,11 @@ StateChase:
 StateAttacking:
 	TryCast(ComboAttack, 1, 5%, 0.7s, 5s, NoInterrupt) -> SendEmote(24); //right
 }
+
+
+SkillHandler("GARM_BABY") {
+StateChase:
+	TryCast(FrostDiver, 10, 20%, 0, 5s) -> SendEmote(6); //angry
+StateAttacking:
+	TryCast(Lick, 3, 5%, 0, 5s) -> SendEmote(6); //angry
+}

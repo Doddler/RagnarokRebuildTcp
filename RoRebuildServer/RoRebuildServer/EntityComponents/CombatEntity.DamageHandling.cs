@@ -9,7 +9,9 @@ using RebuildSharedData.Data;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Simulation.Pathfinding;
+using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.Util;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -158,6 +160,23 @@ public partial class CombatEntity
         return eleMod;
     }
 
+    public bool IsAttackRanged(CombatEntity? target, AttackRequest req, bool isPhysical, AttackFlags flags)
+    {
+        if ((flags & AttackFlags.AutoRange) > 0)
+            return Character.Monster.MonsterBase.Range >= 5;
+
+        if ((flags & AttackFlags.Ranged) > 0)
+            return true;
+
+        if ((flags & AttackFlags.Melee) > 0)
+            return false;
+
+        if (req.SkillSource != CharacterSkill.None)
+            return SkillHandler.GetSkillRange(this, req.SkillSource, 1) >= 5;
+
+        return GetStat(CharacterStat.Range) >= 5;
+    }
+
     public (float, int) GetDefenseReductionForReceivedAttack(CombatEntity? attacker, int attackerPenalty, AttackFlags flags, int defMod = 100, int mDefMod = 100)
     {
         var isPhysical = flags.HasFlag(AttackFlags.Physical);
@@ -212,7 +231,7 @@ public partial class CombatEntity
                 }
 
                 def = def * defMod / 100;
-                
+
                 if ((flags & AttackFlags.ReverseDefense) > 0 || attacker?.GetStat(CharacterStat.ReverseDefense) > 0)
                 {
                     defCut = (def + subDef) / 100f;
@@ -341,14 +360,16 @@ public partial class CombatEntity
             }
         }
 
-        //----------------------------------------
-        // Nullifying magic (pneuma/safety wall)
-        //----------------------------------------
+        //----------------------------------------------
+        // Range & Nullifying magic (pneuma/safety wall)
+        //----------------------------------------------
 
-        if (!evade && isPhysical && !flags.HasFlag(AttackFlags.IgnoreNullifyingGroundMagic))
+        var isRanged = IsAttackRanged(target, req, isPhysical, flags);
+
+
+        if (isPhysical && !flags.HasFlag(AttackFlags.IgnoreNullifyingGroundMagic))
         {
-            var distance = target.Character.Position.DistanceTo(Character.Position);
-            if (distance >= 5)
+            if (isRanged)
             {
                 if (target.HasStatusEffectOfType(CharacterStatusEffect.Pneuma))
                 {
@@ -369,6 +390,7 @@ public partial class CombatEntity
                 }
             }
         }
+
 
         //---------------------------
         // Elemental Modifiers
@@ -424,8 +446,8 @@ public partial class CombatEntity
         var racialMod = 100;
         var rangeMod = 100;
         var sizeMod = 100;
+        var specialMod = 100;
         var defMod = 100;
-        var isRanged = req.Flags.HasFlag(AttackFlags.Ranged);
         if (!evade && !flags.HasFlag(AttackFlags.NoDamageModifiers))
         {
             var atkSize = attackerType == CharacterType.Monster ? Character.Monster.MonsterBase.Size : CharacterSize.Medium;
@@ -448,6 +470,11 @@ public partial class CombatEntity
                     rangeMod -= target.GetStat(CharacterStat.AddResistRangedAttack);
 
                 sizeMod -= target.GetStat(CharacterStat.AddResistSmallSize + (int)atkSize);
+
+                if (GetSpecialType() == CharacterSpecialType.Boss)
+                    specialMod -= target.GetStat(CharacterStat.AddResistSpecialBoss);
+                else
+                    specialMod -= target.GetStat(CharacterStat.AddResistSpecialNormal);
 
                 if (attackerType == CharacterType.Monster && Character.Monster.MonsterBase.Tags != null)
                 {
@@ -498,6 +525,11 @@ public partial class CombatEntity
                 if (isCrit)
                     attackMultiplier *= 1 + GetStat(CharacterStat.AddCritDamageRaceFormless + (int)targetRace) / 100f;
 
+                if (target.GetSpecialType() == CharacterSpecialType.Boss)
+                    specialMod += GetStat(CharacterStat.AddAttackSpecialBoss);
+                else
+                    specialMod += GetStat(CharacterStat.AddAttackSpecialNormal);
+
                 sizeMod += GetStat(CharacterStat.AddAttackSmallSize + (int)defSize);
 
                 defMod = int.Clamp(100 - GetStat(CharacterStat.IgnoreDefRaceFormless + (int)targetRace), 0, 100);
@@ -515,7 +547,7 @@ public partial class CombatEntity
         var subDef = 0;
         var vit = target.GetEffectiveStat(CharacterStat.Vit);
 
-        
+
 
         //physical defense
         if (!flags.HasFlag(AttackFlags.IgnoreDefense))
@@ -601,7 +633,7 @@ public partial class CombatEntity
         //------------------------------
 
         //add damage is applied to base damage, but in the original RO it's actually applied after multipliers... maybe revise if it's too strong.
-        var damage = (int)(((baseDamage + addDamage) * attackMultiplier * defCut - subDef) * (eleMod / 100f) * (racialMod / 100f) * (rangeMod / 100f) * (sizeMod / 100f));
+        var damage = (int)(((baseDamage + addDamage) * attackMultiplier * defCut - subDef) * (eleMod / 100f) * (racialMod / 100f) * (rangeMod / 100f) * (sizeMod / 100f) * (specialMod / 100f));
         if (damage < 1)
             damage = 1;
 

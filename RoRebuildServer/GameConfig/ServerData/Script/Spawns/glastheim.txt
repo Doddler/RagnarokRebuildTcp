@@ -61,7 +61,7 @@ MapConfig("gl_church")
 	CreateSpawn("WRAITH", 10);
 	CreateSpawn("EVIL_DRUID", 35);
 	CreateSpawn("GHOUL", 60);
-	CreateSpawn("DARK_ILLUSION", 1, 1h, 30m);
+	CreateSpawn("DARK_ILLUSION", 1, 1h, 30m, Boss);
 	CreateSpawn("MIMIC", 14);
 	CreateSpawn("MIMIC", 1, %(155, 92, 10, 10), 30000, 15000);
 	CreateSpawn("MIMIC", 2, %(155, 75, 10, 10), 60000, 30000);

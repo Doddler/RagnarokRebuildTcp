@@ -1,6 +1,7 @@
 ﻿using RebuildSharedData.Networking;
 using RoRebuildServer.EntityComponents.Util;
 using System.Diagnostics;
+using RebuildSharedData.Enum;
 using RoRebuildServer.EntityComponents;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character
@@ -17,7 +18,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
             Debug.Assert(connection.Character != null);
             Debug.Assert(connection.Character.Map != null);
 
-            if (!connection.Player.CanPerformCharacterActions())
+            if (!connection.Player.CanPerformCharacterActions() || connection.Character.State == CharacterState.Sitting)
                 return;
 
             var player = connection.Player;

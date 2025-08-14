@@ -92,7 +92,7 @@ public abstract class ElementalAttackHandler : SkillHandlerBase
 
         var element = GetElement();
         
-        var res = source.CalculateCombatResult(target, ratio, 1, AttackFlags.Physical, GetSkill(), element);
+        var res = source.CalculateCombatResult(target, ratio, 1, AttackFlags.Physical | AttackFlags.AutoRange, GetSkill(), element);
         if (element == AttackElement.Poison)
         {
             var poisonBarrier = res.IsDamageResult && target.RemoveStatusOfTypeIfExists(CharacterStatusEffect.Detoxify);

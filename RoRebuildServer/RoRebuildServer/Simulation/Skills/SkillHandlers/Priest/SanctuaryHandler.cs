@@ -220,6 +220,8 @@ public class SanctuaryObjectEvent : NpcBehaviorBase
             return;
 
         var power = npc.ValuesInt[0];
+        if (src.Character.Type == CharacterType.Player)
+            power = power * (1000 + src.GetStat(CharacterStat.AddHealingPower)) / 1000;
 
         if (target.IsElementBaseType(CharacterElement.Undead1) || target.GetRace() == CharacterRace.Demon)
         {

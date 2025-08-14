@@ -31,6 +31,11 @@ StateAttacking:
 	TryCast(EarthAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6); //angry
 }
 
+SkillHandler("MEGALODON") {
+StateAttacking:
+	TryCast(UndeadAttack, 1, 5%, 0s, 5s);
+}
+
 SkillHandler("CRAB") {
 StateAttacking:
 	TryCast(WaterAttack, 1, 20%, 0s, 5s);
@@ -50,7 +55,7 @@ StateAttacking:
 
 SkillHandler("MEGALITH") {
 StateIdle:
-	TryCast(Teleport, 1, 5%, 0s, 15s);
+	TryCast(Teleport, 1, 5%, 0s, 15s)[!IsMinion];
 	TryCast(NoCast, 1, 20%, 0s, 5s) -> SendEmote(9);
 }
 

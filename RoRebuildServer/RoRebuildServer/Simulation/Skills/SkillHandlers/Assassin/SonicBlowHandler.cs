@@ -6,7 +6,7 @@ using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.Util;
 
-namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Thief;
+namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Assassin;
 
 [SkillHandler(CharacterSkill.SonicBlow, SkillClass.Physical, SkillTarget.Enemy)]
 public class SonicBlowHandler : SkillHandlerBase
@@ -22,9 +22,13 @@ public class SonicBlowHandler : SkillHandlerBase
         var ch = source.Character;
         lvl = lvl.Clamp(1, 10);
 
-        var attack = new AttackRequest(CharacterSkill.SonicBlow, 0.5f + 0.05f * lvl, 8, AttackFlags.Physical | AttackFlags.CanCrit, AttackElement.None);
+        var flags = AttackFlags.Physical;
+        if (source.Character.Type == CharacterType.Player)
+            flags |= AttackFlags.CanCrit;
+
+        var attack = new AttackRequest(CharacterSkill.SonicBlow, 0.5f + 0.05f * lvl, 8, flags, AttackElement.None);
         attack.AccuracyRatio = 150;
-        
+
         //var res = source.CalculateCombatResult(target, 0.5f + 0.05f * lvl, 1, AttackFlags.Physical, CharacterSkill.SonicBlow);
         var res = source.CalculateCombatResult(target, attack);
         source.ApplyCooldownForAttackAction(target);
@@ -44,6 +48,6 @@ public class SonicBlowHandler : SkillHandlerBase
         res.AttackMotionTime = 0.4f;
         source.ExecuteCombatResult(res, false);
 
-        CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.SonicBlow, lvl, res);        
+        CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.SonicBlow, lvl, res);
     }
 }

@@ -451,7 +451,7 @@ public class WorldObject : IEntityAutoReset
             State = CharacterState.Idle;
 
         var player = Entity.Get<Player>();
-        //player.UpdateSit(isSitting);
+        player.UpdateSitStatus(isSitting);
 
         Map.AddVisiblePlayersAsPacketRecipients(this);
         CommandBuilder.ChangeSittingMulti(this);

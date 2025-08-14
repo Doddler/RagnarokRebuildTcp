@@ -33,9 +33,10 @@ public class PacketSay : IClientPacketHandler
         else
             ServerLogger.Log($"Chat message from [{connection.Player!.Name}]: {text}");
 #endif
+        var p = connection.Player;
+
         if (type == PlayerChatType.Party)
         {
-            var p = connection.Player;
             if (p.Party == null)
             {
                 CommandBuilder.ErrorMessage(p, "Cannot send chat to party when you aren't in a party.");
@@ -55,14 +56,17 @@ public class PacketSay : IClientPacketHandler
                 return;
             }
 
-            if (connection.Player.ShoutCooldown > Time.ElapsedTimeFloat && !connection.Player.IsAdmin)
+            if (connection.Player.ShoutCooldown > Time.ElapsedTimeFloat + 20f && !connection.Player.IsAdmin)
             {
                 CommandBuilder.ErrorMessage(connection.Player, $"You must wait more time before using shout again.");
                 return;
             }
             ServerLogger.Log($"Shout chat message from [{connection.Player!.Name}]: {text}");
             CommandBuilder.AddAllPlayersAsRecipients();
-            connection.Player.ShoutCooldown = Time.ElapsedTimeFloat + 20f;
+            if (p.ShoutCooldown < Time.ElapsedTime)
+                p.ShoutCooldown = Time.ElapsedTimeFloat + 20f;
+            else
+                p.ShoutCooldown += 20f;
         }
         else
             CommandBuilder.AddRecipients(map.Players); //send to everyone on the map

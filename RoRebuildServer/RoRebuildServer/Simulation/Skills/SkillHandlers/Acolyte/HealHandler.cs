@@ -2,6 +2,7 @@
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
+using RoRebuildServer.Database.Domain;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.Util;
@@ -50,6 +51,8 @@ public class HealHandler : SkillHandlerBase
             var baseHeal = 4 + 8 * lvl;
             healValue = (chLevel + statInt) / 10 * baseHeal + matk / 2; //official has /8, but no matk.
 
+            if (source.Character.Type == CharacterType.Player)
+                healValue = healValue * (1000 + source.GetStat(CharacterStat.AddHealingPower)) / 1000;
         }
 
         if (source.Character.Type == CharacterType.Player && target.Character.Type == CharacterType.Monster)

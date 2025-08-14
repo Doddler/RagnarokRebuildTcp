@@ -93,6 +93,8 @@ OnSignal:
 		HideNpc();
 	if(Signal == "OpenImmediately")
 	{
+		SendGlobalSignal("OkolnirReset", "Reset");
+		ShowNpc();
 		SignalNpc("Valkyrie", "Open");
 		StopTimer();
 	}
@@ -137,10 +139,25 @@ OnSignal:
 	EnableTouchArea();
 	KillMyMobs();
 OnTouch:
-	SummonMobs(14, "BAPHOMET_", 107, 261, 21, 56);
-	SummonMobs(8, "INCUBUS", 107, 261, 21, 56);
-	SummonMobs(8, "SUCCUBUS", 107, 261, 21, 56);
-	SummonMobs(2, "DEVILING", 116, 240, 5, 5);
+	if(Random(0, 2) == 0) {
+		SummonMobs(14, "BAPHOMET_", 107, 261, 21, 56);
+		SummonMobs(8, "INCUBUS", 107, 261, 21, 56);
+		SummonMobs(8, "SUCCUBUS", 107, 261, 21, 56);
+		if(Random(0, 2) == 0)
+		{
+			SummonMobs(2, "DEVILING", 116, 240, 5, 5);
+			SummonMobs(1, "GHOSTRING", 116, 240, 5, 5);
+		}
+		else
+			SummonMobs(1, "ARCHANGELING", 116, 240, 5, 5);
+	} else {
+		SummonMobs(14, "NIGHTMARE", 107, 261, 21, 56);
+		SummonMobs(8, "DEVIRUCHI", 107, 261, 21, 56);
+		SummonMobs(4, "MARIONETTE", 107, 261, 21, 56);
+		SummonMobs(6, "INCUBUS", 107, 261, 21, 56);
+		SummonMobs(6, "SUCCUBUS", 107, 261, 21, 56);
+		SummonMobs(1, "DOPPELGANGER", 116, 240, 5, 5);
+	}
 	DisableTouchArea();
 	ServerLog("Okolnir trail spawner 1 activated.");
 }
@@ -152,11 +169,22 @@ OnSignal:
 	EnableTouchArea();
 	KillMyMobs();
 OnTouch:
-	SummonMobs(15, "NINE_TAIL", 74, 151, 10, 64);
-	SummonMobs(6, "AM_MUT", 74, 151, 10, 64);
-	SummonMobs(6, "SKELETON_GENERAL", 74, 151, 10, 64);
-	SummonMobs(1, "CAT_O_NINE_TAIL", 71, 163, 5, 5);
-	SummonMobs(1, "MOONLIGHT", 72, 122, 5, 5);
+	if(Random(0, 2) == 0) {
+		SummonMobs(15, "NINE_TAIL", 74, 151, 10, 64);
+		SummonMobs(6, "AM_MUT", 74, 151, 10, 64);
+		SummonMobs(6, "SKELETON_GENERAL", 74, 151, 10, 64);
+		SummonMobs(1, "CAT_O_NINE_TAIL", 71, 163, 5, 5);
+		SummonMobs(1, "MOONLIGHT", 72, 122, 5, 5);
+	} else {
+		SummonMobs(12, "ARGIOPE", 74, 151, 10, 64);
+		SummonMobs(8, "ARGOS", 74, 151, 10, 64);
+		SummonMobs(8, "PETIT", 74, 151, 10, 64);
+		SummonMobs(8, "PETIT_", 74, 151, 10, 64);
+		SummonMobs(12, "GIANT_HONET", 74, 151, 10, 64);
+		SummonMobs(4, "DEATHSPORE", 74, 151, 10, 64);
+		SummonMobs(1, "WERE_WOLF", 71, 163, 5, 5);
+		SummonMobs(1, "MISTRESS", 72, 122, 5, 5);
+	}
 	DisableTouchArea();
 	ServerLog("Okolnir trail spawner 2 activated.");
 }
@@ -168,11 +196,34 @@ OnSignal:
 	EnableTouchArea();
 	KillMyMobs();
 OnTouch:
-	SummonMobs(12, "ANOLIAN", 123, 83, 39, 12);
-	SummonMobs(2, "MOBSTER", 123, 83, 39, 12);
-	SummonMobs(6, "MEDUSA", 123, 83, 39, 12);
-	SummonMobs(1, "MUTANT_DRAGON", 112, 79, 5, 5);
-	SummonMobs(1, "GRYPHON", 146, 79, 5, 5);
+	if(Random(0, 2) == 0) {
+		SummonMobs(12, "ANOLIAN", 123, 83, 39, 12);
+		SummonMobs(2, "MOBSTER", 123, 83, 39, 12);
+		SummonMobs(6, "MEDUSA", 123, 83, 39, 12);
+		if(Random(1, 3) == 0) {
+			SummonMobs(2, "MUTANT_DRAGON", 112, 79, 5, 5);
+			SummonMobs(1, "GRYPHON", 126, 79, 5, 5);
+		} else {
+			SummonMobs(1, "MUTANT_DRAGON", 112, 79, 5, 5);
+			SummonMobs(2, "GRYPHON", 126, 79, 5, 5);
+		}		
+		SummonMobs(6, "STALACTIC_GOLEM", 123, 83, 39, 12);
+		SummonMobs(1, "TAO_GUNKA", 146, 79, 5, 5);
+	} else {
+		SummonMobs(12, "ISIS", 123, 83, 39, 12);
+		SummonMobs(6, "ANUBIS", 123, 83, 39, 12);
+		SummonMobs(1, "OSIRIS", 112, 79, 5, 5);
+		if(Random(0, 2) == 0) {
+			SummonMobs(10, "ANCIENT_MUMMY", 123, 83, 39, 12);
+			SummonMobs(1, "AMON_RA", 146, 79, 5, 5);
+		}
+		else
+		{
+			SummonMobs(6, "MARDUK", 123, 83, 39, 12);
+			SummonMobs(6, "PASANA", 123, 83, 39, 12);
+			SummonMobs(1, "PHARAOH", 146, 79, 5, 5);
+		}
+	}
 	DisableTouchArea();
 	ServerLog("Okolnir trail spawner 3 activated.");
 }
@@ -184,12 +235,53 @@ OnSignal:
 	EnableTouchArea();
 	KillMyMobs();
 OnTouch:
-	SummonMobs(4, "WANDER_MAN", 184, 132, 15, 41);
-	SummonMobs(4, "KHALITZBURG", 184, 132, 15, 41);
-	SummonMobs(8, "RAYDRIC", 184, 132, 15, 41);
-	SummonMobs(8, "RAYDRIC_ARCHER", 184, 132, 15, 41);
-	SummonMobs(3, "KNIGHT_OF_ABYSS", 184, 153, 15, 19);
-	SummonMobs(1, "CHIMERA", 184, 153, 15, 19);
+	var rnd = Random(0, 3);
+	if(rnd == 0) {
+		SummonMobs(4, "WANDER_MAN", 184, 132, 15, 41);
+		SummonMobs(4, "KHALITZBURG", 184, 132, 15, 41);
+		SummonMobs(10, "RAYDRIC", 184, 132, 15, 41);
+		SummonMobs(1, "CHIMERA", 184, 132, 15, 41);
+		SummonMobs(8, "RAYDRIC_ARCHER", 184, 132, 15, 41);
+		SummonMobs(3, "KNIGHT_OF_ABYSS", 184, 153, 15, 19);
+		if(Random(0, 2) == 0)
+			SummonMobs(1, "BLOODY_KNIGHT", 184, 153, 15, 19);
+		else {
+			SummonMobs(1, "MYSTELTAINN", 184, 153, 15, 19);
+			SummonMobs(1, "TIRFING", 184, 153, 15, 19);
+			SummonMobs(1, "EXECUTIONER", 184, 153, 15, 19);
+		}
+		if(Random(0, 3) == 0)
+			SummonMobs(1, "BAPHOMET", 184, 153, 15, 19);
+		else
+			SummonMobs(1, "CHIMERA", 184, 132, 15, 41);
+	}
+	if(rnd == 1) {
+		SummonMobs(8, "RYBIO", 184, 132, 15, 41);
+		SummonMobs(10, "INJUSTICE", 184, 132, 15, 41);
+		SummonMobs(4, "PHENDARK", 184, 132, 15, 41);
+		SummonMobs(3, "ZOMBIE_PRISONER", 184, 132, 15, 41);
+		SummonMobs(3, "SKEL_PRISONER", 184, 132, 15, 41);
+		SummonMobs(6, "GARGOYLE", 184, 132, 15, 41);
+		SummonMobs(1, "ZHERLTHSH", 184, 153, 15, 19);
+		if(Random(0, 3) == 0)
+			SummonMobs(1, "DARK_LORD", 184, 153, 15, 19);
+		else
+		{
+			SummonMobs(4, "ARCLOUSE", 184, 132, 15, 41);
+			SummonMobs(8, "STING", 184, 153, 15, 19);
+			SummonMobs(3, "MAJORUROS", 184, 153, 15, 19);
+		}
+	}
+	if(rnd == 2) {
+		SummonMobs(6, "DRAGON_TAIL", 182, 99, 10, 8);
+		SummonMobs(4, "SPRING_RABBIT", 182, 99, 10, 8);
+		SummonMobs(15, "PEST", 184, 132, 15, 41);
+		SummonMobs(6, "PERMETER", 184, 132, 15, 41);
+		SummonMobs(6, "FREEZER", 184, 132, 15, 41);
+		SummonMobs(6, "HEATER", 184, 132, 15, 41);
+		SummonMobs(6, "ASSULTER", 184, 132, 15, 41);
+		SummonMobs(1, "TURTLE_GENERAL", 184, 153, 15, 19);
+	}
 	DisableTouchArea();
 
 	ServerLog("Okolnir trail spawner 4 activated.");
@@ -202,9 +294,23 @@ OnSignal:
 	EnableTouchArea();
 	KillMyMobs();
 OnTouch:
-	SummonMobs(8, "SASQUATCH", 149, 170, 13, 6);
-	SummonMobs(4, "LEIB_OLMAI", 149, 170, 13, 6);
-	SummonMobs(1, "EDDGA", 142, 172, 1, 1);
+	var rnd = Random(0, 3);
+	if(rnd == 0) {
+		SummonMobs(8, "SASQUATCH", 149, 170, 13, 6);
+		SummonMobs(4, "LEIB_OLMAI", 149, 170, 13, 6);
+		SummonMobs(2, "EDDGA", 142, 172, 1, 1);
+	} 
+	if(rnd == 1) {
+		SummonMobs(18, "PENOMENA", 149, 170, 13, 6);
+		SummonMobs(10, "MIMIC", 149, 170, 13, 6);
+		SummonMobs(1, "DRAKE", 142, 172, 1, 1);
+	}
+	if(rnd == 2) {
+		SummonMobs(12, "ORC_ARCHER", 149, 170, 13, 6);
+		SummonMobs(12, "HIGH_ORC", 149, 170, 13, 6);
+		SummonMobs(1, "ORC_LORD", 145, 172, 1, 1);
+		SummonMobs(1, "ORK_HERO", 142, 172, 1, 1);
+	}
 	DisableTouchArea();
 	ServerLog("Okolnir trail spawner 5 activated.");
 	StartTimer(5s); //we do both timer and on kill event, you know, just in case
@@ -436,6 +542,23 @@ OnSignal:
 	}
 }
 
+Npc("que_qsch01", "#RandgrisHelper2", "CLEAR_NPC", 5, 6, SE)
+{
+OnSignal:
+	if(Signal == "Spawn")
+	{
+		DescendSummonMonster("VALKYRIE", 125, 142, 0, 0, NW, "EVENT_VALKYRIE");
+		DescendSummonMonster("VALKYRIE", 138, 142, 0, 0, NE, "EVENT_VALKYRIE");
+		DescendSummonMonster("VALKYRIE", 125, 129, 0, 0, SW, "EVENT_VALKYRIE");
+		DescendSummonMonster("VALKYRIE", 138, 129, 0, 0, SE, "EVENT_VALKYRIE");
+		MoveLockAllMyMonsters(%(132, 136, 16, 16));
+	}
+	if(Signal == "Die")
+	{
+		KillMyMobs();
+	}
+}
+
 event OkolnirLootEvent {
 	StartTimer(100);
 OnTimer 1000:
@@ -450,13 +573,13 @@ OnTimer 1000:
 AltSkillHandler("EVENT_VALKYRIE") {
 	OnInit:
 		FlagAsMvp();
-		Cast(NoCast, 10, 8s, 5s, EasyInterrupt | HideCastBar | HideSkillName);
+		Cast(NoCast, 10, 5s, 5s, EasyInterrupt | HideCastBar | HideSkillName);
 	StateIdle:
 		TryCast(Heal, 9999, 100%, 0s, 5s)[HpPercent < 60];
 	StateChase:
-		TryCast(Heal, 4999, 100%, 0.7s, 15s)[FindAllyBelowHpPercent(60)];
+		TryCast(Heal, 9999, 100%, 0.7s, 5s)[FindAllyBelowHpPercent(60)];
 	StateAttacking:
-		TryCast(Heal, 4999, 100%, 0.7s, 15s)[FindAllyBelowHpPercent(60)];
+		TryCast(Heal, 9999, 100%, 0.7s, 5s)[FindAllyBelowHpPercent(60)];
 		TryCast(SonicBlow, 1, 5%, 1s, 10s);
 		TryCast(JupitelThunder, 3, 2%, 2s, 10s);
 }
@@ -464,23 +587,56 @@ AltSkillHandler("EVENT_VALKYRIE") {
 AltSkillHandler("EVENT_RANDGRIS") {
 	OnInit:
 		FlagAsMvp();
-		Cast(NoCast, 10, 2s, 5s, EasyInterrupt | HideCastBar | HideSkillName);
+		Cast(NoCast, 10, 2s, 5s, EasyInterrupt | HideCastBar | HideSkillName); //force her to not aggro for the first 2s on spawn in
+	StateIdle:
+		TryCast(Heal, 9999, 100%, 0s, 3s)[HpPercent < 50];
 	StateChase:
-		TryCast(CallMinion, 1, 100%, 2.5s, 0s, NoInterrupt)[HpPercent < 55 && IsNamedEventOffCooldown("SummonMinions")] -> {
+		TryCast(CallMinion, 1, 100%, 1.5s, 0s, NoInterrupt)[HpPercent < 85 && IsNamedEventOffCooldown("SummonMinions1")] -> {
 			SignalNpc("#RandgrisHelper", "Spawn");
-			SetEventCooldown("SummonMinions", -1);
+			SetEventCooldown("SummonMinions1", -1);
 		}
-		TryCast(EarthShaker, 1, 20%, 4s, 15s, NeverInterrupt | EventOnStartCast)[HpPercent < 95]  -> CreateEventOnTarget("EarthShakerCastEvent", 1 + (100 - HpPercent) / 25);
-		TryCast(RollingThunder, 1, 20%, 3s, 20s, NeverInterrupt | EventOnStartCast)[HpPercent < 90]  -> CreateEventOnTarget("ExaflareControlEvent", 1 + (100 - HpPercent) / 25);
-		TryCast(LordOfVermilion, 11, 10%, 3.5s, 25s, RandomTarget);
+		TryCast(CallMinion, 1, 100%, 1.5s, 0s, NoInterrupt)[HpPercent < 45 && IsNamedEventOffCooldown("SummonMinions2")] -> {
+			SignalNpc("#RandgrisHelper2", "Spawn");
+			SetEventCooldown("SummonMinions2", -1);
+		}
+		TryCast(EarthShaker, 1, 20%, 4s, 20s, NeverInterrupt | EventOnStartCast)[HpPercent < 95]  -> {
+			CreateEventOnTarget("EarthShakerCastEvent", 2 + (100 - HpPercent) / 33);
+			if(HpPercent < 50)
+				SetStateFlag(0, 1);
+		}
+		TryCast(NoCast, 1, 100%, 0, 0)[GetStateFlag(0) > 0] -> {
+			CreateEventOnTarget("EarthShakerCastEvent", 2 + (100 - HpPercent) / 33);
+			SetStateFlag(0, 0);
+		}
+		TryCast(RollingThunder, 1, 20%, 2.2s, 25s, NeverInterrupt | EventOnStartCast)[HpPercent < 90]  -> CreateEventOnTarget("ExaflareControlEvent", 2 + (100 - HpPercent) / 33);
+		TryCast(LordOfVermilion, 11, 10%, 2.8s, 25s, RandomTarget);
+		TryCast(JupitelThunder, 9, 5%, 0.7s, 15s);
 	StateAttacking:
-		TryCast(EarthShaker, 1, 20%, 4s, 15s, NeverInterrupt | EventOnStartCast)[HpPercent < 95]  -> CreateEventOnTarget("EarthShakerCastEvent", 1 + (100 - HpPercent) / 25);
-		TryCast(RollingThunder, 1, 20%, 3s, 20s, NeverInterrupt | EventOnStartCast)[HpPercent < 90] -> CreateEventOnTarget("ExaflareControlEvent", 1 + (100 - HpPercent) / 25);
-		TryCast(LordOfVermilion, 11, 5%, 3.5s, 25s, RandomTarget);
+		TryCast(CallMinion, 1, 100%, 1.5s, 0s, NoInterrupt)[HpPercent < 80 && IsNamedEventOffCooldown("SummonMinions1")] -> {
+			SignalNpc("#RandgrisHelper", "Spawn");
+			SetEventCooldown("SummonMinions1", -1);
+		}
+		TryCast(CallMinion, 1, 100%, 1.5s, 0s, NoInterrupt)[HpPercent < 35 && IsNamedEventOffCooldown("SummonMinions2")] -> {
+			SignalNpc("#RandgrisHelper2", "Spawn");
+			SetEventCooldown("SummonMinions2", -1);
+		}
+		TryCast(EarthShaker, 1, 20%, 4s, 20s, NeverInterrupt | EventOnStartCast)[HpPercent < 95]  -> {
+			CreateEventOnTarget("EarthShakerCastEvent", 2 + (100 - HpPercent) / 33);
+			if(HpPercent < 50)
+				SetStateFlag(0, 1);
+		}
+		TryCast(NoCast, 1, 100%, 0, 0)[GetStateFlag(0) > 0] -> {
+			CreateEventOnTarget("EarthShakerCastEvent", 2 + (100 - HpPercent) / 33);
+			SetStateFlag(0, 0);
+		}
+		TryCast(RollingThunder, 1, 20%, 2.2s, 25s, NeverInterrupt | EventOnStartCast)[HpPercent < 90]  -> CreateEventOnTarget("ExaflareControlEvent", 2 + (100 - HpPercent) / 33);
+		TryCast(LordOfVermilion, 11, 5%, 2.8s, 25s, RandomTarget);
 		TryCast(SonicBlow, 1, 5%, 1s, 10s);
-		TryCast(TwoHandQuicken, 1, 100%, 0, 120s)[HpPercent < 30];
-		TryCast(PowerUp, 2, 100%, 0.7s, 30s)[HpPercent < 30];
+		TryCast(JupitelThunder, 9, 5%, 0.7s, 15s);
+		TryCast(TwoHandQuicken, 1, 100%, 0, 120s)[HpPercent < 25];
+		TryCast(PowerUp, 2, 100%, 0.7s, 25s)[HpPercent < 25];
 	OnDie:
 		CallSpecialMonsterEvent("OkolnirEnd");
 		SignalNpc("#RandgrisHelper", "Die");
+		SignalNpc("#RandgrisHelper2", "Die");
 }

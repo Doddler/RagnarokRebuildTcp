@@ -747,6 +747,16 @@ public partial class CombatEntity : IEntityAutoReset
             DamageQueue.Sort((a, b) => a.Time.CompareTo(b.Time));
     }
 
+    public bool HasFatalDamageQueued()
+    {
+        if (Character.Type != CharacterType.Monster || DamageQueue.Count == 0)
+            return false;
+        var hp = GetStat(CharacterStat.Hp);
+        foreach (var d in DamageQueue)
+            hp -= d.Damage;
+        return hp < 0;
+    }
+
     public void ClearDamageQueue()
     {
         DamageQueue.Clear();
@@ -1355,10 +1365,13 @@ public partial class CombatEntity : IEntityAutoReset
         var defenderAgi = target.GetEffectiveStat(CharacterStat.Agi);
         var defenderFlee = target.GetStat(CharacterStat.Level) + defenderAgi + target.GetStat(CharacterStat.AddFlee);
 
+        if (defenderFlee < 0)
+            return true;
+
         var hitSuccessRate = attackerHit + 75 - defenderFlee;
 
         if (hitSuccessRate < 5) hitSuccessRate = 5;
-        if (hitSuccessRate > 95 && target.Character.Type == CharacterType.Player) hitSuccessRate = 95;
+        //if (hitSuccessRate > 95 && target.Character.Type == CharacterType.Player) hitSuccessRate = 95;
 
         hitSuccessRate = hitSuccessRate * attackerHitBonus / 100;
 
@@ -1552,6 +1565,8 @@ public partial class CombatEntity : IEntityAutoReset
 
         if (damageInfo.Damage != 0)
             target.QueueDamage(damageInfo);
+
+        
     }
 
     public void PerformMeleeAttack(CombatEntity target)

@@ -262,7 +262,7 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4259,CHEPET,Chepet,42,17953,47,119,35,60,39,142,278,339,1,0,23,7398,3315,10,12,Medium,Demihuman,Fire1,672,288,672,400,Normal,AiStandardBoss,336,chepet.spr,0,0.5,1,#FFFFFFFF,
 4260,GOBLINE_XMAS,Festive Goblin,25,1338,20,21,20,28,16,12,77,94,1,9,9,370,276,10,12,Medium,Demihuman,Wind1,1120,240,620,100,Normal,AiStandardBoss,384,gobline_xmas.spr,0,0.5,1,#FFFFFFFF,Goblin
 4261,GARM,Garm,73,182815,105,73,82,79,55,59,1367,1670,3,42,32,160740,95367,10,12,Large,Beast,Water4,608,336,408,400,Boss,AiStandardBoss,312,garm.spr,0,1,1,#FFFFFFFF,
-4262,GARM_BABY,Baby Garm,61,11880,50,57,56,69,38,33,531,650,1,23,22,8338,6333,10,12,Medium,Beast,Water2,879,576,672,450,Normal,AiAggressive,288,garm_baby.spr,0,0.5,1,#FFFFFFFF,
+4262,GARM_BABY,Baby Garm,61,15841,56,63,59,72,38,36,551,674,1,24,23,10118,7125,10,12,Medium,Beast,Water2,879,576,672,450,Normal,AiAggressive,288,garm_baby.spr,0,0.5,1,#FFFFFFFF,
 4263,KNIGHT_OF_WINDSTORM,Stormy Knight,77,231628,94,90,83,100,88,62,1216,1487,2,35,41,191840,143864,10,12,Large,Formless,Wind4,468,288,468,200,Boss,AiStandardBoss,252,knight_of_windstorm.spr,0,0.5,1,#FFFFFFFF,
 4264,MYSTCASE,Mystcase,40,3398,33,33,33,42,24,19,216,264,1,5,11,1704,787,10,12,Medium,Formless,Neutral3,1248,432,1248,400,Normal,AiPassiveSense,432,mystcase.spr,0,0.5,1,#FFFFFFFF,
 4265,WRAITH_DEAD,Wraith Dead,74,35452,50,77,24,104,50,34,937,1100,2,12,45,18021,7452,10,12,Large,Undead,Undead4,1816,240,576,175,Normal,AiStandardBoss,720,wraith_dead.spr,0,0.5,1,#FFFFFFFF,Flying
@@ -286,8 +286,8 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4283,TAO_GUNKA,Tao Gunka,70,168704,4,61,72,112,47,48,946,1157,2,24,24,121491,79625,10,12,Large,Demon,Neutral3,1020,144,288,150,Boss,AiAggressive,384,tao_gunka.spr,0,0.5,1,#FFFFFFFF,Golem
 4284,TARGET_DUMMY,Target Dummy,1,100000,1,20,20,1,1,1,1,1,0,20,20,0,0,10,12,Large,Formless,Neutral4,1001,1,1000,-1,Boss,AiPlant,0,barricade.spr,0,-1,1,#FFFFFFFF,
 4285,TEST_DRONE,Test Drone,1,100000,1,20,20,1,1,1,8,9,1,20,20,0,0,10,12,Small,Formless,Dark3,1000,500,1000,150,Normal,AiHyperPacifist,216,constant.spr,0,0.5,1,#FFFFFFFF,Flying
-4286,RANDGRIS,Valkyrie Randgris,99,1145083,132,113,100,112,22,113,1011,1236,3,21,16,802270,626196,12,15,Large,Angel,Holy1,576,480,576,100,Boss,AiAggressive,504,randgris.spr,0,0.5,1.4,#FFFFFFFF,Flying
-4287,VALKYRIE,Valkyrie,99,78911,102,148,77,97,19,88,774,946,3,22,19,185709,144783,12,15,Large,Angel,Holy1,576,480,576,100,Boss,AiAggressive,504,g_randgris.spr,0,0.5,1,#FFFFFFFF,
+4286,RANDGRIS,Valkyrie Randgris,99,2358497,132,113,100,112,22,113,1011,1236,3,21,5,780189,609861,12,15,Large,Angel,Holy1,576,480,576,100,Boss,AiAggressive,504,randgris.spr,0,0.5,1.4,#FFFFFFFF,Flying
+4287,VALKYRIE,Valkyrie,99,78911,102,148,77,97,19,88,774,946,3,22,4,180193,140723,12,15,Large,Angel,Holy1,576,480,576,100,Boss,AiAggressive,504,g_randgris.spr,0,0.5,1,#FFFFFFFF,
 4288,IRON_FIST,Iron Fist,43,2692,28,29,29,53,34,15,285,348,1,17,12,1931,1277,5,12,Medium,Insect,Neutral3,1500,1000,500,200,Normal,AiAggressiveSense,384,iron_fist.spr,0,0.5,1,#FFFFFFFF,
 4289,SHINOBI,Kabuki Ninja,69,10503,57,28,28,77,56,34,546,911,2,17,24,10325,6905,10,12,Medium,Demihuman,Dark3,1003,336,1152,150,Normal,AiAggressive,480,shinobi.spr,0,0.5,1,#FFFFFFFF,
 4290,KAPHA,Kappa,51,6877,40,20,42,52,30,45,423,517,3,17,22,4216,2418,10,12,Medium,Aquatic,Water1,2012,672,1728,165,Normal,AiAngry,576,kapha.spr,0,0.5,1,#FFFFFFFF,

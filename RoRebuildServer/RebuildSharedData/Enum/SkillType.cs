@@ -43,11 +43,13 @@
         NoDamageModifiers = 1 << 10,
         NoElement = 1 << 11,
         Ranged = 1 << 12,
-        NoTriggerOnAttackEffects = 1 << 13,
-        NoTriggerWhenAttackedEffects = 1 << 14,
-        CanAttackHidden = 1 << 15,
-        IgnoreWeaponRefine = 1 << 16,
-        ReverseDefense = 1 << 17,
+        Melee = 1 << 13,
+        AutoRange = 1 << 14,
+        NoTriggerOnAttackEffects = 1 << 15,
+        NoTriggerWhenAttackedEffects = 1 << 16,
+        CanAttackHidden = 1 << 17,
+        IgnoreWeaponRefine = 1 << 18,
+        ReverseDefense = 1 << 19,
         NoTriggers = NoTriggerOnAttackEffects | NoTriggerWhenAttackedEffects,
         PhysicalStatusTest = Physical | IgnoreEvasion | IgnoreNullifyingGroundMagic | NoTriggerOnAttackEffects | NoTriggerWhenAttackedEffects | NoElement
     }
