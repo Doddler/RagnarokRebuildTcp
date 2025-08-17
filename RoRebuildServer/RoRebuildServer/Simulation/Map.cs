@@ -1709,12 +1709,12 @@ public class Map
         var xDir = (GameRandom.Next(0, 20000) % 2) == 1 ? 1 : -1;
         var yDir = (GameRandom.Next(0, 20000) % 2) == 1 ? 1 : -1;
 
-        for (var i = -1; i < 2; i++)
+        for (var x = -1; x < 2; x++)
         {
-            for (var j = -1; j < 2; j++)
+            for (var y = -1; y < 2; y++)
             {
-                var sx = p.X + i * (GameRandom.Next(0, 20000) % xr) * xDir;
-                var sy = p.Y + i * (GameRandom.Next(0, 20000) % yr) * yDir;
+                var sx = p.X + x * (GameRandom.Next(0, 20000) % xr) * xDir;
+                var sy = p.Y + y * (GameRandom.Next(0, 20000) % yr) * yDir;
                 var target = new Position(sx, sy);
 
                 if (mapBounds.Contains(target) && WalkData.IsCellWalkable(target))
