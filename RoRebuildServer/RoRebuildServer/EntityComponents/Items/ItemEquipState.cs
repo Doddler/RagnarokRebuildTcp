@@ -145,9 +145,10 @@ public class ItemEquipState
         }
         for (var i = 0; i < 3; i++)
             headgearMultiSlotInfo[i] = HeadgearPosition.None;
-
+        
         RemoveEquipEffectForAmmo();
         AmmoId = -1;
+        WeaponRange = 1;
     }
 
     public void UpdateAppearanceIfNecessary(EquipSlot slot)
@@ -186,6 +187,7 @@ public class ItemEquipState
         {
             UnEquipItem(EquipSlot.Weapon);
             updateAppearance = true;
+            WeaponRange = 1;
         }
         else
         {

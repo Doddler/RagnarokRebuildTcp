@@ -51,7 +51,7 @@ namespace Assets.Scripts.UI.TitleScreen
         private IEnumerator StartEvent()
         {
 #if !UNITY_EDITOR
-            ServerInputBox.text = "wss://roserver.dodsrv.com/ws";
+            ServerInputBox.text = PlayerPrefs.GetString($"ConnectServer", "ws://127.0.0.1:5000/ws");
 #endif
             UsernameBox.text = PlayerPrefs.GetString("LoginUsername", "");
             if (!string.IsNullOrWhiteSpace(GameConfig.Data?.SavedLoginToken) && !string.IsNullOrWhiteSpace(UsernameBox.text) && UsernameBox.text != "ID")
@@ -143,6 +143,7 @@ namespace Assets.Scripts.UI.TitleScreen
             var username = UsernameBox.text;
             var password = PasswordBox.text;
 
+            PlayerPrefs.SetString($"ConnectServer", ServerInputBox.text);
             AudioManager.Instance.PlaySystemSound(Parent.ButtonSound); //button sound
 
             if (currentTab == 0)
@@ -232,13 +233,21 @@ namespace Assets.Scripts.UI.TitleScreen
             if (Input.GetKeyDown(KeyCode.Tab))
                 HandleTabKey();
 
-#if(UNITY_EDITOR)
+// #if(UNITY_EDITOR)
+
+            //simplify testing stuff
             if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.F1))
-                ServerInputBox.text = "wss://roserver.dodsrv.com/ws";
-#else
-            if(Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.F1))
-                ServerInputBox.text = "ws://127.0.0.1:5000/ws";
-#endif
+            {
+                if (ServerInputBox.text == "ws://127.0.0.1:5000/ws")
+                    ServerInputBox.text = "wss://roserver.dodsrv.com/ws";
+                else
+                    ServerInputBox.text = "ws://127.0.0.1:5000/ws";
+                PlayerPrefs.SetString($"ConnectServer", ServerInputBox.text);
+            }
+// #else
+//             if(Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.F1))
+//                 ServerInputBox.text = "ws://127.0.0.1:5000/ws";
+// #endif
 
             if (currentTab == 0)
             {

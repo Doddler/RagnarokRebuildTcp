@@ -557,7 +557,7 @@ namespace Assets.Scripts.Sprites
             control.WeaponClass = param.WeaponClass;
             control.PartyName = param.PartyName;
             control.IsPartyMember = param.PartyId > 0 && param.PartyId == state.PartyId;
-
+            
             bodySprite.Controllable = control;
             if (param.State == CharacterState.Moving)
                 bodySprite.ChangeMotion(SpriteMotion.Walk);

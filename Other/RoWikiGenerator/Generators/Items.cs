@@ -579,6 +579,8 @@ public class Items
 
         foreach (var entry in GetCsvRows<CsvItemWeapon>("ItemsWeapons.csv"))
         {
+            if(entry.Code == "Staff_of_Destruction")
+                Console.WriteLine("Hi");
             if (!AvailableItems.TryGetValue(entry.Id, out var itemSource))
                 continue;
 
@@ -626,7 +628,7 @@ public class Items
         itemsByCategory.Add("Axe", weapons.Where(w => w.weaponClass.Id == 6).OrderBy(w => w.csvData.Rank).ThenBy(w => w.csvData.Attack).Select(w => (object)w).ToList());
         itemsByCategory.Add("2HAxe", weapons.Where(w => w.weaponClass.Id == 7).OrderBy(w => w.csvData.Rank).ThenBy(w => w.csvData.Attack).Select(w => (object)w).ToList());
         itemsByCategory.Add("Mace", weapons.Where(w => w.weaponClass.Id == 8).OrderBy(w => w.csvData.Rank).ThenBy(w => w.csvData.Attack).Select(w => (object)w).ToList());
-        itemsByCategory.Add("Rod", weapons.Where(w => w.weaponClass.Id == 10).OrderBy(w => w.csvData.Rank).ThenBy(w => w.csvData.Attack).Select(w => (object)w).ToList());
+        itemsByCategory.Add("Rod", weapons.Where(w => w.weaponClass.Id == 10 || w.weaponClass.Id == 11).OrderBy(w => w.csvData.Rank).ThenBy(w => w.csvData.Attack).Select(w => (object)w).ToList());
         itemsByCategory.Add("Bow", weapons.Where(w => w.weaponClass.Id == 12).OrderBy(w => w.csvData.Rank).ThenBy(w => w.csvData.Attack).Select(w => (object)w).ToList());
 
 

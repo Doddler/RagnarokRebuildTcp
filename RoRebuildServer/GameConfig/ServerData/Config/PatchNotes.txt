@@ -1,3 +1,26 @@
+::2025-08-16 Update
+<i>Server Side Changes</i>
+- Loot priority now exists for monster drops, the top contributing player and their party will have several seconds where only they can pick up a monster's drops.
+- Fixed an issue where giving an npc money did not update your total zeny count on the client.
+- Monsters that switch targets when melee attacked will now only switch when hit by auto-attacks and not skills. This can still be blocked by provoking the monster.
+- Wind Ghost card now works.
+- The auto-spell jupitel thunder effect of Staff of Destruction corrected to activate when taking melee attacks, not when performing melee attacks.
+
+<i>Client Side Changes</i>
+- Targeting ally targeted skills onto your character info box in the top left will now cast that skill on yourself.
+
+::2025-08-15 Update
+<i>Server Side Changes</i>
+- Staff of Destruction and Hurricane Fury added to the high-end weapon vendor. (Their descriptions will be out of date without a client update)
+- Dead branch monsters now use a different, more aggressive AI type.
+- Unequipping your weapon will now properly reset your attack range.
+- Fixed an issue where items that cause status effects when dealing ranged damage or when being attacked were not function correctly.
+- Fixed mage not having a weapon sprite when using a 2h staff.
+
+<i>Client Side Changes</i>
+- HP bars for non-party members will now display in yellow, with party members displaying as green.
+- Party member HP bars are always visible, regardless of current HP. This doesn't currently respect your option settings, but the whole thing needs to be rewritten.
+
 ::2025-08-14 Update
 <i>Server Side Changes</i>
 - Auto-attack lock will automatically disengage if the monster has fatal damage queued.
@@ -6,6 +29,7 @@
 - Autocast sight no longer triggers an attack cooldown.
 - You can no longer pick up items while sitting.
 - When sitting you now get double the hp/sp amount on the second and subsequent regen ticks.
+- Fixed an issue where 0 items could be removed from storage and it would create an empty item stack.
 - Made some changes to the okolnir challenge.
   * The monsters in okolnir are randomized between runs.
   * Lowered mdef on the valkyries a little to be a bit more fair to casters.

@@ -123,7 +123,7 @@ Item("Pet_Incubator") { OnValidate: return false; OnUse: }
 Item("Gift_Box") { OnValidate: return false; OnUse: }
 Item("Concentration_Potion") { OnUse: AddStatusEffect(StatusIncreasedAttackSpeed, 30m, 10); }
 Item("Awakening_Potion") { OnValidate: return CharacterLevel >= 40 && JobId != 4; OnUse: AddStatusEffect(StatusIncreasedAttackSpeed, 30m, 15); }
-Item("Berserk_Potion") { OnValidate: return CharacterLevel > 80 && (JobId == 1 || JobId == 3 || JobId == 6); OnUse: AddStatusEffect(StatusIncreasedAttackSpeed, 30m, 20); }
+Item("Berserk_Potion") { OnValidate: return CharacterLevel >= 85 && (JobId == 1 || JobId == 3 || JobId == 6); OnUse: AddStatusEffect(StatusIncreasedAttackSpeed, 30m, 20); }
 Item("Elemental_Converter_Fire") { OnUse: AddStatusEffect(StatusElementalConverterFire, 10m);}
 Item("Elemental_Converter_Water") { OnUse: AddStatusEffect(StatusElementalConverterWater, 10m);}
 Item("Elemental_Converter_Wind") { OnUse: AddStatusEffect(StatusElementalConverterWind, 10m);}

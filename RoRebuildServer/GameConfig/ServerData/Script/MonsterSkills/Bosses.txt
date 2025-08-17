@@ -548,6 +548,88 @@ StateIdle:
 	
 }
 
+
+//------------------------------------
+// Valkyrie Randgris
+//------------------------------------
+
+SkillHandler("VALKYRIE") {
+	StateIdle:
+		TryCast(Heal, 9999, 100%, 0s, 5s)[HpPercent < 60];
+	StateChase:
+		TryCast(Heal, 9999, 100%, 0.7s, 5s)[FindAllyBelowHpPercent(60)];
+	StateAttacking:
+		TryCast(Heal, 9999, 100%, 0.7s, 5s)[FindAllyBelowHpPercent(60)];
+		TryCast(SonicBlow, 1, 5%, 1s, 10s);
+		TryCast(JupitelThunder, 3, 2%, 2s, 10s);
+}
+
+//TossSummonMonster will default to have no exp/drops so this exists to fix that
+AltSkillHandler("SummonedValkyrie") {
+OnInit:
+	ChangeAiClass(AiStandardBoss);
+	SetGivesExperience(true); 
+	ChangeAiHandler("VALKYRIE");
+StateAny:
+	if(TimeAlive > 3s) {
+		ChangeAiClass(AiStandardBoss);
+	}
+}
+
+SkillHandler("RANDGRIS") {
+	OnInit:
+		ResummonMinionCount = 1;
+		SkipNextMinionDeadTimer();
+	StateIdle:
+		TryCast(RecallMinion, 1, 100%, 0, 15s)[MinionCount > 0];
+		TryCast(Heal, 9999, 100%, 0s, 5s)[HpPercent < 50];
+	StateChase:
+		TryCast(RecallMinion, 1, 50%, 0, 25s)[MinionCount > 0 && MinionsLost];
+		TryCast(CallMinion, 1, 100%, 1.5s, 0, NoInterrupt)[HpPercent < 85 && MinionsDeadFor(60s)] -> {
+			DescendSummonMinions(2, "VALKYRIE", "SummonedValkyrie", 9, 9);
+		}
+		TryCast(CallMinion, 1, 100%, 1.5s, 0, NoInterrupt)[HpPercent < 45 && IsNamedEventOffCooldown("SummonMinions2")] -> {
+			DescendSummonMinions(4, "VALKYRIE", "SummonedValkyrie", 9, 9);
+			SetEventCooldown("SummonMinions2", -1);
+		}
+		TryCast(EarthShaker, 1, 20%, 4s, 20s, NeverInterrupt | EventOnStartCast)[HpPercent < 95]  -> {
+			CreateEventOnTarget("EarthShakerCastEvent", 2 + (100 - HpPercent) / 33);
+			if(HpPercent < 50)
+				SetStateFlag(0, 1);
+		}
+		TryCast(NoCast, 1, 100%, 0, 0)[GetStateFlag(0) > 0] -> {
+			CreateEventOnTarget("EarthShakerCastEvent", 2 + (100 - HpPercent) / 33);
+			SetStateFlag(0, 0);
+		}
+		TryCast(RollingThunder, 1, 20%, 2.2s, 25s, NeverInterrupt | EventOnStartCast)[HpPercent < 90]  -> CreateEventOnTarget("ExaflareOutOfEventControlEvent", 2 + (100 - HpPercent) / 33);
+		TryCast(LordOfVermilion, 11, 10%, 2.8s, 25s, RandomTarget);
+		TryCast(JupitelThunder, 9, 5%, 0.7s, 15s);
+	StateAttacking:
+		TryCast(RecallMinion, 1, 50%, 0, 25s)[MinionCount > 0 && MinionsLost];
+		TryCast(CallMinion, 1, 100%, 1.5s, 0, NoInterrupt)[HpPercent < 85 && MinionsDeadFor(60s)] -> {
+			DescendSummonMinions(2, "VALKYRIE", "SummonedValkyrie", 9, 9);
+		}
+		TryCast(CallMinion, 1, 100%, 1.5s, 0, NoInterrupt)[HpPercent < 45 && IsNamedEventOffCooldown("SummonMinions2")] -> {
+			DescendSummonMinions(4, "VALKYRIE", "SummonedValkyrie", 9, 9);
+			SetEventCooldown("SummonMinions2", -1);
+		}
+		TryCast(EarthShaker, 1, 20%, 4s, 20s, NeverInterrupt | EventOnStartCast)[HpPercent < 95]  -> {
+			CreateEventOnTarget("EarthShakerCastEvent", 2 + (100 - HpPercent) / 33);
+			if(HpPercent < 50)
+				SetStateFlag(0, 1);
+		}
+		TryCast(NoCast, 1, 100%, 0, 0)[GetStateFlag(0) > 0] -> {
+			CreateEventOnTarget("EarthShakerCastEvent", 2 + (100 - HpPercent) / 33);
+			SetStateFlag(0, 0);
+		}
+		TryCast(RollingThunder, 1, 20%, 2.2s, 25s, NeverInterrupt | EventOnStartCast)[HpPercent < 90]  -> CreateEventOnTarget("ExaflareOutOfEventControlEvent", 2 + (100 - HpPercent) / 33);
+		TryCast(LordOfVermilion, 11, 5%, 2.8s, 25s, RandomTarget);
+		TryCast(SonicBlow, 1, 5%, 1s, 10s);
+		TryCast(JupitelThunder, 9, 5%, 0.7s, 15s);
+		TryCast(TwoHandQuicken, 1, 100%, 0, 120s)[HpPercent < 25];
+		TryCast(PowerUp, 2, 100%, 0.7s, 25s)[HpPercent < 25];
+}
+
 //------------------------------------
 // Moonlight Flower
 //------------------------------------

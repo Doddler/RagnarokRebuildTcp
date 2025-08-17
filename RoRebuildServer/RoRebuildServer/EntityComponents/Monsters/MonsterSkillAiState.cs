@@ -751,7 +751,6 @@ public class MonsterSkillAiState(Monster monsterIn)
         }
     }
 
-
     public void SummonMonstersUnderMyMaster(int count, string name, int width = 0, int height = 0, int offsetX = 0, int offsetY = 0)
     {
         Debug.Assert(monster.Character.Map != null, $"Npc {monster.Character.Name} cannot summon mobs {name} nearby, it is not currently attached to a map.");
@@ -840,6 +839,31 @@ public class MonsterSkillAiState(Monster monsterIn)
             monster.AddChild(ref minion, MonsterAiType.AiMinion);
             //minionMonster.MakeChild(ref monster.Entity);
         }
+    }
+
+
+    public void DescendSummonMinions(int count, string name, string aiType, int width = 0, int height = 0, int offsetX = 0, int offsetY = 0)
+    {
+        Debug.Assert(monster.Character.Map != null, $"Npc {monster.Character.Name} cannot summon mobs {name} nearby, it is not currently attached to a map.");
+
+        var monsterDef = DataManager.MonsterCodeLookup[name];
+
+        var area = Area.CreateAroundPoint(monster.Character.Position + new Position(offsetX, offsetY), width, height);
+
+        for (var i = 0; i < count; i++)
+        {
+            var minion = World.Instance.CreateMonster(monster.Character.Map, monsterDef, area, null, false);
+            var minionMonster = minion.Get<Monster>();
+            minionMonster.ResetAiUpdateTime();
+            minionMonster.AddDelay(0.6f);
+            minionMonster.GivesExperience = false;
+            
+            monster.Character.Map.AddEntityWithEvent(ref minion, CreateEntityEventType.Descend, monster.Character.Position);
+            monster.AddChild(ref minion, MonsterAiType.AiMinion);
+            minionMonster.ChangeAiSkillHandler(aiType);
+        }
+
+        MinionDeathTime = -1; //reset
     }
 
     public void SendEmote(int emoteId)

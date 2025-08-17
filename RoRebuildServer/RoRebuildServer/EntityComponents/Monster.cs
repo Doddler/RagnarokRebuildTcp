@@ -535,6 +535,7 @@ public partial class Monster : IEntityAutoReset
         var hasDrop = false;
         var totalChance = 0;
         int dropId = 0;
+        var topContributor = GetTopContributor();
         if (DataManager.MonsterDropData.TryGetValue(MonsterBase.Code, out var drops))
         {
             for (var i = 0; i < drops.DropChances.Count; i++)
@@ -548,6 +549,8 @@ public partial class Monster : IEntityAutoReset
                         count = GameRandom.NextInclusive(d.CountMin, d.CountMax);
                     var dropPos = GetNextTileForDrop(dropId);
                     var item = new GroundItem(dropPos, d.Id, count);
+                    if (topContributor != null)
+                        item.SetExclusivePickupTime(topContributor, isMvp ? 8f : 4f);
                     Character.Map.DropGroundItem(ref item);
                     hasDrop = true;
                     dropId++;
@@ -567,6 +570,8 @@ public partial class Monster : IEntityAutoReset
 
                     var dropPos = GetNextTileForDrop(dropId);
                     var item = new GroundItem(dropPos, drops.DropChances[i].Id, 1);
+                    if (topContributor != null)
+                        item.SetExclusivePickupTime(topContributor, isMvp ? 8f : 4f);
                     Character.Map.DropGroundItem(ref item);
                     break;
                 }
@@ -594,6 +599,7 @@ public partial class Monster : IEntityAutoReset
         if (TotalDamageReceived == null || TotalDamageReceived.Count < 1)
             return;
 
+        TotalDamageReceived.ClearInactive();
         var dmgValues = TotalDamageReceived.InternalValueList;
         if(dmgValues != null)
             dmgValues[0] = dmgValues[0] * 130 / 100; //give first attacker a bonus contribution
@@ -601,6 +607,9 @@ public partial class Monster : IEntityAutoReset
 
     public WorldObject? GetTopContributor()
     {
+        if (TotalDamageReceived == null || TotalDamageReceived.Count == 0)
+            return null;
+
         var maxDamage = 0;
         WorldObject? damageDealer = null;
 

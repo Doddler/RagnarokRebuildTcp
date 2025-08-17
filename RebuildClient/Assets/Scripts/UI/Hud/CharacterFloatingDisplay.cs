@@ -260,6 +260,9 @@ namespace Assets.Scripts.UI.Hud
 
             hpBar = Manager.AttachHpBar(gameObject);
             gameObject.SetActive(true);
+            UpdateMaxHp(controllable.MaxHp);
+            UpdateHp(controllable.Hp, controllable.Hp, false);
+            RefreshHpBarDetails();
         }
 
         public void UpdateMaxHp(int maxHp) => this.maxHp = maxHp;
@@ -284,9 +287,20 @@ namespace Assets.Scripts.UI.Hud
                 
             // Debug.Log($"Update HP on {characterName}: {hp}/{maxHp}");
             gameObject.SetActive(true);
+            RefreshHpBarDetails();
+        }
+
+        public void RefreshHpBarDetails()
+        {
+            if (hpBar == null)
+                return;
+            
             if (isPlayer)
             {
-                hpBar.SetColor(new Color32(0x6C, 0xEA, 0x45, 255));
+                if(controllable.IsPartyMember || controllable.IsMainCharacter)
+                    hpBar.SetColor(new Color32(0x6C, 0xEA, 0x45, 255));
+                else //EAE745
+                    hpBar.SetColor(new Color32(0xEA, 0xEA, 0x35, 255));
                 if(isMain)
                     ((RectTransform)hpBar.transform).sizeDelta = new Vector2(100f, 10f);
                 else

@@ -3,6 +3,7 @@ using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildZoneServer.Networking;
 using RoRebuildServer.Data;
+using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.Simulation.Util;
 
@@ -11,6 +12,8 @@ namespace RoRebuildServer.Simulation.Items;
 public struct GroundItem : IEquatable<GroundItem>
 {
     public int Id = -1;
+    public int ContributorId = -1;
+    public float ExclusiveTime;
     public float Expiration;
     public ItemType Type;
     public FloatPosition Position;
@@ -37,6 +40,12 @@ public struct GroundItem : IEquatable<GroundItem>
     public GroundItem(Position tile, RegularItem item) => InitializeRegularItem(tile, item);
 
     public GroundItem(Position tile, UniqueItem item) => InitializeUniqueItem(tile, item);
+
+    public void SetExclusivePickupTime(WorldObject src, float expiration)
+    {
+        ContributorId = src.Id;
+        ExclusiveTime = Time.ElapsedTimeFloat + expiration;
+    }
 
     public void InitializeUniqueItem(Position tile, UniqueItem item)
     {

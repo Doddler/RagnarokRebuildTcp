@@ -19,6 +19,8 @@ ComboItem("DarkLordSet", "Dark_Illusion_Card", "Dark_Lord_Card") { OnEquip: AddS
 ComboItem("OwlSet", "Owl_Duke_Card", "Owl_Baron_Card") { OnEquip: AutoSpellOnAttack(LightningBolt, 5, 100);}
 ComboItem("CrabSet", "Crab_Card", "Aster_Card", "Shellfish_Card") { OnEquip: AddStat(AddAttackElementWater, 45); }
 
+ComboItem("Skel_Set", "Skeleton_Card", "Skel_Prisoner_Card") { OnEquip: AddStat(WhenAttackedSleep, 60); }
+
 ComboItem("OrcArcherSet", "Orc_Archer_Bow", "Steel_Arrow") { OnEquip: AddStat(AddAttackRangedAttack, 50); }
 
 //other

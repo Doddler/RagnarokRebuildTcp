@@ -1207,6 +1207,13 @@ namespace Assets.Scripts.Network
             EnsureFloatingDisplayCreated();
         }
 
+        public void ForceHpBarOn(int hp)
+        {
+            EnsureFloatingDisplayCreated();
+            //FloatingDisplay.UpdateHp(hp, hp ,false);
+            FloatingDisplay.ForceHpBarOn();
+        }
+
         //     public void BlastOff(Vector3 direction)
         //     {
         //         isMoving = false;
@@ -1554,6 +1561,22 @@ namespace Assets.Scripts.Network
                 MinimapController.Instance.SetPlayerPosition(CellPosition, Directions.GetAngleForDirection(SpriteAnimator.Direction) + 180f);
 
                 Shader.SetGlobalVector(RoBlindFocus, transform.position);
+            }
+
+            //this is scuffed
+            if (CharacterType == CharacterType.Player && PlayerState.Instance.PartyId > 0 && PartyName == PlayerState.Instance.PartyName)
+            {
+
+                FloatingDisplay.ForceHpBarOn();
+                FloatingDisplay.RefreshHpBarDetails();
+                IsPartyMember = true;
+            }
+            else
+            {
+                if(IsPartyMember)
+                    FloatingDisplay.RefreshHpBarDetails();
+                
+                IsPartyMember = false;
             }
 
             if (SpriteAnimator.SpriteData == null)

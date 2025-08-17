@@ -36,7 +36,7 @@ public class PacketStorageInteraction : IClientPacketHandler
         var bagId = msg.ReadInt32();
         var count = msg.ReadInt32();
 
-        if (count < 0)
+        if (count <= 0)
             return;
 
         //inventory to storage

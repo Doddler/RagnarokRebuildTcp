@@ -76,7 +76,7 @@ Item("Pirate_Skel_Card") { OnEquip: } //enable skill discount 5
 Item("Bigfoot_Card") { OnEquip: AddStat(AddResistRaceInsect, 30); }
 Item("Argos_Card") { OnEquip: AddStat(ResistStoneStatus, 30); AddStat(AddDef, 1); AddStat(AddResistElementPoison, 30); }
 Item("Magnolia_Card") { OnEquip: AddStat(OnMeleeAttackCurse, 50); AddStat(OnRangedAttackCurse, 50); AddStat(AddAttackPower, 5); }
-Item("Phen_Card") { OnEquip: AddStat(UninterruptibleCast, 1); AddStat(AddCastTime, 15); } //make cast uninteruptable, add 25% cast time
+Item("Phen_Card") { OnEquip: AddStat(UninterruptibleCast, 1); AddStat(AddCastTime, 10); } //make cast uninteruptable, add 25% cast time
 Item("Savage_Card") { OnEquip: AddStat(AddVit, 3); }
 Item("Mantis_Card") { OnEquip: AddStat(AddStr, 3); }
 Item("Flora_Card") { OnEquip: AddStat(AddAttackRaceAquatic, 20); }
@@ -299,7 +299,7 @@ Item("Wootan_Shooter_Card") { OnEquip: AddStat(AddDef, 1); AddStat(ResistConfusi
 Item("Wootan_Fighter_Card") { OnEquip: AddStat(AddDef, 1); AddStat(ResistBleedingStatus, 20); }
 Item("Cloud_Hermit_Card") { OnValidate: return false; OnEquip: }
 Item("Samurai_Specter_Card") { OnEquip: } //should add ignore def on normal, lose hp and kill hp ercovery
-Item("Wind_Ghost_Card") { OnEquip: } //autospell jupitel thunder
+Item("Wind_Ghost_Card") { OnEquip: var lvl = 3; if(HasLearnedSkill(JupitelThunder, 10)) lvl = 10; AutoSpellOnAttack(JupitelThunder, lvl, 30); } //autospell jupitel thunder
 Item("Jing_Guai_Card") { OnValidate: return false; OnEquip: }
 Item("Eclipse_Card") { OnEquip: AddStat(AddVit, 1); }
 Item("Explosion_Card") { OnEquip: AddStat(AddExpRaceDragon, 10); AddStat(AddResistRaceDragon, -20); }

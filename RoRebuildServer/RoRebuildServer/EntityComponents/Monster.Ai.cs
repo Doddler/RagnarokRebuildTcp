@@ -299,6 +299,9 @@ public partial class Monster
         if (CombatEntity.HasStatusEffectOfType(CharacterStatusEffect.Provoke))
             return false;
 
+        if (LastDamageSourceType != CharacterSkill.None && LastDamageSourceType != CharacterSkill.Provoke)
+            return false;
+
         var target = ce.Character;
 
         if (target.Position.DistanceTo(Character.Position) <= MonsterBase.Range)

@@ -3,6 +3,9 @@ using RoRebuildServer.EntityComponents.Util;
 using System.Diagnostics;
 using RebuildSharedData.Enum;
 using RoRebuildServer.EntityComponents;
+using RoRebuildServer.EntitySystem;
+using RoRebuildServer.Simulation;
+using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character
 {
@@ -35,6 +38,9 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
 
             if (player.Character.Position.SquareDistance(item.Position) <= 1)
             {
+                if (!player.HasLootPriority(item))
+                    return;
+
                 if (player.Character.InAttackCooldown) //yes, we use attack cooldown to throttle pickup speed
                 {
                     player.Character.QueuedAction = QueuedAction.PickUpItem;

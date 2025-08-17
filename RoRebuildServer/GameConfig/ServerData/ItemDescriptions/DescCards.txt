@@ -284,7 +284,7 @@ ATK +5
 +5% chance of <color=#800000>Curse</color> on physical attack
 
 ::Phen_Card //id 4077 - slotted on Accessory
-Cast Time +15%
+Cast Time +10%
 Skill/spell casts becomes uninterruptible
 
 ::Savage_Card //id 4078 - slotted on Armor
@@ -1049,7 +1049,6 @@ Lose 999 HP/unequip
 +2% Autospell <color=#0000FF>Jupitel Thunder 3</color> on non-skill attack
 if <color=#0000FF>Jupitel Thunder 10</color>:
  Autospell <color=#0000FF>Jupitel Thunder 10</color> instead
-<color=#BB3333><i>Some or all of this card's effects do not function as expected.</i></color>
 
 ::Jing_Guai_Card //id 4265 - slotted on Accessory
 +1% chance to find <color=#008080>Box of Sunlight</color> on Angel kill

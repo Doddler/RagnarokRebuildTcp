@@ -69,10 +69,10 @@ MapConfig("c_tower4")
 	CreateSpawn("OWL_DUKE", 3, %(108, 58, 100, 10));
 	CreateSpawn("OWL_DUKE", 3, %(108, 38, 100, 10));
 	CreateSpawn("OWL_DUKE", 3, %(108, 18, 100, 10));
-	CreateSpawn("OWL_BARON", 1, %(105, 153, 21, 8), 15m, 5m);
-	CreateSpawn("OWL_BARON", 1, %(107, 67, 14, 6), 15m, 5m);
-	CreateSpawn("OWL_BARON", 1, %(52, 116, 24, 19), 15m, 5m);
-	CreateSpawn("OWL_BARON", 1, %(141, 104, 2, 31), 15m, 5m);
+	CreateSpawn("OWL_BARON", 1, %(105, 153, 21, 8), 3m);
+	CreateSpawn("OWL_BARON", 1, %(107, 67, 14, 6), 3m);
+	CreateSpawn("OWL_BARON", 1, %(52, 116, 24, 19), 3m);
+	CreateSpawn("OWL_BARON", 1, %(141, 104, 2, 31), 3m);
 	CreateSpawn("RIDEWORD", 1, %(98, 180, 0, 0), 300000, 150000);
 	CreateSpawn("RIDEWORD", 1, %(97, 180, 0, 0), 240000, 150000);
 	CreateSpawn("RIDEWORD", 1, %(96, 180, 0, 0), 350000, 150000);

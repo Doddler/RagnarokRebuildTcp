@@ -4822,7 +4822,7 @@
     },
     {
       "Code": "Hurricane_Fury",
-      "Description": "\u003Ccolor=#808080\u003EA massive axe embedded with an orb imbued with the power of a hurricane.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003EAxe (2-Handed)\u003C/color\u003E\nDurability: \u003Ccolor=#777777\u003EUnbreakable\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E332\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E350\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E80\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003E\u003Ci\u003ECurrently unequippable by any job\u003C/i\u003E\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA massive axe embedded with an orb imbued with the power of a hurricane.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EASPD \u002BRefine%\n-(10 \u002B Refine)% damage taken from medium size enemies.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003EAxe (2-Handed)\u003C/color\u003E\nDurability: \u003Ccolor=#777777\u003EUnbreakable\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E332\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E350\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E80\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EMerchant\u003C/color\u003E"
     },
     {
       "Code": "Brave_Battle_Axe",
@@ -4978,11 +4978,11 @@
     },
     {
       "Code": "Soul_Staff",
-      "Description": "\u003Ccolor=#808080\u003EA high quality staff that amplifies psychic power.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EAGI \u002B2, INT \u002B5\nMATK \u002B15%\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ERod\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E25\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E140\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E3\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E73\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EMage, Soul Linker\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA high quality staff that amplifies psychic power.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EAGI \u002B2, INT \u002B5\nMATK \u002B20%\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ERod\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E25\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E140\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E3\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E73\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EMage, Soul Linker\u003C/color\u003E"
     },
     {
       "Code": "Wizardry_Staff",
-      "Description": "\u003Ccolor=#808080\u003EAn awesome staff crafted by an ancient wizard.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EINT \u002B6, DEX \u002B2\nMATK \u002B15%\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ERod\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E120\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E240\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E90\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EMage, Soul Linker\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EAn awesome staff crafted by an ancient wizard.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EINT \u002B6, DEX \u002B2\nMATK \u002B20%\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ERod\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E120\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E240\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E90\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EMage, Soul Linker\u003C/color\u003E"
     },
     {
       "Code": "Gae_Bolg",
@@ -5814,7 +5814,7 @@
     },
     {
       "Code": "Staff_of_Destruction",
-      "Description": "\u003Ccolor=#808080\u003EA tremendously powerful staff that can be wielded by the spiritually strong.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EAGI \u002B10, INT \u002B3\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ERod (2-Handed)\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E130\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E250\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E80\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003E\u003Ci\u003ECurrently unequippable by any job\u003C/i\u003E\u003C/color\u003E"
+      "Description": "\u003Ccolor=#808080\u003EA tremendously powerful staff that can be wielded by the spiritually strong.\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003Cline-height=100%\u003EMATK \u002B25%\nAGI \u002B10, INT \u002B3\nEvery 2 refine increase MATK by 1%.\nEvery refine increases SP cost by 2%.\nAdds (2 * Refine)% chance to autospell Jupitel Thunder 5 when receiving melee damage.\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003EClass: \u003Ccolor=#777777\u003ERod (2-Handed)\u003C/color\u003E\nAttack: \u003Ccolor=#777777\u003E130\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E250\u003C/color\u003E\nWeapon Level: \u003Ccolor=#777777\u003E4\u003C/color\u003E\nRequired Level: \u003Ccolor=#777777\u003E80\u003C/color\u003E\nJobs: \u003Ccolor=#777777\u003EMage, Soul Linker\u003C/color\u003E"
     },
     {
       "Code": "Divine_Cross",
@@ -9442,7 +9442,7 @@
     },
     {
       "Code": "Wind_Ghost_Card",
-      "Description": "\u002B2% Autospell \u003Ccolor=#0000FF\u003EJupitel Thunder 3\u003C/color\u003E on non-skill attack\nif \u003Ccolor=#0000FF\u003EJupitel Thunder 10\u003C/color\u003E:\n Autospell \u003Ccolor=#0000FF\u003EJupitel Thunder 10\u003C/color\u003E instead\n\u003Ccolor=#BB3333\u003E\u003Ci\u003ESome or all of this card\u0027s effects do not function as expected.\u003C/i\u003E\u003C/color\u003E\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
+      "Description": "\u002B2% Autospell \u003Ccolor=#0000FF\u003EJupitel Thunder 3\u003C/color\u003E on non-skill attack\nif \u003Ccolor=#0000FF\u003EJupitel Thunder 10\u003C/color\u003E:\n Autospell \u003Ccolor=#0000FF\u003EJupitel Thunder 10\u003C/color\u003E instead\u003Cline-height=120%\u003E\n\u003C/line-height=100%\u003ESockets In: \u003Ccolor=#777777\u003EAccessory\u003C/color\u003E\nWeight: \u003Ccolor=#777777\u003E1\u003C/color\u003E"
     },
     {
       "Code": "Jing_Guai_Card",

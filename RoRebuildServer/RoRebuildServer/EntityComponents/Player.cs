@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Numerics;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
@@ -198,6 +199,7 @@ public class Player : IEntityAutoReset
     {
         var v = CharData[(int)PlayerStat.Zeny] - val;
         CharData[(int)PlayerStat.Zeny] = v > 0 ? v : 0;
+        CommandBuilder.SendUpdateZeny(this);
     }
 
     //how much it costs (cumulatively) to have a stat at a specific level. Should be in its own file...
@@ -905,13 +907,13 @@ public class Player : IEntityAutoReset
                     OnMeleeAttackStatusFlags |= (StatusTriggerFlags)(1 << (effect - CharacterStat.OnMeleeAttackFirst));
                     break;
                 case >= CharacterStat.OnRangedAttackFirst and <= CharacterStat.OnRangedAttackLast:
-                    OnMeleeAttackStatusFlags |= (StatusTriggerFlags)(1 << (effect - CharacterStat.OnRangedAttackFirst));
+                    OnRangedAttackStatusFlags |= (StatusTriggerFlags)(1 << (effect - CharacterStat.OnRangedAttackFirst));
                     break;
                 case >= CharacterStat.OnMeleeStatusSelfFirst and <= CharacterStat.OnMeleeStatusSelfLast:
-                    OnMeleeAttackStatusFlags |= (StatusTriggerFlags)(1 << (effect - CharacterStat.OnMeleeStatusSelfFirst));
+                    OnMeleeAttackStatusSelfFlags |= (StatusTriggerFlags)(1 << (effect - CharacterStat.OnMeleeStatusSelfFirst));
                     break;
                 case >= CharacterStat.WhenAttackedFirst and <= CharacterStat.WhenAttackedLast:
-                    OnMeleeAttackStatusFlags |= (StatusTriggerFlags)(1 << (effect - CharacterStat.WhenAttackedFirst));
+                    WhenAttackedStatusFlags |= (StatusTriggerFlags)(1 << (effect - CharacterStat.WhenAttackedFirst));
                     break;
                 case CharacterStat.PureHpDrain:
                 case CharacterStat.HpDrainChance:
@@ -1607,7 +1609,7 @@ public class Player : IEntityAutoReset
         var monster = entity.Get<Monster>();
         if (lifetime < int.MaxValue)
             monster.CombatEntity.AddStatusEffect(CharacterStatusEffect.Doom, lifetime);
-        monster.ChangeAiStateMachine(MonsterAiType.AiAggressiveActiveSense);
+        monster.ChangeAiStateMachine(MonsterAiType.AiStandardBoss);
         monster.ResetAiUpdateTime(); //make it active instantly
     }
 
@@ -1791,11 +1793,31 @@ public class Player : IEntityAutoReset
         return true; //lol
     }
 
+    public bool HasLootPriority(GroundItem item)
+    {
+        if (item.ContributorId > 0 && Character.Id != item.ContributorId && item.ExclusiveTime > Time.ElapsedTimeFloat)
+        {
+            var dropOwner = World.Instance.GetEntityById(item.ContributorId);
+
+            if (dropOwner.IsAlive() && dropOwner.TryGet<Player>(out var prioPlayer))
+            {
+                if (prioPlayer.Party == null || Party == null ||
+                    prioPlayer.Party.PartyId != Party.PartyId)
+                {
+                    CommandBuilder.ErrorMessage(this, "You are unable to pick up this item yet.");
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
     public bool TryPickup(GroundItem groundItem)
     {
         var item = groundItem.ToItemReference();
 
-        if (!CanPickUpItem(item))
+        if (!CanPickUpItem(item) || !HasLootPriority(groundItem))
             return false;
 
         Character.Map!.PickUpOrRemoveItem(Character, groundItem.Id);

@@ -1066,6 +1066,8 @@ public class Map
 
     public int GatherPlayersInArea(Area area, EntityList? list, bool checkImmunity = false)
     {
+        area.ClipArea(MapBounds);
+
         var hasList = list != null;
         var count = 0;
         var chunkArea = GetChunksForArea(area);
@@ -1177,6 +1179,25 @@ public class Map
 
         effect = null;
         return false;
+    }
+
+    private static readonly int[] scanOrder = [0, 3, 5, 7, 2, 4, 6, 1];
+    public Position ScanLineOfSightForWallInDirection(Position start, Position center, int distance, Direction dir)
+    {
+        //var dir = scanOrder[GameRandom.Next(0, 8)];
+
+        var (x, y) = Directions.GetXYForDirection(dir);
+
+        var pos = start;
+        do
+        {
+            var p2 = new Position(pos.X + x, pos.Y + y);
+            if (!WalkData.IsCellWalkable(p2))
+                break;
+            pos = p2;
+        } while (pos.SquareDistance(center) < distance);
+
+        return pos;
     }
 
     public Position GetRandomVisiblePositionInArea(Position center, int minDistance, int distance, int checksPerDistance = 10)

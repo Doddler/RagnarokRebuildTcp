@@ -215,8 +215,8 @@ public class CharacterBag : IResettable
 
     public bool RemoveItemByBagIdAndGetRemovedItem(int id, int removeCount, out ItemReference itemOut)
     {
-        if (removeCount < 0)
-            throw new Exception($"Player attempting to remove negative items from their bag.");
+        if (removeCount <= 0)
+            throw new Exception($"Player attempting to remove {removeCount} items from their bag.");
 
         if (RegularItems.TryGetValue(id, out var regular))
         {

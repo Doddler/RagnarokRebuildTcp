@@ -20,7 +20,7 @@ ARGIOPE,Bug_Leg,5335,Zargon,1200,Rough_Elunium,175,Boots_,5,Green_Herb,1500,Amet
 ARGOS,Cobweb,9000,Scell,1200,Bug_Leg,500,Rough_Elunium,61,Green_Herb,670,Yellow_Herb,250,,0,Argos_Card,1
 ASSULTER,Turtle_Shell,4413,Destroyed_Armor,1200,Old_Shuriken,840,Yellow_Herb,1280,Zargon,1240,Huuma_Wing_Shuriken,5,Old_Blue_Box,1,Assaulter_Card,1
 ASTER,Sticky_Mucus,500,Coral_Reef,40,Single_Cell,1200,Yellow_Herb,200,Zargon,60,Apple,100,,0,Aster_Card,1
-BAPHOMET,Crescent_Scythe,900,Majestic_Goat,900,Clip,800,Emperium,500,Old_Purple_Box,3000,Elunium,5432,Oridecon,4171,Okolnir_Key,5000,Baphomet_Card,1
+BAPHOMET,Crescent_Scythe,900,Majestic_Goat,900,Clip,800,Emperium,500,Old_Purple_Box,3000,Elunium,5432,Oridecon,4171,Baphomet_Doll,3000,Okolnir_Key,5000,Baphomet_Card,1
 BAPHOMET_,Evil_Horn,500,Oridecon,63,Halberd_,2,Yggdrasil_Berry,50,Yggdrasil_Leaf,100,Yellow_Herb,1300,Boots,50,Baphomet_Jr._Card,1
 BATHORY,Star_Dust,200,Witch_Starsand,4850,Wizard_Hat,3,Arc_Wand_,5,Star_Crumb,30,Old_Magicbook,15,Old_Broom,20,Bathory_Card,1
 BIGFOOT,Bear's_Footskin,9000,Poo_Poo_Hat,5,Animal_Skin,5000,Puppet,80,Potato,1500,Honey,450,Rough_Oridecon,43,Bigfoot_Card,1
@@ -182,8 +182,8 @@ ORC_SKELETON,Orc's_Fang,5500,Skel-Bone,3500,Rough_Elunium,80,Orc_Helm,2,Buster_,
 ORC_ZOMBIE,Orc_Claw,5500,Sticky_Mucus,3000,Emperium,1,,0,,0,,0,,0,Orc_Zombie_Card,1
 ORK_HERO,Heroic_Emblem,9700,,0,Light_Epsilon,450,Shield_,750,Orcish_Sword,2000,Elunium,4559,Oridecon,3589,Okolnir_Key,2500,Orc_Hero_Card,1
 ORK_WARRIOR,Iron,210,Orcish_Voucher,9000,Rough_Oridecon,40,Cigarette,3,Battle_Axe_,10,Orcish_Axe,5,Axe,100,Orc_Warrior_Card,1
-OSIRIS,Old_Purple_Box,2000,Assassin_Dagger,450,Crown,400,Jamadhar_,1200,Hand_of_God,1000,Sphinx_Hat,450,Oridecon,3783,Okolnir_Key,3000,Osiris_Card,1
-OWL_BARON,Tattered_Clothes,3500,Soft_Feather,2500,Gakkung_Bow_,2,Soul_Staff,1,Javelin_,25,,0,Magician_Hat,5,Owl_Baron_Card,1
+OSIRIS,Old_Purple_Box,2000,Assassin_Dagger,450,Crown,400,Jamadhar_,1200,Hand_of_God,1000,Sphinx_Hat,450,Oridecon,3783,Osiris_Doll,3000,Okolnir_Key,3000,Osiris_Card,1
+OWL_BARON,Tattered_Clothes,3500,Soft_Feather,2500,Gakkung_Bow_,2,Soul_Staff,80,Javelin_,25,,0,Magician_Hat,5,Owl_Baron_Card,1
 OWL_DUKE,Tattered_Clothes,4413,Soft_Feather,1500,,0,Crystal_Mirror,1,Guisarme,3,Morning_Star,2,Magician_Hat,1,Owl_Duke_Card,1
 PANZER_GOBLIN,Cyfar,4413,Brigan,3500,Steel,180,Iron,360,Coal,580,Butcher,5,Flame_Heart,160,Panzer_Goblin_Card,1
 PASANA,Broken_Sword,4365,Honey_Pot,2500,Rough_Elunium,20,Falchion_,500,Stiletto_,150,Undershirt,100,,0,Pasana_Card,1
@@ -263,10 +263,10 @@ THIEF_BUG,Insect_Peeling,2500,Jacket_,80,Red_Herb,350,Jellopy,2000,Jacket,120,Ir
 THIEF_BUG_,Insect_Peeling,3500,Garlet,250,Blade_,15,Insect_Feeler,200,Red_Herb,400,Red_Gemstone,50,Iron_Ore,300,Female_Thief_Bug_Card,1
 THIEF_BUG__,Emveretarcon,40,Insect_Feeler,5500,Insect_Peeling,1500,Slayer_,10,Yellow_Herb,90,Zircon,5,Katana,50,Male_Thief_Bug_Card,1
 THIEF_BUG_EGG,Phracon,300,Chrysalis,5000,Guard_,2,Sticky_Mucus,600,Red_Gemstone,100,Black_Ladle,10,Iron_Ore,250,Thief_Bug_Egg_Card,1
-TIRFING,Old_Hilt,1,Silver_Knife_of_Chastity,50,Muscovite,1500,Dagger_,70,Stiletto_,40,Steel,120,Oridecon,189,Tyrfing_Card,1
+TIRFING,Old_Hilt,1500,Silver_Knife_of_Chastity,50,Muscovite,1500,Dagger_,70,Stiletto_,40,Steel,120,Oridecon,189,Tyrfing_Card,1
 TOAD,Big_Ribbon,50,Honey,2000,Zircon,1000,Glass_Bead,1500,Alcohol,100,Detrimindexta,100,Angel's_Kiss,1000,Toad_Card,1
 TRI_JOINT,Cyfar,100,Solid_Shell,380,Aloevera,200,Green_Live,160,Star_Dust,140,,0,Rough_Elunium,106,Tri_Joint_Card,1
-TURTLE_GENERAL,Iron_Driver,300,War_Axe,100,Pole_Axe,200,Broken_Shell,5335,Immaterial_Sword,300,Union_of_Tribe,1,Old_Purple_Box,500,Okolnir_Key,4000,Turtle_General_Card,1
+TURTLE_GENERAL,Iron_Driver,2500,War_Axe,2500,Pole_Axe,800,Broken_Shell,5335,Immaterial_Sword,800,Union_of_Tribe,120,Old_Purple_Box,500,Okolnir_Key,4000,Turtle_General_Card,1
 VADON,Crystal_Blue,40,Nipper,9000,Garlet,3000,Padded_Armor_,5,Solid_Shell,100,Rough_Elunium,40,Blue_Gemstone,50,Vadon_Card,1
 VAGABOND_WOLF,Western_Grace,200,Wolf_Claw,8000,Topaz,1500,Star_Dust_Blade,100,Angel's_Cardigan,1000,Sardonyx,10,Monster_Juice,50,Vagabond_Wolf_Card,1
 VENATU_1,Rusty_Screw,2000,Crest_Piece_1,350,Steel,300,Fragment,300,Drifter,5,Elunium,10,,0,Venatu_Card,1

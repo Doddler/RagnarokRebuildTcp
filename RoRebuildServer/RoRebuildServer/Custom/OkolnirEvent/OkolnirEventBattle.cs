@@ -13,7 +13,9 @@ public class OkolnirEventBattle : INpcLoader
     {
         DataManager.RegisterEvent("OkolnirDamageZone", new OkolnirDamageZoneObjectEvent());
         DataManager.RegisterEvent("ExaflareControlEvent", new ExaflareControlEvent());
+        DataManager.RegisterEvent("ExaflareOutOfEventControlEvent", new ExaflareOutOfEventControlEvent());
         DataManager.RegisterEvent("ExaflareRowEvent", new ExaflareRowEvent());
+        DataManager.RegisterEvent("ExaflareRowSkipWallEvent", new ExaflareRowSkipWallEvent());
         DataManager.RegisterEvent("ExaflareBlastEvent", new ExaflareBlastEvent());
         DataManager.RegisterEvent("EarthShakerCastEvent", new EarthShakerSkillEvent());
 

@@ -205,7 +205,7 @@ OnClick:
 	{
 		case 0: OpenShop();
 		case 1: StartSellToNpc();
-		case 2: StartItemTrade();
+		//case 2: StartItemTrade();
 	}
 }
 
@@ -369,6 +369,8 @@ OnClick:
 
 Npc("prt_fild08", "Black Market Exchange", "4_F_JOB_ASSASSIN", 152, 377, S)
 {
+	AddTradedItem(CreateTradedItem("Staff_of_Destruction").Requires("Evil_Bone_Wand").Requires("Soul_Staff").Requires("Baphomet_Doll").Requires("Osiris_Doll").Requires("Gold", 2).Costs(50000));
+	AddTradedItem(CreateTradedItem("Hurricane_Fury").Requires("War_Axe").Requires("Old_Hilt").Requires("Peridot").Requires("Emperium", 3).Requires("Gold", 2).Costs(50000));
 	AddTradedItem(CreateTradedItem("Rudra_Bow").Requires("Muscovite").Requires("Peridot").Requires("Rose_Quartz").Requires("Illusion_Flower").Requires("Gold", 2).Costs(50000));
 	AddTradedItem(CreateTradedItem("Ice_Pick").Requires("Biotite").Requires("Muscovite").Requires("Phlogopite").Requires("Chivalry_Emblem", 2).Requires("Gold", 2).Costs(50000));
 	AddTradedItem(CreateTradedItem("Combat_Knife").Requires("Agate").Requires("Citrin").Requires("Muscovite").Requires("Tongue", 15).Requires("Gold", 2).Costs(50000));

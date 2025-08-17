@@ -20,6 +20,7 @@ Archer,Bow,0,2,2,Archer_M_활.spr,,Archer_F_활.spr,
 Mage,Unarmed,0,3,3,,,,
 Mage,Dagger,0,3,3,Mage_M_단검.spr,Mage_M_단검_검광.spr,Mage_F_단검.spr,Mage_F_단검_검광.spr
 Mage,Rod,0,2,2,Mage_M_롯드.spr,,Mage_F_롯드.spr,
+Mage,2HRod,0,2,2,Mage_M_롯드.spr,,Mage_F_롯드.spr,
 Acolyte,Unarmed,0,2,2,,,,
 Acolyte,Rod,0,2,2,Acolyte_M_롯드.spr,Acolyte_M_롯드_검광.spr,Acolyte_F_롯드.spr,Acolyte_F_롯드_검광.spr
 Acolyte,Mace,0,2,2,Acolyte_M_클럽.spr,Acolyte_M_클럽_검광.spr,Acolyte_F_클럽.spr,Acolyte_F_클럽_검광.spr

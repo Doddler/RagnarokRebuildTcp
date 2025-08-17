@@ -633,6 +633,8 @@ ASPD +5%
 
 ::Hurricane_Fury //id 1377 - 2HAxe
 <desc>A massive axe embedded with an orb imbued with the power of a hurricane.</desc>
+ASPD +Refine%
+-(10 + Refine)% damage taken from medium size enemies.
 
 ::Brave_Battle_Axe //id 1379 - 2HAxe
 STR +3
@@ -780,12 +782,12 @@ STR +3
 ::Soul_Staff //id 1472 - Rod
 <desc>A high quality staff that amplifies psychic power.</desc>
 AGI +2, INT +5
-MATK +15%
+MATK +20%
 
 ::Wizardry_Staff //id 1473 - Rod
 <desc>An awesome staff crafted by an ancient wizard.</desc>
 INT +6, DEX +2
-MATK +15%
+MATK +20%
 
 ::Gae_Bolg //id 1474 - 2HSpear
 <desc>A spear, created from the body of a dead, giant sea creature.</desc>
@@ -1550,7 +1552,11 @@ DEX +2
 
 ::Staff_of_Destruction //id 2000 - 2HRod
 <desc>A tremendously powerful staff that can be wielded by the spiritually strong.</desc>
+MATK +25%
 AGI +10, INT +3
+Every 2 refine increase MATK by 1%.
+Every refine increases SP cost by 2%.
+Adds (2 * Refine)% chance to autospell Jupitel Thunder 5 when receiving melee damage.
 
 ::Divine_Cross //id 2001 - 2HRod
 <desc>A staff that is composed of two parts to form a cross.</desc>

@@ -10,17 +10,17 @@ Npc("alberta", "Sailor", "4_M_SEAMAN", 247, 122, S)
 OnClick:
     FocusNpc();
     Dialog(name, "Heh... I can see it in your eyes...\nI can tell you're curious about Turtle Island. I'm not sure where you heard about it, but I can help you out.");
-    Option("Turtle Island -> 10000z", "Cancel" );
+    Option("Turtle Island -> 5000z", "Cancel" );
     switch(Result)
     {
         case 0:
-            if(GetZeny() < 10000)
+            if(GetZeny() < 5000)
             {
                 Dialog(name, "Hmm... Sorry, but you don't have enough zeny. I hope you understand I can't let my expertise and experience be undervalued...");
                 return;
             }
             Dialog(name, "Alright!!\nYou've made your choice! With my experience, we'll arrive without fail! I appreciate your spirit!\n<color=#3355FF>- choo-choo -</color>");
-            DropZeny(10000);
+            DropZeny(5000);
             MoveTo("tur_dun01", 157, 39);
             return;
         case 1:
@@ -55,17 +55,17 @@ Npc("alberta", "Overseas Captain", "4_M_SEAMAN", 245, 93, SW)
 OnClick:
     FocusNpc();
     Dialog(name, "Hey, there. You've heard of Amatsu, the land beyond the sea? I wasn't planning on making the voyage any time soon, but I could get you there if you're willing to pay.");
-    Option("Travel to Amatsu -> 10000z", "Cancel");
+    Option("Travel to Amatsu -> 3000z", "Cancel");
     switch(Result)
     {
         case 0:
-            if(GetZeny() < 10000)
+            if(GetZeny() < 3000)
             {
                 Dialog(name, "Were you even listening? 10,000 zeny. You're an adventurer right? Go loot some dungeon or shipwreck or something and come back when you got the money.");
                 return;
             }
             Dialog(name, "Alright, I'll start the engine!");
-            DropZeny(10000);
+            DropZeny(3000);
             MoveTo("amatsu", 197, 83);
     }
 }

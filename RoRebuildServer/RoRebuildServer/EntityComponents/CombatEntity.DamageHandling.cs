@@ -874,11 +874,11 @@ public partial class CombatEntity
                     if ((player.OnAttackTriggerFlags & (AttackEffectTriggers.HpOnKill | AttackEffectTriggers.SpOnKill)) > 0)
                         player.CombatEntity.TriggerOnKillEffects(this);
                 }
-
-                monster.BoostDamageContributionOfFirstAttacker();
-
+                
                 if (DataManager.MvpMonsterCodes.Contains(monster.MonsterBase.Code))
                     monster.RewardMVP();
+
+                monster.BoostDamageContributionOfFirstAttacker(); //happens after reward mvp
 
                 Monster.OnMonsterDieEvent?.Invoke(monster);
 

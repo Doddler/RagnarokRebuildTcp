@@ -232,6 +232,17 @@
       "EffectFemale": ""
     },
     {
+      "Job": 3,
+      "Class": 11,
+      "Weapon": 0,
+      "AttackMale": 2,
+      "AttackFemale": 2,
+      "SpriteMale": "Assets/Sprites/Weapons/Mage/Male/Mage_M_\uB86F\uB4DC.spr",
+      "EffectMale": "",
+      "SpriteFemale": "Assets/Sprites/Weapons/Mage/Female/Mage_F_\uB86F\uB4DC.spr",
+      "EffectFemale": ""
+    },
+    {
       "Job": 4,
       "Class": 0,
       "Weapon": 0,
@@ -828,17 +839,6 @@
     {
       "Job": 3,
       "Class": 9,
-      "Weapon": 0,
-      "AttackMale": 3,
-      "AttackFemale": 3,
-      "SpriteMale": "",
-      "EffectMale": "",
-      "SpriteFemale": "",
-      "EffectFemale": ""
-    },
-    {
-      "Job": 3,
-      "Class": 11,
       "Weapon": 0,
       "AttackMale": 3,
       "AttackFemale": 3,

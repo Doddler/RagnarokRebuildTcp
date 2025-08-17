@@ -290,6 +290,7 @@ Item("Windhawk") { OnEquip: AddStat(AspdBonus, 5); }
 Item("Gungnir") { OnEquip: AddStat(AddHit, 30); }
 Item("Gelerdria") { OnEquip: AddStat(AddMaxHp, 800); AddStat(AddMaxSp, -50); }
 Item("Pole_Axe") { OnEquip: AddStat(AddStr, 1); AddStat(AddInt, 2); AddStat(AddDex, 1); }
+Item("Hurricane_Fury") { OnEquip: AddStat(AspdBonus, Refine); AddStat(AddResistMidSize, 10 + Refine); }
 Item("Gungnir_") { OnEquip: AddStat(AddHit, 30); /* AddGuideAttack 25 */ }
 Item("Long_Horn") { OnEquip: AddStat(OnMeleeAttackBleeding, 50); GrantSkill(Detoxify, 1); }
 Item("Assaulter_Spear") { OnEquip: AddStat(AddStr, 2); AddStat(AddAttackRaceDemihuman, 95); AddStat(IgnoreDefRaceDemihuman, 20); }
@@ -472,7 +473,7 @@ Item("Crescent_Scythe_") { OnEquip: AddStat(AddCrit, 30); AddStat(AddHit, 10); }
 Item("Spectral_Spear") { OnEquip: AddStat(AddResistRaceUndead, 10); AddStat(AddResistRaceDemon, 10); AddStat(AddResistElementDark, 10); AddStat(AddAttackElementDark, 20); AddStat(AddAttackElementUndead, 20); AddStat(AddAttackRaceDemon, 20); AddStat(OnAttackConfusionSelf, 100); }
 Item("Assaulter_Lance") { OnEquip: AddStat(AddStr, 2); AddStat(AddAttackRaceDemihuman, 25); }
 Item("Ivory_Lance") { OnEquip: AddStat(AddAgi, 2); }
-Item("Staff_of_Destruction") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddInt, 3); AddStat(AddAgi, 10); AddStat(AddMagicAttackPercent, 10); }
+Item("Staff_of_Destruction") { OnEquip: AddStat(AddMagicAttackPercent, 25); AddStat(AddInt, 3); AddStat(AddAgi, 10); AddStat(AddMagicAttackPercent, Refine / 2); AddStat(SpConsumption, Refine * 2); AutoSpellWhenAttacked(JupitelThunder, 5, Refine * 20); }
 Item("Divine_Cross") { OnEquip: AddStat(AddMagicAttackPercent, 15); AddStat(AddDex, 4); AddStat(AddResistRaceUndead, 15); AddStat(AddResistRaceDemon, 15); }
 Item("Glorious_Staff") { OnEquip: AddStat(AddMagicAttackPercent, 15); }
 Item("Huuma_Giant_Wheel_Shuriken") { OnEquip: AddStat(OnMeleeAttackBleeding, 10); }

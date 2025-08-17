@@ -1160,6 +1160,7 @@ public class Npc : IEntityAutoReset
         }
     }
 
+
     public void StartWalkDirect(int x, int y, int speed)
     {
         Character.MoveSpeed = speed / 1000f;
@@ -1311,11 +1312,22 @@ public class Npc : IEntityAutoReset
         CommandBuilder.ClearRecipients();
     }
 
+    public void MoveNpc(int x, int y)
+    {
+        var chara = Entity.Get<WorldObject>();
+        if (chara.Map == null)
+            throw new Exception($"Npc {FullName} attempting to move npc, but the npc is not currently attached to a map.");
+        
+        //DebugMessage($"Moving npc {Name} to {x},{y}");
+
+        chara.Map.ChangeEntityPosition3(chara, chara.Position, new Position(x, y), false);
+    }
+
     public void MoveNpcRelative(int x, int y)
     {
         var chara = Entity.Get<WorldObject>();
         if (chara.Map == null)
-            throw new Exception($"Npc {FullName} attempting to play effect, but the npc is not currently attached to a map.");
+            throw new Exception($"Npc {FullName} attempting to move npc, but the npc is not currently attached to a map.");
 
         x = chara.Position.X + x;
         y = chara.Position.Y + y;

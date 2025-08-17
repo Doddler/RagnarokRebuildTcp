@@ -4,6 +4,22 @@ namespace RebuildSharedData.Data;
 
 public static class Directions
 {
+    public static (int x, int y) GetXYForDirection(Direction dir)
+    {
+        return dir switch
+        {
+            Direction.East => (1, 0),
+            Direction.SouthEast => (1, -1),
+            Direction.South => (0, -1),
+            Direction.SouthWest => (-1, -1),
+            Direction.West => (-1, 0),
+            Direction.NorthWest => (-1, 1),
+            Direction.North => (0, 1),
+            Direction.NorthEast => (1, 1),
+            _ => (1, 0)
+        };
+    }
+
     public static Direction GetDirectionFromCoordinates(int x, int y)
     {
         if (x < 0 && y < 0) return Direction.SouthWest;

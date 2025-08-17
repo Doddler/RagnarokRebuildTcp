@@ -141,6 +141,7 @@ namespace Assets.Scripts
         public bool UseSmoothPixel = false;
         public bool UseTTFDamage = false;
         public bool IsInNPCInteraction = false;
+        public bool IsHoveringSelfPanel;
 
         private int[] levelReqs = new int[100];
 
@@ -150,12 +151,14 @@ namespace Assets.Scripts
 
         private bool hasSkillOnCursor;
         private bool isCursorSkillItem;
+        private bool isRapidFireMode;
         private CharacterSkill cursorSkill;
         private SkillTarget cursorSkillTarget;
         private int cursorItemId;
         private int cursorSkillLvl = 5;
         private int cursorMaxSkillLvl = 10;
         private float skillScroll = 5f;
+        private float rapidFireTimer = 0f;
 
         public float ShakeTime = 0f;
         private float shakeStepProgress = 0f;
@@ -826,7 +829,7 @@ namespace Assets.Scripts
         {
             var closestAnim = GetHitAnimator(hits[0]);
             var closestHit = hits[0];
-
+            
             //var log = $"{hits.Length} {closestAnim.Controllable.gameObject.name}{closestHit.distance}{closestAnim.Controllable.IsAlly}";
 
             if (hits.Length == 1)
@@ -840,7 +843,7 @@ namespace Assets.Scripts
 
             var isOk = closestAnim.State != SpriteState.Dead && !closestAnim.IsHidden;
             var isAlly = closestAnim.Controllable.IsAlly;
-
+            var wantDead = hasSkillOnCursor && cursorSkill == CharacterSkill.Resurrection;
 
             for (var i = 1; i < hits.Length; i++)
             {
@@ -860,6 +863,9 @@ namespace Assets.Scripts
 
                 if (anim.State == SpriteState.Dead && anim.Type != SpriteType.Player)
                     continue;
+                
+                if (wantDead && anim.Controllable.CharacterType == CharacterType.Player && anim.State == SpriteState.Dead)
+                    return anim; //short-circuit to target resurrection on dead players
 
                 if (!isOk)
                 {
@@ -1012,6 +1018,7 @@ namespace Assets.Scripts
             var isSkillEnemyTargeted = hasSkillOnCursor && cursorSkillTarget == SkillTarget.Enemy;
             var isSkillAllyTargeted = hasSkillOnCursor && cursorSkillTarget == SkillTarget.Ally;
             var canTargetPartyList = hasSkillOnCursor && isSkillAllyTargeted && UiManager.Instance.PartyPanel.HoverEntry != null;
+            var canTargetSelf = IsHoveringSelfPanel && hasSkillOnCursor && isSkillAllyTargeted;
 
             //cancel skill on cursor if we can't use a skill
             if (hasSkillOnCursor && (!isAlive || isSitting))
@@ -1793,6 +1800,28 @@ namespace Assets.Scripts
                     {
                         pointerOverUi = true;
                     }
+
+                    if (HasSkillOnCursor && (CursorSkillTarget == SkillTarget.Ally || CursorSkillTarget == SkillTarget.Any))
+                    {
+                        if (Input.GetMouseButtonDown(0))
+                        {
+                            NetworkManager.Instance.SendSingleTargetSkillAction(PlayerState.EntityId, cursorSkill, cursorSkillLvl);
+                            hasSkillOnCursor = false;
+                            isCursorSkillItem = false;
+                            CharacterDetailBox.OverlayDisplay.SetActive(false);
+                            pointerOverUi = true;
+                        }
+                        else
+                        {
+                            pointerOverUi = true;
+                            IsHoveringSelfPanel = true;
+                            CharacterDetailBox.OverlayDisplay.SetActive(true);
+                        }
+                    }
+                    else
+                        CharacterDetailBox.OverlayDisplay.SetActive(false);
+                    
+                    
                 }
                 
                 if (pointerEvent.pointerEnter.name == "PartyMember")
