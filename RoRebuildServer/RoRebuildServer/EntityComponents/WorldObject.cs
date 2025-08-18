@@ -502,7 +502,7 @@ public class WorldObject : IEntityAutoReset
         if (delay <= 0f)
             return false;
 
-        if (InMoveLock && MoveLockTime < Time.ElapsedTimeFloat && !force)
+        if (MoveLockTime + 0.04f > Time.ElapsedTimeFloat && !force)
             return false;
         
         if (!InMoveLock && State == CharacterState.Moving)
