@@ -320,8 +320,8 @@ namespace Assets.Scripts.MapEditor.Editor
 
 			Debug.Log(newLines[lineId + 1] + " : " + newLines[lineId + 2] + " " + newLines[lineId + 3]);
 			
-			var near = float.Parse(newLines[lineId + 1]);
-			var far = float.Parse(newLines[lineId + 2]);
+			var near = float.Parse(newLines[lineId + 1], CultureInfo.InvariantCulture);
+			var far = float.Parse(newLines[lineId + 2], CultureInfo.InvariantCulture);
 
             var hex = newLines[lineId + 3].Substring(2);
             if (hex.Length < 8)

@@ -214,7 +214,7 @@ internal class DataLoader
         {
             var s = timingEntry.Split(",");
             var cName = s[0];
-            var timing = s.Skip(1).Select(f => float.Parse(f)).ToArray();
+            var timing = s.Skip(1).Select(f => float.Parse(f, CultureInfo.InvariantCulture)).ToArray();
             timings.Add(cName, timing);
         }
 
