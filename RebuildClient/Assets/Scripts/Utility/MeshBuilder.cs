@@ -269,10 +269,10 @@ namespace Assets.Scripts.Utility
                 var start = i * 40000;
                 var count = Mathf.Clamp(vertices.Count - start, 0, 40000);
                 var triCount = count / 4 * 6;
-                Debug.Log($"{start} {count} {triCount}");
+                // Debug.Log($"{start} {count} {triCount}");
 
-                if (vertices.Count != color32s.Count && colors.Count == 0)
-                    Console.WriteLine("AAAAA");
+                // if (vertices.Count != color32s.Count && colors.Count == 0)
+                //     Console.WriteLine("AAAAA");
 
                 mesh.SetVertices(vertices.GetRange(start, count));
                 mesh.SetTriangles(triangles.GetRange(0, triCount), 0);

@@ -52,7 +52,7 @@ public class Player : IEntityAutoReset
     [EntityIgnoreNullCheck]
     public SavePosition SavePosition
     {
-        get; 
+        get;
         set;
     } = new();
     [EntityIgnoreNullCheck] public MapMemoLocation[] MemoLocations = new MapMemoLocation[4];
@@ -62,7 +62,7 @@ public class Player : IEntityAutoReset
     [EntityIgnoreNullCheck] public Dictionary<CharacterSkill, double> SkillSpecificCooldowns = new();
     public Dictionary<CharacterSkill, int> LearnedSkills = null!;
     public Dictionary<CharacterSkill, int>? GrantedSkills;
-    
+
     public Dictionary<string, int>? NpcFlags;
     public ItemEquipState Equipment = null!;
     public CharacterBag? Inventory;
@@ -253,7 +253,7 @@ public class Player : IEntityAutoReset
         SpecialStateTarget = Position.Invalid;
         PlayerFollower = PlayerFollower.None;
 
-        if(AttackVersusTag != null)
+        if (AttackVersusTag != null)
             AttackVersusTag.Clear();
 
         if (ResistVersusTag != null)
@@ -320,23 +320,23 @@ public class Player : IEntityAutoReset
         RecentAttackersList = EntityValueListPool<float>.Get();
         ResetRegenTickTime();
 
-        if(CharacterLevel == 0)
+        if (CharacterLevel == 0)
             SetData(PlayerStat.Level, 1); //why
-        if(JobLevel == 0)
+        if (JobLevel == 0)
             SetData(PlayerStat.JobLevel, 1);
         var hasStatFix = false;
-        for(var i = 0; i < 6; i++)
+        for (var i = 0; i < 6; i++)
             if (GetData(PlayerStat.Str + i) <= 0)
             {
                 SetData(PlayerStat.Str + i, 1); //should never happen, but lookups will break if they have 0 in any stat so fix it
                 hasStatFix = true;
             }
-        if(hasStatFix)
+        if (hasStatFix)
             ServerLogger.LogError($"Player {this} initialized with one or more stats set to 0, something must have gone wrong loading their data.");
 
         //if this is their first time logging in, they get a free Knife
         var isNewCharacter = GetData(PlayerStat.Status) == 0 || (Inventory == null && GetData(PlayerStat.Level) <= 3);
-        if (GetData(PlayerStat.Level) <= 1 && GetData(PlayerStat.Job) == 0 
+        if (GetData(PlayerStat.Level) <= 1 && GetData(PlayerStat.Job) == 0
             && Equipment.GetEquipmentIdBySlot(EquipSlot.Weapon) <= 0 && Equipment.GetEquipmentIdBySlot(EquipSlot.Body) <= 0)
             isNewCharacter = true;
         if (isNewCharacter)
@@ -427,7 +427,7 @@ public class Player : IEntityAutoReset
 
         return false;
     }
-    
+
     public void WriteCharacterStorageToDatabase()
     {
         if (StorageInventory == null)
@@ -467,7 +467,7 @@ public class Player : IEntityAutoReset
 
         return true;
     }
-    
+
     public void SendPlayerUpdateData(OutboundMessage packet, bool sendInventory, bool sendCart, bool refreshSkills)
     {
         foreach (var dataType in PlayerClientStatusDef.PlayerUpdateData)
@@ -502,7 +502,7 @@ public class Player : IEntityAutoReset
                     packet.Write(CombatEntity.GetEffectiveStat(CharacterStat.PerfectDodge));
                     break;
                 case CharacterStat.AddLuk:
-                    if(CombatEntity.HasBodyState(BodyStateFlags.Curse))
+                    if (CombatEntity.HasBodyState(BodyStateFlags.Curse))
                         packet.Write(-CombatEntity.GetStat(CharacterStat.Luk));
                     else
                         packet.Write(CombatEntity.GetStat(CharacterStat.AddLuk));
@@ -544,7 +544,7 @@ public class Player : IEntityAutoReset
         {
             Inventory.TryWrite(packet, true);
             packet.Write((byte)(sendCart ? 1 : 0));
-            if(sendCart)
+            if (sendCart)
                 CartInventory.TryWrite(packet, true);
             //StorageInventory.TryWrite(packet, true);
             for (var i = 0; i < 10; i++)
@@ -552,7 +552,7 @@ public class Player : IEntityAutoReset
             packet.Write(Equipment.AmmoId);
         }
     }
-    
+
     public bool TryRemoveItemFromInventory(int type, int count, bool sendPacket = false)
     {
         Debug.Assert(count < short.MaxValue);
@@ -582,7 +582,7 @@ public class Player : IEntityAutoReset
         var level = GetData(PlayerStat.Level);
         if (CharacterLevel >= 99 || exp == 0)
             return 0;
-        
+
         var curExp = GetData(PlayerStat.Experience);
         var requiredExp = DataManager.ExpChart.ExpRequired[level];
 
@@ -610,7 +610,7 @@ public class Player : IEntityAutoReset
 
         SetData(PlayerStat.Experience, curExp);
 
-        if(Party != null)
+        if (Party != null)
             CommandBuilder.NotifyPartyOfChange(Party, PartyMemberId, PartyUpdateType.UpdatePlayer);
 
         Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
@@ -670,7 +670,7 @@ public class Player : IEntityAutoReset
         SetData(PlayerStat.JobLevel, level);
         SetData(PlayerStat.JobExperience, curExp);
 
-        if(job == 0 && level == 10 && origLevel < level)
+        if (job == 0 && level == 10 && origLevel < level)
             CommandBuilder.SendServerEvent(this, ServerEvent.EligibleForJobChange, job);
 
         Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
@@ -791,7 +791,7 @@ public class Player : IEntityAutoReset
         //the aspd bonus is handled differently should work out to nearly the same up to +60% aspd
         //above that, there's diminishing returns.
         //For example, 0agi/dex +80% apsd (berserk pot/2hq/frenzy) goes from 4.34/sec to 3.54/sec
-        
+
         var jobAspd = jobInfo.WeaponTimings[WeaponClass];
         var aspdBonus = (float)GetStat(CharacterStat.AspdBonus);
         if (aspdBonus >= 0) aspdBonus *= MathF.Pow(1.0064f, aspdBonus);
@@ -856,7 +856,7 @@ public class Player : IEntityAutoReset
             SetStat(CharacterStat.Hp, updatedMaxHp);
         if (GetStat(CharacterStat.Hp) > updatedMaxHp)
             SetStat(CharacterStat.Hp, updatedMaxHp);
-        
+
         var spPercent = 100 + GetStat(CharacterStat.AddMaxSpPercent);
         var newMaxSp = DataManager.JobMaxSpLookup[job][level] * (1 + GetEffectiveStat(CharacterStat.Int) / 100f);
         newMaxSp += GetStat(CharacterStat.AddMaxSp);
@@ -945,7 +945,7 @@ public class Player : IEntityAutoReset
                     break;
             }
         }
-        
+
         //update skill points! Ideally, this only should happen when you change your skills, but, well...
         var jobLevel = GetData(PlayerStat.JobLevel);
         var skillPointEarned = job == 0 ? jobLevel - 1 : jobLevel + 9 - 1;
@@ -1005,7 +1005,7 @@ public class Player : IEntityAutoReset
 
         SetStat(CharacterStat.WeaponMastery, mastery);
     }
-    
+
     public void LevelUp()
     {
         var level = GetData(PlayerStat.Level);
@@ -1058,7 +1058,7 @@ public class Player : IEntityAutoReset
             CommandBuilder.ChangePlayerSpecialActionState(this, SpecialPlayerActionState.None);
         }
 
-        if(skill != CharacterSkill.Cloaking && skill != CharacterSkill.Hiding)
+        if (skill != CharacterSkill.Cloaking && skill != CharacterSkill.Hiding)
             CombatEntity.UpdateHidingStateAfterAttack();
     }
 
@@ -1113,7 +1113,7 @@ public class Player : IEntityAutoReset
         var spCost = GetSpCostForSkill(skill, level);
         if (spCost == 0)
             return true;
-        
+
         var currentSp = GetStat(CharacterStat.Sp);
         if (currentSp < spCost)
             return false;
@@ -1163,14 +1163,14 @@ public class Player : IEntityAutoReset
         if (SkillHandler.GetSkillAttributes(skill).SkillTarget == SkillTarget.Passive)
             UpdateStats();
     }
-    
+
     public void GrantSkillToCharacter(CharacterSkill skill, int level)
     {
         GrantedSkills ??= new();
 
         if (GrantedSkills.TryGetValue(skill, out var cur))
         {
-            if(cur >= level)
+            if (cur >= level)
                 return;
 
             GrantedSkills[skill] = level;
@@ -1280,7 +1280,7 @@ public class Player : IEntityAutoReset
             regen += plusHpRegen;
             CommandBuilder.SendImprovedRecoveryValue(this, plusHpRegen, 0);
         }
-        
+
         if (regen < 1) regen = 1;
 
         if (regen + hp > maxHp)
@@ -1332,7 +1332,7 @@ public class Player : IEntityAutoReset
             regen += plusSpRegen;
             CommandBuilder.SendImprovedRecoveryValue(this, 0, plusSpRegen);
         }
-        
+
         if (regen < 1)
             regen = 1;
 
@@ -1343,7 +1343,7 @@ public class Player : IEntityAutoReset
         if (regen > 0)
         {
             CommandBuilder.ChangeSpValue(this, sp + regen, maxSp);
-            if(Party != null)
+            if (Party != null)
                 CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(this, true);
         }
     }
@@ -1447,25 +1447,25 @@ public class Player : IEntityAutoReset
     public void RefreshJobBonus()
     {
         var bonusData = DataManager.GetJobBonusesForLevel(GetData(PlayerStat.Job), GetData(PlayerStat.JobLevel));
-        
+
         if (jobStatBonuses != null)
         {
             if (bonusData.Equals(jobStatBonuses.Value))
                 return;
 
             var existing = jobStatBonuses.Value.Span;
-            for(var i = 0; i < 6; i++)
+            for (var i = 0; i < 6; i++)
                 SubStat(CharacterStat.AddStr + i, existing[i]);
         }
-        
+
         var newBonuses = bonusData.Span;
 
-        for(var i = 0; i < 6; i++)
+        for (var i = 0; i < 6; i++)
             AddStat(CharacterStat.AddStr + i, newBonuses[i]);
 
         jobStatBonuses = bonusData;
     }
-    
+
     public void ChangeJob(int newJobId)
     {
         var curJob = GetData(PlayerStat.Job);
@@ -1908,7 +1908,7 @@ public class Player : IEntityAutoReset
         CombatEntity.ClearDamageQueue();
         CombatEntity.RemoveStatusOfGroupIfExists("StopGroup");
         SpecialState = SpecialPlayerActionState.None;
-        
+
         var oldPos = Character.Position;
         var p = new Position(x, y);
 
@@ -2111,19 +2111,19 @@ public class Player : IEntityAutoReset
         {
             Character.QueuedAction = QueuedAction.None;
             AutoAttackLock = false;
-            if(IndirectCastQueue.Count > 0)
+            if (IndirectCastQueue.Count > 0)
                 IndirectCastQueue.Clear();
             if (Character.State == CharacterState.Dead)
                 return;
         }
-        
+
         UpdateRegenTick();
 
         if (IsInNpcInteraction)
         {
             if (NpcInteractionState.InteractionResult == NpcInteractionResult.WaitForStorageAccess)
             {
-                if(Connection.LoadStorageRequest == null)
+                if (Connection.LoadStorageRequest == null)
                 {
                     if (StorageInventory != null)
                         NpcInteractionState.FinishOpeningStorage();
@@ -2166,7 +2166,7 @@ public class Player : IEntityAutoReset
                 }
             }
         }
-        
+
         if (Character.QueuedAction == QueuedAction.Cast)
         {
             if (CombatEntity.HasBodyState(BodyStateFlags.Silence) || SkillCooldownTime > Time.ElapsedTime + 1.5f)

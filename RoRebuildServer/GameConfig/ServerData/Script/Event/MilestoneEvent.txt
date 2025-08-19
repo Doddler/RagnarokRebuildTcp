@@ -5,11 +5,11 @@
 //Once someone reaches level 20 : Unlock Ranch Vendor (meat, milk, etc)
 //Once someone reaches level 30 : Unlock General Vendor (fly wings, arrows)
 //Once someone reaches level 40 : Unlocks Alchemist (Potions)
-//Once someone reaches level 55 : Unlocks Fletcher (Arrow Quivers)
-//Once someone reaches level 70 : Unlock Apothecary (Turns herbs into potions)
+//Once someone reaches level 50 : Unlocks Fletcher (Arrow Quivers)
+//Once someone reaches level 60 : Unlock Apothecary (Turns herbs into potions)
 //Once someone reaches level 80 : Unlock Scholar (scrolls)
-//Once 5 minibosses are killed: Unlock headgear crafting
-//Once 8 minibosses are killed: Unlock weapon crafting
+//Once 4 minibosses are killed: Unlock elemental weapon forging
+//Once 7 minibosses are killed: Unlock headgear crafting
 //Once 2 MVPs are killed: Unlock high level weapon crafting
 //Once 8 MVPs are killed and someone reaches level 85 : Unlock Valkyrie and Okolnir challenge dungeon
 
