@@ -59,6 +59,9 @@ public class ServerMapConfig : IServerMapConfig
         {
             var spawn = SpawnRules[i];
 
+            if (!spawn.SpawnArea.IsZero && (spawn.SpawnArea.Size < 10 || (spawn.SpawnArea.Width <= 5 && spawn.SpawnArea.Height <= 5)) && spawn.MaxSpawnTime <= ServerConfig.DebugConfig.MinSpawnTime)
+                ServerLogger.LogWarning($"Spawn of {spawn.Count}x {spawn.MonsterDatabaseInfo.Code} on map {Map.Name} is set to instantly respawn within a small area ({spawn.SpawnArea}). Is this intended?");
+
             for (var j = 0; j < spawn.Count; j++)
             {
                 //the difference with the official server spawns is that each monster has its own spawn zone offset within the initial area randomly on startup.

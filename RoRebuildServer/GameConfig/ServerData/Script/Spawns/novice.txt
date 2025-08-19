@@ -26,7 +26,7 @@ MapConfig("job_thief1")
 	CreateSpawn("CHONCHON", 50);
 	CreateSpawn("SPORE", 30);
 }
-
+/*
 MapConfig("in_moc_16")
 {
 	CreateSpawn("PORING", 1, %(62, 161, 1, 1), 0, 0);
@@ -177,3 +177,4 @@ MapConfig("job_wiz")
 	CreateSpawn("METALLER", 1, %(37, 89, 1, 1), 0, 0);
 	CreateSpawn("DESERT_WOLF", 1, %(54, 89, 1, 1), 0, 0);
 }
+*/

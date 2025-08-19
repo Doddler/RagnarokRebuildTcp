@@ -47,8 +47,8 @@ MapConfig("cmd_fild04")
 {
 	CreateSpawn("ASTER", 45, %(221, 120, 120, 40));
 	CreateSpawn("ALLIGATOR", 20);
-	CreateSpawn("ALLIGATOR", 10, %(296, 311, 0, 0));
-	CreateSpawn("ALLIGATOR", 10, %(93, 222, 0, 0));
+	CreateSpawn("ALLIGATOR", 10, %(126, 263, 120, 60));
+	CreateSpawn("ALLIGATOR", 10, %(93, 222, 120, 60));
 	CreateSpawn("CRAB", 20);
 	CreateSpawn("RAGGLER", 20);
 	CreateSpawn("SHELLFISH", 20);
