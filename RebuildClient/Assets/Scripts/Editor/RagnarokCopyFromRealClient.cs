@@ -49,18 +49,6 @@ namespace Assets.Editor
                     return;
             }
 
-            bool TestPath(string fileName)
-            {
-                if (!File.Exists(Path.Combine(dataDir, fileName)))
-                {
-                    Debug.LogError(
-                        $"Could not verify client data directory \"{dataDir}\" is valid. File checked: {fileName} ");
-                    return false;
-                }
-
-                return true;
-            }
-
             if (!TestPath("prontera.gat") || !TestPath(@"texture\워터\water000.jpg"))
                 return;
 
@@ -218,6 +206,15 @@ namespace Assets.Editor
             ItemIconImporter.ImportItems();
 
             RoLightingManagerWindow.CreateOrOpen();
+            return;
+
+            bool TestPath(string fileName)
+            {
+                if (File.Exists(Path.Combine(dataDir, fileName))) return true;
+                Debug.LogError(
+                    $"Could not verify client data directory \"{dataDir}\" is valid. File checked: {fileName} ");
+                return false;
+            }
         }
 
         [MenuItem("Ragnarok/Select data to copy from client data folder", priority = 2)]
@@ -260,19 +257,7 @@ namespace Assets.Editor
                 }
 
                 // sanity checks
-                bool TestPath(string fileName)
-                {
-                    var full = Path.Combine(dataDir, fileName);
-                    if (!File.Exists(full))
-                    {
-                        Debug.LogError($"Invalid client data directory: missing {fileName}");
-                        return false;
-                    }
-
-                    return true;
-                }
-
-                if (!TestPath("prontera.gat") || !TestPath("texture\\워터\\water000.jpg"))
+                if (!TestPath("prontera.gat") || !TestPath(@"texture\워터\water000.jpg"))
                     return;
 
                 // Define each copy category
@@ -472,6 +457,16 @@ namespace Assets.Editor
 
                 // Initialize selections based on whether already imported
                 selections = categories.Select(cat => !cat.IsAlreadyImported()).ToArray();
+                return;
+
+                
+                bool TestPath(string fileName)
+                {
+                    var full = Path.Combine(_dataDir, fileName);
+                    if (File.Exists(full)) return true;
+                    Debug.LogError($"Invalid client data directory: missing {fileName}");
+                    return false;
+                }
             }
 
             private void OnGUI()
