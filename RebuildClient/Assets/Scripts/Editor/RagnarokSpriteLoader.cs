@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Assets.Scripts;
@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Editor
 {
-    internal struct SpriteFrameData
+    struct SpriteFrameData
     {
         public bool IsIndexed;
         public int Width;
@@ -15,7 +15,7 @@ namespace Assets.Editor
         public byte[] Data;
     }
 
-    internal class RagnarokSpriteLoader
+    class RagnarokSpriteLoader
     {
         //private Stream fs;
         private MemoryStream _ms;
@@ -170,9 +170,11 @@ namespace Assets.Editor
 
         private Texture2D RgbaToTexture(SpriteFrameData frame)
         {
-            var image = new Texture2D(frame.Width, frame.Height, TextureFormat.ARGB32, false);
-            image.wrapMode = TextureWrapMode.Clamp;
-            image.alphaIsTransparency = true;
+            var image = new Texture2D(frame.Width, frame.Height, TextureFormat.ARGB32, false)
+            {
+                wrapMode = TextureWrapMode.Clamp,
+                alphaIsTransparency = true
+            };
 
             var colors = new Color[frame.Width * frame.Height];
 
@@ -204,9 +206,11 @@ namespace Assets.Editor
 
         private Texture2D IndexedToTexture(SpriteFrameData frame)
         {
-            var image = new Texture2D(frame.Width, frame.Height, TextureFormat.ARGB32, false);
-            image.wrapMode = TextureWrapMode.Clamp;
-            image.alphaIsTransparency = true;
+            var image = new Texture2D(frame.Width, frame.Height, TextureFormat.ARGB32, false)
+            {
+                wrapMode = TextureWrapMode.Clamp,
+                alphaIsTransparency = true
+            };
 
             var colors = new Color[frame.Width * frame.Height];
 
@@ -243,10 +247,9 @@ namespace Assets.Editor
 
         public Texture2D LoadFirstSpriteTextureOnly(string sprPath)
         {
-            var filename = sprPath;
-            var basename = Path.GetFileNameWithoutExtension(filename);
+            var basename = Path.GetFileNameWithoutExtension(sprPath);
 
-            var bytes = File.ReadAllBytes(filename);
+            var bytes = File.ReadAllBytes(sprPath);
             _ms = new MemoryStream(bytes);
             _br = new BinaryReader(_ms);
 
