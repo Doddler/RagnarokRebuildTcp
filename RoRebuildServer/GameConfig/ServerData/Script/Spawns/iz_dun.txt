@@ -38,7 +38,7 @@ MapConfig("iz_dun03")
 {
 	CreateSpawn("PHEN", 50);
 	CreateSpawn("MARINE_SPHERE", 40);
-	CreateSpawn("SWORD_FISH", 15);
+	CreateSpawn("SWORD_FISH", 25);
 	CreateSpawn("SWORD_FISH", 20, %(146, 113, 114, 67));
 	CreateSpawn("MARC", 10);
 	CreateSpawn("MARC", 30, %(148, 190, 117, 72));

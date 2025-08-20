@@ -19,18 +19,15 @@ MapConfig("alde_dun03")
 	CreateSpawn("CRAMP", 25);
 	CreateSpawn("DRAINLIAR", 20);
 	CreateSpawn("CRAMP", 3, %(77, 28, 5, 5), 40000, 20000);
-	CreateSpawn("PENOMENA", 25, 300000, 150000);
+	CreateSpawn("PENOMENA", 45, 300000, 150000);
 	CreateSpawn("CRAMP", 10, %(184, 61, 30, 30), 300000, 150000);
 	CreateSpawn("DRAINLIAR", 10, %(184, 61, 30, 30), 300000, 150000);
-	CreateSpawn("PENOMENA", 5, 300000, 150000);
 	CreateSpawn("PENOMENA", 3, %(163, 56, 10, 10), 600000, 300000);
 	CreateSpawn("PENOMENA", 2, %(168, 42, 6, 6), 600000, 300000);
 	CreateSpawn("PENOMENA", 2, %(147, 30, 8, 8), 600000, 300000);
-	CreateSpawn("PENOMENA", 10, 300000, 150000);
 	CreateSpawn("CRAMP", 5, %(126, 53, 20, 20), 300000, 150000);
 	CreateSpawn("DRAINLIAR", 5, %(126, 53, 20, 20), 300000, 150000);
 	CreateSpawn("PENOMENA", 4, %(102, 40, 10, 10), 600000, 300000);
-	CreateSpawn("PENOMENA", 15, 300000, 150000);
 	CreateSpawn("CRAMP", 10, %(130, 220, 40, 40), 300000, 150000);
 	CreateSpawn("DRAINLIAR", 10, %(130, 220, 40, 40), 300000, 150000);
 	CreateSpawn("PENOMENA", 7, %(155, 201, 25, 25), 600000, 300000);
@@ -46,8 +43,8 @@ MapConfig("alde_dun03")
 
 MapConfig("alde_dun04")
 {
-	CreateSpawn("BATHORY", 65);
-	CreateSpawn("JOKER", 12);
+	CreateSpawn("BATHORY", 70);
+	CreateSpawn("JOKER", 8);
 	CreateSpawn("EXECUTIONER", 1, 3600000, 1800000, Boss);
 	CreateSpawn("MYSTELTAINN", 1, 3600000, 1800000, Boss);
 	CreateSpawn("TIRFING", 1, 3600000, 1800000, Boss);

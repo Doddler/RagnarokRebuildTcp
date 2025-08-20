@@ -347,7 +347,7 @@ Catalyst: <color=#777777>1 Blue Gemstone</color>
 Deals 8 hits at [50 + SkillLevel * 5]% to a single target, with a +50% increase to accuracy.
 
 ::EnchantPoison
-Enchant the weapon or yourself or an ally to deal poison property damage. Also adds a [2 + SkillLevel]% chance to poison the enemy when performing melee attacks.
+Enchant the weapon or yourself or an ally to deal poison property damage. Also adds a [2 + SkillLevel / 2]% chance to poison the enemy when performing melee attacks.
 Unequipping or swapping weapons will cause the effect to end early.
 Duration: [15 + SkillLevel * 15]s
 

@@ -11,14 +11,14 @@ MapConfig("glast_01")
 
 MapConfig("gl_cas01")
 {
-	CreateSpawn("SAGEWORM", 40);
-	CreateSpawn("CARAT", 40);
+	CreateSpawn("SAGEWORM", 30);
+	CreateSpawn("CARAT", 50);
 	CreateSpawn("RIDEWORD", 15);
 	CreateSpawn("DARK_FRAME", 20);
-	CreateSpawn("WHISPER", 20);
+	CreateSpawn("WHISPER", 10);
 	CreateSpawn("ALICE", 1);
 	CreateSpawn("TIRFING", 1, 2h, 1h, Boss);
-	CreateSpawn("OWL_BARON", 3);
+	CreateSpawn("OWL_BARON", 6);
 }
 
 MapConfig("gl_cas02")
@@ -27,6 +27,7 @@ MapConfig("gl_cas02")
 	CreateSpawn("RAYDRIC", 45);
 	CreateSpawn("RIDEWORD", 10);
 	CreateSpawn("RAYDRIC_ARCHER", 19);
+	CreateSpawn("KNIGHT_OF_ABYSS", 3);
 	CreateSpawn("RAYDRIC", 3, %(193, 167, 5, 5), 5m, 2m);
 	CreateSpawn("RAYDRIC", 3, %(193, 135, 5, 5), 5m, 2m);
 	CreateSpawn("MYSTELTAINN", 1, %(104, 145, 5, 5), 2h, 1h);
@@ -59,10 +60,10 @@ MapConfig("gl_cas02")
 MapConfig("gl_church")
 {
 	CreateSpawn("WRAITH", 10);
-	CreateSpawn("EVIL_DRUID", 35);
-	CreateSpawn("GHOUL", 60);
+	CreateSpawn("EVIL_DRUID", 60);
+	CreateSpawn("GHOUL", 50);
 	CreateSpawn("DARK_ILLUSION", 1, 1h, 30m, Boss);
-	CreateSpawn("MIMIC", 14);
+	CreateSpawn("MIMIC", 5);
 	CreateSpawn("MIMIC", 1, %(155, 92, 10, 10), 30000, 15000);
 	CreateSpawn("MIMIC", 2, %(155, 75, 10, 10), 60000, 30000);
 	CreateSpawn("MIMIC", 1, %(155, 54, 10, 10), 30000, 15000);
@@ -70,11 +71,11 @@ MapConfig("gl_church")
 
 MapConfig("gl_chyard")
 {
-	CreateSpawn("GHOUL", 30);
-	CreateSpawn("ZOMBIE", 15);
-	CreateSpawn("WRAITH", 25);
+	CreateSpawn("GHOUL", 20);
+	CreateSpawn("ZOMBIE", 10);
+	CreateSpawn("WRAITH", 45);
 	CreateSpawn("EVIL_DRUID", 10);
-	CreateSpawn("HUNTER_FLY", 5);
+	CreateSpawn("HUNTER_FLY", 3);
 	CreateSpawn("MIMIC", 3);
 	CreateSpawn("DARK_LORD", 1, 1h, 30m, MVP);
 	CreateSpawn("SKEL_PRISONER", 25);
@@ -83,14 +84,14 @@ MapConfig("gl_chyard")
 
 MapConfig("gl_dun01")
 {
-	CreateSpawn("ARCLOUSE", 50);
-	CreateSpawn("STING", 50);
+	CreateSpawn("ARCLOUSE", 55);
+	CreateSpawn("STING", 45);
 }
 
 MapConfig("gl_dun02")
 {
-	CreateSpawn("MAJORUROS", 40);
-	CreateSpawn("GARGOYLE", 20);
+	CreateSpawn("MAJORUROS", 45);
+	CreateSpawn("GARGOYLE", 15);
 }
 
 MapConfig("gl_in01")
@@ -186,7 +187,8 @@ MapConfig("gl_sew01")
 {
 	CreateSpawn("GARGOYLE", 30);
 	CreateSpawn("ARCLOUSE", 10);
-	CreateSpawn("WHISPER", 50);
+	CreateSpawn("CRAMP", 10);
+	CreateSpawn("WHISPER", 70);
 }
 
 MapConfig("gl_sew02")
@@ -207,15 +209,15 @@ MapConfig("gl_sew03")
 
 MapConfig("gl_sew04")
 {
-	CreateSpawn("ANOLIAN", 60);
-	CreateSpawn("GARGOYLE", 30);
+	CreateSpawn("ANOLIAN", 120, 1m, 1m);
+	CreateSpawn("GARGOYLE", 20);
 	CreateSpawn("DRAINLIAR", 10);
 }
 
 MapConfig("gl_step")
 {
-	CreateSpawn("MIMIC", 20, 1m, 30000);
-	CreateSpawn("RAYDRIC_ARCHER", 30);
-	CreateSpawn("WIND_GHOST", 30);
+	CreateSpawn("MIMIC", 5, 1m, 30000);
+	CreateSpawn("RAYDRIC_ARCHER", 10);
+	CreateSpawn("WIND_GHOST", 100);
 	CreateSpawn("WRAITH", 30);
 }

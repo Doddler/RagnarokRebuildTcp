@@ -17,7 +17,7 @@ MapConfig("c_tower2")
 	CreateSpawn("CLOCK", 30);
 	CreateSpawn("CLOCK", 20, 30m);
 	CreateSpawn("ARCHER_SKELETON", 20, 30m);
-	CreateSpawn("RIDEWORD", 10, 3m);
+	CreateSpawn("RIDEWORD", 7, 3m);
 	CreateSpawn("RIDEWORD", 1, %(128, 100, 10, 10), 1m, 30s);
 	CreateSpawn("RIDEWORD", 1, %(149, 199, 10, 10), 2m, 1m);
 	CreateSpawn("RIDEWORD", 1, %(149, 199, 10, 10), 5m, 1m);
@@ -36,7 +36,7 @@ MapConfig("c_tower2")
 MapConfig("c_tower3")
 {
 	CreateSpawn("ALARM", 100, 5s);
-	CreateSpawn("RIDEWORD", 14, 90s);
+	CreateSpawn("RIDEWORD", 7, 90s);
 	CreateSpawn("RIDEWORD", 1, %(153, 220, 10, 10), 126000, 100000);
 	CreateSpawn("MIMIC", 10, 9000);
 	CreateSpawn("C_TOWER_MANAGER", 1);
