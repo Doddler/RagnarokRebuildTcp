@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,34 +12,6 @@ namespace Assets.Editor
 {
     public class RagnarokCopyFromRealClient : EditorWindow
     {
-        public static void TestCopy()
-        {
-            var dataDir = RagnarokDirectory.GetRagnarokDataDirectorySafe;
-
-            Func<string, string> updateHeadName = (str) => str.Replace("머리", "");
-            Func<string, string> updateBodyName = (str) => str.Replace("몸", "");
-
-            var headPath = Path.Combine(dataDir, "palette/머리");
-            var bodyPath = Path.Combine(dataDir, "palette/몸");
-
-            if (Directory.Exists(headPath))
-            {
-                CopyFolder(headPath, "Assets/Sprites/Characters/HeadFemale/Palette/", false, false, "*_여_*.pal",
-                    updateHeadName);
-                CopyFolder(headPath, "Assets/Sprites/Characters/HeadMale/Palette/", false, false, "*_남_*.pal",
-                    updateHeadName);
-            }
-
-            headPath = Path.Combine(dataDir, "palette/머리/costume_1");
-            bodyPath = Path.Combine(dataDir, "palette/몸/costume_1");
-
-            if (Directory.Exists(bodyPath))
-            {
-                CopyFolder(bodyPath, "Assets/Sprites/Characters/BodyFemale/Palette/", false, false, "*_여_*.pal",
-                    updateHeadName);
-                CopyFolder(bodyPath, "Assets/Sprites/Characters/BodyMale/Palette/", false, false, "*_남_*.pal");
-            }
-        }
 
         private static string UpdateSpriteName(string name)
         {
@@ -54,47 +26,6 @@ namespace Assets.Editor
             name = name.Replace("남_", "M_");
 
             return name;
-        }
-
-
-        [MenuItem("Ragnarok/TestCopy")]
-        public static void TestCopy2()
-        {
-            var dataDir = RagnarokDirectory.GetRagnarokDataDirectorySafe;
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/성직자"), "Assets/Sprites/Weapons/Acolyte/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/궁수"), "Assets/Sprites/Weapons/Archer/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/마법사"), "Assets/Sprites/Weapons/Mage/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/상인"), "Assets/Sprites/Weapons/Merchant/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/초보자"), "Assets/Sprites/Weapons/Novice/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/검사"), "Assets/Sprites/Weapons/Swordsman/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/도둑"), "Assets/Sprites/Weapons/Thief/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/슈퍼노비스"), "Assets/Sprites/Weapons/SuperNovice/", false, true,
-                "*", UpdateSpriteName);
-
-
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/성직자"), "Assets/Sprites/Shields/Acolyte/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/궁수"), "Assets/Sprites/Shields/Archer/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/마법사"), "Assets/Sprites/Shields/Mage/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/상인"), "Assets/Sprites/Shields/Merchant/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/초보자"), "Assets/Sprites/Shields/Novice/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/검사"), "Assets/Sprites/Shields/Swordsman/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/도둑"), "Assets/Sprites/Shields/Thief/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/슈퍼노비스"), "Assets/Sprites/Shields/SuperNovice/", false, true,
-                "*", UpdateSpriteName);
         }
 
         [MenuItem("Ragnarok/Copy data from client data folder", priority = 1)]
