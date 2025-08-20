@@ -233,15 +233,15 @@ namespace Assets.Editor
                 public Func<bool> IsAlreadyImported;
             }
 
-            private List<CopyCategory> categories;
-            private bool[] selections;
-            private Vector2 scrollPos;
-            private string dataDir;
+            private List<CopyCategory> _categories;
+            private bool[] _selections;
+            private Vector2 _scrollPos;
+            private string _dataDir;
 
             private void OnEnable()
             {
-                dataDir = RagnarokDirectory.GetRagnarokDataDirectorySafe;
-                if (dataDir == null)
+                _dataDir = RagnarokDirectory.GetRagnarokDataDirectorySafe;
+                if (_dataDir == null)
                 {
                     const string prompt =
                         "Before you continue, specify the extracted data.grf directory with correct locale filenames.";
@@ -250,8 +250,8 @@ namespace Assets.Editor
                         return;
 
                     RagnarokDirectory.SetDataDirectory();
-                    dataDir = RagnarokDirectory.GetRagnarokDataDirectorySafe;
-                    if (dataDir == null)
+                    _dataDir = RagnarokDirectory.GetRagnarokDataDirectorySafe;
+                    if (_dataDir == null)
                         return;
                 }
 
@@ -260,12 +260,12 @@ namespace Assets.Editor
                     return;
 
                 // Define each copy category
-                categories = new List<CopyCategory>
+                _categories = new List<CopyCategory>
                 {
                     new CopyCategory
                     {
                         Label = "Sounds (WAV)",
-                        Execute = () => CopyFolder(Path.Combine(dataDir, "wav/"), "Assets/Sounds/", recursive: true),
+                        Execute = () => CopyFolder(Path.Combine(_dataDir, "wav/"), "Assets/Sounds/", recursive: true),
                         IsAlreadyImported = () =>
                             Directory.Exists("Assets/Sounds") && Directory
                                 .GetFiles("Assets/Sounds", "*.wav", SearchOption.AllDirectories).Any()
@@ -439,13 +439,13 @@ namespace Assets.Editor
                         Label = "Miscellaneous Files (Cursors, Emotions, Damagenumbers)",
                         Execute = () =>
                         {
-                            CopySingleFile(Path.Combine(dataDir, "sprite/cursors.act"), "Assets/Sprites/Misc/");
-                            CopySingleFile(Path.Combine(dataDir, "sprite/cursors.spr"), "Assets/Sprites/Misc/");
-                            CopySingleFile(Path.Combine(dataDir, "sprite/이팩트/emotion.act"), "Assets/Sprites/Misc/");
-                            CopySingleFile(Path.Combine(dataDir, "sprite/이팩트/emotion.spr"), "Assets/Sprites/Misc/");
-                            CopySingleFile(Path.Combine(dataDir, "sprite/이팩트/숫자.act"),
+                            CopySingleFile(Path.Combine(_dataDir, "sprite/cursors.act"), "Assets/Sprites/Misc/");
+                            CopySingleFile(Path.Combine(_dataDir, "sprite/cursors.spr"), "Assets/Sprites/Misc/");
+                            CopySingleFile(Path.Combine(_dataDir, "sprite/이팩트/emotion.act"), "Assets/Sprites/Misc/");
+                            CopySingleFile(Path.Combine(_dataDir, "sprite/이팩트/emotion.spr"), "Assets/Sprites/Misc/");
+                            CopySingleFile(Path.Combine(_dataDir, "sprite/이팩트/숫자.act"),
                                 "Assets/Sprites/Misc/damagenumbers.act");
-                            CopySingleFile(Path.Combine(dataDir, "sprite/이팩트/숫자.spr"),
+                            CopySingleFile(Path.Combine(_dataDir, "sprite/이팩트/숫자.spr"),
                                 "Assets/Sprites/Misc/damagenumbers.spr");
                         },
                         IsAlreadyImported = () =>
@@ -455,7 +455,7 @@ namespace Assets.Editor
                 };
 
                 // Initialize selections based on whether already imported
-                selections = categories.Select(cat => !cat.IsAlreadyImported()).ToArray();
+                _selections = _categories.Select(cat => !cat.IsAlreadyImported()).ToArray();
                 return;
 
                 
@@ -475,18 +475,18 @@ namespace Assets.Editor
 
                 EditorGUILayout.BeginHorizontal();
                 if (GUILayout.Button("Select All", GUILayout.Height(20)))
-                    for (int i = 0; i < selections.Length; i++)
-                        selections[i] = true;
+                    for (var i = 0; i < _selections.Length; i++)
+                        _selections[i] = true;
                 if (GUILayout.Button("Unselect All", GUILayout.Height(20)))
-                    for (int i = 0; i < selections.Length; i++)
-                        selections[i] = false;
+                    for (var i = 0; i < _selections.Length; i++)
+                        _selections[i] = false;
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.Space();
 
-                scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
-                for (int i = 0; i < categories.Count; i++)
+                _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
+                for (var i = 0; i < _categories.Count; i++)
                 {
-                    selections[i] = EditorGUILayout.ToggleLeft(categories[i].Label, selections[i]);
+                    _selections[i] = EditorGUILayout.ToggleLeft(_categories[i].Label, _selections[i]);
                 }
 
                 EditorGUILayout.EndScrollView();
@@ -500,14 +500,12 @@ namespace Assets.Editor
 
                 if (GUILayout.Button("Copy Selected Data", GUILayout.Height(30)))
                 {
-                    int count = 0;
-                    for (int i = 0; i < categories.Count; i++)
+                    for (var i = 0; i < _categories.Count; i++)
                     {
-                        if (!selections[i]) continue;
+                        if (!_selections[i]) continue;
                         try
                         {
-                            categories[i].Execute();
-                            count++;
+                            _categories[i].Execute();
                         }
                         catch (Exception ex)
                         {
@@ -520,7 +518,7 @@ namespace Assets.Editor
                     }
 
                     AssetDatabase.Refresh();
-                    Debug.Log($"Copied {count} categories.");
+                    //Debug.Log($"Copied {count} categories.");
                 }
             }
 
