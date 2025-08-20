@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Editor
 {
-    struct SpriteFrameData
+    internal struct SpriteFrameData
     {
         public bool IsIndexed;
         public int Width;
@@ -15,35 +15,34 @@ namespace Assets.Editor
         public byte[] Data;
     }
 
-    class RagnarokSpriteLoader
+    internal class RagnarokSpriteLoader
     {
         //private Stream fs;
-        private MemoryStream ms;
-        private BinaryReader br;
+        private MemoryStream _ms;
+        private BinaryReader _br;
 
-        private int version;
-        private int indexCount;
-        private int rgbaCount;
+        private int _version;
+        private int _rgbaCount;
 
-        private List<SpriteFrameData> spriteFrames;
-        private byte[] paletteData;
+        private List<SpriteFrameData> _spriteFrames;
+        private byte[] _paletteData;
 
-        public List<Texture2D> Textures = new();
-        public List<Sprite> Sprites = new();
-        public List<Vector2Int> SpriteSizes = new();
-        public int SpriteFrameCount => spriteFrames.Count;
+        public readonly List<Texture2D> Textures = new();
+        public readonly List<Sprite> Sprites = new();
+        public readonly List<Vector2Int> SpriteSizes = new();
+        public int SpriteFrameCount => _spriteFrames.Count;
 
         public Texture2D Atlas;
 
-        public int IndexCount => indexCount;
+        public int IndexCount { get; private set; }
 
         private void ReadIndexedImage()
         {
-            for (var i = 0; i < indexCount; i++)
+            for (var i = 0; i < IndexCount; i++)
             {
-                var width = br.ReadUInt16();
-                var height = br.ReadUInt16();
-                var data = br.ReadBytes(width * height);
+                var width = _br.ReadUInt16();
+                var height = _br.ReadUInt16();
+                var data = _br.ReadBytes(width * height);
 
                 var frame = new SpriteFrameData()
                 {
@@ -53,30 +52,30 @@ namespace Assets.Editor
                     Data = data
                 };
 
-                spriteFrames.Add(frame);
+                _spriteFrames.Add(frame);
             }
         }
 
 
         private void ReadRleIndexedImage()
         {
-            for (var i = 0; i < indexCount; i++)
+            for (var i = 0; i < IndexCount; i++)
             {
-                var width = br.ReadUInt16();
-                var height = br.ReadUInt16();
+                var width = _br.ReadUInt16();
+                var height = _br.ReadUInt16();
                 var size = width * height;
                 var data = new byte[size];
                 var index = 0;
-                var end = br.ReadUInt16() + ms.Position;
+                var end = _br.ReadUInt16() + _ms.Position;
 
-                while (ms.Position < end)
+                while (_ms.Position < end)
                 {
-                    var c = br.ReadByte();
+                    var c = _br.ReadByte();
                     data[index++] = c;
 
                     if (c == 0)
                     {
-                        var count = br.ReadByte();
+                        var count = _br.ReadByte();
                         if (count == 0)
                         {
                             data[index++] = count;
@@ -99,26 +98,26 @@ namespace Assets.Editor
                     Data = data
                 };
 
-                spriteFrames.Add(frame);
+                _spriteFrames.Add(frame);
             }
         }
 
         private void ReadRgbaImage()
         {
-            for (var i = 0; i < rgbaCount; i++)
+            for (var i = 0; i < _rgbaCount; i++)
             {
-                var width = br.ReadInt16();
-                var height = br.ReadInt16();
+                var width = _br.ReadInt16();
+                var height = _br.ReadInt16();
 
                 var frame = new SpriteFrameData()
                 {
                     IsIndexed = false,
                     Width = width,
                     Height = height,
-                    Data = br.ReadBytes(width * height * 4)
+                    Data = _br.ReadBytes(width * height * 4)
                 };
 
-                spriteFrames.Add(frame);
+                _spriteFrames.Add(frame);
             }
         }
 
@@ -217,9 +216,9 @@ namespace Assets.Editor
                 {
                     var index1 = frame.Data[x + y * frame.Width] * 4;
 
-                    var r = paletteData[index1 + 0];
-                    var g = paletteData[index1 + 1];
-                    var b = paletteData[index1 + 2];
+                    var r = _paletteData[index1 + 0];
+                    var g = _paletteData[index1 + 1];
+                    var b = _paletteData[index1 + 2];
                     var a = index1 > 0 ? 255 : 0;
 
                     var color = new Color(r / 255f, g / 255f, b / 255f, a / 255f);
@@ -239,7 +238,7 @@ namespace Assets.Editor
 
         private void ReadPalette()
         {
-            paletteData = br.ReadBytes(1024);
+            _paletteData = _br.ReadBytes(1024);
         }
 
         public Texture2D LoadFirstSpriteTextureOnly(string sprPath)
@@ -248,50 +247,49 @@ namespace Assets.Editor
             var basename = Path.GetFileNameWithoutExtension(filename);
 
             var bytes = File.ReadAllBytes(filename);
-            ms = new MemoryStream(bytes);
-            br = new BinaryReader(ms);
+            _ms = new MemoryStream(bytes);
+            _br = new BinaryReader(_ms);
 
 
-            var header = new string(br.ReadChars(2));
+            var header = new string(_br.ReadChars(2));
             if (header != "SP")
                 throw new Exception("Not sprite");
 
-            var minorVersion = br.ReadByte();
-            var majorVersion = br.ReadByte();
-            version = majorVersion * 10 + minorVersion;
+            var minorVersion = _br.ReadByte();
+            var majorVersion = _br.ReadByte();
+            _version = majorVersion * 10 + minorVersion;
 
-            indexCount = br.ReadUInt16();
-            rgbaCount = 0;
+            IndexCount = _br.ReadUInt16();
+            _rgbaCount = 0;
 
-            if (version > 11)
-                rgbaCount = br.ReadUInt16();
+            if (_version > 11)
+                _rgbaCount = _br.ReadUInt16();
 
             //Debug.Log($"RGBA count: {rgbaCount}");
 
-            var frameCount = indexCount + rgbaCount;
-            var rgbaIndex = indexCount;
+            var frameCount = IndexCount + _rgbaCount;
 
-            spriteFrames = new List<SpriteFrameData>(frameCount);
+            _spriteFrames = new List<SpriteFrameData>(frameCount);
 
-            if (version < 21)
+            if (_version < 21)
                 ReadIndexedImage();
             else
                 ReadRleIndexedImage();
 
             ReadRgbaImage();
 
-            if (version > 10)
+            if (_version > 10)
                 ReadPalette();
 
-            if (spriteFrames.Count > 0)
+            if (_spriteFrames.Count > 0)
             {
                 var i = 0;
 
                 Texture2D image;
-                if (spriteFrames[i].IsIndexed)
-                    image = IndexedToTexture(spriteFrames[i]);
+                if (_spriteFrames[i].IsIndexed)
+                    image = IndexedToTexture(_spriteFrames[i]);
                 else
-                    image = RgbaToTexture(spriteFrames[i]);
+                    image = RgbaToTexture(_spriteFrames[i]);
                 image.name = basename;
                 // image.name = $"{basename}_{i:D4}";
                 // image.hideFlags = HideFlags.HideInHierarchy;
@@ -315,10 +313,10 @@ namespace Assets.Editor
         private void LoadTextures(string baseName, int frame, int paletteId = -1)
         {
             Texture2D image;
-            if (spriteFrames[frame].IsIndexed)
-                image = IndexedToTexture(spriteFrames[frame]);
+            if (_spriteFrames[frame].IsIndexed)
+                image = IndexedToTexture(_spriteFrames[frame]);
             else
-                image = RgbaToTexture(spriteFrames[frame]);
+                image = RgbaToTexture(_spriteFrames[frame]);
             if (paletteId >= 0)
                 image.name = $"{baseName}_{frame:D4}";
             else
@@ -332,50 +330,47 @@ namespace Assets.Editor
         {
             //var filename = ctx.assetPath;
             var basename = Path.GetFileNameWithoutExtension(filename);
-            var dirName = Path.GetDirectoryName(filename);
 
             if (!File.Exists(filename))
             {
-                Debug.LogError($"Could not import asset {filename}, the related .spr file could not be found.");
-                return;
+                throw new FileNotFoundException($"File {filename} not found");
             }
             
             var bytes = File.ReadAllBytes(filename);
-            ms = new MemoryStream(bytes);
-            br = new BinaryReader(ms);
+            _ms = new MemoryStream(bytes);
+            _br = new BinaryReader(_ms);
 
             //fs = new FileStream(filename, FileMode.Open);
             //br = new BinaryReader(fs);
 
-            var header = new string(br.ReadChars(2));
+            var header = new string(_br.ReadChars(2));
             if (header != "SP")
                 throw new Exception("Not sprite");
 
-            var minorVersion = br.ReadByte();
-            var majorVersion = br.ReadByte();
-            version = majorVersion * 10 + minorVersion;
+            var minorVersion = _br.ReadByte();
+            var majorVersion = _br.ReadByte();
+            _version = majorVersion * 10 + minorVersion;
 
-            indexCount = br.ReadUInt16();
-            rgbaCount = 0;
+            IndexCount = _br.ReadUInt16();
+            _rgbaCount = 0;
 
-            if (version > 11)
-                rgbaCount = br.ReadUInt16();
+            if (_version > 11)
+                _rgbaCount = _br.ReadUInt16();
 
             //Debug.Log($"RGBA count: {rgbaCount}");
 
-            var frameCount = indexCount + rgbaCount;
-            var rgbaIndex = indexCount;
+            var frameCount = IndexCount + _rgbaCount;
 
-            spriteFrames = new List<SpriteFrameData>(frameCount);
+            _spriteFrames = new List<SpriteFrameData>(frameCount);
 
-            if (version < 21)
+            if (_version < 21)
                 ReadIndexedImage();
             else
                 ReadRleIndexedImage();
 
             ReadRgbaImage();
 
-            if (version > 10)
+            if (_version > 10)
                 ReadPalette();
 
             // Debug.Log($"Palette check " + Path.Combine(dirName, "Palette/", basename + "_0.pal"));
@@ -387,7 +382,7 @@ namespace Assets.Editor
 
             if (File.Exists(paletteFile))
             {
-                var origPalette = paletteData;
+                var origPalette = _paletteData;
                 var newPaletteData = File.ReadAllBytes(paletteFile);
 
                 var tr = newPaletteData[255 * 4];
@@ -400,17 +395,17 @@ namespace Assets.Editor
                     var g = newPaletteData[i + 1];
                     var b = newPaletteData[i + 2];
                     if (r == tr && g == tb && b == tg)
-                        Array.Copy(origPalette, i, paletteData, i, 4);
+                        Array.Copy(origPalette, i, _paletteData, i, 4);
                     else
-                        Array.Copy(newPaletteData, i, paletteData, i, 4);
+                        Array.Copy(newPaletteData, i, _paletteData, i, 4);
                 }
 
-                for (var i = 0; i < spriteFrames.Count; i++)
+                for (var i = 0; i < _spriteFrames.Count; i++)
                     LoadTextures(basename, i);
             }
             else
             {
-                for (var i = 0; i < spriteFrames.Count; i++)
+                for (var i = 0; i < _spriteFrames.Count; i++)
                     LoadTextures(basename, i);
 
             }
@@ -471,8 +466,8 @@ namespace Assets.Editor
                 dataObject.IgnoreAnchor = true;
             }
             
-            br.Dispose();
-            ms.Dispose();
+            _br.Dispose();
+            _ms.Dispose();
         }
     }
 }
