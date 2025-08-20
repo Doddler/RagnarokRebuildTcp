@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Assets.Editor;
 using Assets.Scripts;
 using Assets.Scripts.MapEditor.Editor;
+using JetBrains.Annotations;
 using UnityEditor;
 using UnityEditor.AssetImporters;
 using UnityEngine;
@@ -12,66 +14,53 @@ using Utility.Editor;
 [ScriptedImporter(1, "act", AllowCaching = true)]
 public class ActImporter : ScriptedImporter
 {
-    public int PaletteCount;
-
     public override void OnImportAsset(AssetImportContext ctx)
     {
-        // var asset = ScriptableObject.CreateInstance<RagnarokActFile>();
-        // ctx.AddObjectToAsset(name + " data", asset);
-        // ctx.SetMainObject(asset);
+        //ImportActFile(ctx.assetPath);
     }
 
-    public static void ImportActFile(string actPath)
+    public static void ImportActFile([NotNull] string actFilePath, string assetDirectoryPath = null)
     {
-        var dir = Path.GetDirectoryName(actPath);
-        var baseName = Path.GetFileNameWithoutExtension(actPath);
-        var rel = dir.Substring(dir.Replace("\\", "/").IndexOfOccurence("/", 2) + 1);
-        var targetFolder = Path.Combine("Assets/Sprites/Imported", rel).Replace("\\", "/");
-        var atlasPath = Path.Combine(targetFolder, "Atlas/", $"{baseName}_atlas.png").Replace("\\", "/");
-        //var palettePath = Path.Combine("G:\\Games\\RagnarokJP\\data\\palette\\몸\\costume_1", $"{basename}_0_1.pal");
-        var palettePath = Path.Combine(dir, "Palette/");
+        var actFileName = Path.GetFileNameWithoutExtension(actFilePath);
+        var actDirectoryPath = Path.GetDirectoryName(actFilePath) ?? throw new ArgumentNullException($"Resulting diretory for {actFilePath} cannot be null");
+        var atlasFilePath = Path.Combine(assetDirectoryPath ?? actDirectoryPath, "Atlas", $"{actFileName}_atlas.png");
+        var palettePath = Path.Combine(actDirectoryPath, "Palette");
         var palettes = new List<string>();
-        
+    
         for (var i = 0; i < 10; i++)
         {
-            var pName = Path.Combine(palettePath, $"{baseName}_{i}_1.pal");
+            var pName = Path.Combine(palettePath, $"{actFileName}_{i}_1.pal");
             if (File.Exists(pName))
                 palettes.Add(pName);
-            pName = Path.Combine(palettePath, $"{baseName}_{i}.pal");
+            pName = Path.Combine(palettePath, $"{actFileName}_{i}.pal");
             if (File.Exists(pName))
                 palettes.Add(pName);
         }
-
-        // Debug.Log($"{targetFolder}");
-
-        if (!Directory.Exists(targetFolder))
-            Directory.CreateDirectory(targetFolder);
-
-        var asset = ScriptableObject.CreateInstance<RoSpriteData>();
-        AssetDatabase.CreateAsset(asset, Path.Combine(targetFolder, $"{baseName}.asset"));
+        
+        var spriteAsset = ScriptableObject.CreateInstance<RoSpriteData>();
+        AssetDatabase.CreateAsset(spriteAsset, Path.Combine(assetDirectoryPath ?? actDirectoryPath, $"{actFileName}.asset"));
 
         var loader = new RagnarokSpriteLoader();
-        loader.Load(actPath.Replace(".act", ".spr"), atlasPath, asset, null);
-        SetUpSpriteData(loader, asset, dir, baseName, baseName);
-
+        loader.Load(actFilePath.Replace(".act", ".spr"), atlasFilePath, spriteAsset, null);
+        SetUpSpriteData(loader, spriteAsset, actDirectoryPath, actFileName, actFileName);
+        
         for (var i = 0; i < palettes.Count; i++)
         {
-            asset = ScriptableObject.CreateInstance<RoSpriteData>();
-            AssetDatabase.CreateAsset(asset, Path.Combine(targetFolder, $"{baseName}_{i}.asset"));
+            spriteAsset = ScriptableObject.CreateInstance<RoSpriteData>();
+            AssetDatabase.CreateAsset(spriteAsset, Path.Combine(assetDirectoryPath ?? actDirectoryPath, $"{actFileName}_{i}.asset"));
 
-            atlasPath = Path.Combine(targetFolder, "Atlas/", $"{baseName}_{i}_atlas.png").Replace("\\", "/");
+            atlasFilePath = Path.Combine(assetDirectoryPath ?? actDirectoryPath, "Atlas", $"{actFileName}_{i}_atlas.png").Replace("\\", "/");
             loader = new RagnarokSpriteLoader();
-            loader.Load(actPath.Replace(".act", ".spr"), atlasPath, asset, palettes[i]);
-            SetUpSpriteData(loader, asset, dir, baseName, $"{baseName}_{i}");
+            loader.Load(actFilePath.Replace(".act", ".spr"), atlasFilePath, spriteAsset, palettes[i]);
+            SetUpSpriteData(loader, spriteAsset, actDirectoryPath, actFileName, $"{actFileName}_{i}");
         }
-
         AssetDatabase.SaveAssets();
     }
 
     private static void SetUpSpriteData(RagnarokSpriteLoader spr, RoSpriteData asset, string basePath, string baseName, string outName)
     {
         var actName = Path.Combine(basePath, baseName + ".act");
-        var imfFile = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectorySafe, "imf/", baseName + ".imf");
+        var imfFile = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectorySafe, "imf", baseName + ".imf");
         if (!File.Exists(imfFile))
             imfFile = null;
         
@@ -91,83 +80,61 @@ public class ActImporter : ScriptedImporter
 
             for (var i = 0; i < asset.Sounds.Length; i++)
             {
-                var s = actLoader.Sounds[i];
-                if (s == "atk")
+                var soundAction = actLoader.Sounds[i];
+                if (soundAction == "atk")
                     continue;
-                var sPath = $"Assets/Sounds/{s}";
-                if (!File.Exists(sPath))
-                    sPath = $"Assets/Sounds/{s.Replace(".wav", "")}.ogg";
+                var sPath = $"Assets/Sounds/{soundAction}";
 
                 var sound = AssetDatabase.LoadAssetAtPath<AudioClip>(sPath);
-                if (sound == null)
-                    Debug.Log("Could not find sound " + sPath + " for sprite " + baseName);
+                if (!sound)
+                    throw new FileNotFoundException($"Sound {sPath} for sprite {baseName} not found.");
                 asset.Sounds[i] = sound;
             }
         }
 
-        switch (asset.Actions.Length)
+        asset.Type = asset.Actions.Length switch
         {
-            case 8:
-                asset.Type = SpriteType.Npc;
-                break;
-            case 13:
-                asset.Type = SpriteType.Npc;
-                break;
-            case 32:
-                asset.Type = SpriteType.ActionNpc;
-                break;
-            case 39: //mi gao/increase soil for some reason
-            case 40:
-            case 41: //zerom for some reason
-                asset.Type = SpriteType.Monster;
-                break;
-            case 47: //dullahan for some reason
-            case 48:
-                asset.Type = SpriteType.Monster2;
-                break;
-            case 56:
-                asset.Type = SpriteType.Monster; //???
-                break;
-            case 64:
-                asset.Type = SpriteType.Monster;
-                break;
-            case 72:
-                asset.Type = SpriteType.Pet;
-                break;
-        }
+            8 or 13 => SpriteType.Npc,
+            32 => SpriteType.ActionNpc,
+            39 or 40 or 41 => SpriteType.Monster, //zerom/mi gao/increase soil for some reason
+            47 or 48 => SpriteType.Monster2, //dullahan for some reason
+            56 or 64 => SpriteType.Monster,  //56 ???
+            72 => SpriteType.Pet,
+            _ => asset.Type
+        };
 
         var maxExtent = 0f;
         var totalWidth = 0f;
         var widthCount = 0;
 
-        foreach (var a in asset.Actions)
+        foreach (var action in asset.Actions)
         {
             var frameId = 0;
-            foreach (var f in a.Frames)
+            foreach (var frame in action.Frames)
             {
-                if (f.IsAttackFrame)
-                    asset.AttackFrameTime = a.Delay * frameId;
+                if (frame.IsAttackFrame)
+                    asset.AttackFrameTime = action.Delay * frameId;
 
                 frameId++;
 
-                foreach (var l in f.Layers)
+                foreach (var layer in frame.Layers)
                 {
-                    if (l.Index == -1)
+                    if (layer.Index == -1)
                         continue;
-                    var sprite = asset.SpriteSizes[l.Index];
-                    var y = l.Position.y + sprite.y / 2f;
-                    if (l.Position.x < 0)
-                        y = Mathf.Abs(l.Position.y - sprite.y / 2f);
+                    var sprite = asset.SpriteSizes[layer.Index];
+                    var y = layer.Position.y + sprite.y / 2f;
+                    if (layer.Position.x < 0)
+                        y = Mathf.Abs(layer.Position.y - sprite.y / 2f);
                     if (y > maxExtent)
                         maxExtent = y;
-                    totalWidth += Mathf.Abs(l.Position.x) + sprite.x / 2f;
+                    totalWidth += Mathf.Abs(layer.Position.x) + sprite.x / 2f;
                     widthCount++;
                 }
             }
         }
 
         //far better way to get sprite attack timing
-        if (asset.Type == SpriteType.Monster || asset.Type == SpriteType.Monster2 || asset.Type == SpriteType.Pet)
+        if (asset.Type is SpriteType.Monster or SpriteType.Monster2 or SpriteType.Pet)
         {
             var actionId = RoAnimationHelper.GetMotionIdForSprite(asset.Type, SpriteMotion.Attack1);
             if (actionId == -1)
@@ -206,34 +173,27 @@ public class ActImporter : ScriptedImporter
         asset.StandingHeight = 20;
         try
         {
-            var maxHeight = 0f;
             var firstFrame = asset.Actions[0].Frames[0];
-            for (var i = 0; i < firstFrame.Layers.Length; i++)
-            {
-                var l = firstFrame.Layers[i];
-                if (l.Index < 0)
-                    continue;
-                var curSpr = asset.Sprites[l.Index];
-                var height = curSpr.rect.height / 2 - l.Position.y; //y is negative
-                if (height > maxHeight)
-                    maxHeight = height;
-            }
+            var maxHeight = 
+            (
+                from layer in firstFrame.Layers where layer.Index >= 0 
+                let curSpr = asset.Sprites[layer.Index] 
+                select curSpr.rect.height / 2 - layer.Position.y
+            ).Prepend(0f).Max();
 
             if (maxHeight > asset.StandingHeight)
                 asset.StandingHeight = maxHeight;
         }
         catch (Exception)
         {
-            Debug.Log($"Couldn't process standing height for sprite {asset.Name}");
+            throw new Exception($"Couldn't process standing height for sprite {asset.Name}");
         }
-        
-        
     }
 }
 
 public class ActPostProcessor : AssetPostprocessor
 {
-    static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths,
+    private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths,
         bool didDomainReload)
     {
         foreach (var importedAsset in importedAssets)
