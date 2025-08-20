@@ -35,9 +35,8 @@ namespace Assets.Editor
 
             if (dataDir == null)
             {
-                var prompt =
-                    @"Before you continue, you will need to specify a directory containing the contents of an extracted data.grf. "
-                    + "For this import process to work correctly, the files will need to have been extracted with the right locale and working korean file names.";
+                const string prompt = @"Before you continue, you will need to specify a directory containing the contents of an extracted data.grf. "
+                                      + "For this import process to work correctly, the files will need to have been extracted with the right locale and working korean file names.";
 
                 if (!EditorUtility.DisplayDialog("Copy from RO Client", prompt, "Continue", "Cancel"))
                     return;
@@ -52,11 +51,11 @@ namespace Assets.Editor
             if (!TestPath("prontera.gat") || !TestPath(@"texture\워터\water000.jpg"))
                 return;
 
-            var prompt2 = @"This import process will copy files from your data folder into this project. "
-                          + "Because this includes converting all maps and objects, expect this process to take more than an hour."
-                          + "\n\nWhen complete, the lighting window will load where you can bake the lighting for all the scenes (accessible via 'Ragnarok->Lighting Manager'). "
-                          + "You will also need to manually copy over your BGM into the music folder if you want music."
-                          + "\n\nLastly, before you run you will need to use 'Ragnarok->Update Addressables' to make sure everything can load.";
+            const string prompt2 = @"This import process will copy files from your data folder into this project. "
+                                   + "Because this includes converting all maps and objects, expect this process to take more than an hour."
+                                   + "\n\nWhen complete, the lighting window will load where you can bake the lighting for all the scenes (accessible via 'Ragnarok->Lighting Manager'). "
+                                   + "You will also need to manually copy over your BGM into the music folder if you want music."
+                                   + "\n\nLastly, before you run you will need to use 'Ragnarok->Update Addressables' to make sure everything can load.";
 
             if (!EditorUtility.DisplayDialog("Copy from RO Client", prompt2, "Continue", "Cancel"))
                 return;
