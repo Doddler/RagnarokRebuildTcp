@@ -37,7 +37,7 @@ namespace Assets.Scripts.MapEditor.Editor
             if (!string.IsNullOrWhiteSpace(oldPath) && Directory.Exists(oldPath))
             {
                 var di = new DirectoryInfo(oldPath);
-                oldPath = di.Parent.FullName;
+                oldPath = di.Parent?.FullName;
                 defaultName = di.Name;
             }
             var path = EditorUtility.SaveFolderPanel("Locate Ragnarok Data Folder", oldPath, defaultName);
