@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using Assets.Scripts;
@@ -7,6 +8,7 @@ using Assets.Scripts.Editor;
 using Assets.Scripts.MapEditor.Editor;
 using UnityEditor;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace Assets.Editor
 {
@@ -519,11 +521,10 @@ namespace Assets.Editor
                         }
                         catch (Exception ex)
                         {
-                            Debug.LogError(
-                                $"[Copy Failure] Category = '{categories[i].Label}'\n" +
+                            throw new FileLoadException(
+                                $"[Copy Failure] Category = '{_categories[i].Label}" +
                                 $"Exception message: {ex.Message}\n" +
-                                $"Full stack trace:\n{ex}"
-                            );
+                                $"Full stack trace:\n{ex}");
                         }
                     }
 
@@ -612,64 +613,56 @@ namespace Assets.Editor
                             File.Copy(path, destPath, true);
                     }
                 }
-
-                return true;
             }
 
             private static void CopySingleFile(string src, string dest)
             {
-                Debug.Log($"[CopySingleFile] Attempting to copy:\n    src = {src}\n    dest = {dest}");
+                //Debug.Log($"[CopySingleFile] Attempting to copy:\n    src = {src}\n    dest = {dest}");
                 
                 string destPath;
-                bool looksLikeFolder = dest.EndsWith("/") || dest.EndsWith("\\") || Directory.Exists(dest);
-                if (looksLikeFolder && (dest.StartsWith("Assets/") || dest.StartsWith("Assets\\")))
+                var looksLikeFolder = dest.EndsWith("/") || dest.EndsWith("\\") || Directory.Exists(dest);
+                switch (looksLikeFolder)
                 {
-                    string folder = dest.TrimEnd('\\', '/');
+                    case true when (dest.StartsWith("Assets/") || dest.StartsWith("Assets\\")):
+                    {
+                        var folder = dest.TrimEnd('\\', '/');
                     
-                    string assetsSubpath = folder.Substring("Assets/".Length);
-                    destPath = Path.Combine(Application.dataPath, assetsSubpath);
+                        var assetsSubpath = folder.Substring("Assets/".Length);
+                        destPath = Path.Combine(Application.dataPath, assetsSubpath);
                     
-                    var fileName = Path.GetFileName(src);
-                    destPath = Path.Combine(destPath, fileName);
-                }
-                else if (looksLikeFolder)
-                {
-                    string folder = dest.TrimEnd('\\', '/');
-                    var fileName = Path.GetFileName(src);
-                    destPath = Path.Combine(folder, fileName);
-                }
-                else
-                {
-                    destPath = dest;
+                        var fileName = Path.GetFileName(src);
+                        destPath = Path.Combine(destPath, fileName);
+                        break;
+                    }
+                    case true:
+                    {
+                        var folder = dest.TrimEnd('\\', '/');
+                        var fileName = Path.GetFileName(src);
+                        destPath = Path.Combine(folder, fileName);
+                        break;
+                    }
+                    default:
+                        destPath = dest;
+                        break;
                 }
 
                 var parentDir = Path.GetDirectoryName(destPath);
                 if (string.IsNullOrEmpty(parentDir))
-                {
-                    Debug.LogError($"[CopySingleFile] Invalid destination: {destPath}");
-                    return;
-                }
+                    throw new DirectoryNotFoundException($"CopySingleFile: parent directory not found: {destPath}");
                 
-                if (!Directory.Exists(parentDir))
-                {
-                    Debug.Log($"[CopySingleFile] Creating directory: {parentDir}");
-                    Directory.CreateDirectory(parentDir);
-                }
+                Directory.CreateDirectory(parentDir);
                 
                 if (!File.Exists(src))
-                {
-                    Debug.LogError($"[CopySingleFile] Source not found: {src}");
-                    return;
-                }
+                    throw new FileNotFoundException($"CopySingleFile: source file not found: {src}");
                 
                 try
                 {
                     File.Copy(src, destPath, overwrite: true);
-                    Debug.Log($"[CopySingleFile] Successfully copied {src} → {destPath}");
+                    //Debug.Log($"[CopySingleFile] Successfully copied {src} → {destPath}");
                 }
                 catch (Exception ex)
                 {
-                    Debug.LogError($"[CopySingleFile] Failed to copy {src} → {destPath}\nException: {ex}");
+                    throw new FileLoadException($"[CopySingleFile] Failed to copy {src} → {destPath}\nException: {ex}");
                 }
             }
         }
@@ -728,23 +721,19 @@ namespace Assets.Editor
             }
         }
 
-        private static bool CopyFolder(string src, string dest, bool recursive = false, bool maleFemaleSplit = false,
+        private static void CopyFolder(string sourcePath, string dest, bool recursive = false,
+            bool maleFemaleSplit = false,
             string filter = "*",
             Func<string, string> updateFileName = null)
         {
             var opt = recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
 
-            var hasFiles = false;
+            Directory.CreateDirectory(dest); //CreateDirectory already checks for directory existance
 
-            if (!Directory.Exists(dest))
-                Directory.CreateDirectory(dest);
-
-            foreach (var path in Directory.GetFiles(src, filter, opt))
+            foreach (var path in Directory.GetFiles(sourcePath, filter, opt))
             {
-                var rel = Path.GetRelativePath(src, path);
+                var rel = Path.GetRelativePath(sourcePath, path);
                 var destPath = Path.Combine(dest, rel);
-
-                hasFiles = true;
 
                 if (maleFemaleSplit)
                 {
@@ -761,11 +750,9 @@ namespace Assets.Editor
                     destPath = updateFileName(destPath);
 
                 var outDir = Path.GetDirectoryName(destPath);
-                if (!Directory.Exists(outDir))
-                    Directory.CreateDirectory(outDir);
+                Directory.CreateDirectory(outDir ?? throw new InvalidOperationException("output directory must exist"));
 
                 var ext = Path.GetExtension(path);
-                var fName = Path.GetFileName(path);
 
                 if (ext == ".bmp")
                 {
@@ -777,7 +764,6 @@ namespace Assets.Editor
                         ti.crunchedCompression = false;
                         ti.textureCompression = TextureImporterCompression.CompressedHQ;
                     });
-                    //TextureImportHelper.GetOrImportTextureToProject(fName, path, destPath);
                 }
                 else
                 {
@@ -787,8 +773,6 @@ namespace Assets.Editor
             }
 
             AssetDatabase.Refresh();
-
-            return hasFiles;
         }
     }
 }
