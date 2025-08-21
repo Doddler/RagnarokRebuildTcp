@@ -838,7 +838,7 @@ namespace Assets.Scripts.Network
             // Show exp-gain in chat window if the given setting was activated
             if (GameConfig.Data.ShowExpGainInChat == true && (exp > 0 || job > 0))
             {
-                CameraFollower.AppendChatText($"<color=#00FFF200>You gained {exp} base and {job} job exp.</color>");
+                CameraFollower.AppendChatText($"<color=#FFFF00FF>You gained {exp} base and {job} job exp.</color>");
             }
 
             //Debug.Log("Gain Exp:" + exp + " " + total);
