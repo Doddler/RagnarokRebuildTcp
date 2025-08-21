@@ -11,21 +11,25 @@ using UnityEditor;
 namespace Assets.Scripts
 {
 
-    public static class TextureImportHelper
+    public class TextureImportHelper
     {
         public static void SetTexturesReadable(List<Texture2D> textures)
         {
             var hasChanges = false;
             foreach (var t in textures)
             {
-                if (t.isReadable) continue;
-                var texPath = AssetDatabase.GetAssetPath(t);
-                var tImporter = AssetImporter.GetAtPath(texPath) as TextureImporter;
-                if (!tImporter) continue;
-                tImporter.isReadable = true;
+                if (!t.isReadable)
+                {
+                    var texPath = AssetDatabase.GetAssetPath(t);
+                    var tImporter = AssetImporter.GetAtPath(texPath) as TextureImporter;
+                    if (tImporter != null)
+                    {
+                        tImporter.isReadable = true;
 
-                AssetDatabase.ImportAsset(texPath);
-                hasChanges = true;
+                        AssetDatabase.ImportAsset(texPath);
+                        hasChanges = true;
+                    }
+                }
             }
 
             if(hasChanges)
@@ -36,7 +40,8 @@ namespace Assets.Scripts
         {
             outputPath = outputPath.Replace("\\", "/");
             var dir = Path.GetDirectoryName(outputPath);
-            Directory.CreateDirectory(dir ?? throw new InvalidOperationException("outputPath cannot be invalid"));
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
 
 	        var bytes = texture.EncodeToPNG();
 	        File.WriteAllBytes(outputPath, bytes);
@@ -45,7 +50,7 @@ namespace Assets.Scripts
 	            AssetDatabase.ImportAsset(outputPath, ImportAssetOptions.ForceUpdate);
 	        AssetDatabase.Refresh();
 
-	        var importer = (TextureImporter)AssetImporter.GetAtPath(outputPath);
+	        TextureImporter importer = (TextureImporter)TextureImporter.GetAtPath(outputPath);
             importer.textureType = TextureImporterType.Default;
 	        importer.npotScale = TextureImporterNPOTScale.None;
 	        importer.textureCompression = TextureImporterCompression.CompressedHQ;
@@ -62,7 +67,8 @@ namespace Assets.Scripts
             settings.spriteMeshType = SpriteMeshType.FullRect;
             importer.SetTextureSettings(settings);
 
-            callback?.Invoke(importer);
+            if (callback != null)
+                callback(importer);
 
 	        importer.SaveAndReimport();
             
@@ -84,31 +90,34 @@ namespace Assets.Scripts
 
             //Debug.Log(texPath);
 
-            if (!File.Exists(texPath))
-                throw new Exception($"Could not find texture {textureName} in the import path {importPath}");
-            var filename = Path.GetFileNameWithoutExtension(textureName);
-            var texOutPath = Path.Combine(outputPath, DirectoryHelper.GetRelativeDirectory(importPath, Path.GetDirectoryName(texPath)));
-            var pngPath = Path.Combine(texOutPath, filename + ".png");
-                
-            if (!File.Exists(pngPath))
+            if (File.Exists(texPath))
             {
-                var tex2D = LoadTexture(texPath, keyOnBlack);
+                var bpath = Path.GetDirectoryName(textureName);
+                var fname = Path.GetFileNameWithoutExtension(textureName);
+                var texOutPath = Path.Combine(outputPath, DirectoryHelper.GetRelativeDirectory(importPath, Path.GetDirectoryName(texPath)));
+                var pngPath = Path.Combine(texOutPath, fname + ".png");
+                
+                if (!File.Exists(pngPath))
+                {
+                    var tex2D = LoadTexture(texPath, keyOnBlack);
 
-                tex2D.name = textureName;
+                    tex2D.name = textureName;
 
-                PathHelper.CreateDirectoryIfNotExists(texOutPath);
+                    PathHelper.CreateDirectoryIfNotExists(texOutPath);
 
-                File.WriteAllBytes(pngPath, tex2D.EncodeToPNG());
+                    File.WriteAllBytes(pngPath, tex2D.EncodeToPNG());
 
-                //Debug.Log("Png file does not exist: " + pngPath);
+                    //Debug.Log("Png file does not exist: " + pngPath);
 
-                AssetDatabase.Refresh();
+                    AssetDatabase.Refresh();
+                }
+
+                var texout = AssetDatabase.LoadAssetAtPath(pngPath, typeof(Texture2D)) as Texture2D;
+
+                return texout;
             }
 
-            var texture = AssetDatabase.LoadAssetAtPath(pngPath, typeof(Texture2D)) as Texture2D;
-
-            return texture;
-
+            throw new Exception($"Could not find texture {textureName} in the import path {importPath}");
         }
 
         public static Texture2D FixPinkColor(Texture2D tex)
@@ -149,7 +158,7 @@ namespace Assets.Scripts
 
                             var color2 = colors[x + x2 + (y + y2) * width];
 
-                            if (color2 is { r: >= 254, g: 0, b: >= 254 })
+                            if (color2.r >= 254 && color2.g == 0 && color2.b >= 254)
                                 continue;
 
                             count++;
@@ -192,10 +201,8 @@ namespace Assets.Scripts
                 return TGALoader.LoadTGA(path);
             }
             
-            var bmp = new BMPLoader
-            {
-                ForceAlphaReadWhenPossible = false
-            };
+            var bmp = new BMPLoader();
+            bmp.ForceAlphaReadWhenPossible = false;
             var img = bmp.LoadBMP(path);
 
             if (img == null)
@@ -211,10 +218,13 @@ namespace Assets.Scripts
             {
                 for (var x = 0; x < width; x++)
                 {
+                    //var count = 0;
+                    //var r = 0;
+                    //var g = 0;
+                    //var b = 0;
+
                     if (x + y * width >= colors.Length)
-                        throw new IndexOutOfRangeException(
-                            $"For some reason looking out of bounds on color table on texture {path} w{width} h{height} position {x} {y} ({x + y * width}");
-                        //Debug.LogWarning($"For some reason looking out of bounds on color table on texture {path} w{width} h{height} position {x} {y} ({x + y * width}");
+                        Debug.LogWarning($"For some reason looking out of bounds on color table on texture {path} w{width} h{height} position {x} {y} ({x + y * width}");
                     var color = colors[x + y * width];
                     
                     var posterized = new Color32((byte)(color.r & 0xF0), (byte)(color.g & 0xF0), (byte)(color.b & 0xF0), color.a);
@@ -224,8 +234,58 @@ namespace Assets.Scripts
                     if (posterized.r == posterizedMask.r && posterized.g == posterizedMask.g && posterized.b == posterizedMask.b)
                         img.imageData[x + y * width] = new Color32(0, 0, 0, 0);
                     
-                    if(keyOnBlack && color is { r: 0, g: 0, b: 0 })
+                    if(keyOnBlack && color.r == 0 && color.g == 0 && color.b == 0)
                         img.imageData[x + y * width] = new Color32(0, 0, 0, 0);
+                    
+                    //
+                    // //
+                    // //Debug.Log(color);
+                    // if (posterized.r != keyColor.r || posterized.g != keyColor.g || posterized.b != keyColor.b)
+                    // {
+                    //     if(!keyOnBlack || color.r > 0 || color.g > 0 || color.b > 0)
+                    //         continue;
+                    // }
+
+                    //Debug.Log("OHWOW: " + color);
+                    //
+                    // for (var y2 = -1; y2 <= 1; y2++)
+                    // {
+                    //     for (var x2 = -1; x2 <= 1; x2++)
+                    //     {
+                    //         if (y + y2 < 0 || y + y2 >= height)
+                    //             continue;
+                    //         if (x + x2 < 0 || x + x2 >= width)
+                    //             continue;
+                    //
+                    //         var color2 = colors[x + x2 + (y + y2) * width];
+                    //
+                    //         var isKeyed = color2.r == keyColor.r && color2.g == keyColor.g && color2.b == keyColor.b;
+                    //         if (keyOnBlack)
+                    //             isKeyed = color2.r == 0 && color2.g == 0 && color2.b == 0;
+                    //
+                    //         if (isKeyed)
+                    //             continue;
+                    //         
+                    //         count++;
+                    //
+                    //         r += color2.r;
+                    //         g += color2.g;
+                    //         b += color2.b;
+                    //     }
+                    // }
+                    //
+                    // if (count > 0)
+                    // {
+                    //     var r2 = (byte)Mathf.Clamp(r / count, 0, 255);
+                    //     var g2 = (byte)Mathf.Clamp(g / count, 0, 255);
+                    //     var b2 = (byte)Mathf.Clamp(b / count, 0, 255);
+                    //
+                    //     //Debug.Log($"{x},{y} - change {color} to {r2},{g2},{b2}");
+                    //
+                    //     img.imageData[x + y * width] = new Color32(r2, g2, b2, 0);
+                    // }
+                    // else
+                        // img.imageData[x + y * width] = new Color32(0, 0, 0, 0);
                 }
             }
 
@@ -291,21 +351,21 @@ namespace Assets.Scripts
         //code graciously from https://github.com/hanbim520/Unity2017AutoCreateSpriteAtlas
         public static void CreateAtlas(string atlasName, string sptDesDir)
         {
-            const string yaml = @"%YAML 1.1
-                                %TAG !u! tag:unity3d.com,2011:
-                                --- !u!612988286 &1
-                                SpriteAtlasAsset:
-                                  m_ObjectHideFlags: 0
-                                  m_CorrespondingSourceObject: {fileID: 0}
-                                  m_PrefabInstance: {fileID: 0}
-                                  m_PrefabAsset: {fileID: 0}
-                                  m_Name: 
-                                  serializedVersion: 2
-                                  m_MasterAtlas: {fileID: 0}
-                                  m_ImporterData:
-                                    packables: []
-                                  m_IsVariant: 0
-                                ";
+            string yaml = @"%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!612988286 &1
+SpriteAtlasAsset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  serializedVersion: 2
+  m_MasterAtlas: {fileID: 0}
+  m_ImporterData:
+    packables: []
+  m_IsVariant: 0
+";
             AssetDatabase.Refresh();
 
             if (!Directory.Exists(sptDesDir ))
