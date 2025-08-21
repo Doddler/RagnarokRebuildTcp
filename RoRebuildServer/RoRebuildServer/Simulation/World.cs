@@ -747,7 +747,7 @@ public class World
         ch.State = CharacterState.Idle;
 
         ce.Init(ref e, ch);
-        monster.Initialize(ref e, ch, ce, monster.MonsterBase, monster.MonsterBase.AiType, spawnEntry, map.Name);
+        monster.Initialize(ref e, ch, ce, spawnEntry.MonsterDatabaseInfo, spawnEntry.MonsterDatabaseInfo.AiType, spawnEntry, map.Name);
 
         if (ch.IsImportant)
             map.RegisterImportantEntity(ch);
