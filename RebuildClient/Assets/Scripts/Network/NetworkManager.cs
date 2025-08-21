@@ -15,6 +15,7 @@ using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.UI.Hud;
 using Assets.Scripts.UI.RefineItem;
 using Assets.Scripts.UI.TitleScreen;
+using Assets.Scripts.UI.Utility;
 using Assets.Scripts.Utility;
 using HybridWebSocket;
 using JetBrains.Annotations;
@@ -147,7 +148,6 @@ namespace Assets.Scripts.Network
 
             ClientDataLoader.Instance.Initialize();
             UiManager.Instance.Initialize();
-
 
             spritePreload = Addressables.LoadAssetAsync<RoSpriteData>("Assets/Sprites/Monsters/poring.spr");
 
@@ -834,6 +834,12 @@ namespace Assets.Scripts.Network
             var exp = msg.ReadInt32();
             var jobTotal = msg.ReadInt32();
             var job = msg.ReadInt32();
+
+            // Show exp-gain in chat window if the given setting was activated
+            if (GameConfig.Data.ShowExpGainInChat == true && (exp > 0 || job > 0))
+            {
+                CameraFollower.AppendChatText($"<color=#00FFF200>You gained {exp} base and {job} job exp.</color>");
+            }
 
             //Debug.Log("Gain Exp:" + exp + " " + total);
 
