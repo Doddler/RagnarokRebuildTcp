@@ -19,6 +19,7 @@ using System.Runtime.CompilerServices;
 using RoRebuildServer.ScriptSystem;
 using System.Runtime.InteropServices;
 using RoRebuildServer.Data.Monster;
+using System.Text.RegularExpressions;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -611,9 +612,31 @@ public partial class CombatEntity : IEntityAutoReset
         if (Character.Map == null || Character.Type != CharacterType.Player)
             return;
 
-        Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
         CommandBuilder.ChangeSpValue(Player, curSp + sp, maxSp);
-        CommandBuilder.ClearRecipients();
+        if (Player.Party != null)
+            CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(Player);
+    }
+
+    public void RecoverSpFixed(int sp)
+    {
+        if (sp <= 0)
+            return;
+
+        var curSp = GetStat(CharacterStat.Sp);
+        var maxSp = GetStat(CharacterStat.MaxSp);
+        var newSp = curSp + sp;
+
+        if (newSp > maxSp)
+            newSp = maxSp;
+
+        SetStat(CharacterStat.Sp, newSp);
+
+        if (Character.Map == null || Character.Type != CharacterType.Player)
+            return;
+
+        CommandBuilder.ChangeSpValue(Player, newSp, maxSp);
+        if (Player.Party != null)
+            CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(Player);
     }
 
     [ScriptUseable]

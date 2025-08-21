@@ -133,11 +133,11 @@ public partial class CombatEntity
             {
                 var val = GetStat(CharacterStat.SpGainOnAttack);
                 if (val > 0)
-                    RecoverSp(val);
+                    RecoverSpFixed(val);
 
                 val = GetStat(CharacterStat.SpGainOnAttackRaceFormless + (int)race);
                 if (val > 0)
-                    RecoverSp(val);
+                    RecoverSpFixed(val);
             }
 
             if ((attackTriggerFlags & AttackEffectTriggers.KillOnAttack) > 0
