@@ -46,8 +46,6 @@
 * 
 *****/
 #endregion License and Information
-
-using System;
 using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
@@ -265,87 +263,87 @@ namespace B83.Image.BMP
 
         private static void Read24BitImage(BinaryReader aReader, BMPImage bmp)
         {
-            var w = Mathf.Abs(bmp.info.width);
-            var h = Mathf.Abs(bmp.info.height);
-            var rowLength = ((24 * w + 31) / 32) * 4;
-            var count = rowLength * h;
-            var pad = rowLength - w * 3;
-            var data = bmp.imageData = new Color32[w * h];
+            int w = Mathf.Abs(bmp.info.width);
+            int h = Mathf.Abs(bmp.info.height);
+            int rowLength = ((24 * w + 31) / 32) * 4;
+            int count = rowLength * h;
+            int pad = rowLength - w * 3;
+            Color32[] data = bmp.imageData = new Color32[w * h];
             if (aReader.BaseStream.Position + count > aReader.BaseStream.Length)
             {
                 throw new FileLoadException($"Unexpected end of file. (Have {(aReader.BaseStream.Position + count)} bytes, expected {aReader.BaseStream.Length} bytes)");
             }
-            var shiftR = GetShiftCount(bmp.rMask);
-            var shiftG = GetShiftCount(bmp.gMask);
-            var shiftB = GetShiftCount(bmp.bMask);
-            for (var y = 0; y < h; y++)
+            int shiftR = GetShiftCount(bmp.rMask);
+            int shiftG = GetShiftCount(bmp.gMask);
+            int shiftB = GetShiftCount(bmp.bMask);
+            for (int y = 0; y < h; y++)
             {
-                for(var x = 0; x < w; x++)
+                for(int x = 0; x < w; x++)
                 {
-                    var v = aReader.ReadByte() | ((uint)aReader.ReadByte()<<8) | ((uint)aReader.ReadByte()<<16);
-                    var r = (byte)((v & bmp.rMask) >> shiftR);
-                    var g = (byte)((v & bmp.gMask) >> shiftG);
-                    var b = (byte)((v & bmp.bMask) >> shiftB);
+                    uint v = aReader.ReadByte() | ((uint)aReader.ReadByte()<<8) | ((uint)aReader.ReadByte()<<16);
+                    byte r = (byte)((v & bmp.rMask) >> shiftR);
+                    byte g = (byte)((v & bmp.gMask) >> shiftG);
+                    byte b = (byte)((v & bmp.bMask) >> shiftB);
                     data[x+y*w] = new Color32(r, g, b, 255);
                 }
-                for (var i = 0; i < pad; i++)
+                for (int i = 0; i < pad; i++)
                     aReader.ReadByte();
             }
         }
 
         private static void Read16BitImage(BinaryReader aReader, BMPImage bmp)
         {
-            var w = Mathf.Abs(bmp.info.width);
-            var h = Mathf.Abs(bmp.info.height);
-            var rowLength = ((16 * w + 31) / 32) * 4;
-            var count = rowLength * h;
-            var pad = rowLength - w * 2;
-            var data = bmp.imageData = new Color32[w * h];
+            int w = Mathf.Abs(bmp.info.width);
+            int h = Mathf.Abs(bmp.info.height);
+            int rowLength = ((16 * w + 31) / 32) * 4;
+            int count = rowLength * h;
+            int pad = rowLength - w * 2;
+            Color32[] data = bmp.imageData = new Color32[w * h];
             if (aReader.BaseStream.Position + count > aReader.BaseStream.Length)
             {
                 throw new FileLoadException($"Unexpected end of file. (Have {aReader.BaseStream.Position + count} bytes, expected {aReader.BaseStream.Length} bytes)");
             }
-            var shiftR = GetShiftCount(bmp.rMask);
-            var shiftG = GetShiftCount(bmp.gMask);
-            var shiftB = GetShiftCount(bmp.bMask);
-            var shiftA = GetShiftCount(bmp.aMask);
+            int shiftR = GetShiftCount(bmp.rMask);
+            int shiftG = GetShiftCount(bmp.gMask);
+            int shiftB = GetShiftCount(bmp.bMask);
+            int shiftA = GetShiftCount(bmp.aMask);
             byte a = 255;
-            for (var y = 0; y < h; y++)
+            for (int y = 0; y < h; y++)
             {
-                for (var x = 0; x < w; x++)
+                for (int x = 0; x < w; x++)
                 {
-                    var v = aReader.ReadByte() | ((uint)aReader.ReadByte() << 8);
-                    var r = (byte)((v & bmp.rMask) >> shiftR);
-                    var g = (byte)((v & bmp.gMask) >> shiftG);
-                    var b = (byte)((v & bmp.bMask) >> shiftB);
+                    uint v = aReader.ReadByte() | ((uint)aReader.ReadByte() << 8);
+                    byte r = (byte)((v & bmp.rMask) >> shiftR);
+                    byte g = (byte)((v & bmp.gMask) >> shiftG);
+                    byte b = (byte)((v & bmp.bMask) >> shiftB);
                     if (bmp.aMask != 0)
                         a = (byte)((v & bmp.aMask) >> shiftA);
                     data[x + y * w] = new Color32(r, g, b, a);
                 }
-                for (var i = 0; i < pad; i++)
+                for (int i = 0; i < pad; i++)
                     aReader.ReadByte();
             }
         }
 
         private static void ReadIndexedImage(BinaryReader aReader, BMPImage bmp)
         {
-            var w = Mathf.Abs(bmp.info.width);
-            var h = Mathf.Abs(bmp.info.height);
-            var bitCount = bmp.info.nBitsPerPixel;
-            var rowLength = ((bitCount * w + 31) / 32) * 4;
-            var count = rowLength * h;
-            var pad = rowLength - (w * bitCount + 7)/8;
-            var data = bmp.imageData = new Color32[w * h];
+            int w = Mathf.Abs(bmp.info.width);
+            int h = Mathf.Abs(bmp.info.height);
+            int bitCount = bmp.info.nBitsPerPixel;
+            int rowLength = ((bitCount * w + 31) / 32) * 4;
+            int count = rowLength * h;
+            int pad = rowLength - (w * bitCount + 7)/8;
+            Color32[] data = bmp.imageData = new Color32[w * h];
             if (aReader.BaseStream.Position + count > aReader.BaseStream.Length)
             {
                 throw new FileLoadException($"Unexpected end of file. (Have {aReader.BaseStream.Position + count} bytes, expected {aReader.BaseStream.Length} bytes)");
             }
-            var bitReader = new BitStreamReader(aReader);
-            for (var y = 0; y < h; y++)
+            BitStreamReader bitReader = new BitStreamReader(aReader);
+            for (int y = 0; y < h; y++)
             {
-                for (var x = 0; x < w; x++)
+                for (int x = 0; x < w; x++)
                 {
-                    var v = (int)bitReader.ReadBits(bitCount);
+                    int v = (int)bitReader.ReadBits(bitCount);
                     if (v >= bmp.palette.Count)
                     {
                         throw new FileLoadException("Indexed bitmap has indices greater than it's color palette");
@@ -353,25 +351,25 @@ namespace B83.Image.BMP
                     data[x + y * w] = bmp.palette[v];
                 }
                 bitReader.Flush();
-                for (var i = 0; i < pad; i++)
+                for (int i = 0; i < pad; i++)
                     aReader.ReadByte();
             }
         }
         private static void ReadIndexedImageRLE4(BinaryReader aReader, BMPImage bmp)
         {
-            var w = Mathf.Abs(bmp.info.width);
-            var h = Mathf.Abs(bmp.info.height);
-            var data = bmp.imageData = new Color32[w * h];
-            var x = 0;
-            var y = 0;
-            var yOffset = 0;
+            int w = Mathf.Abs(bmp.info.width);
+            int h = Mathf.Abs(bmp.info.height);
+            Color32[] data = bmp.imageData = new Color32[w * h];
+            int x = 0;
+            int y = 0;
+            int yOffset = 0;
             while (aReader.BaseStream.Position < aReader.BaseStream.Length-1)
             {
-                var count = (int)aReader.ReadByte();
-                var d = aReader.ReadByte();
+                int count = aReader.ReadByte();
+                byte d = aReader.ReadByte();
                 if (count > 0)
                 {   
-                    for (var i = (count/2); i > 0; i--)
+                    for (int i = (count/2); i > 0; i--)
                     {
                         data[x++ + yOffset] = bmp.palette[(d>>4)&0x0F];
                         data[x++ + yOffset] = bmp.palette[d & 0x0F];
@@ -401,9 +399,9 @@ namespace B83.Image.BMP
                     }
                     else
                     {
-                        for(var i = (d / 2); i > 0; i--)
+                        for(int i = (d / 2); i > 0; i--)
                         {
-                            var d2 = aReader.ReadByte();
+                            byte d2 = aReader.ReadByte();
                             data[x++ + yOffset] = bmp.palette[(d2 >> 4) & 0x0F];
                             data[x++ + yOffset] = bmp.palette[d2 & 0x0F];
                         }
@@ -421,19 +419,19 @@ namespace B83.Image.BMP
         }
         private static void ReadIndexedImageRLE8(BinaryReader aReader, BMPImage bmp)
         {
-            var w = Mathf.Abs(bmp.info.width);
-            var h = Mathf.Abs(bmp.info.height);
-            var data = bmp.imageData = new Color32[w * h];
-            var x = 0;
-            var y = 0;
-            var yOffset = 0;
+            int w = Mathf.Abs(bmp.info.width);
+            int h = Mathf.Abs(bmp.info.height);
+            Color32[] data = bmp.imageData = new Color32[w * h];
+            int x = 0;
+            int y = 0;
+            int yOffset = 0;
             while (aReader.BaseStream.Position < aReader.BaseStream.Length - 1)
             {
-                var count = (int)aReader.ReadByte();
-                var d = aReader.ReadByte();
+                int count = aReader.ReadByte();
+                byte d = aReader.ReadByte();
                 if (count > 0)
                 {
-                    for (var i = count; i > 0; i--)
+                    for (int i = count; i > 0; i--)
                     {
                         data[x++ + yOffset] = bmp.palette[d ];
                     }
@@ -472,7 +470,7 @@ namespace B83.Image.BMP
         }
         private static int GetShiftCount(uint mask)
         {
-            for(var i = 0; i < 32; i++)
+            for(int i = 0; i < 32; i++)
             {
                 if ((mask & 0x01) > 0)
                     return i;
@@ -483,7 +481,7 @@ namespace B83.Image.BMP
         private static uint GetMask(int bitCount)
         {
             uint mask = 0;
-            for(var i = 0; i < bitCount; i++)
+            for(int i = 0; i < bitCount; i++)
             {
                 mask <<= 1;
                 mask |= 0x01;
@@ -515,24 +513,24 @@ namespace B83.Image.BMP
             aHeader.yPPM = aReader.ReadInt32();
             aHeader.nPaletteColors = aReader.ReadUInt32();
             aHeader.nImportantColors = aReader.ReadUInt32();
-            var pad = (int)aHeader.size - 40;
+            int pad = (int)aHeader.size - 40;
             if (pad > 0)
                 aReader.ReadBytes(pad);
             return true;
         }
 
-        private static List<Color32> ReadPalette(BinaryReader aReader, BMPImage aBmp, bool aReadAlpha)
+        public static List<Color32> ReadPalette(BinaryReader aReader, BMPImage aBmp, bool aReadAlpha)
         {
-            var count = aBmp.info.nPaletteColors;
+            uint count = aBmp.info.nPaletteColors;
             if (count == 0u)
                 count = 1u << aBmp.info.nBitsPerPixel;
             var palette = new List<Color32>((int)count);
-            for(var i = 0; i < count; i++)
+            for(int i = 0; i < count; i++)
             {
-                var b = aReader.ReadByte();
-                var g = aReader.ReadByte();
-                var r = aReader.ReadByte();
-                var a = aReader.ReadByte();
+                byte b = aReader.ReadByte();
+                byte g = aReader.ReadByte();
+                byte r = aReader.ReadByte();
+                byte a = aReader.ReadByte();
                 if (!aReadAlpha)
                     a = 255;
                 palette.Add(new Color32(r,g,b,a));
@@ -543,37 +541,37 @@ namespace B83.Image.BMP
     }
     public class BitStreamReader
     {
-        private readonly BinaryReader _mReader;
-        private byte _mData;
-        private int _mBits;
+        private readonly BinaryReader m_Reader;
+        private byte m_Data;
+        private int m_Bits;
         
         public BitStreamReader(BinaryReader aReader)
         {
-            _mReader = aReader;
+            m_Reader = aReader;
         }
         public BitStreamReader(Stream aStream) : this(new BinaryReader(aStream)) { }
 
         private byte ReadBit()
         {
-            if (_mBits > 0) return (byte)((_mData >> --_mBits) & 1);
-            _mData = _mReader.ReadByte();
-            _mBits = 8;
-            return (byte)((_mData >> --_mBits) & 1);
+            if (m_Bits > 0) return (byte)((m_Data >> --m_Bits) & 1);
+            m_Data = m_Reader.ReadByte();
+            m_Bits = 8;
+            return (byte)((m_Data >> --m_Bits) & 1);
         }
 
         public ulong ReadBits(int aCount)
         {
-            var val = 0UL;
+            ulong val = 0UL;
             if (aCount is <= 0 or > 32)
                 throw new System.ArgumentOutOfRangeException(nameof(aCount), "aCount must be between 1 and 32 inclusive");
-            for (var i = aCount-1; i>=0; i--)
+            for (int i = aCount-1; i>=0; i--)
                 val |= (ulong)ReadBit() << i;
             return val;
         }
         public void Flush()
         {
-            _mData = 0;
-            _mBits = 0;
+            m_Data = 0;
+            m_Bits = 0;
         }
     }
 }

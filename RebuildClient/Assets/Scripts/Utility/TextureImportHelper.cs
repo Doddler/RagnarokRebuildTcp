@@ -292,20 +292,20 @@ namespace Assets.Scripts
         public static void CreateAtlas(string atlasName, string sptDesDir)
         {
             const string yaml = @"%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!612988286 &1
-SpriteAtlasAsset:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  serializedVersion: 2
-  m_MasterAtlas: {fileID: 0}
-  m_ImporterData:
-    packables: []
-  m_IsVariant: 0
-";
+                                %TAG !u! tag:unity3d.com,2011:
+                                --- !u!612988286 &1
+                                SpriteAtlasAsset:
+                                  m_ObjectHideFlags: 0
+                                  m_CorrespondingSourceObject: {fileID: 0}
+                                  m_PrefabInstance: {fileID: 0}
+                                  m_PrefabAsset: {fileID: 0}
+                                  m_Name: 
+                                  serializedVersion: 2
+                                  m_MasterAtlas: {fileID: 0}
+                                  m_ImporterData:
+                                    packables: []
+                                  m_IsVariant: 0
+                                ";
             AssetDatabase.Refresh();
 
             if (!Directory.Exists(sptDesDir ))
@@ -313,14 +313,14 @@ SpriteAtlasAsset:
                 Directory.CreateDirectory(sptDesDir );
                 AssetDatabase.Refresh();
             }
-            var filePath = sptDesDir + "/" + atlasName;
+            string filePath = sptDesDir + "/" + atlasName;
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);
                 AssetDatabase.Refresh();
             }
-            var fs = new FileStream(filePath, FileMode.CreateNew);
-            var bytes = new UTF8Encoding().GetBytes(yaml);
+            FileStream fs = new FileStream(filePath, FileMode.CreateNew);
+            byte[] bytes = new UTF8Encoding().GetBytes(yaml);
             fs.Write(bytes, 0, bytes.Length);
             fs.Close();
             AssetDatabase.Refresh();

@@ -5,11 +5,9 @@ using System.Linq;
 using Assets.Editor;
 using Assets.Scripts;
 using Assets.Scripts.MapEditor.Editor;
-using JetBrains.Annotations;
 using UnityEditor;
 using UnityEditor.AssetImporters;
 using UnityEngine;
-using Utility.Editor;
 
 [ScriptedImporter(1, "act", AllowCaching = true)]
 public class ActImporter : ScriptedImporter
@@ -19,12 +17,19 @@ public class ActImporter : ScriptedImporter
         //ImportActFile(ctx.assetPath);
     }
 
-    public static void ImportActFile([NotNull] string actFilePath, string assetDirectoryPath = null)
+    public static void ImportActFile(string actFilePath, string assetDirectoryPath = null)
     {
-        var actFileName = Path.GetFileNameWithoutExtension(actFilePath);
-        var actDirectoryPath = Path.GetDirectoryName(actFilePath) ?? throw new ArgumentNullException($"Resulting diretory for {actFilePath} cannot be null");
-        var atlasFilePath = Path.Combine(assetDirectoryPath ?? actDirectoryPath, "Atlas", $"{actFileName}_atlas.png");
-        var palettePath = Path.Combine(actDirectoryPath, "Palette");
+        //Check for .spr pair immediately, otherwise quit the import
+        string sprFilePath = actFilePath.Replace(".act", ".spr");
+        if (!File.Exists(sprFilePath))
+        {
+            throw new NotSupportedException($"Couldn't find a matching {Path.GetFileName(sprFilePath)} file, aborting import");
+        };
+        
+        string actFileName = Path.GetFileNameWithoutExtension(actFilePath);
+        string actDirectoryPath = Path.GetDirectoryName(actFilePath) ?? throw new ArgumentNullException($"Resulting diretory for {actFilePath} cannot be null");
+        string atlasFilePath = Path.Combine(assetDirectoryPath ?? actDirectoryPath, "Atlas", $"{actFileName}_atlas.png");
+        string palettePath = Path.Combine(actDirectoryPath, "Palette");
         var palettes = new List<string>();
     
         for (var i = 0; i < 10; i++)
@@ -36,14 +41,14 @@ public class ActImporter : ScriptedImporter
             if (File.Exists(pName))
                 palettes.Add(pName);
         }
-        
+
         var spriteAsset = ScriptableObject.CreateInstance<RoSpriteData>();
         AssetDatabase.CreateAsset(spriteAsset, Path.Combine(assetDirectoryPath ?? actDirectoryPath, $"{actFileName}.asset"));
 
         var loader = new RagnarokSpriteLoader();
         loader.Load(actFilePath.Replace(".act", ".spr"), atlasFilePath, spriteAsset, null);
         SetUpSpriteData(loader, spriteAsset, actDirectoryPath, actFileName, actFileName);
-        
+
         for (var i = 0; i < palettes.Count; i++)
         {
             spriteAsset = ScriptableObject.CreateInstance<RoSpriteData>();
@@ -134,7 +139,7 @@ public class ActImporter : ScriptedImporter
         }
 
         //far better way to get sprite attack timing
-        if (asset.Type is SpriteType.Monster or SpriteType.Monster2 or SpriteType.Pet)
+        if (asset.Type is (SpriteType.Monster or SpriteType.Monster2 or SpriteType.Pet))
         {
             var actionId = RoAnimationHelper.GetMotionIdForSprite(asset.Type, SpriteMotion.Attack1);
             if (actionId == -1)
