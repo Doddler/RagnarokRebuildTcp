@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Network.HandlerBase;
+﻿using Assets.Scripts.Effects.EffectHandlers.Skills.Priest;
+using Assets.Scripts.Network.HandlerBase;
 using RebuildSharedData.Networking;
 
 namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
@@ -19,6 +20,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             }
 
             Camera.AttachEffectToEntity("Resurrect", controllable.gameObject, id);
+            ReviveEffect.Create(controllable);
 
             controllable.IsCharacterAlive = true;
             controllable.SpriteAnimator.State = SpriteState.Idle;
