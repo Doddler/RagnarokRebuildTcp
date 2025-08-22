@@ -1351,6 +1351,7 @@ namespace Assets.Scripts
                 TextColor.Equipment => "<color=#00fbfb>",
                 TextColor.Item => "<color=#00fbfb>",
                 TextColor.Error => "<color=#ed0000>",
+                TextColor.System => "<color=#FFFF00>",
                 _ => ""
             };
 
