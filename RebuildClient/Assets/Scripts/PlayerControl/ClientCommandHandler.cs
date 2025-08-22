@@ -147,7 +147,6 @@ namespace PlayerControl
                     NetworkManager.Instance.SendClientTextCommand(ClientTextCommand.Info);
                 }
 
-
                 if (s[0] == "/adminify")
                 {
                     if (s.Length > 1)
@@ -164,7 +163,6 @@ namespace PlayerControl
                     var newName = text.Substring(s[0].Length + 1);
                     NetworkManager.Instance.SendChangeName(newName);
                 }
-
 
                 if (s[0] == "/find")
                 {
@@ -410,6 +408,12 @@ namespace PlayerControl
                 if (s[0] == "/die" || s[0] == "/suicide")
                 {
                     NetworkManager.Instance.SendAdminDieAction();
+                }
+
+                if (s[0] == "/showexp") {
+                    GameConfig.Data.ShowExpGainInChat = !GameConfig.Data.ShowExpGainInChat;
+                    UiManager.Instance.ConfigManager.Refresh();
+                    cameraFollower.AppendChatText($"showexp turned {(GameConfig.Data.ShowExpGainInChat == true ? "on" : "off")}",TextColor.System);
                 }
 
                 if (s[0] == "/sit")
