@@ -48,7 +48,7 @@ namespace Assets.Scripts.UI.ConfigWindow
         public bool ShowBaseExpPercent = true;
         public bool ShowJobExpValue = true;
         public bool ShowJobExpPercent = true;
-        public bool ShowExpGainInChat = true;
+        public bool ShowExpGainInChat = false;
 
         //visuals
         public bool UseSmoothPixel = true;
