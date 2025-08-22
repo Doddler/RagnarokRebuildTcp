@@ -412,6 +412,7 @@ namespace PlayerControl
 
                 if (s[0] == "/showexp") {
                     GameConfig.Data.ShowExpGainInChat = !GameConfig.Data.ShowExpGainInChat;
+                    UiManager.Instance.ConfigManager.Refresh();
                     cameraFollower.AppendChatText($"showexp turned {(GameConfig.Data.ShowExpGainInChat == true ? "on" : "off")}",TextColor.System);
                 }
 

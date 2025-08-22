@@ -14,6 +14,18 @@ namespace Assets.Scripts.UI.ConfigWindow
         public Toggle JobExpShowPercent;
         public Toggle ShowExpGainInChat;
 
+        // Refreshes the Config UI. Used when internally changing settings and wanting the UI to refresh to
+        // show the newly applied values
+        public void Refresh()
+        {
+            MasterUISize.SetValueWithoutNotify(GameConfig.Data.MasterUIScale * 10);
+            BaseExpShowValue.SetIsOnWithoutNotify(GameConfig.Data.ShowBaseExpValue);
+            BaseExpShowPercent.SetIsOnWithoutNotify(GameConfig.Data.ShowBaseExpPercent);
+            JobExpShowValue.SetIsOnWithoutNotify(GameConfig.Data.ShowJobExpValue);
+            JobExpShowPercent.SetIsOnWithoutNotify(GameConfig.Data.ShowJobExpPercent);
+            ShowExpGainInChat.SetIsOnWithoutNotify(GameConfig.Data.ShowExpGainInChat);
+        }
+
         public void UpdateUISizeSettings()
         {
             GameConfig.Data.MasterUIScale = MasterUISize.value / 10f;
@@ -42,12 +54,7 @@ namespace Assets.Scripts.UI.ConfigWindow
 
         private void InitializeUISettings()
         {
-            MasterUISize.SetValueWithoutNotify(GameConfig.Data.MasterUIScale * 10);
-            BaseExpShowValue.SetIsOnWithoutNotify(GameConfig.Data.ShowBaseExpValue);
-            BaseExpShowPercent.SetIsOnWithoutNotify(GameConfig.Data.ShowBaseExpPercent);
-            JobExpShowValue.SetIsOnWithoutNotify(GameConfig.Data.ShowJobExpValue);
-            JobExpShowPercent.SetIsOnWithoutNotify(GameConfig.Data.ShowJobExpPercent);
-            ShowExpGainInChat.SetIsOnWithoutNotify(GameConfig.Data.ShowExpGainInChat);
+            Refresh();
         }
     }
 }
