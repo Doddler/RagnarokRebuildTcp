@@ -314,7 +314,7 @@ public partial class CombatEntity
 
         //evasion
         if (isPhysical && !flags.HasFlag(AttackFlags.IgnoreEvasion))
-            evade = !TestHitVsEvasion(target, req.AccuracyRatio, attackerPenalty * 10);
+            evade = !TestHitVsEvasion(target, req.AccuracyRatio, attackerPenalty * (5 + attackerPenalty / 2));
 
         if (target.HasBodyState(BodyStateFlags.Hidden) && !flags.HasFlag(AttackFlags.IgnoreEvasion)
                                                             && !flags.HasFlag(AttackFlags.CanAttackHidden)

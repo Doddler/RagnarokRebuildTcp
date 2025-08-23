@@ -29,9 +29,6 @@ namespace Assets.Scripts.Utility
 		public Image LoadingImage;
 
 		public TextMeshProUGUI MonsterHoverText;
-
-		public TextAsset MapList;
-		public TextAsset FogData;
 		
 		private Scene unloadScene;
 		private string newScene;
@@ -55,13 +52,13 @@ namespace Assets.Scripts.Utility
 			BlackoutImage.gameObject.SetActive(true);
 			LoadingImage.gameObject.SetActive(true);
 			
-			var json = JsonUtility.FromJson<Wrapper<FogInfo>>(FogData.text);
+			var json = JsonUtility.FromJson<Wrapper<FogInfo>>(ClientDataLoader.ReadStreamingAssetFile("ClientConfig/fogdata.json"));
 			mapFogInfo = json.Items.ToList();
         }
 
 		private void LoadMaps()
 		{
-			var maps = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(MapList.text);
+			var maps = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(ClientDataLoader.ReadStreamingAssetFile("ClientConfigGenerated/maps.json"));
 			mapEntries = maps.Items.ToList();
 		}
 

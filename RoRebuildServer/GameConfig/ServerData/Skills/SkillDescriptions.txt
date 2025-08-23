@@ -34,7 +34,7 @@ For 20 seconds after using the skill all physical attacks will all deal an addit
 Enrages an enemy by taunting them, causing them drop their guard for 30 seconds.
 Reduces enemy defense by [5 + SkillLevel * 5]%.
 Increases enemy attack power by [2 + SkillLevel *3]%.
-The effectivness of this skill is halved on boss type monsters.
+The effectiveness of this skill is halved on boss type monsters.
 While provoked the enemy has a low chance of dealing extra damage against you specifically.
 
 ::SwordMastery

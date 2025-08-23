@@ -19,7 +19,7 @@ namespace DataToClientUtility;
 class Program
 {
     private const string path = @"..\..\..\..\GameConfig\ServerData\Db\";
-    private const string outPath = @"..\..\..\..\..\RebuildClient\Assets\Data\";
+    private const string outPath = @"..\..\..\..\..\RebuildClient\Assets\StreamingAssets\ClientConfigGenerated\";
     private const string outPathStreaming = @"..\..\..\..\..\RebuildClient\Assets\StreamingAssets\";
     private const string configPath = @"..\..\..\..\..\RebuildServer\";
 
@@ -28,6 +28,9 @@ class Program
 
     static void Main(string[] args)
     {
+        if (!Directory.Exists(outPath))
+            Directory.CreateDirectory(outPath);
+
         AppSettings.LoadConfigFromServerPath();
         DataManager.Initialize();
 

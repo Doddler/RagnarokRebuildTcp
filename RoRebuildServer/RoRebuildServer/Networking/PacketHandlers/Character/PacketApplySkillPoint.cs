@@ -81,7 +81,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
             player.RefreshWeaponMastery();
             player.UpdateStats(true, true);
         }
-        
+
         private bool CheckPrereqFromTree(PlayerSkillTree tree, CharacterSkill skill, Player player)
         {
             if (tree.SkillTree == null || !tree.SkillTree.TryGetValue(skill, out var prereqs))
