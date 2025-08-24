@@ -44,7 +44,12 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
                 foreach (var s in player.LearnedSkills)
                     skillPointsUsed += s.Value;
 
-                var minUsedPoints = 9 + (player.JobSkillTree.JobRank - 1) * 49;
+                var targetTree = player.JobSkillTree;
+                while (!targetTree.SkillTree.ContainsKey(skillId) && targetTree.Parent != null)
+                    targetTree = targetTree.Parent;
+
+                var targetRank = targetTree.JobRank;
+                var minUsedPoints = 9 + (targetRank - 1) * 49;
                 if (skillPointsUsed < minUsedPoints)
                 {
                     CommandBuilder.ErrorMessage(player, "You must apply skill points earned as a previous job before applying points in this skill.");
