@@ -408,124 +408,58 @@ internal class DataLoader
 
             drops.Add(monster, data);
         }
-
-        //var entries = csv.GetRecords<dynamic>();
-        //foreach (var entry in entries)
-        //{
-        //    if (entry is IDictionary<string, object> obj)
-        //    {
-        //        var monster = ((string)obj["Monster"]).Replace(" ", "_").ToUpper();
-        //        var data = new MonsterDropData();
-
-        //        if (!DataManager.MonsterCodeLookup.ContainsKey(monster))
-        //            ServerLogger.LogWarning($"Item drops defined for monster {monster} but that monster could not be found.");
-
-        //        for (var i = 1; i <= 12; i++)
-        //        {
-        //            var key = $"Item{i}";
-        //            if (obj.ContainsKey(key))
-        //            {
-        //                var itemName = (string)obj[key];
-        //                if (string.IsNullOrWhiteSpace(itemName))
-        //                    continue;
-
-        //                var rangeMin = 1;
-        //                var rangeMax = 1;
-        //                if (itemName.Contains("#"))
-        //                {
-        //                    var countSection = itemName.AsSpan(itemName.IndexOf('#') + 1);
-        //                    if (countSection.Contains('-'))
-        //                    {
-        //                        rangeMin = int.Parse(countSection[..countSection.IndexOf('-')]);
-        //                        rangeMax = int.Parse(countSection[(countSection.IndexOf('-') + 1)..]);
-        //                    }
-
-        //                    itemName = itemName.Substring(0, itemName.IndexOf('#'));
-        //                }
-
-        //                if (!DataManager.ItemIdByName.TryGetValue(itemName, out var item))
-        //                {
-        //                    ServerLogger.LogWarning($"Monster {monster} dropped item {itemName} was not found in the item list.");
-        //                    //continue;
-        //                }
-
-        //                var chance = (int)int.Parse((string)obj[$"Chance{i}"]);
-        //                if (chance <= 0)
-        //                    continue;
-
-        //                if (remapDrops)
-        //                {
-        //                    var itemInfo = DataManager.GetItemInfoById(item);
-        //                    if (itemInfo != null)
-        //                        chance = config.UpdateDropData(itemInfo.ItemClass, itemInfo.Code, itemInfo.SubCategory, chance);
-        //                }
-
-        //                if (item > 0) //for debug reasons mostly
-        //                    data.DropChances.Add(new MonsterDropData.MonsterDropEntry(item, chance, rangeMin, rangeMax));
-        //            }
-        //        }
-
-        //        drops.Add(monster, data);
-        //    }
-        //}
-
+        
         return drops.AsReadOnly();
     }
 
-    public ReadOnlyDictionary<int, int[]> LoadMaxHpChart()
+    private ReadOnlyDictionary<int, int[]> ReadHpSpChart(string path)
     {
         var dict = new Dictionary<int, int[]>();
-
-        var inPath = Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/JobHpChart.csv");
+        var inPath = Path.Combine(ServerConfig.DataConfig.DataPath, path);
 
         using var tr = new StreamReader(inPath, Encoding.UTF8) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
-        var entries = csv.GetRecords<CsvJobMaxHp>().ToList();
 
-        for (var i = 0; i < 7; i++)
-            dict.Add(i, new int[100]);
+        foreach (var job in DataManager.JobInfo)
+            dict[job.Key] = new int[100];
 
-        foreach (var entry in entries)
+        csv.Read();
+        csv.ReadHeader();
+
+        if (csv.HeaderRecord == null)
+            throw new Exception($"Could not read header on csv {path}!");
+
+        var headers = csv.HeaderRecord;
+        var jobList = new Dictionary<int, int>();
+        var colCount = 1;
+        foreach (var header in headers)
         {
-            var lvl = entry.Level;
-            dict[0][lvl] = entry.Novice;
-            dict[1][lvl] = entry.Swordsman;
-            dict[2][lvl] = entry.Archer;
-            dict[3][lvl] = entry.Mage;
-            dict[4][lvl] = entry.Acolyte;
-            dict[6][lvl] = entry.Merchant;
-            dict[5][lvl] = entry.Thief;
+            if (header == "Level")
+                continue;
+            if (DataManager.JobIdLookup.TryGetValue(header, out var jobId))
+                jobList.Add(colCount, jobId);
+            colCount++;
+        }
+
+        while (csv.Read())
+        {
+            var lvl = csv.GetField<int>("Level");
+            foreach (var (col, job) in jobList)
+                dict[job][lvl] = csv.GetField<int>(col);
         }
 
         return dict.AsReadOnly();
     }
 
+    public ReadOnlyDictionary<int, int[]> LoadMaxHpChart()
+    {
+        var dict = ReadHpSpChart(@"Db/JobHpChart.csv");
+        return dict.AsReadOnly();
+    }
 
     public ReadOnlyDictionary<int, int[]> LoadMaxSpChart()
     {
-        var dict = new Dictionary<int, int[]>();
-
-        var inPath = Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/JobSpChart.csv");
-
-        using var tr = new StreamReader(inPath, Encoding.UTF8) as TextReader;
-        using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
-        var entries = csv.GetRecords<CsvJobMaxHp>().ToList();
-
-        for (var i = 0; i < 7; i++)
-            dict.Add(i, new int[100]);
-
-        foreach (var entry in entries)
-        {
-            var lvl = entry.Level;
-            dict[0][lvl] = entry.Novice;
-            dict[1][lvl] = entry.Swordsman;
-            dict[2][lvl] = entry.Archer;
-            dict[3][lvl] = entry.Mage;
-            dict[4][lvl] = entry.Acolyte;
-            dict[6][lvl] = entry.Merchant;
-            dict[5][lvl] = entry.Thief;
-        }
-
+        var dict = ReadHpSpChart(@"Db/JobSpChart.csv");
         return dict.AsReadOnly();
     }
 
@@ -969,7 +903,7 @@ internal class DataLoader
                         lastTag++;
                     }
                 }
-                
+
             }
 
             obj.Add(new MonsterDatabaseInfo()
