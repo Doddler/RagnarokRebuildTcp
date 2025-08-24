@@ -273,7 +273,7 @@ namespace PlayerControl
                         return;
                     }
 
-                    var itemId = NetworkManager.Instance.PlayerState.EquippedItems[(int)itemPosition];
+                    var itemId = PlayerState.Instance.EquippedItems[(int)itemPosition];
                     if (itemId <= 0)
                     {
                         cameraFollower.AppendError($"Item not equipped in slot {itemPosition}.");
@@ -291,7 +291,7 @@ namespace PlayerControl
                     }
                     else
                     {
-                        var item = NetworkManager.Instance.PlayerState.Inventory.GetInventoryItem(itemId);
+                        var item = PlayerState.Instance.Inventory.GetInventoryItem(itemId);
                         refine = item.UniqueItem.Refine + 1;
                     }
 

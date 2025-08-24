@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Network;
+using Assets.Scripts.PlayerControl;
 using Assets.Scripts.UI.Hud;
 using Assets.Scripts.UI.Inventory;
 using UnityEngine;
@@ -47,7 +48,7 @@ namespace Assets.Scripts.UI
                         NetworkManager.Instance.SendDropItem(obj.ItemId, obj.ItemCount);
                     else
                     {
-                        if(NetworkManager.Instance.PlayerState.Inventory.GetInventoryData().TryGetValue(obj.ItemId, out var item))
+                        if(PlayerState.Instance.Inventory.GetInventoryData().TryGetValue(obj.ItemId, out var item))
                         {
                             UiManager.Instance.DropCountConfirmationWindow.BeginItemDrop(item, DropConfirmationType.DropOnGround);
                         }

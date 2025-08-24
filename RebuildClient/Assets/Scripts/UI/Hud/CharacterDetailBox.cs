@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Network;
+using Assets.Scripts.PlayerControl;
 using RebuildSharedData.Enum;
 using TMPro;
 using UnityEngine;
@@ -30,7 +31,7 @@ namespace Assets.Scripts.UI.Hud
 
         public void UpdateWeightAndZeny()
         {
-            var state = NetworkManager.Instance.PlayerState;
+            var state = PlayerState.Instance;
             
             var curWeight = state.CurrentWeight / 10;
             var totalWeight = state.MaxWeight / 10;

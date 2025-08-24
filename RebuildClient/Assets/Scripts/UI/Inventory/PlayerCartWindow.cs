@@ -51,7 +51,7 @@ namespace Assets.Scripts.UI.Inventory
             
             Debug.Log($"Moving item to cart: {bagSlotId}");
 
-            if (NetworkManager.Instance.PlayerState.Inventory.GetInventoryData().TryGetValue(bagSlotId, out var item))
+            if (PlayerState.Instance.Inventory.GetInventoryData().TryGetValue(bagSlotId, out var item))
             {
                 if (item.ItemData.IsUnique || item.Count == 1 || Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
                     NetworkManager.Instance.CartItemInteraction(CartInteractionType.InventoryToCart, bagSlotId, item.Count);
@@ -70,7 +70,7 @@ namespace Assets.Scripts.UI.Inventory
             
             Debug.Log($"Moving item to storage: {bagSlotId}");
 
-            if (NetworkManager.Instance.PlayerState.Cart.GetInventoryData().TryGetValue(bagSlotId, out var item))
+            if (PlayerState.Instance.Cart.GetInventoryData().TryGetValue(bagSlotId, out var item))
             {
                 if (item.ItemData.IsUnique || item.Count == 1 || Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
                     NetworkManager.Instance.CartItemInteraction(CartInteractionType.CartToInventory, bagSlotId, item.Count);
@@ -92,7 +92,7 @@ namespace Assets.Scripts.UI.Inventory
         
         private void OnDoubleClick(InventoryItem item)
         {
-            var state = NetworkManager.Instance.PlayerState;
+            var state = PlayerState.Instance;
         
             if (UiManager.Instance.InventoryWindow.gameObject.activeInHierarchy)
             {
@@ -103,10 +103,10 @@ namespace Assets.Scripts.UI.Inventory
         
         public void UpdateActiveVisibleBag()
         {
-            if (!gameObject.activeSelf || NetworkManager.Instance?.PlayerState == null)
+            if (!gameObject.activeSelf || PlayerState.Instance == null)
                 return;
 
-            var state = NetworkManager.Instance.PlayerState;
+            var state = PlayerState.Instance;
             var inventory = state.Cart;
             activeEntryCount = 0;
             var bagItems = inventory.GetInventoryData();

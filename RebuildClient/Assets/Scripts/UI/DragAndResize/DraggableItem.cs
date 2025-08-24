@@ -113,7 +113,7 @@ namespace Assets.Scripts.UI
 
                 if (Type == DragItemType.CartItem)
                 {
-                    var inventory = NetworkManager.Instance.PlayerState.Cart.GetInventoryData();
+                    var inventory = PlayerState.Instance.Cart.GetInventoryData();
                     if (!inventory.TryGetValue(ItemId, out var dat))
                         return;
                     text = dat.ProperName();
@@ -122,7 +122,7 @@ namespace Assets.Scripts.UI
                 
                 if (Type == DragItemType.VendActive)
                 {
-                    var inventory = NetworkManager.Instance.PlayerState.Cart.GetInventoryData();
+                    var inventory = PlayerState.Instance.Cart.GetInventoryData();
                     var prices = VendingActiveWindow.Instance.ItemPriceList;
                     if (!inventory.TryGetValue(ItemId, out var dat) || !prices.TryGetValue(ItemId, out var price))
                         return;
@@ -131,7 +131,7 @@ namespace Assets.Scripts.UI
 
                 if (Type == DragItemType.VendSetupSource)
                 {
-                    var inventory = NetworkManager.Instance.PlayerState.Cart.GetInventoryData();
+                    var inventory = PlayerState.Instance.Cart.GetInventoryData();
                     if (!inventory.TryGetValue(ItemId, out var dat))
                         return;
                     text = dat.ProperName();
@@ -139,7 +139,7 @@ namespace Assets.Scripts.UI
 
                 if (Type == DragItemType.Item)
                 {
-                    var inventory = NetworkManager.Instance.PlayerState.Inventory.GetInventoryData();
+                    var inventory = PlayerState.Instance.Inventory.GetInventoryData();
                     if (!inventory.TryGetValue(ItemId, out var dat))
                         return;
                     text = dat.ProperName();

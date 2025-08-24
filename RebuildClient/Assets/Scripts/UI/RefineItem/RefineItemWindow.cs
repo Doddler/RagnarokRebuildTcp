@@ -321,7 +321,7 @@ namespace Assets.Scripts.UI.RefineItem
         
         public void Init()
         {
-            state = NetworkManager.Instance.PlayerState;
+            state = PlayerState.Instance;
             OkButton.interactable = false;
             MainTargetItem.EventOnClick = OpenItemSelectWindow;
             SelectedOre.IsActive = false;

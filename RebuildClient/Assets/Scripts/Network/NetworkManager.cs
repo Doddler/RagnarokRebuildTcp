@@ -54,8 +54,6 @@ namespace Assets.Scripts.Network
         public NetQueue<ClientOutgoingMessage> OutboundMessages = new NetQueue<ClientOutgoingMessage>(30);
         public Dictionary<int, float> EntityLastSeenTime = new();
 
-        public PlayerState PlayerState = new PlayerState();
-
         //private static NetClient client;
 
         private float lastPing;
@@ -172,8 +170,8 @@ namespace Assets.Scripts.Network
                 yield return 0;
             }
 
-            CameraFollower.PlayerState = PlayerState;
-            ClientPacketHandler.Init(this, PlayerState);
+            CameraFollower.PlayerState = PlayerState.Instance;
+            ClientPacketHandler.Init(this, PlayerState.Instance);
             IsLoaded = true;
 
             isOnLoginScreen = true;
@@ -842,14 +840,14 @@ namespace Assets.Scripts.Network
 
             //Debug.Log("Gain Exp:" + exp + " " + total);
 
-            PlayerState.Exp = total;
+            PlayerState.Instance.Exp = total;
 
             if (!EntityList.TryGetValue(PlayerId, out var controllable))
                 return;
             
             var max = CameraFollower.Instance.ExpForLevel(controllable.Level);
-            var jobMax = ClientDataLoader.Instance.GetJobExpRequired(PlayerState.JobId, PlayerState.GetData(PlayerStat.JobLevel));
-            CameraFollower.Instance.UpdatePlayerExp(PlayerState.Exp, max);
+            var jobMax = ClientDataLoader.Instance.GetJobExpRequired(PlayerState.Instance.JobId, PlayerState.Instance.GetData(PlayerStat.JobLevel));
+            CameraFollower.Instance.UpdatePlayerExp(PlayerState.Instance.Exp, max);
             CameraFollower.Instance.UpdatePlayerJobExp(jobTotal, jobMax);
             
             if (exp == 0)
@@ -897,9 +895,9 @@ namespace Assets.Scripts.Network
                 //                                   + "Speak to the bard south of Prontera to get started.</i></color>");
 
                 var req = CameraFollower.Instance.ExpForLevel(lvl);
-                PlayerState.Exp = curExp;
-                PlayerState.Level = lvl;
-                CameraFollower.Instance.UpdatePlayerExp(PlayerState.Exp, req);
+                PlayerState.Instance.Exp = curExp;
+                PlayerState.Instance.Level = lvl;
+                CameraFollower.Instance.UpdatePlayerExp(PlayerState.Instance.Exp, req);
                 //CameraFollower.Instance.CharacterDetailBox.CharacterName.text = $"Lv. {controllable.Level} {controllable.Name}";
                 CameraFollower.Instance.CharacterDetailBox.BaseLvlDisplay.text = $"Base Lv. {controllable.Level}";
             }

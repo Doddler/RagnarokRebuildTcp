@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Network;
+using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using RebuildSharedData.Enum.EntityStats;
 using UnityEngine.UI;
@@ -40,7 +41,7 @@ namespace Assets.Scripts.UI.ConfigWindow
             GameConfig.Data.ShowJobExpPercent = JobExpShowPercent.isOn;
             GameConfig.Data.ShowExpGainInChat = ShowExpGainInChat.isOn;
             
-            var state = NetworkManager.Instance.PlayerState;
+            var state = PlayerState.Instance;
             CameraFollower.Instance.UpdatePlayerExp(state.Exp, CameraFollower.Instance.ExpForLevel(state.Level));
             CameraFollower.Instance.UpdatePlayerJobExp(state.GetData(PlayerStat.JobExp), 
             ClientDataLoader.Instance.GetJobExpRequired(state.JobId, state.GetData(PlayerStat.JobLevel)));
