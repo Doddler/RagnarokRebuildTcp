@@ -981,11 +981,10 @@ public partial class CombatEntity : IEntityAutoReset
             ExecuteQueuedSkillAttack();
         else
         {
-
             if (Character.Type == CharacterType.Player) //monsters have their interrupt mode set during their AI skill handler
             {
                 var skillData = DataManager.SkillData[skill];
-                CastInterruptionMode = skillData.InterruptMode == CastInterruptionMode.Default ? CastInterruptionMode.InterruptOnSkill : skillData.InterruptMode;
+                CastInterruptionMode = skillData.InterruptMode == CastInterruptionMode.Default ? ServerConfig.OperationConfig.DefaultCastInterruptMode : skillData.InterruptMode;
 
                 castTime = castTime * (100 + GetStat(CharacterStat.AddCastTime)) / 100;
             }
@@ -1085,7 +1084,7 @@ public partial class CombatEntity : IEntityAutoReset
             if (Character.Type == CharacterType.Player) //monsters have their interrupt mode set during their AI skill handler
             {
                 var skillData = DataManager.SkillData[skill];
-                CastInterruptionMode = skillData.InterruptMode == CastInterruptionMode.Default ? CastInterruptionMode.InterruptOnSkill : skillData.InterruptMode;
+                CastInterruptionMode = skillData.InterruptMode == CastInterruptionMode.Default ? ServerConfig.OperationConfig.DefaultCastInterruptMode : skillData.InterruptMode;
                 castTime = castTime * (100 + GetStat(CharacterStat.AddCastTime)) / 100;
             }
 
@@ -1215,7 +1214,7 @@ public partial class CombatEntity : IEntityAutoReset
                 if (Character.Type == CharacterType.Player) //monsters have their interrupt mode set during their AI skill handler
                 {
                     var skillData = DataManager.SkillData[skill];
-                    CastInterruptionMode = skillData.InterruptMode == CastInterruptionMode.Default ? CastInterruptionMode.InterruptOnSkill : skillData.InterruptMode;
+                    CastInterruptionMode = skillData.InterruptMode == CastInterruptionMode.Default ? ServerConfig.OperationConfig.DefaultCastInterruptMode : skillData.InterruptMode;
 
                     castTime = castTime * (100 + GetStat(CharacterStat.AddCastTime)) / 100;
                 }

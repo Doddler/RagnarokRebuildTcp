@@ -1,4 +1,6 @@
-﻿namespace RoRebuildServer.Data.Config;
+﻿using RebuildSharedData.ClientTypes;
+
+namespace RoRebuildServer.Data.Config;
 
 public class ServerOperationConfig
 {
@@ -12,6 +14,7 @@ public class ServerOperationConfig
     public bool RemapDropRates { get; set; }
     public bool GuaranteeMvpDrops { get; set; } = true;
     public bool FliersIgnoreTraps { get; set; } = true;
+    public CastInterruptionMode DefaultCastInterruptMode { get; set; } = CastInterruptionMode.InterruptOnSkill;
     public float EtcItemValueMultiplier { get; set; }
     public List<string> ActiveEvents { get; set; } = new();
 }
