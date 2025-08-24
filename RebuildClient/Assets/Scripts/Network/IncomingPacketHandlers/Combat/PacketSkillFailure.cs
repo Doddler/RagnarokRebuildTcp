@@ -61,7 +61,9 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 case SkillValidationResult.TargetImmuneToEffect:
                     Camera.AppendChatText("<color=#FF7777>Skill failed: The target's equipment blocks this skill.</color>");
                     break;
-                        
+                case SkillValidationResult.TargetAreaOccupied:
+                    Camera.AppendChatText("<color=#FF7777>Skill failed: Target area is currently occupied.</color>");
+                    break;
                 case SkillValidationResult.CannotTeleportHere:
                     Camera.AppendChatText("<color=#FF7777>You're unable to teleport in this location.</color>");
                     break;

@@ -86,12 +86,15 @@ public class WarpPortalHandler : SkillHandlerBase
 
         if (player.SpecialState == SpecialPlayerActionState.WaitingOnPortalDestination)
         {
+            if (map.IsTileOccupied(player.SpecialStateTarget))
+            {
+                CommandBuilder.SkillFailed(player, SkillValidationResult.TargetAreaOccupied);
+                return;
+            }
+
             if (!isIndirect && !ConsumeGemstoneForSkillWithFailMessage(source, BlueGemstone))
                 return;
-        }
         
-        if (player.SpecialState == SpecialPlayerActionState.WaitingOnPortalDestination)
-        {
             //the player has selected a destination, which is a second cast of warp portal
             var memo = player.MemoLocations[lvl - 1];
             if (string.IsNullOrWhiteSpace(memo.MapName) || !World.Instance.IsValidMap(memo.MapName))
