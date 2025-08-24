@@ -220,9 +220,7 @@ namespace Assets.Scripts.MapEditor.Editor
             var entriesAdded = new List<AddressableAssetEntry>();
             var entriesRemoved = new List<AddressableAssetEntry>();
 
-            var monText =
-                AssetDatabase.LoadAssetAtPath(@"Assets/Data/monsterclass.json", typeof(TextAsset)) as TextAsset;
-            var monsters = JsonUtility.FromJson<Wrapper<MonsterClassData>>(monText.text);
+            var monsters = JsonUtility.FromJson<Wrapper<MonsterClassData>>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/monsterclass.json"));
 
             //---------------------------------------------------------
             // Sprites
@@ -287,8 +285,7 @@ namespace Assets.Scripts.MapEditor.Editor
             // Effects
             //---------------------------------------------------------
 
-            var effectText = AssetDatabase.LoadAssetAtPath(@"Assets/Data/effects.json", typeof(TextAsset)) as TextAsset;
-            var effects = JsonUtility.FromJson<EffectTypeList>(effectText.text);
+            var effects = JsonUtility.FromJson<EffectTypeList>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/effects.json"));
 
             Debug.Log(effects.Effects.Count);
 
@@ -321,8 +318,7 @@ namespace Assets.Scripts.MapEditor.Editor
             // Maps
             //---------------------------------------------------------
 
-            var mapText = AssetDatabase.LoadAssetAtPath(@"Assets/Data/maps.json", typeof(TextAsset)) as TextAsset;
-            var maps = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(mapText.text);
+            var maps = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/maps.json"));
             var musicNames = new List<string>();
             musicNames.Add("01.mp3");
 
@@ -583,8 +579,7 @@ namespace Assets.Scripts.MapEditor.Editor
         private void OnEnable()
         {
             // 1) Load maps.json
-            var asset = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Data/maps.json");
-            var wrapper = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(asset.text);
+            var wrapper = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/maps.json"));
             maps = wrapper.Items.ToList();
 
             // 2) Initialize checkboxes (true = not imported yet)
