@@ -28,8 +28,8 @@ namespace Assets.Scripts.MapEditor.Editor
 
         public static void ImportAllMissingMaps()
         {
-            var asset = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Data/maps.json");
-            var wrapper = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(asset.text);
+            var wrapper = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/maps.json"));
+
             var maps = wrapper.Items;
 
             if (!Directory.Exists("Assets/Scenes/Maps/"))
