@@ -299,18 +299,33 @@ internal class DataLoader
     {
         var path = Path.Combine(ServerConfig.DataConfig.DataPath, @"Skills/SkillTree.toml");
         var options = new TomlModelOptions() { ConvertPropertyName = name => name, ConvertFieldName = name => name, IncludeFields = true };
-        var skillTreeData = Toml.ToModel<Dictionary<string, PlayerSkillTree>>(File.ReadAllText(path, Encoding.UTF8), null, options);
+        var skillTreeData = Toml.ToModel<Dictionary<string, CsvPlayerSkillTree>>(File.ReadAllText(path, Encoding.UTF8), null, options);
         var extendList = new Dictionary<int, int>();
         var treeOut = new Dictionary<int, PlayerSkillTree>();
+        var parentList = new Dictionary<int, int>();
 
         foreach (var (id, tree) in skillTreeData)
         {
-            treeOut.Add(DataManager.JobIdLookup[id], tree);
+            var jobId = DataManager.JobIdLookup[id];
+
+            var treeData = tree.SkillTree;
+            if (treeData == null)
+                treeData = new();
+
+            treeOut.Add(jobId, new PlayerSkillTree()
+            {
+                JobId = jobId,
+                JobRank = tree.JobRank,
+
+                SkillTree = treeData
+            });
+
             if (tree.Extends != null)
-                extendList.Add(DataManager.JobIdLookup[id], DataManager.JobIdLookup[tree.Extends]); //save this so we can chase skill requirements from previous jobs
+                parentList.Add(jobId, DataManager.JobIdLookup[tree.Extends]);
         }
 
-        DataManager.JobExtendsList = extendList.AsReadOnly();
+        foreach (var (job, prereq) in parentList)
+            treeOut[job].Parent = treeOut[prereq];
 
         return treeOut.AsReadOnly();
     }

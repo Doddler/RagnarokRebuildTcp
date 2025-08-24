@@ -6,6 +6,7 @@ using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RebuildZoneServer.Networking;
 using RoRebuildServer.Data;
+using RoRebuildServer.Data.CsvDataTypes;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.Database;
 using RoRebuildServer.Database.Requests;
@@ -76,6 +77,7 @@ public class Player : IEntityAutoReset
 
     public SpecialPlayerActionState SpecialState;
     public Position SpecialStateTarget;
+    public PlayerSkillTree? JobSkillTree;
 
     public Party? Party;
     public int PartyMemberId;
@@ -252,6 +254,7 @@ public class Player : IEntityAutoReset
         SpecialState = SpecialPlayerActionState.None;
         SpecialStateTarget = Position.Invalid;
         PlayerFollower = PlayerFollower.None;
+        JobSkillTree = null;
 
         if (AttackVersusTag != null)
             AttackVersusTag.Clear();
@@ -762,6 +765,9 @@ public class Player : IEntityAutoReset
         var level = GetData(PlayerStat.Level);
         var job = GetData(PlayerStat.Job);
         var jobInfo = DataManager.JobInfo[job];
+
+        if (!DataManager.SkillTree.TryGetValue(job, out JobSkillTree))
+            JobSkillTree = null;
 
         if (level > 99 || level < 1)
         {

@@ -1018,7 +1018,7 @@ class Program
         SaveToClient("skillinfo.json", skillOut);
 
         //skill tree
-        var skillTreeData = Toml.ToModel<Dictionary<string, PlayerSkillTree>>(File.ReadAllText(Path.Combine(path, "../Skills/SkillTree.toml"), Encoding.UTF8), null, options);
+        var skillTreeData = Toml.ToModel<Dictionary<string, CsvPlayerSkillTree>>(File.ReadAllText(Path.Combine(path, "../Skills/SkillTree.toml"), Encoding.UTF8), null, options);
         var skillTreeOut = new List<ClientSkillTree>();
 
         foreach (var (id, tree) in skillTreeData)

@@ -35,45 +35,29 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
                 return;
             }
 
-            //is the skill available for the player to learn?
-            if (!DataManager.SkillTree.TryGetValue(player.GetData(PlayerStat.Job), out var tree))
-            {
-                CommandBuilder.ErrorMessage(player, "Cannot apply skill points to this skill.");
+            if (player.JobSkillTree == null)
                 return;
-            }
 
-            //this needs to be way more robust as it only works with novice -> first jobs
-            if (player.JobId != 0 && skillId != CharacterSkill.BasicMastery && skillId != CharacterSkill.FirstAid)
+            if (player.JobSkillTree.JobRank > 0)
             {
-                if (player.MaxLearnedLevelOfSkill(CharacterSkill.BasicMastery) < 8 ||
-                    player.MaxLearnedLevelOfSkill(CharacterSkill.FirstAid) < 1)
+                var skillPointsUsed = 0;
+                foreach (var s in player.LearnedSkills)
+                    skillPointsUsed += s.Value;
+
+                var minUsedPoints = 9 + (player.JobSkillTree.JobRank - 1) * 49;
+                if (skillPointsUsed < minUsedPoints)
                 {
-                    CommandBuilder.ErrorMessage(player, "You must apply your 9 novice skill points before assigning points to your first job.");
+                    CommandBuilder.ErrorMessage(player, "You must apply skill points earned as a previous job before applying points in this skill.");
                     return;
                 }
             }
             
-            //does the player meet the requirements for this skill?
-            var meetsPrereq = CheckPrereqFromTree(tree, skillId, player);
-            if (!meetsPrereq)
-            {
-                while (tree!.Extends != null)
-                {
-                    var job = DataManager.JobIdLookup[tree.Extends];
-                    tree = DataManager.SkillTree.GetValueOrDefault(job);
-                    if (tree != null && CheckPrereqFromTree(tree, skillId, player))
-                    {
-                        meetsPrereq = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!meetsPrereq)
+            if (!CheckPrereqFromTree(skillId, player))
             {
                 CommandBuilder.ErrorMessage(player, "You do not meet the requirements to level up this skill.");
                 return;
             }
+            
             player.AddSkillToCharacter(skillId, knownLevel + 1);
             player.SetData(PlayerStat.SkillPoints, points - 1);
 
@@ -82,9 +66,26 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
             player.UpdateStats(true, true);
         }
 
-        private bool CheckPrereqFromTree(PlayerSkillTree tree, CharacterSkill skill, Player player)
+        private bool CheckPrereqFromTree(CharacterSkill skill, Player player)
         {
-            if (tree.SkillTree == null || !tree.SkillTree.TryGetValue(skill, out var prereqs))
+            List<SkillPrereq>? prereqs;
+            var found = false;
+            PlayerSkillTree? tree = player.JobSkillTree;
+            if (tree == null)
+                return false;
+
+            do
+            {
+                if (tree.SkillTree.TryGetValue(skill, out prereqs))
+                {
+                    found = true;
+                    break;
+                }
+
+                tree = tree.Parent;
+            } while (tree != null);
+
+            if (!found)
                 return false;
 
             if(prereqs == null) return true;
