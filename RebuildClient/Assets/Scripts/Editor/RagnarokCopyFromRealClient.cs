@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 using Assets.Scripts;
 using Assets.Scripts.Editor;
 using Assets.Scripts.MapEditor.Editor;
 using UnityEditor;
+using UnityEditor.VersionControl;
 using UnityEngine;
+using Application = UnityEngine.Application;
 using Debug = UnityEngine.Debug;
 
 namespace Assets.Editor
@@ -29,8 +32,130 @@ namespace Assets.Editor
 
             return name;
         }
+        [UnityEditor.MenuItem("Ragnarok/Test New Process", priority = -100)]
+        public static void TestNewProcess()
+        {
+            Debug.Log("Testing new process");
+            var dataDir = RagnarokDirectory.GetRagnarokDataDirectorySafe;
 
-        [MenuItem("Ragnarok/Copy data from client data folder", priority = 1)]
+            if (dataDir == null)
+            {
+                const string prompt = @"Before you continue, you will need to specify a directory containing the contents of an extracted data.grf. "
+                                      + "For this import process to work correctly, the files will need to have been extracted with the right locale and working korean file names.";
+
+                if (!EditorUtility.DisplayDialog("Copy from RO Client", prompt, "Continue", "Cancel"))
+                    return;
+
+                RagnarokDirectory.SetDataDirectory();
+
+                dataDir = RagnarokDirectory.GetRagnarokDataDirectorySafe;
+                if (dataDir == null)
+                    return;
+            }
+            Debug.Log("Instantiate new boss");
+            Debug.Log("Start process");
+            RoDataImportManager.ProcessGrfData(dataDir);
+        }
+
+        [UnityEditor.MenuItem("Ragnarok/Clear Imported Assets", priority = -99)]
+        public static void ClearImportedAssets()
+        {
+            Debug.Log("Start Clearing Imported Assets");
+            try
+            {
+                AssetDatabase.StartAssetEditing();
+                var filesToDelete = AssetDatabase.FindAssets("*", new[] {"Assets/Sprites", "Assets/Sounds"});
+                Debug.Log($"Found {filesToDelete.Length} assets to remove");
+                foreach (var guid in filesToDelete)
+                {
+                    AssetDatabase.DeleteAsset(AssetDatabase.GUIDToAssetPath(guid));
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            finally
+            {
+                AssetDatabase.StopAssetEditing();
+            }
+        }
+
+        [UnityEditor.MenuItem("Ragnarok/Select GRF data to import", priority = -98)]
+        public static void OpenSelectGrfDataToImportWindow()
+        {
+            var window = GetWindow<RagnarokSelectGrfDataToImportWindow>("Select GRF data to import");
+            window.minSize = new Vector2(450, 600);
+            window.Focus();
+        }
+
+        public class RagnarokSelectGrfDataToImportWindow : EditorWindow
+        {
+            private Vector2 scrollPosition;
+            private bool[] selections;
+            private GrfDataFilesCategorized grfData;
+            
+            private void OnEnable()
+            {
+                grfData = RoDataImportManager.ReadGrfDataFolder();
+                selections = new bool[grfData.Categories.Length];
+            }
+
+            private void OnGUI()
+            {
+                EditorGUILayout.LabelField("Select data to import:", EditorStyles.boldLabel);
+                EditorGUILayout.Space();
+
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("Select All", GUILayout.Height(20)))
+                    for (int i = 0; i < selections.Length; i++)
+                        selections[i] = true;
+                if (GUILayout.Button("Unselect All", GUILayout.Height(20)))
+                    for (int i = 0; i < selections.Length; i++)
+                        selections[i] = false;
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.Space();
+
+                scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+                for (var i = 0; i < grfData.Categories.Length; i++)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    selections[i] = EditorGUILayout.ToggleLeft(grfData[i], selections[i]);
+                    EditorGUILayout.LabelField($"imported {grfData.Categories[i].Imported} of {grfData.Categories[i].Count} files", EditorStyles.miniLabel);
+                    EditorGUILayout.EndHorizontal();
+                }
+                EditorGUILayout.EndScrollView();
+                EditorGUILayout.Space();
+
+                EditorGUILayout.HelpBox(
+                    "Before you continue, you will need to specify a directory containing the contents of an extracted data.grf. " +
+                    "For this import process to work correctly, the files will need to have been extracted with the right locale and working Korean file names.",
+                    MessageType.Warning
+                );
+                
+                if (GUILayout.Button("Copy Selected Data", GUILayout.Height(30)))
+                {
+                    if (selections.Any(x => !x))
+                    {
+                        var actualGrfDataToProcess =  new GrfDataFilesCategorized();
+                        for (var i = 0; i < selections.Length; i++)
+                        {
+                            if (selections[i])
+                                actualGrfDataToProcess.Categories[i].AddRange(grfData.Categories[i]);
+                        }
+                        RoDataImportManager.ProcessGrfData(actualGrfDataToProcess);
+                    }
+                    else
+                    {
+                        RoDataImportManager.ProcessGrfData(grfData);
+                    }
+                }
+                
+            }
+        }
+        
+        [UnityEditor.MenuItem("Ragnarok/Copy data from client data folder", priority = 1)]
         public static void CopyClientData()
         {
             string dataDir = RagnarokDirectory.GetRagnarokDataDirectorySafe;
@@ -218,15 +343,15 @@ namespace Assets.Editor
             }
         }
 
-        [MenuItem("Ragnarok/Select data to copy from client data folder", priority = 2)]
+        [UnityEditor.MenuItem("Ragnarok/Select data to copy from client data folder", priority = 2)]
         public static void ShowCopyClientDataWindow()
         {
-            var window = GetWindow<RagnarokCopyFromRealClientWindow>("Copy Client Data");
+            var window = GetWindow<RagnarokPrepareClientDataFromGrfDataWindow>("Prepare Client Data");
             window.minSize = new Vector2(450, 600);
             window.Focus();
         }
 
-        public class RagnarokCopyFromRealClientWindow : EditorWindow
+        public class RagnarokPrepareClientDataFromGrfDataWindow : EditorWindow
         {
             private struct CopyCategory
             {
@@ -552,7 +677,7 @@ namespace Assets.Editor
                     string fileExtension = Path.GetExtension(srcFilePath);
                     if (!fileExtension.Equals(".spr", StringComparison.OrdinalIgnoreCase)) continue;
                     //Debug.Log($"Importing file {srcFilePath} to {assetDirectoryPath}");
-                    ActImporter.ImportActFile(srcFilePath.Replace(".spr",".act"), assetDirectoryPath);
+                    RoDataImportManager.ImportActFile(srcFilePath.Replace(".spr",".act"), assetDirectoryPath);
                 }
             }
             private static void CopyFolder(string src, string dest, bool recursive = false,
