@@ -32,11 +32,19 @@ namespace Assets.Scripts.Sprites
         public Material OverrideMaterial;
         public float VerticalOffset;
         public float ZOffset;
+        public float ShaderYOffset;
 
         private static Material belowWaterMat;
         private static Material aboveWaterMat;
         private static Material[] materialArrayNormal;
         private static Material[] materialArrayWater;
+        private static readonly int MainTex = Shader.PropertyToID("_MainTex");
+        private static readonly int Color1 = Shader.PropertyToID("_Color");
+        private static readonly int EnvColor = Shader.PropertyToID("_EnvColor");
+        private static readonly int Width = Shader.PropertyToID("_Width");
+        private static readonly int Offset = Shader.PropertyToID("_Offset");
+        private static readonly int Drain = Shader.PropertyToID("_ColorDrain");
+        private static readonly int VPos = Shader.PropertyToID("_VPos");
         private MaterialPropertyBlock propertyBlock;
 
         private Shader shader;
@@ -268,10 +276,10 @@ namespace Assets.Scripts.Sprites
         {
             var envColor = RoMapRenderSettings.GetBakedLightContribution(new Vector2(transform.position.x, transform.position.z));
             
-            propertyBlock.SetTexture("_MainTex", SpriteData.Atlas);
-            propertyBlock.SetColor("_Color", Color);
-            propertyBlock.SetColor("_EnvColor", envColor);
-            propertyBlock.SetFloat("_Width", SpriteData.AverageWidth / 25f);
+            propertyBlock.SetTexture(MainTex, SpriteData.Atlas);
+            propertyBlock.SetColor(Color1, Color);
+            propertyBlock.SetColor(EnvColor, envColor);
+            propertyBlock.SetFloat(Width, SpriteData.AverageWidth / 25f);
             
             // if (SpriteData.Palette != null || AppliedPalette != null)
             // {
@@ -282,11 +290,12 @@ namespace Assets.Scripts.Sprites
             // }
 
             if (Mathf.Approximately(0, SpriteOffset))
-                propertyBlock.SetFloat("_Offset", Mathf.Max(SpriteData.Size / 125f, 1f));
+                propertyBlock.SetFloat(Offset, Mathf.Max(SpriteData.Size / 125f, 1f));
             else
-                propertyBlock.SetFloat("_Offset", SpriteOffset);
+                propertyBlock.SetFloat(Offset, SpriteOffset);
             
-            propertyBlock.SetFloat("_ColorDrain", ColorDrain);
+            propertyBlock.SetFloat(Drain, ColorDrain);
+            propertyBlock.SetFloat(VPos, ShaderYOffset);
 
             MeshRenderer.SetPropertyBlock(propertyBlock);
         }

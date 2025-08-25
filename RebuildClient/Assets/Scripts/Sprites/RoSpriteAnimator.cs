@@ -639,7 +639,13 @@ namespace Assets.Scripts.Sprites
 
                 var diff = parentAnchor - ourAnchor;
 
-                transform.localPosition = new Vector3(diff.x / 50f, -diff.y / 50f, -SpriteOrder * 0.01f);
+                if (SpriteRenderer is RoSpriteRendererStandard std)
+                {
+                    transform.localPosition = new Vector3(diff.x / 50f, 0, -SpriteOrder * 0.003f);
+                    std.ShaderYOffset = -diff.y / 50f;
+                }
+                else
+                    transform.localPosition = new Vector3(diff.x / 50f, -diff.y / 50f, -SpriteOrder * 0.01f);
             }
         }
 

@@ -10,6 +10,7 @@ Shader"Ragnarok/CharacterSpriteShader"
 		[PerRendererData] _EnvColor("Environment", Color) = (1,1,1,1)
 		[PerRendererData] _Offset("Offset", Float) = 0
 		[PerRendererData] _Width("Width", Float) = 0
+		[PerRendererData] _VPos("VerticalPos", Float) = 0
 		_ColorDrain("Color Drain", Range(0,1)) = 0
 		_Rotation("Rotation", Range(0,360)) = 0
 	}
@@ -63,11 +64,14 @@ Shader"Ragnarok/CharacterSpriteShader"
 
 			sampler2D _MainTex;
 			fixed4 _Color;
+			fixed _VPos;
 
 			
 			v2f vert(appdata_t v)
 			{
 				v2f o;
+
+				v.vertex.y += _VPos;
 
 			//--------------------------------------------------------------------------------------------
 			//start of billboard code
@@ -200,6 +204,7 @@ Shader"Ragnarok/CharacterSpriteShader"
 			fixed _Rotation;
 			fixed _Width;
 			fixed _ColorDrain;
+			fixed _VPos;
 
 
 			sampler2D _MainTex;
@@ -243,6 +248,7 @@ Shader"Ragnarok/CharacterSpriteShader"
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO()
 				
 				//v.vertex = Rotate(v.vertex);
+				v.vertex.y += _VPos;
 		
 				//--------------------------------------------------------------------------------------------
 				//start of billboard code
