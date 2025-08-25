@@ -1,6 +1,6 @@
 namespace Sprites
 {
-    partial class RoSpriteV21
+    class RoSpriteV21
     {
         public struct BitmapSprite
         {

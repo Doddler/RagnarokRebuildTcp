@@ -1,3 +1,8 @@
+using Sprites;
+using UnityEditor;
+using UnityEditor.AssetImporters;
+using UnityEngine;
+
 namespace Editor
 {
     [ScriptedImporter(1, "spr", AllowCaching = true)]
