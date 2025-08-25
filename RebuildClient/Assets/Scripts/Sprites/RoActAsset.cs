@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class RagnarokActFile : ScriptableObject
+public class RoActAsset : ScriptableObject
 {
     //I hate that this needs to be in its own file
 }
