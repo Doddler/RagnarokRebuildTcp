@@ -1728,19 +1728,20 @@ public class Map
         return false;
     }
 
-    public Position FindRandomPositionOnMap()
+    public Position FindRandomPositionOnMap(Position fallback)
     {
         var area = MapBounds.Shrink(5, 5);
         var pos = new Position(20, 20);
         var count = 0;
 
-        do
+        for (var i = 0; i < 100; i++)
         {
             pos = area.RandomInArea();
-            count++;
-        } while (!WalkData.IsCellWalkable(pos) && count < 50);
+            if (WalkData.IsCellWalkable(pos))
+                return pos;
+        }
 
-        return pos;
+        return fallback;
     }
 
     public bool FindPositionInRange(Area area, out Position p)

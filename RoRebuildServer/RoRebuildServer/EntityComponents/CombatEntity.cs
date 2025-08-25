@@ -346,7 +346,7 @@ public partial class CombatEntity : IEntityAutoReset
         if (Character.Map == null)
             return;
 
-        var pos = Character.Map.FindRandomPositionOnMap();
+        var pos = Character.Map.FindRandomPositionOnMap(Character.Position);
 
         if (Character.Type == CharacterType.Player)
             Player.AddInputActionDelay(InputActionCooldownType.Teleport);
