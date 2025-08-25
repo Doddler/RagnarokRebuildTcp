@@ -7,64 +7,206 @@ using Assets.Scripts;
 using Assets.Scripts.MapEditor.Editor;
 using UnityEditor;
 using UnityEngine;
+using static Assets.Scripts.MapEditor.Editor.RagnarokDirectory.ActDirectoriesID;
+
+public class GrfDataFilesCategorized
+{
+    public sealed class RoFilesList : List<string>
+    {
+        public uint Imported
+        {
+            get;
+            set;
+        }
+    }
+    
+    public RoFilesList SoundFiles = new();
+    public RoFilesList MonsterFiles = new();
+    public RoFilesList HeadFiles = new();
+    public RoFilesList BodyFiles = new();
+    public RoFilesList HeadgearFiles = new();
+    public RoFilesList WeaponFiles = new();
+    public RoFilesList ShieldFiles = new();
+    public RoFilesList NpcFiles = new();
+    public RoFilesList PaletteFiles = new();
+    public RoFilesList CutinFiles = new();
+    public RoFilesList MiscFiles = new();
+
+    public string this[int index] => categoriesDict.Keys.ToArray()[index];
+    public readonly RoFilesList[] Categories;
+    public int Count => Categories.Aggregate(0, (acc, cur) => acc + cur.Count);
+    private readonly Dictionary<string, RoFilesList> categoriesDict;
+    
+    public GrfDataFilesCategorized()
+    {
+        Categories = new[]
+        {
+            SoundFiles, MonsterFiles, HeadFiles,
+            BodyFiles, HeadgearFiles, WeaponFiles,
+            ShieldFiles, NpcFiles, PaletteFiles,
+            CutinFiles, MiscFiles
+        };
+        
+        categoriesDict = new Dictionary<string, RoFilesList>
+        {
+            ["SoundFiles"] = SoundFiles,
+            ["MonsterFiles"] = MonsterFiles,
+            ["HeadFiles"] = HeadFiles,
+            ["BodyFiles"] = BodyFiles,
+            ["HeadgearFiles"] = HeadgearFiles,
+            ["WeaponFiles"] = WeaponFiles,
+            ["ShieldFiles"] = ShieldFiles,
+            ["NpcFiles"] = NpcFiles,
+            ["PaletteFiles"] = PaletteFiles,
+            ["CutinFiles"] = CutinFiles,
+            ["MiscFiles"] = MiscFiles
+        };
+    }
+}
 
 /// <summary>
 /// Prepares all relevant data from an extracted GRF to be used by the Rebuild client
 /// </summary>
-public static class RoDataBoss // Open to suggestions on this name
+public static class RoDataImportManager // Open to suggestions on this name
 {
-    /// <summary>
-    /// Goes through all RagnarokDirectory folders
-    /// </summary>
-    /// <param name="inputPath"></param>
-    /// <exception cref="DirectoryNotFoundException"></exception>
-    public static void ProcessGrfData(string inputPath = null)
+    private static string TranslateFilename(string name)
     {
-        Debug.Log($"Our input path is :{inputPath}");
-        if (inputPath == null)
+        return name
+            .Replace("성직자_", "Acolyte_")
+            .Replace("궁수_", "Archer_")
+            .Replace("마법사_", "Mage_")
+            .Replace("상인_", "Merchant_")
+            .Replace("초보자_", "Novice_")
+            .Replace("검사_", "Swordsman_")
+            .Replace("도둑_", "Thief_")
+            .Replace("여_", "F_")
+            .Replace("남_", "M_");
+    }
+    
+    /// <summary>
+    /// Goes through all RagnarokDirectory content and categorize file paths
+    /// </summary>
+    /// <param name="inputDataPath"></param>
+    /// <exception cref="DirectoryNotFoundException"></exception>
+    public static GrfDataFilesCategorized ReadGrfDataFolder(string inputDataPath = null)
+    {
+        inputDataPath = ValidateGrfDataFolder(inputDataPath);
+        Debug.Log("Reading and categorizing Grf Data folder");
+
+        var grfData = new GrfDataFilesCategorized();
+        
+        var directoryToCategoryMap = new Dictionary<int, GrfDataFilesCategorized.RoFilesList>()
         {
-            try
-            {
-                inputPath = RagnarokDirectory.GetRagnarokDataDirectory;
-            }
-            catch (DirectoryNotFoundException)
-            {
-                throw new DirectoryNotFoundException($"ProcessGrfData: directory not found: {inputPath}\nYou must pass a directory to ProcessGrfData or set a ragnarok data directory first!");
-            }
-        } else if (!Directory.Exists(inputPath))
-            throw new DirectoryNotFoundException($"ProcessGrfData: directory not found: {inputPath}");
-       
-        Debug.Log("Path is valid");
-        var wavFilePaths = new List<string>(); // Though there's only one folder for wav, pal and rsw files, we don't have a bult-in CopyDirectory available to batch copy
-        var actFilePaths = new List<string>();
-        var palFilePaths = new List<string>();
-        var rswFilePaths = new List<string>();
-        foreach (var filePath in Directory.EnumerateFiles(inputPath, "*", SearchOption.AllDirectories))
+            {(int)ActMonstersDirectories, grfData.MonsterFiles},
+            {(int)ActPlayerHeadDirectories, grfData.HeadFiles},
+            {(int)ActPlayerBodyDirectories, grfData.BodyFiles},
+            {(int)ActPlayerHeadgearDirectories, grfData.HeadgearFiles},
+            {(int)ActWeaponsDirectories, grfData.WeaponFiles},
+            {(int)ActShieldsDirectories, grfData.ShieldFiles},
+            {(int)ActNpcDirectories, grfData.NpcFiles}
+        };
+        
+        foreach (var filePath in Directory.EnumerateFiles(inputDataPath, "*", SearchOption.AllDirectories))
         {
             var extension = Path.GetExtension(filePath);
+            var fileRelativePath = Path.GetRelativePath(inputDataPath, filePath);
+            var directoryRelativePath =  Path.GetDirectoryName(fileRelativePath);
             switch (extension)
             {
-                case ".wav":
-                    wavFilePaths.Add(filePath);
+                case ".wav" or ".ogg":
+                    grfData.SoundFiles.Add(filePath);
+                    if (WasThisFileAlreadyImported(filePath))
+                        grfData.SoundFiles.Imported++;
                     break;
                 case ".act":
-                    actFilePaths.Add(filePath);
+                    foreach (var (directoriesCategory, id) in RagnarokDirectory.ActDirectories.Select((directories, id) => (directory: directories, id)))
+                    {
+                        if (directoriesCategory.Contains(directoryRelativePath))
+                        {
+                            directoryToCategoryMap[id]
+                                .Add(filePath);
+                            if (WasThisFileAlreadyImported(filePath))
+                                directoryToCategoryMap[id].Imported++;
+                            break;
+                        }
+                        if (RagnarokDirectory.ExpectedMiscFiles.Contains(fileRelativePath))
+                        {
+                            grfData.MiscFiles.Add(filePath);
+                            // if (WasThisFileAlreadyImported(filePath))
+                            //     grfData.IncrementImportedCount(nameof(grfData.MiscFiles));
+                            break;
+                        }
+                    }
                     break;
                 case ".pal":
-                    palFilePaths.Add(filePath);
+                    grfData.PaletteFiles.Add(filePath);
+                    if (WasThisFileAlreadyImported(filePath))
+                        grfData.PaletteFiles.Imported++;
                     break;
-                case ".rsw":
-                    rswFilePaths.Add(filePath);
+                case ".bmp":
+                    if (RagnarokDirectory.ImgCutinDirectories.Contains(directoryRelativePath))
+                    {
+                        grfData.CutinFiles.Add(filePath);
+                        if (WasThisFileAlreadyImported(filePath))
+                            grfData.CutinFiles.Imported++;
+                    }
                     break;
             }
         }
+        return grfData;
+    }
+    public static void ProcessGrfData(string inputDataPath = null)
+    {
+        var grfData = ReadGrfDataFolder(inputDataPath);
+
+
         Debug.Log("Sorted files by type");
-        ProcessWavFiles(wavFilePaths);
-        //ProcessActFiles(actFilePaths);
-        //ProcessPalFiles(palFilePaths); // TODO: Rework spr/pal so that sprites are kept in a indexed format and use the color lookup table to render the correct colors 
+        Debug.Log($"Processing grf data with {grfData.Count} Files");
+        ProcessWavFiles(grfData.SoundFiles);
+        ProcessActFiles(grfData.MonsterFiles);
+        //ProcessPalFiles(palFilePaths); // TODO: Rework spr/act so that sprites are kept in a indexed format and use the color lookup table to render the correct colors 
         //ProcessRswFiles(rswFilePaths);
         Debug.Log("Done processing");
     }
+
+    public static void ProcessGrfData(GrfDataFilesCategorized grfData)
+    {
+        Debug.Log($"Processing grf data with {grfData.Count} Files");
+        Debug.Log($"{grfData.SoundFiles.Count} in Sounds");
+        Debug.Log($"{grfData.MonsterFiles.Count} in Monsters");
+        Debug.Log($"{grfData.HeadFiles.Count} in Heads");
+        Debug.Log($"{grfData.BodyFiles.Count} in Body");
+        Debug.Log($"{grfData.HeadgearFiles.Count} in Headgear");
+        Debug.Log($"{grfData.WeaponFiles.Count} in Weapons");
+        Debug.Log($"{grfData.ShieldFiles.Count} in Shields");
+        Debug.Log($"{grfData.NpcFiles.Count} in Npcs");
+        Debug.Log($"{grfData.PaletteFiles.Count} in Palettes");
+        Debug.Log($"{grfData.CutinFiles.Count} in Cutins");
+        Debug.Log($"{grfData.MiscFiles.Count} in Misc");
+        
+        ProcessWavFiles(grfData.SoundFiles);
+        ProcessActFiles(grfData.MonsterFiles);
+    }
+
+    private static string ValidateGrfDataFolder(string inputDataPath = null)
+    {
+        Debug.Log($"Our input path is :{inputDataPath}");
+        if (inputDataPath == null)
+        {
+            try
+            {
+                inputDataPath = RagnarokDirectory.GetRagnarokDataDirectory;
+            }
+            catch (DirectoryNotFoundException)
+            {
+                throw new DirectoryNotFoundException($"ProcessGrfData: directory not found: {inputDataPath}\nYou must pass a directory to ProcessGrfData or set a ragnarok data directory first!");
+            }
+        } else if (!Directory.Exists(inputDataPath))
+            throw new DirectoryNotFoundException($"ProcessGrfData: directory not found: {inputDataPath}");
+        
+        return inputDataPath;
+    }
+    
     private static void ProcessWavFiles(List<string> wavFilesPath)
     {
         Debug.Log("Starting wav processing");
@@ -178,6 +320,31 @@ public static class RoDataBoss // Open to suggestions on this name
         // }
     }
 
+    private static bool WasThisFileAlreadyImported(string filePath)
+    {
+        var relativeFilePath =  Path.GetRelativePath(RagnarokDirectory.GetRagnarokDataDirectory, filePath);
+        var relativeFolderPath = Path.GetDirectoryName(relativeFilePath);
+        string relativeAssetFolderPath;
+        try
+        {
+            relativeAssetFolderPath = RagnarokDirectory.RelativeDirectoryConversion[relativeFolderPath!];
+        }
+        catch (KeyNotFoundException e)
+        {
+            Debug.LogException(e);
+            return false;
+        }
+        var fileName = Path.GetFileNameWithoutExtension(filePath);
+        var fileExtension = Path.GetExtension(filePath);
+        var relativeAssetFilePath = Path.Combine(relativeAssetFolderPath, fileName) + fileExtension;
+        //Debug.Log($"Checking if file {filePath} was already imported as {relativeAssetFilePath} ");
+        return fileExtension switch
+        {
+            ".act" => File.Exists(Path.Combine(Application.dataPath, relativeAssetFolderPath, fileName, ".asset")),
+            _ => File.Exists(Path.Combine(Application.dataPath, relativeAssetFilePath))
+        };
+    }
+    
     /// <summary>
     /// Check if a .spr file pair exists for the .act file on <paramref name="actFilePath"/>.<br/>
     /// Will ask for the .spr file path if <paramref name="autoSkip"/> is false
@@ -425,7 +592,7 @@ public static class RoDataBoss // Open to suggestions on this name
 //                 continue;
 //             }
 //
-//             RoDataBoss.ImportActFile(importedAsset);
+//             RoDataImportManager.ImportActFile(importedAsset);
 //         }
 //     }
 // }
