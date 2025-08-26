@@ -374,6 +374,61 @@ public class WorldObject : IEntityAutoReset
         Events.Add(eventEntity);
     }
 
+    public void EndAllEvents()
+    {
+        if (Events == null)
+            return;
+
+        for (var i = 0; i < Events.Count; i++)
+        {
+            if (Events[i].TryGet<Npc>(out var npc))
+            {
+                npc.EndEvent();
+                Events.SwapFromBack(i);
+                i--;
+            }
+        }
+
+        Events.ClearInactive();
+
+        if (Events.Count <= 0)
+        {
+            Events.Clear();
+            EntityListPool.Return(Events);
+            Events = null;
+            return;
+        }
+    }
+
+    public bool EndEventsOfType(string eventType)
+    {
+        if (Events == null)
+            return false;
+
+        var hasRemove = false;
+
+        for (var i = 0; i < Events.Count; i++)
+        {
+            if (Events[i].TryGet<Npc>(out var npc) && npc.EventType == eventType)
+            {
+                npc.EndEvent();
+                Events.SwapFromBack(i);
+                i--;
+                hasRemove = true;
+            }
+        }
+
+        Events.ClearInactive();
+        if (Events.Count <= 0)
+        {
+            Events.Clear();
+            EntityListPool.Return(Events);
+            Events = null;
+        }
+
+        return hasRemove;
+    }
+
     public int CountEventsOfType(string eventType)
     {
         if (Events == null)

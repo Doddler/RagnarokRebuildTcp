@@ -66,11 +66,11 @@ public class Npc : IEntityAutoReset
     public bool IsEvent;
     public bool IsPathActive;
     public bool ExpireEventWithoutOwner;
+    public bool ExpireEventIfOwnerLeavesMap;
     public NpcPathHandler? NpcPathHandler;
 
     private string? currentSignalTarget;
     
-
     //private SkillCastInfo? skillInfo;
 
     public bool IsHidden() => !Entity.Get<WorldObject>().AdminHidden;
@@ -90,10 +90,19 @@ public class Npc : IEntityAutoReset
                 return;
         }
 
-        if (IsEvent && ExpireEventWithoutOwner && !Owner.IsAlive())
+        if (IsEvent)
         {
-            EndEvent();
-            return;
+            if (ExpireEventWithoutOwner && !Owner.IsAlive())
+            {
+                EndEvent();
+                return;
+            }
+
+            if (!Owner.TryGet<WorldObject>(out var owner) && owner.Map != Character.Map)
+            {
+                EndEvent();
+                return;
+            }
         }
 
         if (IsPathActive && NpcPathHandler != null)

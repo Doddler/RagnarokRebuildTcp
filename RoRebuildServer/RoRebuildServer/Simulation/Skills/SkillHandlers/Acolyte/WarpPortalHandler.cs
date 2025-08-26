@@ -156,6 +156,7 @@ public class WarpPortalBaseEvent : NpcBehaviorBase
         npc.ValuesString[0] = paramString!;
         npc.RevealAsEffect(NpcEffectType.WarpPortalOpening, "WarpPortal");
         npc.StartTimer(1000);
+        npc.ExpireEventIfOwnerLeavesMap = false; //owner can take the warp and it'll stay for others
     }
 
     public override void OnTimer(Npc npc, float lastTime, float newTime)

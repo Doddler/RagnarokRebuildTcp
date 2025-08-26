@@ -339,7 +339,10 @@ public class World
         npc.IsEvent = true;
         npc.Owner = owner;
         if (owner.IsAlive())
+        {
             npc.ExpireEventWithoutOwner = true;
+            npc.ExpireEventIfOwnerLeavesMap = true;
+        }
 
         using (entityLock.EnterScope())
         {
