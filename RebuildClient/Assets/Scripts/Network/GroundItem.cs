@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Effects;
+﻿using System.Collections;
+using Assets.Scripts.Effects;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
 using RebuildSharedData.Enum;
@@ -20,6 +21,9 @@ namespace Assets.Scripts.Network
         private float velocity;
         private bool isReady = false;
 
+        private Color _color;
+        private RoGroundItemDrawCall _drawCall;
+        
         private static Material spriteMaterial;
 
         public static GroundItem Create(int entityId, int id, int count, Vector2 position, bool showAnimation)
@@ -47,7 +51,8 @@ namespace Assets.Scripts.Network
             subObject.transform.localScale = new Vector3(3, 3, 3);
             subObject.transform.localPosition = new Vector3(0, showAnimation ? 0.2f : 0f, 0f);
             subObject.layer = LayerMask.NameToLayer("Item");
-            subObject.AddComponent<BillboardObject>();
+            // We added the billboard component later when making the shadow.
+            //subObject.AddComponent<BillboardObject>();
             if (data.IsUnique)
                 subObject.transform.localScale *= 1.4f;
 
@@ -62,7 +67,9 @@ namespace Assets.Scripts.Network
             var walkProvider = CameraFollower.Instance.WalkProvider;
             if (walkProvider != null)
             {
-                var pos = new Vector3(position.x, CameraFollower.Instance.WalkProvider.GetHeightForPosition(position.x, position.y) + 0.02f, position.y);
+	            // This was set to 0.02, however things were a bit clippy sometimes so i'm moving it half the size of the box instead.
+	            var offset = 0.2f;
+                var pos = new Vector3(position.x, CameraFollower.Instance.WalkProvider.GetHeightForPosition(position.x, position.y) + offset, position.y);
                 go.transform.position = pos;
                 item.isReady = true;
             }
@@ -78,7 +85,7 @@ namespace Assets.Scripts.Network
             // else
             //     go.transform.localScale = Vector3.one;
 
-            SpriteUtil.AttachShadowToGameObject(go, 0.3f);
+            SpriteUtil.AttachShadowToGameObject(go, 0.3f, true);
 
             if (showAnimation)
             {
@@ -119,17 +126,61 @@ namespace Assets.Scripts.Network
             var step1 = 15f;
             var stepSize = 0.08f;
 
-            var color = Color.white;
+            _color = Color.white;
             
             if (timer > step1 - stepSize && timer < step1)
-                color = Color.Lerp(Color.white, Color.red, (timer - (step1 - stepSize)) * (1 / stepSize));
+                _color = Color.Lerp(Color.white, Color.red, (timer - (step1 - stepSize)) * (1 / stepSize));
             if (timer >= step1 && timer < step1 + stepSize)
-                color = Color.Lerp(Color.red, Color.white, (timer - (step1)) * (1 / stepSize));
+                _color = Color.Lerp(Color.red, Color.white, (timer - (step1)) * (1 / stepSize));
 
             if (timer > 16f)
                 timer = 1f;
             
-            SpriteRenderer.color = color;
+            SpriteRenderer.color = _color;
+            
+            UpdateDrawCall();
+        }
+        
+        private void OnEnable()
+        {
+	        StartCoroutine(WaitSpriteThenCreateDrawCall());
+        }
+
+        private IEnumerator WaitSpriteThenCreateDrawCall()
+        {
+	        while (!Sprite)
+	        {
+		        yield return null;
+	        }
+
+	        UpdateDrawCall();
+	        RoGroundItemBatcher.Instance.drawCalls.AddItem(Sprite.texture, _drawCall);
+        }
+        
+        private void OnDisable()
+        {
+	        if (_drawCall == null) return;
+	        RoGroundItemBatcher.Instance.drawCalls.RemoveItem(Sprite.texture, _drawCall);
+        }
+        
+        private void UpdateDrawCall()
+        {
+	        _drawCall ??= new RoGroundItemDrawCall();
+	        
+	        if (!RoGroundItemBatcher.Instance.EnableInstancing)
+	        {
+		        SpriteRenderer.enabled = true;
+		        return;
+	        }
+	        
+	        SpriteRenderer.enabled = false;
+	        _drawCall.UVRect = Sprite.textureRect;
+	        
+	        _drawCall.Transform = SpriteRenderer.transform;
+	        
+	        _drawCall.Color = _color;
+	        _drawCall.Offset = 0;
+	        _drawCall.ColorDrain = 0;
         }
     }
 }

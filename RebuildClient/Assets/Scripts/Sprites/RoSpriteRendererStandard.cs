@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Effects;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.MapEditor;
 using RebuildSharedData.Enum;
@@ -32,11 +33,21 @@ namespace Assets.Scripts.Sprites
         public Material OverrideMaterial;
         public float VerticalOffset;
         public float ZOffset;
+        public float ShaderYOffset;
 
         private static Material belowWaterMat;
         private static Material aboveWaterMat;
         private static Material[] materialArrayNormal;
         private static Material[] materialArrayWater;
+        private static readonly int Drain = Shader.PropertyToID("_ColorDrain");
+        private static readonly int Offset = Shader.PropertyToID("_Offset");
+        private static readonly int Width = Shader.PropertyToID("_Width");
+        private static readonly int EnvColor = Shader.PropertyToID("_EnvColor");
+        private static readonly int Color1 = Shader.PropertyToID("_Color");
+        private static readonly int MainTex = Shader.PropertyToID("_MainTex");
+        private static readonly int LightingSamplePosition = Shader.PropertyToID("_LightingSamplePosition");
+        private static readonly int IsMeshRenderer = Shader.PropertyToID("_IsMeshRenderer");
+        private static readonly int VPos = Shader.PropertyToID("_VPos");
         private MaterialPropertyBlock propertyBlock;
 
         private Shader shader;
@@ -56,6 +67,8 @@ namespace Assets.Scripts.Sprites
         public int PaletteId;
         public RoSpriteData SpriteData;
         public bool IsHidden;
+        
+        private RoSpriteDrawCall drawCall;
 
         //public Direction Direction;
         public Direction Direction
@@ -64,6 +77,8 @@ namespace Assets.Scripts.Sprites
             set => Angle = RoAnimationHelper.FacingDirectionToRotation(value);
         }
         public Direction LastDirection;
+
+        private Mesh _mesh;
         //public Texture2D AppliedPalette;
 
         public void SetAction(int action, bool is8Direction)
@@ -130,12 +145,12 @@ namespace Assets.Scripts.Sprites
                 CurrentAngleIndex = RoAnimationHelper.GetSpriteIndexForAngle(Direction, 360 - CameraFollower.Instance.Rotation);
 
             CreateMaterials();
-
+            
             isInitialized = true;
 
             Rebuild();
         }
-
+        
         private void CreateMaterials()
         {
             if (shader == null)
@@ -241,11 +256,11 @@ namespace Assets.Scripts.Sprites
                     transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, ZOffset);
             }
 
-            var mesh = GetMeshForFrame();
+	        _mesh = GetMeshForFrame();
             var cMesh = GetColliderForFrame();
 
             MeshFilter.sharedMesh = null;
-            MeshFilter.sharedMesh = mesh;
+            MeshFilter.sharedMesh = _mesh;
             if (MeshCollider != null)
             {
                 MeshCollider.sharedMesh = null;
@@ -256,6 +271,8 @@ namespace Assets.Scripts.Sprites
             SetPropertyBlock();
             MeshRenderer.SetPropertyBlock(propertyBlock, 0);
 
+            //Debug.Log($"Generating Mesh Data for {SpriteData.Atlas.name} at frame {Time.frameCount}");
+            
             //if (SecondPassForWater && HasWater)
             //{
             //    MeshRenderer.GetPropertyBlock(propertyBlock, 1);
@@ -268,10 +285,16 @@ namespace Assets.Scripts.Sprites
         {
             var envColor = RoMapRenderSettings.GetBakedLightContribution(new Vector2(transform.position.x, transform.position.z));
             
-            propertyBlock.SetTexture("_MainTex", SpriteData.Atlas);
-            propertyBlock.SetColor("_Color", Color);
-            propertyBlock.SetColor("_EnvColor", envColor);
-            propertyBlock.SetFloat("_Width", SpriteData.AverageWidth / 25f);
+            propertyBlock.SetTexture(MainTex, SpriteData.Atlas);
+            propertyBlock.SetColor(Color1, Color);
+            propertyBlock.SetColor(EnvColor, envColor);
+            propertyBlock.SetFloat(Width, SpriteData.AverageWidth / 25f);
+            
+            // We want to sample the light on a single point for all sprites.
+            propertyBlock.SetVector(LightingSamplePosition, transform.parent.position);
+            
+            // Unity send light info differently on sprites and mesh renderers, so we need to let the shader know what path it should take.
+            propertyBlock.SetFloat(IsMeshRenderer, 1f);
             
             // if (SpriteData.Palette != null || AppliedPalette != null)
             // {
@@ -282,11 +305,12 @@ namespace Assets.Scripts.Sprites
             // }
 
             if (Mathf.Approximately(0, SpriteOffset))
-                propertyBlock.SetFloat("_Offset", Mathf.Max(SpriteData.Size / 125f, 1f));
+                propertyBlock.SetFloat(Offset, Mathf.Max(SpriteData.Size / 125f, 1f));
             else
-                propertyBlock.SetFloat("_Offset", SpriteOffset);
+                propertyBlock.SetFloat(Offset, SpriteOffset);
             
-            propertyBlock.SetFloat("_ColorDrain", ColorDrain);
+            propertyBlock.SetFloat(Drain, ColorDrain);
+            propertyBlock.SetFloat(VPos, ShaderYOffset);
 
             MeshRenderer.SetPropertyBlock(propertyBlock);
         }
@@ -327,10 +351,11 @@ namespace Assets.Scripts.Sprites
         {
             if (!isInitialized)
                 return false;
-
-
-            MeshRenderer.enabled = !IsHidden;
+            
+	        MeshRenderer.enabled = !IsHidden;
             // MeshCollider.enabled = !IsHidden;
+            
+            bool result = false;
             
             if (UpdateAngleWithCamera)
             {
@@ -350,13 +375,82 @@ namespace Assets.Scripts.Sprites
                     CurrentAngleIndex = angleIndex;
 
                     Rebuild();
-                    return true;
+                    result = true;
                 }
             }
-
-            return false;
+            
+            UpdateDrawCall();
+            return result;
+        }
+        
+        private void OnEnable()
+        {
+	        StartCoroutine(WaitSpriteDataThenCreateDrawCall());
         }
 
+        private IEnumerator WaitSpriteDataThenCreateDrawCall()
+        {
+	        while (!SpriteData)
+	        {
+		        yield return null;
+	        }
+
+	        UpdateDrawCall();
+	        RoSpriteBatcher.Instance.drawCalls.AddItem(SpriteData.Atlas, drawCall);
+        }
+        
+        private void OnDisable()
+        {
+	        if (drawCall == null) return;
+	        RoSpriteBatcher.Instance.drawCalls.RemoveItem(SpriteData.Atlas, drawCall);
+        }
+        
+        private void UpdateDrawCall()
+        {
+	        drawCall ??= new RoSpriteDrawCall();
+	        
+	        if (!RoSpriteBatcher.Instance.EnableInstancing)
+	        {
+		        MeshRenderer.enabled = !IsHidden;
+		        return;
+	        }
+	        
+	        // We are only instancing quads
+	        if (MeshFilter.sharedMesh.vertexCount != 4)
+	        {
+		        MeshRenderer.enabled = true;
+		        drawCall.Color = Color.clear;
+		        return;
+	        }
+	        
+	        // We can't sort transparency, so we must fall back to standard rendering.
+	        if (MeshFilter.sharedMesh.colors.Length > 0 && MeshFilter.sharedMesh.colors[0].a < 0.5f)
+	        {
+		        MeshRenderer.enabled = true;
+		        drawCall.Vertices = new[] { Vector3.zero };
+		        drawCall.Color = Color.clear;
+		        return;
+	        }
+
+	        MeshRenderer.enabled = false;
+	        if (!isInitialized) return;
+	        
+	        drawCall.Transform = transform;
+	        
+	        drawCall.UV = _mesh.uv;
+	        drawCall.Vertices = _mesh.vertices;
+	        drawCall.VColor = _mesh.colors;
+	        drawCall.IsHidden = IsHidden;
+	        
+	        if (propertyBlock != null)
+	        {
+		        drawCall.Color = propertyBlock.GetColor(Color1);
+		        drawCall.Offset = propertyBlock.GetFloat(Offset);
+		        drawCall.ColorDrain = propertyBlock.GetFloat(Drain);
+		        drawCall.vPos = propertyBlock.GetFloat(VPos);
+	        }
+        }
+        
         //public void OnDestroy()
         //{
         //    if (belowWaterMat != null) Destroy(belowWaterMat);
