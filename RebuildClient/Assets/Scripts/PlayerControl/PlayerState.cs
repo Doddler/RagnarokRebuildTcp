@@ -11,7 +11,7 @@ namespace Assets.Scripts.PlayerControl
 {
     public class PlayerState
     {
-        public static PlayerState Instance;
+        public static PlayerState Instance = new();
         
         public bool IsValid { get; set; } = false;
         public int EntityId { get; set; }
@@ -119,11 +119,6 @@ namespace Assets.Scripts.PlayerControl
             MinimapController.Instance.RefreshPartyMembers();
 
             return info;
-        }
-
-        public PlayerState()
-        {
-            Instance = this;
         }
     }
 }

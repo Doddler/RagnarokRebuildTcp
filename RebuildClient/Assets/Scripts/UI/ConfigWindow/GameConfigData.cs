@@ -48,6 +48,8 @@ namespace Assets.Scripts.UI.ConfigWindow
         public bool ShowBaseExpPercent = true;
         public bool ShowJobExpValue = true;
         public bool ShowJobExpPercent = true;
+        public bool ShowExpGainInChat = false;
+
         //visuals
         public bool UseSmoothPixel = true;
 
@@ -114,8 +116,8 @@ namespace Assets.Scripts.UI.ConfigWindow
 
         public void OnAfterDeserialize()
         {
-                        
-            for(var j = 0; j < CharacterNames.Count; j++)
+
+            for (var j = 0; j < CharacterNames.Count; j++)
             {
                 var name = CharacterNames[j];
                 if (!CharacterHotBarData.TryGetValue(name, out var hotBar))
@@ -127,7 +129,6 @@ namespace Assets.Scripts.UI.ConfigWindow
                 for (var i = 0; i < 30; i++)
                     hotBar[i] = AllHotBarData[j * 30 + i];
             }
-
         }
     }
 }

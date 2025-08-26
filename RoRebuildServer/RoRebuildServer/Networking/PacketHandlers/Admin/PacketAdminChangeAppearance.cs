@@ -47,7 +47,7 @@ public class PacketAdminChangeAppearance : IClientPacketHandler
             case 3:
                 if (!p.IsAdmin)
                     return;
-                if (val >= 0 && val <= 6)
+                if (val >= 0 && val <= 20)
                     p.ChangeJob(val);
                 else
                     p.ChangeJob(GameRandom.Next(0, 6));

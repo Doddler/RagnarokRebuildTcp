@@ -28,6 +28,9 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
             data.Velocity += data.Velocity.normalized * data.Acceleration * Time.deltaTime;
             primitive.transform.localPosition += data.Velocity * Time.deltaTime;
 
+            primitive.transform.Rotate(data.RotationAxis * data.RotationSpeed * Time.deltaTime);
+            data.RotationSpeed += data.RotationAcceleration * Time.deltaTime;
+
             primitive.IsDirty = true;
         }
 

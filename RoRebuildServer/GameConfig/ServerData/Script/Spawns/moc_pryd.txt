@@ -22,15 +22,15 @@ MapConfig("moc_pryd03")
 	CreateSpawn("MATYR", 15);
 	CreateSpawn("MUMMY", 50);
 	CreateSpawn("VERIT", 40);
-	CreateSpawn("MIMIC", 5, 15m);
+	CreateSpawn("MIMIC", 4, 15m);
 }
 
 MapConfig("moc_pryd04")
 {
 	CreateSpawn("MUMMY", 40);
 	CreateSpawn("MATYR", 20);
-	CreateSpawn("ISIS", 50);
-	CreateSpawn("MIMIC", 15, 5m);
+	CreateSpawn("ISIS", 60);
+	CreateSpawn("MIMIC", 10, 5m);
 	CreateSpawn("ANCIENT_MUMMY", 3);
 	CreateSpawn("OSIRIS", 1, 1h, 10m, MVP);
 	
@@ -38,7 +38,7 @@ MapConfig("moc_pryd04")
 
 MapConfig("moc_pryd05")
 {
-	CreateSpawn("MINOROUS", 60);
+	CreateSpawn("MINOROUS", 75);
 	CreateSpawn("MUMMY", 10);
 	CreateSpawn("MATYR", 10);
 	CreateSpawn("VERIT", 50);

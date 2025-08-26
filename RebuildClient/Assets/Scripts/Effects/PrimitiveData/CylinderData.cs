@@ -18,5 +18,8 @@ namespace Assets.Scripts.Effects.PrimitiveData
         public float ArcAngle = 36f;
         public Vector3 Velocity;
         public float Acceleration;
+        public Vector3 RotationAxis = Vector3.up;
+        public float RotationSpeed;
+        public float RotationAcceleration;
     }
 }

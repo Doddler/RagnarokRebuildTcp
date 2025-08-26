@@ -1,6 +1,6 @@
 MapConfig("beach_dun")
 {
-	CreateSpawn("MEDUSA", 20);
+	CreateSpawn("MEDUSA", 65);
 	CreateSpawn("MERMAN", 10, 10000, 5000);
 	CreateSpawn("NERAID", 15);
 	CreateSpawn("PEST", 15);
@@ -10,17 +10,18 @@ MapConfig("beach_dun")
 
 MapConfig("beach_dun2")
 {
-	CreateSpawn("MEGALITH", 30);
-	CreateSpawn("NERAID", 5);
-	CreateSpawn("STALACTIC_GOLEM", 40, 5000);
+	CreateSpawn("MEGALITH", 20);
+	CreateSpawn("NERAID", 10);
+	CreateSpawn("STALACTIC_GOLEM", 65, 5000);
 	CreateSpawn("TRI_JOINT", 20);
-	CreateSpawn("HYDRA", 15);
+	CreateSpawn("HYDRA", 10);
 }
 
 MapConfig("beach_dun3")
 {
 	CreateSpawn("NERAID", 1, 200000, 100000);
-	CreateSpawn("THARA_FROG", 55);
+	CreateSpawn("THARA_FROG", 65);
 	CreateSpawn("HYDRA", 30);
-	CreateSpawn("MEGALODON", 30);
+	CreateSpawn("TRI_JOINT", 3);
+	CreateSpawn("MEGALODON", 35);
 }

@@ -34,7 +34,7 @@ For 20 seconds after using the skill all physical attacks will all deal an addit
 Enrages an enemy by taunting them, causing them drop their guard for 30 seconds.
 Reduces enemy defense by [5 + SkillLevel * 5]%.
 Increases enemy attack power by [2 + SkillLevel *3]%.
-The effectivness of this skill is halved on boss type monsters.
+The effectiveness of this skill is halved on boss type monsters.
 While provoked the enemy has a low chance of dealing extra damage against you specifically.
 
 ::SwordMastery
@@ -347,7 +347,7 @@ Catalyst: <color=#777777>1 Blue Gemstone</color>
 Deals 8 hits at [50 + SkillLevel * 5]% to a single target, with a +50% increase to accuracy.
 
 ::EnchantPoison
-Enchant the weapon or yourself or an ally to deal poison property damage. Also adds a [2 + SkillLevel]% chance to poison the enemy when performing melee attacks.
+Enchant the weapon or yourself or an ally to deal poison property damage. Also adds a [2 + SkillLevel / 2]% chance to poison the enemy when performing melee attacks.
 Unequipping or swapping weapons will cause the effect to end early.
 Duration: [15 + SkillLevel * 15]s
 

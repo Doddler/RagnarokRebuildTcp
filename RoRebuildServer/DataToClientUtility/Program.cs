@@ -19,7 +19,7 @@ namespace DataToClientUtility;
 class Program
 {
     private const string path = @"..\..\..\..\GameConfig\ServerData\Db\";
-    private const string outPath = @"..\..\..\..\..\RebuildClient\Assets\Data\";
+    private const string outPath = @"..\..\..\..\..\RebuildClient\Assets\StreamingAssets\ClientConfigGenerated\";
     private const string outPathStreaming = @"..\..\..\..\..\RebuildClient\Assets\StreamingAssets\";
     private const string configPath = @"..\..\..\..\..\RebuildServer\";
 
@@ -28,6 +28,9 @@ class Program
 
     static void Main(string[] args)
     {
+        if (!Directory.Exists(outPath))
+            Directory.CreateDirectory(outPath);
+
         AppSettings.LoadConfigFromServerPath();
         DataManager.Initialize();
 
@@ -1015,7 +1018,7 @@ class Program
         SaveToClient("skillinfo.json", skillOut);
 
         //skill tree
-        var skillTreeData = Toml.ToModel<Dictionary<string, PlayerSkillTree>>(File.ReadAllText(Path.Combine(path, "../Skills/SkillTree.toml"), Encoding.UTF8), null, options);
+        var skillTreeData = Toml.ToModel<Dictionary<string, CsvPlayerSkillTree>>(File.ReadAllText(Path.Combine(path, "../Skills/SkillTree.toml"), Encoding.UTF8), null, options);
         var skillTreeOut = new List<ClientSkillTree>();
 
         foreach (var (id, tree) in skillTreeData)

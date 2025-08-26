@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Network;
+using Assets.Scripts.PlayerControl;
 using RebuildSharedData.Enum.EntityStats;
 using TMPro;
 using UnityEngine;
@@ -55,9 +56,9 @@ namespace Assets.Scripts.UI.Stats
         private void ChangeStatValue(int stat, int change)
         {
             var count = (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) ? 10 : 1;
-            var state = NetworkManager.Instance.PlayerState;
+            var state = PlayerState.Instance;
             var curStatPoints = state.GetData(PlayerStat.StatPoints);
-            var existing = NetworkManager.Instance.PlayerState.GetData(PlayerStat.Str + stat);
+            var existing = PlayerState.Instance.GetData(PlayerStat.Str + stat);
 
             for (var j = 0; j < count; j++)
             {
@@ -87,7 +88,7 @@ namespace Assets.Scripts.UI.Stats
 
             UpdateCharacterStats();
 
-            // UpdateStat(stat, existing, NetworkManager.Instance.PlayerState.GetStat(CharacterStat.AddStr + stat), adjustValue[stat]);
+            // UpdateStat(stat, existing, PlayerState.Instance.GetStat(CharacterStat.AddStr + stat), adjustValue[stat]);
             //
             // var changeSum = 0;
             // for (var i = 0; i < 6; i++)
@@ -124,12 +125,12 @@ namespace Assets.Scripts.UI.Stats
 
             DecreaseStatButtons[index].interactable = diff > 0;
             IncreaseStatButtons[index].interactable =
-                stat + diff < 99 && statPointsRequired + cost <= NetworkManager.Instance.PlayerState.GetData(PlayerStat.StatPoints);
+                stat + diff < 99 && statPointsRequired + cost <= PlayerState.Instance.GetData(PlayerStat.StatPoints);
         }
 
         public void UpdateCharacterStats()
         {
-            var state = NetworkManager.Instance.PlayerState;
+            var state = PlayerState.Instance;
 
             UpdateStat(0, state.GetData(PlayerStat.Str), state.GetStat(CharacterStat.AddStr), adjustValue[0]);
             UpdateStat(1, state.GetData(PlayerStat.Agi), state.GetStat(CharacterStat.AddAgi), adjustValue[1]);

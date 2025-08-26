@@ -132,8 +132,7 @@ namespace Assets.Scripts.Editor
         {
             //ImportEffectTextures();
             
-            var asset = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Data/effects.json");
-            var effectList = JsonUtility.FromJson<EffectTypeList>(asset.text).Effects;
+            var effectList = JsonUtility.FromJson<EffectTypeList>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/effects.json")).Effects;
 
             if (!Directory.Exists("Assets/Effects/Prefabs/"))
                 Directory.CreateDirectory("Assets/Effects/Prefabs/");

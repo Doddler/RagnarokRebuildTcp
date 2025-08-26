@@ -19,6 +19,7 @@ using System.Runtime.CompilerServices;
 using RoRebuildServer.ScriptSystem;
 using System.Runtime.InteropServices;
 using RoRebuildServer.Data.Monster;
+using System.Text.RegularExpressions;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -345,7 +346,7 @@ public partial class CombatEntity : IEntityAutoReset
         if (Character.Map == null)
             return;
 
-        var pos = Character.Map.FindRandomPositionOnMap();
+        var pos = Character.Map.FindRandomPositionOnMap(Character.Position);
 
         if (Character.Type == CharacterType.Player)
             Player.AddInputActionDelay(InputActionCooldownType.Teleport);
@@ -611,9 +612,31 @@ public partial class CombatEntity : IEntityAutoReset
         if (Character.Map == null || Character.Type != CharacterType.Player)
             return;
 
-        Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
         CommandBuilder.ChangeSpValue(Player, curSp + sp, maxSp);
-        CommandBuilder.ClearRecipients();
+        if (Player.Party != null)
+            CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(Player);
+    }
+
+    public void RecoverSpFixed(int sp)
+    {
+        if (sp <= 0)
+            return;
+
+        var curSp = GetStat(CharacterStat.Sp);
+        var maxSp = GetStat(CharacterStat.MaxSp);
+        var newSp = curSp + sp;
+
+        if (newSp > maxSp)
+            newSp = maxSp;
+
+        SetStat(CharacterStat.Sp, newSp);
+
+        if (Character.Map == null || Character.Type != CharacterType.Player)
+            return;
+
+        CommandBuilder.ChangeSpValue(Player, newSp, maxSp);
+        if (Player.Party != null)
+            CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(Player);
     }
 
     [ScriptUseable]
@@ -958,11 +981,10 @@ public partial class CombatEntity : IEntityAutoReset
             ExecuteQueuedSkillAttack();
         else
         {
-
             if (Character.Type == CharacterType.Player) //monsters have their interrupt mode set during their AI skill handler
             {
                 var skillData = DataManager.SkillData[skill];
-                CastInterruptionMode = skillData.InterruptMode == CastInterruptionMode.Default ? CastInterruptionMode.InterruptOnSkill : skillData.InterruptMode;
+                CastInterruptionMode = skillData.InterruptMode == CastInterruptionMode.Default ? ServerConfig.OperationConfig.DefaultCastInterruptMode : skillData.InterruptMode;
 
                 castTime = castTime * (100 + GetStat(CharacterStat.AddCastTime)) / 100;
             }
@@ -1062,7 +1084,7 @@ public partial class CombatEntity : IEntityAutoReset
             if (Character.Type == CharacterType.Player) //monsters have their interrupt mode set during their AI skill handler
             {
                 var skillData = DataManager.SkillData[skill];
-                CastInterruptionMode = skillData.InterruptMode == CastInterruptionMode.Default ? CastInterruptionMode.InterruptOnSkill : skillData.InterruptMode;
+                CastInterruptionMode = skillData.InterruptMode == CastInterruptionMode.Default ? ServerConfig.OperationConfig.DefaultCastInterruptMode : skillData.InterruptMode;
                 castTime = castTime * (100 + GetStat(CharacterStat.AddCastTime)) / 100;
             }
 
@@ -1192,7 +1214,7 @@ public partial class CombatEntity : IEntityAutoReset
                 if (Character.Type == CharacterType.Player) //monsters have their interrupt mode set during their AI skill handler
                 {
                     var skillData = DataManager.SkillData[skill];
-                    CastInterruptionMode = skillData.InterruptMode == CastInterruptionMode.Default ? CastInterruptionMode.InterruptOnSkill : skillData.InterruptMode;
+                    CastInterruptionMode = skillData.InterruptMode == CastInterruptionMode.Default ? ServerConfig.OperationConfig.DefaultCastInterruptMode : skillData.InterruptMode;
 
                     castTime = castTime * (100 + GetStat(CharacterStat.AddCastTime)) / 100;
                 }

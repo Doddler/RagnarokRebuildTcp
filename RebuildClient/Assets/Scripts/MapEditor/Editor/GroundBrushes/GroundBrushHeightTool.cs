@@ -215,7 +215,7 @@ namespace Assets.Scripts.MapEditor.Editor.GroundBrushes
             if (!Editor.HasSelection || Mathf.Approximately(Editor.HeightSnap, 0))
                 return;
             
-            Debug.Log($"Start update drag handle");
+            // Debug.Log($"Start update drag handle");
             Profiler.BeginSample("UpdateDragHandle");
 
             if (Event.current.type == EventType.MouseUp && Event.current.button == 0)

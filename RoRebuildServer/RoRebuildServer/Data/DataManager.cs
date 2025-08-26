@@ -45,7 +45,6 @@ public static class DataManager
     public static ReadOnlyDictionary<int, int[]> JobMaxHpLookup;
     public static ReadOnlyDictionary<int, int[]> JobMaxSpLookup;
     public static ReadOnlyDictionary<string, SavePosition> SavePoints;
-    public static ReadOnlyDictionary<int, int> JobExtendsList;
     
     public static ReadOnlyDictionary<string, int> WeaponClasses;
     public static ReadOnlyDictionary<string, HashSet<int>> EquipGroupInfo;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Network;
+using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using RebuildSharedData.Enum;
 using UnityEngine;
@@ -123,7 +124,7 @@ namespace Assets.Scripts.UI
 
         public void OnDropItemSellToNpc(ShopDragData dragData)
         {
-            var inventoryData = NetworkManager.Instance.PlayerState.Inventory.GetInventoryItem(dragData.ItemId);
+            var inventoryData = PlayerState.Instance.Inventory.GetInventoryItem(dragData.ItemId);
             var moveFullStack = !LeftWindow.ToggleBox.isOn;
 
             if (dragData.DragSource == ItemListRole.SellToNpcItemList)
@@ -256,7 +257,7 @@ namespace Assets.Scripts.UI
                 }
                 else
                 {
-                    var item = NetworkManager.Instance.PlayerState.Inventory.GetInventoryItem(dragData.ItemId);
+                    var item = PlayerState.Instance.Inventory.GetInventoryItem(dragData.ItemId);
                     entry = new ShopEntry() { ItemId = dragData.ItemId, Cost = item.SalePrice, Count = count };
                     RightSideItems.Add(entry);
                     RightWindow.AddItemEntry(item, entry);
@@ -282,7 +283,7 @@ namespace Assets.Scripts.UI
                 }
                 else
                 {
-                    var item = NetworkManager.Instance.PlayerState.Inventory.GetInventoryItem(dragData.ItemId);
+                    var item = PlayerState.Instance.Inventory.GetInventoryItem(dragData.ItemId);
                     var newLeftEntry = new ShopEntry() { ItemId = dragData.ItemId, Cost = item.SalePrice, Count = count };
                     LeftSideItems.Add(entry.ItemId, newLeftEntry);
                     LeftWindow.AddItemEntry(item, newLeftEntry);
@@ -324,7 +325,7 @@ namespace Assets.Scripts.UI
             }
 
             var errMessage = "";
-            var state = NetworkManager.Instance.PlayerState;
+            var state = PlayerState.Instance;
             if (isBuyingFromNpc && state.CurrentWeight + weight > state.MaxWeight)
                 errMessage = " <color=red>(Too Heavy!)</color>";
             
@@ -431,7 +432,7 @@ namespace Assets.Scripts.UI
             RightWindow.OnPressOk = OnFinish;
             RightWindow.OnPressCancel = OnCancel;
             
-            var state = NetworkManager.Instance.PlayerState;
+            var state = PlayerState.Instance;
             var inventory = state.Inventory;
             var count = 0;
             

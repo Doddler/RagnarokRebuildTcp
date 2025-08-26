@@ -19,7 +19,7 @@ public class HolyLightHandler : SkillHandlerBase
         if (target == null)
             return;
 
-        var res = source.CalculateCombatResult(target, 1, 1, AttackFlags.Magical, CharacterSkill.HolyLight, AttackElement.Holy);
+        var res = source.CalculateCombatResult(target, 1.5f, 1, AttackFlags.Magical, CharacterSkill.HolyLight, AttackElement.Holy);
         //source.ApplyCooldownForAttackAction(target);
         source.ExecuteCombatResult(res, false);
 

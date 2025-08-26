@@ -58,7 +58,6 @@ EnergyCoat = [["FireBolt", 3], ["ColdBolt", 3], ["LightningBolt", 3]]
 JobRank = 1
 Extends = "Novice"
 [Acolyte.SkillTree]
-IncreaseSPRecovery = []
 DivineProtection = []
 DemonBane = [["DivineProtection", 1]]
 Heal = []
@@ -72,11 +71,9 @@ Teleport = [["Ruwach", 1]]
 Return = [["Teleport", 1]]
 WarpPortal = [["Return", 1]]
 Pneuma = [["WarpPortal", 4]]
-HolyLight = [["DemonBane", 5]]
+HolyLight = [["DemonBane", 1]]
 SignumCrusis = [["DemonBane", 3]]
 AquaBenedicta = []
-Resurrection = [["DivineProtection", 7],["Cure", 1]]
-Sanctuary = [["DivineProtection", 10], ["Heal", 10], ["Blessing", 10]]
 
 [Thief]
 JobRank = 1
@@ -110,3 +107,14 @@ CartRevolution = [["PushCart", 10], ["CrazyUproar", 1]]
 HammerFall = [["EnlargeWeightLimit",5]]
 AdrenalineRush = [["ItemAppraisal",5],["Overcharge",5],["PushCart",5]]
 
+[Priest]
+JobRank = 2
+Extends = "Acolyte"
+[Priest.SkillTree]
+IncreaseSPRecovery = []
+StatusRecovery = []
+Resurrection = [["IncreaseSPRecovery",4],["StatusRecovery",1]]
+ImpositioManus = []
+Aspersio = [["AquaBenedicta",1],["ImpositioManus",3]]
+Sanctuary = [["Heal", 1]]
+SafetyWall = [["Aspersio", 4],["Sanctuary", 3]]

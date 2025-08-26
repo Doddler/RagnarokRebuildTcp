@@ -31,6 +31,8 @@ public struct DamageInfo
     public DamageApplicationFlags Flags;
     public bool IsIndirect;
 
+    public float TimeInMs => Single.Max(0, Simulation.Util.Time.ElapsedTimeFloat - Time);
+
     public int DisplayDamage
     {
         get

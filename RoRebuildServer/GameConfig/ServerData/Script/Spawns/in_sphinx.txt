@@ -1,16 +1,16 @@
 MapConfig("in_sphinx1")
 {
-	CreateSpawn("DRAINLIAR", 30);
-	CreateSpawn("SCORPION", 80);
-	CreateSpawn("ARGOS", 30);
+	CreateSpawn("DRAINLIAR", 20);
+	CreateSpawn("SCORPION", 60);
+	CreateSpawn("ARGOS", 20);
 	CreateSpawn("ANACONDAQ", 30);
-	CreateSpawn("ZEROM", 10);
+	CreateSpawn("ZEROM", 45);
 }
 
 MapConfig("in_sphinx2")
 {
 	CreateSpawn("DRAINLIAR", 15);
-	CreateSpawn("REQUIEM", 15);
+	CreateSpawn("REQUIEM", 25);
 	CreateSpawn("ZEROM", 140);
 	CreateSpawn("MATYR", 10);
 	CreateSpawn("WHISPER", 2, 5m);
@@ -19,10 +19,10 @@ MapConfig("in_sphinx2")
 
 MapConfig("in_sphinx3")
 {
-	CreateSpawn("MATYR", 25);
-	CreateSpawn("IRON_FIST", 20);
-	CreateSpawn("REQUIEM", 80);
-	CreateSpawn("MARDUK", 30, %(119, 160, 110, 70));
+	CreateSpawn("MATYR", 20);
+	CreateSpawn("IRON_FIST", 25);
+	CreateSpawn("REQUIEM", 70);
+	CreateSpawn("MARDUK", 40, %(119, 160, 110, 70));
 	CreateSpawn("PASANA", 2, %(20, 153, 10, 76), 5m);
 	//CreateSpawn("MIMIC", 2, %(20, 153, 10, 76), 10m, 5m);
 	CreateSpawn("MIMIC", 3, 10m, 5m);
@@ -33,15 +33,15 @@ MapConfig("in_sphinx4")
 {
 	CreateSpawn("MINOROUS", 50);
 	CreateSpawn("MARDUK", 25);
-	CreateSpawn("MIMIC", 4, 600000, 300000);
+	CreateSpawn("MIMIC", 4, 5m, 10m);
 	CreateSpawn("PASANA", 50);
-	CreateSpawn("ANUBIS", 3, 60000, 90000);
+	CreateSpawn("ANUBIS", 10, 1m, 1m30s);
 }
 
 MapConfig("in_sphinx5")
 {
-	CreateSpawn("PASANA", 30);
-	CreateSpawn("MATYR", 30);
+	CreateSpawn("PASANA", 70);
+	CreateSpawn("MATYR", 15);
 	CreateSpawn("SIDE_WINDER", 20);
 	CreateSpawn("MARDUK", 30);
 	CreateSpawn("MIMIC", 7, 10m, 5m);

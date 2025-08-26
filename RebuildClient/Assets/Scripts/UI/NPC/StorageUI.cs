@@ -145,7 +145,7 @@ namespace Assets.Scripts.UI
             // var srcItem = UiManager.Instance.DragItemObject;
             Debug.Log($"Dropped item {srcItem.ItemId}");
 
-            if (NetworkManager.Instance.PlayerState.Inventory.GetInventoryData().TryGetValue(srcItem.ItemId, out var item))
+            if (PlayerState.Instance.Inventory.GetInventoryData().TryGetValue(srcItem.ItemId, out var item))
             {
                 if (item.ItemData.IsUnique || item.Count == 1)
                     NetworkManager.Instance.SendMoveStorageItem(srcItem.ItemId, srcItem.ItemCount, true);
@@ -158,7 +158,7 @@ namespace Assets.Scripts.UI
         {
             Debug.Log($"Moving item to storage: {bagSlotId}");
 
-            if (NetworkManager.Instance.PlayerState.Inventory.GetInventoryData().TryGetValue(bagSlotId, out var item))
+            if (PlayerState.Instance.Inventory.GetInventoryData().TryGetValue(bagSlotId, out var item))
             {
                 if (item.ItemData.IsUnique || item.Count == 1 || Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
                     NetworkManager.Instance.SendMoveStorageItem(bagSlotId, item.Count, true);
@@ -173,7 +173,7 @@ namespace Assets.Scripts.UI
                 NetworkManager.Instance.SendMoveStorageItem(bagId, 1, false);
             else
             {
-                if (NetworkManager.Instance.PlayerState.Storage.GetInventoryData().TryGetValue(bagId, out var item))
+                if (PlayerState.Instance.Storage.GetInventoryData().TryGetValue(bagId, out var item))
                 {
                     if (item.ItemData.IsUnique || item.Count == 1 || Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
                         NetworkManager.Instance.SendMoveStorageItem(bagId, item.Count, false);

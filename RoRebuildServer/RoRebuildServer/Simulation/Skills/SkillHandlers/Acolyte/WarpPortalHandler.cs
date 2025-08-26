@@ -86,12 +86,15 @@ public class WarpPortalHandler : SkillHandlerBase
 
         if (player.SpecialState == SpecialPlayerActionState.WaitingOnPortalDestination)
         {
+            if (map.IsTileOccupied(player.SpecialStateTarget))
+            {
+                CommandBuilder.SkillFailed(player, SkillValidationResult.TargetAreaOccupied);
+                return;
+            }
+
             if (!isIndirect && !ConsumeGemstoneForSkillWithFailMessage(source, BlueGemstone))
                 return;
-        }
         
-        if (player.SpecialState == SpecialPlayerActionState.WaitingOnPortalDestination)
-        {
             //the player has selected a destination, which is a second cast of warp portal
             var memo = player.MemoLocations[lvl - 1];
             if (string.IsNullOrWhiteSpace(memo.MapName) || !World.Instance.IsValidMap(memo.MapName))
@@ -153,6 +156,7 @@ public class WarpPortalBaseEvent : NpcBehaviorBase
         npc.ValuesString[0] = paramString!;
         npc.RevealAsEffect(NpcEffectType.WarpPortalOpening, "WarpPortal");
         npc.StartTimer(1000);
+        npc.ExpireEventIfOwnerLeavesMap = false; //owner can take the warp and it'll stay for others
     }
 
     public override void OnTimer(Npc npc, float lastTime, float newTime)

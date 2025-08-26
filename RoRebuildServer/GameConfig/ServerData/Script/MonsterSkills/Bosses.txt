@@ -362,15 +362,15 @@ StateAny:
 	TryCast(ThunderStorm, 7, 20%, 0.7s, 5s, NoInterrupt | UnlimitedRange); //not actually unlimited, but anywhere he can see
 	TryCast(DarkBlessing, 5, 20%, 0.8s, 20s, NoInterrupt | UnlimitedRange);
 StateIdle:
-    if(CheckCast(ThunderStorm, 10%)) {
+    if(CheckCast(ThunderStorm, 5%)) {
         if(FindRandomPlayerOnMap()) {
 			var distance = DistanceToSelectedTarget;
 			var castTime = 0.05s * distance; //cast time increases with distance
-            if(castTime < 0.7s) castTime = 0.7s;
+            if(castTime < 1s) castTime = 1s;
             if(castTime > 5s) castTime = 5s;
 
 			CreateEvent("AmonRaThunderCall", TargetPosition, castTime);
-            Cast(ThunderStorm, 1, castTime, 8s, NoInterrupt | NoEffect | SelfTarget); //he's not really casting thunderstorm, we just want everyone to think he is
+            Cast(ThunderStorm, 1, castTime, 10s, NoInterrupt | NoEffect | SelfTarget); //he's not really casting thunderstorm, we just want everyone to think he is
 			LookAtPosition(TargetPosition);
         }
     }

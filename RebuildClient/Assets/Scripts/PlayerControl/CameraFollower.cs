@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers;
@@ -303,7 +304,7 @@ namespace Assets.Scripts
 
             Physics.queriesHitBackfaces = true;
 
-            var effects = JsonUtility.FromJson<EffectTypeList>(EffectConfigFile.text);
+            var effects = JsonUtility.FromJson<EffectTypeList>(ClientDataLoader.ReadStreamingAssetFile("ClientConfigGenerated/effects.json"));
             EffectList = new Dictionary<int, EffectTypeEntry>();
             EffectIdLookup = new Dictionary<string, int>();
             EffectCache = new Dictionary<int, GameObject>();
@@ -319,7 +320,7 @@ namespace Assets.Scripts
                 EffectIdLookup.Add(e.Name, e.Id);
             }
 
-            var lines = LevelChart.text.Split("\n"); //we'll trim out \r after if it exists
+            var lines = ClientDataLoader.ReadStreamingAssetFile("ClientConfigGenerated/levelchart.txt").Split("\n"); //we'll trim out \r after if it exists
             for (var i = 0; i < 99; i++)
                 levelReqs[i] = int.Parse(lines[i].Trim());
 
@@ -1351,6 +1352,7 @@ namespace Assets.Scripts
                 TextColor.Equipment => "<color=#00fbfb>",
                 TextColor.Item => "<color=#00fbfb>",
                 TextColor.Error => "<color=#ed0000>",
+                TextColor.System => "<color=#FFFF00>",
                 _ => ""
             };
 
@@ -1943,7 +1945,7 @@ namespace Assets.Scripts
 
             if (!inInputUI && Input.GetKeyDown(KeyCode.R))
             {
-                if (controllable.SpriteAnimator.State == SpriteState.Dead || !controllable.IsCharacterAlive || NetworkManager.Instance.PlayerState.Hp == 0)
+                if (controllable.SpriteAnimator.State == SpriteState.Dead || !controllable.IsCharacterAlive || PlayerState.Instance.Hp == 0)
                     NetworkManager.Instance.SendRespawn(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
             }
 

@@ -107,7 +107,7 @@ namespace Assets.Scripts.UI
 
         public void UpdateItemCounts()
         {
-            var state = NetworkManager.Instance.PlayerState;
+            var state = PlayerState.Instance;
             var inventory = state.Inventory;
 
             for (var i = 0; i < HotBarEntries.Count; i++)
@@ -162,10 +162,10 @@ namespace Assets.Scripts.UI
 
         public void ActivateHotBarEntry(SkillHotbarEntry entry)
         {
-            if (!NetworkManager.Instance.PlayerState.IsValid)
+            if (!PlayerState.Instance.IsValid)
                 return;
 
-            var state = NetworkManager.Instance.PlayerState;
+            var state = PlayerState.Instance;
 
             if (entry.DragItem.Type == DragItemType.Skill)
             {
