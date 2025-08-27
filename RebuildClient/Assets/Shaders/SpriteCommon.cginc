@@ -13,7 +13,6 @@ struct InstanceData
     float4 color;
     float4 uvRect;
     float offset;
-    float colorDrain;
 };
 
 StructuredBuffer<InstanceData> _Instances;
@@ -40,7 +39,6 @@ inline void SetupInstancingData
 
     color = inst.color;
     offset = inst.offset;
-    colorDrain = inst.colorDrain;
 }
 #else
 struct InstanceData

@@ -15,7 +15,6 @@ public class RoSpriteBatcher : MonoBehaviour
 
 	private Camera _camera;
 	private CommandBuffer _depthCmd;
-	// We are only batching depth pre-pass as there is no need to worry about sorting.
 	private CommandBuffer _colorCmd;
 	//private CommandBuffer _xrayCmd;
 
@@ -31,6 +30,8 @@ public class RoSpriteBatcher : MonoBehaviour
 	private const CameraEvent DepthEvent = CameraEvent.BeforeForwardAlpha;
 	private const CameraEvent ColorEvent = CameraEvent.BeforeForwardAlpha;
 
+	[Header("EXPERIMENTAL! There are small visual artifacts and xRay is not supported.")]
+	[Space]
 	public bool EnableInstancing;
 
 	private void OnEnable()

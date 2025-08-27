@@ -26,14 +26,15 @@ namespace Assets.Scripts.Network
         private RoGroundItemDrawCall _drawCall;
         
         private static Material spriteMaterial;
+        private static readonly int OffsetPropID = Shader.PropertyToID("_Offset");
         private const float Offset = 0.5f;
 
         public static GroundItem Create(int entityId, int id, int count, Vector2 position, bool showAnimation)
         {
             if (spriteMaterial == null)
             {
-                spriteMaterial = new Material(ShaderCache.Instance.SpriteShader);
-                spriteMaterial.SetFloat("_Offset", Offset);
+                spriteMaterial = new Material(GameConfig.Data.EnableXRay ? ShaderCache.Instance.SpriteShaderWithXRay : ShaderCache.Instance.SpriteShader);
+                spriteMaterial.SetFloat(OffsetPropID, Offset);
             }
 
             var data = ClientDataLoader.Instance.GetItemById(id);
@@ -140,14 +141,8 @@ namespace Assets.Scripts.Network
             
             SpriteRenderer.color = _color;
 
-            if (GameConfig.Data.EnableXRay)
-            {
-	            SpriteRenderer.material.shader = ShaderCache.Instance.SpriteShaderWithXRay;
-            }
-            else
-            {
-	            SpriteRenderer.material.shader = ShaderCache.Instance.SpriteShader;
-            }
+            var shader = GameConfig.Data.EnableXRay ? ShaderCache.Instance.SpriteShaderWithXRay : ShaderCache.Instance.SpriteShader;
+            if (spriteMaterial.shader != shader) spriteMaterial.shader = shader;
             
             UpdateDrawCall();
         }
@@ -188,6 +183,8 @@ namespace Assets.Scripts.Network
 	        _drawCall.UVRect = Sprite.textureRect;
 	        
 	        _drawCall.Transform = SpriteRenderer.transform;
+	        _drawCall.Pivot = Sprite.pivot;
+	        _drawCall.SpriteResolution = Sprite.rect.size;
 	        
 	        _drawCall.Color = _color;
 	        _drawCall.Offset = Offset;

@@ -32,7 +32,10 @@ public class RoGroundItemBatcher : MonoBehaviour
 	private const CameraEvent DepthEvent = CameraEvent.BeforeForwardAlpha;
 	private const CameraEvent ColorEvent = CameraEvent.BeforeForwardAlpha;
 	private const CameraEvent XRayEvent = CameraEvent.AfterForwardOpaque;
-
+	
+	// I've matched this visually with the sprite scale / 3f
+	const float QuadSize = 0.24f;
+	
 	private void OnEnable()
 	{
 		Instance = this;
@@ -123,7 +126,10 @@ public class RoGroundItemBatcher : MonoBehaviour
 						offset = rc.Offset,
 					};
 
-					_matrices[i] = rc.Transform ? rc.Transform.localToWorldMatrix : Matrix4x4.identity;
+					var p = rc.Pivot / rc.SpriteResolution;
+					var localPivotOffset = new Vector3((0.5f - p.x) * QuadSize, (0.5f - p.y) * QuadSize, 0);
+					
+					_matrices[i] = (rc.Transform ? rc.Transform.localToWorldMatrix : Matrix4x4.identity) * Matrix4x4.Translate(localPivotOffset);
 				}
 
 				var baseInstance = _pool.AppendInstances(_instStage, 0, batchCount);
@@ -149,10 +155,8 @@ public class RoGroundItemBatcher : MonoBehaviour
 	private static Mesh BuildUnitQuadMesh()
 	{
 		var mesh = new Mesh { name = "Ground Item Quad" };
-
-		// I've matched this visually with the sprite scale / 3f
-		const float h = 0.12f;
-
+		const float h = QuadSize * 0.5f;
+		
 		var vertices = new Vector3[]
 		{
 			new(-h, -h, 0f),
@@ -185,6 +189,8 @@ public class RoGroundItemDrawCall
 {
 	public Transform Transform;
 	public Rect UVRect;
+	public Vector2 Pivot;
+	public Vector2 SpriteResolution;
 	public Color Color;
 	public float Offset;
 }
