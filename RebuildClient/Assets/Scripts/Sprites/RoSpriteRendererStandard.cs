@@ -36,10 +36,6 @@ namespace Assets.Scripts.Sprites
         public float ZOffset;
         public float ShaderYOffset;
 
-        //private static Material belowWaterMat;
-        //private static Material aboveWaterMat;
-        //private static Material[] materialArrayNormal;
-        //private static Material[] materialArrayWater;
         private static readonly int Drain = Shader.PropertyToID("_ColorDrain");
         private static readonly int Offset = Shader.PropertyToID("_Offset");
         private static readonly int Width = Shader.PropertyToID("_Width");
@@ -144,48 +140,12 @@ namespace Assets.Scripts.Sprites
             CurrentAngleIndex = (int)Direction;
             if (UpdateAngleWithCamera)
                 CurrentAngleIndex = RoAnimationHelper.GetSpriteIndexForAngle(Direction, 360 - CameraFollower.Instance.Rotation);
-
-            //CreateMaterials();
             
             isInitialized = true;
 
             Rebuild();
         }
         
-        /*private void CreateMaterials()
-        {
-            if (shader == null)
-                return;
-            
-            if (materialArrayNormal == null || materialArrayNormal.Length <= 0)
-            {
-                var noWaterMat = new Material(shader);
-                noWaterMat.EnableKeyword("WATER_OFF");
-                // if(SpriteData.Palette != null || AppliedPalette != null)
-                //     noWaterMat.EnableKeyword("PALETTE_ON");
-
-                materialArrayNormal = new Material[1];
-                materialArrayNormal[0] = noWaterMat;
-            }
-
-            if (materialArrayWater == null || materialArrayWater.Length <= 0)
-            {
-                aboveWaterMat = new Material(shader);
-                //aboveWaterMat.EnableKeyword("WATER_ABOVE");
-
-                //belowWaterMat = new Material(shader);
-                //belowWaterMat.EnableKeyword("WATER_BELOW");
-                //belowWaterMat.renderQueue -= 2;
-                
-                // if(SpriteData.Palette != null || AppliedPalette != null)
-                //     aboveWaterMat.EnableKeyword("PALETTE_ON");
-
-                materialArrayWater = new Material[1];
-                //materialArrayWater[0] = belowWaterMat;
-                materialArrayWater[0] = aboveWaterMat;
-            }
-        }*/
-
         public void SetActive(bool isActive)
         {
             // Debug.Log($"{gameObject.GetGameObjectPath()} {isActive}");
@@ -208,37 +168,11 @@ namespace Assets.Scripts.Sprites
         {
             if (!isInitialized)
                 return;
-
-            //CreateMaterials();
-
+            
             if (OverrideMaterial != null)
             {
                 MeshRenderer.sharedMaterial = OverrideMaterial;
             }
-            /*else
-            {
-                if (SecondPassForWater)
-                {
-                    if (RoWalkDataProvider.Instance.GetMapPositionForWorldPosition(transform.position, out var pos) && pos != LastPosition)
-                    {
-                        LastPosition = pos;
-
-                        HasWater = RoWalkDataProvider.Instance.IsPositionNearWater(transform.position, 1);
-
-                        if (HasWater)
-                            MeshRenderer.sharedMaterials = materialArrayWater;
-                        else
-                            MeshRenderer.sharedMaterials = materialArrayNormal;
-                    }
-
-                    //Debug.Log($"{pos} {LastPosition} {HasWater}");
-                }
-                else
-                {
-                    if(materialArrayNormal != null)
-                        MeshRenderer.sharedMaterials = materialArrayNormal;
-                }
-            }*/
 
             if (!UpdateAngleWithCamera)
                 CurrentAngleIndex = (int)Direction;
@@ -273,13 +207,6 @@ namespace Assets.Scripts.Sprites
             MeshRenderer.SetPropertyBlock(propertyBlock, 0);
 
             //Debug.Log($"Generating Mesh Data for {SpriteData.Atlas.name} at frame {Time.frameCount}");
-            
-            //if (SecondPassForWater && HasWater)
-            //{
-            //    MeshRenderer.GetPropertyBlock(propertyBlock, 1);
-            //    SetPropertyBlock();
-            //    MeshRenderer.SetPropertyBlock(propertyBlock, 1);
-            //}
         }
 
         private void SetPropertyBlock()
@@ -381,7 +308,7 @@ namespace Assets.Scripts.Sprites
             }
 
             shader = GameConfig.Data.EnableXRay ? ShaderCache.Instance.SpriteShaderWithXRay : ShaderCache.Instance.SpriteShader;
-            MeshRenderer.material.shader = shader;
+            if (MeshRenderer.material.shader != shader) MeshRenderer.material.shader = shader;
             
             UpdateDrawCall();
             return result;
