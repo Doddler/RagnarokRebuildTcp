@@ -246,7 +246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 268285c10f6211349b455370b7838e93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnableInstancing: 0
+  EnableInstancing: 1
 --- !u!1 &5163903571623629270
 GameObject:
   m_ObjectHideFlags: 0
