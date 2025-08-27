@@ -1,4 +1,4 @@
-Shader"Ragnarok/CharacterSpriteShader - Depth Color"
+Shader"Ragnarok/CharacterSpriteShader - Depth Color XRay"
 {
     Properties
     {
@@ -76,6 +76,37 @@ Shader"Ragnarok/CharacterSpriteShader - Depth Color"
             
             //#define SMOOTHPIXEL
 
+            #include "SpriteColorOnlyPass.cginc"
+            ENDCG
+        }
+
+        Pass // X-Ray
+        {
+            Name "XRay"
+            ZWrite Off
+            ZTest Greater
+            //Offset -10, 1
+
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma multi_compile_fwdbase
+            #pragma multi_compile_fog
+            //#pragma multi_compile _ PIXELSNAP_ON
+            //#pragma multi_compile _ PALETTE_ON
+            #pragma multi_compile _ SMOOTHPIXEL
+            #pragma multi_compile _ BLINDEFFECT_ON
+            //#pragma shader_feature _ WATER_OFF
+            #pragma shader_feature _ COLOR_DRAIN
+            #pragma multi_compile _ GROUND_ITEM
+
+            #pragma multi_compile_instancing
+            #pragma instancing_options assumeuniformscaling nolodfade nolightprobe nolightmap
+            #pragma multi_compile _ INSTANCING_ON
+
+            #define XRAY
+            //#define SMOOTHPIXEL
+            
             #include "SpriteColorOnlyPass.cginc"
             ENDCG
         }

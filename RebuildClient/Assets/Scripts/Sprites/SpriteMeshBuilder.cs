@@ -179,46 +179,50 @@ namespace Assets.Scripts.Sprites
 				var uvs = sprite.uv;
 
 				var rotation = Quaternion.Euler(0, 0, -layer.Angle);
-				var scale = new Vector3(layer.Scale.x * (layer.IsMirror ? -1 : 1), layer.Scale.y, 1);
+				
+				var scale = new Vector3(layer.Scale.x, layer.Scale.y, 1);
 
 				var offsetX = (Mathf.RoundToInt(sprite.rect.width) % 2 == 1) ? 0.5f : 0f;
 				var offsetY = (Mathf.RoundToInt(sprite.rect.height) % 2 == 1) ? 0.5f : 0f;
-				
 				maxX = Mathf.Max(maxX, sprite.rect.width);
 				maxY = Mathf.Max(maxY, sprite.rect.height);
+				
+				float minU = float.PositiveInfinity, maxU = float.NegativeInfinity;
+				if (layer.IsMirror)
+				{
+					for (int k = 0; k < uvs.Length; k++)
+					{
+						float u = uvs[k].x;
+						if (u < minU) minU = u;
+						if (u > maxU) maxU = u;
+					}
+				}
 
 				for (var j = 0; j < verts.Length; j++)
 				{
-					var v = rotation * (verts[j] * scale);
-					v += new Vector3(0, vOffset, 0);
-					outVertices.Add(v + new Vector3(layer.Position.x - offsetX, -(layer.Position.y) + offsetY) / 50f);
-					outUvs.Add(uvs[j]);
+					var v3 = rotation * (verts[j] * scale);
+					v3 += new Vector3(0, vOffset, 0);
+					outVertices.Add(v3 + new Vector3(layer.Position.x - offsetX, -(layer.Position.y) + offsetY) / 50f);
+					
+					Vector2 uv = uvs[j];
+					if (layer.IsMirror)
+					{
+						uv.x = (minU + maxU) - uv.x;
+					}
 
-                    var c = new Color(layer.Color.r, layer.Color.g, layer.Color.b, layer.Color.a * alpha);
+					outUvs.Add(uv);
 
+					var c = new Color(layer.Color.r, layer.Color.g, layer.Color.b, layer.Color.a * alpha);
 					outColors.Add(c);
 					outNormals.Add(new Vector3(0, 0, -1));
 				}
-
-				if (layer.IsMirror)
-				{
-					outTris.Add(tIndex + 2);
-					outTris.Add(tIndex + 1);
-					outTris.Add(tIndex);
-					outTris.Add(tIndex + 2);
-					outTris.Add(tIndex + 3);
-					outTris.Add(tIndex + 1);
-				}
-				else
-				{
-					outTris.Add(tIndex);
-					outTris.Add(tIndex + 1);
-					outTris.Add(tIndex + 2);
-					outTris.Add(tIndex + 1);
-					outTris.Add(tIndex + 3);
-					outTris.Add(tIndex + 2);
-				}
-
+				
+				outTris.Add(tIndex);
+				outTris.Add(tIndex + 1);
+				outTris.Add(tIndex + 2);
+				outTris.Add(tIndex + 1);
+				outTris.Add(tIndex + 3);
+				outTris.Add(tIndex + 2);
 
 				tIndex += 4;
 			}

@@ -333,7 +333,9 @@ namespace Assets.Scripts.Sprites
             SpriteRenderer.Initialize(makeCollider);
             if(LightProbeAnchor != null)
                 SpriteRenderer.SetLightProbeAnchor(LightProbeAnchor);
-
+            
+            CacheShadowMaterial();
+            
             isDirty = true;
         }
 
@@ -718,6 +720,14 @@ namespace Assets.Scripts.Sprites
                 SpriteRenderer.SetColor(c);
         }
 
+        public void CacheShadowMaterial()
+        {
+	        if (!Shadow) return;
+	        
+	        SpriteUtil.CacheShadowMaterial();
+	        Shadow.GetComponent<SpriteRenderer>().material = SpriteUtil.shadowMaterial;
+        }
+        
         public void LateUpdate()
         {
             if (canUpdateRenderer)

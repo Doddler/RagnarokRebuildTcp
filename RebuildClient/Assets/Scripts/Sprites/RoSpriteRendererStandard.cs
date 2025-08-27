@@ -1,7 +1,9 @@
 ﻿using Assets.Scripts.Effects;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.MapEditor;
+using Assets.Scripts.UI.ConfigWindow;
 using RebuildSharedData.Enum;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -34,16 +36,14 @@ namespace Assets.Scripts.Sprites
         public float ZOffset;
         public float ShaderYOffset;
 
-        private static Material belowWaterMat;
-        private static Material aboveWaterMat;
-        private static Material[] materialArrayNormal;
-        private static Material[] materialArrayWater;
-        private static readonly int MainTex = Shader.PropertyToID("_MainTex");
-        private static readonly int Color1 = Shader.PropertyToID("_Color");
-        private static readonly int EnvColor = Shader.PropertyToID("_EnvColor");
-        private static readonly int Width = Shader.PropertyToID("_Width");
-        private static readonly int Offset = Shader.PropertyToID("_Offset");
         private static readonly int Drain = Shader.PropertyToID("_ColorDrain");
+        private static readonly int Offset = Shader.PropertyToID("_Offset");
+        private static readonly int Width = Shader.PropertyToID("_Width");
+        private static readonly int EnvColor = Shader.PropertyToID("_EnvColor");
+        private static readonly int Color1 = Shader.PropertyToID("_Color");
+        private static readonly int MainTex = Shader.PropertyToID("_MainTex");
+        private static readonly int LightingSamplePosition = Shader.PropertyToID("_LightingSamplePosition");
+        private static readonly int IsMeshRenderer = Shader.PropertyToID("_IsMeshRenderer");
         private static readonly int VPos = Shader.PropertyToID("_VPos");
         private MaterialPropertyBlock propertyBlock;
 
@@ -64,6 +64,8 @@ namespace Assets.Scripts.Sprites
         public int PaletteId;
         public RoSpriteData SpriteData;
         public bool IsHidden;
+        
+        private RoSpriteDrawCall drawCall;
 
         //public Direction Direction;
         public Direction Direction
@@ -72,6 +74,8 @@ namespace Assets.Scripts.Sprites
             set => Angle = RoAnimationHelper.FacingDirectionToRotation(value);
         }
         public Direction LastDirection;
+
+        private Mesh _mesh;
         //public Texture2D AppliedPalette;
 
         public void SetAction(int action, bool is8Direction)
@@ -126,7 +130,7 @@ namespace Assets.Scripts.Sprites
             propertyBlock = new MaterialPropertyBlock();
 
             if (shader == null)
-                shader = ShaderCache.Instance?.SpriteShader;
+                shader = GameConfig.Data.EnableXRay ? ShaderCache.Instance?.SpriteShaderWithXRay : ShaderCache.Instance?.SpriteShader;
 
             meshCache = SpriteMeshCache.GetMeshCacheForSprite(SpriteData.Name);
             colliderCache = SpriteMeshCache.GetColliderCacheForSprite(SpriteData.Name);
@@ -136,48 +140,12 @@ namespace Assets.Scripts.Sprites
             CurrentAngleIndex = (int)Direction;
             if (UpdateAngleWithCamera)
                 CurrentAngleIndex = RoAnimationHelper.GetSpriteIndexForAngle(Direction, 360 - CameraFollower.Instance.Rotation);
-
-            CreateMaterials();
-
+            
             isInitialized = true;
 
             Rebuild();
         }
-
-        private void CreateMaterials()
-        {
-            if (shader == null)
-                return;
-            
-            if (materialArrayNormal == null || materialArrayNormal.Length <= 0)
-            {
-                var noWaterMat = new Material(shader);
-                noWaterMat.EnableKeyword("WATER_OFF");
-                // if(SpriteData.Palette != null || AppliedPalette != null)
-                //     noWaterMat.EnableKeyword("PALETTE_ON");
-
-                materialArrayNormal = new Material[1];
-                materialArrayNormal[0] = noWaterMat;
-            }
-
-            if (materialArrayWater == null || materialArrayWater.Length <= 0)
-            {
-                aboveWaterMat = new Material(shader);
-                //aboveWaterMat.EnableKeyword("WATER_ABOVE");
-
-                //belowWaterMat = new Material(shader);
-                //belowWaterMat.EnableKeyword("WATER_BELOW");
-                //belowWaterMat.renderQueue -= 2;
-                
-                // if(SpriteData.Palette != null || AppliedPalette != null)
-                //     aboveWaterMat.EnableKeyword("PALETTE_ON");
-
-                materialArrayWater = new Material[1];
-                //materialArrayWater[0] = belowWaterMat;
-                materialArrayWater[0] = aboveWaterMat;
-            }
-        }
-
+        
         public void SetActive(bool isActive)
         {
             // Debug.Log($"{gameObject.GetGameObjectPath()} {isActive}");
@@ -200,36 +168,10 @@ namespace Assets.Scripts.Sprites
         {
             if (!isInitialized)
                 return;
-
-            CreateMaterials();
-
+            
             if (OverrideMaterial != null)
             {
                 MeshRenderer.sharedMaterial = OverrideMaterial;
-            }
-            else
-            {
-                if (SecondPassForWater)
-                {
-                    if (RoWalkDataProvider.Instance.GetMapPositionForWorldPosition(transform.position, out var pos) && pos != LastPosition)
-                    {
-                        LastPosition = pos;
-
-                        HasWater = RoWalkDataProvider.Instance.IsPositionNearWater(transform.position, 1);
-
-                        if (HasWater)
-                            MeshRenderer.sharedMaterials = materialArrayWater;
-                        else
-                            MeshRenderer.sharedMaterials = materialArrayNormal;
-                    }
-
-                    //Debug.Log($"{pos} {LastPosition} {HasWater}");
-                }
-                else
-                {
-                    if(materialArrayNormal != null)
-                        MeshRenderer.sharedMaterials = materialArrayNormal;
-                }
             }
 
             if (!UpdateAngleWithCamera)
@@ -249,11 +191,11 @@ namespace Assets.Scripts.Sprites
                     transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, ZOffset);
             }
 
-            var mesh = GetMeshForFrame();
+	        _mesh = GetMeshForFrame();
             var cMesh = GetColliderForFrame();
 
             MeshFilter.sharedMesh = null;
-            MeshFilter.sharedMesh = mesh;
+            MeshFilter.sharedMesh = _mesh;
             if (MeshCollider != null)
             {
                 MeshCollider.sharedMesh = null;
@@ -264,12 +206,7 @@ namespace Assets.Scripts.Sprites
             SetPropertyBlock();
             MeshRenderer.SetPropertyBlock(propertyBlock, 0);
 
-            //if (SecondPassForWater && HasWater)
-            //{
-            //    MeshRenderer.GetPropertyBlock(propertyBlock, 1);
-            //    SetPropertyBlock();
-            //    MeshRenderer.SetPropertyBlock(propertyBlock, 1);
-            //}
+            //Debug.Log($"Generating Mesh Data for {SpriteData.Atlas.name} at frame {Time.frameCount}");
         }
 
         private void SetPropertyBlock()
@@ -280,6 +217,12 @@ namespace Assets.Scripts.Sprites
             propertyBlock.SetColor(Color1, Color);
             propertyBlock.SetColor(EnvColor, envColor);
             propertyBlock.SetFloat(Width, SpriteData.AverageWidth / 25f);
+            
+            // We want to sample the light on a single point for all sprites.
+            propertyBlock.SetVector(LightingSamplePosition, transform.parent.position);
+            
+            // Unity send light info differently on sprites and mesh renderers, so we need to let the shader know what path it should take.
+            propertyBlock.SetFloat(IsMeshRenderer, 1f);
             
             // if (SpriteData.Palette != null || AppliedPalette != null)
             // {
@@ -336,10 +279,11 @@ namespace Assets.Scripts.Sprites
         {
             if (!isInitialized)
                 return false;
-
-
-            MeshRenderer.enabled = !IsHidden;
+            
+	        MeshRenderer.enabled = !IsHidden;
             // MeshCollider.enabled = !IsHidden;
+            
+            bool result = false;
             
             if (UpdateAngleWithCamera)
             {
@@ -359,13 +303,86 @@ namespace Assets.Scripts.Sprites
                     CurrentAngleIndex = angleIndex;
 
                     Rebuild();
-                    return true;
+                    result = true;
                 }
             }
 
-            return false;
+            shader = GameConfig.Data.EnableXRay ? ShaderCache.Instance.SpriteShaderWithXRay : ShaderCache.Instance.SpriteShader;
+            if (MeshRenderer.material.shader != shader) MeshRenderer.material.shader = shader;
+            
+            UpdateDrawCall();
+            return result;
+        }
+        
+        private void OnEnable()
+        {
+	        StartCoroutine(WaitSpriteDataThenCreateDrawCall());
         }
 
+        private IEnumerator WaitSpriteDataThenCreateDrawCall()
+        {
+	        while (!SpriteData)
+	        {
+		        yield return null;
+	        }
+
+	        UpdateDrawCall();
+	        RoSpriteBatcher.Instance.drawCalls.AddItem(SpriteData.Atlas, drawCall);
+        }
+        
+        private void OnDisable()
+        {
+	        if (drawCall == null) return;
+	        RoSpriteBatcher.Instance.drawCalls.RemoveItem(SpriteData.Atlas, drawCall);
+        }
+        
+        private void UpdateDrawCall()
+        {
+	        drawCall ??= new RoSpriteDrawCall();
+	        
+	        if (!RoSpriteBatcher.Instance.EnableInstancing)
+	        {
+		        MeshRenderer.enabled = !IsHidden;
+		        return;
+	        }
+	        
+	        // We are only instancing quads
+	        if (MeshFilter.sharedMesh.vertexCount != 4)
+	        {
+		        MeshRenderer.enabled = true;
+		        drawCall.Color = Color.clear;
+		        return;
+	        }
+	        
+	        // We can't sort transparency, so we must fall back to standard rendering.
+	        if (MeshFilter.sharedMesh.colors.Length > 0 && MeshFilter.sharedMesh.colors[0].a < 0.5f)
+	        {
+		        MeshRenderer.enabled = true;
+		        drawCall.Vertices = new[] { Vector3.zero };
+		        drawCall.Color = Color.clear;
+		        return;
+	        }
+
+	        MeshRenderer.enabled = false;
+	        if (!isInitialized) return;
+	        
+	        drawCall.Transform = transform;
+	        
+	        drawCall.UV = _mesh.uv;
+	        drawCall.Vertices = _mesh.vertices;
+	        drawCall.VColor = _mesh.colors;
+	        drawCall.IsHidden = IsHidden;
+	        
+	        if (propertyBlock != null)
+	        {
+		        drawCall.Color = propertyBlock.GetColor(Color1);
+		        drawCall.Offset = propertyBlock.GetFloat(Offset);
+		        drawCall.ColorDrain = propertyBlock.GetFloat(Drain);
+		        drawCall.VPos = propertyBlock.GetFloat(VPos);
+		        drawCall.Width = propertyBlock.GetFloat(Width);
+	        }
+        }
+        
         //public void OnDestroy()
         //{
         //    if (belowWaterMat != null) Destroy(belowWaterMat);
