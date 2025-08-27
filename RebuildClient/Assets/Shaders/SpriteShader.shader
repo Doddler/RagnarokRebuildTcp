@@ -16,7 +16,7 @@ Shader"Ragnarok/CharacterSpriteShader - Depth Color"
     SubShader
     {
 
-        Tags{"Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent"}
+        Tags{"Queue" = "Transparent" "LightMode" = "Vertex" "IgnoreProjector" = "True" "RenderType" = "Transparent"}
 
         Cull Off
         Lighting Off
