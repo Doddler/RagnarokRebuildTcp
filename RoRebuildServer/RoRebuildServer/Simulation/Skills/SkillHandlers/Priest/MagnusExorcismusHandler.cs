@@ -8,6 +8,7 @@ using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using System.Diagnostics;
+using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Priest;
 
@@ -202,7 +203,7 @@ public class MagnusExorcismusObjectEvent : NpcBehaviorBase
             var res = src.CalculateCombatResult(target, 1f, npc.ValuesInt[0], AttackFlags.Magical, CharacterSkill.MagnusExorcismus, AttackElement.Holy);
             res.AttackPosition = target.Character.Position.AddDirectionToPosition(target.Character.FacingDirection);
             res.AttackMotionTime = 0;
-            res.Time = 0;
+            res.Time = Time.ElapsedTimeFloat;
             res.IsIndirect = true;
 
             CommandBuilder.SkillExecuteIndirectAutoVisibility(npc.Character, target.Character, res);
