@@ -38,6 +38,13 @@ public class RoSpriteBatcher : MonoBehaviour
 	{
 		Instance = this;
 
+		if (!SystemInfo.supportsInstancing)
+		{
+			EnableInstancing = false;
+			Debug.Log("System doesn't support Instancing, disabling...");
+			return;
+		}
+		
 		_depthCmd = new CommandBuffer();
 		_depthCmd.name = "RoSpriteBatcher - Depth";
 			
