@@ -58,6 +58,8 @@ namespace Assets.Scripts.UI.ConfigWindow
         public bool AllowTabToShowWalkTable = false;
         public bool HideShoutChat = false;
         
+        public bool EnableXRay = false;
+        
         //storage
         public Vector2 StoragePosition = Vector2.zero;
         public int LastStorageTab = 0;

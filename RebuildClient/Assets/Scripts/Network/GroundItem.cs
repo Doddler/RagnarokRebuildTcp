@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Sprites;
+using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.Utility;
 using RebuildSharedData.Enum;
 using UnityEngine;
@@ -25,13 +26,14 @@ namespace Assets.Scripts.Network
         private RoGroundItemDrawCall _drawCall;
         
         private static Material spriteMaterial;
+        private const float Offset = 0.5f;
 
         public static GroundItem Create(int entityId, int id, int count, Vector2 position, bool showAnimation)
         {
             if (spriteMaterial == null)
             {
                 spriteMaterial = new Material(ShaderCache.Instance.SpriteShader);
-                spriteMaterial.SetFloat("_Offset", 0.5f);
+                spriteMaterial.SetFloat("_Offset", Offset);
             }
 
             var data = ClientDataLoader.Instance.GetItemById(id);
@@ -137,6 +139,15 @@ namespace Assets.Scripts.Network
                 timer = 1f;
             
             SpriteRenderer.color = _color;
+
+            if (GameConfig.Data.EnableXRay)
+            {
+	            SpriteRenderer.material.shader = ShaderCache.Instance.SpriteShaderWithXRay;
+            }
+            else
+            {
+	            SpriteRenderer.material.shader = ShaderCache.Instance.SpriteShader;
+            }
             
             UpdateDrawCall();
         }
@@ -179,8 +190,7 @@ namespace Assets.Scripts.Network
 	        _drawCall.Transform = SpriteRenderer.transform;
 	        
 	        _drawCall.Color = _color;
-	        _drawCall.Offset = 0;
-	        _drawCall.ColorDrain = 0;
+	        _drawCall.Offset = Offset;
         }
     }
 }

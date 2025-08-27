@@ -1,12 +1,16 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Assets.Scripts.Effects;
+using Assets.Scripts.UI.ConfigWindow;
 using UnityEngine;
 using UnityEngine.Rendering;
 
 public class RoGroundItemBatcher : MonoBehaviour
 {
 	public static RoGroundItemBatcher Instance;
+	private static readonly int Instances = Shader.PropertyToID("_Instances");
+	private static readonly int BaseInstance = Shader.PropertyToID("_BaseInstance");
+	private static readonly int MainTex = Shader.PropertyToID("_MainTex");
 
 	// Using the dictionary here as well in case we ever have more than 1 atlas.
 	public CollectionDictionary<Texture2D, List<RoGroundItemDrawCall>, RoGroundItemDrawCall> drawCalls = new();
@@ -14,6 +18,7 @@ public class RoGroundItemBatcher : MonoBehaviour
 	private Camera _camera;
 	private CommandBuffer _depthCmd;
 	private CommandBuffer _colorCmd;
+	private CommandBuffer _xRayCmd;
 	private Material _material;
 	private Mesh _quad;
 	private MaterialPropertyBlock _propertyBlock;
@@ -26,6 +31,7 @@ public class RoGroundItemBatcher : MonoBehaviour
 
 	private const CameraEvent DepthEvent = CameraEvent.BeforeForwardAlpha;
 	private const CameraEvent ColorEvent = CameraEvent.BeforeForwardAlpha;
+	private const CameraEvent XRayEvent = CameraEvent.AfterForwardOpaque;
 
 	private void OnEnable()
 	{
@@ -36,12 +42,16 @@ public class RoGroundItemBatcher : MonoBehaviour
 			
 		_colorCmd = new CommandBuffer();
 		_colorCmd.name = "RoGroundItemBatcher - Color";
+		
+		_xRayCmd = new CommandBuffer();
+		_xRayCmd.name = "RoGroundItemBatcher - XRay";
 
 		_camera = GetComponent<Camera>();
 		_camera.AddCommandBuffer(DepthEvent, _depthCmd);
 		_camera.AddCommandBuffer(ColorEvent, _colorCmd);
+		_camera.AddCommandBuffer(XRayEvent, _xRayCmd);
 		
-		_material = new Material(Shader.Find("Ragnarok/CharacterSpriteShader"));
+		_material = new Material(ShaderCache.Instance.SpriteShaderWithXRay);
 		_material.enableInstancing = true;
 
 		_pool = new InstanceBufferPool<GroundItemInstanceData>(1023);
@@ -66,6 +76,13 @@ public class RoGroundItemBatcher : MonoBehaviour
 		_colorCmd?.Release();
 		_colorCmd = null;
 		
+		if (_camera && _colorCmd != null)
+		{
+			_camera.RemoveCommandBuffer(XRayEvent, _xRayCmd);
+		}
+		_xRayCmd?.Release();
+		_xRayCmd = null;
+		
 		if (_material)
 		{
 			Destroy(_material);
@@ -77,6 +94,7 @@ public class RoGroundItemBatcher : MonoBehaviour
 	{
 		_depthCmd.Clear();
 		_colorCmd.Clear();
+		_xRayCmd.Clear();
 
 		if (!EnableInstancing)
 			return;
@@ -103,7 +121,6 @@ public class RoGroundItemBatcher : MonoBehaviour
 						color = rc.Color,
 						uvRect = new Vector4(rect.x, rect.y, rect.width, rect.height),
 						offset = rc.Offset,
-						colorDrain = rc.ColorDrain
 					};
 
 					_matrices[i] = rc.Transform ? rc.Transform.localToWorldMatrix : Matrix4x4.identity;
@@ -112,14 +129,19 @@ public class RoGroundItemBatcher : MonoBehaviour
 				var baseInstance = _pool.AppendInstances(_instStage, 0, batchCount);
 
 				_propertyBlock.Clear();
-				_propertyBlock.SetBuffer("_Instances", _pool.Instances);
-				_propertyBlock.SetInt("_BaseInstance", baseInstance);
-				_propertyBlock.SetTexture("_MainTex", texture);
+				_propertyBlock.SetBuffer(Instances, _pool.Instances);
+				_propertyBlock.SetInt(BaseInstance, baseInstance);
+				_propertyBlock.SetTexture(MainTex, texture);
 				
 				_material.EnableKeyword("GROUND_ITEM");
 				
 				_depthCmd.DrawMeshInstanced(_quad, 0, _material, 0, _matrices, batchCount, _propertyBlock);
 				_colorCmd.DrawMeshInstanced(_quad, 0, _material, 1, _matrices, batchCount, _propertyBlock);
+
+				if (GameConfig.Data.EnableXRay)
+				{
+					_xRayCmd.DrawMeshInstanced(_quad, 0, _material, 2, _matrices, batchCount, _propertyBlock);
+				}
 			}
 		}
 	}
@@ -165,7 +187,6 @@ public class RoGroundItemDrawCall
 	public Rect UVRect;
 	public Color Color;
 	public float Offset;
-	public float ColorDrain;
 }
 
 [StructLayout(LayoutKind.Sequential)]
@@ -174,5 +195,4 @@ public struct GroundItemInstanceData
 	public Vector4 color;
 	public Vector4 uvRect;
 	public float offset;
-	public float colorDrain;
 }

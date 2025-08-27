@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.MapEditor;
+using Assets.Scripts.UI.ConfigWindow;
 using RebuildSharedData.Enum;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -35,10 +36,10 @@ namespace Assets.Scripts.Sprites
         public float ZOffset;
         public float ShaderYOffset;
 
-        private static Material belowWaterMat;
-        private static Material aboveWaterMat;
-        private static Material[] materialArrayNormal;
-        private static Material[] materialArrayWater;
+        //private static Material belowWaterMat;
+        //private static Material aboveWaterMat;
+        //private static Material[] materialArrayNormal;
+        //private static Material[] materialArrayWater;
         private static readonly int Drain = Shader.PropertyToID("_ColorDrain");
         private static readonly int Offset = Shader.PropertyToID("_Offset");
         private static readonly int Width = Shader.PropertyToID("_Width");
@@ -133,7 +134,7 @@ namespace Assets.Scripts.Sprites
             propertyBlock = new MaterialPropertyBlock();
 
             if (shader == null)
-                shader = ShaderCache.Instance?.SpriteShader;
+                shader = GameConfig.Data.EnableXRay ? ShaderCache.Instance?.SpriteShaderWithXRay : ShaderCache.Instance?.SpriteShader;
 
             meshCache = SpriteMeshCache.GetMeshCacheForSprite(SpriteData.Name);
             colliderCache = SpriteMeshCache.GetColliderCacheForSprite(SpriteData.Name);
@@ -144,14 +145,14 @@ namespace Assets.Scripts.Sprites
             if (UpdateAngleWithCamera)
                 CurrentAngleIndex = RoAnimationHelper.GetSpriteIndexForAngle(Direction, 360 - CameraFollower.Instance.Rotation);
 
-            CreateMaterials();
+            //CreateMaterials();
             
             isInitialized = true;
 
             Rebuild();
         }
         
-        private void CreateMaterials()
+        /*private void CreateMaterials()
         {
             if (shader == null)
                 return;
@@ -183,7 +184,7 @@ namespace Assets.Scripts.Sprites
                 //materialArrayWater[0] = belowWaterMat;
                 materialArrayWater[0] = aboveWaterMat;
             }
-        }
+        }*/
 
         public void SetActive(bool isActive)
         {
@@ -208,13 +209,13 @@ namespace Assets.Scripts.Sprites
             if (!isInitialized)
                 return;
 
-            CreateMaterials();
+            //CreateMaterials();
 
             if (OverrideMaterial != null)
             {
                 MeshRenderer.sharedMaterial = OverrideMaterial;
             }
-            else
+            /*else
             {
                 if (SecondPassForWater)
                 {
@@ -237,7 +238,7 @@ namespace Assets.Scripts.Sprites
                     if(materialArrayNormal != null)
                         MeshRenderer.sharedMaterials = materialArrayNormal;
                 }
-            }
+            }*/
 
             if (!UpdateAngleWithCamera)
                 CurrentAngleIndex = (int)Direction;
@@ -378,6 +379,9 @@ namespace Assets.Scripts.Sprites
                     result = true;
                 }
             }
+
+            shader = GameConfig.Data.EnableXRay ? ShaderCache.Instance.SpriteShaderWithXRay : ShaderCache.Instance.SpriteShader;
+            MeshRenderer.material.shader = shader;
             
             UpdateDrawCall();
             return result;
@@ -447,7 +451,8 @@ namespace Assets.Scripts.Sprites
 		        drawCall.Color = propertyBlock.GetColor(Color1);
 		        drawCall.Offset = propertyBlock.GetFloat(Offset);
 		        drawCall.ColorDrain = propertyBlock.GetFloat(Drain);
-		        drawCall.vPos = propertyBlock.GetFloat(VPos);
+		        drawCall.VPos = propertyBlock.GetFloat(VPos);
+		        drawCall.Width = propertyBlock.GetFloat(Width);
 	        }
         }
         

@@ -5,7 +5,7 @@
 
 struct appdata_t
 {
-    float4 vertex : POSITION;
+    float4 positionOS : POSITION;
     float4 color : COLOR;
     float2 texcoord : TEXCOORD0;
     #ifdef INSTANCING_ON
@@ -32,12 +32,14 @@ v2f vert(appdata_t v)
     float isHidden = 0;
     float _Offset = 0;
     float _ColorDrain = 0;
-    SetupInstancingData(v.instanceID, v.vid, v.vertex.xyz, v.texcoord.xy, v.color, _Color, isHidden, _Offset, _ColorDrain, _VPos);
+    float _Width = 0;
+    SetupInstancingData(v.instanceID, v.vid, v.positionOS.xyz, v.texcoord.xy, v.color, _Color, isHidden, _Offset, _ColorDrain, _VPos, _Width);
     #endif
 
     v2f o;
 
-    Billboard billboard = GetBillboard(v.vertex, 0);
+    v.positionOS.y += _VPos;
+    Billboard billboard = GetBillboard(v.positionOS, 0);
     o.pos = billboard.positionCS;
 
     #ifdef  INSTANCING_ON

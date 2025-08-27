@@ -5,7 +5,7 @@
 
 struct appdata_t
 {
-    float4 vertex : POSITION;
+    float4 positionOS : POSITION;
     float4 color : COLOR;
     float2 texcoord : TEXCOORD0;
     #ifdef INSTANCING_ON
@@ -16,7 +16,7 @@ struct appdata_t
 
 struct v2f
 {
-    float4 vertex : SV_POSITION;
+    float4 positionCS : SV_POSITION;
     #if BLINDEFFECT_ON
     fixed4 color : COLOR0;
     fixed4 color2 : COLOR1;
@@ -66,34 +66,6 @@ float4 _RoBlindFocus;
 float _RoBlindDistance;
 #endif
 
-float3 ShadeVertexLightsSprite(float3 pos)
-{
-    float3 viewpos = UnityWorldToViewPos(pos);
-
-    float3 lightColor = UNITY_LIGHTMODEL_AMBIENT.xyz;
-    UNITY_UNROLL
-    for (int i = 0; i < 8; i++)
-    {
-        float3 toLight = unity_LightPosition[i].xyz - viewpos.xyz * unity_LightPosition[i].w;
-
-        float lengthSq = dot(toLight, toLight);
-
-        lengthSq = max(lengthSq, 0.000001);
-        toLight *= rsqrt(lengthSq);
-
-        float atten = rcp(1.0 + lengthSq * unity_LightAtten[i].z);
-
-        // Spot light support.
-        float rho = max(0, dot(toLight, unity_SpotDirection[i].xyz));
-        float spotAtt = (rho - unity_LightAtten[i].x) * unity_LightAtten[i].y;
-        atten *= saturate(spotAtt);
-
-        // unity_LightPosition[i].w will be 0 for directional lights
-        lightColor += unity_LightColor[i].rgb * atten * unity_LightPosition[i].w;
-    }
-    return lightColor;
-}
-
 v2f vert(appdata_t v)
 {
     v2f o;
@@ -104,26 +76,23 @@ v2f vert(appdata_t v)
 
     #ifdef INSTANCING_ON
     float isHidden = 0;
-    SetupInstancingData(v.instanceID, v.vid, v.vertex.xyz, v.texcoord.xy, v.color, _Color, isHidden, _Offset, _ColorDrain, _VPos);
-    #endif
-
-    Billboard billboard = GetBillboard(v.vertex, _Offset);
-    float3 worldPos = billboard.positionWS;
-
-    o.vertex = billboard.positionCS;
-    o.color = v.color * _Color;
-
-    #ifdef  INSTANCING_ON
-    o.vertex.z += 0.001;
+    SetupInstancingData(v.instanceID, v.vid, v.positionOS.xyz, v.texcoord.xy, v.color, _Color, isHidden, _Offset, _ColorDrain, _VPos, _Width);
     #endif
     
-    float4 tempVertex = UnityObjectToClipPos(v.vertex);
+    v.positionOS.y += _VPos;
+    Billboard billboard = GetBillboard(v.positionOS, _Offset);
+    float3 worldPos = billboard.positionWS;
+
+    o.positionCS = billboard.positionCS;
+    o.color = v.color * _Color;
+    
+    float4 tempVertex = UnityObjectToClipPos(v.positionOS);
     UNITY_TRANSFER_FOG(o, tempVertex);
 
     //smoothpixelshader stuff here
     #ifdef SMOOTHPIXEL
     float4 clampedRect = clamp(_ClipRect, -2e10, 2e10);
-    float2 maskUV = (v.vertex.xy - clampedRect.xy) / (clampedRect.zw - clampedRect.xy);
+    float2 maskUV = (v.positionOS.xy - clampedRect.xy) / (clampedRect.zw - clampedRect.xy);
     o.texcoord = float4(v.texcoord.x, v.texcoord.y, maskUV.x, maskUV.y);
     #else
     o.texcoord = v.texcoord;
@@ -131,10 +100,9 @@ v2f vert(appdata_t v)
 
     // It's cheap enougth that we can just perform the calculation for every vertex.
     // For smoother lighting use billboard.positionWS as the sampling pos.
-    float3 samplingPos = _IsMeshRenderer > 0.5? _LightingSamplePosition: mul(unity_ObjectToWorld, float4(0, 0, 0, 1)).xyz;
+    float3 samplingPos = _IsMeshRenderer > 0.5 ? _LightingSamplePosition: mul(unity_ObjectToWorld, float4(0, 0, 0, 1)).xyz;
     o.lighting = float4(ShadeVertexLightsSprite(samplingPos), 1.0);
-
-    /*//end of smooth pixel
+    
     #ifndef WATER_OFF
 
         //this mess fully removes the rotation from the matrix	
@@ -144,15 +112,17 @@ v2f vert(appdata_t v)
             length(unity_ObjectToWorld._m02_m12_m22)
         );
 
-        unity_ObjectToWorld._m00_m10_m20 = float3(scale.x, 0, 0);
-        unity_ObjectToWorld._m01_m11_m21 = float3(0, scale.y, 0);
-        unity_ObjectToWorld._m02_m12_m22 = float3(0, 0, scale.z);
+        // We can't edit unity_ObjectToWorld when instancing is enabled.
+        float4x4 mod_ObjectToWorld = unity_ObjectToWorld;
+        mod_ObjectToWorld._m00_m10_m20 = float3(scale.x, 0, 0);
+        mod_ObjectToWorld._m01_m11_m21 = float3(0, scale.y, 0);
+        mod_ObjectToWorld._m02_m12_m22 = float3(0, 0, scale.z);
 
         //build info needed for water line
-        worldPos = mul(unity_ObjectToWorld, float4(billboard.positionCS.x, billboard.positionCS.y * 1.5, 0, 1)).xyz; //fudge y sprite height 
-        o.screenPos = ComputeScreenPos(o.vertex);
-        o.worldPos = float4(billboard.positionCS.x, worldPos.y, 0, 0);
-    #endif*/
+        worldPos = mul(mod_ObjectToWorld, float4(v.positionOS.x, v.positionOS.y * 1.5, 0, 1)).xyz; //fudge y sprite height 
+        o.screenPos = ComputeScreenPos(o.positionCS);
+        o.worldPos = float4(v.positionOS.x, worldPos.y, 0, 0);
+    #endif
 
     #if BLINDEFFECT_ON
     float d = distance(worldPos, _RoBlindFocus);
@@ -166,6 +136,11 @@ v2f vert(appdata_t v)
 
 fixed4 frag(v2f i) : SV_Target
 {
+    #ifdef XRAY
+    clip(frac(i.positionCS.x / 2) - 0.5);
+    clip(frac(i.positionCS.y / 2) - 0.5);
+    #endif
+    
     //environment ambient contribution disabled for now as it muddies the sprite
     //todo: turn ambient contribution back on if fog is disabled.
     float4 env = float4(1, 1, 1, 1);
@@ -215,7 +190,7 @@ fixed4 frag(v2f i) : SV_Target
     c = saturate(c);
 
     clip(c.a - 0.001);
-
+    
     #ifndef WATER_OFF
     float2 uv = (i.screenPos.xy / i.screenPos.w);
     float4 water = tex2D(_WaterDepth, uv);
@@ -226,7 +201,7 @@ fixed4 frag(v2f i) : SV_Target
 
     float4 waterTex = tex2D(_WaterImageTexture, wateruv);
     float height = water.z;
-
+    
     waterTex = float4(0.5, 0.5, 0.5, 1) + (waterTex * 0.6);
 
     float simHeight = i.worldPos.y - abs(i.worldPos.x) / (_Width) * 0.5;

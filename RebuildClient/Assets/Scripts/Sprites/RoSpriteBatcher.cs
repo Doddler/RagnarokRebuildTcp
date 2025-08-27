@@ -1,8 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
+using Assets.Scripts.Effects;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -54,7 +52,7 @@ public class RoSpriteBatcher : MonoBehaviour
 		_camera.AddCommandBuffer(ColorEvent, _colorCmd);
 		//_camera.AddCommandBuffer(CameraEvent.AfterForwardOpaque + 1, _xrayCmd);
 
-		_material = new Material(Shader.Find("Ragnarok/CharacterSpriteShader"));
+		_material = new Material(ShaderCache.Instance.SpriteShader);
 		_material.enableInstancing = true;
 		
 		_pool = new InstanceBufferPool<SpriteInstanceData>(1023);
@@ -109,7 +107,6 @@ public class RoSpriteBatcher : MonoBehaviour
 			var rawCall = rawCalls.Value;
 			var total = rawCall.Count;
 			
-			
 			_colorCmd.BeginSample(rawCalls.Key.ToString());
 			_depthCmd.BeginSample(rawCalls.Key.ToString());
 			
@@ -142,7 +139,8 @@ public class RoSpriteBatcher : MonoBehaviour
 						isHidden = rc.IsHidden ? 1f : 0f,
 						offset = rc.Offset,
 						colorDrain = rc.ColorDrain,
-						vPos = rc.vPos,
+						vPos = rc.VPos,
+						width = rc.Width,
 					};
 
 					_instStage[i] = inst;
@@ -192,7 +190,8 @@ public class RoSpriteDrawCall
 	public Color Color;
 	public float Offset;
 	public float ColorDrain;
-	public float vPos;
+	public float VPos;
+	public float Width;
 }
 
 [StructLayout(LayoutKind.Sequential)]
@@ -221,4 +220,5 @@ public struct SpriteInstanceData
 	public float offset;
 	public float colorDrain;
 	public float vPos;
+	public float width;
 }
