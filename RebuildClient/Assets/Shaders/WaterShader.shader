@@ -1,4 +1,4 @@
-﻿Shader "Unlit/RoWaterShader"
+﻿Shader "Ragnarok/RoWaterShader"
 {
     Properties
     {
@@ -27,6 +27,12 @@
         ZWrite Off
         Blend One OneMinusSrcAlpha
 
+        Stencil
+        {
+            Ref 1
+            Comp NotEqual
+        }
+        
         Pass
         {
             CGPROGRAM

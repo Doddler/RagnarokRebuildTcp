@@ -390,7 +390,7 @@ namespace Assets.Scripts.MapEditor
 
             if (WaterMaterial == null)
             {
-                WaterMaterial = new Material(Shader.Find("Unlit/RoWaterShader"));
+                WaterMaterial = new Material(Shader.Find("Ragnarok/RoWaterShader"));
                 if (MapData.Water.Images == null || MapData.Water.Images.Length <= 0)
                 {
                     var w = MapData.Water;
