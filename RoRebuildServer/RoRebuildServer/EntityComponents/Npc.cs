@@ -98,7 +98,7 @@ public class Npc : IEntityAutoReset
                 return;
             }
 
-            if (!Owner.TryGet<WorldObject>(out var owner) && owner.Map != Character.Map)
+            if (!Owner.TryGet<WorldObject>(out var owner) || owner.Map != Character.Map)
             {
                 EndEvent();
                 return;
