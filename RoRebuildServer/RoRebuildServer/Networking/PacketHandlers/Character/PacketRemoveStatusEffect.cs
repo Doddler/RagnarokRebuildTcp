@@ -30,6 +30,7 @@ public class PacketRemoveStatusEffect : IClientPacketHandler
         if (!StatusEffectHandler.CanCancelStatusEffect(statusId))
             return;
 
-        player.CombatEntity.RemoveStatusOfTypeIfExists(statusId);
+        if(player.CombatEntity.RemoveStatusOfTypeIfExists(statusId))
+            player.UpdateStats(false, true);
     }
 }
