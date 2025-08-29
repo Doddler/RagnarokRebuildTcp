@@ -545,6 +545,15 @@ public partial class CombatEntity
         if ((target & StatusCleanseTarget.Petrify) > 0 && HasBodyState(BodyStateFlags.Petrified))
             hasUpdate |= statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Stone);
 
+        if ((target & StatusCleanseTarget.Frozen) > 0 && HasBodyState(BodyStateFlags.Frozen))
+            hasUpdate |= statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Frozen);
+
+        if ((target & StatusCleanseTarget.Stunned) > 0 && HasBodyState(BodyStateFlags.Stunned))
+            hasUpdate |= statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Stun);
+
+        if ((target & StatusCleanseTarget.Sleep) > 0 && HasBodyState(BodyStateFlags.Sleep))
+            hasUpdate |= statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Sleep);
+
         if (hasUpdate)
             UpdateStats();
 

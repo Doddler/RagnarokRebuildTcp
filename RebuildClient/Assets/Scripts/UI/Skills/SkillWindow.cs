@@ -300,6 +300,7 @@ namespace Assets.Scripts.UI
             HighlightedEntry = null; //safety first
             activeSkills.Clear();
             maxRank = 0;
+            var curTab = selectedRank;
             
             var state = PlayerState.Instance;
             var id = state.JobId;
@@ -353,7 +354,7 @@ namespace Assets.Scripts.UI
             }
 
             UpdateSkillPointsAndLock();
-            ChangeTab(maxRank);
+            ChangeTab(selectedRank);
         }
 
         private void UpdateSkillPointsAndLock()

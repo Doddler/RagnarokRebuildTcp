@@ -19,3 +19,4 @@ Alchemist,int,dex,dex,0,0,str,0,dex,int,0,agi,0,dex,agi,str,0,int,0,dex,vit,dex,
 Monk,str,str,0,dex,agi,0,vit,0,0,agi,0,str,str,0,luk,int,0,agi,0,vit,agi,dex,agi,0,vit,str,str,0,0,dex,0,luk,vit,0,agi,0,0,int,0,luk,vit,0,dex,agi,0,vit,0,0,str,str,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 Bard,dex,agi,str,0,int,luk,dex,0,luk,agi,agi,0,int,0,dex,dex,vit,0,dex,luk,int,0,0,agi,0,0,0,str,0,agi,0,dex,vit,0,agi,0,0,dex,0,int,luk,0,vit,0,0,dex,int,agi,0,dex,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 Dancer,luk,agi,str,0,int,dex,luk,0,dex,agi,agi,0,int,0,luk,dex,vit,0,luk,dex,int,0,0,agi,0,0,0,str,0,agi,0,luk,vit,0,agi,0,0,luk,0,int,dex,0,vit,0,0,luk,int,agi,0,luk,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Ninja,agi,agi,0,0,0,0,0,0,0,agi,dex,0,0,0,0,0,0,0,0,int,agi,dex,0,0,0,0,0,0,int,luk,agi,dex,0,0,0,0,0,0,0,luk,agi,int,dex,0,0,0,0,0,0,int,agi,luk,dex,0,0,0,0,0,str,vit,agi,int,dex,luk,0,0,0,0,0,0

@@ -67,7 +67,7 @@ namespace Assets.Scripts.Sprites
         private readonly Dictionary<int, CardPrefixData> cardPrefixPostfixTable = new();
         private readonly Dictionary<int, EmoteData> emoteDataTable = new();
         private readonly Dictionary<int, StatusEffectData> statusEffectData = new();
-        private readonly int[] jobExpData = new int[70 * 2];
+        private readonly int[] jobExpData = new int[70 * 3];
 
         private readonly List<string> validMonsterClasses = new();
         private readonly List<string> validMonsterCodes = new();
@@ -122,7 +122,14 @@ namespace Assets.Scripts.Sprites
         public string GetItemDescription(string itemCode) => itemDescriptionTable.GetValueOrDefault(itemCode, "No description available.");
         public CardPrefixData GetCardPrefixData(int id) => cardPrefixPostfixTable.GetValueOrDefault(id, null);
         public StatusEffectData GetStatusEffect(int id) => statusEffectData.GetValueOrDefault(id, null);
-        public int GetJobExpRequired(int job, int level) => level < 0 || level >= 70 ? -1 : jobExpData[(job == 0 ? 0 : 1) * 70 + level];
+        public int GetJobExpRequired(int job, int level)
+        {
+            if (!playerClassLookup.TryGetValue(job, out var jobInfo))
+                return -1;
+            if (level < 0 || level >= 70)
+                return -1;
+            return jobExpData[jobInfo.ExpChart * 70 + level];
+        }
 
         public bool TryGetMetamorphResult(string spriteName, out MetamorphTransitionResult result) =>
             metamorphTransitionResult.TryGetValue(spriteName, out result);
@@ -178,6 +185,7 @@ namespace Assets.Scripts.Sprites
                 var s = line.Split(",");
                 jobExpData[jobLvl] = int.Parse(s[0]);
                 jobExpData[70 + jobLvl] = int.Parse(s[1]);
+                jobExpData[140 + jobLvl] = int.Parse(s[2]);
                 jobLvl++;
             }
 
@@ -830,7 +838,7 @@ namespace Assets.Scripts.Sprites
             }
 
 #if UNITY_EDITOR
-            Debug.Log($"Instantiating entity effect {type}");
+            // Debug.Log($"Instantiating entity effect {type}");
 #endif
 
             var obj = new GameObject(type.ToString());

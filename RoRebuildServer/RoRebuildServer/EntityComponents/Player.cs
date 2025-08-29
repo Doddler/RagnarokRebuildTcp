@@ -638,7 +638,9 @@ public class Player : IEntityAutoReset
     {
         var level = GetData(PlayerStat.JobLevel);
         var job = GetData(PlayerStat.Job);
-        var levelCap = job == 0 ? 10 : 70;
+        var levelCap = job == 0 ? 10 : 50;
+        if (DataManager.JobInfo.TryGetValue(job, out var jobInfo))
+            levelCap = jobInfo.MaxJobLevel;
         if (level >= levelCap)
             return 0;
 
@@ -954,22 +956,25 @@ public class Player : IEntityAutoReset
 
         //update skill points! Ideally, this only should happen when you change your skills, but, well...
         var jobLevel = GetData(PlayerStat.JobLevel);
-        var skillPointEarned = job == 0 ? jobLevel - 1 : jobLevel + 9 - 1;
+        if (JobSkillTree != null)
+        {
+            var skillPointEarned = JobSkillTree.PrereqSkillPoints + (jobLevel - 1); // job == 0 ? jobLevel - 1 : jobLevel + 9 - 1;
 
-        if (job == 0 && skillPointEarned > 9)
-            skillPointEarned = 9;
+            if (job == 0 && skillPointEarned > 9)
+                skillPointEarned = 9;
 
-        if (ServerConfig.DebugConfig.UnlimitedSkillPoints)
-            skillPointEarned = 999;
+            if (ServerConfig.DebugConfig.UnlimitedSkillPoints)
+                skillPointEarned = 999;
 
-        var SkillPointsUsed = 0;
-        foreach (var skill in LearnedSkills)
-            SkillPointsUsed += skill.Value;
+            var SkillPointsUsed = 0;
+            foreach (var skill in LearnedSkills)
+                SkillPointsUsed += skill.Value;
 
-        if (skillPointEarned < SkillPointsUsed)
-            SetData(PlayerStat.SkillPoints, 0);
-        else
-            SetData(PlayerStat.SkillPoints, skillPointEarned - SkillPointsUsed);
+            if (skillPointEarned < SkillPointsUsed)
+                SetData(PlayerStat.SkillPoints, 0);
+            else
+                SetData(PlayerStat.SkillPoints, skillPointEarned - SkillPointsUsed);
+        }
 
         //update stat points! Probably also should only happen when you change your stat points.
         var statPointsEarned = statPointsEarnedByLevel[level - 1];
@@ -1002,6 +1007,10 @@ public class Player : IEntityAutoReset
                 break;
             case 3: //2hand sword
                 mastery = MaxLearnedLevelOfSkill(CharacterSkill.TwoHandSwordMastery) * 4;
+                break;
+            case 8:
+            case 9:
+                mastery = MaxLearnedLevelOfSkill(CharacterSkill.MaceMastery) * 4;
                 break;
         }
 

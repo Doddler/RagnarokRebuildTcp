@@ -18,6 +18,7 @@ public abstract class SkillHandlerBase
     protected const int DefaultMagicCastRange = 9;
 
     protected const int BlueGemstone = 717; //blue gemstone
+    protected const int HolyWater = 523;
 
     public virtual bool IsAreaTargeted => false;
     public virtual bool UsableWhileHidden => false;

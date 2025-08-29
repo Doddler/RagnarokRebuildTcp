@@ -9,6 +9,7 @@ public class PlayerClassData
     public string Name;
     public string SpriteMale;
     public string SpriteFemale;
+    public int ExpChart;
 }
 
 [Serializable]

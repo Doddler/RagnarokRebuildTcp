@@ -239,6 +239,9 @@ public partial class Monster
         if (GameRandom.NextInclusive(0, 1) < 1)
             return false;
 
+        if (Character.IsImportant || Character.DisplayType == CharacterDisplayType.Mvp)
+            return false;
+
         if (Character.Map!.IsEntityStacked(Character))
             return true;
 

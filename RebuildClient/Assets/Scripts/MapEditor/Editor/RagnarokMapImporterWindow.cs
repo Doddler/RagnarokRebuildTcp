@@ -247,14 +247,14 @@ namespace Assets.Scripts.MapEditor.Editor
                         continue;
                 }
 
-                if (path.Contains("Imported/Weapons"))
-                {
-                    if (!path.Contains("Novice") && !path.Contains("Swordsman") && !path.Contains("Mage") && !path.Contains("Acolyte") &&
-                        !path.Contains("Merchant") && !path.Contains("Thief") && !path.Contains("Archer"))
-                    {
-                        continue;
-                    }
-                }
+                // if (path.Contains("Imported/Weapons"))
+                // {
+                //     if (!path.Contains("Novice") && !path.Contains("Swordsman") && !path.Contains("Mage") && !path.Contains("Acolyte") &&
+                //         !path.Contains("Merchant") && !path.Contains("Thief") && !path.Contains("Archer") && !path.Contains("Priest"))
+                //     {
+                //         continue;
+                //     }
+                // }
 
                 if ((path.Contains("Monsters") &&
                      monsters.Items.All(m => m.SpriteName.Replace(".spr", "") != fName.ToLowerInvariant()))

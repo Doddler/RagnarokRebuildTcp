@@ -603,6 +603,12 @@ Target = "Enemy"
 MaxLevel = 10
 SpCost = [20,20,20,20,20,20,20,20,20,20]
 
+[MaceMastery]
+Name = "Mace Mastery"
+Icon = "pr_macemastery"
+Target = "Passive"
+MaxLevel = 10
+
 #----------------------------------
 # Wizard Skills
 #----------------------------------

@@ -1587,8 +1587,6 @@ public partial class CombatEntity : IEntityAutoReset
 
         if (damageInfo.Damage != 0)
             target.QueueDamage(damageInfo);
-
-        
     }
 
     public void PerformMeleeAttack(CombatEntity target)

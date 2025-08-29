@@ -473,7 +473,7 @@ namespace Assets.Editor
                             var jobs = new[]
                             {
                                 "성직자", "궁수", "마법사", "상인", "초보자", "검사", "도둑", "슈퍼노비스", "기사", "위저드", "프리스트", "헌터", "어세신",
-                                "제철공", "크루세이더", "세이지", "바드", "무희바지", "몽크", "로그", "연금술사", "운영자", "신페코크루세이더", "페코페코_기사_남"
+                                "제철공", "크루세이더", "세이지", "바드", "무희바지", "몽크", "로그", "연금술사", "운영자", "신페코크루세이더", "페코페코_기사"
                             };
                             var outputs = new[]
                             {
@@ -485,10 +485,12 @@ namespace Assets.Editor
                             for (int i = 0; i < jobs.Length; i++)
                                 CopyFolder(Path.Combine(dataDir, $"sprite/인간족/{jobs[i]}/"),
                                     $"Assets/Sprites/Weapons/{outputs[i]}/", false, true, "*",
-                                    (p) => p.Replace("성직자_", "Acolyte_").Replace("궁수_", "Archer_")
-                                        .Replace("마법사_", "Mage_").Replace("상인_", "Merchant_").Replace("초보자_", "Novice_")
-                                        .Replace("검사_", "Swordsman_").Replace("도둑_", "Thief_").Replace("여_", "F_")
-                                        .Replace("남_", "M_"));
+                                    (p) =>
+                                    {
+                                        for(var j = 0; j < jobs.Length; j++)
+                                            p = p.Replace(jobs[j], outputs[j]);
+                                        return p.Replace("여_", "F_").Replace("남_", "M_");
+                                    });
                         },
                         IsAlreadyImported = () =>
                             Directory.Exists("Assets/Sprites/Weapons") &&
@@ -502,7 +504,7 @@ namespace Assets.Editor
                             var jobs = new[]
                             {
                                 "성직자", "궁수", "마법사", "상인", "초보자", "검사", "도둑", "슈퍼노비스", "기사", "위저드", "프리스트", "헌터", "어세신",
-                                "제철공", "크루세이더", "세이지", "바드", "무희바지", "몽크", "로그", "연금술사", "운영자", "신페코크루세이더", "페코페코_기사_남"
+                                "제철공", "크루세이더", "세이지", "바드", "무희바지", "몽크", "로그", "연금술사", "운영자", "신페코크루세이더", "페코페코_기사"
                             };
                             var outputs = new[]
                             {
@@ -513,7 +515,12 @@ namespace Assets.Editor
                             };
                             for (int i = 0; i < jobs.Length; i++)
                                 CopyFolder(Path.Combine(dataDir, $"sprite/방패/{jobs[i]}/"),
-                                    $"Assets/Sprites/Shields/{outputs[i]}/", false, true, "*", (p) => p);
+                                    $"Assets/Sprites/Shields/{outputs[i]}/", false, true, "*", (p) =>
+                                    {
+                                        for(var j = 0; j < jobs.Length; j++)
+                                            p = p.Replace(jobs[j], outputs[j]);
+                                        return p.Replace("여_", "F_").Replace("남_", "M_");
+                                    });
                         },
                         IsAlreadyImported = () =>
                             Directory.Exists("Assets/Sprites/Shields") &&

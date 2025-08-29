@@ -11,4 +11,5 @@ public class CsvJobExpChart
     public int JobLvl { get; set; }
     public int Novice { get; set; }
     public int FirstJob { get; set; }
+    public int SecondJob { get; set; }
 }
