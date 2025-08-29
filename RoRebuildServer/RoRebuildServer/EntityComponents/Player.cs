@@ -1257,8 +1257,7 @@ public class Player : IEntityAutoReset
     /// <summary>
     /// Process HP Regeneration
     /// </summary>
-    private void HpRegenTick()
-    {
+    private void HpRegenTick() {
         if (!Character.IsActive || Character.State == CharacterState.Dead)
             return;
 
