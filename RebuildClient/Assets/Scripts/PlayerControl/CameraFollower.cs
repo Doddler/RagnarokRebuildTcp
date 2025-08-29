@@ -533,15 +533,17 @@ namespace Assets.Scripts
             var showValue = GameConfig.Data.ShowBaseExpValue;
             var showPercent = GameConfig.Data.ShowBaseExpPercent;
 
+            var percentVal = Mathf.Floor(percent * 1000f) / 10f;
+
             if (showValue)
             {
                 if (showPercent)
-                    CharacterDetailBox.ExpDisplay.text = $"XP: {exp} / {maxExp} ({percent * 100f:F1}%)";
+                    CharacterDetailBox.ExpDisplay.text = $"XP: {exp} / {maxExp} ({percentVal:F1}%)";
                 else
                     CharacterDetailBox.ExpDisplay.text = $"XP: {exp} / {maxExp}";
             }
             else if (showPercent)
-                CharacterDetailBox.ExpDisplay.text = $"{percent * 100f:F1}%";
+                CharacterDetailBox.ExpDisplay.text = $"{percentVal:F1}%";
             else
                 CharacterDetailBox.ExpDisplay.text = $"";
 
@@ -566,16 +568,19 @@ namespace Assets.Scripts
 
             var showValue = GameConfig.Data.ShowJobExpValue;
             var showPercent = GameConfig.Data.ShowJobExpPercent;
+            
+            
+            var percentVal = Mathf.Floor(percent * 1000f) / 10f;
 
             if (showValue)
             {
                 if (showPercent)
-                    CharacterDetailBox.JobExpDisplay.text = $"XP: {exp} / {maxExp} ({percent * 100f:F1}%)";
+                    CharacterDetailBox.JobExpDisplay.text = $"XP: {exp} / {maxExp} ({percentVal:F1}%)";
                 else
                     CharacterDetailBox.JobExpDisplay.text = $"XP: {exp} / {maxExp}";
             }
             else if (showPercent)
-                CharacterDetailBox.JobExpDisplay.text = $"{percent * 100f:F1}%";
+                CharacterDetailBox.JobExpDisplay.text = $"{percentVal:F1}%";
             else
                 CharacterDetailBox.JobExpDisplay.text = $"";
 
