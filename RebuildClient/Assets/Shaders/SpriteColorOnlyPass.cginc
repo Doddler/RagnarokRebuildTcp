@@ -20,6 +20,7 @@ struct v2f
     #if BLINDEFFECT_ON
     fixed4 color : COLOR0;
     fixed4 color2 : COLOR1;
+    fixed4 lighting : COLOR2;
     #else
     fixed4 color : COLOR;
     fixed4 lighting : COLOR2;
