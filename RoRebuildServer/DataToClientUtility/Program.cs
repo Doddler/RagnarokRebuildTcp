@@ -639,7 +639,8 @@ class Program
         {
             var j0 = DataManager.ExpChart.RequiredJobExp(0, i);
             var j1 = DataManager.ExpChart.RequiredJobExp(1, i);
-            txtOut.AppendLine($"{j0},{j1}");
+            var j2 = DataManager.ExpChart.RequiredJobExp(9, i);
+            txtOut.AppendLine($"{j0},{j1},{j2}");
         }
         File.WriteAllText(Path.Combine(outPath, "jobexpchart.txt"), txtOut.ToString());
     }
