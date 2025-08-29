@@ -1254,6 +1254,9 @@ public class Player : IEntityAutoReset
         }
     }
 
+    /// <summary>
+    /// Process HP Regeneration
+    /// </summary>
     private void HpRegenTick()
     {
         if (!Character.IsActive || Character.State == CharacterState.Dead)
@@ -1262,83 +1265,98 @@ public class Player : IEntityAutoReset
         var hp = GetStat(CharacterStat.Hp);
         var maxHp = GetStat(CharacterStat.MaxHp);
         var hpAddPercent = 100 + GetStat(CharacterStat.AddHpRecoveryPercent);
-
-        if (hp >= maxHp || hpAddPercent <= 0) return;
+        var hpAddAbsolute = GetStat(CharacterStat.AddHpRecoveryAbsolute);
+        
+        if (hp >= maxHp || hpAddPercent <= 0) 
+            return;
 
         var vit = GetEffectiveStat(CharacterStat.Vit);
         var regen = (maxHp / 50 + vit / 5) * (200 + vit) / 200;
         regen = regen * hpAddPercent / 100;
-
-        if (Character.State == CharacterState.Sitting)
-        {
+        
+        
+        
+        if (Character.State == CharacterState.Sitting) {
             if (isSittingHpTick)
                 regen *= 2;
             else
                 isSittingHpTick = true; //first hp tick when sitting isn't doubled. Prevents sitting quickly to catch the tick bonus.
-        }
-        else
+        } else
             isSittingHpTick = false;
 
+        // Apply other means of increased Hp Regeneration such as by learned skills
         var hpRegenSkill = MaxLearnedLevelOfSkill(CharacterSkill.IncreasedHPRecovery);
-        if (hpRegenSkill > 0 && hp < maxHp)
-        {
+        if (hpRegenSkill > 0 && hp < maxHp) {
             var plusHpRegen = 5 * hpRegenSkill + maxHp * hpRegenSkill / 500;
             regen += plusHpRegen;
             CommandBuilder.SendImprovedRecoveryValue(this, plusHpRegen, 0);
         }
+        
+        // Remember to include the absolute HP Recovery
+        // This is only applied after all multiplication formulars
+        // as we do not want to double this flat increase and don't want it to be affected
+        // by any other increases
+        regen += hpAddAbsolute; 
 
-        if (regen < 1) regen = 1;
+        if (regen < 1) 
+            regen = 1;
 
         if (regen + hp > maxHp)
             regen = maxHp - hp;
 
         SetStat(CharacterStat.Hp, hp + regen);
 
-        if (regen > 0)
-        {
-            //Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
-            //CommandBuilder.SendHealSingle(this, regen, HealType.None);
+        if (regen > 0) {
             CommandBuilder.SendHealMultiAutoVis(Character, regen, HealType.None);
-            //CommandBuilder.ClearRecipients();
 
             if (Party != null)
                 CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(this, false); //only update those out of range
         }
     }
 
-    private void SpRegenTick()
-    {
+    /// <summary>
+    /// Process the SP Regeneration
+    /// </summary>
+    private void SpRegenTick()  {
         var sp = GetStat(CharacterStat.Sp);
         var maxSp = GetStat(CharacterStat.MaxSp);
         var spAddPercent = 100 + GetStat(CharacterStat.AddSpRecoveryPercent);
-
+        var spAddAbsolute = GetStat(CharacterStat.AddSpRecoveryAbsolute);
+        
         if (sp >= maxSp || spAddPercent <= 0) return;
 
         var chInt = GetEffectiveStat(CharacterStat.Int);
         var regen = 1 + (maxSp / 100 + chInt / 6) * (200 + chInt) / 200;
+        
         //var regen = maxSp / 100 + chInt / 5; //original formula
-
-        if (chInt >= 120) regen += chInt / 2 - 56;
+        // Add additional SP Recovery if the players INT crossed a threshold
+        if (chInt >= 120)   
+            regen += chInt / 2 - 56;
+        
         regen = regen * spAddPercent / 100;
-
-        if (Character.State == CharacterState.Sitting)
-        {
+        
+        if (Character.State == CharacterState.Sitting)  {
             if (isSittingSpTick)
                 regen *= 2;
             else
                 isSittingSpTick = true;
-        }
-        else
+        } else
             isSittingSpTick = false;
 
+        // Apply SP Recovery through user means such as skills
         var spRegenSkill = MaxLearnedLevelOfSkill(CharacterSkill.IncreaseSPRecovery);
-        if (spRegenSkill > 0 && sp < maxSp)
-        {
+        if (spRegenSkill > 0 && sp < maxSp) {
             var plusSpRegen = 3 * spRegenSkill + maxSp * spRegenSkill / 500; //3sp + 0.2% maxSP per level
             regen += plusSpRegen;
             CommandBuilder.SendImprovedRecoveryValue(this, 0, plusSpRegen);
         }
 
+        // Remember to include the absolute SP Recovery
+        // This is only applied after all multiplication formulars
+        // as we do not want to double this flat increase and don't want it to be affected
+        // by any other increases
+        regen += spAddAbsolute; 
+        
         if (regen < 1)
             regen = 1;
 
@@ -1346,8 +1364,7 @@ public class Player : IEntityAutoReset
             regen = maxSp - sp;
 
         SetStat(CharacterStat.Sp, sp + regen);
-        if (regen > 0)
-        {
+        if (regen > 0) {
             CommandBuilder.ChangeSpValue(this, sp + regen, maxSp);
             if (Party != null)
                 CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(this, true);
