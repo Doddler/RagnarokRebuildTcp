@@ -29,7 +29,7 @@ namespace Assets.Scripts.Objects
             ChannelId = id;
 
             audioSource = gameObject.AddComponent<AudioSource>();
-            audioSource.spatialBlend = 0.5f;
+            audioSource.spatialBlend = 0.65f;
             audioSource.priority = 80;
             audioSource.maxDistance = 50;
             audioSource.rolloffMode = AudioRolloffMode.Custom;

@@ -3,25 +3,25 @@ using Assets.Scripts.Objects;
 
 namespace Assets.Scripts.Effects.EffectHandlers.Skills.Priest
 {
-    [RoEffect("LexAeterna")]
-    public class LexAeternaEffect : IEffectHandler
+    [RoEffect("LexDivina")]
+    public class LexDivinaEffect : IEffectHandler
     {
         public static void Create(ServerControllable target)
         {
-            var effect = RagnarokEffectPool.Get3dEffect(EffectType.LexAeterna);
-            effect.SetDurationByFrames(60);
+            var effect = RagnarokEffectPool.Get3dEffect(EffectType.LexDivina);
+            effect.SetDurationByFrames(90);
             effect.FollowTarget = target.gameObject;
             effect.DestroyOnTargetLost = true;
 
             var cam = CameraFollower.Instance;
-            var id = cam.EffectIdLookup["LexAeterna"];
+            var id = cam.EffectIdLookup["LexDivina"];
             CameraFollower.Instance.AttachEffectToEntity(id, target.gameObject);
         }
 
         public bool Update(Ragnarok3dEffect effect, float pos, int step)
         {
-            if(step == 15)
-                AudioManager.Instance.OneShotSoundEffect(-1, "priest_lexaeterna.ogg", effect.transform.position, 1f);
+            if(step == 0 || step == 20 || step == 35 || step == 60 || step == 70)
+                AudioManager.Instance.OneShotSoundEffect(-1, "priest_lexdivina.ogg", effect.transform.position, 0.7f);
 
             return step < effect.DurationFrames;
         }

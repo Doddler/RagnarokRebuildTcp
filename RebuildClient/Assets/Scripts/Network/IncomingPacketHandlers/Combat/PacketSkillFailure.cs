@@ -64,6 +64,9 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 case SkillValidationResult.TargetAreaOccupied:
                     Camera.AppendChatText("<color=#FF7777>Skill failed: Target area is currently occupied.</color>");
                     break;
+                case SkillValidationResult.CannotTargetSelf:
+                    Camera.AppendChatText("<color=#FF7777>Skill failed: You can't target yourself with this skill.</color>");
+                    break;
                 case SkillValidationResult.TargetStateIgnoresEffect:
                     Camera.AppendChatText("<color=#FF7777>Skill failed: A status effect on the target prevents them from being targeted by this skill.</color>");
                     break;

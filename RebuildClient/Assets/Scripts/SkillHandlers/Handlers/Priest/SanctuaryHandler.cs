@@ -12,7 +12,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
         public override void StartSkillCasting(ServerControllable src, Vector2Int target, int lvl, float castTime)
         {
             HoldStandbyMotionForCast(src, castTime);
-            src.AttachEffect(CastEffect.Create(castTime, src.gameObject, AttackElement.Ghost));
+            src.AttachEffect(CastEffect.Create(castTime, src.gameObject, AttackElement.Holy));
             
             var targetCell = CameraFollower.Instance.WalkProvider.GetWorldPositionForTile(target);
             if(target != Vector2Int.zero)
@@ -22,7 +22,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
         public override void StartSkillCasting(ServerControllable src, ServerControllable target, int lvl, float castTime)
         {
             HoldStandbyMotionForCast(src, castTime);
-            src.AttachEffect(CastEffect.Create(castTime, src.gameObject, AttackElement.Ghost));
+            src.AttachEffect(CastEffect.Create(castTime, src.gameObject, AttackElement.Holy));
             
             if(target != null)
                 target.AttachEffect(CastLockOnEffect.Create(castTime, target.gameObject));
