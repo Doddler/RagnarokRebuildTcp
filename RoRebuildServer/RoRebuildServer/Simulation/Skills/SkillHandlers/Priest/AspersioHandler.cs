@@ -25,9 +25,15 @@ public class AspersioHandler : SkillHandlerBase
         if (target == null)
             return;
 
+        if (!isIndirect && !ConsumeItemForSkillWithFailMessage(source, HolyWater))
+            return;
+
         if (!isIndirect)
+        {
+            source.ApplyCooldownForSupportSkillAction();
             source.ApplyAfterCastDelay(2f);
-        
+        }
+
         var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Aspersio, 30 + 30 * lvl, 5);
         target.AddStatusEffect(status);
 

@@ -39,7 +39,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 }
                 
                 #if UNITY_EDITOR
-                Debug.Log($"Character {controllable.Name} starts casting {skill} lv{lvl}, cast time {castTime}, castFlags:{flags}");
+                // Debug.Log($"Character {controllable.Name} starts casting {skill} lv{lvl}, cast time {castTime}, castFlags:{flags}");
                 #endif
 
                 controllable.HideCastName = flags.HasFlag(SkillCastFlags.HideSkillName);

@@ -19,8 +19,11 @@ public class MagnificatHandler : SkillHandlerBase
 
         var ch = source.Character;
         var effectId = DataManager.EffectIdForName["Magnificat"];
-        source.ApplyCooldownForSupportSkillAction();
-        source.ApplyAfterCastDelay(2f);
+        if (!isIndirect)
+        {
+            source.ApplyCooldownForSupportSkillAction();
+            source.ApplyAfterCastDelay(2f);
+        }
 
         var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Magnificat, 15f + 15 * lvl, lvl);
         source.AddStatusEffect(status);

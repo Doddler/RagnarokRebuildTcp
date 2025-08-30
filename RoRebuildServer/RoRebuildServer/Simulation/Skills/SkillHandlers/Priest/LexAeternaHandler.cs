@@ -24,13 +24,16 @@ public class LexAeternaHandler : SkillHandlerBase
         if (target == null)
             return;
 
-        if(!isIndirect)
-            source.ApplyAfterCastDelay(3f);
+        if (!isIndirect)
+        {
+            source.ApplyAfterCastDelay(2f);
+            source.ApplyCooldownForSupportSkillAction();
+        }
 
         var targetStatus = StatusEffectState.NewStatusEffect(CharacterStatusEffect.LexAeterna, 120, source.Character.Id);
         target.AddStatusEffect(targetStatus);
 
         var di = DamageInfo.EmptyResult(source.Entity, target.Entity);
-        CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.Stop, lvl, di);
+        CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.LexAeterna, lvl, di);
     }
 }

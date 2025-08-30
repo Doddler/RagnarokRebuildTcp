@@ -48,6 +48,7 @@ public class MagnusExorcismusHandler : SkillHandlerBase
 
         if (!isIndirect)
         {
+            source.ApplyAfterCastDelay(3f);
             source.ApplyCooldownForSupportSkillAction();
             CommandBuilder.SkillExecuteAreaTargetedSkillAutoVis(ch, position, CharacterSkill.MagnusExorcismus, lvl);
         }

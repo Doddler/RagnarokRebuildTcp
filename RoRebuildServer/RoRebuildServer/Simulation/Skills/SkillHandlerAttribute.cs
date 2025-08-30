@@ -48,6 +48,20 @@ public abstract class SkillHandlerBase
         }
     }
 
+    public bool ConsumeItemForSkillWithFailMessage(CombatEntity source, int itemId)
+    {
+        if (source.Character.Type != CharacterType.Player)
+            return true;
+
+        if (!source.Player.TryRemoveItemFromInventory(itemId, 1, true))
+        {
+            CommandBuilder.SkillFailed(source.Player, SkillValidationResult.MissingRequiredItem);
+            return false;
+        }
+
+        return true;
+    }
+
     public bool ConsumeGemstoneForSkillWithFailMessage(CombatEntity source, int itemId)
     {
         if (source.Character.Type != CharacterType.Player)
@@ -93,7 +107,8 @@ public abstract class SkillHandlerBase
     {
         if (source.Character.Type == CharacterType.Player && (source.Player.Inventory == null || !source.Player.Inventory.HasItem(itemId)))
         {
-            CommandBuilder.SkillFailed(source.Player, SkillValidationResult.MissingRequiredItem);
+            if(sendFailMessage)
+                CommandBuilder.SkillFailed(source.Player, SkillValidationResult.MissingRequiredItem);
             return false;
         }
 
