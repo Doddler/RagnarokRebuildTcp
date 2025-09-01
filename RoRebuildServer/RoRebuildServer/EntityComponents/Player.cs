@@ -85,6 +85,7 @@ public class Player : IEntityAutoReset
 
     public PlayerFollower PlayerFollower;
     public bool HasCart => (PlayerFollower & PlayerFollower.AnyCart) > 0;
+    public bool HasBird => (PlayerFollower & PlayerFollower.Falcon) > 0;
 
     public StatusTriggerFlags OnMeleeAttackStatusFlags;
     public StatusTriggerFlags OnRangedAttackStatusFlags;
@@ -1497,7 +1498,7 @@ public class Player : IEntityAutoReset
             Character.ClassId = newJobId;
 
         PlayerFollower &= ~PlayerFollower.AnyCart;
-        SetData(PlayerStat.PushCart, 0);
+        SetData(PlayerStat.FollowerType, 0);
 
         Equipment.UnequipAllItems();
         UpdateStats();

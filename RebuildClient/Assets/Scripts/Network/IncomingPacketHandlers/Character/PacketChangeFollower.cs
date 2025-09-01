@@ -13,10 +13,10 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
         public override void ReceivePacket(ClientInboundMessage msg)
         {
             var id = msg.ReadInt32();
-            
+
             if (!Network.EntityList.TryGetValue(id, out var controllable))
                 return;
-            
+
             var follower = (PlayerFollower)msg.ReadByte();
 
             if (controllable.FollowerObject != null)
@@ -46,12 +46,29 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                 var cartObj = new GameObject();
                 var cart = cartObj.AddComponent<CartFollower>();
                 cart.AttachCart(controllable, cartStyle);
+                
+                if(controllable.FollowerObject != null)
+                    GameObject.Destroy(controllable.FollowerObject);
                 controllable.FollowerObject = cartObj;
+
+                if (controllable.IsMainCharacter)
+                    PlayerState.Instance.HasCart = true;
             }
 
-            if (controllable.IsMainCharacter)
-                PlayerState.Instance.HasCart = true;
-            
+            if ((follower & PlayerFollower.Falcon) > 0)
+            {
+                var birdObj = new GameObject();
+                var bird = birdObj.AddComponent<BirdFollower>();
+                bird.AttachBird(controllable, 0);
+                
+                if(controllable.FollowerObject != null)
+                    GameObject.Destroy(controllable.FollowerObject);
+                controllable.FollowerObject = birdObj;
+
+                if (controllable.IsMainCharacter)
+                    PlayerState.Instance.HasBird = true;
+            }
+
             UiManager.Instance.EquipmentWindow.RefreshEquipmentWindow();
         }
     }

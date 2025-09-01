@@ -15,7 +15,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Priest;
 [SkillHandler(CharacterSkill.MagnusExorcismus, SkillClass.Magic, SkillTarget.Ground)]
 public class MagnusExorcismusHandler : SkillHandlerBase
 {
-    public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 15f;
+    public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 12f;
 
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
         int lvl, bool isIndirect, bool isItemSource)

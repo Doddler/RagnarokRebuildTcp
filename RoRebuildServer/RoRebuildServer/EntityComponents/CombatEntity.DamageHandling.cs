@@ -273,6 +273,10 @@ public partial class CombatEntity
         return (defCut, subDef);
     }
 
+    //crit rate: 1%, + 0.3% per luk, + 0.033% per level
+    public int GetBaseCritRate() => (1 + GetEffectiveStat(CharacterStat.Luck) / 3 + GetStat(CharacterStat.AddCrit)) * 10 + GetStat(CharacterStat.Level) / 3;
+    public int GetBonusCritRateVsTarget(CombatEntity target) => GetStat(CharacterStat.AddCritChanceRaceFormless + (int)target.GetRace());
+
     public DamageInfo CalculateCombatResultUsingSetAttackPower(CombatEntity target, AttackRequest req)
     {
         var atk1 = req.MinAtk;
@@ -324,18 +328,20 @@ public partial class CombatEntity
         //critical hit
         if (!isCrit && flags.HasFlag(AttackFlags.CanCrit))
         {
-            //crit rate: 1%, + 0.3% per luk, + 0.1% per level
-            var critRate = (1 + GetEffectiveStat(CharacterStat.Luck) / 3 + GetStat(CharacterStat.AddCrit)) * 10 + srcLevel;
+            var critRate = GetBaseCritRate();
 
             if (Character.Type == CharacterType.Player)
-                critRate = critRate * (100 + GetStat(CharacterStat.AddCritChanceRaceFormless + (int)targetRace)) / 100;
+            {
+                critRate += GetBonusCritRateVsTarget(target);
+                if (Player.WeaponClass == 16) //katar
+                    critRate *= 2;
+            }
 
-            //should double crit for katar here
-
+            //counter crit disabled as counter crit is effectively handled via CheckLuckModifiedRandomChanceVsTarget.
             //counter crit: 0.2% per luck, 0.067% per level
-            var counterCrit = target.GetEffectiveStat(CharacterStat.Luck) / 5 * 10 + targetLevel * 2 / 3;
+            //var counterCrit = 0; //target.GetEffectiveStat(CharacterStat.Luck) / 5 * 10 + targetLevel * 2 / 3;
 
-            if (target.HasBodyState(BodyStateFlags.Sleep) || CheckLuckModifiedRandomChanceVsTarget(target, critRate - counterCrit, 1000))
+            if (target.HasBodyState(BodyStateFlags.Sleep) || CheckLuckModifiedRandomChanceVsTarget(target, critRate, 1000))
                 isCrit = true;
         }
 

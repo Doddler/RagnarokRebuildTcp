@@ -564,7 +564,7 @@ SpCost = [10]
 Name = "Lex Divina"
 Icon = "pr_lexdivina"
 Target = "Enemy"
-MaxLevel = 10
+MaxLevel = 5 #who would ever get 10? May as well just make it 5
 SpCost = [20,20,20,20,20,18,16,14,12,10]
 
 [MagnusExorcismus]
@@ -719,13 +719,57 @@ Target = "Passive"
 MaxLevel = 10
 
 [FalconMastery]
+Name = "Falcon Mastery"
+Icon = "ht_falcon"
+Target = "Passive"
+MaxLevel = 1
+
 [Detect]
+Icon = "ht_detecting"
+Target = "Ground"
+MaxLevel = 1
+SpCost = [8]
+
 [BlitzBeat]
+Name = "Blitz Beat"
+Icon = "ht_blitzbeat"
+Target = "Enemy"
+MaxLevel = 5
+SpCost = [10,13,16,19,22]
+
 [SteelCrow]
+Name = "Steel Crow"
+Icon = "ht_steelcrow"
+Target = "Passive"
+MaxLevel = 10
+
 [LandMine]
+Name = "Land Mine"
+Icon = "ht_landmine"
+Target = "Ground"
+MaxLevel = 5
+SpCost = [20,20,20,20,20]
+
 [RemoveTrap]
+Name = "Remove Trap"
+Icon = "ht_removetrap"
+Target = "Ground"
+MaxLevel = 1
+SpCost = [5]
+
 [SpringTrap]
+Name = "Spring Trap"
+Icon = "ht_springtrap"
+Target = "Ground"
+MaxLevel = 1
+SpCost = [10]
+
 [SkidTrap]
+Name = "Skid Trap"
+Icon = "ht_skidtrap"
+Target = "Ground"
+MaxLevel = 5
+SpCost = [10,10,10,10,10]
 
 [AnkleSnare]
 Name = "Ankle Snare"
@@ -735,12 +779,59 @@ MaxLevel = 5
 SpCost = [12, 12, 12, 12, 12]
 
 [Flasher]
+Icon = "ht_flasher"
+Target = "Ground"
+MaxLevel = 5
+SpCost = [12,12,12,12,12]
+
 [FreezingTrap]
+Name = "Freezing Trap"
+Icon = "ht_freezingtrap"
+Target = "Ground"
+MaxLevel = 5
+SpCost = [10,10,10,10,10]
+
 [Sandman]
+Name = "Sandman"
+Icon = "ht_sandman"
+Target = "Ground"
+MaxLevel = 5
+SpCost = [12,12,12,12,12]
+
 [BlastMine]
+Name = "Blast Mine"
+Icon = "ht_blastmine"
+Target = "Ground"
+MaxLevel = 5
+SpCost = [10,10,10,10,10]
+
 [ClaymoreTrap]
+Name = "Claymore Trap"
+Icon = "ht_claymoretrap"
+Target = "Ground"
+MaxLevel = 5
+SpCost = [15,15,15,15,15]
+
+[ShockwaveTrap]
+Name = "Shockwave Trap"
+Icon = "ht_shockwave"
+Target = "Ground"
+MaxLevel = 5
+SpCost = [45,45,45,45,45]
+
 [TalkieBox]
+Name = "Talkie Box"
+Icon = "ht_talkiebox"
+Target = "Ground"
+MaxLevel = 1
+SpCost = [1]
+
 [PhantasmicArrow]
+Name = "Phantasmic Arrow"
+Icon = "ht_phantasmic"
+Target = "Enemy"
+MaxLevel = 1
+SpCost = [10]
 
 #----------------------------------
 # Assassin

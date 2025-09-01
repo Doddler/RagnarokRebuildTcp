@@ -10,11 +10,11 @@ public class StatusGloria : StatusEffectBase
 {
     public override void OnApply(CombatEntity ch, ref StatusEffectState state)
     {
-        ch.AddStat(CharacterStat.Luck, 30);
+        ch.AddStat(CharacterStat.AddLuk, 30);
     }
 
     public override void OnExpiration(CombatEntity ch, ref StatusEffectState state)
     {
-        ch.SubStat(CharacterStat.Luck, 30);
+        ch.SubStat(CharacterStat.AddLuk, 30);
     }
 }

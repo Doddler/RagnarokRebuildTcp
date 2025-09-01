@@ -159,7 +159,8 @@ public class NpcInteractionState
     public void SkillReset() => Player?.SkillReset();
     public void StatPointReset() => Player?.StatPointReset();
     public bool HasLearnedSkill(CharacterSkill skill, int level = 1) => Player?.DoesCharacterKnowSkill(skill, level) ?? false;
-    public bool HasCart => Player?.GetData(PlayerStat.PushCart) > 0;
+    public bool HasCart => ((Player?.GetData(PlayerStat.FollowerType) ?? 0) & (int)PlayerFollower.AnyCart) > 0;
+    public bool HasBird => ((Player?.GetData(PlayerStat.FollowerType) ?? 0) & (int)PlayerFollower.Falcon) > 0;
 
     public void FocusNpc()
     {
@@ -621,7 +622,7 @@ public class NpcInteractionState
             _ => PlayerFollower.Cart0
         };
 
-        Player.SetData(PlayerStat.PushCart, cartStyle);
+        Player.SetData(PlayerStat.FollowerType, cartStyle);
         Player.PlayerFollower = follower;
 
         CommandBuilder.UpdatePlayerFollowerStateAutoVis(Player);

@@ -839,7 +839,7 @@ public class ItemEquipState
 
         return false;
     }
-
+    
     public void AutoSpellOnAttack(CharacterSkill skill, int level, int chance, SkillPreferredTarget target = SkillPreferredTarget.Any)
     {
         var cast = new AutoSpellEffect()

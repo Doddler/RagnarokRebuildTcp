@@ -652,6 +652,20 @@ namespace Assets.Scripts.Sprites
                 cart.AttachCart(control, cartStyle);
                 control.FollowerObject = cartObj;
             }
+            
+            if ((param.Follower & PlayerFollower.Falcon) > 0)
+            {
+                var birdObj = new GameObject();
+                var bird = birdObj.AddComponent<BirdFollower>();
+                bird.AttachBird(control, 0);
+                
+                if(control.FollowerObject != null)
+                    Destroy(control.FollowerObject);
+                control.FollowerObject = birdObj;
+
+                if (control.IsMainCharacter)
+                    PlayerState.Instance.HasBird = true;
+            }
 
             return control;
         }

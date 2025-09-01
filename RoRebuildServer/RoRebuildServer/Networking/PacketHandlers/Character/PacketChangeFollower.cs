@@ -32,8 +32,9 @@ public class PacketChangeFollower : IClientPacketHandler
 
         if (isRemove)
         {
-            player.PlayerFollower &= ~PlayerFollower.AnyCart;
-            player.SetData(PlayerStat.PushCart, 0);
+            //player.PlayerFollower &= ~PlayerFollower.AnyCart;
+            player.PlayerFollower = 0; //this call will double for removing the bird too
+            player.SetData(PlayerStat.FollowerType, 0);
         }
         else
         {
@@ -44,7 +45,8 @@ public class PacketChangeFollower : IClientPacketHandler
             if (id < 0 || id >= 5)
             {
                 CommandBuilder.ErrorMessage(player, $"Change cart must be a value between 1 and 5.");
-                ServerLogger.LogWarning($"Player {player.Name} trying to change cart to type {id}, but it is out of bounds.");
+                ServerLogger.LogWarning(
+                    $"Player {player.Name} trying to change cart to type {id}, but it is out of bounds.");
                 return;
             }
 
@@ -64,16 +66,7 @@ public class PacketChangeFollower : IClientPacketHandler
             }
 
             player.PlayerFollower &= ~PlayerFollower.AnyCart;
-            player.SetData(PlayerStat.PushCart, id);
-            player.PlayerFollower |= id switch
-            {
-                0 => PlayerFollower.Cart0,
-                1 => PlayerFollower.Cart1,
-                2 => PlayerFollower.Cart2,
-                3 => PlayerFollower.Cart3,
-                4 => PlayerFollower.Cart4,
-                _ => throw new ArgumentOutOfRangeException()
-            };
+            player.SetData(PlayerStat.FollowerType, id);
         }
 
         CommandBuilder.UpdatePlayerFollowerStateAutoVis(player);

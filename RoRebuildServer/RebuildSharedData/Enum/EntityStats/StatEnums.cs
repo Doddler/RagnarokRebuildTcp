@@ -31,7 +31,7 @@ public enum PlayerStat
     StatPoints,
     Zeny,
     JobLevel,
-    PushCart,
+    FollowerType,
     PlayerStatsMax
 }
 

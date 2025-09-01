@@ -199,6 +199,11 @@ Icon = "인찬트포이즌"
 CanDispel = true
 CanDisable = true
 
+[Falcon]
+Name = "Falcon"
+Type = "Buff"
+CanDispel = false
+CanDisable = false
 
 #----------------------------------
 # Priest

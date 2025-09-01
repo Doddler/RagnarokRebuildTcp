@@ -47,6 +47,7 @@ namespace Assets.Scripts.PlayerControl
         public MapMemoLocation[] MemoLocations = new MapMemoLocation[4];
         public bool IsInParty;
         public bool HasCart;
+        public bool HasBird;
         public int PartyId;
         public int PartyLeader = -1;
         public int PartyMemberId;

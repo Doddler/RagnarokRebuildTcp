@@ -178,6 +178,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     State.HairStyleId = headId;
                     State.HairColorId = hairDyeId;
                     State.HasCart = (follower & PlayerFollower.AnyCart) > 0;
+                    State.HasBird = (follower & PlayerFollower.Falcon) > 0;
                     
                     UiManager.Instance.SkillManager.UpdateAvailableSkills();
                     UiManager.Instance.EquipmentWindow.UpdateCharacterDisplay(head1, head2, head3);
