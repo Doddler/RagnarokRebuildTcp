@@ -132,6 +132,7 @@ namespace Assets.Scripts
         private GameObject selectedSprite;
         private string targetText;
         private GameObject clickEffectPrefab;
+        private ServerControllable LastTargetedEnemy;
 
         public GameObject WarpPanel;
         public GameObject DialogPanel;
@@ -370,7 +371,7 @@ namespace Assets.Scripts
         {
             if (TargetControllable.SpriteAnimator.State == SpriteState.Dead)
                 return false;
-            
+
             if (skill == CharacterSkill.Vending)
             {
                 VendingSetupManager.OpenVendSetup();
@@ -568,8 +569,8 @@ namespace Assets.Scripts
 
             var showValue = GameConfig.Data.ShowJobExpValue;
             var showPercent = GameConfig.Data.ShowJobExpPercent;
-            
-            
+
+
             var percentVal = Mathf.Floor(percent * 1000f) / 10f;
 
             if (showValue)
@@ -835,7 +836,7 @@ namespace Assets.Scripts
         {
             var closestAnim = GetHitAnimator(hits[0]);
             var closestHit = hits[0];
-            
+
             //var log = $"{hits.Length} {closestAnim.Controllable.gameObject.name}{closestHit.distance}{closestAnim.Controllable.IsAlly}";
 
             if (hits.Length == 1)
@@ -850,6 +851,7 @@ namespace Assets.Scripts
             var isOk = closestAnim.State != SpriteState.Dead && !closestAnim.IsHidden;
             var isAlly = closestAnim.Controllable.IsAlly;
             var wantDead = hasSkillOnCursor && cursorSkill == CharacterSkill.Resurrection;
+            var hitLastTarget = closestAnim.Controllable != null && closestAnim.Controllable == LastTargetedEnemy;
 
             for (var i = 1; i < hits.Length; i++)
             {
@@ -865,11 +867,13 @@ namespace Assets.Scripts
                     closestHit = hit;
                     isAlly = anim.Controllable.IsAlly;
                     isOk = true;
+                    if (!isAlly && anim.Controllable == LastTargetedEnemy)
+                        hitLastTarget = true;
                 }
 
                 if (anim.State == SpriteState.Dead && anim.Type != SpriteType.Player)
                     continue;
-                
+
                 if (wantDead && anim.Controllable.CharacterType == CharacterType.Player && anim.State == SpriteState.Dead)
                     return anim; //short-circuit to target resurrection on dead players
 
@@ -902,18 +906,20 @@ namespace Assets.Scripts
                     }
                 }
 
-                if ((hit.distance < closestHit.distance))
+                if (hit.distance < closestHit.distance || anim.Controllable == LastTargetedEnemy)
                     MakeTarget();
             }
 
             //log += $" : {closestAnim.Controllable.gameObject.name}{closestHit.distance}{closestAnim.Controllable.IsAlly} {isOk}";
             //Debug.Log(log);
 
+            if (!isOk)
+                return null;
 
-            if (isOk)
-                return closestAnim;
-
-            return null;
+            if (hitLastTarget && LastTargetedEnemy.SpriteAnimator != null)
+                return LastTargetedEnemy.SpriteAnimator;
+            
+            return closestAnim;
         }
 
         private bool FindItemUnderCursor(Ray ray, out GroundItem item)
@@ -1162,7 +1168,10 @@ namespace Assets.Scripts
             if ((canClickEnemy || canTargetPartyList) && leftClick)
             {
                 if (!hasTargetedSkill)
+                {
+                    LastTargetedEnemy = mouseTarget;
                     NetworkManager.Instance.SendAttack(mouseTarget.Id);
+                }
                 else
                 {
                     if (canTargetPartyList)
@@ -1171,6 +1180,9 @@ namespace Assets.Scripts
                         if (partyMember != null && partyMember.Controllable != null)
                             mouseTarget = partyMember.Controllable;
                     }
+
+                    if (!mouseTarget.IsAlly)
+                        LastTargetedEnemy = mouseTarget;
 
                     if (!isCursorSkillItem)
                         NetworkManager.Instance.SendSingleTargetSkillAction(mouseTarget.Id, cursorSkill, cursorSkillLvl);
@@ -1508,12 +1520,12 @@ namespace Assets.Scripts
                 }
             };
         }
-        
-        
+
+
         public void CreateEffectAtLocation(string effectName, Vector3 pos, Vector3 scale, int facing)
         {
             var effect = EffectIdLookup[effectName];
-            
+
             if (!EffectList.TryGetValue(effect, out var asset))
             {
                 AppendError($"Could not find effect with id {effect}.");
@@ -1589,7 +1601,7 @@ namespace Assets.Scripts
                     obj2.AddComponent<BillboardObject>();
 
                 outputObj.AddComponent<RemoveWhenChildless>();
-                
+
                 if (facing != 0)
                     obj2.transform.localRotation = Quaternion.AngleAxis(45 * facing, Vector3.up);
 
@@ -1827,15 +1839,13 @@ namespace Assets.Scripts
                     }
                     else
                         CharacterDetailBox.OverlayDisplay.SetActive(false);
-                    
-                    
                 }
-                
+
                 if (pointerEvent.pointerEnter.name == "PartyMember")
                 {
                     pointerOverUi = false;
                     selected = null;
-                    
+
                     if (Input.GetMouseButtonDown(1) && UiManager.Instance.RightClickMenuWindow.RightClickPartyMenu(pointerEvent))
                     {
                         pointerOverUi = true;
@@ -2007,7 +2017,7 @@ namespace Assets.Scripts
 
             if (!inInputUI && Input.GetKeyDown(KeyCode.A))
                 UiManager.Instance.StatusWindow.ToggleVisibility();
-            
+
             if (!inInputUI && Input.GetKeyDown(KeyCode.D))
                 UiManager.Instance.EmoteManager.GetComponent<WindowBase>().ToggleVisibility();
 
