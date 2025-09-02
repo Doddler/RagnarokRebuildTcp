@@ -17,7 +17,7 @@ MagnumBreak = [["Bash", 5]]
 Provoke = []
 Endure = [["Provoke", 5]]
 ChargeAttack = [["Bash", 7], ["MagnumBreak", 3]]
-TwoHandQuicken = [["TwoHandSwordMastery", 10], ["Endure", 5]] #just for testing
+#TwoHandQuicken = [["TwoHandSwordMastery", 10], ["Endure", 5]] #just for testing
 
 [Archer]
 JobRank = 1
@@ -49,9 +49,6 @@ NapalmBeat = []
 SoulStrike = [["NapalmBeat", 4]]
 SafetyWall = [["NapalmBeat", 7], ["SoulStrike", 5]]
 StoneCurse = []
-EarthSpike = [["StoneCurse", 3]]
-HeavensDrive = [["EarthSpike", 3]]
-WaterBall = [["FrostDiver", 7], ["LightningBolt", 3]]
 EnergyCoat = [["FireBolt", 3], ["ColdBolt", 3], ["LightningBolt", 3]]
 
 [Acolyte]
@@ -88,8 +85,6 @@ Hiding = [["Steal", 5]]
 #SandAttack = [["Envenom", 5]]
 BackSlide = [["ImproveDodge",5]]
 #FindStone = []
-SonicBlow = [["DoubleAttack", 5],["Envenom", 7]]
-EnchantPoison = [["Envenom", 10],["Hiding", 3]]
 
 [Merchant]
 JobRank = 1
@@ -104,8 +99,37 @@ ItemAppraisal = [["Discount",5]]
 Mammonite = []
 CrazyUproar = [["Mammonite", 3], ["ItemAppraisal", 1]]
 CartRevolution = [["PushCart", 10], ["CrazyUproar", 1]]
-HammerFall = [["EnlargeWeightLimit",5]]
-AdrenalineRush = [["ItemAppraisal",5],["Overcharge",5],["PushCart",5]]
+
+[Knight]
+JobRank = 2
+Extends = "Swordsman"
+[Knight.SkillTree]
+CounterAttack = [["TwoHandSwordMastery",1]]
+TwoHandQuicken = [["TwoHandSwordMastery",1]]
+BowlingBash = [["TwoHandSwordMastery",5],["Bash",10],["CounterAttack",5],["TwoHandQuicken",10]]
+PecoPecoRiding = [["Endure",1]]
+CavalierMastery = [["PecoPecoRiding",1]]
+SpearMastery = []
+Pierce = [["SpearMastery",1]]
+SpearBoomerang = [["Pierce",3]]
+SpearStab = [["Pierce",5]]
+BrandishSpear = [["PecoPecoRiding",1],["SpearStab",3]]
+
+[Wizard]
+JobRank = 2
+Extends = "Mage"
+[Wizard.SkillTree]
+Sightrasher = [["Sight",1],["LightningBolt",1]]
+MeteorStorm = [["Sightrasher",2],["ThunderStorm",1]]
+JupitelThunder = [["LightningBolt",1],["NapalmBeat",1]]
+LordOfVermilion = [["ThunderStorm",1],["JupitelThunder",5]]
+WaterBall = [["LightningBolt",1],["ColdBolt",1]]
+StormGust = [["JupitelThunder",3],["FrostDiver",1]]
+IceWall = [["FrostDiver",1],["StoneCurse",1]]
+FrostNova = [["IceWall", 1]]
+EarthSpike = [["StoneCurse", 1]]
+HeavensDrive = [["EarthSpike", 3]]
+Quagmire = [["HeavensDrive",1]]
 
 [Priest]
 JobRank = 2
@@ -149,3 +173,30 @@ Sandman = [["Flasher",1]]
 FreezingTrap = [["Flasher",1]]
 BlastMine = [["LandMine",1],["Sandman",1],["FreezingTrap",1]]
 ClaymoreTrap = [["ShockwaveTrap",1],["BlastMine",1]]
+
+[Assassin]
+JobRank = 2
+Extends = "Thief"
+[Assassin.SkillTree]
+RightHandMastery = []
+LeftHandMastery = [["RightHandMastery",2]]
+KatarMastery = []
+SonicBlow = [["KatarMastery",4]]
+Cloaking = [["Hiding",2]]
+Grimtooth = [["SonicBlow",5],["Cloaking",2]]
+EnchantPoison = [["Envenom",1]]
+PoisonReact = [["EnchantPoison",3]]
+VenomDust = [["VenomDust",5]]
+VenomSplasher = [["PoisonReact",5],["VenomDust",5]]
+
+[Blacksmith]
+JobRank = 2
+Extends = "Merchant"
+[Blacksmith.SkillTree]
+HiltBinding = []
+WeaponryResearch = [["HiltBinding",1]]
+HammerFall = []
+AdrenalineRush = [["HammerFall",2]]
+WeaponPerfection = [["WeaponryResearch",2],["AdrenalineRush",2]]
+PowerThrust = [["AdrenalineRush",3]]
+MaximizePower = [["WeaponPerfection",3],["PowerThrust",2]]

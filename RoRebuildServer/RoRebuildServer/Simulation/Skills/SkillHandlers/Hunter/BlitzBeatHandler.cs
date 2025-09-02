@@ -16,11 +16,6 @@ public class BlitzBeatHandler : SkillHandlerBase
 {
     public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 1.5f;
 
-    public override void ApplyPassiveEffects(CombatEntity owner, int lvl)
-    {
-
-    }
-
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect, bool isItemSource)
     {
         if (target == null || !target.IsTargetable || source.Character.Type != CharacterType.Player)

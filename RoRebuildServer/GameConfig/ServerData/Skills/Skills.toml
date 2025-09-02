@@ -838,9 +838,28 @@ SpCost = [10]
 #----------------------------------
 
 [RightHandMastery]
+Name = "Righthand Mastery"
+Icon = "as_right"
+Target = "Passive"
+MaxLevel = 10
+
 [LeftHandMastery]
+Name = "Lefthand Mastery"
+Icon = "as_left"
+Target = "Passive"
+MaxLevel = 10
+
 [KatarMastery]
+Name = "Katar Mastery"
+Icon = "as_katar"
+Target = "Passive"
+MaxLevel = 10
+
 [Grimtooth]
+Icon = "as_grimtooth"
+Target = "Enemy"
+MaxLevel = 5
+SpCost = [3,3,3,3,3]
 
 [SonicBlow]
 Name = "Sonic Blow"
@@ -863,8 +882,26 @@ MaxLevel = 10
 SpCost = [20,20,20,20,20,20,20,20,20,20]
 
 [PoisonReact]
+Name = "Poison React"
+Icon = "as_poisonreact"
+Target = "Self"
+MaxLevel = 10
+SpCost = [25,30,35,40,45,50,55,60,45,45]
+
 [VenomDust]
+Name = "Venom Dust"
+Icon = "as_venomdust"
+Target = "Ground"
+MaxLevel = 10
+SpCost = [20,20,20,20,20,20,20,20,20,20]
+
 [VenomSplasher]
+Name = "Venom Splasher"
+Icon = "as_splasher"
+Target = "Enemy"
+MaxLevel = 10
+SpCost = [12,14,16,18,20,22,24,26,28,30]
+
 [SonicAcceleration]
 [VenomKnife]
 
@@ -887,10 +924,58 @@ Target = "Ground"
 MaxLevel = 5
 SpCost = [10,10,10,10,10]
 
+[HiltBinding]
+Name = "Hilt Binding"
+Icon = "bs_hiltbinding"
+Target = "Passive"
+MaxLevel = 1
+
+[WeaponryResearch]
+Name = "Weaponry Research"
+Icon = "bs_weaponresearch"
+Target = "Passive"
+MaxLevel = 10
+
 [WeaponPerfection]
+Name = "Weapon Perfection"
+Icon = "bs_weaponperfect"
+Target = "Self"
+MaxLevel = 5
+SpCost = [18,16,14,12,10]
+
 [SkinTempering]
+Name = "Skin Tempering"
+Icon = "bs_skintemper"
+Target = "Passive"
+MaxLevel = 5
+
 [PowerThrust]
+Name = "Power Thrust"
+Icon = "bs_overthrust"
+Target = "Self"
+MaxLevel = 5
+SpCost = [18,16,14,12,10]
+
 [MaximizePower]
+Name = "MaximizePower"
+Icon = "bs_maximize"
+Target = "Self"
+MaxLevel = 5
+SpCost = [10,10,10,10,10]
+
+[WeaponRepair]
+[SmithDagger]
+[SmithKnuckle]
+[SmithMace]
+[SmithSword]
+[SmithTwoHandSword]
+[SmithSpear]
+[SmithAxe]
+[IronTempering]
+[EnchantedStoneCraft]
+[OrideconResearch]
+[SteelTempering]
+[OreDiscovery]
 
 #----------------------------------
 # Other skills

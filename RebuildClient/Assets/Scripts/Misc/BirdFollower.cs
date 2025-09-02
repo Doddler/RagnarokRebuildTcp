@@ -91,7 +91,7 @@ namespace Assets.Scripts.Misc
             attackVector = targetPos - transform.position;
             LookAt(target.transform.position);
             
-            Debug.Log(attackVector.magnitude);
+            // Debug.Log(attackVector.magnitude);
 
             if (attackVector.magnitude < 6f)
             {
