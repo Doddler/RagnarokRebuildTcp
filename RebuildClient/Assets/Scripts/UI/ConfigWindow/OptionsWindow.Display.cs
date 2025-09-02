@@ -9,7 +9,9 @@ namespace Assets.Scripts.UI.ConfigWindow
         public Toggle AllowTabToShowWalkTableToggle;
         public Toggle HideShoutChatToggle;
         public Toggle EnableXRayToggle;
-        
+        public Toggle EnableWASDControls;
+
+
         public void UpdateDisplayOptions()
         {
             GameConfig.Data.UseUnfilteredSprites = !SpriteFilteringToggle.isOn;

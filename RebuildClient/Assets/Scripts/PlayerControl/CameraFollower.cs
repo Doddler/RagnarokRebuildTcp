@@ -1010,6 +1010,16 @@ namespace Assets.Scripts
             return hasMatch;
         }
 
+        private bool IsAlive()
+        {
+            return controllable.SpriteAnimator.State != SpriteState.Dead;
+        }
+
+        private bool IsSitting()
+        {
+            return controllable.SpriteAnimator.State == SpriteState.Sit;
+        }
+
         private GameCursorMode ScreenCastV2(bool isOverUi)
         {
             if (tempPath == null)
@@ -1028,8 +1038,8 @@ namespace Assets.Scripts
             var rightClick = Input.GetMouseButtonDown(1);
 
             var preferEnemyTarget = !(hasSkillOnCursor && cursorSkillTarget == SkillTarget.Ally);
-            var isAlive = controllable.SpriteAnimator.State != SpriteState.Dead;
-            var isSitting = controllable.SpriteAnimator.State == SpriteState.Sit;
+            var isAlive = IsAlive();
+            var isSitting = IsSitting();
 
             var isSkillEnemyTargeted = hasSkillOnCursor && cursorSkillTarget == SkillTarget.Enemy;
             var isSkillAllyTargeted = hasSkillOnCursor && cursorSkillTarget == SkillTarget.Ally;
