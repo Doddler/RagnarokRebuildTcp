@@ -265,6 +265,7 @@ namespace Assets.Scripts
         // WASD controls
         public float WASDDelay;
         public Vector2Int WASDDirection;
+        public Vector2Int WASDPreviousWalkTo;
 
         public float Rotation;
         public float Distance;
@@ -2355,7 +2356,13 @@ namespace Assets.Scripts
                 }
 
                 // move player
-                NetworkManager.Instance.MovePlayer(PlayerPosition + (multi * WASDDirection));
+                var walkTo = PlayerPosition + (multi * WASDDirection);
+
+                if (walkTo != WASDPreviousWalkTo)
+                {
+                    NetworkManager.Instance.MovePlayer(walkTo);
+                    WASDPreviousWalkTo = walkTo;
+                }
             }
         }
 
