@@ -393,7 +393,7 @@ namespace Assets.Scripts.MapEditor.Editor
 
 
             //update effect sounds
-            guids = AssetDatabase.FindAssets("t:AudioClip", new[] { "Assets/Sounds/Effects" });
+            guids = AssetDatabase.FindAssets("t:AudioClip", new[] { "Assets/Sounds/effect" });
 
             for (int i = 0; i < guids.Length; i++)
             {

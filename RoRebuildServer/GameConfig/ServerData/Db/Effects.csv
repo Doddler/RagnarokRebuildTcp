@@ -60,7 +60,7 @@
 58,SilenceAttack,TRUE,TRUE,FALSE,silence,,,-0.55,,
 59,SleepAttack,TRUE,TRUE,FALSE,sleep,,,-0.55,,
 60,StunAttack,TRUE,TRUE,FALSE,stun,,,-0.55,,
-61,PetrifyAttack,TRUE,TRUE,FALSE,petrify,,,-0.55,,
+61,PetrifyAttack,TRUE,TRUE,FALSE,stonecurse,,,-0.55,,
 62,ComboAttack1,TRUE,TRUE,FALSE,yunta_1,,,0,,
 63,ComboAttack2,TRUE,TRUE,FALSE,yunta_2,,,0,,
 64,ComboAttack3,TRUE,TRUE,FALSE,yunta_3,,,0,,
