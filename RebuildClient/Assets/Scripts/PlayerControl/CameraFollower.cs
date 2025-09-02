@@ -262,6 +262,10 @@ namespace Assets.Scripts
 
         public float ClickDelay;
 
+        // WASD controls
+        public float WASDDelay;
+        public int WASDHold;
+
         public float Rotation;
         public float Distance;
         public float Height;
@@ -1977,9 +1981,6 @@ namespace Assets.Scripts
                 AudioManager.Instance.ToggleMute();
             }
 
-            //if (Input.GetKeyDown(KeyCode.S))
-            //	controllable.SpriteAnimator.Standby = true;
-
             if (!inInputUI && Input.GetKeyDown(KeyCode.Space))
             {
                 //Debug.Log(controllable.IsWalking);
@@ -1987,14 +1988,19 @@ namespace Assets.Scripts
                 NetworkManager.Instance.StopPlayer();
             }
 
-            if (!inInputUI && Input.GetKeyDown(KeyCode.S))
-                UiManager.Instance.SkillManager.ToggleVisibility();
 
-            if (!inInputUI && Input.GetKeyDown(KeyCode.O))
-                UiManager.Instance.ConfigManager.ToggleVisibility();
-
-            if (!inInputUI && Input.GetKeyDown(KeyCode.W))
+            // WASD for movement or for ui panels
+            if (GameConfig.Data.EnableWASDControls)
             {
+                if (!inInputUI)
+                {
+                    WASDMove();
+                }
+            }
+            else
+            {
+                if (!inInputUI && Input.GetKeyDown(KeyCode.W))
+                {
 #if UNITY_EDITOR
                 if (Input.GetKey(KeyCode.LeftShift))
                 {
@@ -2005,21 +2011,31 @@ namespace Assets.Scripts
                 }
                 else
 #endif
-                if (PlayerState.Instance.HasCart)
-                    UiManager.Instance.CartWindow.ToggleVisibility();
+                    if (PlayerState.Instance.HasCart)
+                        UiManager.Instance.CartWindow.ToggleVisibility();
+                }
+
+                //if (Input.GetKeyDown(KeyCode.S))
+                //	controllable.SpriteAnimator.Standby = true;
+
+                if (!inInputUI && Input.GetKeyDown(KeyCode.S))
+                    UiManager.Instance.SkillManager.ToggleVisibility();
+
+                if (!inInputUI && Input.GetKeyDown(KeyCode.A))
+                    UiManager.Instance.StatusWindow.ToggleVisibility();
+
+                if (!inInputUI && Input.GetKeyDown(KeyCode.D))
+                    UiManager.Instance.EmoteManager.GetComponent<WindowBase>().ToggleVisibility();
             }
+
+            if (!inInputUI && Input.GetKeyDown(KeyCode.O))
+                UiManager.Instance.ConfigManager.ToggleVisibility();
 
             if (!inInputUI && Input.GetKeyDown(KeyCode.Q))
                 UiManager.Instance.EquipmentWindow.ToggleVisibility();
 
             if (!inInputUI && Input.GetKeyDown(KeyCode.E))
                 UiManager.Instance.InventoryWindow.ToggleVisibility();
-
-            if (!inInputUI && Input.GetKeyDown(KeyCode.A))
-                UiManager.Instance.StatusWindow.ToggleVisibility();
-
-            if (!inInputUI && Input.GetKeyDown(KeyCode.D))
-                UiManager.Instance.EmoteManager.GetComponent<WindowBase>().ToggleVisibility();
 
             //remove the flag to enable cinemachine recording on this
 #if UNITY_EDITOR
@@ -2274,6 +2290,113 @@ namespace Assets.Scripts
         {
             SaveCurrentCameraSettings();
             GameConfig.SaveConfig();
+        }
+
+        private void WASDMove()
+        {
+            if (!IsAlive() || IsSitting())
+                return;
+
+            var defaultDelay = 0.1f;
+            var defaultHold = 1;
+
+            var moveDirection = GetWASDKeyPress();
+
+            // if player was wasd moving and then stopped, stop the character moving
+            if (moveDirection == Direction.None &&
+                WASDHold > defaultHold)
+            {
+                NetworkManager.Instance.StopPlayer();
+
+                WASDDelay = defaultDelay;
+                WASDHold = 0;
+                return;
+            }
+
+            if (WASDDelay > 0)
+            {
+                WASDDelay -= Time.deltaTime;
+                return;
+            }
+            else
+            {
+                if (moveDirection != Direction.None)
+                {
+                    var moveDirectionAngle = Directions.GetAngleForDirection(moveDirection);
+                    //Debug.LogWarning("moveDirectionAngle: " + moveDirectionAngle);
+
+                    var postRotationAngle = moveDirectionAngle - Rotation; // adjust angle for camera
+
+                    int clampedAngle1 = ((int)postRotationAngle + (10 * 360)) % 360; // clamped to 0 to 360
+                    //Debug.LogWarning("clampedAngle1: " + clampedAngle1);
+
+                    // adjust 0 to 260 to -180 to 180
+                    if (clampedAngle1 > 180)
+                    {
+                        clampedAngle1 = clampedAngle1 - 360;
+                    }
+
+                    // get the direction
+                    var newDirection = Directions.GetFacingForAngle(clampedAngle1);
+
+                    // now from facing angle to vector2int
+                    var newPosTuple = Directions.GetXYForDirection(newDirection);
+                    var newPos = new Vector2Int(newPosTuple.x, newPosTuple.y);
+
+                    // if player has been holding wasd keys, set the move further to make animation smoother
+                    // in future can adjust for movement speed also
+                    if (WASDHold > defaultHold)
+                    {
+                        newPos = 3 * newPos;
+                    }
+
+                    NetworkManager.Instance.MovePlayer(PlayerPosition + newPos);
+
+                    // set delay
+                    WASDDelay = defaultDelay;
+                    WASDHold++;
+                }
+            }
+        }
+
+        private Direction GetWASDKeyPress()
+        {
+            var moveDirection = Direction.None;
+
+            if (Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+            {
+                moveDirection = Direction.North;
+            }
+            else if (Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+            {
+                moveDirection = Direction.South;
+            }
+            else if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+            {
+                moveDirection = Direction.East;
+            }
+            else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+            {
+                moveDirection = Direction.West;
+            }
+            else if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A))
+            {
+                moveDirection = Direction.NorthEast;
+            }
+            else if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D))
+            {
+                moveDirection = Direction.NorthWest;
+            }
+            else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A))
+            {
+                moveDirection = Direction.SouthEast;
+            }
+            else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D))
+            {
+                moveDirection = Direction.SouthWest;
+            }
+
+            return moveDirection;
         }
     }
 }

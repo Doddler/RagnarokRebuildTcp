@@ -19,6 +19,8 @@ namespace Assets.Scripts.UI.ConfigWindow
             
             GameConfig.Data.EnableXRay = EnableXRayToggle.isOn;
 
+            GameConfig.Data.EnableWASDControls = EnableWASDControls.isOn;
+
             CameraFollower.Instance.UseTTFDamage = !GameConfig.Data.UseSpriteBasedDamageNumbers;
             CameraFollower.Instance.SetSmoothPixel(!GameConfig.Data.UseUnfilteredSprites);
         }
@@ -34,6 +36,8 @@ namespace Assets.Scripts.UI.ConfigWindow
             HideShoutChatToggle.isOn = GameConfig.Data.HideShoutChat;
             
             EnableXRayToggle.isOn = GameConfig.Data.EnableXRay;
+
+            EnableWASDControls.isOn = GameConfig.Data.EnableWASDControls;
         }
     }
 }
