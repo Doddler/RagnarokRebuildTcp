@@ -264,7 +264,7 @@ namespace Assets.Scripts
 
         // WASD controls
         public float WASDDelay;
-        public int WASDHold;
+        public Vector2Int WASDDirection;
 
         public float Rotation;
         public float Distance;
@@ -2307,70 +2307,61 @@ namespace Assets.Scripts
             if (!IsAlive() || IsSitting())
                 return;
 
-            var defaultDelay = 0.1f;
-            var defaultHold = 1;
+            var defaultDelay = 0.30f;
 
             var moveDirection = GetWASDKeyPress();
 
-            // if player was wasd moving and then stopped, stop the character moving
-            if (moveDirection == Direction.None &&
-                WASDHold > defaultHold)
+            // if player was wasd moving and then stopped, stop the character
+            if (moveDirection == Direction.None && 
+                WASDDirection != new Vector2Int(0, 0))
             {
                 NetworkManager.Instance.StopPlayer();
-
+                WASDDirection = new Vector2Int(0, 0);
                 WASDDelay = defaultDelay;
-                WASDHold = 0;
                 return;
             }
 
-            if (WASDDelay > 0)
+            if (moveDirection != Direction.None)
             {
-                WASDDelay -= Time.deltaTime;
-                return;
-            }
-            else
-            {
-                if (moveDirection != Direction.None)
+                var moveDirectionAngle = Directions.GetAngleForDirection(moveDirection);
+                //Debug.LogWarning("moveDirectionAngle: " + moveDirectionAngle);
+
+                var postRotationAngle = moveDirectionAngle - Rotation; // adjust angle for camera
+
+                int clampedAngle1 = ((int)postRotationAngle + (10 * 360)) % 360; // clamped to 0 to 360
+                                                                                 //Debug.LogWarning("clampedAngle1: " + clampedAngle1);
+
+                // adjust 0 to 360 to -180 to 180
+                if (clampedAngle1 > 180)
                 {
-                    var moveDirectionAngle = Directions.GetAngleForDirection(moveDirection);
-                    //Debug.LogWarning("moveDirectionAngle: " + moveDirectionAngle);
-
-                    var postRotationAngle = moveDirectionAngle - Rotation; // adjust angle for camera
-
-                    int clampedAngle1 = ((int)postRotationAngle + (10 * 360)) % 360; // clamped to 0 to 360
-                    //Debug.LogWarning("clampedAngle1: " + clampedAngle1);
-
-                    // adjust 0 to 260 to -180 to 180
-                    if (clampedAngle1 > 180)
-                    {
-                        clampedAngle1 = clampedAngle1 - 360;
-                    }
-
-                    // get the direction
-                    var newDirection = Directions.GetFacingForAngle(clampedAngle1);
-
-                    // now from facing angle to vector2int
-                    var newPosTuple = Directions.GetXYForDirection(newDirection);
-                    var newPos = new Vector2Int(newPosTuple.x, newPosTuple.y);
-
-                    // if player has been holding wasd keys, set the move further to make animation smoother
-                    // in future can adjust for movement speed also
-                    if (WASDHold > defaultHold)
-                    {
-                        newPos = 3 * newPos;
-                    }
-
-                    NetworkManager.Instance.MovePlayer(PlayerPosition + newPos);
-
-                    // set delay
-                    WASDDelay = defaultDelay;
-                    WASDHold++;
+                    clampedAngle1 = clampedAngle1 - 360;
                 }
+
+                // get the direction
+                var newDirection = Directions.GetFacingForAngle(clampedAngle1);
+
+                // now from facing angle to vector2int
+                var newPosTuple = Directions.GetXYForDirection(newDirection);
+                var newPos = new Vector2Int(newPosTuple.x, newPosTuple.y);
+
+                WASDDelay -= Time.deltaTime;
+                WASDDirection = newPos;
+
+                // used to smoothen the animation
+                int multi = 1;
+                if (WASDDelay < 0)
+                {
+                    multi = 3;
+                }
+
+                // move player
+                NetworkManager.Instance.MovePlayer(PlayerPosition + (multi * WASDDirection));
             }
         }
 
         private Direction GetWASDKeyPress()
         {
+            // note, had to reverse east and west to get the math to work somehow
             var moveDirection = Direction.None;
 
             if (Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
