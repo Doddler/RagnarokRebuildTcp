@@ -263,7 +263,8 @@ namespace Assets.Scripts
         public float ClickDelay;
 
         // WASD controls
-        public float WASDDelay;
+        public float WASDHoldingTime;
+        public float WASDCommandDelay;
         public Vector2Int WASDDirection;
         public Vector2Int WASDPreviousWalkTo;
 
@@ -2318,7 +2319,7 @@ namespace Assets.Scripts
             {
                 NetworkManager.Instance.StopPlayer();
                 WASDDirection = new Vector2Int(0, 0);
-                WASDDelay = defaultDelay;
+                WASDHoldingTime = defaultDelay;
                 return;
             }
 
@@ -2339,31 +2340,84 @@ namespace Assets.Scripts
                 }
 
                 // get the direction
-                var newDirection = Directions.GetFacingForAngle(clampedAngle1);
+                var newDirectionFace = Directions.GetFacingForAngle(clampedAngle1);
 
                 // now from facing angle to vector2int
-                var newPosTuple = Directions.GetXYForDirection(newDirection);
-                var newPos = new Vector2Int(newPosTuple.x, newPosTuple.y);
+                var newDirectionTuple = Directions.GetXYForDirection(newDirectionFace);
+                var newDirection = new Vector2Int(newDirectionTuple.x, newDirectionTuple.y);
 
-                WASDDelay -= Time.deltaTime;
-                WASDDirection = newPos;
+                WASDHoldingTime -= Time.deltaTime;
+                WASDCommandDelay -= Time.deltaTime;
 
-                // used to smoothen the animation
-                int multi = 1;
-                if (WASDDelay < 0)
+                // used to smoothen the animation by taking multiple steps
+                int steps = 1;
+                if (WASDHoldingTime < 0)
                 {
-                    multi = 3;
+                    steps = 3;
                 }
 
-                // move player
-                var walkTo = PlayerPosition + (multi * WASDDirection);
-
-                if (walkTo != WASDPreviousWalkTo)
+                // if change direction send only 1 step ignoring delay
+                if (WASDDirection != newDirection) 
                 {
-                    NetworkManager.Instance.MovePlayer(walkTo);
-                    WASDPreviousWalkTo = walkTo;
+                    WASDCommandDelay = -1;
+                    steps = 2;
                 }
+
+                // check delay
+                if (WASDCommandDelay > 0)
+                    return;
+
+                WASDDirection = newDirection;
+
+                // try walk along
+                int stepsToCheck = steps;
+                while (stepsToCheck > 0) 
+                {
+                    // move player
+                    if (WASDWalkTo(stepsToCheck--, WASDDirection))
+                        return;
+                }
+
+                // if diagonal, check moving along 1 axis instead
+                if (WASDDirection.x != 0 && WASDDirection.y != 0)
+                {
+                    stepsToCheck = steps;
+                    while (stepsToCheck > 0)
+                    {
+                        // move player along x or y
+                        if (WASDWalkTo(stepsToCheck, new Vector2Int(WASDDirection.x, 0)))
+                            return;
+
+                        else if (WASDWalkTo(stepsToCheck, new Vector2Int(0, WASDDirection.y)))
+                            return;
+
+                        stepsToCheck--;
+                    }
+                }
+
+                // if nothing works give up
             }
+        }
+
+        private bool WASDWalkTo(int multi, Vector2Int wasdDirection) 
+        {
+            // move player
+            var walkTo = PlayerPosition + (multi * wasdDirection);
+
+            var hasValidPath = WalkProvider.IsCellWalkable(walkTo);
+
+            // move player
+            if (hasValidPath)
+            {
+                NetworkManager.Instance.MovePlayer(walkTo);
+                WASDPreviousWalkTo = walkTo;
+
+                WASDCommandDelay = 0.1f;
+
+                return true;
+            }
+
+            return false;
         }
 
         private Direction GetWASDKeyPress()
