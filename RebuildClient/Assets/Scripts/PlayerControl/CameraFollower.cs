@@ -2356,7 +2356,7 @@ namespace Assets.Scripts
                     steps = 3;
                 }
 
-                // if change direction send only 1 step ignoring delay
+                // if change direction, send steps to turn and ignore delay
                 if (WASDDirection != newDirection) 
                 {
                     WASDCommandDelay = -1;
@@ -2369,22 +2369,20 @@ namespace Assets.Scripts
 
                 WASDDirection = newDirection;
 
-                // try walk along
+                // try walk, reduce steps if near edge
                 int stepsToCheck = steps;
                 while (stepsToCheck > 0) 
                 {
-                    // move player
                     if (WASDWalkTo(stepsToCheck--, WASDDirection))
                         return;
                 }
 
-                // if diagonal, check moving along 1 axis instead
+                // if diagonal, check moving along 1 axis instead, reduce steps if near edge
                 if (WASDDirection.x != 0 && WASDDirection.y != 0)
                 {
                     stepsToCheck = steps;
                     while (stepsToCheck > 0)
                     {
-                        // move player along x or y
                         if (WASDWalkTo(stepsToCheck, new Vector2Int(WASDDirection.x, 0)))
                             return;
 
