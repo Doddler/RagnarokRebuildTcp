@@ -262,6 +262,12 @@ namespace Assets.Scripts
 
         public float ClickDelay;
 
+        // WASD controls
+        public float WASDHoldingTime;
+        public float WASDCommandDelay;
+        public Vector2Int WASDDirection;
+        public Vector2Int WASDPreviousWalkTo;
+
         public float Rotation;
         public float Distance;
         public float Height;
@@ -1006,6 +1012,16 @@ namespace Assets.Scripts
             return hasMatch;
         }
 
+        private bool IsAlive()
+        {
+            return controllable.SpriteAnimator.State != SpriteState.Dead;
+        }
+
+        private bool IsSitting()
+        {
+            return controllable.SpriteAnimator.State == SpriteState.Sit;
+        }
+
         private GameCursorMode ScreenCastV2(bool isOverUi)
         {
             if (tempPath == null)
@@ -1024,8 +1040,8 @@ namespace Assets.Scripts
             var rightClick = Input.GetMouseButtonDown(1);
 
             var preferEnemyTarget = !(hasSkillOnCursor && cursorSkillTarget == SkillTarget.Ally);
-            var isAlive = controllable.SpriteAnimator.State != SpriteState.Dead;
-            var isSitting = controllable.SpriteAnimator.State == SpriteState.Sit;
+            var isAlive = IsAlive();
+            var isSitting = IsSitting();
 
             var isSkillEnemyTargeted = hasSkillOnCursor && cursorSkillTarget == SkillTarget.Enemy;
             var isSkillAllyTargeted = hasSkillOnCursor && cursorSkillTarget == SkillTarget.Ally;
@@ -1977,9 +1993,6 @@ namespace Assets.Scripts
                 AudioManager.Instance.ToggleMute();
             }
 
-            //if (Input.GetKeyDown(KeyCode.S))
-            //	controllable.SpriteAnimator.Standby = true;
-
             if (!inInputUI && Input.GetKeyDown(KeyCode.Space))
             {
                 //Debug.Log(controllable.IsWalking);
@@ -1987,14 +2000,19 @@ namespace Assets.Scripts
                 NetworkManager.Instance.StopPlayer();
             }
 
-            if (!inInputUI && Input.GetKeyDown(KeyCode.S))
-                UiManager.Instance.SkillManager.ToggleVisibility();
 
-            if (!inInputUI && Input.GetKeyDown(KeyCode.O))
-                UiManager.Instance.ConfigManager.ToggleVisibility();
-
-            if (!inInputUI && Input.GetKeyDown(KeyCode.W))
+            // WASD for movement or for ui panels
+            if (GameConfig.Data.EnableWASDControls)
             {
+                if (!inInputUI)
+                {
+                    WASDMove();
+                }
+            }
+            else
+            {
+                if (!inInputUI && Input.GetKeyDown(KeyCode.W))
+                {
 #if UNITY_EDITOR
                 if (Input.GetKey(KeyCode.LeftShift))
                 {
@@ -2005,21 +2023,31 @@ namespace Assets.Scripts
                 }
                 else
 #endif
-                if (PlayerState.Instance.HasCart)
-                    UiManager.Instance.CartWindow.ToggleVisibility();
+                    if (PlayerState.Instance.HasCart)
+                        UiManager.Instance.CartWindow.ToggleVisibility();
+                }
+
+                //if (Input.GetKeyDown(KeyCode.S))
+                //	controllable.SpriteAnimator.Standby = true;
+
+                if (!inInputUI && Input.GetKeyDown(KeyCode.S))
+                    UiManager.Instance.SkillManager.ToggleVisibility();
+
+                if (!inInputUI && Input.GetKeyDown(KeyCode.A))
+                    UiManager.Instance.StatusWindow.ToggleVisibility();
+
+                if (!inInputUI && Input.GetKeyDown(KeyCode.D))
+                    UiManager.Instance.EmoteManager.GetComponent<WindowBase>().ToggleVisibility();
             }
+
+            if (!inInputUI && Input.GetKeyDown(KeyCode.O))
+                UiManager.Instance.ConfigManager.ToggleVisibility();
 
             if (!inInputUI && Input.GetKeyDown(KeyCode.Q))
                 UiManager.Instance.EquipmentWindow.ToggleVisibility();
 
             if (!inInputUI && Input.GetKeyDown(KeyCode.E))
                 UiManager.Instance.InventoryWindow.ToggleVisibility();
-
-            if (!inInputUI && Input.GetKeyDown(KeyCode.A))
-                UiManager.Instance.StatusWindow.ToggleVisibility();
-
-            if (!inInputUI && Input.GetKeyDown(KeyCode.D))
-                UiManager.Instance.EmoteManager.GetComponent<WindowBase>().ToggleVisibility();
 
             //remove the flag to enable cinemachine recording on this
 #if UNITY_EDITOR
@@ -2274,6 +2302,161 @@ namespace Assets.Scripts
         {
             SaveCurrentCameraSettings();
             GameConfig.SaveConfig();
+        }
+
+        private void WASDMove()
+        {
+            if (!IsAlive() || IsSitting())
+                return;
+
+            var defaultDelay = 0.30f;
+
+            var moveDirection = GetWASDKeyPress();
+
+            // if player was wasd moving and then stopped, stop the character
+            if (moveDirection == Direction.None && 
+                WASDDirection != new Vector2Int(0, 0))
+            {
+                NetworkManager.Instance.StopPlayer();
+                WASDDirection = new Vector2Int(0, 0);
+                WASDHoldingTime = defaultDelay;
+                return;
+            }
+
+            if (moveDirection != Direction.None)
+            {
+                var moveDirectionAngle = Directions.GetAngleForDirection(moveDirection);
+                //Debug.LogWarning("moveDirectionAngle: " + moveDirectionAngle);
+
+                var postRotationAngle = moveDirectionAngle - Rotation; // adjust angle for camera
+
+                int clampedAngle1 = ((int)postRotationAngle + (10 * 360)) % 360; // clamped to 0 to 360
+                                                                                 //Debug.LogWarning("clampedAngle1: " + clampedAngle1);
+
+                // adjust 0 to 360 to -180 to 180
+                if (clampedAngle1 > 180)
+                {
+                    clampedAngle1 = clampedAngle1 - 360;
+                }
+
+                // get the direction
+                var newDirectionFace = Directions.GetFacingForAngle(clampedAngle1);
+
+                // now from facing angle to vector2int
+                var newDirectionTuple = Directions.GetXYForDirection(newDirectionFace);
+                var newDirection = new Vector2Int(newDirectionTuple.x, newDirectionTuple.y);
+
+                WASDHoldingTime -= Time.deltaTime;
+                WASDCommandDelay -= Time.deltaTime;
+
+                // used to smoothen the animation by taking multiple steps
+                int steps = 1;
+                if (WASDHoldingTime < 0)
+                {
+                    steps = 3;
+                }
+
+                // if change direction, send steps to turn and ignore delay
+                if (WASDDirection != newDirection) 
+                {
+                    WASDCommandDelay = -1;
+                    steps = 2;
+                }
+
+                // check delay
+                if (WASDCommandDelay > 0)
+                    return;
+
+                WASDDirection = newDirection;
+
+                // try walk, reduce steps if near edge
+                int stepsToCheck = steps;
+                while (stepsToCheck > 0) 
+                {
+                    if (WASDWalkTo(stepsToCheck--, WASDDirection))
+                        return;
+                }
+
+                // if diagonal, check moving along 1 axis instead, reduce steps if near edge
+                if (WASDDirection.x != 0 && WASDDirection.y != 0)
+                {
+                    stepsToCheck = steps;
+                    while (stepsToCheck > 0)
+                    {
+                        if (WASDWalkTo(stepsToCheck, new Vector2Int(WASDDirection.x, 0)))
+                            return;
+
+                        else if (WASDWalkTo(stepsToCheck, new Vector2Int(0, WASDDirection.y)))
+                            return;
+
+                        stepsToCheck--;
+                    }
+                }
+
+                // if nothing works give up
+            }
+        }
+
+        private bool WASDWalkTo(int multi, Vector2Int wasdDirection) 
+        {
+            // move player
+            var walkTo = PlayerPosition + (multi * wasdDirection);
+
+            var hasValidPath = WalkProvider.IsCellWalkable(walkTo);
+
+            // move player
+            if (hasValidPath)
+            {
+                NetworkManager.Instance.MovePlayer(walkTo);
+                WASDPreviousWalkTo = walkTo;
+
+                WASDCommandDelay = 0.1f;
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private Direction GetWASDKeyPress()
+        {
+            // note, had to reverse east and west to get the math to work somehow
+            var moveDirection = Direction.None;
+
+            if (Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+            {
+                moveDirection = Direction.North;
+            }
+            else if (Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+            {
+                moveDirection = Direction.South;
+            }
+            else if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+            {
+                moveDirection = Direction.East;
+            }
+            else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+            {
+                moveDirection = Direction.West;
+            }
+            else if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A))
+            {
+                moveDirection = Direction.NorthEast;
+            }
+            else if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D))
+            {
+                moveDirection = Direction.NorthWest;
+            }
+            else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A))
+            {
+                moveDirection = Direction.SouthEast;
+            }
+            else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D))
+            {
+                moveDirection = Direction.SouthWest;
+            }
+
+            return moveDirection;
         }
     }
 }
