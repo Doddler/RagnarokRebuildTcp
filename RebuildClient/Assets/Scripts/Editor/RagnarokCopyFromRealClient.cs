@@ -142,23 +142,27 @@ namespace Assets.Editor
             if (!EditorUtility.DisplayDialog("Copy from RO Client", prompt2, "Continue", "Cancel"))
                 return;
 
+            // Renaming Function from TestCopy function
+            Func<string, string> updateHeadName = (str) => str.Replace("머리", "");
+            Func<string, string> updateBodyName = (str) => str.Replace("몸", "");
+
             CopyFolder(Path.Combine(dataDir, "wav/"), "Assets/Sounds/", true);
             CopyFolder(Path.Combine(dataDir, "sprite/몬스터"), "Assets/Sprites/Monsters/");
             CopyFolder(Path.Combine(dataDir, "sprite/악세사리/남"), "Assets/Sprites/Headgear/Male/");
             CopyFolder(Path.Combine(dataDir, "sprite/악세사리/여"), "Assets/Sprites/Headgear/Female/");
             CopyFolder(Path.Combine(dataDir, "sprite/npc"), "Assets/Sprites/Npcs/");
             CopyFolder(Path.Combine(dataDir, "sprite/이팩트"), "Assets/Sprites/Effects/");
+            CopyFolder(Path.Combine(dataDir, "palette/머리"), "Assets/Sprites/Characters/HeadFemale/Palette/", false, false,
+                "*_여_*.pal", updateHeadName);
+            CopyFolder(Path.Combine(dataDir, "palette/머리"), "Assets/Sprites/Characters/HeadMale/Palette/", false, false,
+                "*_남_*.pal", updateHeadName);
             CopyFolder(Path.Combine(dataDir, "sprite/인간족/머리통/남"), "Assets/Sprites/Characters/HeadMale/");
             CopyFolder(Path.Combine(dataDir, "sprite/인간족/머리통/여"), "Assets/Sprites/Characters/HeadFemale/");
             CopyFolder(Path.Combine(dataDir, "sprite/인간족/몸통/남"), "Assets/Sprites/Characters/BodyMale/");
             CopyFolder(Path.Combine(dataDir, "sprite/인간족/몸통/여"), "Assets/Sprites/Characters/BodyFemale/");
-            CopyFolder(Path.Combine(dataDir, "palette/몸"), "Assets/Sprites/Characters/HeadFemale/", false, false,
-                "*_여_*.pal");
-            CopyFolder(Path.Combine(dataDir, "palette/몸"), "Assets/Sprites/Characters/HeadMale/", false, false,
-                "*_남_*.pal");
 
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/몸통/남"), "Assets/Sprites/Characters/BodyMale/");
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/몸통/여"), "Assets/Sprites/Characters/BodyFemale/");
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/몸통/남"), "Assets/Sprites/Characters/BodyMale/");
+            //CopyFolder(Path.Combine(dataDir, "sprite/인간족/몸통/여"), "Assets/Sprites/Characters/BodyFemale/");
             CopyFolder(Path.Combine(dataDir, "texture/유저인터페이스/illust"), "Assets/Sprites/Cutins/");
 
             CopyFolder(Path.Combine(dataDir, "sprite/인간족/성직자"), "Assets/Sprites/Weapons/Acolyte/", false, true, "*",
@@ -195,7 +199,7 @@ namespace Assets.Editor
                 UpdateSpriteName);
             CopyFolder(Path.Combine(dataDir, "sprite/인간족/바드"), "Assets/Sprites/Weapons/Bard/", false, true, "*",
                 UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/무희바지"), "Assets/Sprites/Weapons/Dancer/", false, true, "*",
+            CopyFolder(Path.Combine(dataDir, "sprite/인간족/무희"), "Assets/Sprites/Weapons/Dancer/", false, true, "*",
                 UpdateSpriteName);
             CopyFolder(Path.Combine(dataDir, "sprite/인간족/몽크"), "Assets/Sprites/Weapons/Monk/", false, true, "*",
                 UpdateSpriteName);
@@ -207,7 +211,7 @@ namespace Assets.Editor
                 UpdateSpriteName);
             CopyFolder(Path.Combine(dataDir, "sprite/인간족/신페코크루세이더"), "Assets/Sprites/Weapons/PecoCrusader/", false,
                 true, "*", UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/페코페코_기사_남"), "Assets/Sprites/Weapons/PecoKnight/", false, true,
+            CopyFolder(Path.Combine(dataDir, "sprite/인간족/페코페코_기사"), "Assets/Sprites/Weapons/PecoKnight/", false, true,
                 "*", UpdateSpriteName);
 
             CopyFolder(Path.Combine(dataDir, "sprite/방패/성직자"), "Assets/Sprites/Shields/Acolyte/", false, true, "*",
@@ -244,7 +248,7 @@ namespace Assets.Editor
                 UpdateSpriteName);
             CopyFolder(Path.Combine(dataDir, "sprite/방패/바드"), "Assets/Sprites/Shields/Bard/", false, true, "*",
                 UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/무희바지"), "Assets/Sprites/Shields/Dancer/", false, true, "*",
+            CopyFolder(Path.Combine(dataDir, "sprite/방패/무희"), "Assets/Sprites/Shields/Dancer/", false, true, "*",
                 UpdateSpriteName);
             CopyFolder(Path.Combine(dataDir, "sprite/방패/몽크"), "Assets/Sprites/Shields/Monk/", false, true, "*",
                 UpdateSpriteName);
@@ -252,12 +256,12 @@ namespace Assets.Editor
                 UpdateSpriteName);
             CopyFolder(Path.Combine(dataDir, "sprite/방패/연금술사"), "Assets/Sprites/Shields/Alchemist/", false, true, "*",
                 UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/운영자"), "Assets/Sprites/Shields/GameMaster/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/신페코크루세이더"), "Assets/Sprites/Shields/PecoCrusader/", false, true,
-                "*", UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/페코페코_기사_남"), "Assets/Sprites/Shields/PecoKnight/", false, true,
-                "*", UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/방패/운영자"), "Assets/Sprites/Shields/GameMaster/", false, true, "*",
+            //    UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/방패/신페코크루세이더"), "Assets/Sprites/Shields/PecoCrusader/", false, true,
+            //    "*", UpdateSpriteName);
+            //CopyFolder(Path.Combine(dataDir, "sprite/방패/페코페코_기사"), "Assets/Sprites/Shields/PecoKnight/", false, true,
+            //    "*", UpdateSpriteName);
 
             CopySingleFile(Path.Combine(dataDir, "sprite/cursors.act"), "Assets/Sprites/Misc/");
             CopySingleFile(Path.Combine(dataDir, "sprite/cursors.spr"), "Assets/Sprites/Misc/");
@@ -400,6 +404,24 @@ namespace Assets.Editor
                     },
                     new CopyCategory
                     {
+                        Label = "Head Palettes (Female)",
+                        Execute = () => CopyFolder(Path.Combine(dataDir, "palette/몸"),
+                            "Assets/Sprites/Characters/HeadFemale/", recursive: false, maleFemaleSplit: false,
+                            filter: "*_여_*.pal"),
+                        IsAlreadyImported = () => Directory.GetFiles("Assets/Sprites/Characters/HeadFemale",
+                            "*_여_*.pal", SearchOption.TopDirectoryOnly).Any()
+                    },
+                    new CopyCategory
+                    {
+                        Label = "Head Palettes (Male)",
+                        Execute = () => CopyFolder(Path.Combine(dataDir, "palette/몸"),
+                            "Assets/Sprites/Characters/HeadMale/", recursive: false, maleFemaleSplit: false,
+                            filter: "*_남_*.pal"),
+                        IsAlreadyImported = () => Directory.GetFiles("Assets/Sprites/Characters/HeadMale", "*_남_*.pal",
+                            SearchOption.TopDirectoryOnly).Any()
+                    },
+                    new CopyCategory
+                    {
                         Label = "Character Heads (Male)",
                         Execute = () => CopyFolder(Path.Combine(dataDir, "sprite/인간족/머리통/남"),
                             "Assets/Sprites/Characters/HeadMale/"),
@@ -440,24 +462,6 @@ namespace Assets.Editor
                     },
                     new CopyCategory
                     {
-                        Label = "Head Palettes (Female)",
-                        Execute = () => CopyFolder(Path.Combine(dataDir, "palette/몸"),
-                            "Assets/Sprites/Characters/HeadFemale/", recursive: false, maleFemaleSplit: false,
-                            filter: "*_여_*.pal"),
-                        IsAlreadyImported = () => Directory.GetFiles("Assets/Sprites/Characters/HeadFemale",
-                            "*_여_*.pal", SearchOption.TopDirectoryOnly).Any()
-                    },
-                    new CopyCategory
-                    {
-                        Label = "Head Palettes (Male)",
-                        Execute = () => CopyFolder(Path.Combine(dataDir, "palette/몸"),
-                            "Assets/Sprites/Characters/HeadMale/", recursive: false, maleFemaleSplit: false,
-                            filter: "*_남_*.pal"),
-                        IsAlreadyImported = () => Directory.GetFiles("Assets/Sprites/Characters/HeadMale", "*_남_*.pal",
-                            SearchOption.TopDirectoryOnly).Any()
-                    },
-                    new CopyCategory
-                    {
                         Label = "UI Illustrations",
                         Execute = () =>
                             CopyFolder(Path.Combine(dataDir, "texture/유저인터페이스/illust"), "Assets/Sprites/Cutins/"),
@@ -472,15 +476,15 @@ namespace Assets.Editor
                         {
                             var jobs = new[]
                             {
-                                "성직자", "궁수", "마법사", "상인", "초보자", "검사", "도둑", "슈퍼노비스", "기사", "위저드", "프리스트", "헌터", "어세신",
-                                "제철공", "크루세이더", "세이지", "바드", "무희바지", "몽크", "로그", "연금술사", "운영자", "신페코크루세이더", "페코페코_기사"
+                                "성직자", "궁수", "마법사", "상인", "초보자", "검사", "도둑", "슈퍼노비스",
+                                "기사", "위저드", "프리스트", "헌터", "어세신", "제철공", "크루세이더", "세이지",
+                                "바드", "무희", "몽크", "로그", "연금술사", "운영자", "신페코크루세이더", "페코페코_기사"
                             };
                             var outputs = new[]
                             {
                                 "Acolyte", "Archer", "Mage", "Merchant", "Novice", "Swordsman", "Thief", "SuperNovice",
                                 "Knight", "Wizard", "Priest", "Hunter", "Assassin", "Blacksmith", "Crusader", "Sage",
-                                "Bard", "Dancer", "Monk", "Rogue", "Alchemist", "GameMaster", "PecoCrusader",
-                                "PecoKnight"
+                                "Bard", "Dancer", "Monk", "Rogue", "Alchemist", "GameMaster", "PecoCrusader", "PecoKnight"
                             };
                             for (int i = 0; i < jobs.Length; i++)
                                 CopyFolder(Path.Combine(dataDir, $"sprite/인간족/{jobs[i]}/"),
@@ -503,15 +507,15 @@ namespace Assets.Editor
                         {
                             var jobs = new[]
                             {
-                                "성직자", "궁수", "마법사", "상인", "초보자", "검사", "도둑", "슈퍼노비스", "기사", "위저드", "프리스트", "헌터", "어세신",
-                                "제철공", "크루세이더", "세이지", "바드", "무희바지", "몽크", "로그", "연금술사", "운영자", "신페코크루세이더", "페코페코_기사"
+                                "성직자", "궁수", "마법사", "상인", "초보자", "검사", "도둑", "슈퍼노비스",
+                                "기사", "위저드", "프리스트", "헌터", "어세신", "제철공", "크루세이더", "세이지",
+                                "바드", "무희", "몽크", "로그", "연금술사", "운영자", "신페코크루세이더", "페코페코_기사"
                             };
                             var outputs = new[]
                             {
                                 "Acolyte", "Archer", "Mage", "Merchant", "Novice", "Swordsman", "Thief", "SuperNovice",
                                 "Knight", "Wizard", "Priest", "Hunter", "Assassin", "Blacksmith", "Crusader", "Sage",
-                                "Bard", "Dancer", "Monk", "Rogue", "Alchemist", "GameMaster", "PecoCrusader",
-                                "PecoKnight"
+                                "Bard", "Dancer", "Monk", "Rogue", "Alchemist", "GameMaster", "PecoCrusader", "PecoKnight"
                             };
                             for (int i = 0; i < jobs.Length; i++)
                                 CopyFolder(Path.Combine(dataDir, $"sprite/방패/{jobs[i]}/"),
