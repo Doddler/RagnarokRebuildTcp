@@ -213,7 +213,7 @@ namespace Assets.Scripts.MapEditor.Editor
                             color = "purple";
                             break;
                         default:
-                            throw new Exception("Unknown cell type: " + map.name + "(X: " + x + " / Y: " + y + ") " + type + ", Likely result of an incompatible map version. Stopping map import process.");
+                            throw new Exception("Unknown cell type for Map " + map.name + " (X: " + x + " / Y: " + y + ") Value " + type");
                     }
 
                     if (isInWater)
