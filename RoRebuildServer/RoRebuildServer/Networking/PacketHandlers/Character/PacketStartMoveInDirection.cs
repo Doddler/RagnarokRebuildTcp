@@ -33,7 +33,10 @@ public class PacketStartMoveInDirection : IClientPacketHandler
 
         var targetDirection = new Position(x, y);
 
-        connection.Character.TryMoveInDirection(targetDirection);
+        // if character cannot move from command in new direction, stop any existing moves
+        if (!connection.Character.TryMoveInDirection(targetDirection))
+            connection.Character.StopMovingImmediately();
+
         player.ClearTarget();
     }
 }
