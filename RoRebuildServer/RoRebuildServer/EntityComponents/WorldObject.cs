@@ -612,7 +612,52 @@ public class WorldObject : IEntityAutoReset
         return MoveSpeed * distance;
     }
 
-    //updated TryMove function using float position instead
+    public bool TryMoveInDirection(Position targetDirection) 
+    {
+        // check how much we can move in the direction
+        var stepsToMove = CheckMoveInDirection(targetDirection);
+
+        // move if can take steps
+        if (stepsToMove > 0)
+            return TryMove(Position + (stepsToMove * targetDirection), 0);
+
+        // if diagonal move, check if can move along 1 axis
+        if (targetDirection.X == 0 || targetDirection.Y == 0)
+            return false;
+
+        var xOnlyDirection = new Position(targetDirection.X, 0);
+        var yOnlyDirection = new Position(0, targetDirection.Y);
+
+        var xOnlySteps = CheckMoveInDirection(xOnlyDirection);
+        var yOnlySteps = CheckMoveInDirection(yOnlyDirection);
+
+        // if can move along 1 axis, move along the axis with the most available steps
+        if (xOnlySteps < 1 && yOnlySteps < 1)
+            return false;
+
+        if (xOnlySteps >= yOnlySteps)
+            return TryMove(Position + (xOnlySteps * xOnlyDirection), 0);
+        else
+            return TryMove(Position + (yOnlySteps * yOnlyDirection), 0);
+    }
+
+    public int CheckMoveInDirection(Position targetDirection) 
+    {
+        if (Map == null) 
+            return -1;
+
+        // check how much we can move in a certain direction,
+        // to avoid janky pathfinding when using wasd controls
+        for (int i = 1; i < 10; ++i)
+        {
+            if (!Map.WalkData.IsCellWalkable(Position + (i * targetDirection)))
+                return (i - 1);
+        }
+
+        return 9;
+    }
+
+    //updated TryMove function using float position instead  
     public bool TryMove(Position target, int desiredDistanceToTarget)
     {
         Debug.Assert(Map != null);

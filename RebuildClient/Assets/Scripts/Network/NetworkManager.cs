@@ -1285,6 +1285,16 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
+        public void MovePlayerInDirection(Vector2Int direction)
+        {
+            var msg = StartMessage();
+            msg.Write((byte)PacketType.StartWalkInDirection);
+            msg.Write((short)direction.x);
+            msg.Write((short)direction.y);
+
+            SendMessage(msg);
+        }
+
         public void SkillAttack()
         {
             var msg = StartMessage();

@@ -263,10 +263,8 @@ namespace Assets.Scripts
         public float ClickDelay;
 
         // WASD controls
-        public float WASDHoldingTime;
         public float WASDCommandDelay;
-        public Vector2Int WASDDirection;
-        public Vector2Int WASDPreviousWalkTo;
+        public Vector2Int WASDPreviousDirection;
 
         public float Rotation;
         public float Distance;
@@ -2304,22 +2302,22 @@ namespace Assets.Scripts
             GameConfig.SaveConfig();
         }
 
+
         private void WASDMove()
         {
             if (!IsAlive() || IsSitting())
                 return;
 
-            var defaultDelay = 0.30f;
+            var defaultDelay = 0.20f;
 
             var moveDirection = GetWASDKeyPress();
 
             // if player was wasd moving and then stopped, stop the character
-            if (moveDirection == Direction.None && 
-                WASDDirection != new Vector2Int(0, 0))
+            if (moveDirection == Direction.None &&
+                WASDPreviousDirection != new Vector2Int(0, 0))
             {
                 NetworkManager.Instance.StopPlayer();
-                WASDDirection = new Vector2Int(0, 0);
-                WASDHoldingTime = defaultDelay;
+                WASDPreviousDirection = new Vector2Int(0, 0);
                 return;
             }
 
@@ -2331,13 +2329,10 @@ namespace Assets.Scripts
                 var postRotationAngle = moveDirectionAngle - Rotation; // adjust angle for camera
 
                 int clampedAngle1 = ((int)postRotationAngle + (10 * 360)) % 360; // clamped to 0 to 360
-                                                                                 //Debug.LogWarning("clampedAngle1: " + clampedAngle1);
 
                 // adjust 0 to 360 to -180 to 180
                 if (clampedAngle1 > 180)
-                {
                     clampedAngle1 = clampedAngle1 - 360;
-                }
 
                 // get the direction
                 var newDirectionFace = Directions.GetFacingForAngle(clampedAngle1);
@@ -2346,76 +2341,22 @@ namespace Assets.Scripts
                 var newDirectionTuple = Directions.GetXYForDirection(newDirectionFace);
                 var newDirection = new Vector2Int(newDirectionTuple.x, newDirectionTuple.y);
 
-                WASDHoldingTime -= Time.deltaTime;
                 WASDCommandDelay -= Time.deltaTime;
 
-                // used to smoothen the animation by taking multiple steps
-                int steps = 1;
-                if (WASDHoldingTime < 0)
-                {
-                    steps = 3;
-                }
+                // if different direction, send command without delay
 
-                // if change direction, send steps to turn and ignore delay
-                if (WASDDirection != newDirection) 
-                {
-                    WASDCommandDelay = -1;
-                    steps = 2;
-                }
+                if (newDirection != WASDPreviousDirection)
+                    WASDCommandDelay = -1f;
 
                 // check delay
                 if (WASDCommandDelay > 0)
                     return;
 
-                WASDDirection = newDirection;
-
-                // try walk, reduce steps if near edge
-                int stepsToCheck = steps;
-                while (stepsToCheck > 0) 
-                {
-                    if (WASDWalkTo(stepsToCheck--, WASDDirection))
-                        return;
-                }
-
-                // if diagonal, check moving along 1 axis instead, reduce steps if near edge
-                if (WASDDirection.x != 0 && WASDDirection.y != 0)
-                {
-                    stepsToCheck = steps;
-                    while (stepsToCheck > 0)
-                    {
-                        if (WASDWalkTo(stepsToCheck, new Vector2Int(WASDDirection.x, 0)))
-                            return;
-
-                        else if (WASDWalkTo(stepsToCheck, new Vector2Int(0, WASDDirection.y)))
-                            return;
-
-                        stepsToCheck--;
-                    }
-                }
-
-                // if nothing works give up
+                // send direction and reset delay
+                NetworkManager.Instance.MovePlayerInDirection(newDirection);
+                WASDPreviousDirection = newDirection;
+                WASDCommandDelay = defaultDelay;
             }
-        }
-
-        private bool WASDWalkTo(int multi, Vector2Int wasdDirection) 
-        {
-            // move player
-            var walkTo = PlayerPosition + (multi * wasdDirection);
-
-            var hasValidPath = WalkProvider.IsCellWalkable(walkTo);
-
-            // move player
-            if (hasValidPath)
-            {
-                NetworkManager.Instance.MovePlayer(walkTo);
-                WASDPreviousWalkTo = walkTo;
-
-                WASDCommandDelay = 0.1f;
-
-                return true;
-            }
-
-            return false;
         }
 
         private Direction GetWASDKeyPress()
