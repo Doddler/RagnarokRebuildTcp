@@ -1,9 +1,11 @@
-using System.Collections.Generic;
-using System.Linq;
 using Assets.Scripts.Sprites;
 using PlayerControl;
 using RebuildSharedData.ClientTypes;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace Assets.Scripts.UI
 {
@@ -11,6 +13,7 @@ namespace Assets.Scripts.UI
     {
         public GameObject ContentArea;
         public GameObject EntryTemplate;
+        public RoSpriteRendererUI EmoteRenderer;
         private bool isInitialized;
 
         private List<EmoteEntry> EmoteEntries = new();
@@ -82,28 +85,43 @@ namespace Assets.Scripts.UI
             return emote;
         }
 
+        private void OnLoadEmotesDone(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<RoSpriteData> spriteData)
+        {
+            if (spriteData.Result != null)
+            {
+                EmoteRenderer.SpriteData = spriteData.Result;
+
+                var emotes = ClientDataLoader.Instance.GetEmoteTable;
+
+                foreach (var (_, emote) in emotes)
+                {
+                    var entry = CreateEntry(emote);
+                    EmoteEntries.Add(entry);
+                }
+                //
+                // var text = EmoteListFile.text.Split("\r\n");
+                //
+                // for (var i = 1; i < text.Length; i++)
+                // {
+                //     var line = text[i];
+                //     var entry = CreateEntry(line);
+                //
+                //     EmoteEntries.Add(entry);
+                // }
+
+                Destroy(EntryTemplate);
+
+                isInitialized = true;
+            }
+            else
+            {
+                Debug.LogWarning("Emote Sprite Data could not be found at: Assets/Sprites/Imported/Miscss/emotionsas.asset");
+            }
+        }
+
         void Init()
         {
-            var emotes = ClientDataLoader.Instance.GetEmoteTable;
-            foreach (var (_, emote) in emotes)
-            {
-                var entry = CreateEntry(emote);
-                EmoteEntries.Add(entry);
-            }
-            //
-            // var text = EmoteListFile.text.Split("\r\n");
-            //
-            // for (var i = 1; i < text.Length; i++)
-            // {
-            //     var line = text[i];
-            //     var entry = CreateEntry(line);
-            //
-            //     EmoteEntries.Add(entry);
-            // }
-
-            Destroy(EntryTemplate);
-            
-            isInitialized = true;
+            Addressables.LoadAssetAsync<RoSpriteData>("Assets/Sprites/Misc/emotion.spr").Completed += OnLoadEmotesDone;
         }
 
         // Update is called once per frame
