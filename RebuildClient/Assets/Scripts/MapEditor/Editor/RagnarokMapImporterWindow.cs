@@ -36,6 +36,7 @@ namespace Assets.Scripts.MapEditor.Editor
                 Directory.CreateDirectory("Assets/Scenes/Maps/");
 
             int imported = 0;
+            List<string> failedMaps = new List<string>();
             foreach (var map in maps)
             {
                 var scenePath = $"Assets/Scenes/Maps/{map.Code}.unity";
@@ -45,19 +46,39 @@ namespace Assets.Scripts.MapEditor.Editor
                 var gndPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, map.Code + ".gnd");
                 if (File.Exists(gndPath))
                 {
-                    ImportMap(gndPath);
-                    imported++;
+                    try
+                    {
+                        ImportMap(gndPath);
+                        imported++;
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogError($"Exception generated while importing map {gndPath}!");
+                        Debug.LogException(e);
+                        failedMaps.Add("Import Error - " + gndPath);
+                    }
                 }
                 else
                 {
                     Debug.LogWarning($"Map file not found: {gndPath}");
+                    failedMaps.Add("Map File not found - " + gndPath);
                 }
             }
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
-            Debug.Log($"[Map Import] Imported {imported} new map(s).");
+            Debug.Log($"[Map Import] Imported {imported} new map(s). Import failed for {failedMaps.Count} Map(s)");
+
+            if (failedMaps.Count > 0)
+            {
+                string failedMapsList = "";
+                foreach (string map in failedMaps)
+                {
+                    failedMapsList += map + "\n";
+                }
+                Debug.LogWarning($"[Map Import] Map import failed on: \n{failedMapsList}");
+            }
         }
 
 
