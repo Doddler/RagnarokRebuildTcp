@@ -161,8 +161,6 @@ namespace Assets.Scripts.Sprites
 
         public bool IsInitialized => isInitialized;
 
-        private Camera mainCamera;
-
         public bool IsAttackMotion => CurrentMotion == SpriteMotion.Attack1 || CurrentMotion == SpriteMotion.Attack2 ||
                                       CurrentMotion == SpriteMotion.Attack3;
 
@@ -424,9 +422,10 @@ namespace Assets.Scripts.Sprites
             }
             
             if(Parent != null)
-                ChildUpdate();
-
-            SpriteRenderer.UpdateRenderer();
+                ChildUpdate(); //this will call UpdateRenderer after updating the angle to match the parent
+            else
+                SpriteRenderer.UpdateRenderer();
+            
             SpriteRenderer.Rebuild();
         }
 
@@ -634,6 +633,7 @@ namespace Assets.Scripts.Sprites
                 Angle = Parent.Angle;
                 SpriteRenderer.SetAngle(Angle);
                 currentAngleIndex = Parent.currentAngleIndex;
+                SpriteRenderer.UpdateRenderer();
             }
 
             if (!IgnoreAnchor)
@@ -736,30 +736,6 @@ namespace Assets.Scripts.Sprites
 	        Shadow.GetComponent<SpriteRenderer>().material = SpriteUtil.shadowMaterial;
         }
         
-        public void LateUpdate()
-        {
-            if (canUpdateRenderer)
-            {
-                nextUseSmoothRender = !nextUseSmoothRender;
-                canUpdateRenderer = false;
-            }
-
-            if (Parent != null)
-                return;
-            if (mainCamera == null)
-                mainCamera = Camera.main;
-
-            var screenPos = Camera.main.WorldToScreenPoint(transform.position);
-            screenPos = new Vector3(
-                Mathf.Clamp(screenPos.x, -100, mainCamera.pixelWidth + 100),
-                Mathf.Clamp(screenPos.y, -100, mainCamera.pixelHeight + 100),
-                0);
-
-            var sortGroup = Mathf.RoundToInt(screenPos.y * Screen.width + screenPos.x);
-            var ratio = 1f / (Screen.width * Screen.height / 20000f);
-            var sortLayerNum = 10000 - Mathf.RoundToInt(sortGroup * ratio);
-        }
-
         public void Update()
         {
             if (!isInitialized)
