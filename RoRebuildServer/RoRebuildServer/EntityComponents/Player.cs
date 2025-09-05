@@ -1993,9 +1993,9 @@ public class Player : IEntityAutoReset
 
     private bool InMoveReadyState => (Character.State == CharacterState.Idle || Character.State == CharacterState.Moving) && !CombatEntity.IsCasting;
 
-    public bool CanPerformCharacterActions()
+    public bool CanPerformCharacterActions(bool ignoreActionCooldown = false)
     {
-        if (InInputActionCooldown())
+        if (!ignoreActionCooldown && InInputActionCooldown())
             return false;
         if (Character.State == CharacterState.Dead)
             return false;

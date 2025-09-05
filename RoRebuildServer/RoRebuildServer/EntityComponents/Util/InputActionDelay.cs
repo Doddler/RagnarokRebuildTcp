@@ -6,6 +6,7 @@ public enum InputActionCooldownType
 {
     Click,
     FaceDirection,
+    MoveInDirection,
     SitStand,
     StopAction,
     UseItem,
@@ -17,6 +18,7 @@ public static class InputActionDelay
 {
     public const float ClickCooldownTime = 0.25f;
     public const float FaceDirectionCooldown = 0.10f;
+    public const float MoveInDirectionCooldown = 0.15f;
     public const float SitStandCooldown = 0.25f;
     private const float StopActionCooldown = 0.20f;
     private const float UseItemCooldown = 0.20f;
@@ -29,6 +31,7 @@ public static class InputActionDelay
         {
             case InputActionCooldownType.Click: return ClickCooldownTime;
             case InputActionCooldownType.FaceDirection: return FaceDirectionCooldown;
+            case InputActionCooldownType.MoveInDirection: return MoveInDirectionCooldown;
             case InputActionCooldownType.SitStand: return SitStandCooldown;
             case InputActionCooldownType.StopAction: return StopActionCooldown;
             case InputActionCooldownType.UseItem: return UseItemCooldown;

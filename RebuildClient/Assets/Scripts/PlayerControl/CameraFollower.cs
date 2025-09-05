@@ -2308,7 +2308,7 @@ namespace Assets.Scripts
             if (!IsAlive() || IsSitting())
                 return;
 
-            var defaultDelay = 0.20f;
+            var defaultDelay = 0.30f;
 
             var moveDirection = GetWASDKeyPress();
 

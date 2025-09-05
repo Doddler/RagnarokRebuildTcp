@@ -20,13 +20,14 @@ public class PacketStartMoveInDirection : IClientPacketHandler
 
         var player = connection.Player;
 
-        if (!player.CanPerformCharacterActions())
+        //MoveInDirection has a higher action cooldown cutoff so that players aren't locked out of moving
+        if (!player.CanPerformCharacterActions(true) && player.InputActionCooldown < 1.2f)
             return;
 
         if (player.CombatEntity.HasBodyState(BodyStateFlags.Hidden))
             return;
 
-        player.AddInputActionDelay(InputActionCooldownType.Click);
+        player.AddInputActionDelay(InputActionCooldownType.MoveInDirection);
 
         var x = msg.ReadInt16();
         var y = msg.ReadInt16();
