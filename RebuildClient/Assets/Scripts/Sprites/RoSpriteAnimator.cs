@@ -422,6 +422,9 @@ namespace Assets.Scripts.Sprites
                         OnFinishPlaying();
                 }
             }
+            
+            if(Parent != null)
+                ChildUpdate();
 
             SpriteRenderer.UpdateRenderer();
             SpriteRenderer.Rebuild();
@@ -622,7 +625,6 @@ namespace Assets.Scripts.Sprites
             currentFrame = newCurrentFrame;
 
             UpdateSpriteFrame();
-            ChildUpdate();
         }
 
         public void ChildUpdate()
