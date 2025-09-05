@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Numerics;
+using System.Runtime.CompilerServices;
 using RebuildSharedData.Enum;
 
 namespace RebuildSharedData.Data;
@@ -227,4 +228,7 @@ public struct Position : IEquatable<Position>
     public static Position operator -(Position left, Position right) => new Position(left.X - right.X, left.Y - right.Y);
     public static Position operator +(Position left, Position right) => new Position(left.X + right.X, left.Y + right.Y);
     public static Position operator /(Position left, int right) => new Position(left.X / right, left.Y / right);
+
+    public static Position operator *(Position v, int scalar) => new Position(v.X * scalar, v.Y * scalar);
+    public static Position operator *(int scalar, Position v) => new Position(v.X * scalar, v.Y * scalar);
 }
