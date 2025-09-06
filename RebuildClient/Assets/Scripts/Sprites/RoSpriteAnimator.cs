@@ -513,7 +513,7 @@ namespace Assets.Scripts.Sprites
                 if (CurrentMotion == SpriteMotion.Idle || CurrentMotion == SpriteMotion.Sit)
                 {
                     currentFrame = (int)HeadFacing;
-                    UpdateSpriteFrame();
+                    //UpdateSpriteFrame();
                     PauseAnimation();
                 }
                 else
