@@ -18,11 +18,11 @@ namespace Assets.Scripts.UI
 
         private List<EmoteEntry> EmoteEntries = new();
 
-        void Start()
-        {
-            if (!isInitialized)
-                Init();
-        }
+        // void Start()
+        // {
+        //     if (!isInitialized)
+        //         Init();
+        // }
 
         public void EnsureInitialized()
         {
@@ -123,13 +123,5 @@ namespace Assets.Scripts.UI
         {
             Addressables.LoadAssetAsync<RoSpriteData>("Assets/Sprites/Misc/emotion.spr").Completed += OnLoadEmotesDone;
         }
-
-        // Update is called once per frame
-        void Update()
-        {
-            if (!isInitialized)
-                return;
-        }
-        
     }
 }
