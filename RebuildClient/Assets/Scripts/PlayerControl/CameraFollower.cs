@@ -296,7 +296,10 @@ namespace Assets.Scripts
         public void Awake()
         {
             _instance = this;
+        }
 
+        public void Initialize()
+        {
             //CurLookAt = Target.transform.position;
             TargetFollow = CurLookAt;
             Camera = GetComponent<Camera>();

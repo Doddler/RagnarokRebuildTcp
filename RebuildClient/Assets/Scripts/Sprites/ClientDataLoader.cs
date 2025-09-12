@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Effects.EffectHandlers.Environment;
@@ -18,6 +21,7 @@ using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Networking;
 using UnityEngine.Rendering;
 using UnityEngine.ResourceManagement.ResourceLocations;
 using UnityEngine.U2D;
@@ -71,7 +75,7 @@ namespace Assets.Scripts.Sprites
 
         private readonly List<string> validMonsterClasses = new();
         private readonly List<string> validMonsterCodes = new();
-        
+
         private const string MonsterClassDataPath = "ClientConfigGenerated/monsterclass.json";
         private const string PlayerClassDataPath = "ClientConfigGenerated/playerclass.json";
         private const string PlayerHeadDataPath = "ClientConfig/headdata.json";
@@ -92,6 +96,43 @@ namespace Assets.Scripts.Sprites
         private const string JobExpDataPath = "ClientConfigGenerated/jobexpchart.txt";
         private const string EmoteDataPath = "ClientConfigGenerated/emotes.json";
         private const string StatusEffectDataPath = "ClientConfigGenerated/statusinfo.json";
+
+// #if UNITY_WEBGL
+        private string[] streamingAssets = new[]
+        {
+            "ClientConfigGenerated/effects.json",
+            "ClientConfigGenerated/levelchart.txt",
+            "ClientConfig/AdminWarpList.txt",
+            "ClientConfig/fogdata.json",
+            MapDataPath,
+        };
+
+        private string[] initializeOnlyStreamingAssets = new[]
+        {
+            MonsterClassDataPath,
+            PlayerClassDataPath,
+            PlayerHeadDataPath,
+            PlayerWeaponDataPath,
+            WeaponClassDataPath,
+            SkillDataPath,
+            SkillTreeDataPath,
+            MapViewpointDataPath,
+            UniqueAttackActionDataPath,
+            MetamorphResultDataPath,
+            ItemDataPath,
+            // MapDataPath,
+            EquipmentSpriteDataPath,
+            ItemDescDataPath,
+            CardPrefixDataPath,
+            ServerVersionDataPath,
+            PatchNoteDataPath,
+            JobExpDataPath,
+            EmoteDataPath,
+            StatusEffectDataPath,
+        };
+
+        private Dictionary<string, string> streamingAssetsData;
+// #endif
 
         public Sprite GetIconAtlasSprite(string name) => EffectSharedMaterialManager.GetAtlasSprite(ItemIconAtlas, name);
 
@@ -122,6 +163,7 @@ namespace Assets.Scripts.Sprites
         public string GetItemDescription(string itemCode) => itemDescriptionTable.GetValueOrDefault(itemCode, "No description available.");
         public CardPrefixData GetCardPrefixData(int id) => cardPrefixPostfixTable.GetValueOrDefault(id, null);
         public StatusEffectData GetStatusEffect(int id) => statusEffectData.GetValueOrDefault(id, null);
+
         public int GetJobExpRequired(int job, int level)
         {
             if (!playerClassLookup.TryGetValue(job, out var jobInfo))
@@ -165,7 +207,63 @@ namespace Assets.Scripts.Sprites
             //Initialize();
         }
 
-        public static string ReadStreamingAssetFile(string file) => File.ReadAllText(Path.Combine(Application.streamingAssetsPath, file));
+        public IEnumerator LoadStreamingAssets()
+        {
+            if (Application.platform == RuntimePlatform.WebGLPlayer || Application.isEditor)
+            {
+                streamingAssetsData = new Dictionary<string, string>();
+
+                var assetList = new List<string>();
+                assetList.AddRange(streamingAssets);
+                assetList.AddRange(initializeOnlyStreamingAssets);
+                
+                var bom = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
+
+                foreach (var assetName in assetList)
+                {
+                    var path = Path.Combine(Application.streamingAssetsPath, assetName);
+                    using UnityWebRequest www = UnityWebRequest.Get(path);
+
+                    yield return www.SendWebRequest();
+                    if (www.result == UnityWebRequest.Result.Success)
+                    {
+                        var txt = www.downloadHandler.text;
+                        if (txt.StartsWith(bom, StringComparison.Ordinal))
+                            txt = txt.Remove(0, bom.Length); //fix byte order mark because unity is fucking stupid
+
+                        streamingAssetsData.Add(assetName, txt);
+                    }
+                    else
+                    {
+                        Debug.LogError($"Could not load streaming asset using WWW request at path: {path}");
+                        streamingAssetsData.Add(assetName, "");
+                    }
+                }
+            }
+        }
+
+        public static string ReadStreamingAssetFile(string file)
+        {
+#if UNITY_EDITOR
+            if (!Instance.streamingAssetsData.ContainsKey(file))
+                Debug.LogWarning($"Warning, attempting to load streaming asset {file}, but it is not in the streamingAssets list in ClientDataLoader.cs."
+                                 + " This can cause the file to be unloadable in a webGL build.");
+#endif
+
+#if !UNITY_WEBGL && !UNITY_EDITOR
+            //Non WebGL platforms can read from streaming assets directly.
+            return File.ReadAllText(Path.Combine(Application.streamingAssetsPath, file));
+#endif
+
+            if (Instance.streamingAssetsData.TryGetValue(file, out var data))
+                return data;
+
+            Debug.LogWarning($"Could not load streaming asset from memory for path: {file}");
+            if (Application.isEditor)
+                return File.ReadAllText(Path.Combine(Application.streamingAssetsPath, file));
+
+            return "";
+        }
 
         public void Initialize()
         {
@@ -307,7 +405,8 @@ namespace Assets.Scripts.Sprites
                     Debug.LogWarning($"Could not convert {action.Action} to a skill type when parsing unique skill actions");
             }
 
-            var metamorphResults = JsonUtility.FromJson<Wrapper<MetamorphTransitionResult>>(ReadStreamingAssetFile(MetamorphResultDataPath));
+            var json = ReadStreamingAssetFile(MetamorphResultDataPath); //File.ReadAllText(Path.Combine(Application.streamingAssetsPath, MetamorphResultDataPath)); // ;
+            var metamorphResults = JsonUtility.FromJson<Wrapper<MetamorphTransitionResult>>(json);
             foreach (var result in metamorphResults.Items)
             {
                 metamorphTransitionResult.Add(result.Sprite, result);
@@ -377,6 +476,12 @@ namespace Assets.Scripts.Sprites
             }
 
             PatchNotes = sb.ToString();
+
+            if (streamingAssetsData != null)
+            {
+                foreach (var asset in initializeOnlyStreamingAssets)
+                    streamingAssetsData.Remove(asset); //no longer necessary
+            }
 
             isInitialized = true;
         }
@@ -568,7 +673,7 @@ namespace Assets.Scripts.Sprites
             control.WeaponClass = param.WeaponClass;
             control.PartyName = param.PartyName;
             control.IsPartyMember = param.PartyId > 0 && param.PartyId == state.PartyId;
-            
+
             bodySprite.Controllable = control;
             if (param.State == CharacterState.Moving)
                 bodySprite.ChangeMotion(SpriteMotion.Walk);
@@ -628,7 +733,8 @@ namespace Assets.Scripts.Sprites
             if (param.PartyId == state.PartyId)
             {
                 state.AssignPartyMemberControllable(control.Id, control);
-                if(state.PartyMemberIdLookup.TryGetValue(control.Id, out var partyMemberId) && UiManager.Instance.PartyPanel.PartyEntryLookup.TryGetValue(partyMemberId, out var panel))
+                if (state.PartyMemberIdLookup.TryGetValue(control.Id, out var partyMemberId) &&
+                    UiManager.Instance.PartyPanel.PartyEntryLookup.TryGetValue(partyMemberId, out var panel))
                     panel.ClearAllStatusEffects(); //we will re-assign them right after
             }
 
@@ -652,14 +758,14 @@ namespace Assets.Scripts.Sprites
                 cart.AttachCart(control, cartStyle);
                 control.FollowerObject = cartObj;
             }
-            
+
             if ((param.Follower & PlayerFollower.Falcon) > 0)
             {
                 var birdObj = new GameObject();
                 var bird = birdObj.AddComponent<BirdFollower>();
                 bird.AttachBird(control, 0);
-                
-                if(control.FollowerObject != null)
+
+                if (control.FollowerObject != null)
                     Destroy(control.FollowerObject);
                 control.FollowerObject = birdObj;
 
@@ -857,7 +963,7 @@ namespace Assets.Scripts.Sprites
 
             var obj = new GameObject(type.ToString());
             obj.layer = LayerMask.NameToLayer("Characters");
-            
+
             var control = obj.AddComponent<ServerControllable>();
             control.ClassId = param.ClassId;
             control.CharacterType = CharacterType.NPC;
@@ -927,7 +1033,7 @@ namespace Assets.Scripts.Sprites
 
             return control;
         }
-        
+
         private void AttachPrefabToControllable(ServerControllable target, string prefabName)
         {
             var loader = Addressables.LoadAssetAsync<GameObject>(prefabName);

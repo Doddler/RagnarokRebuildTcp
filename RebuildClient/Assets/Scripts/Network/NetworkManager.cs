@@ -143,6 +143,8 @@ namespace Assets.Scripts.Network
             var info = Addressables.GetLocatorInfo("AddressablesMainContentCatalog");
             ResourceLocator = info.Locator;
 #endif
+            yield return StartCoroutine(ClientDataLoader.Instance.LoadStreamingAssets());
+            CameraFollower.Instance.Initialize();
 
             ClientDataLoader.Instance.Initialize();
             UiManager.Instance.Initialize();

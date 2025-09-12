@@ -51,9 +51,6 @@ namespace Assets.Scripts.Utility
 			Instance = this;
 			BlackoutImage.gameObject.SetActive(true);
 			LoadingImage.gameObject.SetActive(true);
-			
-			var json = JsonUtility.FromJson<Wrapper<FogInfo>>(ClientDataLoader.ReadStreamingAssetFile("ClientConfig/fogdata.json"));
-			mapFogInfo = json.Items.ToList();
         }
 
 		private void LoadMaps()
@@ -200,6 +197,12 @@ namespace Assets.Scripts.Utility
 			if (needAudioChange)
 			{
 				AudioManager.Instance.PlayBgm(newMap.Music);
+			}
+
+			if (mapFogInfo == null)
+			{
+				var json = JsonUtility.FromJson<Wrapper<FogInfo>>(ClientDataLoader.ReadStreamingAssetFile("ClientConfig/fogdata.json"));
+				mapFogInfo = json.Items.ToList();
 			}
 			
 			var fog = mapFogInfo.FirstOrDefault(m => m.Map == newScene);
