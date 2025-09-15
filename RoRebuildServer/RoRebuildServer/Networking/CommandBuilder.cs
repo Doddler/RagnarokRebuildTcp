@@ -659,10 +659,10 @@ public static class CommandBuilder
         packet.Write((byte)di.Result);
         packet.Write(pos);
         packet.Write(di.DisplayDamage);
+        packet.Write(di.DisplayDamageOffHand);
         packet.Write(di.AttackMotionTime);
         packet.Write(di.Time - Time.ElapsedTimeFloat);
         packet.Write(showAttackMotion);
-
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }

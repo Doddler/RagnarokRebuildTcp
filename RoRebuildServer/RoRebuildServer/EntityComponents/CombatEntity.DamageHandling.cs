@@ -17,8 +17,7 @@ namespace RoRebuildServer.EntityComponents;
 
 public partial class CombatEntity
 {
-
-    public (int atk1, int atk2) CalculateAttackPowerRange(bool isMagic)
+    public (int atk1, int atk2) CalculateAttackPowerRange(bool isMagic, bool isMainHand = true)
     {
         var atk1 = 0;
         var atk2 = 0;
@@ -30,10 +29,12 @@ public partial class CombatEntity
                 var str = GetEffectiveStat(CharacterStat.Str);
                 var dex = GetEffectiveStat(CharacterStat.Dex);
 
+                var weapon = isMainHand ? Player.Equipment.MainHandWeapon : Player.Equipment.OffHandWeapon;
+
                 var mainStat = Player.WeaponClass == 12 ? dex : str;
                 var secondaryStat = Player.WeaponClass == 12 ? str : dex;
-                var weaponLvl = Player.Equipment.WeaponLevel;
-                var weaponAttack = Player.Equipment.WeaponAttackPower;
+                var weaponLvl = weapon.WeaponLevel;
+                var weaponAttack = weapon.WeaponAttackPower;
                 if (Player.WeaponClass == 12) //bow
                     atk1 = (int)(dex * (0.8f + 0.2f * weaponLvl)); //more or less pre-renewal
                 else
@@ -130,7 +131,7 @@ public partial class CombatEntity
                 attackElement = AttackElement.Neutral;
                 if (attacker != null && attacker.Character.Type == CharacterType.Player)
                 {
-                    attackElement = attacker.Player.Equipment.WeaponElement;
+                    attackElement = attacker.Player.Equipment.MainHandWeapon.WeaponElement;
                     if (attacker.Player.WeaponClass == 12) //bows
                     {
                         var arrowElement = attacker.Player.Equipment.AmmoElement;
@@ -225,8 +226,7 @@ public partial class CombatEntity
                         else
                             subDef = vit + GameRandom.NextInclusive(0, 20000) % vitRng;
                     }
-
-
+                    
                     subDef = subDef * (100 + GetStat(CharacterStat.AddSoftDefPercent)) / 100;
                 }
 
@@ -273,8 +273,8 @@ public partial class CombatEntity
         return (defCut, subDef);
     }
 
-    //crit rate: 1%, + 0.3% per luk, + 0.033% per level
-    public int GetBaseCritRate() => (1 + GetEffectiveStat(CharacterStat.Luck) / 3 + GetStat(CharacterStat.AddCrit)) * 10 + GetStat(CharacterStat.Level) / 3;
+    //crit rate: 1%, + 0.3% per luk, + 0.02% per level
+    public int GetBaseCritRate() => (1 + GetEffectiveStat(CharacterStat.Luck) / 3 + GetStat(CharacterStat.AddCrit)) * 10 + GetStat(CharacterStat.Level) / 5;
     public int GetBonusCritRateVsTarget(CombatEntity target) => GetStat(CharacterStat.AddCritChanceRaceFormless + (int)target.GetRace());
 
     public DamageInfo CalculateCombatResultUsingSetAttackPower(CombatEntity target, AttackRequest req)
@@ -542,7 +542,10 @@ public partial class CombatEntity
             }
 
             if (Character.Type == CharacterType.Player && (flags & AttackFlags.IgnoreWeaponRefine) == 0)
-                addDamage += GameRandom.Next(Player.Equipment.MinRefineAtkBonus, Player.Equipment.MaxRefineAtkBonus); //works on both magic and physical!
+            {
+                var weapon = (flags & AttackFlags.OffHandWeapon) > 0 ? Player.Equipment.MainHandWeapon : Player.Equipment.OffHandWeapon;
+                addDamage += GameRandom.Next(weapon.MinRefineAtkBonus, weapon.MaxRefineAtkBonus); //works on both magic and physical!
+            }
         }
 
         //-------------------------------
@@ -762,6 +765,9 @@ public partial class CombatEntity
             targetStatus.OnTakeDamage(ref di);
 
         var damage = di.Damage * di.HitCount;
+
+        if (di.DamageOffHand > 0)
+            damage += di.DamageOffHand;
 
         //inform clients the player was hit and for how much
         var delayTime = GetTiming(TimingStat.HitDelayTime);

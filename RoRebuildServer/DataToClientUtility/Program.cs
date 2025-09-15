@@ -336,6 +336,7 @@ class Program
         foreach (var entry in GetCsvRows<CsvItemWeapon>("ItemsWeapons.csv"))
         {
             var itemData = DataManager.ItemList[entry.Id];
+            var classDef = weaponClasses.FirstOrDefault(w => w.WeaponClass == entry.Type, new PlayerWeaponClass() { Name = entry.Type });
             var item = new ItemData()
             {
                 Code = entry.Code,
@@ -351,7 +352,8 @@ class Program
                 SellPrice = itemData.SellToStoreValue,
                 Weight = entry.Weight,
                 Sprite = entry.Sprite,
-                Position = entry.Position == WeaponPosition.MainHand ? EquipPosition.MainHand : EquipPosition.BothHands
+                Position = entry.Position == WeaponPosition.MainHand ? EquipPosition.MainHand : EquipPosition.BothHands,
+                SubType = classDef.Id
             };
             itemList.Items.Add(item);
 
@@ -370,7 +372,7 @@ class Program
             var breakable = entry.Breakable.ToLower() == "yes";
             var refinable = entry.Refinable.ToLower() == "yes";
 
-            var classDef = weaponClasses.FirstOrDefault(w => w.WeaponClass == entry.Type, new PlayerWeaponClass() { Name = entry.Type });
+            
             var equipGroup = equipGroupDescriptions.TryGetValue(entry.EquipGroup, out var groupName) ? groupName : "<i>Currently unequippable by any job</i>";
             desc += $"<line-height=120%>\n</line-height=100%>";
             //desc += $"<line-height=120%>\n</line-height=100%>Type: <color=#777777>Weapon</color>";
@@ -920,6 +922,7 @@ class Program
         {
             Job = jobs.First(j => j.Name == w.Job).Id,
             Class = classes.First(c => c.WeaponClass == w.Class).Id,
+            Class2 = !string.IsNullOrWhiteSpace(w.Class2) ? classes.First(c => c.WeaponClass == w.Class2).Id : -1,
             AttackMale = w.AttackMale,
             AttackFemale = w.AttackFemale,
             SpriteFemale = string.IsNullOrWhiteSpace(w.SpriteFemale) ? string.Empty : $"Assets/Sprites/Weapons/{w.Job}/Female/" + w.SpriteFemale,

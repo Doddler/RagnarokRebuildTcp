@@ -1352,7 +1352,7 @@ public partial class CombatEntity : IEntityAutoReset
         if (chance > outOf)
             return true;
 
-        var luckMod = 100;
+        var luckMod = 150;
         var successRate = chance / (float)outOf;
         if (successRate > 0.1f)
             luckMod += (int)((successRate * 1000 - 100) / 4f);
@@ -1585,27 +1585,25 @@ public partial class CombatEntity : IEntityAutoReset
             }
         }
 
-        if (damageInfo.Damage != 0)
+        if (damageInfo.Damage != 0 || damageInfo.DamageOffHand > 0)
             target.QueueDamage(damageInfo);
     }
 
     public void PerformMeleeAttack(CombatEntity target)
     {
-        ApplyCooldownForAttackAction(target);
-
-        var flags = AttackFlags.Physical;
+        DamageInfo di;
         if (Character.Type == CharacterType.Player)
-            flags |= AttackFlags.CanCrit;
-        if (Character.Type == CharacterType.Monster)
-            flags |= AttackFlags.CanHarmAllies; //they can auto attack their allies if they get hit by them
-
-        var di = CalculateCombatResult(target, 1f, 1, flags);
-        if (Character.Type == CharacterType.Player && (Character.Player.WeaponClass == 1 || Character.Player.Equipment.DoubleAttackModifiers > 0))
+            di = Player.CalculateMeleeAttack(target);
+        else if (Character.Type == CharacterType.Monster)
         {
-            var doubleChance = GetStat(CharacterStat.DoubleAttackChance);
-            if (doubleChance > 0 && GameRandom.Next(0, 100) <= doubleChance)
-                di.HitCount = 2;
+            var flags = AttackFlags.Physical |
+                        AttackFlags.CanHarmAllies; //they can auto attack their allies if they get hit by them
+            di = CalculateCombatResult(target, 1f, 1, flags);
+            ApplyCooldownForAttackAction(target);
         }
+        else
+            return;
+
 
         UpdateHidingStateAfterAttack();
 

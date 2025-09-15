@@ -345,9 +345,12 @@ namespace Assets.Scripts.Sprites
                 if (!playerWeaponLookup.ContainsKey(weapon.Job))
                     playerWeaponLookup.Add(weapon.Job, new Dictionary<int, PlayerWeaponData>());
 
+                var w = weapon.Class;
+                if (weapon.Class2 > 0)
+                    w += weapon.Class2 << 8;
+
                 var jList = playerWeaponLookup[weapon.Job];
-                if (!jList.ContainsKey(weapon.Class))
-                    jList.Add(weapon.Class, weapon);
+                jList.TryAdd(w, weapon);
             }
 
             var weaponClass = JsonUtility.FromJson<Wrapper<WeaponClassData>>(ReadStreamingAssetFile(WeaponClassDataPath));
@@ -695,6 +698,16 @@ namespace Assets.Scripts.Sprites
             control.ShadowSize = 0.5f;
             control.WeaponClass = param.WeaponClass;
 
+            var weapon = param.Weapon;
+            var shield = param.Shield;
+            var offHand = 0;
+            if (param.Shield > 0 && TryGetItemById(param.Shield, out var item) && item.ItemClass == ItemClass.Weapon)
+            {
+                
+                offHand = item.SubType;
+                shield = 0;
+            }
+
             var bodySpriteName = GetPlayerBodySpriteName(param.ClassId, param.IsMale);
             var headSpriteName = GetPlayerHeadSpriteName(param.HeadId, param.HairDyeId, param.IsMale);
 
@@ -705,9 +718,9 @@ namespace Assets.Scripts.Sprites
             LoadAndAttachEquipmentSprite(control, param.Headgear1, EquipPosition.HeadUpper, 4);
             LoadAndAttachEquipmentSprite(control, param.Headgear2, EquipPosition.HeadMid, 3);
             LoadAndAttachEquipmentSprite(control, param.Headgear3, EquipPosition.HeadLower, 2);
-            LoadAndAttachEquipmentSprite(control, param.Shield, EquipPosition.Shield, 1);
+            LoadAndAttachEquipmentSprite(control, shield, EquipPosition.Shield, 1);
 
-            LoadAndAttachWeapon(control, param.Weapon);
+            LoadAndAttachWeapon(control, weapon, offHand);
 
             control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
             control.Name = param.Name;
@@ -725,6 +738,7 @@ namespace Assets.Scripts.Sprites
                 CameraFollower.Instance.CharacterDetailBox.CharacterJob.text = pData.Name;
                 state.PlayerName = control.Name;
                 state.UpdatePlayerName();
+                state.WeaponClass = param.WeaponClass;
                 CameraFollower.Instance.CharacterDetailBox.BaseLvlDisplay.text = $"Base Lv. {control.Level}";
             }
 
@@ -776,10 +790,18 @@ namespace Assets.Scripts.Sprites
             return control;
         }
 
-        public void LoadAndAttachWeapon(ServerControllable ctrl, int item)
+        public void LoadAndAttachWeapon(ServerControllable ctrl, int item, int offHand = 0)
         {
             var weaponSpriteFile = "";
             var isEffect = item == int.MaxValue;
+            var weaponClass = ctrl.WeaponClass;
+            if (offHand > 0)
+            {
+                if (weaponClass == 0)
+                    weaponClass = offHand; //if we only have a weapon in our offhand, we use the single hand variant
+                else
+                    weaponClass += offHand << 8;
+            }
 
             var attachPosition = isEffect ? EquipPosition.Accessory : EquipPosition.Weapon; //it's not an accessory but too lazy to make a new option
             if (ctrl.AttachedComponents.TryGetValue(attachPosition, out var existing))
@@ -803,7 +825,7 @@ namespace Assets.Scripts.Sprites
             }
 
             var data = GetItemById(item);
-            if (data.Id > 0 && displaySpriteList.TryGetValue(data.Code, out var sprite))
+            if (offHand == 0 && data.Id > 0 && displaySpriteList.TryGetValue(data.Code, out var sprite))
             {
                 var jobName = GetJobNameForId(ctrl.ClassId);
                 var spr = $"Assets/Sprites/Weapons/{jobName}/{(ctrl.IsMale ? $"Male/{jobName}_M_" : $"Female/{jobName}_F_")}{sprite}.spr";
@@ -816,9 +838,12 @@ namespace Assets.Scripts.Sprites
             if (!playerWeaponLookup.TryGetValue(ctrl.ClassId, out var weaponsByJob))
                 return;
 
-            if (!weaponsByJob.TryGetValue(ctrl.WeaponClass, out var weapon))
+            if (!weaponsByJob.TryGetValue(weaponClass, out var weapon))
             {
-                Debug.Log($"Could not load default weapon sprite for weapon class {ctrl.WeaponClass} for job {ctrl.ClassId}");
+                if(offHand == 0)
+                    Debug.Log($"Could not load default weapon sprite for weapon class {ctrl.WeaponClass} for job {ctrl.ClassId}");
+                else
+                    Debug.Log($"Could not load default weapon sprite for weapon class {ctrl.WeaponClass}/{offHand} for job {ctrl.ClassId}");
                 return;
             }
 
@@ -846,7 +871,8 @@ namespace Assets.Scripts.Sprites
             if (isEffect)
                 weaponSprite.SpriteOrder = 5;
 
-            ctrl.SpriteAnimator.PreferredAttackMotion = ctrl.IsMale ? weapon.AttackMale : weapon.AttackFemale;
+            if(!isEffect)
+                ctrl.SpriteAnimator.PreferredAttackMotion = ctrl.IsMale ? weapon.AttackMale : weapon.AttackFemale;
             ctrl.SpriteAnimator.ChildrenSprites.Add(weaponSprite);
 
             ctrl.AttachedComponents[attachPosition] = weaponObj;

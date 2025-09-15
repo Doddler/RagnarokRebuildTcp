@@ -45,7 +45,7 @@ namespace Assets.Scripts.UI.Inventory
                 if (pos > (int)EquipPosition.Accessory)
                     pos = (int)EquipPosition.Accessory;
 
-                if (bagId <= 0 || !inventory.TryGetValue(bagId, out var item) || (item.ItemData.Position & (EquipPosition)pos) == 0)
+                if (bagId <= 0 || !inventory.TryGetValue(bagId, out var item))
                     EquipEntries[i].ClearSlot();
                 else
                     EquipEntries[i].RefreshSlot(item);

@@ -841,13 +841,13 @@ SpCost = [10]
 Name = "Righthand Mastery"
 Icon = "as_right"
 Target = "Passive"
-MaxLevel = 10
+MaxLevel = 5
 
 [LeftHandMastery]
 Name = "Lefthand Mastery"
 Icon = "as_left"
 Target = "Passive"
-MaxLevel = 10
+MaxLevel = 5
 
 [KatarMastery]
 Name = "Katar Mastery"

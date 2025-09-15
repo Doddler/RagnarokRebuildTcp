@@ -519,14 +519,14 @@ namespace Assets.Scripts.Sprites
                 else
                     HeadFacing = HeadFacing.Center;
             }
-
-            if (Shadow != null && isActive)
-            {
-                if (CurrentMotion == SpriteMotion.Sit || CurrentMotion == SpriteMotion.Dead)
-                    Shadow.SetActive(false);
-                else
-                    Shadow.SetActive(!HideShadow);
-            }
+            //
+            // if (Shadow != null && isActive)
+            // {
+            //     if (CurrentMotion == SpriteMotion.Sit || CurrentMotion == SpriteMotion.Dead)
+            //         Shadow.SetActive(false);
+            //     else
+            //         Shadow.SetActive(!HideShadow);
+            // }
         }
 
         public void SetHeadFacing(HeadFacing facing)

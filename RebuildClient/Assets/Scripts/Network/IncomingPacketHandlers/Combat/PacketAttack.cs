@@ -26,9 +26,14 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             var resultType = (AttackResult)msg.ReadByte();
             var pos = msg.ReadPosition();
             var dmg = msg.ReadInt32();
+            var offHand = msg.ReadInt32();
             var motionTime = msg.ReadFloat();
             var damageTime = msg.ReadFloat();
             var showAttackAction = msg.ReadBoolean();
+
+            var comboDelay = 0.2f;
+
+            var hasOffHand = offHand != 0;
 
             //this is a hack, but we want to make sure the client attack motion is slightly longer than the server so attacks can be seamlessly chained.
             if (hasSrc)
@@ -83,8 +88,10 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
 
                 if (resultType == AttackResult.Miss)
                     controllable.Messages.SendMissEffect(damageTime);
-            }
 
+                if (hasOffHand && offHand < 0)
+                    controllable.Messages.SendMissEffect(damageTime + 0.1f);
+            }
 
             if (hasTarget && resultType != AttackResult.InvisibleMiss)
             {
@@ -99,6 +106,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                             hitType = 2;
                         if (dmg > 0)
                             controllable2.Messages.SendHitEffect(controllable, damageTime, hitType);
+                        if (offHand > 0)
+                            controllable2.Messages.SendHitEffect(controllable, damageTime + 0.3f, hitType);
                     }
                 }
 
@@ -111,9 +120,16 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 if (dmg > 0)
                 {
                     var dmgSound = ClientSkillHandler.SkillTakesWeaponSound(skill);
+                    Debug.Log($"Offhand:{hasOffHand} {dmg}x{hits} + {offHand}");
                     if (resultType != AttackResult.Invisible)
-                        controllable2.Messages.SendDamageEvent(controllable, damageTime, dmg, hits, resultType == AttackResult.CriticalDamage, dmgSound,
-                            result.Skill != CharacterSkill.Smoking);
+                    {
+                        if (hasOffHand)
+                            controllable2.Messages.SendDualWieldingDamageEvent(controllable, damageTime, dmg, offHand, hits,
+                                resultType == AttackResult.CriticalDamage);
+                        else
+                            controllable2.Messages.SendDamageEvent(controllable, damageTime, dmg, hits, resultType == AttackResult.CriticalDamage, dmgSound,
+                                result.Skill != CharacterSkill.Smoking);
+                    }
                 }
 
                 //StartCoroutine(DamageEvent(dmg, damageTiming, hits, weaponClass, controllable2));

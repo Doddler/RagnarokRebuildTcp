@@ -50,6 +50,7 @@
         CanAttackHidden = 1 << 17,
         IgnoreWeaponRefine = 1 << 18,
         ReverseDefense = 1 << 19,
+        OffHandWeapon = 1 << 20,
         NoTriggers = NoTriggerOnAttackEffects | NoTriggerWhenAttackedEffects,
         PhysicalStatusTest = Physical | IgnoreEvasion | IgnoreNullifyingGroundMagic | NoTriggerOnAttackEffects | NoTriggerWhenAttackedEffects | NoElement
     }

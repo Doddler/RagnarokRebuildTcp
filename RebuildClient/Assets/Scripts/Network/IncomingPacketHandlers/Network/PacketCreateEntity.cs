@@ -179,10 +179,12 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     State.HairColorId = hairDyeId;
                     State.HasCart = (follower & PlayerFollower.AnyCart) > 0;
                     State.HasBird = (follower & PlayerFollower.Falcon) > 0;
+                    State.WeaponClass = weapon;
                     
                     UiManager.Instance.SkillManager.UpdateAvailableSkills();
                     UiManager.Instance.EquipmentWindow.UpdateCharacterDisplay(head1, head2, head3);
                     UiManager.Instance.EquipmentWindow.RefreshEquipmentWindow(); //follower state might have changed
+                    UiManager.Instance.StatusWindow.UpdateCharacterStats();
                 }
             }
             else

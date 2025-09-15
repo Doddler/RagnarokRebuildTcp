@@ -171,7 +171,7 @@ public class DamageIndicator : MonoBehaviour
 		TextObject.color = new Color(1, 1, 1, alpha);
 		
 		if(isCrit)
-			CritSprite.SpriteRenderer.color = new Color(0.8f, 0.8f, 0.8f, alpha);
+			CritSprite.SpriteRenderer.color = new Color(1, 1, 1, alpha);
 
 	}
 

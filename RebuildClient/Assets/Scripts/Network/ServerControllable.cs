@@ -1306,7 +1306,7 @@ namespace Assets.Scripts.Network
         {
             var di = RagnarokEffectPool.GetDamageIndicator();
             var red = SpriteAnimator.Type == SpriteType.Player;
-            var color = red ? "#FF8888" : "#FFFF00";
+            var color = red ? "#FF8888" : "#FFFF33"; //crit changed from FFFF00 to FFFF33 to brighten it up a bit due to the gradient effect
             var height = 1f;
             di.DoDamage(TextIndicatorType.Critical, damage.ToString(), gameObject.transform.localPosition, height,
                 SpriteAnimator.Direction, color, true);
