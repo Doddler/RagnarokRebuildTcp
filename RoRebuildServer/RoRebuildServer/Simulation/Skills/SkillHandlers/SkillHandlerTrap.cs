@@ -91,6 +91,8 @@ public abstract class TrapBaseEvent : NpcBehaviorBase
     protected abstract NpcEffectType EffectType();
     protected abstract float Duration(int skillLevel);
 
+    protected virtual bool BlockMultipleActivations => true;
+    
     public override void InitEvent(Npc npc, int param1, int param2, int param3, int param4, string? paramString)
     {
         npc.RevealAsEffect(EffectType(), "Trap");
@@ -142,6 +144,9 @@ public abstract class TrapBaseEvent : NpcBehaviorBase
 
     public override void OnAoEInteraction(Npc npc, CombatEntity target, AreaOfEffect aoe)
     {
+        if (BlockMultipleActivations && npc.ValuesInt[2] > 0)
+            return;
+
         if (!npc.Owner.TryGet<CombatEntity>(out var owner) || owner.Character.Map != npc.Character.Map)
         {
             npc.ValuesInt[2] = 1;
