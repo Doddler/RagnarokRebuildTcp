@@ -75,11 +75,3 @@ public class AnkleSnareEvent : TrapBaseEvent
         return true;
     }
 }
-
-public class NpcLoaderAnkleSnare : INpcLoader
-{
-    public void Load()
-    {
-        DataManager.RegisterEvent(nameof(AnkleSnareEvent), new AnkleSnareEvent());
-    }
-}

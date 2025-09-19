@@ -1053,7 +1053,7 @@ namespace Assets.Scripts.Sprites
                     //DummyGroundEffect.Create(obj, "Sanctuary");
                     break;
                 case NpcEffectType.AnkleSnare:
-                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/AnkleSnare.prefab");
+                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelAnkleSnare.prefab");
                     break;
             }
 

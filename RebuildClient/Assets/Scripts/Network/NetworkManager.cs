@@ -823,8 +823,11 @@ namespace Assets.Scripts.Network
             if (shouldStop)
             {
                 controllable.StopImmediate(pos, false);
-                if (controllable.CharacterType != CharacterType.Player || !controllable.SpriteAnimator.IsAttackMotion)
-                    controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Hit);
+                if (controllable.SpriteAnimator != null)
+                {
+                    if (controllable.CharacterType != CharacterType.Player || !controllable.SpriteAnimator.IsAttackMotion)
+                        controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Hit);
+                }
             }
         }
 

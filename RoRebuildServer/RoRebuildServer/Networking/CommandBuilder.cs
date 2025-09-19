@@ -184,7 +184,7 @@ public static class CommandBuilder
             }
             packet.Write(false); //statusEffectData
         }
-        else if (type == CharacterType.Monster || type == CharacterType.Player)
+        else if (type == CharacterType.Monster || type == CharacterType.Player || type == CharacterType.BattleNpc)
         {
             var ce = c.Entity.Get<CombatEntity>();
             packet.Write((byte)ce.GetStat(CharacterStat.Level));
@@ -262,7 +262,7 @@ public static class CommandBuilder
             }
         }
 
-        if (type == CharacterType.NPC)
+        if (type == CharacterType.NPC || type == CharacterType.BattleNpc)
         {
             var npc = c.Entity.Get<Npc>();
             var display = npc.DisplayType;

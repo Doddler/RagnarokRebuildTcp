@@ -21,7 +21,7 @@ using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.EntityComponents;
 
-[EntityComponent(EntityType.Npc)]
+[EntityComponent([EntityType.Npc, EntityType.BattleNpc])]
 public class Npc : IEntityAutoReset
 {
     public Entity Entity;

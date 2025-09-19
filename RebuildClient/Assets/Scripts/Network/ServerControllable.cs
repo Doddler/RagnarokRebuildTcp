@@ -43,6 +43,7 @@ namespace Assets.Scripts.Network
         public Vector3 RealPosition;
         public Vector2 RealPosition2D => new Vector2(RealPosition.x, RealPosition.z);
         public float ShadowSize;
+        public float Angle;
         public bool IsAlly;
         public bool IsPartyMember;
         public bool IsPartyLeader;
@@ -156,7 +157,8 @@ namespace Assets.Scripts.Network
 
         public void LookInDirection(Direction direction)
         {
-            SpriteAnimator.Angle = RoAnimationHelper.FacingDirectionToRotation(direction);
+            Angle = RoAnimationHelper.FacingDirectionToRotation(direction);
+            SpriteAnimator.Angle = Angle;
         }
 
         public void LookAt(Vector3 lookAt)
@@ -168,6 +170,7 @@ namespace Assets.Scripts.Network
             if (angle < 0)
                 angle += 360f;
 
+            Angle = angle;
             if (SpriteAnimator != null)
                 SpriteAnimator.ChangeAngle(angle);
         }
@@ -177,7 +180,10 @@ namespace Assets.Scripts.Network
             if (target != null)
                 LookAt(target.transform.position);
             else
-                SpriteAnimator?.ChangeAngle(RoAnimationHelper.FacingDirectionToRotation(fallbackDir));
+            {
+                Angle = RoAnimationHelper.FacingDirectionToRotation(fallbackDir);
+                SpriteAnimator?.ChangeAngle(Angle);
+            }
         }
 
         public void LookAtOrDefault(ServerControllable target)
@@ -1268,8 +1274,8 @@ namespace Assets.Scripts.Network
             var di = RagnarokEffectPool.GetDamageIndicator();
             //var height = 1f;
             var color = "white";
-            di.DoDamage(type, text, new Vector3(0f, 0.6f, 0f), height,
-                SpriteAnimator.Direction, color, false);
+            var direction = SpriteAnimator != null ? SpriteAnimator.Direction : RoAnimationHelper.GetFacingForAngle(Angle);
+            di.DoDamage(type, text, new Vector3(0f, 0.6f, 0f), height, direction, color, false);
             di.AttachDamageIndicator(this);
         }
 
@@ -1279,8 +1285,8 @@ namespace Assets.Scripts.Network
             var di = RagnarokEffectPool.GetDamageIndicator();
             var height = 1f;
             var color = IsAlly ? "red" : "white";
-            di.DoDamage(TextIndicatorType.Miss, "<font-weight=\"300\">Miss", new Vector3(0f, 0.6f, 0f), height,
-                SpriteAnimator.Direction, color, false);
+            var direction = SpriteAnimator != null ? SpriteAnimator.Direction : RoAnimationHelper.GetFacingForAngle(Angle);
+            di.DoDamage(TextIndicatorType.Miss, "<font-weight=\"300\">Miss", new Vector3(0f, 0.6f, 0f), height, direction, color, false);
             di.AttachDamageIndicator(this);
         }
 
@@ -1288,8 +1294,8 @@ namespace Assets.Scripts.Network
         {
             var di = RagnarokEffectPool.GetDamageIndicator();
             var height = 1f;
-            di.DoDamage(TextIndicatorType.Heal, damage.ToString(), new Vector3(0f, 0.6f, 0f), height,
-                SpriteAnimator.Direction, "green", false);
+            var direction = SpriteAnimator != null ? SpriteAnimator.Direction : RoAnimationHelper.GetFacingForAngle(Angle);
+            di.DoDamage(TextIndicatorType.Heal, damage.ToString(), new Vector3(0f, 0.6f, 0f), height, direction, "green", false);
             di.AttachDamageIndicator(this);
         }
 
@@ -1297,25 +1303,24 @@ namespace Assets.Scripts.Network
         {
             var di = RagnarokEffectPool.GetDamageIndicator();
             var height = 1f;
-            di.DoDamage(TextIndicatorType.Heal, damage.ToString(), new Vector3(0f, 0.6f, 0f), height,
-                SpriteAnimator.Direction, "blue", false);
+            var direction = SpriteAnimator != null ? SpriteAnimator.Direction : RoAnimationHelper.GetFacingForAngle(Angle);
+            di.DoDamage(TextIndicatorType.Heal, damage.ToString(), new Vector3(0f, 0.6f, 0f), height, direction, "blue", false);
             di.AttachDamageIndicator(this);
         }
 
         private void AttachCriticalDamageIndicator(int damage, int totalDamage)
         {
             var di = RagnarokEffectPool.GetDamageIndicator();
-            var red = SpriteAnimator.Type == SpriteType.Player;
+            var red = SpriteAnimator != null && SpriteAnimator.Type == SpriteType.Player;
             var color = red ? "#FF8888" : "#FFFF33"; //crit changed from FFFF00 to FFFF33 to brighten it up a bit due to the gradient effect
             var height = 1f;
-            di.DoDamage(TextIndicatorType.Critical, damage.ToString(), gameObject.transform.localPosition, height,
-                SpriteAnimator.Direction, color, true);
+            var direction = SpriteAnimator != null ? SpriteAnimator.Direction : RoAnimationHelper.GetFacingForAngle(Angle);
+            di.DoDamage(TextIndicatorType.Critical, damage.ToString(), gameObject.transform.localPosition, height, direction, color, true);
 
             if (totalDamage > 0 && CharacterType != CharacterType.Player)
             {
                 var di2 = RagnarokEffectPool.GetDamageIndicator();
-                di2.DoDamage(TextIndicatorType.ComboDamage, $"{totalDamage}", Vector3.zero, height,
-                    SpriteAnimator.Direction, color, false);
+                di2.DoDamage(TextIndicatorType.ComboDamage, $"{totalDamage}", Vector3.zero, height, direction, color, false);
                 di2.AttachComboIndicatorToControllable(this);
             }
         }
@@ -1323,16 +1328,15 @@ namespace Assets.Scripts.Network
         private void AttachDamageIndicator(int damage, int totalDamage)
         {
             var di = RagnarokEffectPool.GetDamageIndicator();
-            var red = SpriteAnimator.Type == SpriteType.Player;
+            var red = SpriteAnimator != null && SpriteAnimator.Type == SpriteType.Player;
             var height = 1f;
-            di.DoDamage(TextIndicatorType.Damage, damage.ToString(), gameObject.transform.localPosition, height,
-                SpriteAnimator.Direction, red ? "red" : null, false);
+            var direction = SpriteAnimator != null ? SpriteAnimator.Direction : RoAnimationHelper.GetFacingForAngle(Angle);
+            di.DoDamage(TextIndicatorType.Damage, damage.ToString(), gameObject.transform.localPosition, height, direction, red ? "red" : null, false);
 
             if (totalDamage > 0 && CharacterType != CharacterType.Player)
             {
                 var di2 = RagnarokEffectPool.GetDamageIndicator();
-                di2.DoDamage(TextIndicatorType.ComboDamage, $"{totalDamage}", Vector3.zero, height,
-                    SpriteAnimator.Direction, "#FFFF00", false);
+                di2.DoDamage(TextIndicatorType.ComboDamage, $"{totalDamage}", Vector3.zero, height, direction, "#FFFF00", false);
                 di2.AttachComboIndicatorToControllable(this);
             }
         }
@@ -1467,7 +1471,7 @@ namespace Assets.Scripts.Network
             else
                 weaponClass = -1;
 
-            if (SpriteAnimator.CurrentMotion != SpriteMotion.Dead && !hasEndure)
+            if (SpriteAnimator != null && SpriteAnimator.CurrentMotion != SpriteMotion.Dead && !hasEndure)
             {
                 if (SpriteAnimator.Type == SpriteType.Player)
                     SpriteAnimator.State = SpriteState.Standby;
@@ -1549,9 +1553,6 @@ namespace Assets.Scripts.Network
             if (FloatingDisplay != null)
                 SnapDialog();
 
-            if (SpriteMode == ClientSpriteType.Prefab)
-                return;
-
             if (IsMainCharacter)
             {
                 var mc = MinimapController.Instance;
@@ -1579,10 +1580,18 @@ namespace Assets.Scripts.Network
                 IsPartyMember = false;
             }
 
+            HandleMessages();
+            
+            if (SpriteMode == ClientSpriteType.Prefab)
+            {
+                RealPosition = new Vector3(RealPosition.x, walkProvider.GetHeightForPosition(RealPosition), RealPosition.z);
+                transform.position = Vector3.Lerp(transform.position, RealPosition + PositionOffset, Time.deltaTime * 20f);
+                return;
+            }
+            
             if (SpriteAnimator.SpriteData == null)
                 return;
 
-            HandleMessages();
 
             var noShadowState = SpriteAnimator.CurrentMotion == SpriteMotion.Sit || SpriteAnimator.CurrentMotion == SpriteMotion.Dead || IsHidden;
             if (shadowSprite != null && (noShadowState != !shadowSprite.gameObject.activeInHierarchy))

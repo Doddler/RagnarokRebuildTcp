@@ -707,6 +707,9 @@ public partial class CombatEntity
         //---------------------------------------
         // On Attack and When Attacked Triggers
         //---------------------------------------
+        
+        if(target.Character.Type == CharacterType.BattleNpc)
+            target.Character.Npc.Behavior.OnCalculateDamage(target.Character.Npc, target.Character.BattleNpc, target, ref di);
 
         if (!flags.HasFlag(AttackFlags.NoTriggerOnAttackEffects))
         {
@@ -817,6 +820,10 @@ public partial class CombatEntity
         if (Character.Type == CharacterType.Monster)
             Character.Monster.NotifyOfAttack(ref di);
 
+        if (Character.Type == CharacterType.BattleNpc)
+            Character.Npc.Behavior.OnApplyDamage(Character.Npc, Character.BattleNpc, ref di);
+
+
         Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
         if (sendMove)
             CommandBuilder.SendMoveEntityMulti(Character);
@@ -850,7 +857,7 @@ public partial class CombatEntity
         if (!di.Target.IsNull() && di.Source.IsAlive())
             Character.LastAttacked = di.Source;
 
-        var ec = di.Target.Get<CombatEntity>();
+        //var ec = di.Target.Get<CombatEntity>();
         var hp = GetStat(CharacterStat.Hp);
 
 #if DEBUG

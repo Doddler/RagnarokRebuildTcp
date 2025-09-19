@@ -309,9 +309,9 @@ public class World
     }
 
     //event is an invisible npc without a spawn definition intended to be transient
-    public Entity CreateEvent(Entity owner, Map map, string eventName, Position pos, int param1, int param2, int param3, int param4, string? paramString)
+    public Entity CreateEvent(Entity owner, Map map, string eventName, Position pos, int param1, int param2, int param3, int param4, string? paramString, bool isCombatEntity = false)
     {
-        var e = EntityManager.New(EntityType.Npc);
+        var e = EntityManager.New(isCombatEntity ? EntityType.BattleNpc : EntityType.Npc);
         var ch = e.Get<WorldObject>();
         var npc = e.Get<Npc>();
 
@@ -325,9 +325,11 @@ public class World
         ch.Entity = e;
         ch.Position = pos;
         ch.MoveSpeed = 0;
-        ch.Type = CharacterType.NPC;
+        ch.Type = isCombatEntity ? CharacterType.BattleNpc : CharacterType.NPC;
         ch.Name = eventName;
         ch.Init(ref e);
+        if(isCombatEntity)
+            ch.CombatEntity.Init(ref e, ch);
         npc.FullName = eventName;
         npc.Name = eventName;
         npc.EventType = eventName;

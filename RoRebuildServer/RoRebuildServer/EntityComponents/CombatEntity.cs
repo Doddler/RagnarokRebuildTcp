@@ -23,7 +23,7 @@ using System.Text.RegularExpressions;
 
 namespace RoRebuildServer.EntityComponents;
 
-[EntityComponent([EntityType.Player, EntityType.Monster])]
+[EntityComponent([EntityType.Player, EntityType.Monster, EntityType.BattleNpc])]
 public partial class CombatEntity : IEntityAutoReset
 {
     public Entity Entity;
@@ -363,7 +363,7 @@ public partial class CombatEntity : IEntityAutoReset
         if (Character.Type == CharacterType.Player)
             CommandBuilder.SendExpGain(Player, 0); //update their exp
 
-        if (Character.Type == CharacterType.Monster) //are they a monster? If so, we should check if they have minions that should come along.
+        if (Character.Type == CharacterType.Monster || Character.Type == CharacterType.BattleNpc) //are they a monster? If so, we should check if they have minions that should come along.
         {
             var m = Character.Monster;
             if (m.Children == null)
@@ -727,7 +727,7 @@ public partial class CombatEntity : IEntityAutoReset
         //if (source.Entity.Type == EntityType.Player)
         //    return false;
 
-        if (Character.ClassId >= 1000 && Character.ClassId < 4000)
+        if (Character.ClassId >= 1000 && Character.ClassId < 4000 && Character.Type != CharacterType.BattleNpc)
             return false; //hack
         //if (source.Party == Party)
         //    return false;
