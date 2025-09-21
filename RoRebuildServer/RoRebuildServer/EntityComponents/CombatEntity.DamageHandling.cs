@@ -709,7 +709,7 @@ public partial class CombatEntity
         //---------------------------------------
         
         if(target.Character.Type == CharacterType.BattleNpc)
-            target.Character.Npc.Behavior.OnCalculateDamage(target.Character.Npc, target.Character.BattleNpc, target, ref di);
+            target.Character.Npc.Behavior.OnCalculateDamage(target.Character.Npc, target.Character.BattleNpc, this, ref di);
 
         if (!flags.HasFlag(AttackFlags.NoTriggerOnAttackEffects))
         {

@@ -26,8 +26,7 @@ namespace Assets.Scripts.Sprites
             get => RoAnimationHelper.GetFacingForAngle(Angle);
             //set => Angle = RoAnimationHelper.FacingDirectionToRotation(value);
         }
-
-        public float Angle;
+        public float Angle { get; set; }
         public SpriteType Type;
         public SpriteState State;
 

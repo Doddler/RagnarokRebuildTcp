@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Assets.Scripts.Objects;
+using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
 using UnityEditor;
 using UnityEngine;
@@ -646,6 +647,15 @@ namespace Assets.Scripts.MapEditor.Editor
 							r.enabled = false;
 						}
 					}
+
+					var anim = model.AddComponent<RoSpriteAnimator>();
+					anim.Type = SpriteType.Npc;
+
+					var collider = model.AddComponent<BoxCollider>();
+					collider.size = new Vector3(1.5f, 0.3f, 1.5f);
+					collider.center = new Vector3(0f, 0.2f, 0f);
+					
+					model.layer = LayerMask.NameToLayer("Characters");
 
 					PrefabUtility.SaveAsPrefabAssetAndConnect(model, $"Assets/Effects/Prefabs/{trap.Value}.prefab", InteractionMode.AutomatedAction);
 					GameObject.DestroyImmediate(model);

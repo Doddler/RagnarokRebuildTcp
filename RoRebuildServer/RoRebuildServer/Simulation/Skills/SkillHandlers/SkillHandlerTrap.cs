@@ -6,6 +6,7 @@ using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using System.Diagnostics;
+using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.Simulation.Items;
@@ -99,7 +100,10 @@ public abstract class TrapBaseEvent : NpcBehaviorBase
     
     public override void InitEvent(Npc npc, int param1, int param2, int param3, int param4, string? paramString)
     {
-        npc.RevealAsEffect(EffectType(), "Trap");
+        if (npc.Character.Type != CharacterType.BattleNpc)
+            throw new Exception($"Cannot create Trap npc as it is not correctly assigned as a BattleNPC type.");
+
+        npc.RevealAsEffect(EffectType(), "");
         npc.ValuesInt[0] = param1;
         npc.ValuesInt[2] = 0;
 
@@ -108,6 +112,10 @@ public abstract class TrapBaseEvent : NpcBehaviorBase
             ServerLogger.LogWarning($"Npc {npc.Character} running trap init but does not have an owner.");
             return;
         }
+
+        var ce = npc.Character.CombatEntity;
+        ce.SetStat(CharacterStat.MaxHp, 5);
+        ce.SetStat(CharacterStat.Hp, 5);
 
         var targeting = new TargetingInfo()
         {
@@ -142,11 +150,14 @@ public abstract class TrapBaseEvent : NpcBehaviorBase
 
     public override void OnCalculateDamage(Npc npc, BattleNpc battleNpc, CombatEntity attacker, ref DamageInfo di)
     {
-        //di.Result = AttackResult.Invisible;
+        di.Result = AttackResult.Invisible;
         //di.Damage = 1;
         
         if(di.AttackSkill == CharacterSkill.None && AllowAutoAttackMove)
             di.KnockBack = 3;
+
+        if (attacker.Character.Type == CharacterType.Player)
+            attacker.Player.AutoAttackLock = false;
     }
 
     public override void OnApplyDamage(Npc npc, BattleNpc battleNpc, ref DamageInfo di)

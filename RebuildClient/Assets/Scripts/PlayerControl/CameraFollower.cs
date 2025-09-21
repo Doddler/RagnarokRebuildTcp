@@ -1088,8 +1088,8 @@ namespace Assets.Scripts
             var canInteract = hasEntity && isAlive && !isOverUi && !isHolding && !hasGroundSkill && !ignoreEntity;
             var canCurrentlyTarget = canInteract &&
                                      ((hasSkillOnCursor && ((mouseTarget.IsAlly && isSkillAllyTargeted) || (!mouseTarget.IsAlly && isSkillEnemyTargeted))) ||
-                                      !mouseTarget.IsAlly);
-            var canClickEnemy = canCurrentlyTarget && mouseTarget.CharacterType != CharacterType.NPC && mouseTarget.IsInteractable;
+                                      !mouseTarget.IsAlly || mouseTarget.IsAttackable);
+            var canClickEnemy = canCurrentlyTarget && ((mouseTarget.CharacterType != CharacterType.NPC && mouseTarget.IsInteractable) || mouseTarget.IsAttackable);
             var canClickNpc = canInteract && !hasSkillOnCursor && mouseTarget.CharacterType == CharacterType.NPC && mouseTarget.IsInteractable;
             var canClickItem = hasItem && !canClickEnemy && !hasSkillOnCursor && !isOverUi;
             var canClickGround = hasGround && isAlive && (!isOverUi || isHolding) && !canClickEnemy && !canClickNpc && !hasTargetedSkill && !canClickItem;

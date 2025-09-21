@@ -50,6 +50,7 @@ namespace Assets.Scripts.Network
         public bool IsMale;
         public bool IsMainCharacter;
         public bool IsInteractable { get; set; }
+        public bool IsAttackable;
         public int Level;
         public string Name { get; set; }
 

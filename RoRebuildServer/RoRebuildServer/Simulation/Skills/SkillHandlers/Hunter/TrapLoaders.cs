@@ -9,5 +9,6 @@ public class TrapLoaders : INpcLoader
     {
         DataManager.RegisterEvent(nameof(AnkleSnareEvent), new AnkleSnareEvent());
         DataManager.RegisterEvent(nameof(LandMineEvent), new LandMineEvent());
+        DataManager.RegisterEvent(nameof(BlastMineEvent), new BlastMineEvent());
     }
 }

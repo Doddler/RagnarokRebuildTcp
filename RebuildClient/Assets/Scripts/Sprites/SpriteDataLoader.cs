@@ -40,6 +40,7 @@ namespace Assets.Scripts.Sprites
 		public int ServerId;
 		public int ClassId;
         public string Name;
+        public CharacterType Type;
 		public Direction Facing;
 		public CharacterState State;
 		public Vector2Int Position;
@@ -47,6 +48,7 @@ namespace Assets.Scripts.Sprites
         public int Hp;
         public int MaxHp;
         public bool Interactable;
+        public bool Attackable;
         public Dictionary<CharacterStatusEffect, float> CharacterStatusEffects;
     }
 }

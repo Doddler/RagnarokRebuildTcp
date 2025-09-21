@@ -934,7 +934,7 @@ public class Npc : IEntityAutoReset
         CommandBuilder.SendRemoveEntityMulti(chara, CharacterRemovalReason.OutOfSight);
         CommandBuilder.ClearRecipients();
     }
-
+    
     public void DisableTouchArea()
     {
         var chara = Entity.Get<WorldObject>();

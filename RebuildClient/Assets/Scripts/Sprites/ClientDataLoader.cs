@@ -1001,7 +1001,7 @@ namespace Assets.Scripts.Sprites
             control.IsInteractable = false;
 
             control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
-            if (type != NpcEffectType.AnkleSnare)
+            if (type < NpcEffectType.AnkleSnare || type > NpcEffectType.ShockwaveTrap)
             {
                 obj.AddComponent<BillboardObject>();
                 obj.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
@@ -1054,6 +1054,34 @@ namespace Assets.Scripts.Sprites
                     break;
                 case NpcEffectType.AnkleSnare:
                     AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelAnkleSnare.prefab");
+                    break;
+                case NpcEffectType.LandMine:
+                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelLandMine.prefab");
+                    break;
+                case NpcEffectType.BlastMine:
+                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelBlastMine.prefab");
+                    control.IsAttackable = true;
+                    break;
+                case NpcEffectType.ClaymoreTrap:
+                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelClaymoreTrap.prefab");
+                    break;
+                case NpcEffectType.FlasherTrap:
+                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelFlasherTrap.prefab");
+                    break;
+                case NpcEffectType.FreezingTrap:
+                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelFreezingTrap.prefab");
+                    break;
+                case NpcEffectType.SandmanTrap:
+                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelSandmanTrap.prefab");
+                    break;
+                case NpcEffectType.SkidTrap:
+                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelSkidTrap.prefab");
+                    break;
+                case NpcEffectType.ShockwaveTrap:
+                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelShockwaveTrap.prefab");
+                    break;
+                case NpcEffectType.TalkieBox:
+                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelTalkieBox.prefab");
                     break;
             }
 
