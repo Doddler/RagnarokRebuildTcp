@@ -201,7 +201,7 @@ namespace Assets.Scripts.Utility
 
 			if (mapFogInfo == null)
 			{
-				var json = JsonUtility.FromJson<Wrapper<FogInfo>>(ClientDataLoader.ReadStreamingAssetFile("ClientConfig/fogdata.json"));
+				var json = JsonUtility.FromJson<Wrapper<FogInfo>>(ClientDataLoader.ReadStreamingAssetFile("ClientConfig/fogData.json"));
 				mapFogInfo = json.Items.ToList();
 			}
 			

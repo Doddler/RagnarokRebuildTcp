@@ -103,7 +103,7 @@ namespace Assets.Scripts.Sprites
             "ClientConfigGenerated/effects.json",
             "ClientConfigGenerated/levelchart.txt",
             "ClientConfig/AdminWarpList.txt",
-            "ClientConfig/fogdata.json",
+            "ClientConfig/fogData.json",
             MapDataPath,
         };
 
@@ -250,7 +250,7 @@ namespace Assets.Scripts.Sprites
                                  + " This can cause the file to be unloadable in a webGL build.");
 #endif
 
-#if !UNITY_WEBGL && !UNITY_EDITOR
+#if !UNITY_WEBGL && !UNITY_EDITOR && !UNITY_ANDROID
             //Non WebGL platforms can read from streaming assets directly.
             return File.ReadAllText(Path.Combine(Application.streamingAssetsPath, file));
 #endif
