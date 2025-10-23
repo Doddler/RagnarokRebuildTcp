@@ -1,19 +1,21 @@
-using Sprites;
+using Assets.Scripts.Sprites;
 using UnityEditor;
 using UnityEditor.AssetImporters;
 using UnityEngine;
 
-namespace Editor
+namespace Assets.Scripts.Editor
 {
     [ScriptedImporter(1, "spr", AllowCaching = true)]
     public sealed class RoSprAssetImporter : ScriptedImporter
     {
 
+        private RoSprAsset asset;
         public override void OnImportAsset(AssetImportContext ctx)
         {
-            var asset = ScriptableObject.CreateInstance<RoSprAsset>();
-            ctx.AddObjectToAsset(GUID.Generate().ToString(), asset);
-            ctx.SetMainObject(asset);
+            var tempAsset = ScriptableObject.CreateInstance<RoSprAsset>();
+            tempAsset.Load(ctx.assetPath);
+            ctx.AddObjectToAsset(GUID.Generate().ToString(), tempAsset);
+            ctx.SetMainObject(tempAsset);
         }
     }
 }
