@@ -81,7 +81,7 @@ namespace Assets.Scripts.Network
 
         [NonSerialized] public ClientSpriteType SpriteMode;
         [NonSerialized] public GameObject EntityObject;
-        [NonSerialized] public GameObject ComboIndicator;
+        [NonSerialized] public DamageIndicator ComboIndicator;
         [NonSerialized] public GameObject FollowerObject;
         [NonSerialized] public GameObject BodyStateEffect;
         [NonSerialized] public StatusEffectState StatusEffectState;
@@ -1313,10 +1313,12 @@ namespace Assets.Scripts.Network
 
             if (totalDamage > 0 && CharacterType != CharacterType.Player)
             {
+	            ComboIndicator?.EndDamageIndicator();
                 var di2 = RagnarokEffectPool.GetDamageIndicator();
                 di2.DoDamage(TextIndicatorType.ComboDamage, $"{totalDamage}", Vector3.zero, height,
                     SpriteAnimator.Direction, color, false);
                 di2.AttachComboIndicatorToControllable(this);
+                ComboIndicator = di2;
             }
         }
 
@@ -1330,10 +1332,12 @@ namespace Assets.Scripts.Network
 
             if (totalDamage > 0 && CharacterType != CharacterType.Player)
             {
-                var di2 = RagnarokEffectPool.GetDamageIndicator();
+	            ComboIndicator?.EndDamageIndicator();
+	            var di2 = RagnarokEffectPool.GetDamageIndicator();
                 di2.DoDamage(TextIndicatorType.ComboDamage, $"{totalDamage}", Vector3.zero, height,
                     SpriteAnimator.Direction, "#FFFF00", false);
                 di2.AttachComboIndicatorToControllable(this);
+                ComboIndicator = di2;
             }
         }
 
@@ -1695,11 +1699,7 @@ namespace Assets.Scripts.Network
                 EffectList.Clear();
             }
 
-            if (ComboIndicator != null)
-            {
-                var di = ComboIndicator.GetComponent<DamageIndicator>();
-                di.EndDamageIndicator();
-            }
+            ComboIndicator?.EndDamageIndicator();
         }
 
         public void OnEffectEnd(Ragnarok3dEffect effect)

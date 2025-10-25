@@ -19,7 +19,7 @@ namespace Assets.Scripts.Effects
         public static int DebugGetPrimitivePoolCount() => primitiveList.Count;
         public static int DebugGetDamageIndicatorCount() => indicatorList.Count;
         #endif
-        
+	    
         public static Ragnarok3dEffect Get3dEffect(EffectType type)
         {
             if (effectContainer == null)
@@ -100,7 +100,7 @@ namespace Assets.Scripts.Effects
         
         public static DamageIndicator GetDamageIndicator()
         {
-            if (damageContainer == null)
+            /*if (damageContainer == null)
             {
                 damageContainer = new GameObject("DamageContainer");
                 indicatorSource = Resources.Load<GameObject>("DamageCritical");
@@ -112,14 +112,16 @@ namespace Assets.Scripts.Effects
                 i = go.GetComponent<DamageIndicator>();
             }
             
-            i.gameObject.transform.SetParent(damageContainer.transform);
-            
+            i.gameObject.transform.SetParent(damageContainer.transform);*/
+
+            var i = new DamageIndicator();
+            DamageIndicatorBatcher.Instance.indicators.Add(i);
             return i;
         }
 
         public static void ReturnDamageIndicator(DamageIndicator indicator)
         {
-            if (indicatorList.Count > 50)
+            /*if (indicatorList.Count > 50)
             {
                 Destroy(indicator.gameObject);
                 return;
@@ -127,7 +129,7 @@ namespace Assets.Scripts.Effects
 
             indicator.gameObject.transform.SetParent(Instance.transform);
             indicator.gameObject.SetActive(false);
-            indicatorList.Push(indicator);
+            indicatorList.Push(indicator);*/
         }
     }
 }

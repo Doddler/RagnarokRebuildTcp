@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
 using Assets.Scripts;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Network;
@@ -22,7 +23,7 @@ public enum TextIndicatorType
 	Debuff
 }
 
-public class DamageIndicator : MonoBehaviour
+public class DamageIndicator// : MonoBehaviour
 {
 	public TextMeshPro TextObject;
 
@@ -37,6 +38,20 @@ public class DamageIndicator : MonoBehaviour
 	private Vector3 basePosition;
 	private bool isCrit;
 
+	public Vector3 pos;
+	public float size;
+	public float alpha;
+	public Color color;
+	public float critJitter;
+
+	public int value;
+
+	public TextIndicatorType type;
+	
+	public float lifeTime = 0;
+	
+	private readonly int[] jitterSequence = { 0, -10, 10, -8, 8, -6, 6, -4, 4, -2, 2, -1, 1, 0 };
+
 	public void AttachDamageIndicator(ServerControllable controllable)
 	{
 		Controllable = controllable;
@@ -45,29 +60,25 @@ public class DamageIndicator : MonoBehaviour
 	
 	public void AttachComboIndicatorToControllable(ServerControllable controllable)
 	{
-		RemoveComboIndicatorIfExists(controllable);
 		Controllable = controllable;
-		Controllable.ComboIndicator = gameObject;
 		basePosition = controllable.transform.localPosition;
-	}
-	
-	private void RemoveComboIndicatorIfExists(ServerControllable controllable)
-	{
-		if (controllable.ComboIndicator == null)
-			return;
-
-		var di = controllable.ComboIndicator.GetComponent<DamageIndicator>();
-		if (di == null)
-		{
-			Destroy(controllable.ComboIndicator);
-			controllable.ComboIndicator = null;
-		}
-		
-		di.EndDamageIndicator();
 	}
 	
 	public void DoDamage(TextIndicatorType type, string value, Vector3 startPosition, float height, Direction direction, string colorCode, bool isCrit)
 	{
+		this.type = type;
+		int.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out this.value);
+		if (type == TextIndicatorType.Experience) this.value = int.Parse(value.Split(' ')[0]);
+		color = colorCode switch
+		{
+			null or "" => Color.white,
+			"green" => Color.green,
+			"red" => Color.red,
+			"blue" => new Color(0.251f, 0.486f, 1f, 1f),
+			_ when ColorUtility.TryParseHtmlString(colorCode, out var parsed) => parsed,
+			_ => Color.white
+		};
+		
 		PathData = type switch
 		{
 			TextIndicatorType.Heal => ClientConstants.Instance.HealPath,
@@ -79,7 +90,6 @@ public class DamageIndicator : MonoBehaviour
 			TextIndicatorType.Debuff => ClientConstants.Instance.DebuffPath,
 			_ => ClientConstants.Instance.DamagePath
 		};
-	    
 		// Debug.Log($"{Time.timeSinceLevelLoad} DoDamage {direction} {direction.GetIntercardinalDirection()}");
 		
         direction = direction.GetIntercardinalDirection();
@@ -109,9 +119,10 @@ public class DamageIndicator : MonoBehaviour
 			}
 		}
 
-		TextObject.text = sb.ToString();
+		//TextObject.text = sb.ToString();
+		//Debug.Log(sb.ToString());
 		sb.Clear();
-
+		
 		var vec = -direction.GetVectorValue();
 		var dirVector = new Vector3(vec.x, 0, vec.y);
 
@@ -124,55 +135,40 @@ public class DamageIndicator : MonoBehaviour
 
         Controllable = null;
         basePosition = Vector3.zero;
-        transform.parent = null;
-		transform.localPosition = start;
-		
-		gameObject.SetActive(true);
-
-		var lt = LeanTween.value(gameObject, OnUpdate, 0, 1, PathData.TweenTime);
-		lt.setOnComplete(onComplete: OnComplete);
-		OnUpdate(0); //do one early for our first frame
-
-		this.isCrit = isCrit;
-		CritSprite.gameObject.SetActive(isCrit);
-		if (isCrit)
-			CritSprite.Reset();
 	}
-
-	private void OnComplete()
-	{
-		EndDamageIndicator(true);
-	}
-
-	public void EndDamageIndicator( bool skipCancelTween = false)
-	{
-		if(!skipCancelTween)
-			LeanTween.cancel(gameObject);
 	
-		if (Controllable && Controllable.ComboIndicator == gameObject)
-			Controllable.ComboIndicator = null;
-			
-		RagnarokEffectPool.ReturnDamageIndicator(this);
+	public void EndDamageIndicator()
+	{
+		lifeTime = 99;
 	}
 
-	void OnUpdate(float f)
+	public bool ShouldRender()
+	{
+		return lifeTime <= 1;
+	}
+
+	public void OnUpdate()
 	{
 		if (Controllable)
+		{
 			basePosition = Controllable.transform.localPosition;
+		}
 		
-		var height = PathData.Trajectory.Evaluate(f);
-		var size = PathData.Size.Evaluate(f);
-		var pos = Vector3.Lerp(start, end, f) + basePosition;
-		var alpha = PathData.Alpha.Evaluate(f);
-
-		transform.localPosition = new Vector3(pos.x, pos.y + height * PathData.HeightMultiplier, pos.z);
-		transform.localScale = new Vector3(size, size, size) * GameConfig.Data.DamageNumberSize;
-
-		TextObject.color = new Color(1, 1, 1, alpha);
+		if (lifeTime > 1)
+		{
+			pos = new Vector3(0, -5000, 0);
+			size = 0;
+			return;
+		}
 		
-		if(isCrit)
-			CritSprite.SpriteRenderer.color = new Color(0.8f, 0.8f, 0.8f, alpha);
+		size = PathData.Size.Evaluate(lifeTime) * GameConfig.Data.DamageNumberSize;
+		pos = Vector3.Lerp(start, end, lifeTime) + basePosition;
+		pos.y += PathData.Trajectory.Evaluate(lifeTime) * PathData.HeightMultiplier;
+		alpha = PathData.Alpha.Evaluate(lifeTime);
 
+		var index = Mathf.Min(Mathf.FloorToInt((lifeTime * PathData.TweenTime) / 0.1f), jitterSequence.Length - 1);
+		critJitter = jitterSequence[index] / 70f;
+		
+		lifeTime += Time.deltaTime / PathData.TweenTime;
 	}
-
 }
