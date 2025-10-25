@@ -30,6 +30,7 @@ namespace Assets.Scripts.PlayerControl
         public int SkillPoints;
         public int JobId;
         public bool IsMale;
+        public int WeaponClass;
         public int HairStyleId;
         public int HairColorId;
         public int CartWeight = 0;

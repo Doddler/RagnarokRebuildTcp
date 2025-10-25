@@ -393,10 +393,25 @@ public class NpcInteractionState
         }
 
         var trade = tradeSet[itemEntry];
+        var data = DataManager.GetItemInfoById(trade.ItemId);
+        
+        if (data == null)
+        {
+            CommandBuilder.ErrorMessage(Player, $"Could not complete the trade.");
+            ServerLogger.LogWarning($"Player submitted a FinalizeTradeItem request for item id {trade.ItemId} but the server does not have information about that item.");
+            return;
+        }
+        
         if (trade.IsCrafted && tradeCount != 1)
         {
             CommandBuilder.ErrorMessage(Player, $"Could not complete the trade.");
             ServerLogger.LogWarning($"Player submitted a FinalizeTradeItem request for item {tradeCount}x {itemEntry} in category '{CurrentShopCategory}', but you can't get more than 1 of an item.");
+            return;
+        }
+
+        if (data.IsUnique && tradeCount > 1)
+        {
+            CommandBuilder.ErrorMessage(Player, $"Could not complete trade: You can only trade for a single piece of equipment at a time.");
             return;
         }
 

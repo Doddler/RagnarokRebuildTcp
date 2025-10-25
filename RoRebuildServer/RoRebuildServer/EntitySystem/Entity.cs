@@ -11,7 +11,7 @@ public enum EntityType : byte
     Player = 1,
     Monster = 2,
     Npc = 3,
-    Effect = 4
+    BattleNpc = 4
 }
 
 [StructLayout(LayoutKind.Sequential, Pack = 2)]
@@ -33,6 +33,8 @@ public struct Entity
     public EntityType Type => (EntityType)TypeId;
     public static Entity Null = new();
     public static Entity Invalid = new() {Gen = 0, Id = -1, TypeId = 0};
+
+    public bool IsBattleEntity => TypeId == 1 || TypeId == 2 || TypeId == 4;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsAlive()

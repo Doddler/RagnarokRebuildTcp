@@ -145,7 +145,7 @@ public class Player : IEntityAutoReset
         regenSpTickTime = HpRegenTickTime / 2f;
     }
 
-    public int WeaponClass;
+    public int WeaponClass => Equipment.MainHandWeapon.WeaponClass;
 
 #if DEBUG
     private float actionCooldown;
@@ -244,7 +244,6 @@ public class Player : IEntityAutoReset
         IsAdmin = false;
         Array.Clear(CharData);
         PlayerStatData.Clear();
-        WeaponClass = 0;
         LastEmoteTime = 0;
         StorageId = -1;
         HasEnteredServer = false;
@@ -485,16 +484,16 @@ public class Player : IEntityAutoReset
             switch (statType)
             {
                 case CharacterStat.Attack:
-                    packet.Write(atk1 + Equipment.MinRefineAtkBonus);
+                    packet.Write(atk1 + Equipment.MainHandWeapon.MinRefineAtkBonus);
                     break;
                 case CharacterStat.Attack2:
-                    packet.Write(atk2 + Equipment.MaxRefineAtkBonus);
+                    packet.Write(atk2 + Equipment.MainHandWeapon.MaxRefineAtkBonus);
                     break;
                 case CharacterStat.MagicAtkMin:
-                    packet.Write(matk1 + Equipment.MinRefineAtkBonus);
+                    packet.Write(matk1 + Equipment.MainHandWeapon.MinRefineAtkBonus);
                     break;
                 case CharacterStat.MagicAtkMax:
-                    packet.Write(matk2 + Equipment.MaxRefineAtkBonus);
+                    packet.Write(matk2 + Equipment.MainHandWeapon.MaxRefineAtkBonus);
                     break;
                 case CharacterStat.Def:
                     packet.Write(CombatEntity.GetEffectiveStat(CharacterStat.Def));
@@ -801,7 +800,9 @@ public class Player : IEntityAutoReset
         //above that, there's diminishing returns.
         //For example, 0agi/dex +80% apsd (berserk pot/2hq/frenzy) goes from 4.34/sec to 3.54/sec
 
-        var jobAspd = jobInfo.WeaponTimings[WeaponClass];
+        var jobAspd = jobInfo.WeaponTimings[Equipment.MainHandWeapon.WeaponClass];
+        if (Equipment.IsDualWielding)
+            jobAspd = (jobAspd + jobInfo.WeaponTimings[Equipment.OffHandWeapon.WeaponClass]) * 0.7f;
         var aspdBonus = (float)GetStat(CharacterStat.AspdBonus);
         if (aspdBonus >= 0) aspdBonus *= MathF.Pow(1.0064f, aspdBonus);
 
@@ -1013,11 +1014,14 @@ public class Player : IEntityAutoReset
             case 9:
                 mastery = MaxLearnedLevelOfSkill(CharacterSkill.MaceMastery) * 4;
                 break;
+            case 16:
+                mastery = MaxLearnedLevelOfSkill(CharacterSkill.KatarMastery) * 4;
+                break;
         }
 
         var appraisal = MaxLearnedLevelOfSkill(CharacterSkill.ItemAppraisal);
         if (appraisal > 0)
-            mastery += appraisal * Equipment.WeaponLevel * 2;
+            mastery += appraisal * Equipment.MainHandWeapon.WeaponLevel * 2;
 
         SetStat(CharacterStat.WeaponMastery, mastery);
     }
@@ -1712,6 +1716,58 @@ public class Player : IEntityAutoReset
             }
 
         }
+    }
+
+    public DamageInfo CalculateMeleeAttack(CombatEntity target)
+    {
+        var multiplier = 1f;
+        var isDualWielding = Character.Player.Equipment.IsDualWielding;
+
+        if (isDualWielding)
+            multiplier = 0.5f + MaxLearnedLevelOfSkill(CharacterSkill.RightHandMastery) * 0.1f;
+
+        var di = CombatEntity.CalculateCombatResult(target, multiplier, 1, AttackFlags.Physical | AttackFlags.CanCrit);
+        var canDoubleAttack = (Character.Player.WeaponClass == 1 ||
+                               Character.Player.Equipment.DoubleAttackModifiers > 0);
+
+        if (canDoubleAttack)
+        {
+            var doubleChance = GetStat(CharacterStat.DoubleAttackChance);
+            if (doubleChance > 0 && GameRandom.Next(0, 100) <= doubleChance)
+                di.HitCount = 2;
+        }
+
+        if (WeaponClass == 16 && di.Damage > 0) //katar
+        {
+            di.Time = Time.ElapsedTimeFloat + di.TimeInSeconds * 0.5f;
+            di.DamageOffHand = (short)(di.Damage * (1 + MaxAvailableLevelOfSkill(CharacterSkill.DoubleAttack) * 2) / 100);
+            if (di.DamageOffHand <= 0)
+                di.DamageOffHand = 1;
+        }
+
+        //add offhand weapon attack
+        if (isDualWielding)
+        {
+            di.Time = Time.ElapsedTimeFloat + di.TimeInSeconds * 0.5f;
+
+            var flags = AttackFlags.Physical | AttackFlags.NoTriggers | AttackFlags.OffHandWeapon | AttackFlags.IgnoreNullifyingGroundMagic | AttackFlags.NoDamageModifiers;
+            if (di.Result == AttackResult.CriticalDamage)
+                flags |= AttackFlags.GuaranteeCrit; //if the original crits, offhand crits, otherwise, it doesn't
+            var element = Equipment.OffHandWeapon.WeaponElement;
+            if (element == AttackElement.None)
+                element = AttackElement.Neutral; //None would be replaced by main-hand element, and off-hand is never endowed, so we specify here if it's a neutral type.
+
+            var req = new AttackRequest(0.3f + MaxLearnedLevelOfSkill(CharacterSkill.LeftHandMastery) * 0.1f, 1, flags, element);
+            (req.MinAtk, req.MaxAtk) = CombatEntity.CalculateAttackPowerRange(false, false); //calculate offhand
+            var di2 = CombatEntity.CalculateCombatResult(target, req);
+
+            if (di2.IsDamageResult)
+                di.DamageOffHand = (short)di2.Damage;
+            else
+                di.DamageOffHand = -1;
+        }
+
+        return di;
     }
 
     private bool PerformAttack(WorldObject targetCharacter)

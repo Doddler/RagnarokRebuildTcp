@@ -3,6 +3,7 @@ using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using RebuildSharedData.Data;
+using RebuildSharedData.Enum;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -281,6 +282,9 @@ namespace Assets.Scripts.UI
             }
 
             RightWindow.OkButton.interactable = canAfford;
+
+            if (maxAfford > 1 && currentTrade.Item.Type == ItemType.UniqueItem)
+                maxAfford = 1; //can only trade 1 unique item at a time
 
             CountText.text = canAfford ? "1" : "-";
             maxCount = maxAfford;

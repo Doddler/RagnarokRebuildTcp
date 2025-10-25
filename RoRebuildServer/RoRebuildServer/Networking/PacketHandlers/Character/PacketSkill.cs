@@ -165,6 +165,9 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
                 return;
             }
 
+            if (target.Character.Type == CharacterType.BattleNpc && !target.Character.BattleNpc.CanBeTargeted(caster.CombatEntity, skill))
+                return;
+
             var isAlly = target.IsValidAlly(caster.CombatEntity);
             var targetType = SkillHandler.GetSkillAttributes(skill).SkillTarget;
             var isValidTarget = targetType == SkillTarget.Any;

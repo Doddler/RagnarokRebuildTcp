@@ -26,8 +26,7 @@ namespace Assets.Scripts.Sprites
             get => RoAnimationHelper.GetFacingForAngle(Angle);
             //set => Angle = RoAnimationHelper.FacingDirectionToRotation(value);
         }
-
-        public float Angle;
+        public float Angle { get; set; }
         public SpriteType Type;
         public SpriteState State;
 
@@ -519,14 +518,14 @@ namespace Assets.Scripts.Sprites
                 else
                     HeadFacing = HeadFacing.Center;
             }
-
-            if (Shadow != null && isActive)
-            {
-                if (CurrentMotion == SpriteMotion.Sit || CurrentMotion == SpriteMotion.Dead)
-                    Shadow.SetActive(false);
-                else
-                    Shadow.SetActive(!HideShadow);
-            }
+            //
+            // if (Shadow != null && isActive)
+            // {
+            //     if (CurrentMotion == SpriteMotion.Sit || CurrentMotion == SpriteMotion.Dead)
+            //         Shadow.SetActive(false);
+            //     else
+            //         Shadow.SetActive(!HideShadow);
+            // }
         }
 
         public void SetHeadFacing(HeadFacing facing)

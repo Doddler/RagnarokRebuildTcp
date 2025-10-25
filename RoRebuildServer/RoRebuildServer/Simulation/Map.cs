@@ -1396,7 +1396,7 @@ public class Map
 
             foreach (var e in chunk.AllEntities)
             {
-                if (e.Type != EntityType.Monster && e.Type != EntityType.Player)
+                if (e.IsBattleEntity)
                     continue;
                 if (!e.TryGet<WorldObject>(out var ch))
                     continue;

@@ -4,6 +4,7 @@ public class CsvJobWeaponInfo
 { 
     public required string Job { get; set; }
     public required string Class { get; set; }
+    public string Class2 { get; set; } = string.Empty;
     public required int ItemId { get; set; }
     public required int AttackMale { get; set; }
     public required int AttackFemale { get; set; }

@@ -61,6 +61,7 @@ public class Chunk
                 Monsters.Add(ref entity);
                 break;
             case CharacterType.NPC:
+            case CharacterType.BattleNpc:
                 break;
             default:
                 throw new Exception("Unhandled character type: " + type);
@@ -82,6 +83,7 @@ public class Chunk
             case CharacterType.Monster:
                 return Monsters.Remove(ref entity);
             case CharacterType.NPC:
+            case CharacterType.BattleNpc:
                 return true;
             default:
                 throw new Exception("Unhandled character type: " + type);

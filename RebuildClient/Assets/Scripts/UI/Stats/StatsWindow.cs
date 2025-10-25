@@ -147,6 +147,10 @@ namespace Assets.Scripts.UI.Stats
 
             var softDef = totalVit * (100 + state.GetStat(CharacterStat.AddSoftDefPercent)) / 100;
 
+            var crit = 1 + (totalLuk / 3) + state.GetStat(CharacterStat.AddCrit);
+            if (state.WeaponClass == 16) //katar
+                crit *= 2;
+
             var changeSum = 0;
             for (var i = 0; i < 6; i++)
                 changeSum += adjustValue[i] != 0 ? 1 : 0;
@@ -157,7 +161,7 @@ namespace Assets.Scripts.UI.Stats
             AttributeText[0].text = $"{state.GetStat(CharacterStat.Attack)} ~ {state.GetStat(CharacterStat.Attack2)}";
             AttributeText[1].text = $"{state.GetStat(CharacterStat.MagicAtkMin)} ~ {state.GetStat(CharacterStat.MagicAtkMax)}";
             AttributeText[2].text = $"{totalDex + state.Level + state.GetStat(CharacterStat.AddHit)}";
-            AttributeText[3].text = $"{(1 + (totalLuk / 3) + state.GetStat(CharacterStat.AddCrit))}";
+            AttributeText[3].text = $"{crit}";
             AttributeText[4].text = $"{state.GetStat(CharacterStat.Def)} + {softDef}";
             AttributeText[5].text = $"{state.GetStat(CharacterStat.MDef)} + {totalInt}";
             AttributeText[6].text = $"{totalAgi + state.Level + state.GetStat(CharacterStat.AddFlee)} + {state.GetStat(CharacterStat.PerfectDodge)}";

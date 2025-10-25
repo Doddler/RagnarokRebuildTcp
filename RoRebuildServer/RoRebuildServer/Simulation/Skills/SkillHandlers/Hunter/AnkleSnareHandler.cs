@@ -22,6 +22,7 @@ public class AnkleSnareEvent : TrapBaseEvent
 {
     protected override CharacterSkill SkillSource() => CharacterSkill.AnkleSnare;
     protected override NpcEffectType EffectType() => NpcEffectType.AnkleSnare;
+    protected override bool Attackable => false;
 
     protected override float Duration(int skillLevel) => 50f; //300f - skillLevel * 50f;
     
@@ -41,7 +42,7 @@ public class AnkleSnareEvent : TrapBaseEvent
 
         var srcLevel = src.GetStat(CharacterStat.Level);
         var targetLevel = target.GetStat(CharacterStat.Level);
-        var agi = target.GetStat(CharacterStat.Agi);
+        var agi = target.GetEffectiveStat(CharacterStat.Agi);
 
         //Duration is 4s * skill level, reduced by 0.5% per point of agi the target has.
         //Monsters higher level than you have a 2% reduction in time per level difference.
@@ -73,13 +74,5 @@ public class AnkleSnareEvent : TrapBaseEvent
         npc.ActivateAndHide(duration);
 
         return true;
-    }
-}
-
-public class NpcLoaderAnkleSnare : INpcLoader
-{
-    public void Load()
-    {
-        DataManager.RegisterEvent(nameof(AnkleSnareEvent), new AnkleSnareEvent());
     }
 }

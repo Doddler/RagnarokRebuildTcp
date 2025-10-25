@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Assets.Scripts.Objects;
+using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
 using UnityEditor;
 using UnityEngine;
@@ -565,7 +566,7 @@ namespace Assets.Scripts.MapEditor.Editor
 				
 				//var modelName = @"프론테라\민가04.rsm"; //prontera armory
 				//var modelName = @"splen\민가침대02.rsm";
-				var modelName = @"외부소품\트랩01.rsm";
+				var modelName = @"외부소품\트랩05.rsm";
 				
 				var modelPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, $@"model\{modelName}"); //prontera armory
 				var savePath = DirectoryHelper.GetRelativeDirectory(RagnarokDirectory.GetRagnarokDataDirectory, Path.GetDirectoryName(modelPath));
@@ -579,7 +580,7 @@ namespace Assets.Scripts.MapEditor.Editor
 				model.transform.SetParent(go.transform, false);
 				model.transform.localScale = new Vector3(1f, 1f, 1f);
 				
-				PrefabUtility.SaveAsPrefabAssetAndConnect(model, "Assets/Models/prefabs/외부소품/트랩01.prefab", InteractionMode.AutomatedAction);
+				PrefabUtility.SaveAsPrefabAssetAndConnect(model, "Assets/Models/prefabs/외부소품/트랩05.prefab", InteractionMode.AutomatedAction);
 			}
 			finally
 			{
@@ -590,53 +591,83 @@ namespace Assets.Scripts.MapEditor.Editor
 		[MenuItem("Ragnarok/Load Model Effects")]
 		public static void LoadModelEffects()
 		{
+			var TrapModels = new Dictionary<string, string>()
+			{
+				{ "외부소품\\트랩01.rsm", "ModelAnkleSnare" },
+				{ "외부소품\\트랩02.rsm", "ModelSkidTrap" },
+				{ "외부소품\\트랩03.rsm", "ModelLandMine" },
+				{ "외부소품\\트랩03_2.rsm", "ModelFreezingTrap" },
+				{ "외부소품\\트랩03_3.rsm", "ModelBlastMine" },
+				{ "외부소품\\트랩03_4.rsm", "ModelSandmanTrap" },
+				{ "외부소품\\트랩03_5.rsm", "ModelFlasherTrap" },
+				{ "외부소품\\트랩03_6.rsm", "ModelSockwaveTrap" },
+				{ "외부소품\\트랩04.rsm", "ModelClaymoreTrap" },
+				{ "외부소품\\트랩05.rsm", "ModelTalkieBox" },
+			};
+			
+			
 			var loader = new RagnarokModelLoader();
-			try
+			foreach (var trap in TrapModels)
 			{
-				var modelName = @"외부소품\트랩01.rsm";
-				
-				var modelPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, $@"model\{modelName}");
-				var savePath = DirectoryHelper.GetRelativeDirectory(RagnarokDirectory.GetRagnarokDataDirectory, Path.GetDirectoryName(modelPath));
-		
-				loader.LoadModel(modelPath, savePath);
-		
-				var model = loader.Compile();
-				model.name = "AnkleSnare";
-		
-				model.transform.localScale = new Vector3(1f, 1f, 1f);
-
-				//AnkleSnare is a model with 2 keyframe rotations attached to it. We want to:
-				//1. Disable them and trigger them if we receive a removal with reason CharacterRemovalReason.Activation
-				//2. We modify the animation so it doesn't loop by duplicating the final keyframe
-				var rotators = model.GetComponentsInChildren<RoKeyframeRotator>();
-				if (rotators != null && rotators.Length > 0)
+				try
 				{
-					var trigger = model.AddComponent<ModelTrigger>();
-					trigger.Rotators = rotators;
-					foreach (var r in rotators)
-					{
-						var kf = new float[r.Keyframes.Length + 1];
-						var rotations = new Quaternion[r.Rotations.Length + 1];
-						Array.Copy(r.Keyframes, kf, r.Keyframes.Length);
-						Array.Copy(r.Rotations, rotations, r.Rotations.Length);
+					//var modelName = @"외부소품\트랩01.rsm";
+					var modelName = trap.Key;
 
-						kf[^1] = 9999999f;
-						rotations[^1] = rotations[^2];
-						r.Keyframes = kf;
-						r.Rotations = rotations;
-						r.enabled = false;
+					var modelPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, $@"model\{modelName}");
+					var savePath = DirectoryHelper.GetRelativeDirectory(RagnarokDirectory.GetRagnarokDataDirectory, Path.GetDirectoryName(modelPath));
+
+					loader.LoadModel(modelPath, savePath);
+
+					var model = loader.Compile();
+					//model.name = "AnkleSnare";
+					model.name = trap.Value;
+
+					model.transform.localScale = new Vector3(1f, 1f, 1f);
+
+					//AnkleSnare is a model with 2 keyframe rotations attached to it. We want to:
+					//1. Disable them and trigger them if we receive a removal with reason CharacterRemovalReason.Activation
+					//2. We modify the animation so it doesn't loop by duplicating the final keyframe
+					var rotators = model.GetComponentsInChildren<RoKeyframeRotator>();
+					if (rotators != null && rotators.Length > 0)
+					{
+						var trigger = model.AddComponent<ModelTrigger>();
+						trigger.Rotators = rotators;
+						foreach (var r in rotators)
+						{
+							var kf = new float[r.Keyframes.Length + 1];
+							var rotations = new Quaternion[r.Rotations.Length + 1];
+							Array.Copy(r.Keyframes, kf, r.Keyframes.Length);
+							Array.Copy(r.Rotations, rotations, r.Rotations.Length);
+
+							kf[^1] = 9999999f;
+							rotations[^1] = rotations[^2];
+							r.Keyframes = kf;
+							r.Rotations = rotations;
+							r.enabled = false;
+						}
 					}
+
+					var anim = model.AddComponent<RoSpriteAnimator>();
+					anim.Type = SpriteType.Npc;
+
+					var collider = model.AddComponent<BoxCollider>();
+					collider.size = new Vector3(1.5f, 0.3f, 1.5f);
+					collider.center = new Vector3(0f, 0.2f, 0f);
+					
+					model.layer = LayerMask.NameToLayer("Characters");
+
+					PrefabUtility.SaveAsPrefabAssetAndConnect(model, $"Assets/Effects/Prefabs/{trap.Value}.prefab", InteractionMode.AutomatedAction);
+					GameObject.DestroyImmediate(model);
 				}
-				
-				PrefabUtility.SaveAsPrefabAssetAndConnect(model, "Assets/Effects/Prefabs/AnkleSnare.prefab", InteractionMode.AutomatedAction);
-				GameObject.DestroyImmediate(model);
+				finally
+				{
+					loader.Dispose();
+					;
+				}
 			}
-			finally
-			{
-				loader.Dispose(); ;
-			}
-		
-		
+
+
 		}
 
 	}

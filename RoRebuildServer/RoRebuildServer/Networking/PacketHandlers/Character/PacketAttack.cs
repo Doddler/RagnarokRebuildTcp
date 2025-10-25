@@ -51,6 +51,9 @@ public class PacketAttack : IClientPacketHandler
         if (targetCharacter.Map != character.Map || !targetCharacter.HasCombatEntity)
             return;
 
+        if (targetCharacter.Type == CharacterType.BattleNpc && !targetCharacter.BattleNpc.CanBeTargeted(player.CombatEntity, CharacterSkill.None))
+            return;
+
         if (character.Position.SquareDistance(targetCharacter.Position) > ServerConfig.MaxViewDistance)
             return;
 

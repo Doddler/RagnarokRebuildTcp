@@ -3,6 +3,7 @@ using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Util;
+using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Simulation.StatusEffects._1stJob;
@@ -33,7 +34,17 @@ public class StatusMagnumBreak : StatusEffectBase
             var res = ch.CalculateCombatResult(target, attack);
 
             if (res.Damage > 0)
-                info.Damage += res.Damage * (10 + state.Value1) / 100;
+            {
+                res.Time = info.Time + 0.1f;
+                if (ch.Character.Type == CharacterType.Player && ch.Player.Equipment.IsDualWielding)
+                    res.Time += 0.1f; //dual-wielding offhand triggers at 0.1s, and double attack at 0.3s, so we'll slot in at 0.2s in this case
+
+                res.IsIndirect = true;
+                res.Damage = res.Damage * (10 + state.Value1) / 100;
+                target.QueueDamage(res);
+                CommandBuilder.AttackAutoVis(ch.Character, target.Character, res, false);
+            }
+                //info.Damage += res.Damage * (10 + state.Value1) / 100;
         }
 
         return StatusUpdateResult.Continue;

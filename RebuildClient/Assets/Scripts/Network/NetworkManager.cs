@@ -143,6 +143,8 @@ namespace Assets.Scripts.Network
             var info = Addressables.GetLocatorInfo("AddressablesMainContentCatalog");
             ResourceLocator = info.Locator;
 #endif
+            yield return StartCoroutine(ClientDataLoader.Instance.LoadStreamingAssets());
+            CameraFollower.Instance.Initialize();
 
             ClientDataLoader.Instance.Initialize();
             UiManager.Instance.Initialize();
@@ -821,8 +823,11 @@ namespace Assets.Scripts.Network
             if (shouldStop)
             {
                 controllable.StopImmediate(pos, false);
-                if (controllable.CharacterType != CharacterType.Player || !controllable.SpriteAnimator.IsAttackMotion)
-                    controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Hit);
+                if (controllable.SpriteAnimator != null)
+                {
+                    if (controllable.CharacterType != CharacterType.Player || !controllable.SpriteAnimator.IsAttackMotion)
+                        controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Hit);
+                }
             }
         }
 

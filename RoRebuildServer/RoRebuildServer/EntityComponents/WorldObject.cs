@@ -26,7 +26,7 @@ public enum QueuedAction
 }
 
 [UsedImplicitly]
-[EntityComponent([EntityType.Player, EntityType.Monster, EntityType.Npc, EntityType.Effect])]
+[EntityComponent([EntityType.Player, EntityType.Monster, EntityType.Npc, EntityType.BattleNpc])]
 public class WorldObject : IEntityAutoReset
 {
     public int Id { get; set; }
@@ -142,11 +142,12 @@ public class WorldObject : IEntityAutoReset
     private Monster monster = null!;
     private Npc npc = null!;
     private CombatEntity combatEntity = null!;
+    private BattleNpc battleNpc = null!;
 
     public EntityList? Events { get; set; }
     public int EventsCount => Events?.Count ?? 0;
 
-    public bool HasCombatEntity => Entity.IsAlive() && (Entity.Type == EntityType.Player || Entity.Type == EntityType.Monster);
+    public bool HasCombatEntity => Entity.IsAlive() && (Entity.Type == EntityType.Player || Entity.Type == EntityType.Monster || Entity.Type == EntityType.BattleNpc);
 
     public Player Player
     {
@@ -175,10 +176,21 @@ public class WorldObject : IEntityAutoReset
         get
         {
 #if DEBUG
-            if (!Entity.IsAlive() || Entity.Type != EntityType.Npc)
+            if (!Entity.IsAlive() || (Entity.Type != EntityType.Npc && Entity.Type != EntityType.BattleNpc))
                 throw new Exception($"Cannot get npc type from world object {Entity} id {Id} as entity is either expired or not a npc.");
 #endif
             return npc;
+        }
+    }
+    public BattleNpc BattleNpc
+    {
+        get
+        {
+#if DEBUG
+            if (!Entity.IsAlive() || Entity.Type != EntityType.BattleNpc)
+                throw new Exception($"Cannot get battleNpc type from world object {Entity} id {Id} as entity is either expired or not a battle npc.");
+#endif
+            return battleNpc;
         }
     }
     public CombatEntity CombatEntity
@@ -219,6 +231,11 @@ public class WorldObject : IEntityAutoReset
         AttackCooldown = 0f;
         SpawnImmunity = 0f;
         ClearVisiblePlayerList();
+        npc = null!;
+        player = null!;
+        combatEntity = null!;
+        monster = null!;
+        battleNpc = null!;
 
         if (Events != null)
         {
@@ -251,6 +268,14 @@ public class WorldObject : IEntityAutoReset
                 break;
             case EntityType.Npc:
                 npc = Entity.Get<Npc>();
+                break;
+            case EntityType.BattleNpc:
+                combatEntity = Entity.Get<CombatEntity>();
+                npc = Entity.Get<Npc>();
+                battleNpc = Entity.Get<BattleNpc>();
+                battleNpc.Character = this;
+                battleNpc.Npc = npc;
+                battleNpc.CombatEntity = combatEntity;
                 break;
         }
     }
@@ -834,9 +859,15 @@ public class WorldObject : IEntityAutoReset
         LastUpdate = Time.UpdateCount;
 #endif
 
-        if (Type == CharacterType.NPC)
+        if (Type == CharacterType.NPC || Type == CharacterType.BattleNpc)
         {
             npc.Update();
+            if (Type == CharacterType.BattleNpc)
+            {
+                battleNpc.Update();
+                combatEntity.Update();
+            }
+
             if (IsActive && State == CharacterState.Moving)
                 PerformMoveUpdate2();
             return;

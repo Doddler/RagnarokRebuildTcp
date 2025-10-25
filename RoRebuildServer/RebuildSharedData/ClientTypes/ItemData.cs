@@ -15,6 +15,7 @@ public class ItemData
     public int SellPrice;
     public int Slots;
     public int ItemRank;
+    public int SubType;
     public bool IsUnique;
     public bool IsRefinable;
     public ItemClass ItemClass;

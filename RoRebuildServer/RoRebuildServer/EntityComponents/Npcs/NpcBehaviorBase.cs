@@ -1,5 +1,7 @@
 ﻿using RebuildSharedData.Enum;
+using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Util;
+using RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte;
 
 namespace RoRebuildServer.EntityComponents.Npcs;
 
@@ -27,6 +29,11 @@ public abstract class NpcBehaviorBase
     public virtual void OnLeaveAoE(Npc npc, CombatEntity target, AreaOfEffect aoe) { }
 
     public virtual void OnTimer(Npc npc, float lastTime, float newTime) { }
+
+    public virtual bool CanBeAttacked(Npc npc, BattleNpc battleNpc, CombatEntity attacker, CharacterSkill skill = CharacterSkill.None) => false;
+    public virtual void OnCalculateDamage(Npc npc, BattleNpc battleNpc, CombatEntity attacker, ref DamageInfo di) { }
+    public virtual void OnApplyDamage(Npc npc, BattleNpc battleNpc, ref DamageInfo di) { }
+    public virtual void CombatUpdate(Npc npc, BattleNpc battleNpc) { }
 
     public virtual NpcPathUpdateResult OnPath(Npc npc, NpcPathHandler path) => NpcPathUpdateResult.EndPath;
 

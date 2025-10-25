@@ -24,6 +24,7 @@ public struct DamageInfo
     public float Time;
     public float AttackMotionTime;
     public int Damage;
+    public short DamageOffHand;
     public byte HitCount;
     public byte KnockBack;
     public AttackResult Result;
@@ -33,7 +34,7 @@ public struct DamageInfo
 
     public float TimeInSeconds
     {
-        get => Single.Max(0, Simulation.Util.Time.ElapsedTimeFloat - Time);
+        get => Single.Max(0, Time - Simulation.Util.Time.ElapsedTimeFloat);
         set => Time = value + Simulation.Util.Time.ElapsedTimeFloat;
     }
 
@@ -56,7 +57,26 @@ public struct DamageInfo
         }
     }
 
-    public bool IsDamageResult => Result == AttackResult.NormalDamage || Result == AttackResult.CriticalDamage;
+    public int DisplayDamageOffHand
+    {
+        get
+        {
+            if (Target.TryGet<CombatEntity>(out var target) && target.HasBodyState(BodyStateFlags.Hallucination))
+            {
+                var adjust = GameRandom.NextInclusive(1, 10) * GameRandom.NextInclusive(1, 10);
+                if (adjust == 1)
+                    return GameRandom.Next(1, 32000);
+                var d = DamageOffHand > 0 ? DamageOffHand : GameRandom.Next(1, 100);
+                var min = int.Clamp(d / adjust, 1, d);
+                var max = int.Clamp(d * adjust, d, 32000);
+                return GameRandom.Next(min, max);
+            }
+
+            return DamageOffHand;
+        }
+    }
+
+    public bool IsDamageResult => Result == AttackResult.NormalDamage || Result == AttackResult.CriticalDamage || DamageOffHand > 0;
 
     public CharacterSkill AttackSkill
     {
@@ -68,6 +88,7 @@ public struct DamageInfo
     {
         Result = AttackResult.Miss;
         Damage = 0;
+        DamageOffHand = 0;
         HitCount = 0;
         KnockBack = 0;
         Flags = DamageApplicationFlags.NoHitLock;
@@ -82,6 +103,7 @@ public struct DamageInfo
             Target = target,
             AttackMotionTime = 0,
             Damage = 0,
+            DamageOffHand = 0,
             HitCount = 0,
             KnockBack = 0,
             skillId = (byte)skill,
@@ -98,6 +120,7 @@ public struct DamageInfo
             Target = target,
             AttackMotionTime = 0,
             Damage = 0,
+            DamageOffHand = 0,
             HitCount = 0,
             KnockBack = 0,
             skillId = 0,
