@@ -58,6 +58,7 @@ namespace Assets.Scripts.Effects
 		WaterBallRise,
 		Aspersio,
 		ImpositioManus,
+		KyrieEleison,
 		LexAeterna,
 		LexDivina,
 		Revive,
@@ -162,6 +163,7 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.WaterBallRise, new Assets.Scripts.Effects.EffectHandlers.Skills.WaterBallRiseEffect());
 			effectHandlers.Add(EffectType.Aspersio, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.AspersioEffect());
 			effectHandlers.Add(EffectType.ImpositioManus, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.ImpositioEffect());
+			effectHandlers.Add(EffectType.KyrieEleison, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.KyrieEleisonEffect());
 			effectHandlers.Add(EffectType.LexAeterna, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.LexAeternaEffect());
 			effectHandlers.Add(EffectType.LexDivina, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.LexDivinaEffect());
 			effectHandlers.Add(EffectType.Revive, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.ReviveEffect());

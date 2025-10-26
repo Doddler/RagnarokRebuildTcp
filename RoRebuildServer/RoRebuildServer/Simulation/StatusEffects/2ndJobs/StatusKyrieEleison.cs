@@ -14,6 +14,9 @@ public class StatusKyrieEleison : StatusEffectBase
     public override StatusUpdateResult OnCalculateDamage(CombatEntity ch, ref StatusEffectState state, ref AttackRequest req,
         ref DamageInfo info)
     {
+        if (!info.IsDamageResult)
+            return StatusUpdateResult.Continue;
+
         var totalDamage = info.Damage * info.HitCount;
         var remaining = state.Value1 - totalDamage;
 

@@ -1290,6 +1290,17 @@ namespace Assets.Scripts.Network
             di.DoDamage(TextIndicatorType.Miss, "<font-weight=\"300\">Miss", new Vector3(0f, 0.6f, 0f), height, direction, color, false);
             di.AttachDamageIndicator(this);
         }
+        
+        private void AttachGuardIndicator()
+        {
+            var di = RagnarokEffectPool.GetDamageIndicator();
+            var height = 1f;
+            var color = "white";
+            var direction = SpriteAnimator != null ? SpriteAnimator.Direction : RoAnimationHelper.GetFacingForAngle(Angle);
+            di.DoDamage(TextIndicatorType.Miss, "<font-weight=\"300\">Guard", new Vector3(0f, 0.6f, 0f), height, direction, color, false);
+            di.AttachDamageIndicator(this);
+            AudioManager.Instance.OneShotSoundEffect(Id, "kyrie_guard.ogg", transform.position, 0.8f);
+        }
 
         public void AttachHealIndicator(int damage)
         {
@@ -1525,6 +1536,9 @@ namespace Assets.Scripts.Network
                     break;
                 case EntityMessageType.Miss:
                     AttachMissIndicator();
+                    break;
+                case EntityMessageType.Guard:
+                    AttachGuardIndicator();
                     break;
                 case EntityMessageType.AttackMotion:
                     OnMessageAttackMotion(msg);

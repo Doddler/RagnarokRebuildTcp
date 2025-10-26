@@ -85,7 +85,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                     //controllable.SetAttackAnimationSpeed(motionTime);
                     controllable.PerformBasicAttackMotion();
                 }
-
+                
                 if (resultType == AttackResult.Miss)
                     controllable.Messages.SendMissEffect(damageTime);
 
@@ -114,6 +114,12 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 if (result.Result == AttackResult.LuckyDodge)
                 {
                     controllable2.Messages.SendMessage(EntityMessageType.LuckyDodge, motionTime);
+                    return;
+                }
+                
+                if (result.Result == AttackResult.Block)
+                {
+                    controllable2.Messages.SendBlockEvent(motionTime);
                     return;
                 }
 

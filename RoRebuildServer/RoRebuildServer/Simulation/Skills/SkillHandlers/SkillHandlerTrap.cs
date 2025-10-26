@@ -97,21 +97,30 @@ public abstract class TrapBaseEvent : NpcBehaviorBase
     protected virtual bool Attackable => false;
     protected virtual bool AllowAutoAttackMove => false;
     protected virtual bool BlockMultipleActivations => true;
+    protected virtual bool InheritOwnerFacing => false;
     
     public override void InitEvent(Npc npc, int param1, int param2, int param3, int param4, string? paramString)
     {
         if (npc.Character.Type != CharacterType.BattleNpc)
             throw new Exception($"Cannot create Trap npc as it is not correctly assigned as a BattleNPC type.");
 
-        npc.RevealAsEffect(EffectType(), "");
-        npc.ValuesInt[0] = param1;
-        npc.ValuesInt[2] = 0;
-
         if (!npc.Owner.TryGet<WorldObject>(out var owner))
         {
             ServerLogger.LogWarning($"Npc {npc.Character} running trap init but does not have an owner.");
             return;
         }
+
+        if (InheritOwnerFacing)
+        {
+            var angle = owner.Position.Angle(npc.Character.Position);
+            var dir = Directions.GetFacingForAngle(angle);
+            npc.Character.FacingDirection = dir;
+        }
+
+        npc.RevealAsEffect(EffectType(), "");
+        npc.ValuesInt[0] = param1;
+        npc.ValuesInt[2] = 0;
+
 
         var ce = npc.Character.CombatEntity;
         ce.SetStat(CharacterStat.MaxHp, 5);

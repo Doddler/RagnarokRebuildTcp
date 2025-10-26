@@ -55,6 +55,12 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             {
                 ClientSkillHandler.OnHitEffect(target, ref attack);
 
+                if (result == AttackResult.Block)
+                {
+                    target.Messages.SendBlockEvent(time);
+                    return;
+                }
+
                 if(hitCount > 0 && result != AttackResult.Miss && result != AttackResult.Invisible)
                     target.Messages.SendDamageEvent(attacker, time, damage, hitCount, result == AttackResult.CriticalDamage);
             }

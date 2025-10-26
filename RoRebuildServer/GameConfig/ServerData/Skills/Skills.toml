@@ -549,7 +549,7 @@ SpCost = [13,16,19,21,24]
 [KyrieEleison]
 Name = "Kyrie Eleison"
 Icon = "pr_kyrie"
-Target = "Self"
+Target = "Ally"
 MaxLevel = 10
 SpCost = [20,20,20,25,25,25,30,30,30,35]
 
