@@ -8,28 +8,8 @@ namespace Scripts.Sprites.Editor
     [ScriptedImporter(1, "spr", AllowCaching = true)]
     public sealed class RoSprAssetImporter : ScriptedImporter
     {
-        private RoSprAsset asset;
-
-        public string spriteVersion;
-        public string filepath;
-        public string sprName;
-        public Texture2D palette;
-        public Texture2D atlas;
-        //public Rect[]  atlasRects;
-        
-        private const string SprExtension = "spr";
-
-        private void PopulateImporterFields()
-        {
-            spriteVersion = asset.spriteVersion;
-            filepath = asset.filepath;
-            sprName = asset.sprName;
-            palette = asset.palette;
-            atlas = asset.atlas;
-            //atlasRects = asset.atlasRects;
-        }
-        
         // This allows us to avoid fiddling with project settings
+        // to add support for the file extension
         private static void TryIncludeSprExtension()
         {
             if (EditorSettings.projectGenerationUserExtensions.Contains(SprExtension)) return;
@@ -38,6 +18,16 @@ namespace Scripts.Sprites.Editor
             EditorSettings.projectGenerationUserExtensions = list.ToArray();
         }
         
+        public string spriteVersion;
+        public string filepath;
+        public string sprFileName;
+        public Texture2D palette;
+        public Texture2D atlas;
+        public Rect[]  atlasRects;
+        
+        private RoSprAsset asset;
+        private const string SprExtension = "spr";
+
         public override void OnImportAsset(AssetImportContext ctx)
         {
             asset = ScriptableObject.CreateInstance<RoSprAsset>();
@@ -52,6 +42,16 @@ namespace Scripts.Sprites.Editor
             ctx.SetMainObject(asset);
 
             TryIncludeSprExtension();
+        }
+        
+        private void PopulateImporterFields()
+        {
+            spriteVersion = asset.spriteVersion;
+            filepath = asset.filepath;
+            sprFileName = asset.sprFileName;
+            palette = asset.palette;
+            atlas = asset.atlas;
+            atlasRects = asset.atlasRects;
         }
     }
 
