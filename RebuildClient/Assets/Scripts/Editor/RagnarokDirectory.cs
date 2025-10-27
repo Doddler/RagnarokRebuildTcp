@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Assets.Scripts.MapEditor.Editor
+namespace Scripts.Editor
 {
     public static class RagnarokDirectory
     {

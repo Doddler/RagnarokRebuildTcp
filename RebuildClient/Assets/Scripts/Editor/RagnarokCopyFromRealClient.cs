@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using Assets.Scripts;
 using Assets.Scripts.Editor;
 using Assets.Scripts.MapEditor.Editor;
+using Scripts.Editor;
 using UnityEditor;
 using UnityEditor.VersionControl;
 using UnityEngine;
