@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Network;
+using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using RebuildSharedData.Enum;
 using TMPro;
@@ -19,7 +20,7 @@ namespace Assets.Scripts.UI.Inventory
             var link = TMP_TextUtilities.FindIntersectingLink(AmmoType, eventData.position, null);
             if (link >= 0)
             {
-                var ammo = NetworkManager.Instance.PlayerState.AmmoId;
+                var ammo = PlayerState.Instance.AmmoId;
                 if (ammo > 0)
                     NetworkManager.Instance.SendUnEquipItem(ammo);
             }
@@ -34,7 +35,7 @@ namespace Assets.Scripts.UI.Inventory
 
         public void RefreshEquipmentWindow()
         {
-            var state = NetworkManager.Instance.PlayerState;
+            var state = PlayerState.Instance;
             var inventory = state.Inventory.GetInventoryData();
 
             for (var i = 0; i < 10; i++)
@@ -44,7 +45,7 @@ namespace Assets.Scripts.UI.Inventory
                 if (pos > (int)EquipPosition.Accessory)
                     pos = (int)EquipPosition.Accessory;
 
-                if (bagId <= 0 || !inventory.TryGetValue(bagId, out var item) || (item.ItemData.Position & (EquipPosition)pos) == 0)
+                if (bagId <= 0 || !inventory.TryGetValue(bagId, out var item))
                     EquipEntries[i].ClearSlot();
                 else
                     EquipEntries[i].RefreshSlot(item);
@@ -86,7 +87,7 @@ namespace Assets.Scripts.UI.Inventory
 
         public void UpdateCharacterDisplay(int headgear1, int headgear2, int headgear3)
         {
-            var state = NetworkManager.Instance.PlayerState;
+            var state = PlayerState.Instance;
 
             PlayerSprite.PrepareDisplayPlayerCharacter(state.JobId, state.HairStyleId, state.HairColorId, headgear1, headgear2, headgear3, state.IsMale);
         }

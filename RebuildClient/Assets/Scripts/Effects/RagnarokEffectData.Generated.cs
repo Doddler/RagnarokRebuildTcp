@@ -56,6 +56,12 @@ namespace Assets.Scripts.Effects
 		LordOfVermilion,
 		WaterBallAttack,
 		WaterBallRise,
+		Aspersio,
+		ImpositioManus,
+		KyrieEleison,
+		LexAeterna,
+		LexDivina,
+		Revive,
 		Sanctuary,
 		EarthShaker,
 		SpecialTargetMarker,
@@ -155,6 +161,12 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.LordOfVermilion, new Assets.Scripts.Effects.EffectHandlers.Skills.LordOfVermilionEffect());
 			effectHandlers.Add(EffectType.WaterBallAttack, new Assets.Scripts.Effects.EffectHandlers.Skills.WaterBallAttackEffect());
 			effectHandlers.Add(EffectType.WaterBallRise, new Assets.Scripts.Effects.EffectHandlers.Skills.WaterBallRiseEffect());
+			effectHandlers.Add(EffectType.Aspersio, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.AspersioEffect());
+			effectHandlers.Add(EffectType.ImpositioManus, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.ImpositioEffect());
+			effectHandlers.Add(EffectType.KyrieEleison, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.KyrieEleisonEffect());
+			effectHandlers.Add(EffectType.LexAeterna, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.LexAeternaEffect());
+			effectHandlers.Add(EffectType.LexDivina, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.LexDivinaEffect());
+			effectHandlers.Add(EffectType.Revive, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.ReviveEffect());
 			effectHandlers.Add(EffectType.Sanctuary, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.SanctuaryEffect());
 			effectHandlers.Add(EffectType.EarthShaker, new Assets.Scripts.Effects.EffectHandlers.Skills.Custom.EarthShakerEffect());
 			effectHandlers.Add(EffectType.SpecialTargetMarker, new Assets.Scripts.Effects.EffectHandlers.Skills.Custom.SpecialTargetMarkerEffect());

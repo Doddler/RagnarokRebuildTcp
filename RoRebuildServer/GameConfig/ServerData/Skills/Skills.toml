@@ -549,7 +549,7 @@ SpCost = [13,16,19,21,24]
 [KyrieEleison]
 Name = "Kyrie Eleison"
 Icon = "pr_kyrie"
-Target = "Self"
+Target = "Ally"
 MaxLevel = 10
 SpCost = [20,20,20,25,25,25,30,30,30,35]
 
@@ -564,7 +564,7 @@ SpCost = [10]
 Name = "Lex Divina"
 Icon = "pr_lexdivina"
 Target = "Enemy"
-MaxLevel = 10
+MaxLevel = 5 #who would ever get 10? May as well just make it 5
 SpCost = [20,20,20,20,20,18,16,14,12,10]
 
 [MagnusExorcismus]
@@ -602,6 +602,12 @@ Icon = "pr_turnundead"
 Target = "Enemy"
 MaxLevel = 10
 SpCost = [20,20,20,20,20,20,20,20,20,20]
+
+[MaceMastery]
+Name = "Mace Mastery"
+Icon = "pr_macemastery"
+Target = "Passive"
+MaxLevel = 10
 
 #----------------------------------
 # Wizard Skills
@@ -713,13 +719,57 @@ Target = "Passive"
 MaxLevel = 10
 
 [FalconMastery]
+Name = "Falcon Mastery"
+Icon = "ht_falcon"
+Target = "Passive"
+MaxLevel = 1
+
 [Detect]
+Icon = "ht_detecting"
+Target = "Ground"
+MaxLevel = 1
+SpCost = [8]
+
 [BlitzBeat]
+Name = "Blitz Beat"
+Icon = "ht_blitzbeat"
+Target = "Enemy"
+MaxLevel = 5
+SpCost = [10,13,16,19,22]
+
 [SteelCrow]
+Name = "Steel Crow"
+Icon = "ht_steelcrow"
+Target = "Passive"
+MaxLevel = 10
+
 [LandMine]
+Name = "Land Mine"
+Icon = "ht_landmine"
+Target = "Ground"
+MaxLevel = 5
+SpCost = [20,20,20,20,20]
+
 [RemoveTrap]
+Name = "Remove Trap"
+Icon = "ht_removetrap"
+Target = "Ground"
+MaxLevel = 1
+SpCost = [5]
+
 [SpringTrap]
+Name = "Spring Trap"
+Icon = "ht_springtrap"
+Target = "Ground"
+MaxLevel = 1
+SpCost = [10]
+
 [SkidTrap]
+Name = "Skid Trap"
+Icon = "ht_skidtrap"
+Target = "Ground"
+MaxLevel = 5
+SpCost = [10,10,10,10,10]
 
 [AnkleSnare]
 Name = "Ankle Snare"
@@ -729,21 +779,87 @@ MaxLevel = 5
 SpCost = [12, 12, 12, 12, 12]
 
 [Flasher]
+Icon = "ht_flasher"
+Target = "Ground"
+MaxLevel = 5
+SpCost = [12,12,12,12,12]
+
 [FreezingTrap]
+Name = "Freezing Trap"
+Icon = "ht_freezingtrap"
+Target = "Ground"
+MaxLevel = 5
+SpCost = [10,10,10,10,10]
+
 [Sandman]
+Name = "Sandman"
+Icon = "ht_sandman"
+Target = "Ground"
+MaxLevel = 5
+SpCost = [12,12,12,12,12]
+
 [BlastMine]
+Name = "Blast Mine"
+Icon = "ht_blastmine"
+Target = "Ground"
+MaxLevel = 5
+SpCost = [10,10,10,10,10]
+
 [ClaymoreTrap]
+Name = "Claymore Trap"
+Icon = "ht_claymoretrap"
+Target = "Ground"
+MaxLevel = 5
+SpCost = [15,15,15,15,15]
+
+[ShockwaveTrap]
+Name = "Shockwave Trap"
+Icon = "ht_shockwave"
+Target = "Ground"
+MaxLevel = 5
+SpCost = [45,45,45,45,45]
+
 [TalkieBox]
+Name = "Talkie Box"
+Icon = "ht_talkiebox"
+Target = "Ground"
+MaxLevel = 1
+SpCost = [1]
+
 [PhantasmicArrow]
+Name = "Phantasmic Arrow"
+Icon = "ht_phantasmic"
+Target = "Enemy"
+MaxLevel = 1
+SpCost = [10]
 
 #----------------------------------
 # Assassin
 #----------------------------------
 
 [RightHandMastery]
+Name = "Righthand Mastery"
+Icon = "as_right"
+Target = "Passive"
+MaxLevel = 5
+
 [LeftHandMastery]
+Name = "Lefthand Mastery"
+Icon = "as_left"
+Target = "Passive"
+MaxLevel = 5
+
 [KatarMastery]
+Name = "Katar Mastery"
+Icon = "as_katar"
+Target = "Passive"
+MaxLevel = 10
+
 [Grimtooth]
+Icon = "as_grimtooth"
+Target = "Enemy"
+MaxLevel = 5
+SpCost = [3,3,3,3,3]
 
 [SonicBlow]
 Name = "Sonic Blow"
@@ -766,8 +882,26 @@ MaxLevel = 10
 SpCost = [20,20,20,20,20,20,20,20,20,20]
 
 [PoisonReact]
+Name = "Poison React"
+Icon = "as_poisonreact"
+Target = "Self"
+MaxLevel = 10
+SpCost = [25,30,35,40,45,50,55,60,45,45]
+
 [VenomDust]
+Name = "Venom Dust"
+Icon = "as_venomdust"
+Target = "Ground"
+MaxLevel = 10
+SpCost = [20,20,20,20,20,20,20,20,20,20]
+
 [VenomSplasher]
+Name = "Venom Splasher"
+Icon = "as_splasher"
+Target = "Enemy"
+MaxLevel = 10
+SpCost = [12,14,16,18,20,22,24,26,28,30]
+
 [SonicAcceleration]
 [VenomKnife]
 
@@ -790,10 +924,58 @@ Target = "Ground"
 MaxLevel = 5
 SpCost = [10,10,10,10,10]
 
+[HiltBinding]
+Name = "Hilt Binding"
+Icon = "bs_hiltbinding"
+Target = "Passive"
+MaxLevel = 1
+
+[WeaponryResearch]
+Name = "Weaponry Research"
+Icon = "bs_weaponresearch"
+Target = "Passive"
+MaxLevel = 10
+
 [WeaponPerfection]
+Name = "Weapon Perfection"
+Icon = "bs_weaponperfect"
+Target = "Self"
+MaxLevel = 5
+SpCost = [18,16,14,12,10]
+
 [SkinTempering]
+Name = "Skin Tempering"
+Icon = "bs_skintemper"
+Target = "Passive"
+MaxLevel = 5
+
 [PowerThrust]
+Name = "Power Thrust"
+Icon = "bs_overthrust"
+Target = "Self"
+MaxLevel = 5
+SpCost = [18,16,14,12,10]
+
 [MaximizePower]
+Name = "MaximizePower"
+Icon = "bs_maximize"
+Target = "Self"
+MaxLevel = 5
+SpCost = [10,10,10,10,10]
+
+[WeaponRepair]
+[SmithDagger]
+[SmithKnuckle]
+[SmithMace]
+[SmithSword]
+[SmithTwoHandSword]
+[SmithSpear]
+[SmithAxe]
+[IronTempering]
+[EnchantedStoneCraft]
+[OrideconResearch]
+[SteelTempering]
+[OreDiscovery]
 
 #----------------------------------
 # Other skills

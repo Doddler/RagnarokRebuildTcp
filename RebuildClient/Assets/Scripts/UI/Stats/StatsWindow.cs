@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Network;
+using Assets.Scripts.PlayerControl;
 using RebuildSharedData.Enum.EntityStats;
 using TMPro;
 using UnityEngine;
@@ -55,9 +56,9 @@ namespace Assets.Scripts.UI.Stats
         private void ChangeStatValue(int stat, int change)
         {
             var count = (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) ? 10 : 1;
-            var state = NetworkManager.Instance.PlayerState;
+            var state = PlayerState.Instance;
             var curStatPoints = state.GetData(PlayerStat.StatPoints);
-            var existing = NetworkManager.Instance.PlayerState.GetData(PlayerStat.Str + stat);
+            var existing = PlayerState.Instance.GetData(PlayerStat.Str + stat);
 
             for (var j = 0; j < count; j++)
             {
@@ -87,7 +88,7 @@ namespace Assets.Scripts.UI.Stats
 
             UpdateCharacterStats();
 
-            // UpdateStat(stat, existing, NetworkManager.Instance.PlayerState.GetStat(CharacterStat.AddStr + stat), adjustValue[stat]);
+            // UpdateStat(stat, existing, PlayerState.Instance.GetStat(CharacterStat.AddStr + stat), adjustValue[stat]);
             //
             // var changeSum = 0;
             // for (var i = 0; i < 6; i++)
@@ -124,12 +125,12 @@ namespace Assets.Scripts.UI.Stats
 
             DecreaseStatButtons[index].interactable = diff > 0;
             IncreaseStatButtons[index].interactable =
-                stat + diff < 99 && statPointsRequired + cost <= NetworkManager.Instance.PlayerState.GetData(PlayerStat.StatPoints);
+                stat + diff < 99 && statPointsRequired + cost <= PlayerState.Instance.GetData(PlayerStat.StatPoints);
         }
 
         public void UpdateCharacterStats()
         {
-            var state = NetworkManager.Instance.PlayerState;
+            var state = PlayerState.Instance;
 
             UpdateStat(0, state.GetData(PlayerStat.Str), state.GetStat(CharacterStat.AddStr), adjustValue[0]);
             UpdateStat(1, state.GetData(PlayerStat.Agi), state.GetStat(CharacterStat.AddAgi), adjustValue[1]);
@@ -146,6 +147,10 @@ namespace Assets.Scripts.UI.Stats
 
             var softDef = totalVit * (100 + state.GetStat(CharacterStat.AddSoftDefPercent)) / 100;
 
+            var crit = 1 + (totalLuk / 3) + state.GetStat(CharacterStat.AddCrit);
+            if (state.WeaponClass == 16) //katar
+                crit *= 2;
+
             var changeSum = 0;
             for (var i = 0; i < 6; i++)
                 changeSum += adjustValue[i] != 0 ? 1 : 0;
@@ -156,7 +161,7 @@ namespace Assets.Scripts.UI.Stats
             AttributeText[0].text = $"{state.GetStat(CharacterStat.Attack)} ~ {state.GetStat(CharacterStat.Attack2)}";
             AttributeText[1].text = $"{state.GetStat(CharacterStat.MagicAtkMin)} ~ {state.GetStat(CharacterStat.MagicAtkMax)}";
             AttributeText[2].text = $"{totalDex + state.Level + state.GetStat(CharacterStat.AddHit)}";
-            AttributeText[3].text = $"{(1 + (totalLuk / 3) + state.GetStat(CharacterStat.AddCrit))}";
+            AttributeText[3].text = $"{crit}";
             AttributeText[4].text = $"{state.GetStat(CharacterStat.Def)} + {softDef}";
             AttributeText[5].text = $"{state.GetStat(CharacterStat.MDef)} + {totalInt}";
             AttributeText[6].text = $"{totalAgi + state.Level + state.GetStat(CharacterStat.AddFlee)} + {state.GetStat(CharacterStat.PerfectDodge)}";

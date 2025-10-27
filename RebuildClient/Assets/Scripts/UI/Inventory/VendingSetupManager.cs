@@ -129,7 +129,7 @@ namespace Assets.Scripts.UI.Inventory
 
         private void OnDropItemOntoRightSide(ItemDragObject srcItem)
         {
-            if (NetworkManager.Instance.PlayerState.Cart.GetInventoryData().TryGetValue(srcItem.ItemId, out var item))
+            if (PlayerState.Instance.Cart.GetInventoryData().TryGetValue(srcItem.ItemId, out var item))
             {
                 if (item.ItemData.IsUnique || item.Count == 1)
                     FinalizeDropItemOntoRightSide(srcItem.ItemId, 1);

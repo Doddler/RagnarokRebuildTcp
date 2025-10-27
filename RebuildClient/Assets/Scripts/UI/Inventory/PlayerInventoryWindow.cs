@@ -92,7 +92,7 @@ namespace Assets.Scripts.UI.Inventory
 
         private void OnDoubleClick(InventoryEntry itemEntry, InventoryItem item)
         {
-            var state = NetworkManager.Instance.PlayerState;
+            var state = PlayerState.Instance;
 
             if (StorageUI.Instance != null)
             {
@@ -145,10 +145,10 @@ namespace Assets.Scripts.UI.Inventory
         
         public void UpdateActiveVisibleBag()
         {
-            if (!gameObject.activeSelf || NetworkManager.Instance?.PlayerState == null)
+            if (!gameObject.activeSelf || PlayerState.Instance == null)
                 return;
 
-            var state = NetworkManager.Instance.PlayerState;
+            var state = PlayerState.Instance;
             var inventory = state.Inventory;
             activeEntryCount = 0;
             var bagItems = inventory.GetInventoryData();

@@ -26,7 +26,7 @@ public enum QueuedAction
 }
 
 [UsedImplicitly]
-[EntityComponent([EntityType.Player, EntityType.Monster, EntityType.Npc, EntityType.Effect])]
+[EntityComponent([EntityType.Player, EntityType.Monster, EntityType.Npc, EntityType.BattleNpc])]
 public class WorldObject : IEntityAutoReset
 {
     public int Id { get; set; }
@@ -142,11 +142,12 @@ public class WorldObject : IEntityAutoReset
     private Monster monster = null!;
     private Npc npc = null!;
     private CombatEntity combatEntity = null!;
+    private BattleNpc battleNpc = null!;
 
     public EntityList? Events { get; set; }
     public int EventsCount => Events?.Count ?? 0;
 
-    public bool HasCombatEntity => Entity.IsAlive() && (Entity.Type == EntityType.Player || Entity.Type == EntityType.Monster);
+    public bool HasCombatEntity => Entity.IsAlive() && (Entity.Type == EntityType.Player || Entity.Type == EntityType.Monster || Entity.Type == EntityType.BattleNpc);
 
     public Player Player
     {
@@ -175,10 +176,21 @@ public class WorldObject : IEntityAutoReset
         get
         {
 #if DEBUG
-            if (!Entity.IsAlive() || Entity.Type != EntityType.Npc)
+            if (!Entity.IsAlive() || (Entity.Type != EntityType.Npc && Entity.Type != EntityType.BattleNpc))
                 throw new Exception($"Cannot get npc type from world object {Entity} id {Id} as entity is either expired or not a npc.");
 #endif
             return npc;
+        }
+    }
+    public BattleNpc BattleNpc
+    {
+        get
+        {
+#if DEBUG
+            if (!Entity.IsAlive() || Entity.Type != EntityType.BattleNpc)
+                throw new Exception($"Cannot get battleNpc type from world object {Entity} id {Id} as entity is either expired or not a battle npc.");
+#endif
+            return battleNpc;
         }
     }
     public CombatEntity CombatEntity
@@ -219,6 +231,11 @@ public class WorldObject : IEntityAutoReset
         AttackCooldown = 0f;
         SpawnImmunity = 0f;
         ClearVisiblePlayerList();
+        npc = null!;
+        player = null!;
+        combatEntity = null!;
+        monster = null!;
+        battleNpc = null!;
 
         if (Events != null)
         {
@@ -251,6 +268,14 @@ public class WorldObject : IEntityAutoReset
                 break;
             case EntityType.Npc:
                 npc = Entity.Get<Npc>();
+                break;
+            case EntityType.BattleNpc:
+                combatEntity = Entity.Get<CombatEntity>();
+                npc = Entity.Get<Npc>();
+                battleNpc = Entity.Get<BattleNpc>();
+                battleNpc.Character = this;
+                battleNpc.Npc = npc;
+                battleNpc.CombatEntity = combatEntity;
                 break;
         }
     }
@@ -372,6 +397,61 @@ public class WorldObject : IEntityAutoReset
         Events ??= EntityListPool.Get();
 
         Events.Add(eventEntity);
+    }
+
+    public void EndAllEvents()
+    {
+        if (Events == null)
+            return;
+
+        for (var i = 0; i < Events.Count; i++)
+        {
+            if (Events[i].TryGet<Npc>(out var npc))
+            {
+                npc.EndEvent();
+                Events.SwapFromBack(i);
+                i--;
+            }
+        }
+
+        Events.ClearInactive();
+
+        if (Events.Count <= 0)
+        {
+            Events.Clear();
+            EntityListPool.Return(Events);
+            Events = null;
+            return;
+        }
+    }
+
+    public bool EndEventsOfType(string eventType)
+    {
+        if (Events == null)
+            return false;
+
+        var hasRemove = false;
+
+        for (var i = 0; i < Events.Count; i++)
+        {
+            if (Events[i].TryGet<Npc>(out var npc) && npc.EventType == eventType)
+            {
+                npc.EndEvent();
+                Events.SwapFromBack(i);
+                i--;
+                hasRemove = true;
+            }
+        }
+
+        Events.ClearInactive();
+        if (Events.Count <= 0)
+        {
+            Events.Clear();
+            EntityListPool.Return(Events);
+            Events = null;
+        }
+
+        return hasRemove;
     }
 
     public int CountEventsOfType(string eventType)
@@ -557,7 +637,52 @@ public class WorldObject : IEntityAutoReset
         return MoveSpeed * distance;
     }
 
-    //updated TryMove function using float position instead
+    public bool TryMoveInDirection(Position targetDirection) 
+    {
+        // check how much we can move in the direction
+        var stepsToMove = CheckMoveInDirection(targetDirection);
+
+        // move if can take steps
+        if (stepsToMove > 0)
+            return TryMove(Position + (stepsToMove * targetDirection), 0);
+
+        // if diagonal move, check if can move along 1 axis
+        if (targetDirection.X == 0 || targetDirection.Y == 0)
+            return false;
+
+        var xOnlyDirection = new Position(targetDirection.X, 0);
+        var yOnlyDirection = new Position(0, targetDirection.Y);
+
+        var xOnlySteps = CheckMoveInDirection(xOnlyDirection);
+        var yOnlySteps = CheckMoveInDirection(yOnlyDirection);
+
+        // if can move along 1 axis, move along the axis with the most available steps
+        if (xOnlySteps < 1 && yOnlySteps < 1)
+            return false;
+
+        if (xOnlySteps >= yOnlySteps)
+            return TryMove(Position + (xOnlySteps * xOnlyDirection), 0);
+        else
+            return TryMove(Position + (yOnlySteps * yOnlyDirection), 0);
+    }
+
+    public int CheckMoveInDirection(Position targetDirection) 
+    {
+        if (Map == null) 
+            return -1;
+
+        // check how much we can move in a certain direction,
+        // to avoid janky pathfinding when using wasd controls
+        for (int i = 1; i < 10; ++i)
+        {
+            if (!Map.WalkData.IsCellWalkable(Position + (i * targetDirection)))
+                return (i - 1);
+        }
+
+        return 9;
+    }
+
+    //updated TryMove function using float position instead  
     public bool TryMove(Position target, int desiredDistanceToTarget)
     {
         Debug.Assert(Map != null);
@@ -734,9 +859,15 @@ public class WorldObject : IEntityAutoReset
         LastUpdate = Time.UpdateCount;
 #endif
 
-        if (Type == CharacterType.NPC)
+        if (Type == CharacterType.NPC || Type == CharacterType.BattleNpc)
         {
             npc.Update();
+            if (Type == CharacterType.BattleNpc)
+            {
+                battleNpc.Update();
+                combatEntity.Update();
+            }
+
             if (IsActive && State == CharacterState.Moving)
                 PerformMoveUpdate2();
             return;

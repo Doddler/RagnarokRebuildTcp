@@ -19,10 +19,11 @@ using System.Runtime.CompilerServices;
 using RoRebuildServer.ScriptSystem;
 using System.Runtime.InteropServices;
 using RoRebuildServer.Data.Monster;
+using System.Text.RegularExpressions;
 
 namespace RoRebuildServer.EntityComponents;
 
-[EntityComponent([EntityType.Player, EntityType.Monster])]
+[EntityComponent([EntityType.Player, EntityType.Monster, EntityType.BattleNpc])]
 public partial class CombatEntity : IEntityAutoReset
 {
     public Entity Entity;
@@ -345,7 +346,7 @@ public partial class CombatEntity : IEntityAutoReset
         if (Character.Map == null)
             return;
 
-        var pos = Character.Map.FindRandomPositionOnMap();
+        var pos = Character.Map.FindRandomPositionOnMap(Character.Position);
 
         if (Character.Type == CharacterType.Player)
             Player.AddInputActionDelay(InputActionCooldownType.Teleport);
@@ -362,7 +363,7 @@ public partial class CombatEntity : IEntityAutoReset
         if (Character.Type == CharacterType.Player)
             CommandBuilder.SendExpGain(Player, 0); //update their exp
 
-        if (Character.Type == CharacterType.Monster) //are they a monster? If so, we should check if they have minions that should come along.
+        if (Character.Type == CharacterType.Monster || Character.Type == CharacterType.BattleNpc) //are they a monster? If so, we should check if they have minions that should come along.
         {
             var m = Character.Monster;
             if (m.Children == null)
@@ -611,9 +612,31 @@ public partial class CombatEntity : IEntityAutoReset
         if (Character.Map == null || Character.Type != CharacterType.Player)
             return;
 
-        Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
         CommandBuilder.ChangeSpValue(Player, curSp + sp, maxSp);
-        CommandBuilder.ClearRecipients();
+        if (Player.Party != null)
+            CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(Player);
+    }
+
+    public void RecoverSpFixed(int sp)
+    {
+        if (sp <= 0)
+            return;
+
+        var curSp = GetStat(CharacterStat.Sp);
+        var maxSp = GetStat(CharacterStat.MaxSp);
+        var newSp = curSp + sp;
+
+        if (newSp > maxSp)
+            newSp = maxSp;
+
+        SetStat(CharacterStat.Sp, newSp);
+
+        if (Character.Map == null || Character.Type != CharacterType.Player)
+            return;
+
+        CommandBuilder.ChangeSpValue(Player, newSp, maxSp);
+        if (Player.Party != null)
+            CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(Player);
     }
 
     [ScriptUseable]
@@ -704,7 +727,7 @@ public partial class CombatEntity : IEntityAutoReset
         //if (source.Entity.Type == EntityType.Player)
         //    return false;
 
-        if (Character.ClassId >= 1000 && Character.ClassId < 4000)
+        if (Character.ClassId >= 1000 && Character.ClassId < 4000 && Character.Type != CharacterType.BattleNpc)
             return false; //hack
         //if (source.Party == Party)
         //    return false;
@@ -958,11 +981,10 @@ public partial class CombatEntity : IEntityAutoReset
             ExecuteQueuedSkillAttack();
         else
         {
-
             if (Character.Type == CharacterType.Player) //monsters have their interrupt mode set during their AI skill handler
             {
                 var skillData = DataManager.SkillData[skill];
-                CastInterruptionMode = skillData.InterruptMode == CastInterruptionMode.Default ? CastInterruptionMode.InterruptOnSkill : skillData.InterruptMode;
+                CastInterruptionMode = skillData.InterruptMode == CastInterruptionMode.Default ? ServerConfig.OperationConfig.DefaultCastInterruptMode : skillData.InterruptMode;
 
                 castTime = castTime * (100 + GetStat(CharacterStat.AddCastTime)) / 100;
             }
@@ -1062,7 +1084,7 @@ public partial class CombatEntity : IEntityAutoReset
             if (Character.Type == CharacterType.Player) //monsters have their interrupt mode set during their AI skill handler
             {
                 var skillData = DataManager.SkillData[skill];
-                CastInterruptionMode = skillData.InterruptMode == CastInterruptionMode.Default ? CastInterruptionMode.InterruptOnSkill : skillData.InterruptMode;
+                CastInterruptionMode = skillData.InterruptMode == CastInterruptionMode.Default ? ServerConfig.OperationConfig.DefaultCastInterruptMode : skillData.InterruptMode;
                 castTime = castTime * (100 + GetStat(CharacterStat.AddCastTime)) / 100;
             }
 
@@ -1192,7 +1214,7 @@ public partial class CombatEntity : IEntityAutoReset
                 if (Character.Type == CharacterType.Player) //monsters have their interrupt mode set during their AI skill handler
                 {
                     var skillData = DataManager.SkillData[skill];
-                    CastInterruptionMode = skillData.InterruptMode == CastInterruptionMode.Default ? CastInterruptionMode.InterruptOnSkill : skillData.InterruptMode;
+                    CastInterruptionMode = skillData.InterruptMode == CastInterruptionMode.Default ? ServerConfig.OperationConfig.DefaultCastInterruptMode : skillData.InterruptMode;
 
                     castTime = castTime * (100 + GetStat(CharacterStat.AddCastTime)) / 100;
                 }
@@ -1330,7 +1352,7 @@ public partial class CombatEntity : IEntityAutoReset
         if (chance > outOf)
             return true;
 
-        var luckMod = 100;
+        var luckMod = 150;
         var successRate = chance / (float)outOf;
         if (successRate > 0.1f)
             luckMod += (int)((successRate * 1000 - 100) / 4f);
@@ -1563,29 +1585,25 @@ public partial class CombatEntity : IEntityAutoReset
             }
         }
 
-        if (damageInfo.Damage != 0)
+        if (damageInfo.Damage != 0 || damageInfo.DamageOffHand > 0 || damageInfo.KnockBack > 0)
             target.QueueDamage(damageInfo);
-
-        
     }
 
     public void PerformMeleeAttack(CombatEntity target)
     {
-        ApplyCooldownForAttackAction(target);
-
-        var flags = AttackFlags.Physical;
+        DamageInfo di;
         if (Character.Type == CharacterType.Player)
-            flags |= AttackFlags.CanCrit;
-        if (Character.Type == CharacterType.Monster)
-            flags |= AttackFlags.CanHarmAllies; //they can auto attack their allies if they get hit by them
-
-        var di = CalculateCombatResult(target, 1f, 1, flags);
-        if (Character.Type == CharacterType.Player && (Character.Player.WeaponClass == 1 || Character.Player.Equipment.DoubleAttackModifiers > 0))
+            di = Player.CalculateMeleeAttack(target);
+        else if (Character.Type == CharacterType.Monster)
         {
-            var doubleChance = GetStat(CharacterStat.DoubleAttackChance);
-            if (doubleChance > 0 && GameRandom.Next(0, 100) <= doubleChance)
-                di.HitCount = 2;
+            var flags = AttackFlags.Physical |
+                        AttackFlags.CanHarmAllies; //they can auto attack their allies if they get hit by them
+            di = CalculateCombatResult(target, 1f, 1, flags);
+            ApplyCooldownForAttackAction(target);
         }
+        else
+            return;
+
 
         UpdateHidingStateAfterAttack();
 

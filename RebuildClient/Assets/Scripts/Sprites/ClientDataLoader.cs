@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Effects.EffectHandlers.Environment;
@@ -18,6 +21,7 @@ using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Networking;
 using UnityEngine.Rendering;
 using UnityEngine.ResourceManagement.ResourceLocations;
 using UnityEngine.U2D;
@@ -43,26 +47,6 @@ namespace Assets.Scripts.Sprites
     {
         public static ClientDataLoader Instance;
 
-        [SerializeField] private TextAsset MonsterClassData;
-        [SerializeField] private TextAsset PlayerClassData;
-        [SerializeField] private TextAsset PlayerHeadData;
-        [SerializeField] private TextAsset PlayerWeaponData;
-        [SerializeField] private TextAsset WeaponClassData;
-        [SerializeField] private TextAsset SkillData;
-        [SerializeField] private TextAsset SkillTreeData;
-        [SerializeField] private TextAsset MapViewpointData;
-        [SerializeField] private TextAsset UniqueAttackActionData;
-        [SerializeField] private TextAsset MetamorphResultData;
-        [SerializeField] private TextAsset ItemData;
-        [SerializeField] private TextAsset MapData;
-        [SerializeField] private TextAsset EquipmentSpriteData;
-        [SerializeField] private TextAsset ItemDescData;
-        [SerializeField] private TextAsset CardPrefixData;
-        [SerializeField] private TextAsset ServerVersionData;
-        [SerializeField] private TextAsset PatchNoteData;
-        [SerializeField] private TextAsset JobExpData;
-        [SerializeField] private TextAsset EmoteData;
-        [SerializeField] private TextAsset StatusEffectData;
         public SpriteAtlas ItemIconAtlas;
         public Sprite ShadowSprite;
 
@@ -87,10 +71,68 @@ namespace Assets.Scripts.Sprites
         private readonly Dictionary<int, CardPrefixData> cardPrefixPostfixTable = new();
         private readonly Dictionary<int, EmoteData> emoteDataTable = new();
         private readonly Dictionary<int, StatusEffectData> statusEffectData = new();
-        private readonly int[] jobExpData = new int[70 * 2];
+        private readonly int[] jobExpData = new int[70 * 3];
 
         private readonly List<string> validMonsterClasses = new();
         private readonly List<string> validMonsterCodes = new();
+
+        private const string MonsterClassDataPath = "ClientConfigGenerated/monsterclass.json";
+        private const string PlayerClassDataPath = "ClientConfigGenerated/playerclass.json";
+        private const string PlayerHeadDataPath = "ClientConfig/headdata.json";
+        private const string PlayerWeaponDataPath = "ClientConfigGenerated/jobweaponinfo.json";
+        private const string WeaponClassDataPath = "ClientConfigGenerated/weaponclass.json";
+        private const string SkillDataPath = "ClientConfigGenerated/skillinfo.json";
+        private const string SkillTreeDataPath = "ClientConfigGenerated/skilltree.json";
+        private const string MapViewpointDataPath = "ClientConfig/MapViewpointList.txt";
+        private const string UniqueAttackActionDataPath = "ClientConfig/monsteractions.json";
+        private const string MetamorphResultDataPath = "ClientConfig/metamorph_actions.json";
+        private const string ItemDataPath = "ClientConfigGenerated/items.json";
+        private const string MapDataPath = "ClientConfigGenerated/maps.json";
+        private const string EquipmentSpriteDataPath = "ClientConfigGenerated/displaySpriteTable.txt";
+        private const string ItemDescDataPath = "ClientConfigGenerated/itemDescriptions.json";
+        private const string CardPrefixDataPath = "ClientConfigGenerated/cardprefixes.json";
+        private const string ServerVersionDataPath = "ClientConfigGenerated/ServerVersion.txt";
+        private const string PatchNoteDataPath = "ClientConfigGenerated/PatchNotes.txt";
+        private const string JobExpDataPath = "ClientConfigGenerated/jobexpchart.txt";
+        private const string EmoteDataPath = "ClientConfigGenerated/emotes.json";
+        private const string StatusEffectDataPath = "ClientConfigGenerated/statusinfo.json";
+
+// #if UNITY_WEBGL
+        private string[] streamingAssets = new[]
+        {
+            "ClientConfigGenerated/effects.json",
+            "ClientConfigGenerated/levelchart.txt",
+            "ClientConfig/AdminWarpList.txt",
+            "ClientConfig/fogData.json",
+            MapDataPath,
+        };
+
+        private string[] initializeOnlyStreamingAssets = new[]
+        {
+            MonsterClassDataPath,
+            PlayerClassDataPath,
+            PlayerHeadDataPath,
+            PlayerWeaponDataPath,
+            WeaponClassDataPath,
+            SkillDataPath,
+            SkillTreeDataPath,
+            MapViewpointDataPath,
+            UniqueAttackActionDataPath,
+            MetamorphResultDataPath,
+            ItemDataPath,
+            // MapDataPath,
+            EquipmentSpriteDataPath,
+            ItemDescDataPath,
+            CardPrefixDataPath,
+            ServerVersionDataPath,
+            PatchNoteDataPath,
+            JobExpDataPath,
+            EmoteDataPath,
+            StatusEffectDataPath,
+        };
+
+        private Dictionary<string, string> streamingAssetsData;
+// #endif
 
         public Sprite GetIconAtlasSprite(string name) => EffectSharedMaterialManager.GetAtlasSprite(ItemIconAtlas, name);
 
@@ -121,7 +163,15 @@ namespace Assets.Scripts.Sprites
         public string GetItemDescription(string itemCode) => itemDescriptionTable.GetValueOrDefault(itemCode, "No description available.");
         public CardPrefixData GetCardPrefixData(int id) => cardPrefixPostfixTable.GetValueOrDefault(id, null);
         public StatusEffectData GetStatusEffect(int id) => statusEffectData.GetValueOrDefault(id, null);
-        public int GetJobExpRequired(int job, int level) => level < 0 || level >= 70 ? -1 : jobExpData[(job == 0 ? 0 : 1) * 70 + level];
+
+        public int GetJobExpRequired(int job, int level)
+        {
+            if (!playerClassLookup.TryGetValue(job, out var jobInfo))
+                return -1;
+            if (level < 0 || level >= 70)
+                return -1;
+            return jobExpData[jobInfo.ExpChart * 70 + level];
+        }
 
         public bool TryGetMetamorphResult(string spriteName, out MetamorphTransitionResult result) =>
             metamorphTransitionResult.TryGetValue(spriteName, out result);
@@ -157,15 +207,73 @@ namespace Assets.Scripts.Sprites
             //Initialize();
         }
 
+        public IEnumerator LoadStreamingAssets()
+        {
+            if (Application.platform == RuntimePlatform.WebGLPlayer || Application.isEditor)
+            {
+                streamingAssetsData = new Dictionary<string, string>();
+
+                var assetList = new List<string>();
+                assetList.AddRange(streamingAssets);
+                assetList.AddRange(initializeOnlyStreamingAssets);
+                
+                var bom = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
+
+                foreach (var assetName in assetList)
+                {
+                    var path = Path.Combine(Application.streamingAssetsPath, assetName);
+                    using UnityWebRequest www = UnityWebRequest.Get(path);
+
+                    yield return www.SendWebRequest();
+                    if (www.result == UnityWebRequest.Result.Success)
+                    {
+                        var txt = www.downloadHandler.text;
+                        if (txt.StartsWith(bom, StringComparison.Ordinal))
+                            txt = txt.Remove(0, bom.Length); //fix byte order mark because unity is fucking stupid
+
+                        streamingAssetsData.Add(assetName, txt);
+                    }
+                    else
+                    {
+                        Debug.LogError($"Could not load streaming asset using WWW request at path: {path}");
+                        streamingAssetsData.Add(assetName, "");
+                    }
+                }
+            }
+        }
+
+        public static string ReadStreamingAssetFile(string file)
+        {
+#if UNITY_EDITOR
+            if (!Instance.streamingAssetsData.ContainsKey(file))
+                Debug.LogWarning($"Warning, attempting to load streaming asset {file}, but it is not in the streamingAssets list in ClientDataLoader.cs."
+                                 + " This can cause the file to be unloadable in a webGL build.");
+#endif
+
+#if !UNITY_WEBGL && !UNITY_EDITOR && !UNITY_ANDROID
+            //Non WebGL platforms can read from streaming assets directly.
+            return File.ReadAllText(Path.Combine(Application.streamingAssetsPath, file));
+#endif
+
+            if (Instance.streamingAssetsData.TryGetValue(file, out var data))
+                return data;
+
+            Debug.LogWarning($"Could not load streaming asset from memory for path: {file}");
+            if (Application.isEditor)
+                return File.ReadAllText(Path.Combine(Application.streamingAssetsPath, file));
+
+            return "";
+        }
+
         public void Initialize()
         {
             if (isInitialized && Instance != null)
                 return;
             Instance = this;
 
-            ServerVersion = int.Parse(ServerVersionData.text);
+            ServerVersion = int.Parse(ReadStreamingAssetFile(ServerVersionDataPath));
 
-            using var jobStr = new StringReader(JobExpData.text);
+            using var jobStr = new StringReader(ReadStreamingAssetFile(JobExpDataPath));
             var jobLvl = 0;
             while (true)
             {
@@ -175,10 +283,11 @@ namespace Assets.Scripts.Sprites
                 var s = line.Split(",");
                 jobExpData[jobLvl] = int.Parse(s[0]);
                 jobExpData[70 + jobLvl] = int.Parse(s[1]);
+                jobExpData[140 + jobLvl] = int.Parse(s[2]);
                 jobLvl++;
             }
 
-            var entityData = JsonUtility.FromJson<Wrapper<MonsterClassData>>(MonsterClassData.text);
+            var entityData = JsonUtility.FromJson<Wrapper<MonsterClassData>>(ReadStreamingAssetFile(MonsterClassDataPath));
             foreach (var m in entityData.Items)
             {
                 monsterClassLookup.Add(m.Id, m);
@@ -186,7 +295,7 @@ namespace Assets.Scripts.Sprites
                 validMonsterCodes.Add(m.Code);
             }
 
-            var headData = JsonUtility.FromJson<Wrapper<PlayerHeadData>>(PlayerHeadData.text);
+            var headData = JsonUtility.FromJson<Wrapper<PlayerHeadData>>(ReadStreamingAssetFile(PlayerHeadDataPath));
             foreach (var h in headData.Items)
             {
                 //playerHeadLookup.Add(h.Id, h);
@@ -222,7 +331,7 @@ namespace Assets.Scripts.Sprites
             }
 
 
-            var playerData = JsonUtility.FromJson<Wrapper<PlayerClassData>>(PlayerClassData.text);
+            var playerData = JsonUtility.FromJson<Wrapper<PlayerClassData>>(ReadStreamingAssetFile(PlayerClassDataPath));
             foreach (var p in playerData.Items)
             {
                 playerClassLookup.Add(p.Id, p);
@@ -230,27 +339,30 @@ namespace Assets.Scripts.Sprites
             }
 
             //split weapon entries into a tree of base job -> weapon class -> sprite list
-            var weaponData = JsonUtility.FromJson<Wrapper<PlayerWeaponData>>(PlayerWeaponData.text);
+            var weaponData = JsonUtility.FromJson<Wrapper<PlayerWeaponData>>(ReadStreamingAssetFile(PlayerWeaponDataPath));
             foreach (var weapon in weaponData.Items)
             {
                 if (!playerWeaponLookup.ContainsKey(weapon.Job))
                     playerWeaponLookup.Add(weapon.Job, new Dictionary<int, PlayerWeaponData>());
 
+                var w = weapon.Class;
+                if (weapon.Class2 > 0)
+                    w += weapon.Class2 << 8;
+
                 var jList = playerWeaponLookup[weapon.Job];
-                if (!jList.ContainsKey(weapon.Class))
-                    jList.Add(weapon.Class, weapon);
+                jList.TryAdd(w, weapon);
             }
 
-            var weaponClass = JsonUtility.FromJson<Wrapper<WeaponClassData>>(WeaponClassData.text);
+            var weaponClass = JsonUtility.FromJson<Wrapper<WeaponClassData>>(ReadStreamingAssetFile(WeaponClassDataPath));
             foreach (var weapon in weaponClass.Items)
                 weaponClassData.TryAdd(weapon.Id, weapon);
 
-            var emoteData = JsonUtility.FromJson<Wrapper<EmoteData>>(EmoteData.text);
+            var emoteData = JsonUtility.FromJson<Wrapper<EmoteData>>(ReadStreamingAssetFile(EmoteDataPath));
             foreach (var emote in emoteData.Items)
                 if (!emoteDataTable.TryAdd(emote.Id, emote))
                     Debug.LogWarning($"Failed to add emote {emote.Id} to emote table");
 
-            var items = JsonUtility.FromJson<Wrapper<ItemData>>(ItemData.text);
+            var items = JsonUtility.FromJson<Wrapper<ItemData>>(ReadStreamingAssetFile(ItemDataPath));
 
             var itemIcons = new Dictionary<string, string>();
             foreach (var item in items.Items)
@@ -272,7 +384,7 @@ namespace Assets.Scripts.Sprites
                 Sprite = "Apple"
             });
 
-            foreach (var l in Regex.Split(EquipmentSpriteData.text, "\n|\r|\r\n"))
+            foreach (var l in Regex.Split(ReadStreamingAssetFile(EquipmentSpriteDataPath), "\n|\r|\r\n"))
             {
                 if (string.IsNullOrWhiteSpace(l))
                     continue;
@@ -281,7 +393,7 @@ namespace Assets.Scripts.Sprites
                 displaySpriteList.Add(l2[0], l2[1]);
             }
 
-            var uniqueAttacks = JsonUtility.FromJson<Wrapper<UniqueAttackAction>>(UniqueAttackActionData.text);
+            var uniqueAttacks = JsonUtility.FromJson<Wrapper<UniqueAttackAction>>(ReadStreamingAssetFile(UniqueAttackActionDataPath));
             foreach (var action in uniqueAttacks.Items)
             {
                 if (!uniqueSpriteActions.TryGetValue(action.Sprite, out var list))
@@ -296,13 +408,14 @@ namespace Assets.Scripts.Sprites
                     Debug.LogWarning($"Could not convert {action.Action} to a skill type when parsing unique skill actions");
             }
 
-            var metamorphResults = JsonUtility.FromJson<Wrapper<MetamorphTransitionResult>>(MetamorphResultData.text);
+            var json = ReadStreamingAssetFile(MetamorphResultDataPath); //File.ReadAllText(Path.Combine(Application.streamingAssetsPath, MetamorphResultDataPath)); // ;
+            var metamorphResults = JsonUtility.FromJson<Wrapper<MetamorphTransitionResult>>(json);
             foreach (var result in metamorphResults.Items)
             {
                 metamorphTransitionResult.Add(result.Sprite, result);
             }
 
-            var skills = JsonUtility.FromJson<Wrapper<SkillData>>(SkillData.text);
+            var skills = JsonUtility.FromJson<Wrapper<SkillData>>(ReadStreamingAssetFile(SkillDataPath));
             foreach (var skill in skills.Items)
             {
                 skill.Icon = "skill_" + skill.Icon;
@@ -312,15 +425,15 @@ namespace Assets.Scripts.Sprites
                 skillData.Add(skill.SkillId, skill);
             }
 
-            var trees = JsonUtility.FromJson<Wrapper<ClientSkillTree>>(SkillTreeData.text);
+            var trees = JsonUtility.FromJson<Wrapper<ClientSkillTree>>(ReadStreamingAssetFile(SkillTreeDataPath));
             foreach (var tree in trees.Items)
                 jobSkillTrees.Add(tree.ClassId, tree);
 
-            var prePosData = JsonUtility.FromJson<Wrapper<CardPrefixData>>(CardPrefixData.text);
+            var prePosData = JsonUtility.FromJson<Wrapper<CardPrefixData>>(ReadStreamingAssetFile(CardPrefixDataPath));
             foreach (var dat in prePosData.Items)
                 cardPrefixPostfixTable.Add(dat.Id, dat);
 
-            foreach (var mapDef in MapViewpointData.text.Split("\r\n"))
+            foreach (var mapDef in ReadStreamingAssetFile(MapViewpointDataPath).Split("\r\n"))
             {
                 var s = mapDef.Split(',');
                 if (s.Length < 9 || s[0] == "map")
@@ -340,19 +453,19 @@ namespace Assets.Scripts.Sprites
                 });
             }
 
-            var mapClass = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(MapData.text);
+            var mapClass = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(ReadStreamingAssetFile(MapDataPath));
             foreach (var map in mapClass.Items)
                 mapDataLookup.TryAdd(map.Code, map);
 
-            var statusData = JsonUtility.FromJson<Wrapper<StatusEffectData>>(StatusEffectData.text);
+            var statusData = JsonUtility.FromJson<Wrapper<StatusEffectData>>(ReadStreamingAssetFile(StatusEffectDataPath));
             foreach (var status in statusData.Items)
                 statusEffectData.Add((int)status.StatusEffect, status);
 
-            var itemDescriptions = JsonUtility.FromJson<Wrapper<ItemDescription>>(ItemDescData.text);
+            var itemDescriptions = JsonUtility.FromJson<Wrapper<ItemDescription>>(ReadStreamingAssetFile(ItemDescDataPath));
             foreach (var desc in itemDescriptions.Items)
                 itemDescriptionTable.Add(desc.Code, desc.Description);
 
-            var notes = JsonUtility.FromJson<Wrapper<PatchNotes>>(PatchNoteData.text);
+            var notes = JsonUtility.FromJson<Wrapper<PatchNotes>>(ReadStreamingAssetFile(PatchNoteDataPath));
 
             var sb = new StringBuilder();
             //sb.AppendLine("<b>Changes</b>");
@@ -366,6 +479,12 @@ namespace Assets.Scripts.Sprites
             }
 
             PatchNotes = sb.ToString();
+
+            if (streamingAssetsData != null)
+            {
+                foreach (var asset in initializeOnlyStreamingAssets)
+                    streamingAssetsData.Remove(asset); //no longer necessary
+            }
 
             isInitialized = true;
         }
@@ -557,7 +676,7 @@ namespace Assets.Scripts.Sprites
             control.WeaponClass = param.WeaponClass;
             control.PartyName = param.PartyName;
             control.IsPartyMember = param.PartyId > 0 && param.PartyId == state.PartyId;
-            
+
             bodySprite.Controllable = control;
             if (param.State == CharacterState.Moving)
                 bodySprite.ChangeMotion(SpriteMotion.Walk);
@@ -579,6 +698,16 @@ namespace Assets.Scripts.Sprites
             control.ShadowSize = 0.5f;
             control.WeaponClass = param.WeaponClass;
 
+            var weapon = param.Weapon;
+            var shield = param.Shield;
+            var offHand = 0;
+            if (param.Shield > 0 && TryGetItemById(param.Shield, out var item) && item.ItemClass == ItemClass.Weapon)
+            {
+                
+                offHand = item.SubType;
+                shield = 0;
+            }
+
             var bodySpriteName = GetPlayerBodySpriteName(param.ClassId, param.IsMale);
             var headSpriteName = GetPlayerHeadSpriteName(param.HeadId, param.HairDyeId, param.IsMale);
 
@@ -589,9 +718,9 @@ namespace Assets.Scripts.Sprites
             LoadAndAttachEquipmentSprite(control, param.Headgear1, EquipPosition.HeadUpper, 4);
             LoadAndAttachEquipmentSprite(control, param.Headgear2, EquipPosition.HeadMid, 3);
             LoadAndAttachEquipmentSprite(control, param.Headgear3, EquipPosition.HeadLower, 2);
-            LoadAndAttachEquipmentSprite(control, param.Shield, EquipPosition.Shield, 1);
+            LoadAndAttachEquipmentSprite(control, shield, EquipPosition.Shield, 1);
 
-            LoadAndAttachWeapon(control, param.Weapon);
+            LoadAndAttachWeapon(control, weapon, offHand);
 
             control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
             control.Name = param.Name;
@@ -609,6 +738,7 @@ namespace Assets.Scripts.Sprites
                 CameraFollower.Instance.CharacterDetailBox.CharacterJob.text = pData.Name;
                 state.PlayerName = control.Name;
                 state.UpdatePlayerName();
+                state.WeaponClass = param.WeaponClass;
                 CameraFollower.Instance.CharacterDetailBox.BaseLvlDisplay.text = $"Base Lv. {control.Level}";
             }
 
@@ -617,7 +747,8 @@ namespace Assets.Scripts.Sprites
             if (param.PartyId == state.PartyId)
             {
                 state.AssignPartyMemberControllable(control.Id, control);
-                if(state.PartyMemberIdLookup.TryGetValue(control.Id, out var partyMemberId) && UiManager.Instance.PartyPanel.PartyEntryLookup.TryGetValue(partyMemberId, out var panel))
+                if (state.PartyMemberIdLookup.TryGetValue(control.Id, out var partyMemberId) &&
+                    UiManager.Instance.PartyPanel.PartyEntryLookup.TryGetValue(partyMemberId, out var panel))
                     panel.ClearAllStatusEffects(); //we will re-assign them right after
             }
 
@@ -642,13 +773,35 @@ namespace Assets.Scripts.Sprites
                 control.FollowerObject = cartObj;
             }
 
+            if ((param.Follower & PlayerFollower.Falcon) > 0)
+            {
+                var birdObj = new GameObject();
+                var bird = birdObj.AddComponent<BirdFollower>();
+                bird.AttachBird(control, 0);
+
+                if (control.FollowerObject != null)
+                    Destroy(control.FollowerObject);
+                control.FollowerObject = birdObj;
+
+                if (control.IsMainCharacter)
+                    PlayerState.Instance.HasBird = true;
+            }
+
             return control;
         }
 
-        public void LoadAndAttachWeapon(ServerControllable ctrl, int item)
+        public void LoadAndAttachWeapon(ServerControllable ctrl, int item, int offHand = 0)
         {
             var weaponSpriteFile = "";
             var isEffect = item == int.MaxValue;
+            var weaponClass = ctrl.WeaponClass;
+            if (offHand > 0)
+            {
+                if (weaponClass == 0)
+                    weaponClass = offHand; //if we only have a weapon in our offhand, we use the single hand variant
+                else
+                    weaponClass += offHand << 8;
+            }
 
             var attachPosition = isEffect ? EquipPosition.Accessory : EquipPosition.Weapon; //it's not an accessory but too lazy to make a new option
             if (ctrl.AttachedComponents.TryGetValue(attachPosition, out var existing))
@@ -672,7 +825,7 @@ namespace Assets.Scripts.Sprites
             }
 
             var data = GetItemById(item);
-            if (data.Id > 0 && displaySpriteList.TryGetValue(data.Code, out var sprite))
+            if (offHand == 0 && data.Id > 0 && displaySpriteList.TryGetValue(data.Code, out var sprite))
             {
                 var jobName = GetJobNameForId(ctrl.ClassId);
                 var spr = $"Assets/Sprites/Weapons/{jobName}/{(ctrl.IsMale ? $"Male/{jobName}_M_" : $"Female/{jobName}_F_")}{sprite}.spr";
@@ -685,9 +838,12 @@ namespace Assets.Scripts.Sprites
             if (!playerWeaponLookup.TryGetValue(ctrl.ClassId, out var weaponsByJob))
                 return;
 
-            if (!weaponsByJob.TryGetValue(ctrl.WeaponClass, out var weapon))
+            if (!weaponsByJob.TryGetValue(weaponClass, out var weapon))
             {
-                Debug.Log($"Could not load default weapon sprite for weapon class {ctrl.WeaponClass} for job {ctrl.ClassId}");
+                if(offHand == 0)
+                    Debug.Log($"Could not load default weapon sprite for weapon class {ctrl.WeaponClass} for job {ctrl.ClassId}");
+                else
+                    Debug.Log($"Could not load default weapon sprite for weapon class {ctrl.WeaponClass}/{offHand} for job {ctrl.ClassId}");
                 return;
             }
 
@@ -715,7 +871,8 @@ namespace Assets.Scripts.Sprites
             if (isEffect)
                 weaponSprite.SpriteOrder = 5;
 
-            ctrl.SpriteAnimator.PreferredAttackMotion = ctrl.IsMale ? weapon.AttackMale : weapon.AttackFemale;
+            if(!isEffect)
+                ctrl.SpriteAnimator.PreferredAttackMotion = ctrl.IsMale ? weapon.AttackMale : weapon.AttackFemale;
             ctrl.SpriteAnimator.ChildrenSprites.Add(weaponSprite);
 
             ctrl.AttachedComponents[attachPosition] = weaponObj;
@@ -827,12 +984,12 @@ namespace Assets.Scripts.Sprites
             }
 
 #if UNITY_EDITOR
-            Debug.Log($"Instantiating entity effect {type}");
+            // Debug.Log($"Instantiating entity effect {type}");
 #endif
 
             var obj = new GameObject(type.ToString());
             obj.layer = LayerMask.NameToLayer("Characters");
-            
+
             var control = obj.AddComponent<ServerControllable>();
             control.ClassId = param.ClassId;
             control.CharacterType = CharacterType.NPC;
@@ -844,7 +1001,7 @@ namespace Assets.Scripts.Sprites
             control.IsInteractable = false;
 
             control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
-            if (type != NpcEffectType.AnkleSnare)
+            if (type < NpcEffectType.AnkleSnare || type > NpcEffectType.ShockwaveTrap)
             {
                 obj.AddComponent<BillboardObject>();
                 obj.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
@@ -896,13 +1053,41 @@ namespace Assets.Scripts.Sprites
                     //DummyGroundEffect.Create(obj, "Sanctuary");
                     break;
                 case NpcEffectType.AnkleSnare:
-                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/AnkleSnare.prefab");
+                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelAnkleSnare.prefab");
+                    break;
+                case NpcEffectType.LandMine:
+                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelLandMine.prefab");
+                    break;
+                case NpcEffectType.BlastMine:
+                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelBlastMine.prefab");
+                    control.IsAttackable = true;
+                    break;
+                case NpcEffectType.ClaymoreTrap:
+                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelClaymoreTrap.prefab");
+                    break;
+                case NpcEffectType.FlasherTrap:
+                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelFlasherTrap.prefab");
+                    break;
+                case NpcEffectType.FreezingTrap:
+                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelFreezingTrap.prefab");
+                    break;
+                case NpcEffectType.SandmanTrap:
+                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelSandmanTrap.prefab");
+                    break;
+                case NpcEffectType.SkidTrap:
+                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelSkidTrap.prefab");
+                    break;
+                case NpcEffectType.ShockwaveTrap:
+                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelShockwaveTrap.prefab");
+                    break;
+                case NpcEffectType.TalkieBox:
+                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelTalkieBox.prefab");
                     break;
             }
 
             return control;
         }
-        
+
         private void AttachPrefabToControllable(ServerControllable target, string prefabName)
         {
             var loader = Addressables.LoadAssetAsync<GameObject>(prefabName);

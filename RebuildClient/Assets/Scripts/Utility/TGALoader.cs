@@ -58,7 +58,7 @@ public static class TGALoader
                     byte green = r.ReadByte();
                     byte blue = r.ReadByte();
 
-                    pulledColors[i] = new Color32(blue, green, red, 1);
+                    pulledColors[i] = new Color32(blue, green, red, 255);
                 }
             }
             else

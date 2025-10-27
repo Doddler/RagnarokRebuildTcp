@@ -8,13 +8,14 @@ using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using System.Diagnostics;
+using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Priest;
 
 [SkillHandler(CharacterSkill.MagnusExorcismus, SkillClass.Magic, SkillTarget.Ground)]
 public class MagnusExorcismusHandler : SkillHandlerBase
 {
-    public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 15f;
+    public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 12f;
 
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
         int lvl, bool isIndirect, bool isItemSource)
@@ -47,6 +48,7 @@ public class MagnusExorcismusHandler : SkillHandlerBase
 
         if (!isIndirect)
         {
+            source.ApplyAfterCastDelay(3f);
             source.ApplyCooldownForSupportSkillAction();
             CommandBuilder.SkillExecuteAreaTargetedSkillAutoVis(ch, position, CharacterSkill.MagnusExorcismus, lvl);
         }
@@ -202,7 +204,7 @@ public class MagnusExorcismusObjectEvent : NpcBehaviorBase
             var res = src.CalculateCombatResult(target, 1f, npc.ValuesInt[0], AttackFlags.Magical, CharacterSkill.MagnusExorcismus, AttackElement.Holy);
             res.AttackPosition = target.Character.Position.AddDirectionToPosition(target.Character.FacingDirection);
             res.AttackMotionTime = 0;
-            res.Time = 0;
+            res.Time = Time.ElapsedTimeFloat;
             res.IsIndirect = true;
 
             CommandBuilder.SkillExecuteIndirectAutoVisibility(npc.Character, target.Character, res);

@@ -104,6 +104,7 @@ public class UiManager : MonoBehaviour
 
         var emote = EmoteManager.GetComponent<EmoteWindow>();
         emote.ShowWindow();
+        emote.EnsureInitialized();
         emote.HideWindow();
 
         //SkillManager.ShowWindow();

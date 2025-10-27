@@ -98,7 +98,7 @@ SkillHandler("STALACTIC_GOLEM") {
 StateIdle:
     @ResumeAiState(20%, AiPassiveSense, 9); //...
 StateChase:
-	TryCast(Endure, 1, 50%, 0, 10s)[WasRangedOrMagicAttacked] -> SendEmote(6);
+	TryCast(Endure, 1, 50%, 0, 10s)[WasRangedAttacked] -> SendEmote(6);
 StateAttacking:
 	TryCast("SwitchToAggressive", 1, 100%, 0, 30s, HiddenCast) -> {
         ChangeAiClass(AiAggressive, false);

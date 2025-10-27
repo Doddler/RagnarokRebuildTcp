@@ -136,6 +136,52 @@ namespace Assets.Scripts.Network.Messaging
             EnqueueMessage(msg);
         }
 
+        public void SendDualWieldingDamageEvent(ServerControllable src, float time, int damage, int offDamage, int hitCount, bool isCrit)
+        {
+            if (damage > 0)
+            {
+                for (var i = 0; i < hitCount; i++)
+                {
+                    var msg = EntityMessagePool.Borrow();
+                    msg.ActivationTime = Time.timeSinceLevelLoad + time + 0.1f * i;
+                    msg.Type = EntityMessageType.ShowDamage;
+                    msg.Entity = src;
+                    msg.Value1 = damage;
+                    if (hitCount > 1)
+                        msg.Value2 = (i + 1) * damage;
+                    msg.Value3 = isCrit ? 1 : 0;
+                    msg.Value4 = 1; //weapon sound
+
+                    EnqueueMessage(msg);
+                }
+            }
+            
+            //offhand
+            if (offDamage > 0)
+            {
+                var msg = EntityMessagePool.Borrow();
+                msg.ActivationTime = Time.timeSinceLevelLoad + time + 0.3f;
+                msg.Type = EntityMessageType.ShowDamage;
+                msg.Entity = src;
+                msg.Value1 = offDamage;
+                if (damage > 0 && hitCount > 1)
+                    msg.Value2 = damage * hitCount + offDamage;
+                msg.Value3 = isCrit ? 1 : 0;
+                msg.Value4 = 1; //weapon sound
+                
+                EnqueueMessage(msg);
+            }
+        }
+
+        public void SendBlockEvent(float time)
+        {
+            var msg = EntityMessagePool.Borrow();
+            msg.ActivationTime = Time.timeSinceLevelLoad + time;
+            msg.Type = EntityMessageType.Guard;
+            
+            EnqueueMessage(msg);
+        }
+
         public void SendDamageEvent(ServerControllable src, float time, int damage, int hitCount, bool isCrit = false, bool takeWeaponSound = true, bool playSound = true)
         {
 // #if DEBUG

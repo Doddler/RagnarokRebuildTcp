@@ -11,12 +11,17 @@ Shader "Unlit/BillboardVerticalZDepthDirect"
  
     SubShader
     {
-        Tags{ "Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent" "DisableBatching" = "True" "LightMode"="ForwardBase" }
+        Tags{ "Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent" /*"DisableBatching" = "True"*/ "LightMode"="ForwardBase" }
  
         ZWrite Off
         Blend One OneMinusSrcAlpha
         Cull Off
-        
+        Stencil
+        {
+            Ref 1
+            Comp NotEqual
+        }
+/*
         Pass
         {
             ZWrite On
@@ -148,9 +153,11 @@ Shader "Unlit/BillboardVerticalZDepthDirect"
             }
             ENDCG
         }
- 
+ */
+
         Pass
         {
+            ZTest LEqual
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -158,14 +165,18 @@ Shader "Unlit/BillboardVerticalZDepthDirect"
             #pragma multi_compile_fog
 			#pragma multi_compile _ LIGHTPROBE_SH
             #pragma multi_compile _ BLINDEFFECT_ON
- 
+            
             #include "UnityCG.cginc"
- 
+            #include "Billboard.cginc"
+
+            #pragma multi_compile_instancing
+            
             struct appdata
             {
                 float4 vertex : POSITION;
                 float4 color    : COLOR;
                 float2 uv : TEXCOORD0;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
             };
  
             struct v2f
@@ -202,43 +213,20 @@ Shader "Unlit/BillboardVerticalZDepthDirect"
 				float4 _RoBlindFocus;
 				float _RoBlindDistance;
 			#endif
-
-
+            
             fixed _Width;
             fixed _Offset;
 			fixed4 _Color;
             fixed4 _ClipRect;
- 
-            float rayPlaneIntersection( float3 rayDir, float3 rayPos, float3 planeNormal, float3 planePos)
-            {
-                float denom = dot(planeNormal, rayDir);
-                denom = max(denom, 0.000001); // avoid divide by zero
-                float3 diff = planePos - rayPos;
-                return dot(diff, planeNormal) / denom;
-            }
- 
+            
             v2f vert(appdata v)
             {
+                UNITY_SETUP_INSTANCE_ID(v);
 				v2f o;
 
-				float3 scale = float3(
-					length(unity_ObjectToWorld._m00_m10_m20),
-					length(unity_ObjectToWorld._m01_m11_m21),
-					length(unity_ObjectToWorld._m02_m12_m22)
-				);
-
-				unity_ObjectToWorld._m00_m10_m20 = float3(scale.x, 0, 0);
-				unity_ObjectToWorld._m01_m11_m21 = float3(0, scale.y, 0);
-				unity_ObjectToWorld._m02_m12_m22 = float3(0, 0, scale.z);
-
-				o.pos = UnityObjectToClipPos(v.vertex);
-				o.uv = v.uv.xy;
-				// billboard mesh towards camera
-				float3 vpos = mul((float3x3)unity_ObjectToWorld, v.vertex.xyz);
-				float4 worldCoord = float4(unity_ObjectToWorld._m03, unity_ObjectToWorld._m13, unity_ObjectToWorld._m23, 1);
-				float4 viewPos = mul(UNITY_MATRIX_V, worldCoord) + float4(vpos, 0);
-
-				o.pos = mul(UNITY_MATRIX_P, viewPos);
+                Billboard billboard = GetBillboard(v.vertex, _Offset);
+				o.pos = billboard.positionCS;
+                float3 viewPos = billboard.positionVS;
 
 				// calculate distance to vertical billboard plane seen at this vertex's screen position
 				float3 planeNormal = normalize(float3(UNITY_MATRIX_V._m20, 0.0, UNITY_MATRIX_V._m22));
@@ -309,7 +297,7 @@ Shader "Unlit/BillboardVerticalZDepthDirect"
 
 				fixed4 col = diff * i.color * float4(env.rgb,1);
 
-				UNITY_APPLY_FOG(i.fogCoord, col);            	
+				//UNITY_APPLY_FOG(i.fogCoord, col);            	
 
                 //col *= i.color * float4(env.rgb,1);
             	col.rgb *= col.a;
@@ -328,7 +316,7 @@ Shader "Unlit/BillboardVerticalZDepthDirect"
 					waterTex = float4(0.5, 0.5, 0.5, 1) + (waterTex / 2);
 	
 					// apply fog
-					UNITY_APPLY_FOG(i.fogCoord, waterTex);
+					//UNITY_APPLY_FOG(i.fogCoord, waterTex);
 	
 					float simHeight = i.worldPos.y - abs(i.worldPos.x)/(_Width)*0.5;
 	

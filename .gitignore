@@ -122,3 +122,5 @@ Other/RoWikiGenerator/wwwroot/maps/
 Other/RoWikiGenerator/wwwroot/regions/
 Other/RebuildTests/
 Other/RoWikiGenerator/Microsoft.CodeAnalysis.Razor.Compiler/
+RebuildClient/Assets/StreamingAssets/ClientConfigGenerated/
+RebuildClient/Assets/Textures/Import/

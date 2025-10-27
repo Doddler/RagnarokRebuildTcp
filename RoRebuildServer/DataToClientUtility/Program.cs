@@ -19,7 +19,7 @@ namespace DataToClientUtility;
 class Program
 {
     private const string path = @"..\..\..\..\GameConfig\ServerData\Db\";
-    private const string outPath = @"..\..\..\..\..\RebuildClient\Assets\Data\";
+    private const string outPath = @"..\..\..\..\..\RebuildClient\Assets\StreamingAssets\ClientConfigGenerated\";
     private const string outPathStreaming = @"..\..\..\..\..\RebuildClient\Assets\StreamingAssets\";
     private const string configPath = @"..\..\..\..\..\RebuildServer\";
 
@@ -28,6 +28,9 @@ class Program
 
     static void Main(string[] args)
     {
+        if (!Directory.Exists(outPath))
+            Directory.CreateDirectory(outPath);
+
         AppSettings.LoadConfigFromServerPath();
         DataManager.Initialize();
 
@@ -333,6 +336,7 @@ class Program
         foreach (var entry in GetCsvRows<CsvItemWeapon>("ItemsWeapons.csv"))
         {
             var itemData = DataManager.ItemList[entry.Id];
+            var classDef = weaponClasses.FirstOrDefault(w => w.WeaponClass == entry.Type, new PlayerWeaponClass() { Name = entry.Type });
             var item = new ItemData()
             {
                 Code = entry.Code,
@@ -348,7 +352,8 @@ class Program
                 SellPrice = itemData.SellToStoreValue,
                 Weight = entry.Weight,
                 Sprite = entry.Sprite,
-                Position = entry.Position == WeaponPosition.MainHand ? EquipPosition.MainHand : EquipPosition.BothHands
+                Position = entry.Position == WeaponPosition.MainHand ? EquipPosition.MainHand : EquipPosition.BothHands,
+                SubType = classDef.Id
             };
             itemList.Items.Add(item);
 
@@ -367,7 +372,7 @@ class Program
             var breakable = entry.Breakable.ToLower() == "yes";
             var refinable = entry.Refinable.ToLower() == "yes";
 
-            var classDef = weaponClasses.FirstOrDefault(w => w.WeaponClass == entry.Type, new PlayerWeaponClass() { Name = entry.Type });
+            
             var equipGroup = equipGroupDescriptions.TryGetValue(entry.EquipGroup, out var groupName) ? groupName : "<i>Currently unequippable by any job</i>";
             desc += $"<line-height=120%>\n</line-height=100%>";
             //desc += $"<line-height=120%>\n</line-height=100%>Type: <color=#777777>Weapon</color>";
@@ -636,7 +641,8 @@ class Program
         {
             var j0 = DataManager.ExpChart.RequiredJobExp(0, i);
             var j1 = DataManager.ExpChart.RequiredJobExp(1, i);
-            txtOut.AppendLine($"{j0},{j1}");
+            var j2 = DataManager.ExpChart.RequiredJobExp(9, i);
+            txtOut.AppendLine($"{j0},{j1},{j2}");
         }
         File.WriteAllText(Path.Combine(outPath, "jobexpchart.txt"), txtOut.ToString());
     }
@@ -908,7 +914,7 @@ class Program
 
         //job list
         var jobs = ConvertToClient<CsvJobs, PlayerClassData>("Jobs.csv", "playerclass.json",
-            jobs => jobs.Select(j => new PlayerClassData() { Id = j.Id, Name = j.Class, SpriteFemale = j.SpriteFemale, SpriteMale = j.SpriteMale }).ToList()
+            jobs => jobs.Select(j => new PlayerClassData() { Id = j.Id, Name = j.Class, SpriteFemale = j.SpriteFemale, SpriteMale = j.SpriteMale, ExpChart = j.ExpChart}).ToList()
             );
 
 
@@ -916,6 +922,7 @@ class Program
         {
             Job = jobs.First(j => j.Name == w.Job).Id,
             Class = classes.First(c => c.WeaponClass == w.Class).Id,
+            Class2 = !string.IsNullOrWhiteSpace(w.Class2) ? classes.First(c => c.WeaponClass == w.Class2).Id : -1,
             AttackMale = w.AttackMale,
             AttackFemale = w.AttackFemale,
             SpriteFemale = string.IsNullOrWhiteSpace(w.SpriteFemale) ? string.Empty : $"Assets/Sprites/Weapons/{w.Job}/Female/" + w.SpriteFemale,
@@ -1015,7 +1022,7 @@ class Program
         SaveToClient("skillinfo.json", skillOut);
 
         //skill tree
-        var skillTreeData = Toml.ToModel<Dictionary<string, PlayerSkillTree>>(File.ReadAllText(Path.Combine(path, "../Skills/SkillTree.toml"), Encoding.UTF8), null, options);
+        var skillTreeData = Toml.ToModel<Dictionary<string, CsvPlayerSkillTree>>(File.ReadAllText(Path.Combine(path, "../Skills/SkillTree.toml"), Encoding.UTF8), null, options);
         var skillTreeOut = new List<ClientSkillTree>();
 
         foreach (var (id, tree) in skillTreeData)

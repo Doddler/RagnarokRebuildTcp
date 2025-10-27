@@ -169,9 +169,12 @@ public class DamageIndicator : MonoBehaviour
 		transform.localScale = new Vector3(size, size, size) * GameConfig.Data.DamageNumberSize;
 
 		TextObject.color = new Color(1, 1, 1, alpha);
-		
-		if(isCrit)
-			CritSprite.SpriteRenderer.color = new Color(0.8f, 0.8f, 0.8f, alpha);
+
+		if (isCrit)
+		{
+			var c = CritSprite.SpriteRenderer.color;
+			CritSprite.SpriteRenderer.color = new Color(c.r, c.g, c.b, alpha);
+		}
 
 	}
 

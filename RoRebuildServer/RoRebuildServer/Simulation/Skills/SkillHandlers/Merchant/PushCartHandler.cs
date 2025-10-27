@@ -13,29 +13,15 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Merchant
             if (owner.Character.Type != CharacterType.Player)
                 return;
 
-            var activeCart = owner.Player.GetData(PlayerStat.PushCart);
-            if (owner.Player.GetData(PlayerStat.PushCart) > 0)
-            {
-                owner.Player.PlayerFollower |= activeCart switch
-                {
-                    1 => PlayerFollower.Cart1,
-                    2 => PlayerFollower.Cart2,
-                    3 => PlayerFollower.Cart3,
-                    4 => PlayerFollower.Cart4,
-                    _ => PlayerFollower.Cart0
-                };
-            }
+            var activeCart = owner.Player.GetData(PlayerStat.FollowerType) & (int)PlayerFollower.AnyCart;
+            owner.Player.PlayerFollower |= (PlayerFollower)activeCart;
         }
 
         public override void RemovePassiveEffects(CombatEntity owner, int lvl)
         {
             if (owner.Character.Type != CharacterType.Player)
                 return;
-
-            var activeCart = owner.Player.PlayerFollower & PlayerFollower.AnyCart;
-            if (activeCart == PlayerFollower.None)
-                return;
-
+            
             owner.Player.PlayerFollower &= ~PlayerFollower.AnyCart;
         }
 

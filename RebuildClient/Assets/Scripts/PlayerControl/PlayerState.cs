@@ -11,7 +11,7 @@ namespace Assets.Scripts.PlayerControl
 {
     public class PlayerState
     {
-        public static PlayerState Instance;
+        public static PlayerState Instance = new();
         
         public bool IsValid { get; set; } = false;
         public int EntityId { get; set; }
@@ -30,6 +30,7 @@ namespace Assets.Scripts.PlayerControl
         public int SkillPoints;
         public int JobId;
         public bool IsMale;
+        public int WeaponClass;
         public int HairStyleId;
         public int HairColorId;
         public int CartWeight = 0;
@@ -47,6 +48,7 @@ namespace Assets.Scripts.PlayerControl
         public MapMemoLocation[] MemoLocations = new MapMemoLocation[4];
         public bool IsInParty;
         public bool HasCart;
+        public bool HasBird;
         public int PartyId;
         public int PartyLeader = -1;
         public int PartyMemberId;
@@ -119,11 +121,6 @@ namespace Assets.Scripts.PlayerControl
             MinimapController.Instance.RefreshPartyMembers();
 
             return info;
-        }
-
-        public PlayerState()
-        {
-            Instance = this;
         }
     }
 }

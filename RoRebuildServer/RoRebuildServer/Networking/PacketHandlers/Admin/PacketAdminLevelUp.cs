@@ -49,7 +49,10 @@ public class PacketAdminLevelUp : IClientPacketHandler
         else
         {
             var jobLevel = player.GetData(PlayerStat.JobLevel);
-            var maxJob = player.GetData(PlayerStat.Job) == 0 ? 10 : 70;
+            var job = player.GetData(PlayerStat.Job);
+            var maxJob = 50;
+            if (DataManager.JobInfo.TryGetValue(job, out var jobInfo))
+                maxJob = jobInfo.MaxJobLevel;
 
             if (lvTarget == 0)
                 lvTarget = 1;

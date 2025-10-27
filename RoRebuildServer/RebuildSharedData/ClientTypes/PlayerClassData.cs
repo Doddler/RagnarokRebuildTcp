@@ -9,6 +9,7 @@ public class PlayerClassData
     public string Name;
     public string SpriteMale;
     public string SpriteFemale;
+    public int ExpChart;
 }
 
 [Serializable]
@@ -16,6 +17,7 @@ public class PlayerWeaponData
 {
     public int Job;
     public int Class;
+    public int Class2;
     public int Weapon;
     public int AttackMale;
     public int AttackFemale;

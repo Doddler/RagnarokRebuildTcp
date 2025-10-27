@@ -82,7 +82,7 @@ namespace Assets.Scripts.UI
                     if (i > 0)
                         tooltipBuilder.Append(", ");
                     var name = ClientDataLoader.Instance.GetSkillName(requiredSkills[i].Skill);
-                    if (NetworkManager.Instance.PlayerState.KnownSkills.TryGetValue(requiredSkills[i].Skill, out var lvl) && requiredSkills[i].Level <= lvl)
+                    if (PlayerState.Instance.KnownSkills.TryGetValue(requiredSkills[i].Skill, out var lvl) && requiredSkills[i].Level <= lvl)
                         tooltipBuilder.Append($"<color=#4444FF>{name} {requiredSkills[i].Level}</color>");
                     else
                         tooltipBuilder.Append($"<color=#FF4444>{name} {requiredSkills[i].Level}</color>");
@@ -137,7 +137,7 @@ namespace Assets.Scripts.UI
 
         public void ApplySkillUpdateFromServer(CharacterSkill skillId, int level)
         {
-            var state = NetworkManager.Instance.PlayerState;
+            var state = PlayerState.Instance;
             for (var i = 0; i < Entries.Count; i++)
             {
                 var entry = Entries[i];
@@ -300,8 +300,9 @@ namespace Assets.Scripts.UI
             HighlightedEntry = null; //safety first
             activeSkills.Clear();
             maxRank = 0;
+            var curTab = selectedRank;
             
-            var state = NetworkManager.Instance.PlayerState;
+            var state = PlayerState.Instance;
             var id = state.JobId;
             var tree = ClientDataLoader.Instance.GetSkillTree(id);
             
@@ -353,12 +354,12 @@ namespace Assets.Scripts.UI
             }
 
             UpdateSkillPointsAndLock();
-            ChangeTab(maxRank);
+            ChangeTab(selectedRank);
         }
 
         private void UpdateSkillPointsAndLock()
         {
-            var points = NetworkManager.Instance.PlayerState.SkillPoints; 
+            var points = PlayerState.Instance.SkillPoints; 
             
             PointsText.text = $"Skill Points {points}";
             for (var i = 0; i < Entries.Count; i++)

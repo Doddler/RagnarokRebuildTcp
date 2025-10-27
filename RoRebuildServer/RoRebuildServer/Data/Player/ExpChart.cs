@@ -9,10 +9,14 @@ public class ExpChart
     {
         if (lvl <= 0 || lvl >= 70)
             return -1;
-
+        
         if (jobId == 0)
             return JobExpRequired[lvl];
 
-        return JobExpRequired[JobExpRequired.Length / 2 + lvl];
+        var rank = 1;
+        if (DataManager.JobInfo.TryGetValue(jobId, out var jobInfo))
+            rank = jobInfo.ExpChart;
+
+        return JobExpRequired[70 * rank + lvl];
     }
 }

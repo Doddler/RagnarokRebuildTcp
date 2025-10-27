@@ -159,7 +159,8 @@ public class NpcInteractionState
     public void SkillReset() => Player?.SkillReset();
     public void StatPointReset() => Player?.StatPointReset();
     public bool HasLearnedSkill(CharacterSkill skill, int level = 1) => Player?.DoesCharacterKnowSkill(skill, level) ?? false;
-    public bool HasCart => Player?.GetData(PlayerStat.PushCart) > 0;
+    public bool HasCart => ((Player?.GetData(PlayerStat.FollowerType) ?? 0) & (int)PlayerFollower.AnyCart) > 0;
+    public bool HasBird => ((Player?.GetData(PlayerStat.FollowerType) ?? 0) & (int)PlayerFollower.Falcon) > 0;
 
     public void FocusNpc()
     {
@@ -392,10 +393,25 @@ public class NpcInteractionState
         }
 
         var trade = tradeSet[itemEntry];
+        var data = DataManager.GetItemInfoById(trade.ItemId);
+        
+        if (data == null)
+        {
+            CommandBuilder.ErrorMessage(Player, $"Could not complete the trade.");
+            ServerLogger.LogWarning($"Player submitted a FinalizeTradeItem request for item id {trade.ItemId} but the server does not have information about that item.");
+            return;
+        }
+        
         if (trade.IsCrafted && tradeCount != 1)
         {
             CommandBuilder.ErrorMessage(Player, $"Could not complete the trade.");
             ServerLogger.LogWarning($"Player submitted a FinalizeTradeItem request for item {tradeCount}x {itemEntry} in category '{CurrentShopCategory}', but you can't get more than 1 of an item.");
+            return;
+        }
+
+        if (data.IsUnique && tradeCount > 1)
+        {
+            CommandBuilder.ErrorMessage(Player, $"Could not complete trade: You can only trade for a single piece of equipment at a time.");
             return;
         }
 
@@ -621,7 +637,7 @@ public class NpcInteractionState
             _ => PlayerFollower.Cart0
         };
 
-        Player.SetData(PlayerStat.PushCart, cartStyle);
+        Player.SetData(PlayerStat.FollowerType, cartStyle);
         Player.PlayerFollower = follower;
 
         CommandBuilder.UpdatePlayerFollowerStateAutoVis(Player);

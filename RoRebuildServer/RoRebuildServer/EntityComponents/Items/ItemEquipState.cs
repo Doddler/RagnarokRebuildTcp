@@ -44,6 +44,44 @@ public struct AutoSpellEffect
     public int Chance;
 }
 
+public struct WeaponAttackInfo
+{
+    public WeaponInfo? WeaponInfo;
+    public AttackElement OverrideElement;
+    public int MinRefineAtkBonus;
+    public int MaxRefineAtkBonus;
+
+    public int WeaponClass => WeaponInfo?.WeaponClass ?? 0;
+    public int WeaponAttackPower => WeaponInfo?.Attack ?? 0;
+    public int WeaponLevel => WeaponInfo?.WeaponLevel ?? 0;
+    public AttackElement WeaponElement
+    {
+        get
+        {
+            if (OverrideElement != AttackElement.None)
+                return OverrideElement;
+            return WeaponInfo?.Element ?? AttackElement.Neutral;
+        }
+    }
+
+    public WeaponAttackInfo() => Reset();
+    public WeaponAttackInfo(WeaponInfo info, int minRefineAtkBonus, int maxRefineAtkBonus)
+    {
+        WeaponInfo = info;
+        MinRefineAtkBonus = minRefineAtkBonus;
+        MaxRefineAtkBonus = maxRefineAtkBonus;
+        OverrideElement = AttackElement.None;
+    }
+
+    public void Reset()
+    {
+        WeaponInfo = null;
+        MinRefineAtkBonus = 0;
+        MaxRefineAtkBonus = 0;
+        OverrideElement = AttackElement.None;
+    }
+}
+
 public class ItemEquipState
 {
     public Player Player = null!; //this is set in player init
@@ -52,22 +90,20 @@ public class ItemEquipState
     public int AmmoId;
     public AmmoType AmmoType;
     public int AmmoAttackPower;
-    public bool IsDualWielding;
+    public bool IsDualWielding => OffHandWeapon.WeaponClass > 0;
     public int DoubleAttackModifiers;
     public int WeaponRange;
-    public AttackElement WeaponElement;
     public AttackElement AmmoElement;
     public CharacterElement ArmorElement;
-    public int WeaponLevel;
-    public int WeaponAttackPower;
-    public int MinRefineAtkBonus;
-    public int MaxRefineAtkBonus;
+    public WeaponAttackInfo MainHandWeapon;
+    public WeaponAttackInfo OffHandWeapon;
     public Dictionary<string, int> ActiveItemCombos = new();
     public Dictionary<int, int> EquippedItems = new();
     public Dictionary<int, AutoSpellEffect> AutoSpellSkillsOnAttack = new();
     public Dictionary<int, AutoSpellEffect> AutoSpellSkillsWhenAttacked = new();
     private readonly SwapList<EquipStatChange> equipmentEffects = new();
     private int activeSlotId;
+    private bool isOffHand;
     private readonly HeadgearPosition[] headgearMultiSlotInfo = new HeadgearPosition[3];
     private bool isTwoHandedWeapon;
     private static int[] attackPerRefine = [2, 3, 5, 7];
@@ -84,11 +120,8 @@ public class ItemEquipState
             headgearMultiSlotInfo[i] = 0;
         AmmoId = -1;
         WeaponRange = 1;
-        WeaponLevel = 0;
-        WeaponAttackPower = 0;
-        MinRefineAtkBonus = 0;
-        MaxRefineAtkBonus = 0;
-        WeaponElement = AttackElement.Neutral;
+        MainHandWeapon.Reset();
+        OffHandWeapon.Reset();
         ArmorElement = CharacterElement.Neutral1;
         AmmoElement = AttackElement.None;
         AutoSpellSkillsOnAttack.Clear();
@@ -140,12 +173,13 @@ public class ItemEquipState
 
             ItemSlots[i] = -1;
             ItemIds[i] = -1;
-            IsDualWielding = false;
             isTwoHandedWeapon = false;
         }
         for (var i = 0; i < 3; i++)
             headgearMultiSlotInfo[i] = HeadgearPosition.None;
         
+        MainHandWeapon.Reset();
+        OffHandWeapon.Reset();
         RemoveEquipEffectForAmmo();
         AmmoId = -1;
         WeaponRange = 1;
@@ -185,7 +219,10 @@ public class ItemEquipState
 
         if (itemData.ItemClass == ItemClass.Weapon)
         {
-            UnEquipItem(EquipSlot.Weapon);
+            var slot = EquipSlot.Weapon;
+            if (ItemSlots[(int)EquipSlot.Shield] == bagId)
+                slot = EquipSlot.Shield;
+            UnEquipItem(slot);
             updateAppearance = true;
             WeaponRange = 1;
         }
@@ -238,8 +275,6 @@ public class ItemEquipState
             WeaponRange = 1;
         }
 
-        if (slot == EquipSlot.Shield)
-            IsDualWielding = false; //probably not but may as well
         if (slot == EquipSlot.HeadTop || slot == EquipSlot.HeadMid || slot == EquipSlot.HeadBottom)
             headgearMultiSlotInfo[(int)slot] = HeadgearPosition.None;
     }
@@ -247,7 +282,7 @@ public class ItemEquipState
     private EquipSlot EquipSlotForWeapon(WeaponInfo weapon)
     {
         //if an assassin is using a one-handed weapon and they are currently equipped with one weapon and no shield, place in shield slot
-        if (Player.Character.ClassId == 11 && !weapon.IsTwoHanded && ItemSlots[(int)EquipSlot.Weapon] > 0 &&
+        if (Player.Character.ClassId == 11 && !isTwoHandedWeapon && !weapon.IsTwoHanded && ItemSlots[(int)EquipSlot.Weapon] > 0 &&
             ItemSlots[(int)EquipSlot.Shield] == 0)
             return EquipSlot.Shield;
         return EquipSlot.Weapon;
@@ -321,8 +356,8 @@ public class ItemEquipState
 
         UnEquipItem(equipSlot);
 
-        IsDualWielding = equipSlot == EquipSlot.Shield;
-        isTwoHandedWeapon = weaponInfo.IsTwoHanded;
+        if(equipSlot == EquipSlot.Weapon)
+            isTwoHandedWeapon = weaponInfo.IsTwoHanded;
 
         ItemSlots[(int)equipSlot] = bagId;
         ItemIds[(int)equipSlot] = itemData.Id;
@@ -488,35 +523,40 @@ public class ItemEquipState
 
         if (data.ItemClass == ItemClass.Weapon)
         {
+            isOffHand = slot == EquipSlot.Shield;
             if (!DataManager.WeaponInfo.TryGetValue(item.Id, out var weapon))
             {
-                Player.WeaponClass = 0;
                 Player.SetStat(CharacterStat.Attack, 0);
                 Player.SetStat(CharacterStat.Attack2, 0);
                 Player.RefreshWeaponMastery();
-                WeaponElement = AttackElement.Neutral;
+                MainHandWeapon.Reset();
                 WeaponRange = 1;
             }
             else
             {
-                Player.WeaponClass = weapon.WeaponClass;
-                WeaponLevel = weapon.WeaponLevel - 1;
+                var wLvl = weapon.WeaponLevel - 1;
 
-                var refBonus = item.Refine * attackPerRefine[WeaponLevel];
+                var refBonus = item.Refine * attackPerRefine[wLvl];
                 var overRefBonus = 0;
-                var overRefine = item.Refine - overRefineLevel[WeaponLevel];
+                var overRefine = item.Refine - overRefineLevel[wLvl];
                 if (overRefine > 0)
-                    overRefBonus = overRefine * overRefineAttackBonus[WeaponLevel];
+                    overRefBonus = overRefine * overRefineAttackBonus[wLvl];
 
-                WeaponAttackPower = weapon.Attack;
-                MinRefineAtkBonus = refBonus;
-                MaxRefineAtkBonus = refBonus + overRefBonus;
+                var weaponInfo = new WeaponAttackInfo(weapon, refBonus, refBonus + overRefBonus);
+
+                if (slot == EquipSlot.Weapon)
+                {
+                    MainHandWeapon = weaponInfo;
+                    WeaponRange = weapon.Range;
+                }
+                if (slot == EquipSlot.Shield)
+                    OffHandWeapon = weaponInfo;
+
+                isTwoHandedWeapon = weapon.IsTwoHanded;
+
                 Player.SetStat(CharacterStat.Attack, 0);
                 Player.SetStat(CharacterStat.Attack2, 0);
                 Player.RefreshWeaponMastery();
-                WeaponElement = weapon.Element;
-                if (slot == EquipSlot.Weapon)
-                    WeaponRange = weapon.Range;
             }
         }
 
@@ -581,6 +621,7 @@ public class ItemEquipState
     public void PerformOnEquipForNewCard(ItemInfo item, EquipSlot slot)
     {
         activeSlotId = (int)slot;
+        isOffHand = slot == EquipSlot.Shield;
         AddEquipItemCount(item.Id);
         item.Interaction?.OnEquip(Player, Player.CombatEntity, this, default, slot);
         OnEquipUpdateItemSets(item.Id);
@@ -601,12 +642,20 @@ public class ItemEquipState
 
         if (data.ItemClass == ItemClass.Weapon)
         {
-            Player.WeaponClass = 0;
-            WeaponLevel = 0;
-            WeaponAttackPower = 0;
-            MinRefineAtkBonus = 0;
-            MaxRefineAtkBonus = 0;
-            WeaponElement = AttackElement.Neutral;
+            isOffHand = slot == EquipSlot.Shield;
+            switch (slot)
+            {
+                case EquipSlot.Weapon:
+                    MainHandWeapon.Reset();
+                    break;
+                case EquipSlot.Shield:
+                    OffHandWeapon.Reset();
+                    break;
+                default:
+                    ServerLogger.LogErrorWithStackTrace($"Attempting to UnEquipEvent a weapon in an unexpected slot ({slot})!");
+                    break;
+            }
+
             Player.RefreshWeaponMastery();
         }
 
@@ -839,7 +888,7 @@ public class ItemEquipState
 
         return false;
     }
-
+    
     public void AutoSpellOnAttack(CharacterSkill skill, int level, int chance, SkillPreferredTarget target = SkillPreferredTarget.Any)
     {
         var cast = new AutoSpellEffect()
@@ -962,7 +1011,10 @@ public class ItemEquipState
 
     public void ChangeWeaponElement(AttackElement element)
     {
-        WeaponElement = element;
+        if (!isOffHand)
+            MainHandWeapon.OverrideElement = element;
+        else
+            OffHandWeapon.OverrideElement = element;
     }
 
     public bool IsBaseJob(JobType type) => JobTypes.IsBaseJob(Player.JobId, type);

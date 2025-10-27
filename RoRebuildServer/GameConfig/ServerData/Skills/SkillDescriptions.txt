@@ -34,7 +34,7 @@ For 20 seconds after using the skill all physical attacks will all deal an addit
 Enrages an enemy by taunting them, causing them drop their guard for 30 seconds.
 Reduces enemy defense by [5 + SkillLevel * 5]%.
 Increases enemy attack power by [2 + SkillLevel *3]%.
-The effectivness of this skill is halved on boss type monsters.
+The effectiveness of this skill is halved on boss type monsters.
 While provoked the enemy has a low chance of dealing extra damage against you specifically.
 
 ::SwordMastery
@@ -330,6 +330,12 @@ Cannot overlap with another trap or be set next to another player or monster.
 If the trap expires without being triggered the trap item will be returned.
 Duration: 50s
 Uses: <color=#777777>1 Trap</color>
+
+::BlitzBeat
+Orders your falcon to attack a target, dealing [SkillLevel] hits to all enemies in a 3x3 area.
+Damage dealt per hit is [80 + Int + (Dex / 5)], and further increased by levels of Steel Crow. Ignores evasion and defense. Not affected by weapon or attack cards, but damage can be increased by cards and equipment that boost critical damage.
+Adds a [1 + Luk / 3]% chance to automatically trigger Blitz Beat when attacking. When triggered this way damage is reduced when striking multiple targets, and the max skill level activated is limited to [1 + JobLevel / 10]. Chance of activation can be improved by cards and equipment that increase your CRIT stat.
+Cast Time: 1.5s
 
 //----------------Priest-------------------
 

@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Network;
+using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using RebuildSharedData.ClientTypes;
 using TMPro;
@@ -61,7 +62,7 @@ namespace Assets.Scripts.UI
                 if(Role == ItemListRole.BuyFromNpcItemList || Role == ItemListRole.BuyFromNpcSummary)
                     UiManager.Instance.ItemDescriptionWindow.ShowItemDescription(ItemId);
                 else
-                    UiManager.Instance.ItemDescriptionWindow.ShowItemDescription(NetworkManager.Instance.PlayerState.Inventory.GetInventoryItem(ItemId));
+                    UiManager.Instance.ItemDescriptionWindow.ShowItemDescription(PlayerState.Instance.Inventory.GetInventoryItem(ItemId));
                 return;
             }
 

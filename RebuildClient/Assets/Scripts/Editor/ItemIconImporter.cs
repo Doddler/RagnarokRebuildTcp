@@ -33,19 +33,17 @@ namespace Assets.Scripts.Editor
         {
             var iconNames = new List<string>();
             var convertName = new Dictionary<string, string>();
-            var skillDataFile = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Data/skillinfo.json");
-            var skills = JsonUtility.FromJson<Wrapper<SkillData>>(skillDataFile.text);
-            foreach (var skill in skills.Items)
+            var skills = JsonUtility.FromJson<Wrapper<SkillData>>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/skillinfo.json"));
+
+            foreach (var skill in skills.Items) { 
                 if (!string.IsNullOrWhiteSpace(skill.Icon) && !iconNames.Contains(skill.Icon))
                 {
                     iconNames.Add(skill.Icon);
                     convertName.Add(skill.Icon, "skill_" + skill.Icon);
-                    
-                    
                 }
+            }
 
-            var itemDataFile = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Data/items.json");
-            var items = JsonUtility.FromJson<Wrapper<ItemData>>(itemDataFile.text);
+            var items = JsonUtility.FromJson<Wrapper<ItemData>>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/items.json"));
             var sharedItemSprites = new StringBuilder();
             var equipIcons = new List<string>();
             var itemIdToCode = new Dictionary<int, string>();
@@ -273,8 +271,8 @@ namespace Assets.Scripts.Editor
                     sprites.Add(sprite);
             }
 
-            var statusDataFile = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Data/statusinfo.json");
-            var statusData = JsonUtility.FromJson<Wrapper<StatusEffectData>>(statusDataFile.text);
+            var statusData = JsonUtility.FromJson<Wrapper<StatusEffectData>>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/statusinfo.json"));
+
             foreach (var status in statusData.Items)
                 if (!string.IsNullOrWhiteSpace(status.Icon) && !iconNames.Contains(status.Icon))
                 {

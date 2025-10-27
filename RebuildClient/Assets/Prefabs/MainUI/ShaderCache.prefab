@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3972526991018904286
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6086365236832295778}
+  - component: {fileID: 2860536967343048357}
+  m_Layer: 0
+  m_Name: ShaderCache
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6086365236832295778
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3972526991018904286}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1129.8488, y: 462.98947, z: -486.05115}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2860536967343048357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3972526991018904286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0597da24de9cbf428d79ba2c59799e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpriteShader: {fileID: 4800000, guid: c3e2b57f3d9f16d4dac9816f7fec7093, type: 3}
+  SpriteShaderNoZWrite: {fileID: 4800000, guid: 65154ebb0faaa3b4b98db4491b0e9dba,
+    type: 3}
+  SpriteShaderNoZWriteAlt: {fileID: 4800000, guid: a86f9552a3a89ca4e8485a83015a9e94,
+    type: 3}
+  SpritePerspectiveShader: {fileID: 4800000, guid: e8688e51baef33644b1ad7ca0bd2498c,
+    type: 3}
+  SpriteShaderNoZTest: {fileID: 4800000, guid: b217f95fb4664884bd090f20078970de, type: 3}
+  SpriteShaderWithXRay: {fileID: 4800000, guid: 372c7e4c9641b5949ada2e4528e9997b,
+    type: 3}
+  AlphaBlendParticleShader: {fileID: 10721, guid: 0000000000000000f000000000000000,
+    type: 0}
+  AlphaBlendNoZTestShader: {fileID: 4800000, guid: 9303f662e059ae84293624132e24a509,
+    type: 3}
+  InvAlphaShader: {fileID: 4800000, guid: 2047a671d485c7f438be8cf32a9ab1a0, type: 3}
+  AdditiveShader: {fileID: 4800000, guid: b6e48a94539aa3e4c8cfa247031eca44, type: 3}
+  AdditiveShaderNoZTest: {fileID: 4800000, guid: 648144712ec1b704890dff0d784835b1,
+    type: 3}
+  WaterShader: {fileID: 4800000, guid: f91689a8f3349d84dbfef0a2d7005ccb, type: 3}
+  PerspectiveAlphaShader: {fileID: 4800000, guid: e39b7cfc0fbfd1347b2fb6508f066a7b,
+    type: 3}
+  ProjectorAdditiveShader: {fileID: 4800000, guid: af716291ecb328748bf8303763de7415,
+    type: 3}
+  AdditivePulseShader: {fileID: 4800000, guid: fdcb07255a8a4a4e836828c58d01f1da, type: 3}
+  EffectShader: {fileID: 4800000, guid: 592f9814102375d4cabf4ba2b796f002, type: 3}
+  BillboardSprites: 1

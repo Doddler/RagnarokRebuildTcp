@@ -70,7 +70,7 @@ namespace Assets.Scripts.UI
             window.OnPressCancel = OnCancel;
             window.OnPressOk = OnOk;
 
-            var state = NetworkManager.Instance.PlayerState;
+            var state = PlayerState.Instance;
 
             var id = 0;
             foreach (var item in validCandidates)
@@ -109,7 +109,7 @@ namespace Assets.Scripts.UI
 
             var socketPosition = itemToSocket.ItemData.Position;
             var validItems = new List<InventoryItem>();
-            var inventory = NetworkManager.Instance.PlayerState.Inventory;
+            var inventory = PlayerState.Instance.Inventory;
             foreach (var (_, item) in inventory.GetInventoryData())
             {
                 if (item.Type != ItemType.UniqueItem)

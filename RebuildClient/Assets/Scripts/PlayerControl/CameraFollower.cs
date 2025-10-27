@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers;
@@ -131,6 +132,7 @@ namespace Assets.Scripts
         private GameObject selectedSprite;
         private string targetText;
         private GameObject clickEffectPrefab;
+        private ServerControllable LastTargetedEnemy;
 
         public GameObject WarpPanel;
         public GameObject DialogPanel;
@@ -260,6 +262,10 @@ namespace Assets.Scripts
 
         public float ClickDelay;
 
+        // WASD controls
+        public float WASDCommandDelay;
+        public Vector2Int WASDPreviousDirection;
+
         public float Rotation;
         public float Distance;
         public float Height;
@@ -290,7 +296,10 @@ namespace Assets.Scripts
         public void Awake()
         {
             _instance = this;
+        }
 
+        public void Initialize()
+        {
             //CurLookAt = Target.transform.position;
             TargetFollow = CurLookAt;
             Camera = GetComponent<Camera>();
@@ -303,7 +312,7 @@ namespace Assets.Scripts
 
             Physics.queriesHitBackfaces = true;
 
-            var effects = JsonUtility.FromJson<EffectTypeList>(EffectConfigFile.text);
+            var effects = JsonUtility.FromJson<EffectTypeList>(ClientDataLoader.ReadStreamingAssetFile("ClientConfigGenerated/effects.json"));
             EffectList = new Dictionary<int, EffectTypeEntry>();
             EffectIdLookup = new Dictionary<string, int>();
             EffectCache = new Dictionary<int, GameObject>();
@@ -319,7 +328,7 @@ namespace Assets.Scripts
                 EffectIdLookup.Add(e.Name, e.Id);
             }
 
-            var lines = LevelChart.text.Split("\n"); //we'll trim out \r after if it exists
+            var lines = ClientDataLoader.ReadStreamingAssetFile("ClientConfigGenerated/levelchart.txt").Split("\n"); //we'll trim out \r after if it exists
             for (var i = 0; i < 99; i++)
                 levelReqs[i] = int.Parse(lines[i].Trim());
 
@@ -369,7 +378,7 @@ namespace Assets.Scripts
         {
             if (TargetControllable.SpriteAnimator.State == SpriteState.Dead)
                 return false;
-            
+
             if (skill == CharacterSkill.Vending)
             {
                 VendingSetupManager.OpenVendSetup();
@@ -532,15 +541,17 @@ namespace Assets.Scripts
             var showValue = GameConfig.Data.ShowBaseExpValue;
             var showPercent = GameConfig.Data.ShowBaseExpPercent;
 
+            var percentVal = Mathf.Floor(percent * 1000f) / 10f;
+
             if (showValue)
             {
                 if (showPercent)
-                    CharacterDetailBox.ExpDisplay.text = $"XP: {exp} / {maxExp} ({percent * 100f:F1}%)";
+                    CharacterDetailBox.ExpDisplay.text = $"XP: {exp} / {maxExp} ({percentVal:F1}%)";
                 else
                     CharacterDetailBox.ExpDisplay.text = $"XP: {exp} / {maxExp}";
             }
             else if (showPercent)
-                CharacterDetailBox.ExpDisplay.text = $"{percent * 100f:F1}%";
+                CharacterDetailBox.ExpDisplay.text = $"{percentVal:F1}%";
             else
                 CharacterDetailBox.ExpDisplay.text = $"";
 
@@ -566,15 +577,18 @@ namespace Assets.Scripts
             var showValue = GameConfig.Data.ShowJobExpValue;
             var showPercent = GameConfig.Data.ShowJobExpPercent;
 
+
+            var percentVal = Mathf.Floor(percent * 1000f) / 10f;
+
             if (showValue)
             {
                 if (showPercent)
-                    CharacterDetailBox.JobExpDisplay.text = $"XP: {exp} / {maxExp} ({percent * 100f:F1}%)";
+                    CharacterDetailBox.JobExpDisplay.text = $"XP: {exp} / {maxExp} ({percentVal:F1}%)";
                 else
                     CharacterDetailBox.JobExpDisplay.text = $"XP: {exp} / {maxExp}";
             }
             else if (showPercent)
-                CharacterDetailBox.JobExpDisplay.text = $"{percent * 100f:F1}%";
+                CharacterDetailBox.JobExpDisplay.text = $"{percentVal:F1}%";
             else
                 CharacterDetailBox.JobExpDisplay.text = $"";
 
@@ -829,7 +843,7 @@ namespace Assets.Scripts
         {
             var closestAnim = GetHitAnimator(hits[0]);
             var closestHit = hits[0];
-            
+
             //var log = $"{hits.Length} {closestAnim.Controllable.gameObject.name}{closestHit.distance}{closestAnim.Controllable.IsAlly}";
 
             if (hits.Length == 1)
@@ -844,6 +858,7 @@ namespace Assets.Scripts
             var isOk = closestAnim.State != SpriteState.Dead && !closestAnim.IsHidden;
             var isAlly = closestAnim.Controllable.IsAlly;
             var wantDead = hasSkillOnCursor && cursorSkill == CharacterSkill.Resurrection;
+            var hitLastTarget = closestAnim.Controllable != null && closestAnim.Controllable == LastTargetedEnemy;
 
             for (var i = 1; i < hits.Length; i++)
             {
@@ -859,11 +874,13 @@ namespace Assets.Scripts
                     closestHit = hit;
                     isAlly = anim.Controllable.IsAlly;
                     isOk = true;
+                    if (!isAlly && anim.Controllable == LastTargetedEnemy)
+                        hitLastTarget = true;
                 }
 
                 if (anim.State == SpriteState.Dead && anim.Type != SpriteType.Player)
                     continue;
-                
+
                 if (wantDead && anim.Controllable.CharacterType == CharacterType.Player && anim.State == SpriteState.Dead)
                     return anim; //short-circuit to target resurrection on dead players
 
@@ -896,18 +913,20 @@ namespace Assets.Scripts
                     }
                 }
 
-                if ((hit.distance < closestHit.distance))
+                if (hit.distance < closestHit.distance || anim.Controllable == LastTargetedEnemy)
                     MakeTarget();
             }
 
             //log += $" : {closestAnim.Controllable.gameObject.name}{closestHit.distance}{closestAnim.Controllable.IsAlly} {isOk}";
             //Debug.Log(log);
 
+            if (!isOk)
+                return null;
 
-            if (isOk)
-                return closestAnim;
-
-            return null;
+            if (hitLastTarget && LastTargetedEnemy.SpriteAnimator != null)
+                return LastTargetedEnemy.SpriteAnimator;
+            
+            return closestAnim;
         }
 
         private bool FindItemUnderCursor(Ray ray, out GroundItem item)
@@ -994,6 +1013,16 @@ namespace Assets.Scripts
             return hasMatch;
         }
 
+        private bool IsAlive()
+        {
+            return controllable.SpriteAnimator.State != SpriteState.Dead;
+        }
+
+        private bool IsSitting()
+        {
+            return controllable.SpriteAnimator.State == SpriteState.Sit;
+        }
+
         private GameCursorMode ScreenCastV2(bool isOverUi)
         {
             if (tempPath == null)
@@ -1012,8 +1041,8 @@ namespace Assets.Scripts
             var rightClick = Input.GetMouseButtonDown(1);
 
             var preferEnemyTarget = !(hasSkillOnCursor && cursorSkillTarget == SkillTarget.Ally);
-            var isAlive = controllable.SpriteAnimator.State != SpriteState.Dead;
-            var isSitting = controllable.SpriteAnimator.State == SpriteState.Sit;
+            var isAlive = IsAlive();
+            var isSitting = IsSitting();
 
             var isSkillEnemyTargeted = hasSkillOnCursor && cursorSkillTarget == SkillTarget.Enemy;
             var isSkillAllyTargeted = hasSkillOnCursor && cursorSkillTarget == SkillTarget.Ally;
@@ -1059,8 +1088,8 @@ namespace Assets.Scripts
             var canInteract = hasEntity && isAlive && !isOverUi && !isHolding && !hasGroundSkill && !ignoreEntity;
             var canCurrentlyTarget = canInteract &&
                                      ((hasSkillOnCursor && ((mouseTarget.IsAlly && isSkillAllyTargeted) || (!mouseTarget.IsAlly && isSkillEnemyTargeted))) ||
-                                      !mouseTarget.IsAlly);
-            var canClickEnemy = canCurrentlyTarget && mouseTarget.CharacterType != CharacterType.NPC && mouseTarget.IsInteractable;
+                                      !mouseTarget.IsAlly || mouseTarget.IsAttackable);
+            var canClickEnemy = canCurrentlyTarget && ((mouseTarget.CharacterType != CharacterType.NPC && mouseTarget.IsInteractable) || mouseTarget.IsAttackable);
             var canClickNpc = canInteract && !hasSkillOnCursor && mouseTarget.CharacterType == CharacterType.NPC && mouseTarget.IsInteractable;
             var canClickItem = hasItem && !canClickEnemy && !hasSkillOnCursor && !isOverUi;
             var canClickGround = hasGround && isAlive && (!isOverUi || isHolding) && !canClickEnemy && !canClickNpc && !hasTargetedSkill && !canClickItem;
@@ -1156,7 +1185,10 @@ namespace Assets.Scripts
             if ((canClickEnemy || canTargetPartyList) && leftClick)
             {
                 if (!hasTargetedSkill)
+                {
+                    LastTargetedEnemy = mouseTarget;
                     NetworkManager.Instance.SendAttack(mouseTarget.Id);
+                }
                 else
                 {
                     if (canTargetPartyList)
@@ -1165,6 +1197,9 @@ namespace Assets.Scripts
                         if (partyMember != null && partyMember.Controllable != null)
                             mouseTarget = partyMember.Controllable;
                     }
+
+                    if (!mouseTarget.IsAlly)
+                        LastTargetedEnemy = mouseTarget;
 
                     if (!isCursorSkillItem)
                         NetworkManager.Instance.SendSingleTargetSkillAction(mouseTarget.Id, cursorSkill, cursorSkillLvl);
@@ -1351,6 +1386,7 @@ namespace Assets.Scripts
                 TextColor.Equipment => "<color=#00fbfb>",
                 TextColor.Item => "<color=#00fbfb>",
                 TextColor.Error => "<color=#ed0000>",
+                TextColor.System => "<color=#FFFF00>",
                 _ => ""
             };
 
@@ -1472,7 +1508,7 @@ namespace Assets.Scripts
                 return;
             }
 
-            Debug.Log($"Loading effect asset {asset.PrefabName}");
+            // Debug.Log($"Loading effect asset {asset.PrefabName}");
             var loader = Addressables.LoadAssetAsync<GameObject>(asset.PrefabName);
             loader.Completed += ah =>
             {
@@ -1501,12 +1537,12 @@ namespace Assets.Scripts
                 }
             };
         }
-        
-        
+
+
         public void CreateEffectAtLocation(string effectName, Vector3 pos, Vector3 scale, int facing)
         {
             var effect = EffectIdLookup[effectName];
-            
+
             if (!EffectList.TryGetValue(effect, out var asset))
             {
                 AppendError($"Could not find effect with id {effect}.");
@@ -1582,7 +1618,7 @@ namespace Assets.Scripts
                     obj2.AddComponent<BillboardObject>();
 
                 outputObj.AddComponent<RemoveWhenChildless>();
-                
+
                 if (facing != 0)
                     obj2.transform.localRotation = Quaternion.AngleAxis(45 * facing, Vector3.up);
 
@@ -1820,15 +1856,13 @@ namespace Assets.Scripts
                     }
                     else
                         CharacterDetailBox.OverlayDisplay.SetActive(false);
-                    
-                    
                 }
-                
+
                 if (pointerEvent.pointerEnter.name == "PartyMember")
                 {
                     pointerOverUi = false;
                     selected = null;
-                    
+
                     if (Input.GetMouseButtonDown(1) && UiManager.Instance.RightClickMenuWindow.RightClickPartyMenu(pointerEvent))
                     {
                         pointerOverUi = true;
@@ -1943,7 +1977,7 @@ namespace Assets.Scripts
 
             if (!inInputUI && Input.GetKeyDown(KeyCode.R))
             {
-                if (controllable.SpriteAnimator.State == SpriteState.Dead || !controllable.IsCharacterAlive || NetworkManager.Instance.PlayerState.Hp == 0)
+                if (controllable.SpriteAnimator.State == SpriteState.Dead || !controllable.IsCharacterAlive || PlayerState.Instance.Hp == 0)
                     NetworkManager.Instance.SendRespawn(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
             }
 
@@ -1960,9 +1994,6 @@ namespace Assets.Scripts
                 AudioManager.Instance.ToggleMute();
             }
 
-            //if (Input.GetKeyDown(KeyCode.S))
-            //	controllable.SpriteAnimator.Standby = true;
-
             if (!inInputUI && Input.GetKeyDown(KeyCode.Space))
             {
                 //Debug.Log(controllable.IsWalking);
@@ -1970,14 +2001,19 @@ namespace Assets.Scripts
                 NetworkManager.Instance.StopPlayer();
             }
 
-            if (!inInputUI && Input.GetKeyDown(KeyCode.S))
-                UiManager.Instance.SkillManager.ToggleVisibility();
 
-            if (!inInputUI && Input.GetKeyDown(KeyCode.O))
-                UiManager.Instance.ConfigManager.ToggleVisibility();
-
-            if (!inInputUI && Input.GetKeyDown(KeyCode.W))
+            // WASD for movement or for ui panels
+            if (GameConfig.Data.EnableWASDControls)
             {
+                if (!inInputUI)
+                {
+                    WASDMove();
+                }
+            }
+            else
+            {
+                if (!inInputUI && Input.GetKeyDown(KeyCode.W))
+                {
 #if UNITY_EDITOR
                 if (Input.GetKey(KeyCode.LeftShift))
                 {
@@ -1988,21 +2024,31 @@ namespace Assets.Scripts
                 }
                 else
 #endif
-                if (PlayerState.Instance.HasCart)
-                    UiManager.Instance.CartWindow.ToggleVisibility();
+                    if (PlayerState.Instance.HasCart)
+                        UiManager.Instance.CartWindow.ToggleVisibility();
+                }
+
+                //if (Input.GetKeyDown(KeyCode.S))
+                //	controllable.SpriteAnimator.Standby = true;
+
+                if (!inInputUI && Input.GetKeyDown(KeyCode.S))
+                    UiManager.Instance.SkillManager.ToggleVisibility();
+
+                if (!inInputUI && Input.GetKeyDown(KeyCode.A))
+                    UiManager.Instance.StatusWindow.ToggleVisibility();
+
+                if (!inInputUI && Input.GetKeyDown(KeyCode.D))
+                    UiManager.Instance.EmoteManager.GetComponent<WindowBase>().ToggleVisibility();
             }
+
+            if (!inInputUI && Input.GetKeyDown(KeyCode.O))
+                UiManager.Instance.ConfigManager.ToggleVisibility();
 
             if (!inInputUI && Input.GetKeyDown(KeyCode.Q))
                 UiManager.Instance.EquipmentWindow.ToggleVisibility();
 
             if (!inInputUI && Input.GetKeyDown(KeyCode.E))
                 UiManager.Instance.InventoryWindow.ToggleVisibility();
-
-            if (!inInputUI && Input.GetKeyDown(KeyCode.A))
-                UiManager.Instance.StatusWindow.ToggleVisibility();
-            
-            if (!inInputUI && Input.GetKeyDown(KeyCode.D))
-                UiManager.Instance.EmoteManager.GetComponent<WindowBase>().ToggleVisibility();
 
             //remove the flag to enable cinemachine recording on this
 #if UNITY_EDITOR
@@ -2257,6 +2303,104 @@ namespace Assets.Scripts
         {
             SaveCurrentCameraSettings();
             GameConfig.SaveConfig();
+        }
+
+
+        private void WASDMove()
+        {
+            if (!IsAlive() || IsSitting())
+                return;
+
+            var defaultDelay = 0.30f;
+
+            var moveDirection = GetWASDKeyPress();
+
+            // if player was wasd moving and then stopped, stop the character
+            if (moveDirection == Direction.None &&
+                WASDPreviousDirection != new Vector2Int(0, 0))
+            {
+                NetworkManager.Instance.StopPlayer();
+                WASDPreviousDirection = new Vector2Int(0, 0);
+                return;
+            }
+
+            if (moveDirection != Direction.None)
+            {
+                var moveDirectionAngle = Directions.GetAngleForDirection(moveDirection);
+                //Debug.LogWarning("moveDirectionAngle: " + moveDirectionAngle);
+
+                var postRotationAngle = moveDirectionAngle - Rotation; // adjust angle for camera
+
+                int clampedAngle1 = ((int)postRotationAngle + (10 * 360)) % 360; // clamped to 0 to 360
+
+                // adjust 0 to 360 to -180 to 180
+                if (clampedAngle1 > 180)
+                    clampedAngle1 = clampedAngle1 - 360;
+
+                // get the direction
+                var newDirectionFace = Directions.GetFacingForAngle(clampedAngle1);
+
+                // now from facing angle to vector2int
+                var newDirectionTuple = Directions.GetXYForDirection(newDirectionFace);
+                var newDirection = new Vector2Int(newDirectionTuple.x, newDirectionTuple.y);
+
+                WASDCommandDelay -= Time.deltaTime;
+
+                // if different direction, send command without delay
+
+                if (newDirection != WASDPreviousDirection)
+                    WASDCommandDelay = -1f;
+
+                // check delay
+                if (WASDCommandDelay > 0)
+                    return;
+
+                // send direction and reset delay
+                NetworkManager.Instance.MovePlayerInDirection(newDirection);
+                WASDPreviousDirection = newDirection;
+                WASDCommandDelay = defaultDelay;
+            }
+        }
+
+        private Direction GetWASDKeyPress()
+        {
+            // note, had to reverse east and west to get the math to work somehow
+            var moveDirection = Direction.None;
+
+            if (Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+            {
+                moveDirection = Direction.North;
+            }
+            else if (Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+            {
+                moveDirection = Direction.South;
+            }
+            else if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+            {
+                moveDirection = Direction.East;
+            }
+            else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+            {
+                moveDirection = Direction.West;
+            }
+            else if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A))
+            {
+                moveDirection = Direction.NorthEast;
+            }
+            else if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D))
+            {
+                moveDirection = Direction.NorthWest;
+            }
+            else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A))
+            {
+                moveDirection = Direction.SouthEast;
+            }
+            else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D))
+            {
+                moveDirection = Direction.SouthWest;
+            }
+
+            return moveDirection;
         }
     }
 }

@@ -17,8 +17,7 @@ namespace RoRebuildServer.EntityComponents;
 
 public partial class CombatEntity
 {
-
-    public (int atk1, int atk2) CalculateAttackPowerRange(bool isMagic)
+    public (int atk1, int atk2) CalculateAttackPowerRange(bool isMagic, bool isMainHand = true)
     {
         var atk1 = 0;
         var atk2 = 0;
@@ -30,10 +29,12 @@ public partial class CombatEntity
                 var str = GetEffectiveStat(CharacterStat.Str);
                 var dex = GetEffectiveStat(CharacterStat.Dex);
 
+                var weapon = isMainHand ? Player.Equipment.MainHandWeapon : Player.Equipment.OffHandWeapon;
+
                 var mainStat = Player.WeaponClass == 12 ? dex : str;
                 var secondaryStat = Player.WeaponClass == 12 ? str : dex;
-                var weaponLvl = Player.Equipment.WeaponLevel;
-                var weaponAttack = Player.Equipment.WeaponAttackPower;
+                var weaponLvl = weapon.WeaponLevel;
+                var weaponAttack = weapon.WeaponAttackPower;
                 if (Player.WeaponClass == 12) //bow
                     atk1 = (int)(dex * (0.8f + 0.2f * weaponLvl)); //more or less pre-renewal
                 else
@@ -130,7 +131,7 @@ public partial class CombatEntity
                 attackElement = AttackElement.Neutral;
                 if (attacker != null && attacker.Character.Type == CharacterType.Player)
                 {
-                    attackElement = attacker.Player.Equipment.WeaponElement;
+                    attackElement = attacker.Player.Equipment.MainHandWeapon.WeaponElement;
                     if (attacker.Player.WeaponClass == 12) //bows
                     {
                         var arrowElement = attacker.Player.Equipment.AmmoElement;
@@ -225,8 +226,7 @@ public partial class CombatEntity
                         else
                             subDef = vit + GameRandom.NextInclusive(0, 20000) % vitRng;
                     }
-
-
+                    
                     subDef = subDef * (100 + GetStat(CharacterStat.AddSoftDefPercent)) / 100;
                 }
 
@@ -273,6 +273,10 @@ public partial class CombatEntity
         return (defCut, subDef);
     }
 
+    //crit rate: 1%, + 0.3% per luk, + 0.02% per level
+    public int GetBaseCritRate() => (1 + GetEffectiveStat(CharacterStat.Luck) / 3 + GetStat(CharacterStat.AddCrit)) * 10 + GetStat(CharacterStat.Level) / 5;
+    public int GetBonusCritRateVsTarget(CombatEntity target) => GetStat(CharacterStat.AddCritChanceRaceFormless + (int)target.GetRace());
+
     public DamageInfo CalculateCombatResultUsingSetAttackPower(CombatEntity target, AttackRequest req)
     {
         var atk1 = req.MinAtk;
@@ -314,7 +318,7 @@ public partial class CombatEntity
 
         //evasion
         if (isPhysical && !flags.HasFlag(AttackFlags.IgnoreEvasion))
-            evade = !TestHitVsEvasion(target, req.AccuracyRatio, attackerPenalty * 10);
+            evade = !TestHitVsEvasion(target, req.AccuracyRatio, attackerPenalty * (5 + attackerPenalty / 2));
 
         if (target.HasBodyState(BodyStateFlags.Hidden) && !flags.HasFlag(AttackFlags.IgnoreEvasion)
                                                             && !flags.HasFlag(AttackFlags.CanAttackHidden)
@@ -324,18 +328,20 @@ public partial class CombatEntity
         //critical hit
         if (!isCrit && flags.HasFlag(AttackFlags.CanCrit))
         {
-            //crit rate: 1%, + 0.3% per luk, + 0.1% per level
-            var critRate = (1 + GetEffectiveStat(CharacterStat.Luck) / 3 + GetStat(CharacterStat.AddCrit)) * 10 + srcLevel;
+            var critRate = GetBaseCritRate();
 
             if (Character.Type == CharacterType.Player)
-                critRate = critRate * (100 + GetStat(CharacterStat.AddCritChanceRaceFormless + (int)targetRace)) / 100;
+            {
+                critRate += GetBonusCritRateVsTarget(target);
+                if (Player.WeaponClass == 16) //katar
+                    critRate *= 2;
+            }
 
-            //should double crit for katar here
-
+            //counter crit disabled as counter crit is effectively handled via CheckLuckModifiedRandomChanceVsTarget.
             //counter crit: 0.2% per luck, 0.067% per level
-            var counterCrit = target.GetEffectiveStat(CharacterStat.Luck) / 5 * 10 + targetLevel * 2 / 3;
+            //var counterCrit = 0; //target.GetEffectiveStat(CharacterStat.Luck) / 5 * 10 + targetLevel * 2 / 3;
 
-            if (target.HasBodyState(BodyStateFlags.Sleep) || CheckLuckModifiedRandomChanceVsTarget(target, critRate - counterCrit, 1000))
+            if (target.HasBodyState(BodyStateFlags.Sleep) || CheckLuckModifiedRandomChanceVsTarget(target, critRate, 1000))
                 isCrit = true;
         }
 
@@ -536,7 +542,10 @@ public partial class CombatEntity
             }
 
             if (Character.Type == CharacterType.Player && (flags & AttackFlags.IgnoreWeaponRefine) == 0)
-                addDamage += GameRandom.Next(Player.Equipment.MinRefineAtkBonus, Player.Equipment.MaxRefineAtkBonus); //works on both magic and physical!
+            {
+                var weapon = (flags & AttackFlags.OffHandWeapon) > 0 ? Player.Equipment.MainHandWeapon : Player.Equipment.OffHandWeapon;
+                addDamage += GameRandom.Next(weapon.MinRefineAtkBonus, weapon.MaxRefineAtkBonus); //works on both magic and physical!
+            }
         }
 
         //-------------------------------
@@ -698,6 +707,9 @@ public partial class CombatEntity
         //---------------------------------------
         // On Attack and When Attacked Triggers
         //---------------------------------------
+        
+        if(target.Character.Type == CharacterType.BattleNpc)
+            target.Character.Npc.Behavior.OnCalculateDamage(target.Character.Npc, target.Character.BattleNpc, this, ref di);
 
         if (!flags.HasFlag(AttackFlags.NoTriggerOnAttackEffects))
         {
@@ -757,6 +769,9 @@ public partial class CombatEntity
 
         var damage = di.Damage * di.HitCount;
 
+        if (di.DamageOffHand > 0)
+            damage += di.DamageOffHand;
+
         //inform clients the player was hit and for how much
         var delayTime = GetTiming(TimingStat.HitDelayTime);
 
@@ -805,6 +820,10 @@ public partial class CombatEntity
         if (Character.Type == CharacterType.Monster)
             Character.Monster.NotifyOfAttack(ref di);
 
+        if (Character.Type == CharacterType.BattleNpc)
+            Character.Npc.Behavior.OnApplyDamage(Character.Npc, Character.BattleNpc, ref di);
+
+
         Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
         if (sendMove)
             CommandBuilder.SendMoveEntityMulti(Character);
@@ -838,7 +857,7 @@ public partial class CombatEntity
         if (!di.Target.IsNull() && di.Source.IsAlive())
             Character.LastAttacked = di.Source;
 
-        var ec = di.Target.Get<CombatEntity>();
+        //var ec = di.Target.Get<CombatEntity>();
         var hp = GetStat(CharacterStat.Hp);
 
 #if DEBUG

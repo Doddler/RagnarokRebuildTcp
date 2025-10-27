@@ -123,6 +123,13 @@ public static class SkillHandler
                 if (dex > 100)
                     dex = 100 + (dex - 100) * 2; //double effectiveness above 100
                 castMultiplier = 1 * MathHelper.PowScaleDown(dex);
+
+                //this should be handled some other way...
+                if (src.StatusContainer?.TryGetExistingStatus(CharacterStatusEffect.Suffragium, out var suff) ?? false)
+                {
+                    castMultiplier *= (1 - 0.15f * suff.Value1);
+                    src.StatusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Suffragium);
+                }
             }
 
             return handler.GetCastTime(src, target, level) * castMultiplier;

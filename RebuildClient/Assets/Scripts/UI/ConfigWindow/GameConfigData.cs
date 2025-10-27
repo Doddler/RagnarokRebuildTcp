@@ -48,6 +48,8 @@ namespace Assets.Scripts.UI.ConfigWindow
         public bool ShowBaseExpPercent = true;
         public bool ShowJobExpValue = true;
         public bool ShowJobExpPercent = true;
+        public bool ShowExpGainInChat = false;
+
         //visuals
         public bool UseSmoothPixel = true;
 
@@ -56,6 +58,11 @@ namespace Assets.Scripts.UI.ConfigWindow
         public bool AllowTabToShowWalkTable = false;
         public bool HideShoutChat = false;
         
+        public bool EnableXRay = false;
+
+        //game
+        public bool EnableWASDControls = false;
+
         //storage
         public Vector2 StoragePosition = Vector2.zero;
         public int LastStorageTab = 0;
@@ -114,8 +121,8 @@ namespace Assets.Scripts.UI.ConfigWindow
 
         public void OnAfterDeserialize()
         {
-                        
-            for(var j = 0; j < CharacterNames.Count; j++)
+
+            for (var j = 0; j < CharacterNames.Count; j++)
             {
                 var name = CharacterNames[j];
                 if (!CharacterHotBarData.TryGetValue(name, out var hotBar))
@@ -127,7 +134,6 @@ namespace Assets.Scripts.UI.ConfigWindow
                 for (var i = 0; i < 30; i++)
                     hotBar[i] = AllHotBarData[j * 30 + i];
             }
-
         }
     }
 }

@@ -28,14 +28,15 @@ namespace Assets.Scripts.MapEditor.Editor
 
         public static void ImportAllMissingMaps()
         {
-            var asset = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Data/maps.json");
-            var wrapper = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(asset.text);
+            var wrapper = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/maps.json"));
+
             var maps = wrapper.Items;
 
             if (!Directory.Exists("Assets/Scenes/Maps/"))
                 Directory.CreateDirectory("Assets/Scenes/Maps/");
 
             int imported = 0;
+            List<string> failedMaps = new List<string>();
             foreach (var map in maps)
             {
                 var scenePath = $"Assets/Scenes/Maps/{map.Code}.unity";
@@ -45,19 +46,39 @@ namespace Assets.Scripts.MapEditor.Editor
                 var gndPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, map.Code + ".gnd");
                 if (File.Exists(gndPath))
                 {
-                    ImportMap(gndPath);
-                    imported++;
+                    try
+                    {
+                        ImportMap(gndPath);
+                        imported++;
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogError($"Exception generated while importing map {gndPath}!");
+                        Debug.LogException(e);
+                        failedMaps.Add("Import Error - " + gndPath);
+                    }
                 }
                 else
                 {
                     Debug.LogWarning($"Map file not found: {gndPath}");
+                    failedMaps.Add("Map File not found - " + gndPath);
                 }
             }
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
-            Debug.Log($"[Map Import] Imported {imported} new map(s).");
+            Debug.Log($"[Map Import] Imported {imported} new map(s). Import failed for {failedMaps.Count} Map(s)");
+
+            if (failedMaps.Count > 0)
+            {
+                string failedMapsList = "";
+                foreach (string map in failedMaps)
+                {
+                    failedMapsList += map + "\n";
+                }
+                Debug.LogWarning($"[Map Import] Map import failed on: \n{failedMapsList}");
+            }
         }
 
 
@@ -220,9 +241,7 @@ namespace Assets.Scripts.MapEditor.Editor
             var entriesAdded = new List<AddressableAssetEntry>();
             var entriesRemoved = new List<AddressableAssetEntry>();
 
-            var monText =
-                AssetDatabase.LoadAssetAtPath(@"Assets/Data/monsterclass.json", typeof(TextAsset)) as TextAsset;
-            var monsters = JsonUtility.FromJson<Wrapper<MonsterClassData>>(monText.text);
+            var monsters = JsonUtility.FromJson<Wrapper<MonsterClassData>>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/monsterclass.json"));
 
             //---------------------------------------------------------
             // Sprites
@@ -249,14 +268,14 @@ namespace Assets.Scripts.MapEditor.Editor
                         continue;
                 }
 
-                if (path.Contains("Imported/Weapons"))
-                {
-                    if (!path.Contains("Novice") && !path.Contains("Swordsman") && !path.Contains("Mage") && !path.Contains("Acolyte") &&
-                        !path.Contains("Merchant") && !path.Contains("Thief") && !path.Contains("Archer"))
-                    {
-                        continue;
-                    }
-                }
+                // if (path.Contains("Imported/Weapons"))
+                // {
+                //     if (!path.Contains("Novice") && !path.Contains("Swordsman") && !path.Contains("Mage") && !path.Contains("Acolyte") &&
+                //         !path.Contains("Merchant") && !path.Contains("Thief") && !path.Contains("Archer") && !path.Contains("Priest"))
+                //     {
+                //         continue;
+                //     }
+                // }
 
                 if ((path.Contains("Monsters") &&
                      monsters.Items.All(m => m.SpriteName.Replace(".spr", "") != fName.ToLowerInvariant()))
@@ -287,8 +306,7 @@ namespace Assets.Scripts.MapEditor.Editor
             // Effects
             //---------------------------------------------------------
 
-            var effectText = AssetDatabase.LoadAssetAtPath(@"Assets/Data/effects.json", typeof(TextAsset)) as TextAsset;
-            var effects = JsonUtility.FromJson<EffectTypeList>(effectText.text);
+            var effects = JsonUtility.FromJson<EffectTypeList>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/effects.json"));
 
             Debug.Log(effects.Effects.Count);
 
@@ -298,7 +316,7 @@ namespace Assets.Scripts.MapEditor.Editor
             {
                 var path = AssetDatabase.GUIDToAssetPath(guids[i]);
                 var fName = Path.GetFileNameWithoutExtension(path);
-                if (effects.Effects.All(m => m.Name != fName))
+                if (effects.Effects.All(m => m.Name != fName) || fName.StartsWith("Model"))
                 {
                     // Debug.Log("Not found: " + fName + " " + effects.Effects[0].Name);
                     var existing = defGroup.GetAssetEntry(guids[i]);
@@ -321,8 +339,7 @@ namespace Assets.Scripts.MapEditor.Editor
             // Maps
             //---------------------------------------------------------
 
-            var mapText = AssetDatabase.LoadAssetAtPath(@"Assets/Data/maps.json", typeof(TextAsset)) as TextAsset;
-            var maps = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(mapText.text);
+            var maps = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/maps.json"));
             var musicNames = new List<string>();
             musicNames.Add("01.mp3");
 
@@ -397,7 +414,7 @@ namespace Assets.Scripts.MapEditor.Editor
 
 
             //update effect sounds
-            guids = AssetDatabase.FindAssets("t:AudioClip", new[] { "Assets/Sounds/Effects" });
+            guids = AssetDatabase.FindAssets("t:AudioClip", new[] { "Assets/Sounds/effect" });
 
             for (int i = 0; i < guids.Length; i++)
             {
@@ -583,8 +600,7 @@ namespace Assets.Scripts.MapEditor.Editor
         private void OnEnable()
         {
             // 1) Load maps.json
-            var asset = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Data/maps.json");
-            var wrapper = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(asset.text);
+            var wrapper = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/maps.json"));
             maps = wrapper.Items.ToList();
 
             // 2) Initialize checkboxes (true = not imported yet)

@@ -21,8 +21,20 @@ public enum NpcEffectType : byte
     WaterBall,
     Sanctuary,
     MagnusExorcismus,
-    AnkleSnare,
 
+    //traps
+    AnkleSnare,
+    BlastMine,
+    ClaymoreTrap,
+    LandMine,
+    SandmanTrap,
+    FlasherTrap,
+    FreezingTrap,
+    SkidTrap,
+    ShockwaveTrap,
+    TalkieBox,
+    FirePillar,
+    
     //custom
     LightOrb,
 }

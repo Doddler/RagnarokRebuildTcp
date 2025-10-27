@@ -25,6 +25,9 @@ public static class CommandBuilder
     [ThreadStatic]
     private static List<NetworkConnection>? recipients;
 
+    [ThreadStatic]
+    private static List<NetworkConnection>? storedRecipients;
+
     public static void AddRecipient(Entity e)
     {
         if (!e.IsAlive())
@@ -71,6 +74,26 @@ public static class CommandBuilder
                     return;
 
         AddRecipient(entity);
+    }
+
+    public static void StoreRecipients()
+    {
+        if (recipients == null)
+            return;
+        if (storedRecipients == null)
+            storedRecipients = new List<NetworkConnection>(16);
+
+        storedRecipients.Clear();
+        (storedRecipients, recipients) = (recipients, storedRecipients);
+    }
+
+    public static void RestoreRecipients()
+    {
+        if (recipients == null || storedRecipients == null)
+            return;
+
+        recipients.Clear();
+        (recipients, storedRecipients) = (storedRecipients, recipients);
     }
 
     public static void AddAllPlayersAsRecipients()
@@ -184,7 +207,7 @@ public static class CommandBuilder
             }
             packet.Write(false); //statusEffectData
         }
-        else if (type == CharacterType.Monster || type == CharacterType.Player)
+        else if (type == CharacterType.Monster || type == CharacterType.Player || type == CharacterType.BattleNpc)
         {
             var ce = c.Entity.Get<CombatEntity>();
             packet.Write((byte)ce.GetStat(CharacterStat.Level));
@@ -262,7 +285,7 @@ public static class CommandBuilder
             }
         }
 
-        if (type == CharacterType.NPC)
+        if (type == CharacterType.NPC || type == CharacterType.BattleNpc)
         {
             var npc = c.Entity.Get<Npc>();
             var display = npc.DisplayType;
@@ -659,12 +682,28 @@ public static class CommandBuilder
         packet.Write((byte)di.Result);
         packet.Write(pos);
         packet.Write(di.DisplayDamage);
+        packet.Write(di.DisplayDamageOffHand);
         packet.Write(di.AttackMotionTime);
         packet.Write(di.Time - Time.ElapsedTimeFloat);
         packet.Write(showAttackMotion);
 
-
         NetworkManager.SendMessageMulti(packet, recipients);
+    }
+
+    public static void AttackAutoVis(WorldObject? attacker, WorldObject target, DamageInfo di, bool showAttackMotion = true)
+    {
+        var hasRecipients = HasRecipients();
+        if (hasRecipients)
+            StoreRecipients(); //for safety's sake, in case we're triggered from within a function that expects the recipient list to remain unmodified
+        
+        target.Map?.AddVisiblePlayersAsPacketRecipients(target);
+
+        AttackMulti(attacker, target, di, showAttackMotion);
+        
+        if(hasRecipients)
+            RestoreRecipients();
+        else
+            ClearRecipients();
     }
 
     public static void TakeDamageMulti(WorldObject target, DamageInfo di)

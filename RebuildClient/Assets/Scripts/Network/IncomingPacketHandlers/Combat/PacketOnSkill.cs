@@ -190,6 +190,12 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                     controllable2.Messages.SendMessage(EntityMessageType.LuckyDodge, motionTime);
                     return;
                 }
+                
+                if (result == AttackResult.Block)
+                {
+                    controllable2.Messages.SendBlockEvent(damageTiming);
+                    return;
+                }
 
                 if (result == AttackResult.Heal && dmg != 0)
                     hits = 1;

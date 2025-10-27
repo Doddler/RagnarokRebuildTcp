@@ -205,7 +205,7 @@ namespace Assets.Scripts.UI.Inventory
             }
 
             var errMessage = "";
-            var state = NetworkManager.Instance.PlayerState;
+            var state = PlayerState.Instance;
             if (state.CurrentWeight + weight > state.MaxWeight)
                 errMessage = " <color=red>(Too Heavy!)</color>";
             

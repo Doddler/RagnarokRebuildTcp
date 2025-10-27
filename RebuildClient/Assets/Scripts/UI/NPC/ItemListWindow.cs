@@ -161,12 +161,12 @@ namespace Assets.Scripts.UI
                 }
                 case ItemListRole.SellToNpcItemList:
                 {
-                    var item = NetworkManager.Instance.PlayerState.Inventory.GetInventoryItem(itemId);
+                    var item = PlayerState.Instance.Inventory.GetInventoryItem(itemId);
                     return item.SalePrice;
                 }
                 case ItemListRole.SellToNpcSummary:
                 {
-                    var item = NetworkManager.Instance.PlayerState.Inventory.GetInventoryItem(itemId);
+                    var item = PlayerState.Instance.Inventory.GetInventoryItem(itemId);
                     return item.SalePrice * count;
                 }
             }
@@ -186,12 +186,12 @@ namespace Assets.Scripts.UI
                 }
                 case ItemListRole.SellToNpcItemList:
                 {
-                    var item = NetworkManager.Instance.PlayerState.Inventory.GetInventoryItem(itemId);
+                    var item = PlayerState.Instance.Inventory.GetInventoryItem(itemId);
                     return item.SalePrice * (100 + ItemAdjustValue) / 100;
                 }
                 case ItemListRole.SellToNpcSummary:
                 {
-                    var item = NetworkManager.Instance.PlayerState.Inventory.GetInventoryItem(itemId);
+                    var item = PlayerState.Instance.Inventory.GetInventoryItem(itemId);
                     return item.SalePrice * (100 + ItemAdjustValue) / 100 * count;
                 }
             }

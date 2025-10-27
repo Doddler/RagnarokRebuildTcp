@@ -199,6 +199,60 @@ Icon = "인찬트포이즌"
 CanDispel = true
 CanDisable = true
 
+[Falcon]
+Name = "Falcon"
+Type = "Buff"
+CanDispel = false
+CanDisable = false
+
+#----------------------------------
+# Priest
+#----------------------------------
+
+[Magnificat]
+Type = "Buff"
+Icon = "마니피캇"
+CanDispel = true
+CanDisable = true
+
+[Gloria]
+Type = "Buff"
+Icon = "글로리아"
+CanDispel = true
+CanDisable = true
+
+[ImpositioManus]
+Name = "Impositio Manus"
+Type = "Buff"
+Icon = "임포시티오마누스"
+CanDispel = true
+CanDisable = true
+
+[KyrieEleison]
+Name = "Kyrie Eleison"
+Type = "Buff"
+Icon = "기리에엘레이손"
+CanDispel = true
+CanDisable = true
+
+[Suffragium]
+Type = "Buff"
+Icon = "수프라기움"
+CanDispel = true
+CanDisable = true
+
+[LexAeterna]
+Type = "Debuff"
+Icon = "렉스에테르나"
+CanDispel = true
+CanDisable = false
+
+[Aspersio]
+Type = "Buff"
+Icon = "아스페르시오"
+CanDispel = true
+CanDisable = true
+
 #----------------------------------
 # Item Buffs
 #----------------------------------

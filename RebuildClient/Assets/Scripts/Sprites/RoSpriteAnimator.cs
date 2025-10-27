@@ -26,8 +26,7 @@ namespace Assets.Scripts.Sprites
             get => RoAnimationHelper.GetFacingForAngle(Angle);
             //set => Angle = RoAnimationHelper.FacingDirectionToRotation(value);
         }
-
-        public float Angle;
+        public float Angle { get; set; }
         public SpriteType Type;
         public SpriteState State;
 
@@ -123,6 +122,10 @@ namespace Assets.Scripts.Sprites
         private int lastWalkFrame = 0;
         private int maxFrame { get; set; } = 0;
 
+        public int OverrideDelay = -1;
+
+        public int CurrentActionIndex => currentActionIndex;
+
         // private bool _isPaused;
         // private bool isPaused
         // {
@@ -156,8 +159,6 @@ namespace Assets.Scripts.Sprites
         private Shader shader;
 
         public bool IsInitialized => isInitialized;
-
-        private Camera mainCamera;
 
         public bool IsAttackMotion => CurrentMotion == SpriteMotion.Attack1 || CurrentMotion == SpriteMotion.Attack2 ||
                                       CurrentMotion == SpriteMotion.Attack3;
@@ -333,7 +334,9 @@ namespace Assets.Scripts.Sprites
             SpriteRenderer.Initialize(makeCollider);
             if(LightProbeAnchor != null)
                 SpriteRenderer.SetLightProbeAnchor(LightProbeAnchor);
-
+            
+            CacheShadowMaterial();
+            
             isDirty = true;
         }
 
@@ -416,8 +419,12 @@ namespace Assets.Scripts.Sprites
                         OnFinishPlaying();
                 }
             }
-
-            SpriteRenderer.UpdateRenderer();
+            
+            if(Parent != null)
+                ChildUpdate(); //this will call UpdateRenderer after updating the angle to match the parent
+            else
+                SpriteRenderer.UpdateRenderer();
+            
             SpriteRenderer.Rebuild();
         }
 
@@ -505,20 +512,20 @@ namespace Assets.Scripts.Sprites
                 if (CurrentMotion == SpriteMotion.Idle || CurrentMotion == SpriteMotion.Sit)
                 {
                     currentFrame = (int)HeadFacing;
-                    UpdateSpriteFrame();
+                    //UpdateSpriteFrame();
                     PauseAnimation();
                 }
                 else
                     HeadFacing = HeadFacing.Center;
             }
-
-            if (Shadow != null && isActive)
-            {
-                if (CurrentMotion == SpriteMotion.Sit || CurrentMotion == SpriteMotion.Dead)
-                    Shadow.SetActive(false);
-                else
-                    Shadow.SetActive(!HideShadow);
-            }
+            //
+            // if (Shadow != null && isActive)
+            // {
+            //     if (CurrentMotion == SpriteMotion.Sit || CurrentMotion == SpriteMotion.Dead)
+            //         Shadow.SetActive(false);
+            //     else
+            //         Shadow.SetActive(!HideShadow);
+            // }
         }
 
         public void SetHeadFacing(HeadFacing facing)
@@ -584,8 +591,10 @@ namespace Assets.Scripts.Sprites
             }
             else
             {
+                var delay = OverrideDelay > 0 ? OverrideDelay : currentAction.Delay;
+                
                 if (currentFrameTime < 0)
-                    currentFrameTime += (float)currentAction.Delay / 1000f * AnimSpeed;
+                    currentFrameTime += (float)delay / 1000f * AnimSpeed;
                 if (currentFrameTime < 0)
                     currentFrameTime = 0; //if we're more than a full frame behind lets just reset the clock
             }
@@ -614,7 +623,6 @@ namespace Assets.Scripts.Sprites
             currentFrame = newCurrentFrame;
 
             UpdateSpriteFrame();
-            ChildUpdate();
         }
 
         public void ChildUpdate()
@@ -624,6 +632,7 @@ namespace Assets.Scripts.Sprites
                 Angle = Parent.Angle;
                 SpriteRenderer.SetAngle(Angle);
                 currentAngleIndex = Parent.currentAngleIndex;
+                SpriteRenderer.UpdateRenderer();
             }
 
             if (!IgnoreAnchor)
@@ -639,7 +648,13 @@ namespace Assets.Scripts.Sprites
 
                 var diff = parentAnchor - ourAnchor;
 
-                transform.localPosition = new Vector3(diff.x / 50f, -diff.y / 50f, -SpriteOrder * 0.01f);
+                if (SpriteRenderer is RoSpriteRendererStandard std)
+                {
+                    transform.localPosition = new Vector3(diff.x / 50f, 0, -SpriteOrder * 0.003f);
+                    std.ShaderYOffset = -diff.y / 50f;
+                }
+                else
+                    transform.localPosition = new Vector3(diff.x / 50f, -diff.y / 50f, -SpriteOrder * 0.01f);
             }
         }
 
@@ -712,30 +727,14 @@ namespace Assets.Scripts.Sprites
                 SpriteRenderer.SetColor(c);
         }
 
-        public void LateUpdate()
+        public void CacheShadowMaterial()
         {
-            if (canUpdateRenderer)
-            {
-                nextUseSmoothRender = !nextUseSmoothRender;
-                canUpdateRenderer = false;
-            }
-
-            if (Parent != null)
-                return;
-            if (mainCamera == null)
-                mainCamera = Camera.main;
-
-            var screenPos = Camera.main.WorldToScreenPoint(transform.position);
-            screenPos = new Vector3(
-                Mathf.Clamp(screenPos.x, -100, mainCamera.pixelWidth + 100),
-                Mathf.Clamp(screenPos.y, -100, mainCamera.pixelHeight + 100),
-                0);
-
-            var sortGroup = Mathf.RoundToInt(screenPos.y * Screen.width + screenPos.x);
-            var ratio = 1f / (Screen.width * Screen.height / 20000f);
-            var sortLayerNum = 10000 - Mathf.RoundToInt(sortGroup * ratio);
+	        if (!Shadow) return;
+	        
+	        SpriteUtil.CacheShadowMaterial();
+	        Shadow.GetComponent<SpriteRenderer>().material = SpriteUtil.shadowMaterial;
         }
-
+        
         public void Update()
         {
             if (!isInitialized)

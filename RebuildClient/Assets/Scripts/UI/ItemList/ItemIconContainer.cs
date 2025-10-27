@@ -42,7 +42,7 @@ namespace Assets.Scripts.UI
         
         private void OnDoubleClick(InventoryItem item)
         {
-            var state = NetworkManager.Instance.PlayerState;
+            var state = PlayerState.Instance;
         
             if (UiManager.Instance.InventoryWindow.gameObject.activeInHierarchy)
             {

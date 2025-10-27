@@ -36,10 +36,18 @@ public class SkillPrereq : IList<object>
     }
 }
 
-public class PlayerSkillTree
+public class CsvPlayerSkillTree
 {
     public int JobRank { get; set; }
     public string? Extends { get; set; }
     public Dictionary<CharacterSkill, List<SkillPrereq>?>? SkillTree { get; set; }
 }
 
+public class PlayerSkillTree
+{
+    public int JobRank { get; set; }
+    public int JobId { get; set; }
+    public int PrereqSkillPoints { get; set; }
+    public PlayerSkillTree? Parent { get; set; }
+    public Dictionary<CharacterSkill, List<SkillPrereq>?> SkillTree { get; set; }
+}

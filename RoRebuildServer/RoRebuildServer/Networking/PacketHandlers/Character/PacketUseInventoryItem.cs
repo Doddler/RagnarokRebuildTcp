@@ -87,9 +87,9 @@ public class PacketUseInventoryItem : IClientPacketHandler
             CommandBuilder.ClearRecipients();
         }
 
+        CommandBuilder.RemoveItemFromInventory(player, item.Id, 1);
+
         if (!targetedItem)
             item.Interaction.OnUse(character.Player, character.CombatEntity);
-
-        CommandBuilder.RemoveItemFromInventory(player, item.Id, 1);
     }
 }

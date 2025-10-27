@@ -6,6 +6,7 @@ using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RebuildZoneServer.Networking;
 using RoRebuildServer.Data;
+using RoRebuildServer.Data.CsvDataTypes;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.Database;
 using RoRebuildServer.Database.Requests;
@@ -76,6 +77,7 @@ public class Player : IEntityAutoReset
 
     public SpecialPlayerActionState SpecialState;
     public Position SpecialStateTarget;
+    public PlayerSkillTree? JobSkillTree;
 
     public Party? Party;
     public int PartyMemberId;
@@ -83,6 +85,7 @@ public class Player : IEntityAutoReset
 
     public PlayerFollower PlayerFollower;
     public bool HasCart => (PlayerFollower & PlayerFollower.AnyCart) > 0;
+    public bool HasBird => (PlayerFollower & PlayerFollower.Falcon) > 0;
 
     public StatusTriggerFlags OnMeleeAttackStatusFlags;
     public StatusTriggerFlags OnRangedAttackStatusFlags;
@@ -142,7 +145,7 @@ public class Player : IEntityAutoReset
         regenSpTickTime = HpRegenTickTime / 2f;
     }
 
-    public int WeaponClass;
+    public int WeaponClass => Equipment.MainHandWeapon.WeaponClass;
 
 #if DEBUG
     private float actionCooldown;
@@ -241,7 +244,6 @@ public class Player : IEntityAutoReset
         IsAdmin = false;
         Array.Clear(CharData);
         PlayerStatData.Clear();
-        WeaponClass = 0;
         LastEmoteTime = 0;
         StorageId = -1;
         HasEnteredServer = false;
@@ -252,6 +254,7 @@ public class Player : IEntityAutoReset
         SpecialState = SpecialPlayerActionState.None;
         SpecialStateTarget = Position.Invalid;
         PlayerFollower = PlayerFollower.None;
+        JobSkillTree = null;
 
         if (AttackVersusTag != null)
             AttackVersusTag.Clear();
@@ -481,16 +484,16 @@ public class Player : IEntityAutoReset
             switch (statType)
             {
                 case CharacterStat.Attack:
-                    packet.Write(atk1 + Equipment.MinRefineAtkBonus);
+                    packet.Write(atk1 + Equipment.MainHandWeapon.MinRefineAtkBonus);
                     break;
                 case CharacterStat.Attack2:
-                    packet.Write(atk2 + Equipment.MaxRefineAtkBonus);
+                    packet.Write(atk2 + Equipment.MainHandWeapon.MaxRefineAtkBonus);
                     break;
                 case CharacterStat.MagicAtkMin:
-                    packet.Write(matk1 + Equipment.MinRefineAtkBonus);
+                    packet.Write(matk1 + Equipment.MainHandWeapon.MinRefineAtkBonus);
                     break;
                 case CharacterStat.MagicAtkMax:
-                    packet.Write(matk2 + Equipment.MaxRefineAtkBonus);
+                    packet.Write(matk2 + Equipment.MainHandWeapon.MaxRefineAtkBonus);
                     break;
                 case CharacterStat.Def:
                     packet.Write(CombatEntity.GetEffectiveStat(CharacterStat.Def));
@@ -635,7 +638,9 @@ public class Player : IEntityAutoReset
     {
         var level = GetData(PlayerStat.JobLevel);
         var job = GetData(PlayerStat.Job);
-        var levelCap = job == 0 ? 10 : 70;
+        var levelCap = job == 0 ? 10 : 50;
+        if (DataManager.JobInfo.TryGetValue(job, out var jobInfo))
+            levelCap = jobInfo.MaxJobLevel;
         if (level >= levelCap)
             return 0;
 
@@ -763,6 +768,9 @@ public class Player : IEntityAutoReset
         var job = GetData(PlayerStat.Job);
         var jobInfo = DataManager.JobInfo[job];
 
+        if (!DataManager.SkillTree.TryGetValue(job, out JobSkillTree))
+            JobSkillTree = null;
+
         if (level > 99 || level < 1)
         {
             ServerLogger.LogWarning($"Woah! The player '{Name}' has a level of {level}, that's not normal. We'll lower the level down to the cap.");
@@ -792,7 +800,9 @@ public class Player : IEntityAutoReset
         //above that, there's diminishing returns.
         //For example, 0agi/dex +80% apsd (berserk pot/2hq/frenzy) goes from 4.34/sec to 3.54/sec
 
-        var jobAspd = jobInfo.WeaponTimings[WeaponClass];
+        var jobAspd = jobInfo.WeaponTimings[Equipment.MainHandWeapon.WeaponClass];
+        if (Equipment.IsDualWielding)
+            jobAspd = (jobAspd + jobInfo.WeaponTimings[Equipment.OffHandWeapon.WeaponClass]) * 0.7f;
         var aspdBonus = (float)GetStat(CharacterStat.AspdBonus);
         if (aspdBonus >= 0) aspdBonus *= MathF.Pow(1.0064f, aspdBonus);
 
@@ -948,22 +958,25 @@ public class Player : IEntityAutoReset
 
         //update skill points! Ideally, this only should happen when you change your skills, but, well...
         var jobLevel = GetData(PlayerStat.JobLevel);
-        var skillPointEarned = job == 0 ? jobLevel - 1 : jobLevel + 9 - 1;
+        if (JobSkillTree != null)
+        {
+            var skillPointEarned = JobSkillTree.PrereqSkillPoints + (jobLevel - 1); // job == 0 ? jobLevel - 1 : jobLevel + 9 - 1;
 
-        if (job == 0 && skillPointEarned > 9)
-            skillPointEarned = 9;
+            if (job == 0 && skillPointEarned > 9)
+                skillPointEarned = 9;
 
-        if (ServerConfig.DebugConfig.UnlimitedSkillPoints)
-            skillPointEarned = 999;
+            if (ServerConfig.DebugConfig.UnlimitedSkillPoints)
+                skillPointEarned = 999;
 
-        var SkillPointsUsed = 0;
-        foreach (var skill in LearnedSkills)
-            SkillPointsUsed += skill.Value;
+            var SkillPointsUsed = 0;
+            foreach (var skill in LearnedSkills)
+                SkillPointsUsed += skill.Value;
 
-        if (skillPointEarned < SkillPointsUsed)
-            SetData(PlayerStat.SkillPoints, 0);
-        else
-            SetData(PlayerStat.SkillPoints, skillPointEarned - SkillPointsUsed);
+            if (skillPointEarned < SkillPointsUsed)
+                SetData(PlayerStat.SkillPoints, 0);
+            else
+                SetData(PlayerStat.SkillPoints, skillPointEarned - SkillPointsUsed);
+        }
 
         //update stat points! Probably also should only happen when you change your stat points.
         var statPointsEarned = statPointsEarnedByLevel[level - 1];
@@ -997,11 +1010,18 @@ public class Player : IEntityAutoReset
             case 3: //2hand sword
                 mastery = MaxLearnedLevelOfSkill(CharacterSkill.TwoHandSwordMastery) * 4;
                 break;
+            case 8:
+            case 9:
+                mastery = MaxLearnedLevelOfSkill(CharacterSkill.MaceMastery) * 4;
+                break;
+            case 16:
+                mastery = MaxLearnedLevelOfSkill(CharacterSkill.KatarMastery) * 4;
+                break;
         }
 
         var appraisal = MaxLearnedLevelOfSkill(CharacterSkill.ItemAppraisal);
         if (appraisal > 0)
-            mastery += appraisal * Equipment.WeaponLevel * 2;
+            mastery += appraisal * Equipment.MainHandWeapon.WeaponLevel * 2;
 
         SetStat(CharacterStat.WeaponMastery, mastery);
     }
@@ -1482,7 +1502,7 @@ public class Player : IEntityAutoReset
             Character.ClassId = newJobId;
 
         PlayerFollower &= ~PlayerFollower.AnyCart;
-        SetData(PlayerStat.PushCart, 0);
+        SetData(PlayerStat.FollowerType, 0);
 
         Equipment.UnequipAllItems();
         UpdateStats();
@@ -1696,6 +1716,58 @@ public class Player : IEntityAutoReset
             }
 
         }
+    }
+
+    public DamageInfo CalculateMeleeAttack(CombatEntity target)
+    {
+        var multiplier = 1f;
+        var isDualWielding = Character.Player.Equipment.IsDualWielding;
+
+        if (isDualWielding)
+            multiplier = 0.5f + MaxLearnedLevelOfSkill(CharacterSkill.RightHandMastery) * 0.1f;
+
+        var di = CombatEntity.CalculateCombatResult(target, multiplier, 1, AttackFlags.Physical | AttackFlags.CanCrit);
+        var canDoubleAttack = (Character.Player.WeaponClass == 1 ||
+                               Character.Player.Equipment.DoubleAttackModifiers > 0);
+
+        if (canDoubleAttack)
+        {
+            var doubleChance = GetStat(CharacterStat.DoubleAttackChance);
+            if (doubleChance > 0 && GameRandom.Next(0, 100) <= doubleChance)
+                di.HitCount = 2;
+        }
+
+        if (WeaponClass == 16 && di.Damage > 0) //katar
+        {
+            di.Time = Time.ElapsedTimeFloat + di.TimeInSeconds * 0.5f;
+            di.DamageOffHand = (short)(di.Damage * (1 + MaxAvailableLevelOfSkill(CharacterSkill.DoubleAttack) * 2) / 100);
+            if (di.DamageOffHand <= 0)
+                di.DamageOffHand = 1;
+        }
+
+        //add offhand weapon attack
+        if (isDualWielding)
+        {
+            di.Time = Time.ElapsedTimeFloat + di.TimeInSeconds * 0.5f;
+
+            var flags = AttackFlags.Physical | AttackFlags.NoTriggers | AttackFlags.OffHandWeapon | AttackFlags.IgnoreNullifyingGroundMagic | AttackFlags.NoDamageModifiers;
+            if (di.Result == AttackResult.CriticalDamage)
+                flags |= AttackFlags.GuaranteeCrit; //if the original crits, offhand crits, otherwise, it doesn't
+            var element = Equipment.OffHandWeapon.WeaponElement;
+            if (element == AttackElement.None)
+                element = AttackElement.Neutral; //None would be replaced by main-hand element, and off-hand is never endowed, so we specify here if it's a neutral type.
+
+            var req = new AttackRequest(0.3f + MaxLearnedLevelOfSkill(CharacterSkill.LeftHandMastery) * 0.1f, 1, flags, element);
+            (req.MinAtk, req.MaxAtk) = CombatEntity.CalculateAttackPowerRange(false, false); //calculate offhand
+            var di2 = CombatEntity.CalculateCombatResult(target, req);
+
+            if (di2.IsDamageResult)
+                di.DamageOffHand = (short)di2.Damage;
+            else
+                di.DamageOffHand = -1;
+        }
+
+        return di;
     }
 
     private bool PerformAttack(WorldObject targetCharacter)
@@ -1977,9 +2049,9 @@ public class Player : IEntityAutoReset
 
     private bool InMoveReadyState => (Character.State == CharacterState.Idle || Character.State == CharacterState.Moving) && !CombatEntity.IsCasting;
 
-    public bool CanPerformCharacterActions()
+    public bool CanPerformCharacterActions(bool ignoreActionCooldown = false)
     {
-        if (InInputActionCooldown())
+        if (!ignoreActionCooldown && InInputActionCooldown())
             return false;
         if (Character.State == CharacterState.Dead)
             return false;

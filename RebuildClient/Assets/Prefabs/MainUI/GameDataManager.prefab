@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5318727745821105121
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1550005808522843776}
+  - component: {fileID: 2767185337244328473}
+  m_Layer: 0
+  m_Name: GameDataManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1550005808522843776
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5318727745821105121}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 157.4374, y: 2.939081, z: 200.805}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2767185337244328473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5318727745821105121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5b6766fdb934bd9af49de2dba488e90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MonsterClassData: {fileID: 4900000, guid: 5cc5b999c9406024aa1eaa264263cf2a, type: 3}
+  PlayerClassData: {fileID: 4900000, guid: 8053c7a53d510ca4db83d6a3787cffe0, type: 3}
+  PlayerHeadData: {fileID: 4900000, guid: 87c440754c880dc4f99595f42a739ef3, type: 3}
+  PlayerWeaponData: {fileID: 4900000, guid: 4c20ee67b4001884487e36371d1bcf9f, type: 3}
+  WeaponClassData: {fileID: 4900000, guid: 2fbb077a485e3df4688c24595c1f5501, type: 3}
+  SkillData: {fileID: 4900000, guid: d6cfe0de31054ff408d93cb745215659, type: 3}
+  SkillTreeData: {fileID: 4900000, guid: 7ed9ea5ca751cff41809e38fe3e98260, type: 3}
+  MapViewpointData: {fileID: 4900000, guid: 483b5a1bb9fd66e469b63266b35f693c, type: 3}
+  UniqueAttackActionData: {fileID: 4900000, guid: 03a16e2d67fabd342ba77db6c9ff39ce,
+    type: 3}
+  MetamorphResultData: {fileID: 4900000, guid: 691f8874ea124c939d5fa906542b2ef5, type: 3}
+  ItemData: {fileID: 4900000, guid: ef3d3eb1a95cb8e4889bded8346f1fcf, type: 3}
+  MapData: {fileID: 4900000, guid: f7ed8fe56d82dc641835d31fa11b09d6, type: 3}
+  EquipmentSpriteData: {fileID: 4900000, guid: 704000c3ad1cf6d4188fbb10ad68515f, type: 3}
+  ItemDescData: {fileID: 4900000, guid: 642548ce0fed7c84e95d5c9b415f8df1, type: 3}
+  CardPrefixData: {fileID: 4900000, guid: 710e2607c7510a64bbf52add74c284d2, type: 3}
+  ServerVersionData: {fileID: 4900000, guid: 6e7544aa87a638943b5825997a98ab8c, type: 3}
+  PatchNoteData: {fileID: 4900000, guid: 80e4f1a43abcb0a46b95ee1f702f14da, type: 3}
+  JobExpData: {fileID: 4900000, guid: b710638773ff500479fcc93e02ab50f0, type: 3}
+  EmoteData: {fileID: 4900000, guid: 2dc31d140e9869c4cadf2f914917ccfb, type: 3}
+  StatusEffectData: {fileID: 4900000, guid: 42aaaef30b112884f81d94aec10f8114, type: 3}
+  ItemIconAtlas: {fileID: 100100200, guid: 81256b27eb27dbc439d2b23d1a2a584d, type: 3}
+  ShadowSprite: {fileID: 21300000, guid: 7a3993df44573374894f81ef56d0b79e, type: 3}
+  ServerVersion: 6
+  LatestPatchNotes: 
+  PatchNotes: 

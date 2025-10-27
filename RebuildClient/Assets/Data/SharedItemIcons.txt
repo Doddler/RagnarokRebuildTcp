@@ -286,6 +286,7 @@ Ballista_	Ballista
 Brave_Cross_Bow	Cross_Bow
 Valorous_Cross_Bow	Cross_Bow
 Glorious_Bow	Hunter_Bow
+Gamemaster's_Bow	Rudra_Bow
 Waghnak_	Waghnak
 Knuckle_Dusters_	Knuckle_Dusters
 Studded_Knuckles_	Studded_Knuckles

@@ -19,16 +19,16 @@ public partial class CombatEntity
         switch (status)
         {
             case StatusTriggerFlags.Blind:
-                TryBlindTarget(target, chance, res.TimeInMs + 0.5f); //delayed a little so you can actually hear the blind sound
+                TryBlindTarget(target, chance, res.TimeInSeconds + 0.5f); //delayed a little so you can actually hear the blind sound
                 break;
             case StatusTriggerFlags.Silence:
-                TrySilenceTarget(target, chance, res.TimeInMs);
+                TrySilenceTarget(target, chance, res.TimeInSeconds);
                 break;
             case StatusTriggerFlags.Curse:
-                TryCurseTarget(target, chance, res.TimeInMs);
+                TryCurseTarget(target, chance, res.TimeInSeconds);
                 break;
             case StatusTriggerFlags.Poison:
-                TryPoisonOnTarget(target, chance, true, useDamage ? (res.Damage * res.HitCount / 2) : 0, 24f, res.TimeInMs);
+                TryPoisonOnTarget(target, chance, true, useDamage ? (res.Damage * res.HitCount / 2) : 0, 24f, res.TimeInSeconds);
                 break;
             case StatusTriggerFlags.Confusion:
                 break;
@@ -37,16 +37,16 @@ public partial class CombatEntity
             case StatusTriggerFlags.Bleeding:
                 break;
             case StatusTriggerFlags.Stun:
-                TryStunTarget(target, chance, res.TimeInMs);
+                TryStunTarget(target, chance, res.TimeInSeconds);
                 break;
             case StatusTriggerFlags.Stone:
-                TryPetrifyTarget(target, chance, 1f, res.TimeInMs);
+                TryPetrifyTarget(target, chance, 1f, res.TimeInSeconds);
                 break;
             case StatusTriggerFlags.Freeze:
-                TryFreezeTarget(target, chance, res.TimeInMs + 0.1f); //don't want our damage application to cancel the status
+                TryFreezeTarget(target, chance, res.TimeInSeconds + 0.1f); //don't want our damage application to cancel the status
                 break;
             case StatusTriggerFlags.Sleep:
-                TrySleepTarget(target, chance, res.TimeInMs + 0.1f); //don't want our damage application to cancel the status
+                TrySleepTarget(target, chance, res.TimeInSeconds + 0.1f); //don't want our damage application to cancel the status
                 break;
         }
     }
@@ -133,11 +133,11 @@ public partial class CombatEntity
             {
                 var val = GetStat(CharacterStat.SpGainOnAttack);
                 if (val > 0)
-                    RecoverSp(val);
+                    RecoverSpFixed(val);
 
                 val = GetStat(CharacterStat.SpGainOnAttackRaceFormless + (int)race);
                 if (val > 0)
-                    RecoverSp(val);
+                    RecoverSpFixed(val);
             }
 
             if ((attackTriggerFlags & AttackEffectTriggers.KillOnAttack) > 0
@@ -428,7 +428,7 @@ public partial class CombatEntity
         return true;
     }
 
-    public bool TrySilenceTarget(CombatEntity target, int chanceIn1000, float delayApply = 0.3f)
+    public bool TrySilenceTarget(CombatEntity target, int chanceIn1000, float delayApply = 0.3f, float baseLength = 30f)
     {
         if (target.HasStatusEffectOfType(CharacterStatusEffect.Silence) || target.GetSpecialType() == CharacterSpecialType.Boss)
             return false;
@@ -436,7 +436,7 @@ public partial class CombatEntity
         var luk = target.GetEffectiveStat(CharacterStat.Luk);
         var vit = target.GetEffectiveStat(CharacterStat.Vit);
 
-        var resist = MathHelper.PowScaleDown(luk);
+        var resist = MathHelper.PowScaleDown(vit + luk);
         var resistChance = 100 - target.GetStat(CharacterStat.ResistSilenceStatus);
         if (resistChance != 100)
             resist = resist * resistChance / 100;
@@ -447,7 +447,7 @@ public partial class CombatEntity
         var timeResist = MathHelper.PowScaleDown(vit + GameRandom.Next(0, luk));
         if (resistChance != 100)
             timeResist = resist * resistChance / 100;
-        var len = 30f * timeResist;
+        var len = baseLength * timeResist;
 
         target.CancelCast();
 
@@ -544,6 +544,15 @@ public partial class CombatEntity
 
         if ((target & StatusCleanseTarget.Petrify) > 0 && HasBodyState(BodyStateFlags.Petrified))
             hasUpdate |= statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Stone);
+
+        if ((target & StatusCleanseTarget.Frozen) > 0 && HasBodyState(BodyStateFlags.Frozen))
+            hasUpdate |= statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Frozen);
+
+        if ((target & StatusCleanseTarget.Stunned) > 0 && HasBodyState(BodyStateFlags.Stunned))
+            hasUpdate |= statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Stun);
+
+        if ((target & StatusCleanseTarget.Sleep) > 0 && HasBodyState(BodyStateFlags.Sleep))
+            hasUpdate |= statusContainer.RemoveStatusEffectOfType(CharacterStatusEffect.Sleep);
 
         if (hasUpdate)
             UpdateStats();

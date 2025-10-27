@@ -12,3 +12,13 @@
 10,Rod,Rod,_hit_rod
 11,2HRod,Rod (2-Handed),_hit_rod
 12,Bow,Bow,_hit_arrow
+13,Instrument,Instrument,_hit_mace
+14,Whip,Whip,_hit_mace
+15,Book,Book,_hit_mace
+16,Katar,Katar,_hit_mace
+17,Pistol,Pistol,_hit_권총
+18,Rifle,Rifle,_hit_라이플
+19,GatlingGun,Gatling Gun,_hit_개틀링한발
+20,Shotgun,Shotgun,_hit_샷건
+21,Grenade,Grenade Launcher,_hit_그레네이드런쳐
+22,Shuriken,Huuma Shuriken,_hit_sword

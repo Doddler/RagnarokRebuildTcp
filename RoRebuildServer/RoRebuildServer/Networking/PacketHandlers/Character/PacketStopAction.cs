@@ -13,7 +13,7 @@ public class PacketStopAction : IClientPacketHandler
 
         var player = connection.Player;
 
-        if (!player.CanPerformCharacterActions())
+        if (!player.CanPerformCharacterActions(true))
             return;
 
         player.AddInputActionDelay(InputActionCooldownType.StopAction);

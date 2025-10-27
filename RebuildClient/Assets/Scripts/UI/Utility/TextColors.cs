@@ -8,6 +8,7 @@
         Job,
         Equipment,
         Item,
-        Error
+        Error,
+        System
     }
 }

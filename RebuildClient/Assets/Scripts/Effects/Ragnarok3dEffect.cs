@@ -84,19 +84,19 @@ namespace Assets.Scripts.Effects
             IsInitialized = true;
         }
 
-        public void SetDurationByTime(float time)
+        public void SetDurationByTime(float timeInSeconds)
         {
-            Duration = time;
-            if (time >= float.MaxValue) //direct equals gives a warning
+            Duration = timeInSeconds;
+            if (timeInSeconds >= float.MaxValue) //direct equals gives a warning
                 DurationFrames = int.MaxValue;
             else
-                DurationFrames = Mathf.FloorToInt(time * 60f);
+                DurationFrames = Mathf.FloorToInt(timeInSeconds * 60f);
         }
         
-        public void SetDurationByFrames(int frame)
+        public void SetDurationByFrames(int timeInFrames)
         {
-            Duration = (frame + 1) * (1f / 60f);
-            DurationFrames = frame;
+            Duration = (timeInFrames + 1) * (1f / 60f);
+            DurationFrames = timeInFrames;
         }
         
         public void SetRemainingDurationByFrames(int frame)
