@@ -72,19 +72,69 @@ namespace Scripts.Sprites
 
     public class RoSpr<T> where T : IRoSpr
     {
-        private T roSprData;
-
-        private char[] Signature
+        public static byte[] CompressBitmapImage(BitmapImage image)
         {
-            get
+            var compressedPaletteIndexesList = new List<byte>();
+            var zeroRun = false;
+            byte zeroCount = 0;
+            foreach (var colorIndex in image.PaletteIndexes)
             {
-                return roSprData.Signature;
+                switch (colorIndex)
+                {
+                    case 0 when !zeroRun:
+                        zeroRun = true;
+                        zeroCount++;
+                        compressedPaletteIndexesList.Add(colorIndex);
+                        break;
+                    case 0:
+                        zeroCount++;
+                        break;
+                    case > 0 when !zeroRun:
+                        compressedPaletteIndexesList.Add(colorIndex);
+                        break;
+                    case > 0:
+                        zeroRun = false;
+                        compressedPaletteIndexesList.Add(zeroCount);
+                        zeroCount = 0;
+                        compressedPaletteIndexesList.Add(colorIndex);
+                        break;
+                }
             }
-            set
-            {
-                roSprData.Signature = value;
-            }
+            return compressedPaletteIndexesList.ToArray();
         }
+        
+        public static byte[] DecompressBitmapImage(CompressedBitmapImage image)
+        {
+            var decompressedPaletteIndexes = new byte[image.ImageWidth * image.ImageHeight];
+            var decompressedIndex = 0;
+            var zeroRun = false;
+            for (var compressedIndex = 0; compressedIndex < image.CompressedSize; compressedIndex++)
+            {
+                var currentByte = image.CompressedPaletteIndexes[compressedIndex];
+                switch (currentByte)
+                {
+                    case 0 when !zeroRun:
+                        zeroRun = true;
+                        break;
+                    case 0:
+                        throw new InvalidDataException("Found 00 00 while decompressing sprite. Not RLE?");
+                    case > 0 when zeroRun:
+                    {
+                        for (var count = 1; count <= currentByte; count++)
+                        {
+                            decompressedPaletteIndexes[decompressedIndex++] = 0x00;
+                        }
+                        zeroRun = false;
+                        break;
+                    }
+                    case > 0:
+                        decompressedPaletteIndexes[decompressedIndex++] = currentByte;
+                        break;
+                }
+            }
+            return decompressedPaletteIndexes;
+        }
+        
         public byte VersionMajor
         {
             get
@@ -202,68 +252,18 @@ namespace Scripts.Sprites
             }
         }
         
-        public static byte[] CompressBitmapImage(BitmapImage image)
+        private char[] Signature
         {
-            var compressedPaletteIndexesList = new List<byte>();
-            var zeroRun = false;
-            byte zeroCount = 0;
-            foreach (var colorIndex in image.PaletteIndexes)
+            get
             {
-                switch (colorIndex)
-                {
-                    case 0 when !zeroRun:
-                        zeroRun = true;
-                        zeroCount++;
-                        compressedPaletteIndexesList.Add(colorIndex);
-                        break;
-                    case 0:
-                        zeroCount++;
-                        break;
-                    case > 0 when !zeroRun:
-                        compressedPaletteIndexesList.Add(colorIndex);
-                        break;
-                    case > 0:
-                        zeroRun = false;
-                        compressedPaletteIndexesList.Add(zeroCount);
-                        zeroCount = 0;
-                        compressedPaletteIndexesList.Add(colorIndex);
-                        break;
-                }
+                return roSprData.Signature;
             }
-            return compressedPaletteIndexesList.ToArray();
-        }
-        
-        public static byte[] DecompressBitmapImage(CompressedBitmapImage image)
-        {
-            var decompressedPaletteIndexes = new byte[image.ImageWidth * image.ImageHeight];
-            var decompressedIndex = 0;
-            var zeroRun = false;
-            for (var compressedIndex = 0; compressedIndex < image.CompressedSize; compressedIndex++)
+            set
             {
-                var currentByte = image.CompressedPaletteIndexes[compressedIndex];
-                switch (currentByte)
-                {
-                    case 0 when !zeroRun:
-                        zeroRun = true;
-                        break;
-                    case 0:
-                        throw new InvalidDataException("Found 00 00 while decompressing sprite. Not RLE?");
-                    case > 0 when zeroRun:
-                    {
-                        for (var count = 1; count <= currentByte; count++)
-                        {
-                            decompressedPaletteIndexes[decompressedIndex++] = 0x00;
-                        }
-                        zeroRun = false;
-                        break;
-                    }
-                    case > 0:
-                        decompressedPaletteIndexes[decompressedIndex++] = currentByte;
-                        break;
-                }
+                roSprData.Signature = value;
             }
-            return decompressedPaletteIndexes;
         }
+        private T roSprData;
 
         /// <summary>
         /// Write spr data to file

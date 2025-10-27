@@ -15,12 +15,10 @@ namespace Scripts.Sprites.Editor
 
         private void OnEnable()
         {
-            sprName = serializedObject.FindProperty("sprName");
-            //sprites = serializedObject.FindProperty("sprites");
+            sprName = serializedObject.FindProperty("sprFileName");
             spriteVersion = serializedObject.FindProperty("spriteVersion");
             palette = serializedObject.FindProperty("palette");
             atlas = serializedObject.FindProperty("atlas");
-            //atlasRects = serializedObject.FindProperty("atlasRects");
         }
         
         public override void OnInspectorGUI()
@@ -33,10 +31,8 @@ namespace Scripts.Sprites.Editor
         {
             EditorGUILayout.PropertyField(sprName, new GUIContent("Sprite Name"));
             EditorGUILayout.PropertyField(spriteVersion, new GUIContent("Sprite Version"));
-            //EditorGUILayout.PropertyField(sprites, new GUIContent("Sprites"), true);
             EditorGUILayout.PropertyField(palette, new GUIContent("Palette"));
             EditorGUILayout.PropertyField(atlas, new GUIContent("Atlas"));
-            //EditorGUILayout.PropertyField(atlasRects, new GUIContent("Atlas Rects"), true);
         }
     }
 }
