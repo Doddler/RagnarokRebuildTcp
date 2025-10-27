@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
-namespace Assets.Scripts.Sprites
+namespace Scripts.Sprites
 {
     public class RoSprAsset : ScriptableObject
     {
@@ -17,6 +18,7 @@ namespace Assets.Scripts.Sprites
                 return instanceID;
             }
         }
+        
         private int hashCode;
         public int HashCode
         {
@@ -25,20 +27,63 @@ namespace Assets.Scripts.Sprites
                 return InstanceID.GetHashCode();
             }
         }
+        
+        private List<Texture2D> sprites;
+        
+        [HideInInspector] public string spriteVersion;
+        [HideInInspector] public string filepath;
+        [HideInInspector] public string sprName;
+        [HideInInspector] public Texture2D palette;
+        [HideInInspector] public Texture2D atlas;
+        [HideInInspector] public Rect[] atlasRects;
 
-        private IRoSprite rawSpriteData;
-        // [HideInInspector]
-        public int spriteVersion;
-        public string filepath;
-        public string sprName;
-        public List<Texture2D> sprites;
-        public Texture2D palette;
-
+        private void Load<T>() where T : IRoSpr
+        {
+            var rawSprData = new RoSpr<T>();
+            rawSprData.ReadBytes(filepath);
+            
+            spriteVersion = $"{rawSprData.VersionMajor}.{rawSprData.VersionMinor}";
+            
+            var palTex = new Texture2D(16,16, TextureFormat.RGBA32, false);
+            foreach (var ci in rawSprData.PaletteColors.Select((color, index) => new {color, index}))
+            {
+                var pColor = rawSprData.PaletteColors[ci.index];
+                palTex.SetPixel(
+                    ci.index % 16,
+                    15 - ci.index / 16,
+                    pColor
+                );
+            }
+            palTex.Apply();
+            palette = palTex;
+            
+            foreach (var bitMapSprite in rawSprData.BitmapImages)
+            {
+                var texture = new Texture2D(bitMapSprite.ImageWidth, bitMapSprite.ImageHeight, TextureFormat.RGBA32, false);
+                foreach (var cii in bitMapSprite.PaletteIndexes.Select((colorIndex, index) => new {colorIndex, index}))
+                {
+                    var pColor = cii.colorIndex == 0 ? new Color32(0,0,0,0) : rawSprData.PaletteColors[cii.colorIndex];
+                    texture.SetPixel(
+                        cii.index % bitMapSprite.ImageWidth, 
+                        bitMapSprite.ImageHeight - cii.index / bitMapSprite.ImageWidth,
+                        pColor
+                    );
+                }
+                texture.Apply();
+                sprites.Add(texture);
+            }
+            atlasRects = atlas.PackTextures(sprites.ToArray(), 0);
+            sprites.Clear();
+            rawSprData.WriteBytes("D:/sprDuplicate.spr");
+        }
+        
         public void Load(string assetFilePath)
         {
-            sprites =  new List<Texture2D>();
-            filepath =  assetFilePath;
+            sprites = new List<Texture2D>();
+            filepath = assetFilePath;
             sprName = Path.GetFileNameWithoutExtension(filepath);
+            atlas = new Texture2D(2,2,TextureFormat.RGBA32, false);
+            
             var stream = new MemoryStream(File.ReadAllBytes(filepath));
             var reader = new BinaryReader(stream);
             var header = new string(reader.ReadChars(2));
@@ -51,80 +96,16 @@ namespace Assets.Scripts.Sprites
             var minorVersion = reader.ReadByte();
             var majorVersion = reader.ReadByte();
             var version = majorVersion * 10 + minorVersion;
-            Debug.Log($"Version: {version}");
             reader.Dispose();
             stream.Dispose();
             switch (version)
             {
                 case 20:
-                    spriteVersion = 20;
-                    LoadV20();
+                    Load<RoSprV20>();
                     break;
                 case 21:
-                    spriteVersion = 21;
-                    LoadV21();
+                    Load<RoSprV21>();
                     break;
-            }
-        }
-        private void LoadV20()
-        {
-            rawSpriteData = new RoSpriteV20();
-            Debug.Log("Reading V20 Bytes");
-            rawSpriteData.ReadBytes(filepath);
-            
-            var palTex = new Texture2D(16,16, TextureFormat.RGBA32, false);
-            palTex.SetPixels32(((RoSpriteV20)rawSpriteData).BitmapColors);
-            palTex.Apply();
-            palette = palTex;
-            
-            foreach (var bitMapSprite in ((RoSpriteV20)rawSpriteData).BitmapSprites)
-            {
-                var texture =  new Texture2D(bitMapSprite.ImageWidth,  bitMapSprite.ImageHeight, TextureFormat.RGBA32, false);
-                foreach (var index in bitMapSprite.PaletteIndices)
-                {
-                    var pColor = ((RoSpriteV20)rawSpriteData).BitmapColors[index];
-                    texture.SetPixel(
-                        index % bitMapSprite.ImageWidth, 
-                        index / bitMapSprite.ImageWidth,
-                        pColor
-                    );
-                }
-                texture.Apply();
-                sprites.Add(texture);
-            }
-        }
-        
-        private void LoadV21()
-        {
-            rawSpriteData = new RoSpriteV21();
-            Debug.Log("Reading V21 Bytes");
-            rawSpriteData.ReadBytes(filepath);
-            
-            var palTex = new Texture2D(16,16, TextureFormat.RGBA32, false);
-            palTex.SetPixels32(((RoSpriteV21)rawSpriteData).BitmapColors);
-            palTex.Apply();
-            palette = palTex;
-            
-            foreach (var compressedBitmapSprite in ((RoSpriteV21)rawSpriteData).CompressedBitmapSprites)
-            {
-                var texture = new Texture2D(compressedBitmapSprite.ImageWidth, compressedBitmapSprite.ImageHeight, TextureFormat.RGBA32, false)
-                {
-                    hideFlags = HideFlags.None
-                };
-                
-                var uncompressedPaletteIndices = compressedBitmapSprite.DecompressPaletteIndices();
-                foreach (var index in uncompressedPaletteIndices)
-                {
-                    var pColor = ((RoSpriteV21)rawSpriteData).BitmapColors[index];
-                    texture.SetPixel(
-                        index % compressedBitmapSprite.ImageWidth, 
-                        index / compressedBitmapSprite.ImageWidth,
-                        pColor
-                    );
-                }
-                texture.Apply();
-                //Debug.Log($"Our beautiful Texture: {texture}");
-                sprites.Add(texture);
             }
         }
     }
