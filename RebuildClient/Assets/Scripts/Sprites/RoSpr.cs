@@ -7,132 +7,13 @@ using UnityEngine;
 
 namespace Assets.Scripts.Sprites
 {
-    public interface IRoSpr
-    {
-        char[] Signature { get; set; }
-        byte VersionMajor { get; set; }
-        byte VersionMinor { get; set; }
-        ushort BitmapImageCount { get; set; }
-        ushort TrueColorImageCount { get; set; }
-        TrueColorImage[] TrueColorImages { get; set; }
-        Color32[] PaletteColors { get; set; }
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct BitmapImage
-    {
-        public ushort ImageWidth;
-        public ushort ImageHeight;
-        public byte[] PaletteIndexes;
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct CompressedBitmapImage
-    {
-        public ushort ImageWidth;
-        public ushort ImageHeight;
-        public ushort CompressedSize;
-        public byte[] CompressedPaletteIndexes;
-    }
-    
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct TrueColorImage
-    {
-        public ushort ImageWidth;
-        public ushort ImageHeight;
-        public Color32[] ImageData;
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct RoSprV20 : IRoSpr
-    {
-        public char[] Signature { get; set; }
-        public byte VersionMajor { get; set; }
-        public byte VersionMinor { get; set; }
-        public ushort BitmapImageCount { get; set; }
-        public ushort TrueColorImageCount { get; set; }
-        public BitmapImage[] BitmapImages { get; set; }
-        public TrueColorImage[] TrueColorImages { get; set; }
-        public Color32[] PaletteColors { get; set; }
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct RoSprV21 : IRoSpr
-    {
-        public char[] Signature { get; set; }
-        public byte VersionMajor { get; set; }
-        public byte VersionMinor { get; set; }
-        public ushort BitmapImageCount { get; set; }
-        public ushort TrueColorImageCount { get; set; }
-        public CompressedBitmapImage[] CompressedBitmapImages { get; set; }
-        public TrueColorImage[] TrueColorImages { get; set; }
-        public Color32[] PaletteColors { get; set; }
-    }
-
     public class RoSpr<T> where T : IRoSpr
     {
-        public static byte[] CompressBitmapImage(BitmapImage image)
-        {
-            var compressedPaletteIndexesList = new List<byte>();
-            var zeroRun = false;
-            byte zeroCount = 0;
-            foreach (var colorIndex in image.PaletteIndexes)
-            {
-                switch (colorIndex)
-                {
-                    case 0 when !zeroRun:
-                        zeroRun = true;
-                        zeroCount++;
-                        compressedPaletteIndexesList.Add(colorIndex);
-                        break;
-                    case 0:
-                        zeroCount++;
-                        break;
-                    case > 0 when !zeroRun:
-                        compressedPaletteIndexesList.Add(colorIndex);
-                        break;
-                    case > 0:
-                        zeroRun = false;
-                        compressedPaletteIndexesList.Add(zeroCount);
-                        zeroCount = 0;
-                        compressedPaletteIndexesList.Add(colorIndex);
-                        break;
-                }
-            }
-            return compressedPaletteIndexesList.ToArray();
-        }
-        
-        public static byte[] DecompressBitmapImage(CompressedBitmapImage image)
-        {
-            var decompressedPaletteIndexes = new byte[image.ImageWidth * image.ImageHeight];
-            var decompressedIndex = 0;
-            var zeroRun = false;
-            for (var compressedIndex = 0; compressedIndex < image.CompressedSize; compressedIndex++)
-            {
-                var currentByte = image.CompressedPaletteIndexes[compressedIndex];
-                switch (currentByte)
-                {
-                    case 0 when !zeroRun:
-                        zeroRun = true;
-                        break;
-                    case 0:
-                        throw new InvalidDataException("Found 00 00 while decompressing sprite. Not RLE?");
-                    case > 0 when zeroRun:
-                    {
-                        for (var count = 1; count <= currentByte; count++)
-                        {
-                            decompressedPaletteIndexes[decompressedIndex++] = 0x00;
-                        }
-                        zeroRun = false;
-                        break;
-                    }
-                    case > 0:
-                        decompressedPaletteIndexes[decompressedIndex++] = currentByte;
-                        break;
-                }
-            }
-            return decompressedPaletteIndexes;
-        }
+        /// <summary>
+        /// Compress the given BitMapImage and return a CompressedBitmapImage 
+        /// </summary>
+        /// <param name="image"></param>
+        /// <returns></returns>
         
         public byte VersionMajor
         {
@@ -188,7 +69,7 @@ namespace Assets.Scripts.Sprites
                 var images = roSprData switch
                 {
                     RoSprV20 v20 => v20.BitmapImages,
-                    RoSprV21 => DecompressBitmapImages(),
+                    RoSprV21 v21 => DecompressBitmapImage(v21.CompressedBitmapImages),
                     _ => throw new InvalidDataException("Invalid sprite version?")
                 };
                 return images;
@@ -211,7 +92,7 @@ namespace Assets.Scripts.Sprites
                         {
                             throw new FormatException($"BitMapImages cant have more than {ushort.MaxValue} entries");
                         }
-                        v21.CompressedBitmapImages = CompressBitmapImages(value);
+                        v21.CompressedBitmapImages = CompressBitmapImage(value);
                         v21.BitmapImageCount = (ushort)value.Length;
                         roSprData = (T)(object)v21;
                         break;
@@ -264,6 +145,101 @@ namespace Assets.Scripts.Sprites
         }
         private T roSprData;
 
+        public static CompressedBitmapImage CompressBitmapImage(BitmapImage image)
+        {
+            var compressedPaletteIndexesList = new List<byte>();
+            var zeroRun = false;
+            byte zeroCount = 0;
+            foreach (var colorIndex in image.PaletteIndexes)
+            {
+                switch (colorIndex)
+                {
+                    case 0 when !zeroRun:
+                        zeroRun = true;
+                        zeroCount++;
+                        compressedPaletteIndexesList.Add(colorIndex);
+                        break;
+                    case 0:
+                        zeroCount++;
+                        break;
+                    case > 0 when !zeroRun:
+                        compressedPaletteIndexesList.Add(colorIndex);
+                        break;
+                    case > 0:
+                        zeroRun = false;
+                        compressedPaletteIndexesList.Add(zeroCount);
+                        zeroCount = 0;
+                        compressedPaletteIndexesList.Add(colorIndex);
+                        break;
+                }
+            }
+            var compressedImage = new CompressedBitmapImage
+            {
+                ImageHeight = image.ImageHeight,
+                ImageWidth = image.ImageWidth,
+                CompressedSize = (ushort)compressedPaletteIndexesList.Count,
+                CompressedPaletteIndexes = compressedPaletteIndexesList.ToArray()
+            };
+            return compressedImage;
+        }
+        public static CompressedBitmapImage[] CompressBitmapImage(BitmapImage[] images)
+        {
+            var compressedBitmapImages = new CompressedBitmapImage[images.Length];
+            foreach (var ii in images.Select((image, index) => new { image, index }))
+            {
+                var compressedBitmapImage = CompressBitmapImage(ii.image);
+                compressedBitmapImages[ii.index] = compressedBitmapImage;
+            }
+            return compressedBitmapImages;
+        }
+        public static BitmapImage DecompressBitmapImage(CompressedBitmapImage compressedImage)
+        {
+            var decompressedPaletteIndexes = new byte[compressedImage.ImageWidth * compressedImage.ImageHeight];
+            var decompressedIndex = 0;
+            var zeroRun = false;
+            for (var compressedIndex = 0; compressedIndex < compressedImage.CompressedSize; compressedIndex++)
+            {
+                var currentByte = compressedImage.CompressedPaletteIndexes[compressedIndex];
+                switch (currentByte)
+                {
+                    case 0 when !zeroRun:
+                        zeroRun = true;
+                        break;
+                    case 0:
+                        throw new InvalidDataException("Found 00 00 while decompressing sprite. Not RLE?");
+                    case > 0 when zeroRun:
+                    {
+                        for (var count = 1; count <= currentByte; count++)
+                        {
+                            decompressedPaletteIndexes[decompressedIndex++] = 0x00;
+                        }
+                        zeroRun = false;
+                        break;
+                    }
+                    case > 0:
+                        decompressedPaletteIndexes[decompressedIndex++] = currentByte;
+                        break;
+                }
+            }
+            var bitmapImage = new BitmapImage()
+            {
+                ImageHeight = compressedImage.ImageHeight,
+                ImageWidth = compressedImage.ImageWidth,
+                PaletteIndexes = decompressedPaletteIndexes
+            };
+            return bitmapImage;
+        }
+        public static BitmapImage[] DecompressBitmapImage(CompressedBitmapImage[] compressedImages)
+        {
+            var bitmapImages = new BitmapImage[compressedImages.Length];
+            foreach (var ii in compressedImages.Select((image, index) => new {image, index}))
+            {
+                var bitmapImage = DecompressBitmapImage(ii.image);
+                bitmapImages[ii.index] = bitmapImage;
+            }
+            return bitmapImages;
+        }
+        
         /// <summary>
         /// Write spr data to file
         /// </summary>
@@ -407,56 +383,6 @@ namespace Assets.Scripts.Sprites
             }
             
             binaryReader.Close();
-        }
-
-        private CompressedBitmapImage[] CompressBitmapImages(BitmapImage[] images)
-        {
-            var compressedBitmapImages = new CompressedBitmapImage[BitmapImageCount];
-            switch (roSprData)
-            {
-                case RoSprV20:
-                    throw new FormatException(".spr v2.0 images should not be compressed");
-                case RoSprV21:
-                    foreach (var ii in images.Select((image, index) => new { image, index }))
-                    {
-                        var compressedBitmapImage = new CompressedBitmapImage
-                        {
-                            ImageWidth = ii.image.ImageWidth,
-                            ImageHeight = ii.image.ImageHeight,
-                            CompressedPaletteIndexes = CompressBitmapImage(ii.image)
-                        };
-                        compressedBitmapImage.CompressedSize = (ushort)compressedBitmapImage.CompressedPaletteIndexes.Length;
-                        compressedBitmapImages[ii.index] = compressedBitmapImage;
-                    }
-                    break;
-            }
-            return compressedBitmapImages;
-        }
-
-        private BitmapImage[] DecompressBitmapImages()
-        {
-            var bitmapImages = new BitmapImage[BitmapImageCount];
-            
-            switch (roSprData)
-            {
-                case RoSprV20: 
-                    throw new FormatException(".spr v2.0 don't have compressed images");
-                case RoSprV21 v21:
-                {
-                    foreach (var ii in v21.CompressedBitmapImages.Select((image, index) => new {image, index}))
-                    {
-                        var bitmapImage = new BitmapImage
-                        {
-                            ImageWidth = ii.image.ImageWidth,
-                            ImageHeight = ii.image.ImageHeight,
-                            PaletteIndexes = DecompressBitmapImage(ii.image)
-                        };
-                        bitmapImages[ii.index] = bitmapImage;
-                    }
-                    break;
-                }
-            }
-            return bitmapImages;
         }
     }
 }
