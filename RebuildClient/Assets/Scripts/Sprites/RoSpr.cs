@@ -9,12 +9,17 @@ namespace Assets.Scripts.Sprites
 {
     public class RoSpr<T> where T : IRoSpr
     {
-        /// <summary>
-        /// Compress the given BitMapImage and return a CompressedBitmapImage 
-        /// </summary>
-        /// <param name="image"></param>
-        /// <returns></returns>
-        
+        public char[] Signature
+        {
+            get
+            {
+                return roSprData.Signature;
+            }
+            set
+            {
+                roSprData.Signature = value;
+            }
+        }
         public byte VersionMajor
         {
             get
@@ -132,19 +137,13 @@ namespace Assets.Scripts.Sprites
             }
         }
         
-        private char[] Signature
-        {
-            get
-            {
-                return roSprData.Signature;
-            }
-            set
-            {
-                roSprData.Signature = value;
-            }
-        }
         private T roSprData;
-
+        
+        /// <summary>
+        /// Compress the given BitmapImage and return a CompressedBitmapImage 
+        /// </summary>
+        /// <param name="image"></param>
+        /// <returns></returns>
         public static CompressedBitmapImage CompressBitmapImage(BitmapImage image)
         {
             var compressedPaletteIndexesList = new List<byte>();
@@ -182,6 +181,11 @@ namespace Assets.Scripts.Sprites
             };
             return compressedImage;
         }
+        /// <summary>
+        /// Compress the given BitmapImage array and return a CompressedBitmapImage array 
+        /// </summary>
+        /// <param name="image"></param>
+        /// <returns></returns>
         public static CompressedBitmapImage[] CompressBitmapImage(BitmapImage[] images)
         {
             var compressedBitmapImages = new CompressedBitmapImage[images.Length];
