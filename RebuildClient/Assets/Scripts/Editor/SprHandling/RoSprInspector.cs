@@ -1,7 +1,9 @@
+using Assets.Scripts.Sprites;
+using Scripts.Sprites;
 using UnityEditor;
 using UnityEngine;
 
-namespace Scripts.Sprites.Editor
+namespace Assets.Scripts.Editor
 {
     [CustomEditor(typeof(RoSprAsset))]
     public class RoSprInspector : UnityEditor.Editor

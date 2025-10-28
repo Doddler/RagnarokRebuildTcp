@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Assets.Scripts;
 using UnityEngine;
 
-namespace Scripts.Sprites
+namespace Assets.Scripts.Sprites
 {
     public interface IRoSpr
     {

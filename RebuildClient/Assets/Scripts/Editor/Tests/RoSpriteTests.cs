@@ -1,6 +1,7 @@
+using Assets.Scripts.Sprites;
 using NUnit.Framework;
 
-namespace Scripts.Sprites.Editor.Tests
+namespace Assets.Scripts.Editor.Tests
 {
     class RoSpriteTests
     {

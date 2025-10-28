@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
-namespace Scripts.Sprites
+namespace Assets.Scripts.Sprites
 {
     public class RoSprAsset : ScriptableObject
     {
