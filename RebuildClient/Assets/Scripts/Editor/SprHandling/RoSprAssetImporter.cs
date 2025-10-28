@@ -1,11 +1,10 @@
 using System.Linq;
 using Assets.Scripts.Sprites;
-using Scripts.Sprites;
 using UnityEditor;
 using UnityEditor.AssetImporters;
 using UnityEngine;
 
-namespace Assets.Scripts.Editor
+namespace Assets.Scripts.Editor.SprHandling
 {
     [ScriptedImporter(1, "spr", AllowCaching = true)]
     public sealed class RoSprAssetImporter : ScriptedImporter
