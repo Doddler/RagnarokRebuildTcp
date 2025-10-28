@@ -13,16 +13,14 @@ namespace Assets.Scripts.Sprites
         TrueColorImage[] TrueColorImages { get; set; }
         Color32[] PaletteColors { get; set; }
     }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    
     public struct BitmapImage
     {
         public ushort ImageWidth;
         public ushort ImageHeight;
         public byte[] PaletteIndexes;
     }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    
     public struct CompressedBitmapImage
     {
         public ushort ImageWidth;
@@ -31,15 +29,13 @@ namespace Assets.Scripts.Sprites
         public byte[] CompressedPaletteIndexes;
     }
     
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct TrueColorImage
     {
         public ushort ImageWidth;
         public ushort ImageHeight;
         public Color32[] ImageData;
     }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    
     public struct RoSprV20 : IRoSpr
     {
         public char[] Signature { get; set; }
@@ -51,8 +47,7 @@ namespace Assets.Scripts.Sprites
         public TrueColorImage[] TrueColorImages { get; set; }
         public Color32[] PaletteColors { get; set; }
     }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    
     public struct RoSprV21 : IRoSpr
     {
         public char[] Signature { get; set; }
