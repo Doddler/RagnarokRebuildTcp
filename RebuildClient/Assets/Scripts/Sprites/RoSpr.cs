@@ -8,6 +8,12 @@ namespace Assets.Scripts.Sprites
 {
     public class RoSpr
     {
+        private readonly struct VERSIONS 
+        {
+            public const string V20 = "2.0";
+            public const string V21 = "2.1";
+        }
+        
         public string Version
         {
             get { return $"{VersionMajor}.{VersionMinor}"; }
@@ -16,36 +22,36 @@ namespace Assets.Scripts.Sprites
         {
             get
             {
-                var images = roSprData switch
+                var bitmapImages = Version switch
                 {
-                    RoSprV20 v20 => v20.BitmapImages,
-                    RoSprV21 v21 => DecompressBitmapImage(v21.CompressedBitmapImages),
+                    VERSIONS.V20 => roSprData.BitmapImages,
+                    VERSIONS.V21 => DecompressBitmapImage(roSprData.CompressedBitmapImages),
                     _ => throw new InvalidDataException("Invalid sprite version?")
                 };
-                return images;
+                return bitmapImages;
             }
             set
             {
-                switch (roSprData)
+                switch (Version)
                 {
-                    case RoSprV20 v20:
+                    case VERSIONS.V20:
                     {
                         if (value.Length > ushort.MaxValue)
                         {
                             throw new FormatException($"BitMapImages cant have more than {ushort.MaxValue} entries");
                         }
-                        v20.BitmapImages = value;
-                        v20.BitmapImageCount = (ushort)value.Length;
+                        roSprData.BitmapImages = value;
+                        roSprData.BitmapImageCount = (ushort)value.Length;
                         break;
                     }
-                    case RoSprV21 v21:
+                    case VERSIONS.V21:
                     {
                         if (value.Length > ushort.MaxValue)
                         {
                             throw new FormatException($"BitMapImages cant have more than {ushort.MaxValue} entries");
                         }
-                        v21.CompressedBitmapImages = CompressBitmapImage(value);
-                        v21.BitmapImageCount = (ushort)value.Length;
+                        roSprData.CompressedBitmapImages = CompressBitmapImage(value);
+                        roSprData.BitmapImageCount = (ushort)value.Length;
                         break;
                     }
 
@@ -78,7 +84,7 @@ namespace Assets.Scripts.Sprites
                 roSprData.PaletteColors = value;
             }
         }
-        
+
         private char[] Signature
         {
             get { return roSprData.Signature; }
@@ -105,7 +111,7 @@ namespace Assets.Scripts.Sprites
             set { roSprData.TrueColorImageCount = value; }
         }
 
-        private IRoSpr roSprData;
+        private RoSprData roSprData;
 
         /// <summary>
         /// Compress the given BitmapImage and return a CompressedBitmapImage 
@@ -235,23 +241,26 @@ namespace Assets.Scripts.Sprites
         {
             var binaryWriter = new BinaryWriter(new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite));
 
-            binaryWriter.Write(Signature);
-            binaryWriter.Write(VersionMajor);
-            binaryWriter.Write(VersionMinor);
-            binaryWriter.Write(BitmapImageCount);
+            binaryWriter.Write(roSprData.Signature);
+            binaryWriter.Write(roSprData.VersionMajor);
+            binaryWriter.Write(roSprData.VersionMinor);
+            binaryWriter.Write(roSprData.BitmapImageCount);
             binaryWriter.Write(roSprData.TrueColorImageCount);
-            switch (roSprData)
+            switch (Version)
             {
-                case RoSprV20 v20:
-                    foreach (var bitmapImage in v20.BitmapImages)
+                case VERSIONS.V20:
+                {
+                    foreach (var bitmapImage in roSprData.BitmapImages)
                     {
                         binaryWriter.Write(bitmapImage.ImageWidth);
                         binaryWriter.Write(bitmapImage.ImageWidth);
                         binaryWriter.Write(bitmapImage.PaletteIndexes);
                     }
                     break;
-                case RoSprV21 v21:
-                    foreach (var compressedBitmapImage in v21.CompressedBitmapImages)
+                }
+                case VERSIONS.V21:
+                {
+                    foreach (var compressedBitmapImage in roSprData.CompressedBitmapImages)
                     {
                         binaryWriter.Write(compressedBitmapImage.ImageWidth);
                         binaryWriter.Write(compressedBitmapImage.ImageHeight);
@@ -259,8 +268,9 @@ namespace Assets.Scripts.Sprites
                         binaryWriter.Write(compressedBitmapImage.CompressedPaletteIndexes);
                     }
                     break;
+                }
             }
-            foreach (var trueColorImage in TrueColorImages)
+            foreach (var trueColorImage in roSprData.TrueColorImages)
             {
                 binaryWriter.Write(trueColorImage.ImageWidth);
                 binaryWriter.Write(trueColorImage.ImageHeight);
@@ -270,7 +280,7 @@ namespace Assets.Scripts.Sprites
                 }
             }
 
-            foreach (var color in PaletteColors)
+            foreach (var color in roSprData.PaletteColors)
             {
                 binaryWriter.Write(color.r);
                 binaryWriter.Write(color.g);
@@ -317,33 +327,28 @@ namespace Assets.Scripts.Sprites
 
         public void ReadBytes(BinaryReader binaryReader)
         {
-            var tempSig = binaryReader.ReadChars(2);
-            Debug.Log(new string(tempSig));
-            if (new string(tempSig) != "SP")
+            roSprData = new RoSprData();
+
+            Signature = binaryReader.ReadChars(2);
+            if (new string(Signature) != "SP")
             {
                 throw new NotSupportedException("Not a sprite file");
             }
-            var tempVerMinor = binaryReader.ReadByte();
-            var tempVerMajor = binaryReader.ReadByte();
-
-            roSprData = $"{tempVerMajor}.{tempVerMinor}" switch
+            VersionMinor = binaryReader.ReadByte();
+            VersionMajor = binaryReader.ReadByte();
+            if (!new[] { "2.0", "2.1" }.Contains(Version))
             {
-                "2.0" => new RoSprV20(),
-                "2.1" => new RoSprV21(),
-                _ => throw new NotSupportedException("Unsupported sprite version")
-            };
-            
-            Signature = tempSig;
-            VersionMajor = tempVerMajor;
-            VersionMinor = tempVerMinor;
+                throw new NotSupportedException("Unsupported sprite version");
+            }
             BitmapImageCount = binaryReader.ReadUInt16();
             TrueColorImageCount = binaryReader.ReadUInt16();
 
-            switch (roSprData)
+            switch (Version)
             {
-                case RoSprV20 v20:
-                    v20.BitmapImages = new BitmapImage[roSprData.BitmapImageCount];
-                    for (var index = 0; index < v20.BitmapImages.Length; index++)
+                case VERSIONS.V20:
+                {
+                    roSprData.BitmapImages = new BitmapImage[roSprData.BitmapImageCount];
+                    for (var index = 0; index < roSprData.BitmapImageCount; index++)
                     {
                         var bitmapSprite = new BitmapImage
                         {
@@ -352,12 +357,15 @@ namespace Assets.Scripts.Sprites
                         };
                         bitmapSprite.PaletteIndexes = new byte[bitmapSprite.ImageWidth * bitmapSprite.ImageHeight];
                         bitmapSprite.PaletteIndexes = binaryReader.ReadBytes(bitmapSprite.PaletteIndexes.Length);
-                        v20.BitmapImages[index] = bitmapSprite;
+                        roSprData.BitmapImages[index] = bitmapSprite;
                     }
                     break;
-                case RoSprV21 v21:
-                    v21.CompressedBitmapImages = new CompressedBitmapImage[roSprData.BitmapImageCount];
-                    for (var index = 0; index < v21.CompressedBitmapImages.Length; index++)
+                }
+
+                case VERSIONS.V21:
+                {
+                    roSprData.CompressedBitmapImages = new CompressedBitmapImage[roSprData.BitmapImageCount];
+                    for (var index = 0; index < roSprData.BitmapImageCount; index++)
                     {
                         var bitmapSprite = new CompressedBitmapImage
                         {
@@ -367,14 +375,16 @@ namespace Assets.Scripts.Sprites
                         };
                         bitmapSprite.CompressedPaletteIndexes = new byte[bitmapSprite.CompressedSize];
                         bitmapSprite.CompressedPaletteIndexes = binaryReader.ReadBytes(bitmapSprite.CompressedPaletteIndexes.Length);
-                        v21.CompressedBitmapImages[index] = bitmapSprite;
+                        roSprData.CompressedBitmapImages[index] = bitmapSprite;
                     }
                     break;
+                }
+
             }
 
 
             roSprData.TrueColorImages = new TrueColorImage[roSprData.TrueColorImageCount];
-            for (var index = 0; index < roSprData.TrueColorImages.Length; index++)
+            for (var index = 0; index < roSprData.TrueColorImageCount; index++)
             {
                 var trueColorSprite = new TrueColorImage
                 {
@@ -398,7 +408,7 @@ namespace Assets.Scripts.Sprites
             }
 
             roSprData.PaletteColors = new Color32[256];
-            for (var index = 0; index < roSprData.PaletteColors.Length; index++)
+            for (var index = 0; index < 256; index++)
             {
                 var bitmapColor = new Color32()
                 {
