@@ -9,20 +9,20 @@ namespace Assets.Scripts.Sprites
         public byte VersionMajor { get; set; }
         public ushort BitmapImageCount { get; set; }
         public ushort TrueColorImageCount { get; set; }
-        public BitmapImage[] BitmapImages { get; set; }
-        public CompressedBitmapImage[] CompressedBitmapImages { get; set; }
-        public TrueColorImage[] TrueColorImages { get; set; }
+        public RoBitmapImage[] BitmapImages { get; set; }
+        public RoCompressedBitmapImage[] CompressedBitmapImages { get; set; }
+        public RoTrueColorImage[] TrueColorImages { get; set; }
         public Color32[] PaletteColors { get; set; }
     }
 
-    public class BitmapImage
+    public class RoBitmapImage
     {
         public ushort ImageWidth;
         public ushort ImageHeight;
         public byte[] PaletteIndexes;
     }
 
-    public class CompressedBitmapImage
+    public class RoCompressedBitmapImage
     {
         public ushort ImageWidth;
         public ushort ImageHeight;
@@ -30,7 +30,7 @@ namespace Assets.Scripts.Sprites
         public byte[] CompressedPaletteIndexes;
     }
 
-    public class TrueColorImage
+    public class RoTrueColorImage
     {
         public ushort ImageWidth;
         public ushort ImageHeight;

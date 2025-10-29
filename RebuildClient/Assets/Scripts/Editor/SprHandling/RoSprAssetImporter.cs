@@ -18,8 +18,8 @@ namespace Assets.Scripts.Editor.SprHandling
             list.Add(SprExtension);
             EditorSettings.projectGenerationUserExtensions = list.ToArray();
         }
-
-        public string spriteVersion;
+        
+        public string sprVersion;
         public string filepath;
         public string sprFileName;
         public Texture2D palette;
@@ -47,7 +47,7 @@ namespace Assets.Scripts.Editor.SprHandling
 
         private void PopulateImporterFields()
         {
-            spriteVersion = asset.spriteVersion;
+            sprVersion = asset.sprVersion;
             filepath = asset.filepath;
             sprFileName = asset.sprFileName;
             palette = asset.palette;

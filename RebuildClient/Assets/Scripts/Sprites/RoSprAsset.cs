@@ -20,8 +20,8 @@ namespace Assets.Scripts.Sprites
         {
             get { return InstanceID.GetHashCode(); }
         }
-
-        [HideInInspector] public string spriteVersion;
+        
+        [HideInInspector] public string sprVersion;
         [HideInInspector] public string filepath;
         [HideInInspector] public string sprFileName;
         [HideInInspector] public Texture2D palette;
@@ -29,7 +29,6 @@ namespace Assets.Scripts.Sprites
         [HideInInspector] public Rect[] atlasRects;
 
         private int instanceID;
-        private int hashCode;
 
         public void Load(string assetFilePath)
         {
@@ -44,7 +43,7 @@ namespace Assets.Scripts.Sprites
 
             var rawSprData = new RoSpr(filepath);
 
-            spriteVersion = rawSprData.Version;
+            sprVersion = rawSprData.Version;
             var palTex = new Texture2D(16, 16, TextureFormat.RGBA32, false)
             {
                 filterMode = FilterMode.Point,
