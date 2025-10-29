@@ -8,39 +8,14 @@ namespace Assets.Scripts.Sprites
         ushort AnimationClipCount { get; set; }
         AnimationClip[] AnimationClips { get; set; }
     }
+
+    public interface IRoActAnimationFrame
+    {
+        public uint SpriteLayerCount {get; set;}
+        public IRoActSpriteLayer[] SpriteLayers {get; set;}
+        public uint AnimationEventID {get; set;}
+    }
     
-    public struct RoActV20 : IRoAct
-    {
-        public char[] Signature { get; set; }
-        public byte VersionMinor { get; set; }
-        public byte VersionMajor { get; set; }
-        public ushort AnimationClipCount { get; set; }
-        public AnimationClip[] AnimationClips { get; set; }
-    }
-
-    public struct RoActV21 : IRoAct
-    {
-        public char[] Signature { get; set; }
-        public byte VersionMinor { get; set; }
-        public byte VersionMajor { get; set; }
-        public ushort AnimationClipCount { get; set; }
-        public AnimationClip[] AnimationClips { get; set; }
-        private uint AnimationEventCount { get; set; }
-        private AnimationEvent AnimationEvents { get; set; }
-    }
-
-    public struct RoActV23 : IRoAct
-    {
-        public char[] Signature { get; set; }
-        public byte VersionMinor { get; set; }
-        public byte VersionMajor { get; set; }
-        public ushort AnimationClipCount { get; set; }
-        public AnimationClip[] AnimationClips { get; set; }
-        private uint AnimationEventCount { get; set; }
-        private AnimationEvent AnimationEvents { get; set; }
-        private float[] FrameTimes { get; set; }
-    }
-
     public interface IRoActSpriteLayer
     {
         public uint PositionU {get; set;}
@@ -53,6 +28,18 @@ namespace Assets.Scripts.Sprites
         public byte ColorTintAlpha {get; set;}
         public uint RotationDegrees {get; set;}
         public uint ImageTypeID {get; set;}
+    }
+    
+    public struct AnimationClip
+    {
+        public uint AnimationFrameCount ;
+        public IRoActAnimationFrame[] AnimationFrames;
+    }
+    
+    public struct SpriteAnchor {
+        public uint PositionU;
+        public uint PositionV;
+        public uint UnknownFlag;
     }
     
     public struct SpriteLayerV20 : IRoActSpriteLayer
@@ -103,19 +90,6 @@ namespace Assets.Scripts.Sprites
         public uint ImageWidth {get; set;}
         public uint ImageHeight {get; set;}
     }
-
-    public struct SpriteAnchor {
-        public uint PositionU;
-        public uint PositionV;
-        public uint UnknownFlag;
-    }
-
-    public interface IRoActAnimationFrame
-    {
-        public uint SpriteLayerCount {get; set;}
-        public IRoActSpriteLayer[] SpriteLayers {get; set;}
-        public uint AnimationEventID {get; set;}
-    }
     
     public struct AnimationFrameV20 : IRoActAnimationFrame
     {
@@ -133,14 +107,40 @@ namespace Assets.Scripts.Sprites
         public SpriteAnchor[] AnchorPoints {get; set;}
     }
 
-    public struct AnimationClip
-    {
-        public uint AnimationFrameCount ;
-        public IRoActAnimationFrame[] AnimationFrames;
-    }
-
     public struct AnimationEvent
     {
         public char[] Name; //40 chars
+    }
+    
+    public struct RoActV20 : IRoAct
+    {
+        public char[] Signature { get; set; }
+        public byte VersionMinor { get; set; }
+        public byte VersionMajor { get; set; }
+        public ushort AnimationClipCount { get; set; }
+        public AnimationClip[] AnimationClips { get; set; }
+    }
+
+    public struct RoActV21 : IRoAct
+    {
+        public char[] Signature { get; set; }
+        public byte VersionMinor { get; set; }
+        public byte VersionMajor { get; set; }
+        public ushort AnimationClipCount { get; set; }
+        public AnimationClip[] AnimationClips { get; set; }
+        private uint AnimationEventCount { get; set; }
+        private AnimationEvent AnimationEvents { get; set; }
+    }
+
+    public struct RoActV23 : IRoAct
+    {
+        public char[] Signature { get; set; }
+        public byte VersionMinor { get; set; }
+        public byte VersionMajor { get; set; }
+        public ushort AnimationClipCount { get; set; }
+        public AnimationClip[] AnimationClips { get; set; }
+        private uint AnimationEventCount { get; set; }
+        private AnimationEvent AnimationEvents { get; set; }
+        private float[] FrameTimes { get; set; }
     }
 }
