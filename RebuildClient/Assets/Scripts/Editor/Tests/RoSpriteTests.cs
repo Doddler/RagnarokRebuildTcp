@@ -5,7 +5,7 @@ namespace Assets.Scripts.Editor.Tests
 {
     class RoSpriteTests
     {
-        private static readonly CompressedBitmapImage CompressedImage = new CompressedBitmapImage
+        private static readonly RoCompressedBitmapImage RoCompressedImage = new RoCompressedBitmapImage
         {
             ImageHeight = 5,
             ImageWidth = 5,
@@ -18,7 +18,7 @@ namespace Assets.Scripts.Editor.Tests
             }
         };
 
-        private static readonly BitmapImage DecompressedImage = new BitmapImage
+        private static readonly RoBitmapImage DecompressedImage = new RoBitmapImage
         {
             ImageHeight = 5,
             ImageWidth = 5,
@@ -35,7 +35,7 @@ namespace Assets.Scripts.Editor.Tests
         [Test]
         public void RoSpriteV21DecompressSuccessfully()
         {
-            var result = RoSpr.DecompressBitmapImage(CompressedImage);
+            var result = RoSpr.DecompressBitmapImage(RoCompressedImage);
             Assert.AreEqual(DecompressedImage.ImageHeight, result.ImageHeight);
             Assert.AreEqual(DecompressedImage.ImageWidth, result.ImageWidth);
             Assert.AreEqual(DecompressedImage.PaletteIndexes, result.PaletteIndexes);
@@ -45,10 +45,10 @@ namespace Assets.Scripts.Editor.Tests
         public void RoSpriteV21CompressSuccessfully()
         {
             var result = RoSpr.CompressBitmapImage(DecompressedImage);
-            Assert.AreEqual(CompressedImage.ImageHeight, result.ImageHeight);
-            Assert.AreEqual(CompressedImage.ImageWidth, result.ImageWidth);
-            Assert.AreEqual(CompressedImage.CompressedSize, result.CompressedSize);
-            Assert.AreEqual(CompressedImage.CompressedPaletteIndexes, result.CompressedPaletteIndexes);
+            Assert.AreEqual(RoCompressedImage.ImageHeight, result.ImageHeight);
+            Assert.AreEqual(RoCompressedImage.ImageWidth, result.ImageWidth);
+            Assert.AreEqual(RoCompressedImage.CompressedSize, result.CompressedSize);
+            Assert.AreEqual(RoCompressedImage.CompressedPaletteIndexes, result.CompressedPaletteIndexes);
         }
     }
 }
