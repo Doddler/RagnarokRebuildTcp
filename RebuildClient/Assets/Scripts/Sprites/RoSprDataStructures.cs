@@ -13,28 +13,6 @@ namespace Assets.Scripts.Sprites
         Color32[] PaletteColors { get; set; }
     }
 
-    public struct BitmapImage
-    {
-        public ushort ImageWidth;
-        public ushort ImageHeight;
-        public byte[] PaletteIndexes;
-    }
-
-    public struct CompressedBitmapImage
-    {
-        public ushort ImageWidth;
-        public ushort ImageHeight;
-        public ushort CompressedSize;
-        public byte[] CompressedPaletteIndexes;
-    }
-
-    public struct TrueColorImage
-    {
-        public ushort ImageWidth;
-        public ushort ImageHeight;
-        public Color32[] ImageData;
-    }
-
     public class RoSprV20 : IRoSpr
     {
         public char[] Signature { get; set; }
@@ -57,5 +35,27 @@ namespace Assets.Scripts.Sprites
         public CompressedBitmapImage[] CompressedBitmapImages { get; set; }
         public TrueColorImage[] TrueColorImages { get; set; }
         public Color32[] PaletteColors { get; set; }
+    }
+
+    public class BitmapImage
+    {
+        public ushort ImageWidth;
+        public ushort ImageHeight;
+        public byte[] PaletteIndexes;
+    }
+
+    public class CompressedBitmapImage
+    {
+        public ushort ImageWidth;
+        public ushort ImageHeight;
+        public ushort CompressedSize;
+        public byte[] CompressedPaletteIndexes;
+    }
+
+    public class TrueColorImage
+    {
+        public ushort ImageWidth;
+        public ushort ImageHeight;
+        public Color32[] ImageData;
     }
 }
