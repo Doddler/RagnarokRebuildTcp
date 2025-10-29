@@ -21,13 +21,13 @@ namespace Assets.Scripts.Editor.SprHandling
             palette = serializedObject.FindProperty("palette");
             atlas = serializedObject.FindProperty("atlas");
         }
-        
+
         public override void OnInspectorGUI()
         {
             DrawImporterGUI();
             serializedObject.ApplyModifiedProperties();
         }
-        
+
         private void DrawImporterGUI()
         {
             EditorGUILayout.PropertyField(sprName, new GUIContent("Sprite Name"));

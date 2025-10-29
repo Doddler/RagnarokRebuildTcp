@@ -2,70 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using UnityEngine;
 
 namespace Assets.Scripts.Sprites
 {
-    public class RoSpr<T> where T : IRoSpr
+    public class RoSpr
     {
-        public char[] Signature
+        public string Version
         {
-            get
-            {
-                return roSprData.Signature;
-            }
-            set
-            {
-                roSprData.Signature = value;
-            }
-        }
-        public byte VersionMajor
-        {
-            get
-            {
-                return roSprData.VersionMajor;
-            }
-
-            private set
-            {
-                roSprData.VersionMajor = value;
-            }
-        }
-        public byte VersionMinor
-        {
-            get
-            {
-                return roSprData.VersionMinor;
-            }
-
-            private set
-            {
-                roSprData.VersionMinor = value;
-            }
-        }
-        private ushort BitmapImageCount
-        {
-            get
-            {
-                return roSprData.BitmapImageCount;
-            }
-
-            set
-            {
-                roSprData.BitmapImageCount = value;
-            }
-        }
-        public ushort TrueColorImageCount
-        {
-            get
-            {
-                return roSprData.TrueColorImageCount;
-            }
-            private set
-            {
-                roSprData.TrueColorImageCount = value;
-            }
+            get { return $"{VersionMajor}.{VersionMinor}"; }
         }
         public BitmapImage[] BitmapImages
         {
@@ -84,32 +29,32 @@ namespace Assets.Scripts.Sprites
                 switch (roSprData)
                 {
                     case RoSprV20 v20:
+                    {
                         if (value.Length > ushort.MaxValue)
                         {
                             throw new FormatException($"BitMapImages cant have more than {ushort.MaxValue} entries");
                         }
                         v20.BitmapImages = value;
                         v20.BitmapImageCount = (ushort)value.Length;
-                        roSprData = (T)(object)v20;
                         break;
+                    }
                     case RoSprV21 v21:
+                    {
                         if (value.Length > ushort.MaxValue)
                         {
                             throw new FormatException($"BitMapImages cant have more than {ushort.MaxValue} entries");
                         }
                         v21.CompressedBitmapImages = CompressBitmapImage(value);
                         v21.BitmapImageCount = (ushort)value.Length;
-                        roSprData = (T)(object)v21;
                         break;
+                    }
+
                 }
             }
         }
         public TrueColorImage[] TrueColorImages
         {
-            get
-            {
-                return roSprData.TrueColorImages;
-            }
+            get { return roSprData.TrueColorImages; }
 
             set
             {
@@ -123,10 +68,7 @@ namespace Assets.Scripts.Sprites
         }
         public Color32[] PaletteColors
         {
-            get
-            {
-                return roSprData.PaletteColors;
-            }
+            get { return roSprData.PaletteColors; }
             set
             {
                 if (value.Length > 256)
@@ -137,8 +79,34 @@ namespace Assets.Scripts.Sprites
             }
         }
         
-        private T roSprData;
-        
+        private char[] Signature
+        {
+            get { return roSprData.Signature; }
+            set { roSprData.Signature = value; }
+        }
+        private byte VersionMajor
+        {
+            get { return roSprData.VersionMajor; }
+            set { roSprData.VersionMajor = value; }
+        }
+        private byte VersionMinor
+        {
+            get { return roSprData.VersionMinor; }
+            set { roSprData.VersionMinor = value; }
+        }
+        private ushort BitmapImageCount
+        {
+            get { return roSprData.BitmapImageCount; }
+            set { roSprData.BitmapImageCount = value; }
+        }
+        private ushort TrueColorImageCount
+        {
+            get { return roSprData.TrueColorImageCount; }
+            set { roSprData.TrueColorImageCount = value; }
+        }
+
+        private IRoSpr roSprData;
+
         /// <summary>
         /// Compress the given BitmapImage and return a CompressedBitmapImage 
         /// </summary>
@@ -184,7 +152,7 @@ namespace Assets.Scripts.Sprites
         /// <summary>
         /// Compress the given BitmapImage array and return a CompressedBitmapImage array 
         /// </summary>
-        /// <param name="image"></param>
+        /// <param name="images"></param>
         /// <returns></returns>
         public static CompressedBitmapImage[] CompressBitmapImage(BitmapImage[] images)
         {
@@ -236,14 +204,29 @@ namespace Assets.Scripts.Sprites
         public static BitmapImage[] DecompressBitmapImage(CompressedBitmapImage[] compressedImages)
         {
             var bitmapImages = new BitmapImage[compressedImages.Length];
-            foreach (var ii in compressedImages.Select((image, index) => new {image, index}))
+            foreach (var ii in compressedImages.Select((image, index) => new { image, index }))
             {
                 var bitmapImage = DecompressBitmapImage(ii.image);
                 bitmapImages[ii.index] = bitmapImage;
             }
             return bitmapImages;
         }
-        
+
+        public RoSpr(string filename)
+        {
+            ReadBytes(filename);
+        }
+
+        public RoSpr(FileStream filestream)
+        {
+            ReadBytes(filestream);
+        }
+
+        public RoSpr(BinaryReader binaryReader)
+        {
+            ReadBytes(binaryReader);
+        }
+
         /// <summary>
         /// Write spr data to file
         /// </summary>
@@ -251,7 +234,7 @@ namespace Assets.Scripts.Sprites
         public void WriteBytes(string filePath)
         {
             var binaryWriter = new BinaryWriter(new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite));
-            
+
             binaryWriter.Write(Signature);
             binaryWriter.Write(VersionMajor);
             binaryWriter.Write(VersionMinor);
@@ -283,7 +266,7 @@ namespace Assets.Scripts.Sprites
                 binaryWriter.Write(trueColorImage.ImageHeight);
                 foreach (var color in trueColorImage.ImageData)
                 {
-                    binaryWriter.Write(color);       
+                    binaryWriter.Write(color);
                 }
             }
 
@@ -294,7 +277,7 @@ namespace Assets.Scripts.Sprites
                 binaryWriter.Write(color.b);
                 binaryWriter.Write(color.a);
             }
-            
+
             binaryWriter.Close();
         }
 
@@ -304,11 +287,55 @@ namespace Assets.Scripts.Sprites
         /// <param name="filePath"></param>
         public void ReadBytes(string filePath)
         {
-            var binaryReader = new BinaryReader(new FileStream(filePath, FileMode.Open, FileAccess.Read));
+            var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            try
+            {
+                ReadBytes(fileStream);
+            }
+            catch (NotSupportedException e)
+            {
+                fileStream.Close();
+                throw;
+            }
+            fileStream.Close();
+        }
 
-            Signature = binaryReader.ReadChars(2);
-            VersionMajor = binaryReader.ReadByte();
-            VersionMinor = binaryReader.ReadByte();
+        public void ReadBytes(FileStream fileStream)
+        {
+            var binaryReader = new BinaryReader(fileStream);
+            try
+            {
+                ReadBytes(binaryReader);
+            }
+            catch (NotSupportedException e)
+            {
+                binaryReader.Close();
+                throw;
+            }
+            binaryReader.Close();
+        }
+
+        public void ReadBytes(BinaryReader binaryReader)
+        {
+            var tempSig = binaryReader.ReadChars(2);
+            Debug.Log(new string(tempSig));
+            if (new string(tempSig) != "SP")
+            {
+                throw new NotSupportedException("Not a sprite file");
+            }
+            var tempVerMinor = binaryReader.ReadByte();
+            var tempVerMajor = binaryReader.ReadByte();
+
+            roSprData = $"{tempVerMajor}.{tempVerMinor}" switch
+            {
+                "2.0" => new RoSprV20(),
+                "2.1" => new RoSprV21(),
+                _ => throw new NotSupportedException("Unsupported sprite version")
+            };
+            
+            Signature = tempSig;
+            VersionMajor = tempVerMajor;
+            VersionMinor = tempVerMinor;
             BitmapImageCount = binaryReader.ReadUInt16();
             TrueColorImageCount = binaryReader.ReadUInt16();
 
@@ -327,7 +354,6 @@ namespace Assets.Scripts.Sprites
                         bitmapSprite.PaletteIndexes = binaryReader.ReadBytes(bitmapSprite.PaletteIndexes.Length);
                         v20.BitmapImages[index] = bitmapSprite;
                     }
-                    roSprData = (T)(object)v20;
                     break;
                 case RoSprV21 v21:
                     v21.CompressedBitmapImages = new CompressedBitmapImage[roSprData.BitmapImageCount];
@@ -343,7 +369,6 @@ namespace Assets.Scripts.Sprites
                         bitmapSprite.CompressedPaletteIndexes = binaryReader.ReadBytes(bitmapSprite.CompressedPaletteIndexes.Length);
                         v21.CompressedBitmapImages[index] = bitmapSprite;
                     }
-                    roSprData = (T)(object)v21;
                     break;
             }
 
@@ -385,8 +410,6 @@ namespace Assets.Scripts.Sprites
                 bitmapColor.a = byte.MaxValue;
                 roSprData.PaletteColors[index] = bitmapColor;
             }
-            
-            binaryReader.Close();
         }
     }
 }

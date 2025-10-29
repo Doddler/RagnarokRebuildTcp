@@ -31,20 +31,20 @@ namespace Assets.Scripts.Editor.Tests
                 0x00, 0x00, 0x00, 0x00, 0x07,
             }
         };
-        
+
         [Test]
         public void RoSpriteV21DecompressSuccessfully()
         {
-            var result = RoSpr<RoSprV21>.DecompressBitmapImage(CompressedImage);
+            var result = RoSpr.DecompressBitmapImage(CompressedImage);
             Assert.AreEqual(DecompressedImage.ImageHeight, result.ImageHeight);
             Assert.AreEqual(DecompressedImage.ImageWidth, result.ImageWidth);
             Assert.AreEqual(DecompressedImage.PaletteIndexes, result.PaletteIndexes);
         }
-        
+
         [Test]
         public void RoSpriteV21CompressSuccessfully()
         {
-            var result = RoSpr<RoSprV21>.CompressBitmapImage(DecompressedImage);
+            var result = RoSpr.CompressBitmapImage(DecompressedImage);
             Assert.AreEqual(CompressedImage.ImageHeight, result.ImageHeight);
             Assert.AreEqual(CompressedImage.ImageWidth, result.ImageWidth);
             Assert.AreEqual(CompressedImage.CompressedSize, result.CompressedSize);
