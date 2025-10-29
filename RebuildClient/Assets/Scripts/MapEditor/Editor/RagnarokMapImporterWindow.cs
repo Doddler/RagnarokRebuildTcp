@@ -6,6 +6,7 @@ using Assets.Scripts.MapEditor.Editor.ObjectEditors;
 using Assets.Scripts.Sprites;
 using B83.Image.BMP;
 using RebuildSharedData.ClientTypes;
+using Scripts.Editor;
 using SFB;
 using UnityEditor;
 using UnityEditor.AddressableAssets;
