@@ -234,7 +234,7 @@ csharp_space_between_square_brackets = false
 
 # Blocks are allowed
 csharp_prefer_braces = true:silent
-csharp_preserve_single_line_blocks =true
+csharp_preserve_single_line_blocks = true
 csharp_preserve_single_line_statements = true
 
 # Currently only enabled for C# due to crash in VB analyzer.  VB can be enabled once
@@ -243,8 +243,8 @@ dotnet_style_allow_statement_immediately_after_block_experimental = false
 
 # CS8618: Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 dotnet_diagnostic.CS8618.severity = none
-csharp_style_namespace_declarations= file_scoped:silent
-insert_final_newline=false
+csharp_style_namespace_declarations = file_scoped:silent
+insert_final_newline = false
 
 # IDE1006: Naming Styles
 dotnet_diagnostic.IDE1006.severity = none
