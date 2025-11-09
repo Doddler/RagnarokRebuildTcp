@@ -86,6 +86,7 @@ public class Player : IEntityAutoReset
     public PlayerFollower PlayerFollower;
     public bool HasCart => (PlayerFollower & PlayerFollower.AnyCart) > 0;
     public bool HasBird => (PlayerFollower & PlayerFollower.Falcon) > 0;
+    public bool HasPeco => (PlayerFollower & PlayerFollower.Mounted) > 0;
 
     public StatusTriggerFlags OnMeleeAttackStatusFlags;
     public StatusTriggerFlags OnRangedAttackStatusFlags;
@@ -889,6 +890,8 @@ public class Player : IEntityAutoReset
                 moveBonus = 0.8f; //lower is faster, speed here is capped at +20%. Later peco will push this limit to 0.7 (+30%)
             if (HasCart)
                 moveBonus += 0.05f * (10 - MaxLearnedLevelOfSkill(CharacterSkill.PushCart));
+            if (HasPeco)
+                moveBonus *= 0.75f;
         }
 
         //var moveSpeed = 0.15f - (0.001f * level / 5f);

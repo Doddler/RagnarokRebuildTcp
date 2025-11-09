@@ -192,7 +192,8 @@ public partial class CombatEntity
             if (isPhysical)
             {
                 //armor def.
-                var def = GetEffectiveStat(CharacterStat.Def);
+                var def = GetStat(CharacterStat.Def);
+                var refineDef = GetStat(CharacterStat.EquipmentRefineDef);
 
                 //soft def
                 if (!flags.HasFlag(AttackFlags.IgnoreSubDefense))
@@ -240,7 +241,7 @@ public partial class CombatEntity
                 else
                 {
                     //convert def to damage reduction %
-                    defCut = MathHelper.DefValueLookup(def);
+                    defCut = MathHelper.DefValueLookup(def, refineDef);
 
                     if (def >= 200)
                         subDef = 999999;

@@ -43,7 +43,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[29] = new DefaultSkillHandler();
 			handlers[30] = new Assets.Scripts.SkillHandlers.Handlers.TwoHandQuickenHandler();
 			handlers[31] = new DefaultSkillHandler();
-			handlers[32] = new DefaultSkillHandler();
+			handlers[32] = new Assets.Scripts.SkillHandlers.Handlers.Knight.BowlingBashHandler();
 			handlers[33] = new DefaultSkillHandler();
 			handlers[34] = new DefaultSkillHandler();
 			handlers[35] = new DefaultSkillHandler();

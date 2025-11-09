@@ -29,15 +29,38 @@ public class PacketChangeFollower : IClientPacketHandler
 
         var id = msg.ReadInt32();
         var isRemove = id < 0;
+        var isPecoChange = player.JobId == 7 || player.JobId == 13;
 
         if (isRemove)
         {
             //player.PlayerFollower &= ~PlayerFollower.AnyCart;
             player.PlayerFollower = 0; //this call will double for removing the bird too
             player.SetData(PlayerStat.FollowerType, 0);
+
+            if (isPecoChange)
+            {
+                player.CombatEntity.RemoveStatusOfTypeIfExists(CharacterStatusEffect.PecoRiding);
+                map.RefreshEntity(player.Character);
+                player.UpdateStats(false, false);
+                return;
+            }
         }
         else
         {
+            if (isPecoChange)
+            {
+                if (player.HasPeco)
+                    return;
+
+                player.PlayerFollower |= PlayerFollower.Mounted;
+                player.SetData(PlayerStat.FollowerType, (int)player.PlayerFollower);
+                player.CombatEntity.AddStatusEffect(CharacterStatusEffect.PecoRiding, int.MaxValue);
+
+                map.RefreshEntity(player.Character);
+                player.UpdateStats(false, false);
+                return;
+            }
+
             if (!player.HasCart)
                 return; //can't change cart if they don't have a cart
 

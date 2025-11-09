@@ -205,6 +205,13 @@ Type = "Buff"
 CanDispel = false
 CanDisable = false
 
+[PecoRiding]
+Name = "Peco Peco Riding"
+Type = "Buff"
+Icon = "라이딩"
+CanDispel = false
+CanDisable = false
+
 #----------------------------------
 # Priest
 #----------------------------------

@@ -63,6 +63,7 @@ namespace Assets.Scripts.Effects
 		LexDivina,
 		Revive,
 		Sanctuary,
+		BowlingBashImpact,
 		EarthShaker,
 		SpecialTargetMarker,
 		ArcherArrow,
@@ -168,6 +169,7 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.LexDivina, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.LexDivinaEffect());
 			effectHandlers.Add(EffectType.Revive, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.ReviveEffect());
 			effectHandlers.Add(EffectType.Sanctuary, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.SanctuaryEffect());
+			effectHandlers.Add(EffectType.BowlingBashImpact, new Assets.Scripts.Effects.EffectHandlers.Skills.Knight.BowlingBashImpactEffect());
 			effectHandlers.Add(EffectType.EarthShaker, new Assets.Scripts.Effects.EffectHandlers.Skills.Custom.EarthShakerEffect());
 			effectHandlers.Add(EffectType.SpecialTargetMarker, new Assets.Scripts.Effects.EffectHandlers.Skills.Custom.SpecialTargetMarkerEffect());
 			effectHandlers.Add(EffectType.ArcherArrow, new Assets.Scripts.Effects.EffectHandlers.General.ArcherArrow());

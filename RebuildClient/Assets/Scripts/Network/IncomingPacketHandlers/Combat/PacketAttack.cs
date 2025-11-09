@@ -126,7 +126,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 if (dmg > 0)
                 {
                     var dmgSound = ClientSkillHandler.SkillTakesWeaponSound(skill);
-                    Debug.Log($"Offhand:{hasOffHand} {dmg}x{hits} + {offHand}");
+                    // Debug.Log($"Offhand:{hasOffHand} {dmg}x{hits} + {offHand}");
                     if (resultType != AttackResult.Invisible)
                     {
                         if (hasOffHand)

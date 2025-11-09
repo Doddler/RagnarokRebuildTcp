@@ -143,6 +143,14 @@ public struct Position : IEquatable<Position>
         return false;
     }
 
+    public Direction GetDirectionTowardsTarget(Position target)
+    {
+        if (this == target)
+            return (Direction)GameRandom.Next(0, 8);
+
+        return (target - this).Normalize().GetDirectionForOffset();
+    }
+
     public Direction GetDirectionForOffset()
     {
 #if DEBUG
@@ -190,6 +198,12 @@ public struct Position : IEquatable<Position>
         }
 
         return this;
+    }
+
+    public Position SubDirectionToPosition(Direction d)
+    {
+        var dir = (Direction)(((int)d + 4) % 8);
+        return AddDirectionToPosition(dir);
     }
 
     public static bool operator ==(Position src, Position dest)

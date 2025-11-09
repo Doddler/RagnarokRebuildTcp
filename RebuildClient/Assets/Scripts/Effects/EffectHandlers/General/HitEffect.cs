@@ -42,16 +42,18 @@ namespace Assets.Scripts.Effects.EffectHandlers
             //generate hit particles
             LaunchHitParticles(src, target, color, particleId);
             var dir = (src - target).normalized;
+            //
+            // //generate ring effect
+            // if (!Materials.TryGetValue("ring_blue", out var mat))
+            // {
+            //     mat = new Material(ShaderCache.Instance.PerspectiveAlphaShader);
+            //     mat.mainTexture = Resources.Load<Texture2D>("ring_blue");
+            //     mat.renderQueue = 3001;
+            //     Materials.Add("ring_blue", mat);
+            // }
 
-            //generate ring effect
-            if (!Materials.TryGetValue("ring_blue", out var mat))
-            {
-                mat = new Material(ShaderCache.Instance.PerspectiveAlphaShader);
-                mat.mainTexture = Resources.Load<Texture2D>("ring_blue");
-                mat.renderQueue = 3001;
-                Materials.Add("ring_blue", mat);
-            }
-
+            var mat = EffectSharedMaterialManager.GetMaterial(EffectMaterialType.BluePerspectiveCylinder);
+            
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.HitEffect);
             effect.SetDurationByFrames(9);
             // Debug.Log(effect.Duration);

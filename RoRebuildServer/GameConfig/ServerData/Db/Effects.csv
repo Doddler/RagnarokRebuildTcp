@@ -125,3 +125,5 @@
 124,ImpositioManus,TRUE,TRUE,FALSE,impositio,,,0,,
 125,LexAeterna,TRUE,TRUE,FALSE,lexaeterna,,,0,,
 126,LexDivina,TRUE,TRUE,FALSE,lexdivina,,,0,,
+127,SkidTrapActivation,TRUE,TRUE,FALSE,skidtrap,,,0,,
+128,BowlingBash,TRUE,TRUE,FALSE,bowling,,,0,,

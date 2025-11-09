@@ -54,6 +54,8 @@ namespace Assets.Scripts.Effects
         MapPillarGreen,
         MapPillarRed,
         SkillFlashEffect,
+        FireRingNoZCheck,
+        BluePerspectiveCylinder,
         EffectMaterialMax
     }
 
@@ -402,6 +404,14 @@ namespace Assets.Scripts.Effects
                     
                     case EffectMaterialType.SkillFlashEffect:
                         SetUpTextureMaterial(mat, ShaderCache.Instance.AlphaBlendNoZTestShader, GetOrLoadEffectTexture(EffectTextureType.AlphaCenter), 3003);
+                        break;
+                    
+                    case EffectMaterialType.FireRingNoZCheck:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.AlphaBlendNoZTestShader, GetOrLoadEffectTexture(EffectTextureType.RingYellow), 3003);
+                        break;
+                    
+                    case EffectMaterialType.BluePerspectiveCylinder:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.PerspectiveAlphaShader, GetOrLoadEffectTexture(EffectTextureType.RingBlue));
                         break;
                 }
             }

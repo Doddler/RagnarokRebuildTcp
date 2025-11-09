@@ -36,6 +36,7 @@ namespace Assets.Scripts.Network
         public RoSpriteAnimator SpriteAnimator;
         public int Id;
         public int ClassId;
+        public int OverrideClassId;
         public Vector2Int CellPosition;
         public Vector2 MoveStartPos;
         public Vector3 StartPos;
@@ -293,8 +294,12 @@ namespace Assets.Scripts.Network
 
             if (!flags.HasFlag(SkillCastFlags.HideCastBar))
             {
-                EnsureFloatingDisplayCreated();
-                FloatingDisplay.StartCasting(duration);
+                if (skill != CharacterSkill.BowlingBash) //put this in a config or something...
+                {
+                    EnsureFloatingDisplayCreated();
+                    FloatingDisplay.StartCasting(duration);
+                }
+
                 var sName = ClientDataLoader.Instance.GetSkillName(skill);
 
                 if (!HideCastName && skill != CharacterSkill.NoCast &&

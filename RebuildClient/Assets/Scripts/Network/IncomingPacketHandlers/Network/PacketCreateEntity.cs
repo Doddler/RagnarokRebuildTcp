@@ -115,7 +115,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 }
 
                 var follower = (PlayerFollower)msg.ReadByte();
-                
+
                 var isMain = Network.PlayerId == id;
                 if (isMain)
                 {

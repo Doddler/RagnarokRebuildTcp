@@ -648,11 +648,11 @@ namespace PlayerControl
                     }
                 }
 
-                if (s[0] == "/changecart")
+                if (s[0] == "/changecart" || s[0] == "/changeriding")
                 {
                     if (s.Length != 2 || !int.TryParse(s[1], out var cartId))
                     {
-                        cameraFollower.AppendChatText("Incorrectly formatted command. Command should look like: /changecart #");
+                        cameraFollower.AppendChatText($"Incorrectly formatted command. Command should look like: /{s[0]} #");
                         return;
                     }
 

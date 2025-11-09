@@ -233,12 +233,49 @@ MaxLevel = 10
 SpCost = [14,18,22,26,30,34,38,42,46,50]
 
 [CounterAttack]
+Name = "Counter Attack"
+Icon = "kn_autocounter"
+Target = "Self"
+MaxLevel = 5
+SpCost = [3]
+
 [BowlingBash]
+Name = "Bowling Bash"
+Icon = "kn_bowlingbash"
+Target = "Enemy"
+MaxLevel = 10
+SpCost = [13,14,15,16,17,18,19,20,21,22]
+
 [PecoPecoRiding]
+Name = "Peco Peco Riding"
+Icon = "kn_riding"
+Target = "Passive"
+MaxLevel = 1
+
 [CavalierMastery]
+Name = "Cavalier Mastery"
+Icon = "kn_cavaliermastery"
+Target = "Passive"
+MaxLevel = 5
+
 [SpearMastery]
+Name = "Spear Mastery"
+Icon = "kn_spearmastery"
+Target = "Passive"
+MaxLevel = 10
+
 [Pierce]
+Icon = "kn_pierce"
+Target = "Enemy"
+MaxLevel = 10
+SpCost = [7]
+
 [SpearStab]
+Name = "Spear Stab"
+Icon = "kn_spearstab"
+Target = "Enemy"
+MaxLevel = 10
+SpCost = [9]
 
 [BrandishSpear]
 Name = "Brandish Spear"
@@ -249,6 +286,11 @@ SpCost = [12,12,12,12,12,12,12,12,12,12]
 
 
 [SpearBoomerang]
+Name = "Spear Boomerang"
+Icon = "kn_spearboomerang"
+Target = "Enemy"
+MaxLevel = 5
+SpCost = [10]
 
 [ChargeAttack]
 Name = "Charge Attack"

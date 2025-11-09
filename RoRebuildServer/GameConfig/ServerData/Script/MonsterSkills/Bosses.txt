@@ -319,7 +319,7 @@ StateIdle:
 	TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
 StateChase:
 	TryCast(NoCast, 3, 100%, 0s, 10s, HideSkillName)[TimerFinished(0)] -> SetAttackCooldown(1s); //make him not attack when dark blessing activates
-	TryCast(DarkAttack, 3, 100%, 1s, 0, HideSkillName)[TimerFinished(0)] -> ResetTimer(0);
+	TryCast(ChargeArrow, 1, 100%, 0.4s, 0, HideSkillName)[TimerFinished(0)] -> ResetTimer(0);
 	TryCast(CallMinion, 1, 20%, 1.4s, 25s)[MinionsDeadFor(15s) && TimerInactive(0)] -> CallDefaultMinions();
 	TryCast(ChargeArrow, 1, 20%, 0, 0);
 	TryCast(DarkStrike, 10, 20%, 0, 5s);
@@ -328,7 +328,7 @@ StateChase:
 StateAttacking:
 	TryCast(PowerUp, 5, 100%, 0.3s, 30s)[HpPercent < 30];
 	TryCast(NoCast, 3, 100%, 0s, 10s, HideSkillName)[TimerFinished(0)] -> SetAttackCooldown(1s); //make him not attack when dark blessing activates
-	TryCast(DarkAttack, 3, 100%, 1s, 0, HideSkillName)[TimerFinished(0)] -> ResetTimer(0);
+	TryCast(ChargeArrow, 1, 100%, 0.4s, 0, HideSkillName)[TimerFinished(0)] -> ResetTimer(0);
 	TryCast(CallMinion, 1, 20%, 1.4s, 25s)[MinionsDeadFor(15s) && TimerInactive(0)] -> CallDefaultMinions();
 	TryCast(ChargeArrow, 1, 20%, 0, 0);
 	TryCast(DarkStrike, 10, 20%, 0, 5s);

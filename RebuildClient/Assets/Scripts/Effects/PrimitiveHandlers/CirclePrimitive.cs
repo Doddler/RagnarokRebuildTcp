@@ -22,6 +22,12 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
                 data.Alpha = Mathf.Clamp(data.Alpha + data.AlphaSpeed * Time.deltaTime, 0, data.MaxAlpha);
 
             // Debug.Log($"{primitive.CurrentPos} fadeStart:{fadeStartTime} alpha:{data.Alpha} alphaSpeed:{data.AlphaSpeed} fadeSpeed:{data.MaxAlpha/data.FadeOutLength}");
+            
+            if (primitive.IsStepFrame && data.ChangePoint > 0 && data.ChangePoint == primitive.Step)
+            {
+                data.RadiusSpeed = data.ChangeSpeed;
+                data.RadiusAccel = data.ChangeAccel;
+            }
 
             data.RadiusSpeed += data.RadiusAccel * Time.deltaTime;
             data.Radius += data.RadiusSpeed * Time.deltaTime;
