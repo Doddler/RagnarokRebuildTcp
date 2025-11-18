@@ -64,6 +64,7 @@ namespace Assets.Scripts.Effects
 		Revive,
 		Sanctuary,
 		BowlingBashImpact,
+		SpearBoomerang,
 		EarthShaker,
 		SpecialTargetMarker,
 		ArcherArrow,
@@ -170,6 +171,7 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.Revive, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.ReviveEffect());
 			effectHandlers.Add(EffectType.Sanctuary, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.SanctuaryEffect());
 			effectHandlers.Add(EffectType.BowlingBashImpact, new Assets.Scripts.Effects.EffectHandlers.Skills.Knight.BowlingBashImpactEffect());
+			effectHandlers.Add(EffectType.SpearBoomerang, new Assets.Scripts.Effects.EffectHandlers.Skills.Knight.SpearBoomerangEffect());
 			effectHandlers.Add(EffectType.EarthShaker, new Assets.Scripts.Effects.EffectHandlers.Skills.Custom.EarthShakerEffect());
 			effectHandlers.Add(EffectType.SpecialTargetMarker, new Assets.Scripts.Effects.EffectHandlers.Skills.Custom.SpecialTargetMarkerEffect());
 			effectHandlers.Add(EffectType.ArcherArrow, new Assets.Scripts.Effects.EffectHandlers.General.ArcherArrow());

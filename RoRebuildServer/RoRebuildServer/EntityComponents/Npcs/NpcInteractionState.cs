@@ -161,6 +161,7 @@ public class NpcInteractionState
     public bool HasLearnedSkill(CharacterSkill skill, int level = 1) => Player?.DoesCharacterKnowSkill(skill, level) ?? false;
     public bool HasCart => ((Player?.GetData(PlayerStat.FollowerType) ?? 0) & (int)PlayerFollower.AnyCart) > 0;
     public bool HasBird => ((Player?.GetData(PlayerStat.FollowerType) ?? 0) & (int)PlayerFollower.Falcon) > 0;
+    public bool HasPeco => ((Player?.GetData(PlayerStat.FollowerType) ?? 0) & (int)PlayerFollower.Mounted) > 0;
 
     public void FocusNpc()
     {
@@ -176,6 +177,11 @@ public class NpcInteractionState
             return;
 
         CommandBuilder.SendFocusNpc(Player, NpcEntity.Get<Npc>(), false);
+    }
+
+    public void GivePeco()
+    {
+        Player?.StartRidingMount();
     }
 
     public void GiveZeny(int val)

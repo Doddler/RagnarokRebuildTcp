@@ -814,6 +814,13 @@ public class Player : IEntityAutoReset
         var speedBoost = MathF.Pow(0.99f, aspdBonus);
         var recharge = jobAspd * speedScore * speedBoost;
 
+        if (HasPeco)
+        {
+            var ridingLevel = MaxLearnedLevelOfSkill(CharacterSkill.CavalierMastery);
+            if (ridingLevel < 5)
+                recharge *= 1.5f - ridingLevel * 0.1f;
+        }
+
         //--- old formula -------------------------------------------------------
         /*
         var jobAspd = jobInfo.WeaponTimings[WeaponClass];
@@ -1013,6 +1020,13 @@ public class Player : IEntityAutoReset
             case 3: //2hand sword
                 mastery = MaxLearnedLevelOfSkill(CharacterSkill.TwoHandSwordMastery) * 4;
                 break;
+            case 4: //spear
+            case 5: //2hand spear
+                if(HasPeco)
+                    mastery = MaxLearnedLevelOfSkill(CharacterSkill.SpearMastery) * 5;
+                else
+                    mastery = MaxLearnedLevelOfSkill(CharacterSkill.SpearMastery) * 4;
+                break;
             case 8:
             case 9:
                 mastery = MaxLearnedLevelOfSkill(CharacterSkill.MaceMastery) * 4;
@@ -1027,6 +1041,40 @@ public class Player : IEntityAutoReset
             mastery += appraisal * Equipment.MainHandWeapon.WeaponLevel * 2;
 
         SetStat(CharacterStat.WeaponMastery, mastery);
+    }
+
+    public void StartRidingMount()
+    {
+        if (HasPeco)
+            return;
+
+        if (JobId != 7 && JobId != 13)
+        {
+            ServerLogger.LogErrorWithStackTrace($"Player {Character.Name} attempting to mount, but they are not one of the allowed jobs (job {JobId})");
+            return;
+        }
+
+        PlayerFollower |= PlayerFollower.Mounted;
+        SetData(PlayerStat.FollowerType, (int)PlayerFollower);
+        CombatEntity.AddStatusEffect(CharacterStatusEffect.PecoRiding, int.MaxValue);
+
+        RefreshWeaponMastery();
+        UpdateStats(false, false);
+        Character.Map?.RefreshEntity(Character);
+    }
+
+    public void StopRidingMount()
+    {
+        if (!HasPeco)
+            return;
+
+        PlayerFollower = 0; //this call will double for removing the bird too
+        SetData(PlayerStat.FollowerType, 0);
+        CombatEntity.RemoveStatusOfTypeIfExists(CharacterStatusEffect.PecoRiding); //this will call StopRidingMount as well, but we're already off the peco so it's fine.
+
+        RefreshWeaponMastery();
+        UpdateStats(false, false);
+        Character.Map?.RefreshEntity(Character);
     }
 
     public void LevelUp()

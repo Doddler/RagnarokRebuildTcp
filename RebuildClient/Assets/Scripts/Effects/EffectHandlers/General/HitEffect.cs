@@ -147,6 +147,48 @@ namespace Assets.Scripts.Effects.EffectHandlers
 
             return null;
         }
+        
+        public static Ragnarok3dEffect HitPierce(Vector3 src, Vector3 target, Color32 color, int particleId)
+        {
+            //generate hit particles
+            LaunchHitParticles(src, target, color, particleId);
+            var dir = (src - target).normalized;
+            //
+            // //generate ring effect
+            // if (!Materials.TryGetValue("ring_blue", out var mat))
+            // {
+            //     mat = new Material(ShaderCache.Instance.PerspectiveAlphaShader);
+            //     mat.mainTexture = Resources.Load<Texture2D>("ring_blue");
+            //     mat.renderQueue = 3001;
+            //     Materials.Add("ring_blue", mat);
+            // }
+
+            var mat = EffectSharedMaterialManager.GetMaterial(EffectMaterialType.FireRing);
+            
+            var effect = RagnarokEffectPool.Get3dEffect(EffectType.HitEffect);
+            effect.SetDurationByFrames(15);
+            // Debug.Log(effect.Duration);
+
+            var prim = effect.LaunchPrimitive(PrimitiveType.Cylinder3D, mat, effect.Duration);
+            prim.transform.rotation = Quaternion.FromToRotation(Vector3.up, dir);
+            prim.transform.position = target + dir / 5f + Vector3.up * 2f;
+            prim.transform.localScale = Vector3.one * 0.2f;
+
+            var data = prim.GetPrimitiveData<CylinderData>();
+
+            var speed = (0.7f * 60) / 5f;
+
+            data.Velocity = dir * speed;
+            data.Acceleration = -(speed / effect.Duration) / 2f;
+            data.InnerRadius = 6f;
+            data.OuterRadius = 11f;
+            data.Height = 3.5f;
+            data.Alpha = 255;
+            data.MaxAlpha = 255;
+            data.FadeOutLength = effect.Duration / 2f;
+
+            return null;
+        }
 
         public bool Update(Ragnarok3dEffect effect, float pos, int step)
         {

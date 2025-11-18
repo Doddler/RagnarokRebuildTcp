@@ -1054,6 +1054,22 @@ namespace Assets.Scripts.Network
             //SpriteAnimator.AnimSpeed = AttackAnimationSpeed;
             return true;
         }
+        
+        
+        public void PerformThrowMotion(CharacterSkill skill = CharacterSkill.None)
+        {
+        
+            if (!IsCharacterAlive || SpriteAnimator.State == SpriteState.Dead)
+                return;
+
+            if (SpriteAnimator.Type == SpriteType.Player)
+                SpriteAnimator.ChangeMotion(SpriteMotion.Throwing, true);
+            else
+                SpriteAnimator.ChangeMotion(SpriteMotion.Attack1, true);
+
+            // Debug.Log($"PerformBasicAttackMotion {name} speed {AttackAnimationSpeed}");
+            SpriteAnimator.AnimSpeed = 1f;
+        }
 
         public void PerformBasicAttackMotion(CharacterSkill skill = CharacterSkill.None)
         {
@@ -1388,6 +1404,13 @@ namespace Assets.Scripts.Network
             {
                 if (msg.Entity != null)
                     HitEffect.Hit2(msg.Entity, this);
+                return;
+            }
+            
+            if (msg.Value1 == 3) //temporary bad way to handle hit pierce
+            {
+                if (msg.Entity != null)
+                    HitEffect.HitPierce(msg.Entity.transform.position, transform.position, new Color32(255, 255, 255, 80), 3);
                 return;
             }
 

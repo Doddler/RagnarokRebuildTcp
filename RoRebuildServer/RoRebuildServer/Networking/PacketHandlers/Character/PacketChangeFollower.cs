@@ -39,9 +39,7 @@ public class PacketChangeFollower : IClientPacketHandler
 
             if (isPecoChange)
             {
-                player.CombatEntity.RemoveStatusOfTypeIfExists(CharacterStatusEffect.PecoRiding);
-                map.RefreshEntity(player.Character);
-                player.UpdateStats(false, false);
+                player.StopRidingMount();
                 return;
             }
         }
@@ -52,12 +50,7 @@ public class PacketChangeFollower : IClientPacketHandler
                 if (player.HasPeco)
                     return;
 
-                player.PlayerFollower |= PlayerFollower.Mounted;
-                player.SetData(PlayerStat.FollowerType, (int)player.PlayerFollower);
-                player.CombatEntity.AddStatusEffect(CharacterStatusEffect.PecoRiding, int.MaxValue);
-
-                map.RefreshEntity(player.Character);
-                player.UpdateStats(false, false);
+                player.StartRidingMount();
                 return;
             }
 

@@ -127,3 +127,5 @@
 126,LexDivina,TRUE,TRUE,FALSE,lexdivina,,,0,,
 127,SkidTrapActivation,TRUE,TRUE,FALSE,skidtrap,,,0,,
 128,BowlingBash,TRUE,TRUE,FALSE,bowling,,,0,,
+129,PierceSelf,TRUE,TRUE,FALSE,pierce,,,0,,
+130,SpearBoomerangSelf,TRUE,TRUE,FALSE,spearboomerang,,,0.45,,

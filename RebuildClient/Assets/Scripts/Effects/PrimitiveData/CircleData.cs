@@ -22,16 +22,20 @@ namespace Assets.Scripts.Effects.PrimitiveData
         
         public void Reset()
         {
-            ChangePoint = 0;
-            ArcAngle = 36f;
-            Color = Color.white;
             Radius = 0;
             RadiusSpeed = 0;
             RadiusAccel = 0;
+            FadeOutLength = 0;
+            AlphaSpeed = 0f;
             MaxAlpha = 0f;
             Alpha = 0f;
+            ArcAngle = 36f;
             InnerSize = 0f;
-            FillCircle = true;
+            Color = Color.white;
+            FillCircle = false;
+            ChangePoint = 0;
+            ChangeAccel = 0;
+            ChangeSpeed = 0;
         }
     }
 }
