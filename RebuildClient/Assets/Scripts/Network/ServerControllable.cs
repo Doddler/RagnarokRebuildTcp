@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Assets.Scripts.Effects;
+using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Effects.EffectHandlers.General;
 using Assets.Scripts.MapEditor;
 using Assets.Scripts.Network.Messaging;
@@ -71,11 +72,11 @@ namespace Assets.Scripts.Network
         {
             get
             {
-                if(CharacterType == CharacterType.NPC || !GameConfig.Data.ShowLevelsInOverlay || Name.StartsWith("[NPC]"))
+                if (CharacterType == CharacterType.NPC || !GameConfig.Data.ShowLevelsInOverlay || Name.StartsWith("[NPC]"))
                     return Name;
-                if(string.IsNullOrWhiteSpace(PartyName))
+                if (string.IsNullOrWhiteSpace(PartyName))
                     return $"Lv.{Level} {Name}";
-                
+
                 return $"Lv.{Level} {Name}\n<size=-2>[{PartyName}]";
             }
         }
@@ -109,7 +110,7 @@ namespace Assets.Scripts.Network
         private float uniqueAttackStart;
         private bool skipNextAttackMotion;
         private Vector2 lastFramePosition;
-        
+
         private bool isMoving;
         //  {
         //      get => _isMoving;
@@ -196,8 +197,8 @@ namespace Assets.Scripts.Network
 
         private void RefreshPartyValues()
         {
-            if (CharacterType == CharacterType.Player && !IsMainCharacter && PartyName == PlayerState.Instance.PartyName 
-                                                      && PlayerState.Instance.PartyMemberIdLookup.TryGetValue(Id, out var partyMemberId))
+            if (CharacterType == CharacterType.Player && !IsMainCharacter && PartyName == PlayerState.Instance.PartyName
+                && PlayerState.Instance.PartyMemberIdLookup.TryGetValue(Id, out var partyMemberId))
                 UiManager.Instance.PartyPanel.UpdateHpSpOfPartyMember(partyMemberId);
         }
 
@@ -208,7 +209,7 @@ namespace Assets.Scripts.Network
             Sp = sp;
             FloatingDisplay.UpdateMaxMp(maxSp);
             FloatingDisplay.UpdateMp(sp);
-            
+
             if (!string.IsNullOrWhiteSpace(PartyName))
                 RefreshPartyValues();
         }
@@ -223,18 +224,18 @@ namespace Assets.Scripts.Network
             {
                 if (CharacterType == CharacterType.Player && PartyName == PlayerState.Instance.PartyName)
                     return true;
-                
+
                 return false;
             }
 
             return true;
         }
-        
+
         public void SetHp(int hp, int maxHp, bool animate = true)
         {
             if (!ShouldUpdateHpBar())
                 return;
-            
+
             MaxHp = maxHp;
             Hp = hp;
             FloatingDisplay.UpdateMaxHp(maxHp);
@@ -250,7 +251,7 @@ namespace Assets.Scripts.Network
 
             var oldHp = Hp;
             Hp = hp;
-            
+
             if (!string.IsNullOrWhiteSpace(PartyName))
                 RefreshPartyValues();
 
@@ -933,7 +934,7 @@ namespace Assets.Scripts.Network
                 {
                     if (!string.IsNullOrWhiteSpace(val) && EffectList[i].StringValue != val)
                         continue;
-                    
+
                     EffectList[i].EndEffect();
                     endEffect[pos] = i;
                     pos++;
@@ -946,7 +947,7 @@ namespace Assets.Scripts.Network
                 EffectList.RemoveAt(endEffect[i - 1]);
             }
         }
-        
+
 
         public void SetAttackAnimationSpeed(float motionTime)
         {
@@ -1037,7 +1038,6 @@ namespace Assets.Scripts.Network
 
             if (SpriteAnimator.Type == SpriteType.Player)
             {
-                
                 if (speedUpForFastMotionTime && AttackMotionTime < 0.5f && AttackMotionTime > 0f)
                     SpriteAnimator.AnimSpeed = AttackMotionTime / 0.5f;
                 else
@@ -1054,11 +1054,10 @@ namespace Assets.Scripts.Network
             //SpriteAnimator.AnimSpeed = AttackAnimationSpeed;
             return true;
         }
-        
-        
+
+
         public void PerformThrowMotion(CharacterSkill skill = CharacterSkill.None)
         {
-        
             if (!IsCharacterAlive || SpriteAnimator.State == SpriteState.Dead)
                 return;
 
@@ -1311,7 +1310,7 @@ namespace Assets.Scripts.Network
             di.DoDamage(TextIndicatorType.Miss, "<font-weight=\"300\">Miss", new Vector3(0f, 0.6f, 0f), height, direction, color, false);
             di.AttachDamageIndicator(this);
         }
-        
+
         private void AttachGuardIndicator()
         {
             var di = RagnarokEffectPool.GetDamageIndicator();
@@ -1406,7 +1405,7 @@ namespace Assets.Scripts.Network
                     HitEffect.Hit2(msg.Entity, this);
                 return;
             }
-            
+
             if (msg.Value1 == 3) //temporary bad way to handle hit pierce
             {
                 if (msg.Entity != null)
@@ -1416,22 +1415,22 @@ namespace Assets.Scripts.Network
 
             var hitPosition = transform.position + new Vector3(0, 2, 0);
             if (msg.Entity != null)
-                HitEffect.Hit1(msg.Entity.SpriteAnimator.transform.position + new Vector3(0, 2, 0), hitPosition);
+                HitEffect.DirectionalHit((HitEffectType)msg.Value1, msg.Entity.SpriteAnimator.transform.position + new Vector3(0, 2, 0), hitPosition);
             else if (msg.Position != Vector3.zero)
-                HitEffect.Hit1(msg.Position + new Vector3(0, 2, 0), hitPosition);
+                HitEffect.DirectionalHit((HitEffectType)msg.Value1, msg.Position + new Vector3(0, 2, 0), hitPosition);
             else
             {
                 if (SpriteMode == ClientSpriteType.Sprite)
                 {
                     var dir = RoAnimationHelper.FacingDirectionToVector(SpriteAnimator.Direction);
                     var srcPos = hitPosition + new Vector3(dir.x, 0f, dir.y);
-                    HitEffect.Hit1(srcPos, hitPosition);
+                    HitEffect.DirectionalHit((HitEffectType)msg.Value1, srcPos, hitPosition);
                 }
                 else
                 {
                     var dir = transform.forward;
                     var srcPos = hitPosition + dir;
-                    HitEffect.Hit1(srcPos, hitPosition);
+                    HitEffect.DirectionalHit((HitEffectType)msg.Value1, srcPos, hitPosition);
                 }
             }
         }
@@ -1610,28 +1609,27 @@ namespace Assets.Scripts.Network
             //this is scuffed
             if (CharacterType == CharacterType.Player && PlayerState.Instance.PartyId > 0 && PartyName == PlayerState.Instance.PartyName)
             {
-
                 FloatingDisplay.ForceHpBarOn();
                 FloatingDisplay.RefreshHpBarDetails();
                 IsPartyMember = true;
             }
             else
             {
-                if(IsPartyMember)
+                if (IsPartyMember)
                     FloatingDisplay.RefreshHpBarDetails();
-                
+
                 IsPartyMember = false;
             }
 
             HandleMessages();
-            
+
             if (SpriteMode == ClientSpriteType.Prefab)
             {
                 RealPosition = new Vector3(RealPosition.x, walkProvider.GetHeightForPosition(RealPosition), RealPosition.z);
                 transform.position = Vector3.Lerp(transform.position, RealPosition + PositionOffset, Time.deltaTime * 20f);
                 return;
             }
-            
+
             if (SpriteAnimator.SpriteData == null)
                 return;
 

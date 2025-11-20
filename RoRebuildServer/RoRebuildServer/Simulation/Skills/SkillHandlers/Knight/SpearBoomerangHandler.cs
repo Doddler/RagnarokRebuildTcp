@@ -43,7 +43,7 @@ public class SpearBoomerangHandler : SkillHandlerBase
 
         var res = source.CalculateCombatResult(target, 1f + lvl * 0.5f, 1, AttackFlags.Physical | AttackFlags.Ranged, CharacterSkill.SpearBoomerang);
         res.AttackMotionTime = 0.2f; //throw motion is half as long as the attack one
-        res.Time = Time.ElapsedTimeFloat + 0.2f + source.Character.Position.DistanceTo(target.Character.Position) / ServerConfig.ArrowTravelTime;
+        res.Time = Time.ElapsedTimeFloat + 0.3f + source.Character.Position.DistanceTo(target.Character.Position) / ServerConfig.ArrowTravelTime;
         source.ApplyCooldownForSupportSkillAction();
         source.ExecuteCombatResult(res, false);
 

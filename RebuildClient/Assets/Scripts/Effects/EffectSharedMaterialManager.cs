@@ -56,6 +56,7 @@ namespace Assets.Scripts.Effects
         SkillFlashEffect,
         FireRingNoZCheck,
         BluePerspectiveCylinder,
+        PerspectiveLens2Cylinder,
         EffectMaterialMax
     }
 
@@ -69,6 +70,7 @@ namespace Assets.Scripts.Effects
         RingRed,
         RingBlue,
         RingYellow,
+        Lens2,
         EffectTextureMax
     }
 
@@ -200,6 +202,7 @@ namespace Assets.Scripts.Effects
                 EffectTextureType.AlphaDown => "alpha_down",
                 EffectTextureType.AlphaCenter => "alpha_center",
                 EffectTextureType.MagicViolet => "magic_violet",
+                EffectTextureType.Lens2 => "lens2",
                 _ => null
             };
             if (texName == null)
@@ -412,6 +415,9 @@ namespace Assets.Scripts.Effects
                     
                     case EffectMaterialType.BluePerspectiveCylinder:
                         SetUpTextureMaterial(mat, ShaderCache.Instance.PerspectiveAlphaShader, GetOrLoadEffectTexture(EffectTextureType.RingBlue));
+                        break;
+                    case EffectMaterialType.PerspectiveLens2Cylinder:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.PerspectiveAlphaShader, GetOrLoadEffectTexture(EffectTextureType.Lens2));
                         break;
                 }
             }

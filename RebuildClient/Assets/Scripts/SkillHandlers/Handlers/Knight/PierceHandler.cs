@@ -11,7 +11,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers.Knight
     {
         public override void OnHitEffect(ServerControllable target, ref AttackResultData attack)
         {
-            target.Messages.SendHitEffect(attack.Src, attack.MotionTime, 3, 1);
+            target.Messages.SendHitEffect(attack.Src, attack.MotionTime, (int)HitEffectType.Pierce, 1);
         }
         
         public override void ExecuteSkillTargeted(ServerControllable src, ref AttackResultData attack)

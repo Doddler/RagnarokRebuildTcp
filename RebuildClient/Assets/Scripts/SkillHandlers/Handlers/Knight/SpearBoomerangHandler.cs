@@ -9,14 +9,19 @@ namespace Assets.Scripts.SkillHandlers.Handlers.Knight
     [SkillHandler(CharacterSkill.SpearBoomerang)]
     public class SpearBoomerangHandler : SkillHandlerBase
     {
+        public override void OnHitEffect(ServerControllable target, ref AttackResultData attack)
+        {
+            target.Messages.SendHitEffect(attack.Src, attack.DamageTiming, (int)HitEffectType.SpearBoomerang);
+        }
+
         public override void ExecuteSkillTargeted(ServerControllable src, ref AttackResultData attack)
         {
             //DefaultSkillCastEffect.Create(src);
             src.LookAtOrDefault(attack.Target);
             src.PerformThrowMotion();
             CameraFollower.Instance.AttachEffectToEntity("SpearBoomerangSelf", src.gameObject, src.Id);
-            if(attack.Target != null)
-                SpearBoomerangEffect.CreateSpearBoomerang(src, attack.Target.gameObject, attack.MotionTime);
+            if (attack.Target != null)
+                SpearBoomerangEffect.CreateSpearBoomerang(src, attack.Target.gameObject, attack.MotionTime + 0.1f);
             //AudioManager.Instance.AttachSoundToEntity(src.Id, "ef_bash.ogg", src.gameObject);
         }
     }

@@ -24,6 +24,8 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
             data.InnerRadius += data.InnerRadiusSpeed * Time.deltaTime;
             data.OuterRadiusSpeed += data.OuterRadiusAccel * Time.deltaTime;
             data.OuterRadius += data.OuterRadiusSpeed * Time.deltaTime;
+            data.HeightSpeed += data.HeightAccel * Time.deltaTime;
+            data.Height += data.HeightSpeed * Time.deltaTime;
 
             data.Velocity += data.Velocity.normalized * data.Acceleration * Time.deltaTime;
             primitive.transform.localPosition += data.Velocity * Time.deltaTime;

@@ -92,7 +92,7 @@ namespace Assets.Scripts.Effects
 
         //this is actually only used in the hit particle effect, but I'm too lazy to refactor it
         public void AddTrailParticle(float size, Vector3 position, Vector3 velocity, float lifetime, Color32 color, float acceleration = 0,
-            float gravity = 0, int spriteId = 0, ParticleDisplayMode displayMode = ParticleDisplayMode.Normal)
+            float gravity = 0, int spriteId = 0, ParticleDisplayMode displayMode = ParticleDisplayMode.Normal, float shrinkLength = -1)
         {
             if (!isInit)
                 Initialize();
@@ -127,6 +127,8 @@ namespace Assets.Scripts.Effects
 
             var curSize = size;
             var alpha = color.a;
+            if (shrinkLength < 0)
+                shrinkLength = lifetime / 2f;
 
             for (var i = 0; i < 1; i++)
             {
@@ -135,7 +137,7 @@ namespace Assets.Scripts.Effects
                 Particles[ParticlesInUse + i].StartTime += 1 / 60f * i;
                 Particles[ParticlesInUse + i].Color = new Color32(color.r, color.g, color.b, alpha);
                 Particles[ParticlesInUse + i].Size = curSize;
-                Particles[ParticlesInUse + i].ShrinkLength = lifetime / 2f;
+                Particles[ParticlesInUse + i].ShrinkLength = shrinkLength;
                 
                 curSize /= 2;
                 alpha = (byte)(alpha / 2);
