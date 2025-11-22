@@ -20,6 +20,12 @@ public static class Directions
         };
     }
 
+    public static Position GetVectorForDirection(Direction dir)
+    {
+        var (x, y) = GetXYForDirection(dir);
+        return new Position(x, y);
+    }
+
     public static Direction GetDirectionFromCoordinates(int x, int y)
     {
         if (x < 0 && y < 0) return Direction.SouthWest;

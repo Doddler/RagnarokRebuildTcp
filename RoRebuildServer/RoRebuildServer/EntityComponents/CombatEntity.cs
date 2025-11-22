@@ -1632,11 +1632,11 @@ public partial class CombatEntity : IEntityAutoReset
         ApplyAfterCastDelay(time);
     }
 
-    public void CancelCast()
+    public void CancelCast(bool force = false)
     {
         if (!IsCasting)
             return;
-        if (CastInterruptionMode == CastInterruptionMode.NeverInterrupt)
+        if (CastInterruptionMode == CastInterruptionMode.NeverInterrupt && !force)
             return;
 
         //monster skill cooldowns should start where a cast is cancelled, but since we set it to delay + cast time, we refund the extra time
@@ -1654,7 +1654,6 @@ public partial class CombatEntity : IEntityAutoReset
         Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
         CommandBuilder.StopCastMulti(Character);
         CommandBuilder.ClearRecipients();
-
     }
 
 

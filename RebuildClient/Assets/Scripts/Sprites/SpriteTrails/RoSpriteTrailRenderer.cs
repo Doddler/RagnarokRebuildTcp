@@ -11,10 +11,12 @@ namespace Assets.Scripts.Sprites
         public RoSpriteTrail Parent;
         public SortingGroup SortingGroup;
         public float SpriteOffset;
+        public float VerticalOffset;
         public RoSpriteData SpriteData;
         private MaterialPropertyBlock propertyBlock;
         //private bool skipFrame = true;
         
+        private static readonly int VPos = Shader.PropertyToID("_VPos");
 
         public void Init()
         {
@@ -51,6 +53,7 @@ namespace Assets.Scripts.Sprites
             else
                 propertyBlock.SetFloat("_Offset", SpriteOffset);
             //
+            propertyBlock.SetFloat(VPos, VerticalOffset);
             MeshRenderer.SetPropertyBlock(propertyBlock);
         }
 

@@ -448,6 +448,20 @@ public static class CommandBuilder
         ClearRecipients();
     }
 
+    public static void ResetMotionAutoVis(WorldObject caster)
+    {
+        caster.Map?.AddVisiblePlayersAsPacketRecipients(caster);
+        EnsureRecipient(caster.Entity);
+
+        var packet = NetworkManager.StartPacket(PacketType.ResetMotion, 8);
+
+        packet.Write(caster.Id);
+
+        NetworkManager.SendMessageMulti(packet, recipients);
+
+        ClearRecipients();
+    }
+
     public static void StopCastMulti(WorldObject caster)
     {
         if (!HasRecipients())

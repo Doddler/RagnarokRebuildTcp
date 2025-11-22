@@ -365,3 +365,14 @@ Strike the earth with a powerful hammer swing that has a [20 + SkillLvl * 10]% c
 ::AdrenalineRush
 Increases attack speed with axes and maces, reducing the delay between attacks by 30% for yourself and 25% for party members. 
 Duration: [SkillLevel * 30] seconds.
+
+//----------------Blacksmith-------------------
+
+::BowlingBash
+Knocks a target back 1 cell and deals 2 hits of [100 + SkillLevel * 50]% physical damage.
+If the target ends in contact with another enemy, the skill will chain to that target, who will in turn be damaged and knocked back, causing a chain reaction.
+The chain reaction will continue until each target contacted has taken damage or the chain reaction reaches a length of [SkillLevel - 1] (minimum 1).
+
+::SpearBoomerang
+Strike a target far away from you with your s pear dealing [100 + SkillLevel * 50]% ranged physical damage. Requires a spear to be equipped to use.
+Range: 5/6/8/9/11 cells depending on the skill level

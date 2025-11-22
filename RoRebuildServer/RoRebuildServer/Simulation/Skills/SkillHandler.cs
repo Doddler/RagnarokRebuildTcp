@@ -6,6 +6,7 @@ using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.Skills.SkillHandlers;
 using RoRebuildServer.Simulation.Util;
@@ -155,6 +156,23 @@ public static class SkillHandler
 
         return src.GetEffectiveStat(CharacterStat.Range);
     }
+
+    public static void TriggerEventOnHitWhileCasting(CombatEntity self, ref AttackRequest req, ref DamageInfo di)
+    {
+        if (!self.IsCasting)
+            return;
+
+        var info = self.CastingSkill;
+
+        var handler = handlers[(int)info.Skill];
+        if (handler != null)
+        {
+            di.Source.TryGet<CombatEntity>(out var attacker);
+            handler.OnHitEvent(self, attacker, info, ref req, ref di);
+        }
+    }
+
+    public static SkillClass GetSkillClassification(CharacterSkill skill) => skillAttributes[(int)skill].SkillClassification;
 
     public static bool ExecuteSkill(SkillCastInfo info, CombatEntity src)
     {

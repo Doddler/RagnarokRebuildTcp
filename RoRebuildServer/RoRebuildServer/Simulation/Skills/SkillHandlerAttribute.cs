@@ -5,6 +5,7 @@ using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Networking;
 
@@ -29,6 +30,7 @@ public abstract class SkillHandlerBase
     public virtual bool PreProcessValidation(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect, bool isItemSource) => true;
     public abstract void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect, bool isItemSource);
     public virtual void NpcProcess(Npc source, CombatEntity? target, Position position, int lvl) { }
+    public virtual void OnHitEvent(CombatEntity owner, CombatEntity? attacker, SkillCastInfo info, ref AttackRequest req, ref DamageInfo di) { }
 
 
     public float GetCastTime(CombatEntity source, CombatEntity? target, int lvl) => GetCastTime(source, target, Position.Invalid, lvl);

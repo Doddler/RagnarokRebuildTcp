@@ -126,6 +126,7 @@ public enum PacketType : byte
     VendingPurchaseFromStore,
 
     StartWalkInDirection,
+    ResetMotion,
 }
 
 public enum MessageType : byte

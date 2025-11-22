@@ -238,6 +238,7 @@ Icon = "kn_autocounter"
 Target = "Self"
 MaxLevel = 5
 SpCost = [3]
+InterruptMode = "NoInterrupt"
 
 [BowlingBash]
 Name = "Bowling Bash"

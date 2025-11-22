@@ -20,7 +20,8 @@ public enum SkillCastFlags : byte
     None,
     HideSkillName = 1,
     HideCastBar = 2,
-    NoEffect = 4
+    NoEffect = 4,
+    EventOnHit = 8,
 }
 
 

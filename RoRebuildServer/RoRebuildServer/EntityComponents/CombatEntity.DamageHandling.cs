@@ -714,6 +714,9 @@ public partial class CombatEntity
 
         if (!flags.HasFlag(AttackFlags.NoTriggerOnAttackEffects))
         {
+            if (target.IsCasting)
+                SkillHandler.TriggerEventOnHitWhileCasting(target, ref req, ref di);
+            
             if (statusContainer != null)
                 statusContainer.OnAttack(ref di);
 
@@ -851,6 +854,7 @@ public partial class CombatEntity
                     CommandBuilder.StopCastMulti(Character);
                 }
             }
+
         }
 
         CommandBuilder.ClearRecipients();

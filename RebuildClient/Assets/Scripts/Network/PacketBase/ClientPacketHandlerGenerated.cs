@@ -15,7 +15,7 @@ namespace Assets.Scripts.Network.PacketBase
 	{
 		static ClientPacketHandler()
 		{
-			handlers = new ClientPacketHandlerBase[109];
+			handlers = new ClientPacketHandlerBase[111];
 			handlers[0] = new PacketOnConnectionApproved(); //ConnectionApproved
 			handlers[1] = new InvalidPacket(); //ConnectionDenied
 			handlers[2] = new InvalidPacket(); //PlayerReady
@@ -125,6 +125,8 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[106] = new PacketVendingStoreView(); //VendingViewStore
 			handlers[107] = new PacketVendingNotifyOfSale(); //VendingNotifyOfSale
 			handlers[108] = new InvalidPacket(); //VendingPurchaseFromStore
+			handlers[109] = new InvalidPacket(); //StartWalkInDirection
+			handlers[110] = new PacketResetMotion(); //ResetMotion
 		}
 	}
 }

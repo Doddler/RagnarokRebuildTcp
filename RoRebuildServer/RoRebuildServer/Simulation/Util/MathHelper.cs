@@ -1,4 +1,7 @@
-﻿namespace RoRebuildServer.Simulation.Util;
+﻿using RebuildSharedData.Data;
+using RebuildSharedData.Enum;
+
+namespace RoRebuildServer.Simulation.Util;
 
 public static class MathHelper
 {
@@ -37,6 +40,14 @@ public static class MathHelper
             else
                 DefTable[i] = MathF.Max(0.1f, MathF.Pow(0.99f, i / 10f - 30) - 0.3f);
         }
+    }
+
+    public static float AngleFromDirection(Direction dir, Position offset)
+    {
+        var angle = Directions.GetAngleForDirection(dir);
+        var angle2 = (MathF.Atan2(offset.X, offset.Y) * MathHelper.Rad2Deg) % 360;
+
+        return 180 - MathF.Abs(MathF.Abs(angle - angle2) - 180);
     }
 
     public static float PowScaleDown(int value)
