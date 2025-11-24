@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
@@ -12,6 +10,9 @@ using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Util;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -536,6 +537,19 @@ public class WorldObject : IEntityAutoReset
         Map.AddVisiblePlayersAsPacketRecipients(this);
         CommandBuilder.ChangeSittingMulti(this);
         CommandBuilder.ClearRecipients();
+    }
+
+    public void FaceTargetWithoutClientUpdate(WorldObject target)
+    {
+        if (State == CharacterState.Moving || State == CharacterState.Dead || target.Position == Position)
+            return;
+
+        if (Type == CharacterType.Player)
+            Player.HeadFacing = HeadFacing.Center;
+        if (Type == CharacterType.NPC && OverrideAppearanceState != null)
+            OverrideAppearanceState.HeadFacing = HeadFacing.Center;
+
+        FacingDirection = DistanceCache.Direction(Position, target.Position);
     }
 
     public void ChangeLookDirection(Position lookAt, HeadFacing facing = HeadFacing.Center)

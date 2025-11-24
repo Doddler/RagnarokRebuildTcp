@@ -128,5 +128,6 @@
 127,SkidTrapActivation,TRUE,TRUE,FALSE,skidtrap,,,0,,
 128,BowlingBash,TRUE,TRUE,FALSE,bowling,,,0,,
 129,PierceSelf,TRUE,TRUE,FALSE,pierce,,,0,,
-130,SpearBoomerangSelf,TRUE,TRUE,FALSE,spearboomerang,,,0.45,,
-131,CounterAttack,TRUE,TRUE,FALSE,autocounter,,,0.45,,
+130,SpearBoomerangSelf,TRUE,TRUE,FALSE,spearboomerang,,,0.40,,
+131,CounterAttack,TRUE,TRUE,FALSE,autocounter,,,0.40,,
+132,SpearStab,TRUE,TRUE,FALSE,spear_step,,,0.40,,

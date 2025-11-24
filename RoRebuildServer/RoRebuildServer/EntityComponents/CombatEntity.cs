@@ -213,11 +213,6 @@ public partial class CombatEntity : IEntityAutoReset
         if (statusContainer == null || statusContainer.TotalStatusEffectCount == 0) //that last one fixes an unfortunate issue where attempting to remove an existing status while adding a status breaks things
             return false;
         var success = statusContainer.RemoveStatusEffectOfType(type);
-        if (!statusContainer.HasStatusEffects())
-        {
-            StatusEffectPoolManager.ReturnStatusContainer(statusContainer);
-            statusContainer = null;
-        }
 
         return success;
     }
@@ -1707,6 +1702,13 @@ public partial class CombatEntity : IEntityAutoReset
             Player.IndirectCastQueueUpdate(); //we handle this in combat entity to guarantee it happens after damage queue update
 
         if (statusContainer != null && Character.IsActive) //we could have gone inactive after attack update
+        {
             statusContainer.UpdateStatusEffects();
+            if (!statusContainer.HasStatusEffects())
+            {
+                StatusEffectPoolManager.ReturnStatusContainer(statusContainer);
+                statusContainer = null;
+            }
+        }
     }
 }

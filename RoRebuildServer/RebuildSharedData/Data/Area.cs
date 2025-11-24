@@ -170,6 +170,16 @@ public struct Area
         return this;
     }
 
+    public static Area CreateAroundTwoPoints(Position a, Position b, int padding)
+    {
+        var minX = a.X > b.X ? b.X : a.X;
+        var minY = a.Y > b.Y ? b.Y : a.Y;
+        var maxX = a.X > b.X ? a.X : b.X;
+        var maxY = a.Y > b.Y ? a.Y : b.Y;
+
+        return new Area(minX - padding, minY - padding, maxX + padding, maxY + padding);
+    }
+
     public static Area CreateAroundPoint(Position position, int distance)
     {
         return new Area(position.X - distance, position.Y - distance, position.X + distance, position.Y + distance);

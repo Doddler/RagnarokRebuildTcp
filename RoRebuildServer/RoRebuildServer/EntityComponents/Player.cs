@@ -1065,13 +1065,12 @@ public class Player : IEntityAutoReset
 
     public void StopRidingMount()
     {
-        if (!HasPeco)
-            return;
-
-        PlayerFollower = 0; //this call will double for removing the bird too
-        SetData(PlayerStat.FollowerType, 0);
-        CombatEntity.RemoveStatusOfTypeIfExists(CharacterStatusEffect.PecoRiding); //this will call StopRidingMount as well, but we're already off the peco so it's fine.
-
+        if (HasPeco)
+        {
+            PlayerFollower = 0; //this call will double for removing the bird too
+            SetData(PlayerStat.FollowerType, 0);
+        }
+        
         RefreshWeaponMastery();
         UpdateStats(false, false);
         Character.Map?.RefreshEntity(Character);

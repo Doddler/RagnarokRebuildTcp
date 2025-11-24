@@ -1,8 +1,8 @@
-﻿using RebuildSharedData.Networking;
-using System.Diagnostics;
-using RebuildSharedData.Enum;
+﻿using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
+using RebuildSharedData.Networking;
 using RoRebuildServer.Logging;
+using System.Diagnostics;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;
 
@@ -39,7 +39,7 @@ public class PacketChangeFollower : IClientPacketHandler
 
             if (isPecoChange)
             {
-                player.StopRidingMount();
+                player.CombatEntity.RemoveStatusOfTypeIfExists(CharacterStatusEffect.PecoRiding); //this will call StopRidingMount as well, but we're already off the peco so it's fine.
                 return;
             }
         }

@@ -50,6 +50,8 @@ public struct Position : IEquatable<Position>
         return pos;
     }
 
+    public Vector2 ToVector2() => new Vector2(X, Y);
+
     /// <summary>
     /// Calculate the chebyshev distance to the destination.
     /// A simplified distance check that returns the max distance along both the x and y-axes.
@@ -64,6 +66,11 @@ public struct Position : IEquatable<Position>
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int BlockDistance(Position dest) => Math.Abs(X - dest.X) + Math.Abs(Y - dest.Y);
+
+    public float FloatDistance(Position dest)
+    {
+        return MathF.Sqrt((MathF.Pow(X - dest.X, 2) + MathF.Pow(Y - dest.Y, 2)));
+    }
 
     public float Angle(Position b)
     {
@@ -81,6 +88,16 @@ public struct Position : IEquatable<Position>
     {
         return SquareDistance(target) <= distance;
         //return target.X >= X - distance && target.X <= X + distance && target.Y >= Y - distance && target.Y <= Y + distance;
+    }
+
+    public static Position FromAngleDistance(float angle, int distance)
+    {
+        var radians = angle * (float)(MathF.PI / 180.0);
+
+        var x = MathF.Cos(radians);
+        var y = MathF.Sin(radians);
+
+        return new Position((int)(x * distance + 0.5f), (int)(y * distance + 0.5f)); //0.5 will cause floor to round
     }
 
     public static Position RandomPosition(Area area)

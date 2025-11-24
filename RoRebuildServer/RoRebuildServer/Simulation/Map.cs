@@ -917,6 +917,41 @@ public class Map
         }
     }
 
+    public void GatherEnemiesInArea(WorldObject character, Area area, EntityList list, bool checkLineOfSight, bool checkImmunity = false)
+    {
+        foreach (Chunk c in GetChunkEnumeratorForArea(area))
+        {
+
+            foreach (var m in c.AllEntities)
+            {
+                var potentialTarget = m.Get<WorldObject>();
+                if (!potentialTarget.IsActive)
+                    continue;
+
+                if (potentialTarget.Type == CharacterType.NPC)
+                    continue;
+
+                if (checkImmunity && potentialTarget.IsTargetImmune)
+                    continue;
+
+                if (!potentialTarget.CombatEntity.IsValidTarget(character.CombatEntity, false, true))
+                    continue;
+
+                if (area.Contains(potentialTarget.Position))
+                {
+                    if (checkLineOfSight)
+                    {
+                        if (!WalkData.HasLineOfSight(character.Position, potentialTarget.Position))
+
+                            continue;
+                    }
+
+                    list.Add(m);
+                }
+            }
+        }
+    }
+
     public void GatherEnemiesInArea(WorldObject character, Position position, int distance, EntityList list, bool checkLineOfSight, bool checkImmunity = false)
     {
         foreach (Chunk c in GetChunkEnumeratorAroundPosition(position, distance))
@@ -955,38 +990,6 @@ public class Map
     public void GatherEnemiesInRange(WorldObject character, int distance, EntityList list, bool checkLineOfSight, bool checkImmunity = false)
     {
         GatherEnemiesInArea(character, character.Position, distance, list, checkLineOfSight, checkImmunity);
-        return;
-        //foreach (Chunk c in GetChunkEnumeratorAroundPosition(character.Position, distance))
-        //{
-
-        //    foreach (var m in c.AllEntities)
-        //    {
-        //        var ch = m.Get<WorldObject>();
-        //        if (!ch.IsActive)
-        //            continue;
-
-        //        if (ch.Type == CharacterType.NPC)
-        //            continue;
-
-        //        if (checkImmunity && ch.IsTargetImmune)
-        //            continue;
-
-        //        if (!ch.CombatEntity.IsValidTarget(character.CombatEntity))
-        //            continue;
-
-        //        if (character.Position.InRange(ch.Position, distance))
-        //        {
-        //            if (checkLineOfSight)
-        //            {
-        //                if (!WalkData.HasLineOfSight(character.Position, ch.Position))
-
-        //                        continue;
-        //            }
-
-        //            list.Add(m);
-        //        }
-        //    }
-        //}
     }
 
     public bool CheckIfNpcNearby(WorldObject character, int distance)
@@ -1672,6 +1675,14 @@ public class Map
         var area2 = GetChunksForArea(area);
         return new ChunkAreaEnumerator(Chunks, chunkWidth, area2);
     }
+
+    public ChunkAreaEnumerator GetChunkEnumeratorForArea(Area area)
+    {
+        area = area.ClipArea(MapBounds);
+        var area2 = GetChunksForArea(area);
+        return new ChunkAreaEnumerator(Chunks, chunkWidth, area2);
+    }
+
 
     public ChunkAreaEnumerator GetChunkEnumerator(Area area)
     {

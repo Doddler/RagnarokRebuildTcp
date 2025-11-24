@@ -14,7 +14,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
         Normal,
         Critical,
         Pierce,
-        SpearBoomerang
+        SpearBoomerang,
     }
 
     [RoEffect("HitEffect")]

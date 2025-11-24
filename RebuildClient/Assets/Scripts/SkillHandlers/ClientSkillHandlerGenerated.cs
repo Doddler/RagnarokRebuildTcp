@@ -48,7 +48,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[34] = new DefaultSkillHandler();
 			handlers[35] = new DefaultSkillHandler();
 			handlers[36] = new Assets.Scripts.SkillHandlers.Handlers.Knight.PierceHandler();
-			handlers[37] = new DefaultSkillHandler();
+			handlers[37] = new Assets.Scripts.SkillHandlers.Handlers.Knight.SpearStabHandler();
 			handlers[38] = new DefaultSkillHandler();
 			handlers[39] = new Assets.Scripts.SkillHandlers.Handlers.Knight.SpearBoomerangHandler();
 			handlers[40] = new Assets.Scripts.SkillHandlers.Handlers.Knight.ChargeAttackHandler();

@@ -1,4 +1,5 @@
-﻿using RebuildSharedData.Data;
+﻿using System.Numerics;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 
 namespace RoRebuildServer.Simulation.Util;
@@ -48,6 +49,30 @@ public static class MathHelper
         var angle2 = (MathF.Atan2(offset.X, offset.Y) * MathHelper.Rad2Deg) % 360;
 
         return 180 - MathF.Abs(MathF.Abs(angle - angle2) - 180);
+    }
+
+    public static bool IsPointInLinePath(Position lineStart, Position lineTarget, Position checkPoint, float length, float width)
+    {
+        var t1 = checkPoint.ToVector2();
+        var p1 = lineStart.ToVector2();
+        var p2 = lineTarget.ToVector2();
+        
+        var dirNorm = Vector2.Normalize(p2 - p1);
+        p2 = p1 + dirNorm * length;
+
+        var t = Vector2.Dot(t1 - p1, dirNorm);
+        var clamped = float.Clamp(t, 0, (p2 - p1).Length());
+        var closest = p1 + dirNorm * clamped;
+        var dist = Vector2.Distance(closest, t1);
+
+        if (dist > width)
+            return false;
+
+        //we're within the width of the line... but are we between the two points?
+        var d1 = Vector2.Distance(closest, p1);
+        var d2 = Vector2.Distance(closest, p2);
+        
+        return d1 < length && d2 < length;
     }
 
     public static float PowScaleDown(int value)
