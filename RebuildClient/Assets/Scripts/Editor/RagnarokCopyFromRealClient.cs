@@ -1,45 +1,23 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 using Assets.Scripts;
 using Assets.Scripts.Editor;
 using Assets.Scripts.MapEditor.Editor;
+using Scripts.Editor;
 using UnityEditor;
+using UnityEditor.VersionControl;
 using UnityEngine;
+using Application = UnityEngine.Application;
+using Debug = UnityEngine.Debug;
 
 namespace Assets.Editor
 {
     public class RagnarokCopyFromRealClient : EditorWindow
     {
-        public static void TestCopy()
-        {
-            var dataDir = RagnarokDirectory.GetRagnarokDataDirectorySafe;
-
-            Func<string, string> updateHeadName = (str) => str.Replace("머리", "");
-            Func<string, string> updateBodyName = (str) => str.Replace("몸", "");
-
-            var headPath = Path.Combine(dataDir, "palette/머리");
-            var bodyPath = Path.Combine(dataDir, "palette/몸");
-
-            if (Directory.Exists(headPath))
-            {
-                CopyFolder(headPath, "Assets/Sprites/Characters/HeadFemale/Palette/", false, false, "*_여_*.pal",
-                    updateHeadName);
-                CopyFolder(headPath, "Assets/Sprites/Characters/HeadMale/Palette/", false, false, "*_남_*.pal",
-                    updateHeadName);
-            }
-
-            headPath = Path.Combine(dataDir, "palette/머리/costume_1");
-            bodyPath = Path.Combine(dataDir, "palette/몸/costume_1");
-
-            if (Directory.Exists(bodyPath))
-            {
-                CopyFolder(bodyPath, "Assets/Sprites/Characters/BodyFemale/Palette/", false, false, "*_여_*.pal",
-                    updateHeadName);
-                CopyFolder(bodyPath, "Assets/Sprites/Characters/BodyMale/Palette/", false, false, "*_남_*.pal");
-            }
-        }
 
         private static string UpdateSpriteName(string name)
         {
@@ -55,58 +33,138 @@ namespace Assets.Editor
 
             return name;
         }
-
-
-        [MenuItem("Ragnarok/TestCopy")]
-        public static void TestCopy2()
+        [UnityEditor.MenuItem("Ragnarok/Test New Process", priority = -100)]
+        public static void TestNewProcess()
         {
-            var dataDir = RagnarokDirectory.GetRagnarokDataDirectorySafe;
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/성직자"), "Assets/Sprites/Weapons/Acolyte/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/궁수"), "Assets/Sprites/Weapons/Archer/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/마법사"), "Assets/Sprites/Weapons/Mage/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/상인"), "Assets/Sprites/Weapons/Merchant/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/초보자"), "Assets/Sprites/Weapons/Novice/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/검사"), "Assets/Sprites/Weapons/Swordsman/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/도둑"), "Assets/Sprites/Weapons/Thief/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/인간족/슈퍼노비스"), "Assets/Sprites/Weapons/SuperNovice/", false, true,
-                "*", UpdateSpriteName);
-
-
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/성직자"), "Assets/Sprites/Shields/Acolyte/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/궁수"), "Assets/Sprites/Shields/Archer/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/마법사"), "Assets/Sprites/Shields/Mage/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/상인"), "Assets/Sprites/Shields/Merchant/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/초보자"), "Assets/Sprites/Shields/Novice/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/검사"), "Assets/Sprites/Shields/Swordsman/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/도둑"), "Assets/Sprites/Shields/Thief/", false, true, "*",
-                UpdateSpriteName);
-            CopyFolder(Path.Combine(dataDir, "sprite/방패/슈퍼노비스"), "Assets/Sprites/Shields/SuperNovice/", false, true,
-                "*", UpdateSpriteName);
-        }
-
-        [MenuItem("Ragnarok/Copy data from client data folder", priority = 1)]
-        public static void CopyClientData()
-        {
+            Debug.Log("Testing new process");
             var dataDir = RagnarokDirectory.GetRagnarokDataDirectorySafe;
 
             if (dataDir == null)
             {
-                var prompt =
-                    @"Before you continue, you will need to specify a directory containing the contents of an extracted data.grf. "
-                    + "For this import process to work correctly, the files will need to have been extracted with the right locale and working korean file names.";
+                const string prompt = @"Before you continue, you will need to specify a directory containing the contents of an extracted data.grf. "
+                                      + "For this import process to work correctly, the files will need to have been extracted with the right locale and working korean file names.";
+
+                if (!EditorUtility.DisplayDialog("Copy from RO Client", prompt, "Continue", "Cancel"))
+                    return;
+
+                RagnarokDirectory.SetDataDirectory();
+
+                dataDir = RagnarokDirectory.GetRagnarokDataDirectorySafe;
+                if (dataDir == null)
+                    return;
+            }
+            Debug.Log("Instantiate new boss");
+            Debug.Log("Start process");
+            RoDataImportManager.ProcessGrfData(dataDir);
+        }
+
+        [UnityEditor.MenuItem("Ragnarok/Clear Imported Assets", priority = -99)]
+        public static void ClearImportedAssets()
+        {
+            Debug.Log("Start Clearing Imported Assets");
+            try
+            {
+                AssetDatabase.StartAssetEditing();
+                var filesToDelete = AssetDatabase.FindAssets("*", new[] {"Assets/Sprites", "Assets/Sounds"});
+                Debug.Log($"Found {filesToDelete.Length} assets to remove");
+                foreach (var guid in filesToDelete)
+                {
+                    AssetDatabase.DeleteAsset(AssetDatabase.GUIDToAssetPath(guid));
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            finally
+            {
+                AssetDatabase.StopAssetEditing();
+            }
+        }
+
+        [UnityEditor.MenuItem("Ragnarok/Select GRF data to import", priority = -98)]
+        public static void OpenSelectGrfDataToImportWindow()
+        {
+            var window = GetWindow<RagnarokSelectGrfDataToImportWindow>("Select GRF data to import");
+            window.minSize = new Vector2(450, 600);
+            window.Focus();
+        }
+
+        public class RagnarokSelectGrfDataToImportWindow : EditorWindow
+        {
+            private Vector2 scrollPosition;
+            private bool[] selections;
+            private GrfDataFilesCategorized grfData;
+            
+            private void OnEnable()
+            {
+                grfData = RoDataImportManager.ReadGrfDataFolder();
+                selections = new bool[grfData.Categories.Length];
+            }
+
+            private void OnGUI()
+            {
+                EditorGUILayout.LabelField("Select data to import:", EditorStyles.boldLabel);
+                EditorGUILayout.Space();
+
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("Select All", GUILayout.Height(20)))
+                    for (int i = 0; i < selections.Length; i++)
+                        selections[i] = true;
+                if (GUILayout.Button("Unselect All", GUILayout.Height(20)))
+                    for (int i = 0; i < selections.Length; i++)
+                        selections[i] = false;
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.Space();
+
+                scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+                for (var i = 0; i < grfData.Categories.Length; i++)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    selections[i] = EditorGUILayout.ToggleLeft(grfData[i], selections[i]);
+                    EditorGUILayout.LabelField($"imported {grfData.Categories[i].Imported} of {grfData.Categories[i].Count} files", EditorStyles.miniLabel);
+                    EditorGUILayout.EndHorizontal();
+                }
+                EditorGUILayout.EndScrollView();
+                EditorGUILayout.Space();
+
+                EditorGUILayout.HelpBox(
+                    "Before you continue, you will need to specify a directory containing the contents of an extracted data.grf. " +
+                    "For this import process to work correctly, the files will need to have been extracted with the right locale and working Korean file names.",
+                    MessageType.Warning
+                );
+                
+                if (GUILayout.Button("Copy Selected Data", GUILayout.Height(30)))
+                {
+                    if (selections.Any(x => !x))
+                    {
+                        var actualGrfDataToProcess =  new GrfDataFilesCategorized();
+                        for (var i = 0; i < selections.Length; i++)
+                        {
+                            if (selections[i])
+                                actualGrfDataToProcess.Categories[i].AddRange(grfData.Categories[i]);
+                        }
+                        RoDataImportManager.ProcessGrfData(actualGrfDataToProcess);
+                    }
+                    else
+                    {
+                        RoDataImportManager.ProcessGrfData(grfData);
+                    }
+                }
+                
+            }
+        }
+        
+        [UnityEditor.MenuItem("Ragnarok/Copy data from client data folder", priority = 1)]
+        public static void CopyClientData()
+        {
+            string dataDir = RagnarokDirectory.GetRagnarokDataDirectorySafe;
+
+            if (dataDir == null)
+            {
+                const string prompt = @"Before you continue, you will need to specify a directory containing the contents of an extracted data.grf. "
+                                      + "For this import process to work correctly, the files will need to have been extracted with the right locale and working korean file names.";
 
                 if (!EditorUtility.DisplayDialog("Copy from RO Client", prompt, "Continue", "Cancel"))
                     return;
@@ -118,26 +176,14 @@ namespace Assets.Editor
                     return;
             }
 
-            bool TestPath(string fileName)
-            {
-                if (!File.Exists(Path.Combine(dataDir, fileName)))
-                {
-                    Debug.LogError(
-                        $"Could not verify client data directory \"{dataDir}\" is valid. File checked: {fileName} ");
-                    return false;
-                }
-
-                return true;
-            }
-
             if (!TestPath("prontera.gat") || !TestPath(@"texture\워터\water000.jpg"))
                 return;
 
-            var prompt2 = @"This import process will copy files from your data folder into this project. "
-                          + "Because this includes converting all maps and objects, expect this process to take more than an hour."
-                          + "\n\nWhen complete, the lighting window will load where you can bake the lighting for all the scenes (accessible via 'Ragnarok->Lighting Manager'). "
-                          + "You will also need to manually copy over your BGM into the music folder if you want music."
-                          + "\n\nLastly, before you run you will need to use 'Ragnarok->Update Addressables' to make sure everything can load.";
+            const string prompt2 = @"This import process will copy files from your data folder into this project. "
+                                   + "Because this includes converting all maps and objects, expect this process to take more than an hour."
+                                   + "\n\nWhen complete, the lighting window will load where you can bake the lighting for all the scenes (accessible via 'Ragnarok->Lighting Manager'). "
+                                   + "You will also need to manually copy over your BGM into the music folder if you want music."
+                                   + "\n\nLastly, before you run you will need to use 'Ragnarok->Update Addressables' to make sure everything can load.";
 
             if (!EditorUtility.DisplayDialog("Copy from RO Client", prompt2, "Continue", "Cancel"))
                 return;
@@ -291,17 +337,26 @@ namespace Assets.Editor
             ItemIconImporter.ImportItems();
 
             RoLightingManagerWindow.CreateOrOpen();
+            return;
+
+            bool TestPath(string fileName)
+            {
+                if (File.Exists(Path.Combine(dataDir, fileName))) return true;
+                Debug.LogError(
+                    $"Could not verify client data directory \"{dataDir}\" is valid. File checked: {fileName} ");
+                return false;
+            }
         }
 
-        [MenuItem("Ragnarok/Select data to copy from client data folder", priority = 2)]
+        [UnityEditor.MenuItem("Ragnarok/Select data to copy from client data folder", priority = 2)]
         public static void ShowCopyClientDataWindow()
         {
-            var window = GetWindow<RagnarokCopyFromRealClientWindow>("Copy Client Data");
+            var window = GetWindow<RagnarokPrepareClientDataFromGrfDataWindow>("Prepare Client Data");
             window.minSize = new Vector2(450, 600);
             window.Focus();
         }
 
-        public class RagnarokCopyFromRealClientWindow : EditorWindow
+        public class RagnarokPrepareClientDataFromGrfDataWindow : EditorWindow
         {
             private struct CopyCategory
             {
@@ -333,19 +388,7 @@ namespace Assets.Editor
                 }
 
                 // sanity checks
-                bool TestPath(string fileName)
-                {
-                    var full = Path.Combine(dataDir, fileName);
-                    if (!File.Exists(full))
-                    {
-                        Debug.LogError($"Invalid client data directory: missing {fileName}");
-                        return false;
-                    }
-
-                    return true;
-                }
-
-                if (!TestPath("prontera.gat") || !TestPath("texture\\워터\\water000.jpg"))
+                if (!TestPath("prontera.gat") || !TestPath(@"texture\워터\water000.jpg"))
                     return;
 
                 // Define each copy category
@@ -356,50 +399,95 @@ namespace Assets.Editor
                         Label = "Sounds (WAV)",
                         Execute = () => CopyFolder(Path.Combine(dataDir, "wav/"), "Assets/Sounds/", recursive: true),
                         IsAlreadyImported = () =>
-                            Directory.Exists("Assets/Sounds") && Directory
-                                .GetFiles("Assets/Sounds", "*.wav", SearchOption.AllDirectories).Any()
+                            Directory.Exists("Assets/Sounds") && 
+                            Directory.GetFiles("Assets/Sounds", 
+                                "*.wav", SearchOption.AllDirectories).Any()
                     },
                     new CopyCategory
                     {
                         Label = "Monster Sprites",
-                        Execute = () => CopyFolder(Path.Combine(dataDir, "sprite/몬스터"), "Assets/Sprites/Monsters/"),
+                        Execute = () => ImportFromGrfFolder(Path.Combine(dataDir, "sprite/몬스터"), "Assets/Sprites/Monsters/"),
                         IsAlreadyImported = () =>
-                            Directory.Exists("Assets/Sprites/Monsters") && Directory.GetFiles("Assets/Sprites/Monsters",
+                            Directory.Exists("Assets/Sprites/Monsters") &&
+                            Directory.GetFiles("Assets/Sprites/Monsters", 
                                 "*.spr", SearchOption.TopDirectoryOnly).Any()
                     },
                     new CopyCategory
                     {
                         Label = "Headgear Sprites (Male)",
                         Execute = () =>
-                            CopyFolder(Path.Combine(dataDir, "sprite/악세사리/남"), "Assets/Sprites/Headgear/Male/"),
+                            ImportFromGrfFolder(Path.Combine(dataDir, "sprite/악세사리/남"), "Assets/Sprites/Headgear/Male/"),
                         IsAlreadyImported = () =>
-                            Directory.Exists("Assets/Sprites/Headgear/Male") && Directory
-                                .GetFiles("Assets/Sprites/Headgear/Male", "*.spr", SearchOption.TopDirectoryOnly).Any()
+                            Directory.Exists("Assets/Sprites/Headgear/Male") && 
+                            Directory.GetFiles("Assets/Sprites/Headgear/Male", 
+                                "*.spr", SearchOption.TopDirectoryOnly).Any()
                     },
                     new CopyCategory
                     {
                         Label = "Headgear Sprites (Female)",
                         Execute = () =>
-                            CopyFolder(Path.Combine(dataDir, "sprite/악세사리/여"), "Assets/Sprites/Headgear/Female/"),
+                            ImportFromGrfFolder(Path.Combine(dataDir, "sprite/악세사리/여"), "Assets/Sprites/Headgear/Female/"),
                         IsAlreadyImported = () =>
-                            Directory.Exists("Assets/Sprites/Headgear/Female") && Directory
-                                .GetFiles("Assets/Sprites/Headgear/Female", "*.spr", SearchOption.TopDirectoryOnly)
-                                .Any()
+                            Directory.Exists("Assets/Sprites/Headgear/Female") && 
+                            Directory.GetFiles("Assets/Sprites/Headgear/Female", 
+                                "*.spr", SearchOption.TopDirectoryOnly).Any()
                     },
                     new CopyCategory
                     {
                         Label = "NPC Sprites",
-                        Execute = () => CopyFolder(Path.Combine(dataDir, "sprite/npc"), "Assets/Sprites/Npcs/"),
+                        Execute = () => ImportFromGrfFolder(Path.Combine(dataDir, "sprite/npc"), "Assets/Sprites/Npcs/"),
                         IsAlreadyImported = () =>
-                            Directory.Exists("Assets/Sprites/Npcs") && Directory
-                                .GetFiles("Assets/Sprites/Npcs", "*.spr", SearchOption.TopDirectoryOnly).Any()
+                            Directory.Exists("Assets/Sprites/Npcs") && 
+                            Directory.GetFiles("Assets/Sprites/Npcs",
+                                "*.spr", SearchOption.TopDirectoryOnly).Any()
                     },
                     new CopyCategory
                     {
                         Label = "Effect Sprites",
-                        Execute = () => CopyFolder(Path.Combine(dataDir, "sprite/이팩트"), "Assets/Sprites/Effects/"),
+                        Execute = () => ImportFromGrfFolder(Path.Combine(dataDir, "sprite/이팩트"), "Assets/Sprites/Effects/"),
                         IsAlreadyImported = () =>
-                            Directory.Exists("Assets/Sprites/Effects") && Directory.GetFiles("Assets/Sprites/Effects",
+                            Directory.Exists("Assets/Sprites/Effects") && 
+                            Directory.GetFiles("Assets/Sprites/Effects", 
+                                "*.spr", SearchOption.TopDirectoryOnly).Any()
+                    },
+                    new CopyCategory
+                    {
+                        Label = "Character Heads (Male) - Import",
+                        Execute = () =>  ImportFromGrfFolder(Path.Combine(dataDir, "sprite/인간족/머리통/남"),
+                                "Assets/Sprites/Characters/HeadMale/"),
+                        IsAlreadyImported = () =>
+                            Directory.Exists("Assets/Sprites/Characters/HeadMale") && 
+                            Directory.GetFiles("Assets/Sprites/Characters/HeadMale", 
+                                "*.spr", SearchOption.TopDirectoryOnly).Any()
+                    },
+                    new CopyCategory
+                    {
+                        Label = "Character Heads (Female) -  Import",
+                        Execute = () => ImportFromGrfFolder(Path.Combine(dataDir, "sprite/인간족/머리통/여"),
+                            "Assets/Sprites/Characters/HeadFemale/"),
+                        IsAlreadyImported = () =>
+                            Directory.Exists("Assets/Sprites/Characters/HeadFemale") && 
+                            Directory.GetFiles("Assets/Sprites/Characters/HeadFemale", 
+                                "*.spr", SearchOption.TopDirectoryOnly).Any()
+                    },
+                    new CopyCategory
+                    {
+                        Label = "Character Bodies (Male)",
+                        Execute = () => ImportFromGrfFolder(Path.Combine(dataDir, "sprite/인간족/몸통/남"),
+                            "Assets/Sprites/Characters/BodyMale/"),
+                        IsAlreadyImported = () =>
+                            Directory.Exists("Assets/Sprites/Characters/BodyMale") && 
+                            Directory.GetFiles("Assets/Sprites/Characters/BodyMale", 
+                                "*.spr", SearchOption.TopDirectoryOnly).Any()
+                    },
+                    new CopyCategory
+                    {
+                        Label = "Character Bodies (Female)",
+                        Execute = () => ImportFromGrfFolder(Path.Combine(dataDir, "sprite/인간족/몸통/여"),
+                            "Assets/Sprites/Characters/BodyFemale/"),
+                        IsAlreadyImported = () =>
+                            Directory.Exists("Assets/Sprites/Characters/BodyFemale") && 
+                            Directory.GetFiles("Assets/Sprites/Characters/BodyFemale", 
                                 "*.spr", SearchOption.TopDirectoryOnly).Any()
                     },
                     new CopyCategory
@@ -408,8 +496,10 @@ namespace Assets.Editor
                         Execute = () => CopyFolder(Path.Combine(dataDir, "palette/몸"),
                             "Assets/Sprites/Characters/HeadFemale/", recursive: false, maleFemaleSplit: false,
                             filter: "*_여_*.pal"),
-                        IsAlreadyImported = () => Directory.GetFiles("Assets/Sprites/Characters/HeadFemale",
-                            "*_여_*.pal", SearchOption.TopDirectoryOnly).Any()
+                        IsAlreadyImported = () => 
+                            Directory.Exists(@"Assets/Sprites/Characters/HeadFemale") && 
+                            Directory.GetFiles("Assets/Sprites/Characters/HeadFemale", 
+                                "*_여_*.pal",SearchOption.TopDirectoryOnly).Any()
                     },
                     new CopyCategory
                     {
@@ -417,48 +507,10 @@ namespace Assets.Editor
                         Execute = () => CopyFolder(Path.Combine(dataDir, "palette/몸"),
                             "Assets/Sprites/Characters/HeadMale/", recursive: false, maleFemaleSplit: false,
                             filter: "*_남_*.pal"),
-                        IsAlreadyImported = () => Directory.GetFiles("Assets/Sprites/Characters/HeadMale", "*_남_*.pal",
-                            SearchOption.TopDirectoryOnly).Any()
-                    },
-                    new CopyCategory
-                    {
-                        Label = "Character Heads (Male)",
-                        Execute = () => CopyFolder(Path.Combine(dataDir, "sprite/인간족/머리통/남"),
-                            "Assets/Sprites/Characters/HeadMale/"),
-                        IsAlreadyImported = () =>
-                            Directory.Exists("Assets/Sprites/Characters/HeadMale") && Directory
-                                .GetFiles("Assets/Sprites/Characters/HeadMale", "*.spr", SearchOption.TopDirectoryOnly)
-                                .Any()
-                    },
-                    new CopyCategory
-                    {
-                        Label = "Character Heads (Female)",
-                        Execute = () => CopyFolder(Path.Combine(dataDir, "sprite/인간족/머리통/여"),
-                            "Assets/Sprites/Characters/HeadFemale/"),
-                        IsAlreadyImported = () =>
-                            Directory.Exists("Assets/Sprites/Characters/HeadFemale") && Directory
-                                .GetFiles("Assets/Sprites/Characters/HeadFemale", "*.spr",
-                                    SearchOption.TopDirectoryOnly).Any()
-                    },
-                    new CopyCategory
-                    {
-                        Label = "Character Bodies (Male)",
-                        Execute = () => CopyFolder(Path.Combine(dataDir, "sprite/인간족/몸통/남"),
-                            "Assets/Sprites/Characters/BodyMale/"),
-                        IsAlreadyImported = () =>
-                            Directory.Exists("Assets/Sprites/Characters/BodyMale") && Directory
-                                .GetFiles("Assets/Sprites/Characters/BodyMale", "*.spr", SearchOption.TopDirectoryOnly)
-                                .Any()
-                    },
-                    new CopyCategory
-                    {
-                        Label = "Character Bodies (Female)",
-                        Execute = () => CopyFolder(Path.Combine(dataDir, "sprite/인간족/몸통/여"),
-                            "Assets/Sprites/Characters/BodyFemale/"),
-                        IsAlreadyImported = () =>
-                            Directory.Exists("Assets/Sprites/Characters/BodyFemale") && Directory
-                                .GetFiles("Assets/Sprites/Characters/BodyFemale", "*.spr",
-                                    SearchOption.TopDirectoryOnly).Any()
+                        IsAlreadyImported = () => 
+                            Directory.Exists(@"Assets/Sprites/Characters/HeadMale") && 
+                            Directory.GetFiles("Assets/Sprites/Characters/HeadMale", 
+                                "*_남_*.pal", SearchOption.TopDirectoryOnly).Any()
                     },
                     new CopyCategory
                     {
@@ -466,7 +518,8 @@ namespace Assets.Editor
                         Execute = () =>
                             CopyFolder(Path.Combine(dataDir, "texture/유저인터페이스/illust"), "Assets/Sprites/Cutins/"),
                         IsAlreadyImported = () =>
-                            Directory.Exists("Assets/Sprites/Cutins") && Directory.GetFiles("Assets/Sprites/Cutins",
+                            Directory.Exists("Assets/Sprites/Cutins") && 
+                            Directory.GetFiles("Assets/Sprites/Cutins",
                                 "*.bmp", SearchOption.TopDirectoryOnly).Any()
                     },
                     new CopyCategory
@@ -474,27 +527,19 @@ namespace Assets.Editor
                         Label = "Weapon Sprites (All Classes)",
                         Execute = () =>
                         {
-                            var jobs = new[]
+                            // TODO: Extract these into an importable asset so that these strings are centralized
+                            var jobs = new (string kr, string en)[]
                             {
-                                "성직자", "궁수", "마법사", "상인", "초보자", "검사", "도둑", "슈퍼노비스",
-                                "기사", "위저드", "프리스트", "헌터", "어세신", "제철공", "크루세이더", "세이지",
-                                "바드", "무희", "몽크", "로그", "연금술사", "운영자", "신페코크루세이더", "페코페코_기사"
+                                ("성직자", "Acolyte"), ("궁수", "Archer"), ("마법사", "Mage"), ("상인", "Merchant"), ("초보자", "Novice"), ("검사", "Swordsman"),
+                                ("도둑", "Thief"), ("슈퍼노비스", "SuperNovice"), ("기사", "Knight"), ("위저드", "Wizard"), ("프리스트", "Priest"), ("헌터", "Hunter"),
+                                ("어세신", "Assassin"), ("제철공", "Blacksmith"), ("크루세이더", "Crusader"), ("세이지", "Sage"), ("바드", "Bard"), ("무희바지", "Dancer"),
+                                ("몽크", "Monk"), ("로그", "Rogue"), ("연금술사", "Alchemist"), ("운영자", "GameMaster"), ("신페코크루세이더", "PecoCrusader"), ("페코페코_기사_남", "PecoKnight")
                             };
-                            var outputs = new[]
-                            {
-                                "Acolyte", "Archer", "Mage", "Merchant", "Novice", "Swordsman", "Thief", "SuperNovice",
-                                "Knight", "Wizard", "Priest", "Hunter", "Assassin", "Blacksmith", "Crusader", "Sage",
-                                "Bard", "Dancer", "Monk", "Rogue", "Alchemist", "GameMaster", "PecoCrusader", "PecoKnight"
-                            };
-                            for (int i = 0; i < jobs.Length; i++)
-                                CopyFolder(Path.Combine(dataDir, $"sprite/인간족/{jobs[i]}/"),
-                                    $"Assets/Sprites/Weapons/{outputs[i]}/", false, true, "*",
-                                    (p) =>
-                                    {
-                                        for(var j = 0; j < jobs.Length; j++)
-                                            p = p.Replace(jobs[j], outputs[j]);
-                                        return p.Replace("여_", "F_").Replace("남_", "M_");
-                                    });
+                            foreach ((string kr, string en) job in jobs)
+                                ImportFromGrfFolder(Path.Combine(dataDir, $"sprite/인간족/{job.kr}/"),
+                                    $"Assets/Sprites/Weapons/{job.en}/", false, true, "*",
+                                    (p) => p.Replace($"{job.kr}_", $"{job.en}_").Replace("여_", "F_")
+                                        .Replace("남_", "M_"));
                         },
                         IsAlreadyImported = () =>
                             Directory.Exists("Assets/Sprites/Weapons") &&
@@ -505,26 +550,16 @@ namespace Assets.Editor
                         Label = "Shield Sprites (All Classes)",
                         Execute = () =>
                         {
-                            var jobs = new[]
+                            var jobs = new (string kr, string en)[]
                             {
-                                "성직자", "궁수", "마법사", "상인", "초보자", "검사", "도둑", "슈퍼노비스",
-                                "기사", "위저드", "프리스트", "헌터", "어세신", "제철공", "크루세이더", "세이지",
-                                "바드", "무희", "몽크", "로그", "연금술사", "운영자", "신페코크루세이더", "페코페코_기사"
+                                ("성직자", "Acolyte"), ("궁수", "Archer"), ("마법사", "Mage"), ("상인", "Merchant"), ("초보자", "Novice"), ("검사", "Swordsman"),
+                                ("도둑", "Thief"), ("슈퍼노비스", "SuperNovice"), ("기사", "Knight"), ("위저드", "Wizard"), ("프리스트", "Priest"), ("헌터", "Hunter"),
+                                ("어세신", "Assassin"), ("제철공", "Blacksmith"), ("크루세이더", "Crusader"), ("세이지", "Sage"), ("바드", "Bard"), ("무희바지", "Dancer"),
+                                ("몽크", "Monk"), ("로그", "Rogue"), ("연금술사", "Alchemist"), ("운영자", "GameMaster"), ("신페코크루세이더", "PecoCrusader"), ("페코페코_기사_남", "PecoKnight")
                             };
-                            var outputs = new[]
-                            {
-                                "Acolyte", "Archer", "Mage", "Merchant", "Novice", "Swordsman", "Thief", "SuperNovice",
-                                "Knight", "Wizard", "Priest", "Hunter", "Assassin", "Blacksmith", "Crusader", "Sage",
-                                "Bard", "Dancer", "Monk", "Rogue", "Alchemist", "GameMaster", "PecoCrusader", "PecoKnight"
-                            };
-                            for (int i = 0; i < jobs.Length; i++)
-                                CopyFolder(Path.Combine(dataDir, $"sprite/방패/{jobs[i]}/"),
-                                    $"Assets/Sprites/Shields/{outputs[i]}/", false, true, "*", (p) =>
-                                    {
-                                        for(var j = 0; j < jobs.Length; j++)
-                                            p = p.Replace(jobs[j], outputs[j]);
-                                        return p.Replace("여_", "F_").Replace("남_", "M_");
-                                    });
+                            foreach ((string kr, string en) job in jobs)
+                                ImportFromGrfFolder(Path.Combine(dataDir, $"sprite/방패/{job.kr}/"),
+                                    $"Assets/Sprites/Shields/{job.kr}/", false, true);
                         },
                         IsAlreadyImported = () =>
                             Directory.Exists("Assets/Sprites/Shields") &&
@@ -552,6 +587,16 @@ namespace Assets.Editor
 
                 // Initialize selections based on whether already imported
                 selections = categories.Select(cat => !cat.IsAlreadyImported()).ToArray();
+                return;
+
+                
+                bool TestPath(string fileName)
+                {
+                    string full = Path.Combine(dataDir, fileName);
+                    if (File.Exists(full)) return true;
+                    Debug.LogError($"Invalid client data directory: missing {fileName}");
+                    return false;
+                }
             }
 
             private void OnGUI()
@@ -586,53 +631,79 @@ namespace Assets.Editor
 
                 if (GUILayout.Button("Copy Selected Data", GUILayout.Height(30)))
                 {
-                    int count = 0;
                     for (int i = 0; i < categories.Count; i++)
                     {
                         if (!selections[i]) continue;
                         try
                         {
                             categories[i].Execute();
-                            count++;
                         }
                         catch (Exception ex)
                         {
-                            Debug.LogError(
-                                $"[Copy Failure] Category = '{categories[i].Label}'\n" +
+                            throw new FileLoadException(
+                                $"[Copy Failure] Category = '{categories[i].Label}" +
                                 $"Exception message: {ex.Message}\n" +
-                                $"Full stack trace:\n{ex}"
-                            );
+                                $"Full stack trace:\n{ex}");
                         }
                     }
 
                     AssetDatabase.Refresh();
-                    Debug.Log($"Copied {count} categories.");
+                    //Debug.Log($"Copied {count} categories.");
                 }
             }
 
             // Reuse copy helpers from original
-            private static bool CopyFolder(string src, string dest, bool recursive = false,
+            private static void ImportFromGrfFolder(string srcFolderPath, string destFolderPath, bool recursive = false,
+                bool maleFemaleSplit = false, string searchPattern = "*", Func<string, string> updateFileName = null)
+            {
+                if (!Directory.Exists(srcFolderPath))
+                    throw new DirectoryNotFoundException($"ImportFromGrfFolder: source directory not found: {srcFolderPath}");
+                
+                SearchOption searchOption = recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+                string[] srcFilePathArray = Directory.GetFiles(srcFolderPath, searchPattern, searchOption);
+                if (srcFilePathArray.Length == 0)
+                    throw new FileNotFoundException($"CopyFolder: no files in '{srcFolderPath}' matching '{searchPattern}'");
+                
+                foreach (string srcFilePath in srcFilePathArray)
+                {
+                    string relativePath = Path.GetRelativePath(srcFolderPath, srcFilePath);
+                    string assetFilePath = Path.Combine(destFolderPath, relativePath);
+                    if (maleFemaleSplit)
+                    {
+                        if (relativePath.Contains("_남_"))
+                            assetFilePath = Path.Combine(destFolderPath, "Male", relativePath);
+                        if (relativePath.Contains("_여_"))
+                            assetFilePath = Path.Combine(destFolderPath, "Female", relativePath);
+                    }
+                    
+                    if (updateFileName != null) assetFilePath = updateFileName(assetFilePath);
+                    string assetDirectoryPath = Path.GetDirectoryName(assetFilePath) ?? throw new NoNullAllowedException("Invalid directory on {destPath}");
+                    Directory.CreateDirectory(assetDirectoryPath);
+                    string fileExtension = Path.GetExtension(srcFilePath);
+                    if (!fileExtension.Equals(".spr", StringComparison.OrdinalIgnoreCase)) continue;
+                    //Debug.Log($"Importing file {srcFilePath} to {assetDirectoryPath}");
+                    RoDataImportManager.ImportActFile(srcFilePath.Replace(".spr",".act"), assetDirectoryPath);
+                }
+            }
+            private static void CopyFolder(string src, string dest, bool recursive = false,
                 bool maleFemaleSplit = false, string filter = "*", Func<string, string> updateFileName = null)
             {
                 if (!Directory.Exists(src))
                 {
-                    Debug.LogError($"CopyFolder: source directory not found: {src}");
-                    return false;
+                    throw new DirectoryNotFoundException($"CopyFolder: source directory not found: {src}");
                 }
 
                 var opt = recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
                 var files = Directory.GetFiles(src, filter, opt);
                 if (files.Length == 0)
                 {
-                    Debug.LogWarning($"CopyFolder: no files in '{src}' matching '{filter}'");
-                    return false;
+                    throw new FileNotFoundException($"CopyFolder: no files in '{src}' matching '{filter}'");
                 }
 
                 foreach (var path in Directory.GetFiles(src, filter, opt))
                 {
                     var rel = Path.GetRelativePath(src, path);
                     var destPath = Path.Combine(dest, rel);
-                    Debug.Log($"CopyFolder: {path} → {destPath}");
                     if (maleFemaleSplit)
                     {
                         if (rel.Contains("_남_"))
@@ -661,64 +732,56 @@ namespace Assets.Editor
                             File.Copy(path, destPath, true);
                     }
                 }
-
-                return true;
             }
 
             private static void CopySingleFile(string src, string dest)
             {
-                Debug.Log($"[CopySingleFile] Attempting to copy:\n    src = {src}\n    dest = {dest}");
+                //Debug.Log($"[CopySingleFile] Attempting to copy:\n    src = {src}\n    dest = {dest}");
                 
                 string destPath;
                 bool looksLikeFolder = dest.EndsWith("/") || dest.EndsWith("\\") || Directory.Exists(dest);
-                if (looksLikeFolder && (dest.StartsWith("Assets/") || dest.StartsWith("Assets\\")))
+                switch (looksLikeFolder)
                 {
-                    string folder = dest.TrimEnd('\\', '/');
+                    case true when (dest.StartsWith("Assets/") || dest.StartsWith("Assets\\")):
+                    {
+                        string folder = dest.TrimEnd('\\', '/');
                     
-                    string assetsSubpath = folder.Substring("Assets/".Length);
-                    destPath = Path.Combine(Application.dataPath, assetsSubpath);
+                        string assetsSubpath = folder.Substring("Assets/".Length);
+                        destPath = Path.Combine(Application.dataPath, assetsSubpath);
                     
-                    var fileName = Path.GetFileName(src);
-                    destPath = Path.Combine(destPath, fileName);
-                }
-                else if (looksLikeFolder)
-                {
-                    string folder = dest.TrimEnd('\\', '/');
-                    var fileName = Path.GetFileName(src);
-                    destPath = Path.Combine(folder, fileName);
-                }
-                else
-                {
-                    destPath = dest;
+                        string fileName = Path.GetFileName(src);
+                        destPath = Path.Combine(destPath, fileName);
+                        break;
+                    }
+                    case true:
+                    {
+                        string folder = dest.TrimEnd('\\', '/');
+                        string fileName = Path.GetFileName(src);
+                        destPath = Path.Combine(folder, fileName);
+                        break;
+                    }
+                    default:
+                        destPath = dest;
+                        break;
                 }
 
                 var parentDir = Path.GetDirectoryName(destPath);
                 if (string.IsNullOrEmpty(parentDir))
-                {
-                    Debug.LogError($"[CopySingleFile] Invalid destination: {destPath}");
-                    return;
-                }
+                    throw new DirectoryNotFoundException($"CopySingleFile: parent directory not found: {destPath}");
                 
-                if (!Directory.Exists(parentDir))
-                {
-                    Debug.Log($"[CopySingleFile] Creating directory: {parentDir}");
-                    Directory.CreateDirectory(parentDir);
-                }
+                Directory.CreateDirectory(parentDir);
                 
                 if (!File.Exists(src))
-                {
-                    Debug.LogError($"[CopySingleFile] Source not found: {src}");
-                    return;
-                }
+                    throw new FileNotFoundException($"CopySingleFile: source file not found: {src}");
                 
                 try
                 {
                     File.Copy(src, destPath, overwrite: true);
-                    Debug.Log($"[CopySingleFile] Successfully copied {src} → {destPath}");
+                    //Debug.Log($"[CopySingleFile] Successfully copied {src} → {destPath}");
                 }
                 catch (Exception ex)
                 {
-                    Debug.LogError($"[CopySingleFile] Failed to copy {src} → {destPath}\nException: {ex}");
+                    throw new FileLoadException($"[CopySingleFile] Failed to copy {src} → {destPath}\nException: {ex}");
                 }
             }
         }
@@ -777,23 +840,19 @@ namespace Assets.Editor
             }
         }
 
-        private static bool CopyFolder(string src, string dest, bool recursive = false, bool maleFemaleSplit = false,
+        private static void CopyFolder(string sourcePath, string dest, bool recursive = false,
+            bool maleFemaleSplit = false,
             string filter = "*",
             Func<string, string> updateFileName = null)
         {
             var opt = recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
 
-            var hasFiles = false;
+            Directory.CreateDirectory(dest); //CreateDirectory already checks for directory existence
 
-            if (!Directory.Exists(dest))
-                Directory.CreateDirectory(dest);
-
-            foreach (var path in Directory.GetFiles(src, filter, opt))
+            foreach (var path in Directory.GetFiles(sourcePath, filter, opt))
             {
-                var rel = Path.GetRelativePath(src, path);
+                var rel = Path.GetRelativePath(sourcePath, path);
                 var destPath = Path.Combine(dest, rel);
-
-                hasFiles = true;
 
                 if (maleFemaleSplit)
                 {
@@ -810,11 +869,9 @@ namespace Assets.Editor
                     destPath = updateFileName(destPath);
 
                 var outDir = Path.GetDirectoryName(destPath);
-                if (!Directory.Exists(outDir))
-                    Directory.CreateDirectory(outDir);
+                Directory.CreateDirectory(outDir ?? throw new InvalidOperationException("output directory must exist"));
 
                 var ext = Path.GetExtension(path);
-                var fName = Path.GetFileName(path);
 
                 if (ext == ".bmp")
                 {
@@ -826,7 +883,6 @@ namespace Assets.Editor
                         ti.crunchedCompression = false;
                         ti.textureCompression = TextureImporterCompression.CompressedHQ;
                     });
-                    //TextureImportHelper.GetOrImportTextureToProject(fName, path, destPath);
                 }
                 else
                 {
@@ -836,8 +892,6 @@ namespace Assets.Editor
             }
 
             AssetDatabase.Refresh();
-
-            return hasFiles;
         }
     }
 }
