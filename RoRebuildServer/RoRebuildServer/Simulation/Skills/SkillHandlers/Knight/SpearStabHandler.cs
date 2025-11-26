@@ -63,10 +63,10 @@ public class SpearStabHandler : SkillHandlerBase
             res2.KnockBack = 6;
             res2.IsIndirect = true;
             if (splashTarget.Character.Position == source.Character.Position)
-                res.AttackPosition = source.Character.Position - Directions.GetVectorForDirection(source.Character.FacingDirection); //if we're stacked knock back in view direction
+                res2.AttackPosition = source.Character.Position - Directions.GetVectorForDirection(source.Character.FacingDirection); //if we're stacked knock back in view direction
             source.ExecuteCombatResult(res2, false);
 
-            CommandBuilder.AttackMulti(source.Character, splashTarget.Character, res, false);
+            CommandBuilder.AttackMulti(source.Character, splashTarget.Character, res2, false);
         }
 
         CommandBuilder.SkillExecuteTargetedSkill(source.Character, target.Character, CharacterSkill.SpearStab, lvl, res);

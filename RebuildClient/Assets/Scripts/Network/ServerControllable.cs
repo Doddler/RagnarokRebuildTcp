@@ -295,7 +295,7 @@ namespace Assets.Scripts.Network
 
             if (!flags.HasFlag(SkillCastFlags.HideCastBar))
             {
-                if (skill != CharacterSkill.BowlingBash) //put this in a config or something...
+                if (CharacterType != CharacterType.Player || (skill != CharacterSkill.BowlingBash && skill != CharacterSkill.BrandishSpear)) //put this in a config or something...
                 {
                     EnsureFloatingDisplayCreated();
                     FloatingDisplay.StartCasting(duration);

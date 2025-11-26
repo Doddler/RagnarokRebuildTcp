@@ -51,7 +51,17 @@ public static class MathHelper
         return 180 - MathF.Abs(MathF.Abs(angle - angle2) - 180);
     }
 
-    public static bool IsPointInLinePath(Position lineStart, Position lineTarget, Position checkPoint, float length, float width)
+    /// <summary>
+    /// Checks if a point is within a rectangle representing a path starting from lineStart and pointing towards lineTarget.
+    /// </summary>
+    /// <param name="lineStart">The starting point of the line.</param>
+    /// <param name="lineTarget">The ending target of the line.</param>
+    /// <param name="checkPoint">The point you want to see if falls within the line.</param>
+    /// <param name="length">The length of the line. The line may stop before the target or extend past the target based on what the length is set to.</param>
+    /// <param name="width">How wide the line is.</param>
+    /// <param name="backtrackDistance">How far behind the start point you want to extend the line. Without this a checkPoint matching the lineStart may not match due to floating point accuracy.</param>
+    /// <returns>Returns true if the checkPoint is within the line bounds.</returns>
+    public static bool IsPointInLinePath(Position lineStart, Position lineTarget, Position checkPoint, float length, float width, float backtrackDistance = 0.1f)
     {
         var t1 = checkPoint.ToVector2();
         var p1 = lineStart.ToVector2();
@@ -59,6 +69,7 @@ public static class MathHelper
         
         var dirNorm = Vector2.Normalize(p2 - p1);
         p2 = p1 + dirNorm * length;
+        p1 -= dirNorm * backtrackDistance;
 
         var t = Vector2.Dot(t1 - p1, dirNorm);
         var clamped = float.Clamp(t, 0, (p2 - p1).Length());
@@ -73,6 +84,43 @@ public static class MathHelper
         var d2 = Vector2.Distance(closest, p2);
         
         return d1 < length && d2 < length;
+    }
+
+    /// <summary>
+    /// Checks if a point is within a rectangle representing a path starting from lineStart and pointing towards lineTarget.
+    /// </summary>
+    /// <param name="lineStart">The starting point of the line.</param>
+    /// <param name="lineTarget">The ending target of the line.</param>
+    /// <param name="checkPoint">The point you want to see if falls within the line.</param>
+    /// <param name="length">The length of the line. The line may stop before the target or extend past the target based on what the length is set to.</param>
+    /// <param name="width">How wide the line is.</param>
+    /// <param name="backtrackDistance">How far behind the start point you want to extend the line. Without this a checkPoint matching the lineStart may not match due to floating point accuracy.</param>
+    /// <returns>Returns true if the checkPoint is within the line path and how far away that point is to the closest point to it along the line.</returns>
+    public static (bool, float) IsPointInLinePathWithProjectedDistance(Position lineStart, Position lineTarget, Position checkPoint, float length, float width, float backtrackDistance = 0.1f)
+    {
+        var t1 = checkPoint.ToVector2();
+        var p1 = lineStart.ToVector2();
+        var p2 = lineTarget.ToVector2();
+
+        var dirNorm = Vector2.Normalize(p2 - p1);
+        p2 = p1 + dirNorm * length;
+        p1 -= dirNorm * backtrackDistance;
+
+        var t = Vector2.Dot(t1 - p1, dirNorm);
+        var clamped = float.Clamp(t, 0, (p2 - p1).Length());
+        var closest = p1 + dirNorm * clamped;
+        var dist = Vector2.Distance(closest, t1);
+
+        if (dist > width)
+            return (false, -1);
+
+        //we're within the width of the line... but are we between the two points?
+        var d1 = Vector2.Distance(closest, p1);
+        var d2 = Vector2.Distance(closest, p2);
+
+        var realLength = length + backtrackDistance;
+
+        return (d1 < realLength && d2 < realLength, Vector2.Distance(p1, closest));
     }
 
     public static float PowScaleDown(int value)

@@ -131,3 +131,5 @@
 130,SpearBoomerangSelf,TRUE,TRUE,FALSE,spearboomerang,,,0.40,,
 131,CounterAttack,TRUE,TRUE,FALSE,autocounter,,,0.40,,
 132,SpearStab,TRUE,TRUE,FALSE,spear_step,,,0.40,,
+133,BrandishTarget,TRUE,TRUE,FALSE,brandish,,,0,,
+134,BrandishSelf,TRUE,TRUE,FALSE,brandish2,,,0,,
