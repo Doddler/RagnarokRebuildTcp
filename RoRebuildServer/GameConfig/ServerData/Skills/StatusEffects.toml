@@ -212,6 +212,12 @@ Icon = "라이딩"
 CanDispel = false
 CanDisable = false
 
+[VenomSplasher]
+Name = "Venom Splasher"
+Type = "Debuff"
+CanDispel = false
+CanDisable = false
+
 #----------------------------------
 # Priest
 #----------------------------------

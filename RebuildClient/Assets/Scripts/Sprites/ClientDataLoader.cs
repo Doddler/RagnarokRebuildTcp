@@ -1058,6 +1058,9 @@ namespace Assets.Scripts.Sprites
                     SanctuaryEffect.Create(control, true);
                     //DummyGroundEffect.Create(obj, "Sanctuary");
                     break;
+                case NpcEffectType.VenomDust:
+                    DummyGroundEffect.Create(obj, "VenomDust");
+                    break;
                 case NpcEffectType.AnkleSnare:
                     AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelAnkleSnare.prefab");
                     break;

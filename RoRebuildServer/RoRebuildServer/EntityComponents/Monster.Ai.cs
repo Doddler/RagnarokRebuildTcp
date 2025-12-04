@@ -75,7 +75,7 @@ public partial class Monster
             return true;
 
         //if it's a 1 tile long path we never want to bail early (starting step counts as 1)
-        if (Character.TotalMoveSteps <= 2) 
+        if (Character.TotalMoveSteps <= 2)
             return false;
 
         if (Character.StepsRemaining == 1)
@@ -356,7 +356,7 @@ public partial class Monster
     {
         if (Character.Map == null || Character.Map.PlayerCount == 0)
             return false;
-        
+
         if (!FindRandomTargetInRange(AttackSight, out var newTarget))
             return false;
 
@@ -512,6 +512,7 @@ public partial class Monster
         }
 
         nextMoveUpdate = Time.ElapsedTimeFloat + GameRandom.NextFloat(4f, 6f); // + extraTime;
+
         //inAdjustMove = false;
 
         return true;

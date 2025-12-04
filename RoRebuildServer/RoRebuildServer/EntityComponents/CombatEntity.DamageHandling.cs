@@ -286,6 +286,7 @@ public partial class CombatEntity
         var attackElement = req.Element;
         var attackMultiplier = req.AttackMultiplier;
         var attackerType = Character.Type;
+        var attackerRace = GetRace();
         var defenderType = target.Character.Type;
         var defenderElement = target.GetElement();
         var isPhysical = req.Flags.HasFlag(AttackFlags.Physical);
@@ -321,9 +322,16 @@ public partial class CombatEntity
         if (isPhysical && !flags.HasFlag(AttackFlags.IgnoreEvasion))
             evade = !TestHitVsEvasion(target, req.AccuracyRatio, attackerPenalty * (5 + attackerPenalty / 2));
 
+        if (isPhysical && (GetSpecialType() == CharacterSpecialType.Boss || attackerRace == CharacterRace.Demon ||
+                           attackerRace == CharacterRace.Insect))
+        {
+            req.Flags |= AttackFlags.CanAttackHidden;
+            flags |= AttackFlags.CanAttackHidden;
+        }
+
         if (target.HasBodyState(BodyStateFlags.Hidden) && !flags.HasFlag(AttackFlags.IgnoreEvasion)
-                                                            && !flags.HasFlag(AttackFlags.CanAttackHidden)
-                                                            && !(attackElement == AttackElement.Earth && flags.HasFlag(AttackFlags.Magical))) //earth magic breaks hide
+                                                       && !flags.HasFlag(AttackFlags.CanAttackHidden)
+                                                       && !(attackElement == AttackElement.Earth && flags.HasFlag(AttackFlags.Magical))) //earth magic breaks hide
             evade = true;
 
         //critical hit
@@ -926,7 +934,9 @@ public partial class CombatEntity
         if (Character.Type == CharacterType.Monster && Character.Monster.CurrentAiState != MonsterAiState.StateAttacking)
         {
             if (di.Source.TryGet<WorldObject>(out var src) &&
-                src.Position.DistanceTo(Character.Position) <= Character.Monster.MonsterBase.Range)
+                src.Position.DistanceTo(Character.Position) <= Character.Monster.MonsterBase.Range &&
+                src.Type != CharacterType.NPC &&
+                src.CombatEntity.CanBeTargeted(this))
             {
                 Character.Monster.Target = di.Source;
                 Character.Monster.CurrentAiState = MonsterAiState.StateAttacking;

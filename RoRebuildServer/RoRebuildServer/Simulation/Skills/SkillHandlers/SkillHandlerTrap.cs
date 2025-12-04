@@ -151,6 +151,8 @@ public abstract class TrapBaseEvent : NpcBehaviorBase
     {
         if (!Attackable)
             return false;
+        if (attacker.Character.Type == CharacterType.Monster)
+            return false;
         if (skill == CharacterSkill.None) return AllowAutoAttackMove;
 
         var attr = SkillHandler.GetSkillAttributes(skill);

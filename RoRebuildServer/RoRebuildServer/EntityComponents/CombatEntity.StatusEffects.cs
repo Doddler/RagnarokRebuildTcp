@@ -321,7 +321,7 @@ public partial class CombatEntity
         if (resistChance != 100)
             resist = resist * resistChance / 100;
 
-        if (!CheckLuckModifiedRandomChanceVsTarget(target, (int)(chanceIn1000 * resist), 1000))
+        if (chanceIn1000 < 100_000 && !CheckLuckModifiedRandomChanceVsTarget(target, (int)(chanceIn1000 * resist), 1000))
             return false;
 
         if (baseDamage == 0)

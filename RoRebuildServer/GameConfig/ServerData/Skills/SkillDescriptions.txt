@@ -357,6 +357,15 @@ Enchant the weapon or yourself or an ally to deal poison property damage. Also a
 Unequipping or swapping weapons will cause the effect to end early.
 Duration: [15 + SkillLevel * 15]s
 
+::VenomSplasher
+Strikes a target with 100% physical damage and inflict them with a time delayed toxin.
+While inflicted all physical damage dealt to the target will be stored, to a maximum of [600 + 150 * SkillLevel]% ATK.
+After 12 seconds elapses an explosion will occur dealing the accumulated damage as poison property damage to the target and 2/3 of the amount to nearby targets.
+The skill will detonate early if the accumulated damage either reaches the maximum amount or exceeds the target's remaining HP.
+Catalyst: <color=#777777>1 Red Gemstone</color>
+Cast Time: 1s
+Skill Cooldown: 3s
+
 //----------------Blacksmith-------------------
 
 ::HammerFall

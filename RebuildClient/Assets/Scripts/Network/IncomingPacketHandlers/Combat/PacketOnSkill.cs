@@ -139,7 +139,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 MotionTime = motionTime,
                 DamageTiming = damageTiming,
                 Target = controllable2,
-                Src = controllable
+                Src = controllable,
+                IsIndirect = isIndirect
             };
             var dmgSound = ClientSkillHandler.SkillTakesWeaponSound(skill);
 

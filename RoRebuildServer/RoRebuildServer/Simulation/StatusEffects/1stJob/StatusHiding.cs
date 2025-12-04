@@ -14,6 +14,9 @@ public class StatusHiding : StatusEffectBase
 
     public override StatusUpdateResult OnUpdateTick(CombatEntity ch, ref StatusEffectState state)
     {
+        if (state.Value4 == 1)
+            return StatusUpdateResult.EndStatus;
+
         if (ch.Character.Type != CharacterType.Player)
             return StatusUpdateResult.Continue;
         
@@ -39,7 +42,7 @@ public class StatusHiding : StatusEffectBase
 
     public override StatusUpdateResult OnCalculateDamage(CombatEntity ch, ref StatusEffectState state, ref AttackRequest req, ref DamageInfo info)
     {
-        if ((req.Flags & AttackFlags.CanAttackHidden) != 0 && info.IsDamageResult && info.Damage > 0)
+        if ((req.Flags & AttackFlags.CanAttackHidden) > 0 && info.IsDamageResult && info.Damage > 0)
             state.Value4 = 1;
 
         //if (ch.GetSpecialType() == CharacterSpecialType.Boss)

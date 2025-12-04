@@ -18,7 +18,10 @@ public abstract class SkillHandlerBase
     public SkillClass SkillClassification = SkillClass.Unique;
     protected const int DefaultMagicCastRange = 9;
 
-    protected const int BlueGemstone = 717; //blue gemstone
+    protected const int YellowGemstone = 715;
+    protected const int RedGemstone = 716;
+    protected const int BlueGemstone = 717;
+    
     protected const int HolyWater = 523;
 
     public virtual bool IsAreaTargeted => false;

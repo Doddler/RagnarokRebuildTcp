@@ -945,6 +945,9 @@ Icon = "as_splasher"
 Target = "Enemy"
 MaxLevel = 10
 SpCost = [12,14,16,18,20,22,24,26,28,30]
+InterruptMode = "NoInterrupt"
+
+[VenomSplasherDetonation]
 
 [SonicAcceleration]
 [VenomKnife]

@@ -186,7 +186,7 @@ Cloaking = [["Hiding",2]]
 Grimtooth = [["SonicBlow",5],["Cloaking",2]]
 EnchantPoison = [["Envenom",1]]
 PoisonReact = [["EnchantPoison",3]]
-VenomDust = [["VenomDust",5]]
+VenomDust = [["EnchantPoison",5]]
 VenomSplasher = [["PoisonReact",5],["VenomDust",5]]
 
 [Blacksmith]

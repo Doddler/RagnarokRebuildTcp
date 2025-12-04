@@ -24,7 +24,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
                 return StatusUpdateResult.Continue; //only do this every 3 seconds
             state.Value4 = (byte)(ch.Character.Type == CharacterType.Player ? 3 : 2);
 
-            if (ch.Character.Type == CharacterType.Monster && ch.HpPercent < 20 && ch.Character.Monster.TimeSinceLastDamage > 3f)
+            if (ch.Character.Type == CharacterType.Monster && (ch.HpPercent < 20 || ch.GetSpecialType() == CharacterSpecialType.Boss) && ch.Character.Monster.TimeSinceLastDamage > 3f)
                 return StatusUpdateResult.Continue;
 
             var attackerEntity = World.Instance.GetEntityById(state.Value1);
@@ -55,7 +55,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
                 Time = 0,
                 AttackMotionTime = 0,
                 AttackPosition = ch.Character.Position,
-                Flags = DamageApplicationFlags.NoHitLock | DamageApplicationFlags.SkipOnHitTriggers
+                Flags = DamageApplicationFlags.NoHitLock | DamageApplicationFlags.SkipOnHitTriggers | DamageApplicationFlags.PhysicalDamage
             };
             
             ch.ExecuteCombatResult(di, false, false);

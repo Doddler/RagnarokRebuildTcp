@@ -1,24 +1,26 @@
-﻿using RebuildSharedData.Data;
+﻿using RebuildSharedData.ClientTypes;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
+using RebuildSharedData.Util;
 using RoRebuildServer.Data;
+using RoRebuildServer.Data.Monster;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
+using RoRebuildServer.ScriptSystem;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Skills;
+using RoRebuildServer.Simulation.Skills.SkillHandlers.Priest;
+using RoRebuildServer.Simulation.StatusEffects.Setup;
 using RoRebuildServer.Simulation.Util;
 using System.Diagnostics.CodeAnalysis;
-using RoRebuildServer.Simulation.StatusEffects.Setup;
-using RebuildSharedData.ClientTypes;
-using RebuildSharedData.Util;
 using System.Runtime.CompilerServices;
-using RoRebuildServer.ScriptSystem;
 using System.Runtime.InteropServices;
-using RoRebuildServer.Data.Monster;
 using System.Text.RegularExpressions;
 
 namespace RoRebuildServer.EntityComponents;
@@ -174,6 +176,15 @@ public partial class CombatEntity : IEntityAutoReset
             return;
         World.Instance.CreateEvent(Entity, Character.Map, eventName, Character.Position, param1, param2, param3, param4, null);
     }
+
+    [ScriptUseable]
+    public void CreateEvent(string eventName, Position position, int param1 = 0, int param2 = 0, int param3 = 0, int param4 = 0)
+    {
+        if (Character.Map == null)
+            return;
+        World.Instance.CreateEvent(Entity, Character.Map, eventName, position, param1, param2, param3, param4, null);
+    }
+
 
     [ScriptUseable]
     public bool IsEventNearby(string eventName, int range)
@@ -717,6 +728,9 @@ public partial class CombatEntity : IEntityAutoReset
                 return false;
             if (!canHarmAllies && source.Entity.Type == EntityType.Monster && Character.Entity.Type == EntityType.Monster)
                 return false;
+            if (Character.Entity.Type == EntityType.BattleNpc && !Character.BattleNpc.CanBeTargeted(source, CharacterSkill.None))
+                return false;
+
         }
 
         //if (source.Entity.Type == EntityType.Player)
