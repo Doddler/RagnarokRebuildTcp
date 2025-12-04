@@ -97,7 +97,7 @@ public class PacketSocketEquipment : IClientPacketHandler
                 break;
             }
         }
-            
+
         if (targetSlot < 0) // if there are no free slots
         {
             ServerLogger.LogWarning($"Player {player} tried to socket item {srcData.Code} into an item {targetData.Code}, but it has no free slots.");
@@ -130,6 +130,5 @@ public class PacketSocketEquipment : IClientPacketHandler
 
         OnError:
         CommandBuilder.ErrorMessage(connection, "Socketing failed.");
-
     }
 }

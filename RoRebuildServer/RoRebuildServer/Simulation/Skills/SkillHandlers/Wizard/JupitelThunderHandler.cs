@@ -32,12 +32,12 @@ public class JupitelThunderHandler : SkillHandlerBase
 
         var res = source.CalculateCombatResult(target, 1, hitCount, AttackFlags.Magical, CharacterSkill.JupitelThunder, AttackElement.Wind);
         res.KnockBack = (byte)knockBack;
-        
+
         var dist = source.Character.WorldPosition.DistanceTo(target.Character.WorldPosition);
         var distTime = dist * 0.025f;
         res.Time = Time.ElapsedTimeFloat + res.AttackMotionTime * 0.7f + distTime;
-        
-        if(!isIndirect)
+
+        if (!isIndirect)
             source.ApplyCooldownForAttackAction(target);
 
         var ch = source.Character;

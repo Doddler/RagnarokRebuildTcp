@@ -44,7 +44,6 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
                 CommandBuilder.ErrorMessage(player, $"Failed to remove item from inventory.");
                 return;
             }
-
         }
     }
 }

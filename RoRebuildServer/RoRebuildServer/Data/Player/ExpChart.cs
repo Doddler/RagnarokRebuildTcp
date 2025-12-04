@@ -9,7 +9,7 @@ public class ExpChart
     {
         if (lvl <= 0 || lvl >= 70)
             return -1;
-        
+
         if (jobId == 0)
             return JobExpRequired[lvl];
 

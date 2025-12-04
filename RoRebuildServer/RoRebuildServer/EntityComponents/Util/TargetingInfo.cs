@@ -13,7 +13,6 @@ public enum TargetingType : byte
     Everyone = Player | Party | Faction | Enemies
 }
 
-
 public struct TargetingInfo
 {
     public Entity SourceEntity;

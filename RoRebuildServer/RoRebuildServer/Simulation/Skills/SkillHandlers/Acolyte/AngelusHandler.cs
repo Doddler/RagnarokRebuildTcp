@@ -25,7 +25,7 @@ public class AngelusHandler : SkillHandlerBase
         var dp = 0;
         if (ch.Type == CharacterType.Player)
             dp = source.Player.MaxLearnedLevelOfSkill(CharacterSkill.DivineProtection);
-        
+
         var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Angelus, 30f + 30 * lvl, lvl, dp);
         source.AddStatusEffect(status);
         ch.Map?.AddVisiblePlayersAsPacketRecipients(source.Character);

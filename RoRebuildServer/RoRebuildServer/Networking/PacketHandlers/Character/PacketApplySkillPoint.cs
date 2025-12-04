@@ -26,7 +26,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
                 CommandBuilder.ErrorMessage(player, "Insufficient skill points.");
                 return;
             }
-            
+
             //do we already know the max level of this skill?
             var knownLevel = player.LearnedSkills.GetValueOrDefault(skillId, 0);
             if (knownLevel >= skill.MaxLevel)
@@ -56,13 +56,13 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
                     return;
                 }
             }
-            
+
             if (!CheckPrereqFromTree(skillId, player))
             {
                 CommandBuilder.ErrorMessage(player, "You do not meet the requirements to level up this skill.");
                 return;
             }
-            
+
             player.AddSkillToCharacter(skillId, knownLevel + 1);
             player.SetData(PlayerStat.SkillPoints, points - 1);
 
@@ -93,7 +93,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
             if (!found)
                 return false;
 
-            if(prereqs == null) return true;
+            if (prereqs == null) return true;
             for (var i = 0; i < prereqs.Count; i++)
             {
                 var prereq = prereqs[i];

@@ -5,6 +5,7 @@ namespace RebuildSharedData.Util;
 public static class JobTypes
 {
     public static bool IsBaseJob(int id, JobType type) => IsBaseJob((JobType)id, type);
+
     public static bool IsBaseJob(JobType t, JobType type)
     {
         switch (type)
@@ -13,7 +14,7 @@ public static class JobTypes
             case JobType.JobSwordsman:
                 return t is JobType.JobSwordsman or JobType.JobKnight or JobType.JobPecoKnight or JobType.JobCrusader
                     or JobType.JobPecoCrusader;
-            case JobType.JobAcolyte: 
+            case JobType.JobAcolyte:
                 return t is JobType.JobAcolyte or JobType.JobPriest or JobType.JobMonk;
             case JobType.JobArcher:
                 return t is JobType.JobArcher or JobType.JobHunter or JobType.JobDancer or JobType.JobBard;

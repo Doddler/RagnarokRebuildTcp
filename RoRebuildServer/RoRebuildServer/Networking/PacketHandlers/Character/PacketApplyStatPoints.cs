@@ -15,7 +15,7 @@ public class PacketApplyStatPoints : IClientPacketHandler
         Span<int> stats = stackalloc int[6];
         for (var i = 0; i < 6; i++)
             stats[i] = msg.ReadInt32();
-    
+
         player.AddStatPoints(stats);
     }
 }

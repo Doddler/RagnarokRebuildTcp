@@ -6,13 +6,13 @@ public class EntityComponentPool
 {
     private const int DefaultRetained = 128;
 
-    private object[] pool;
-    private int count;
-    private Type type;
-
 #if DEBUG
-    readonly List<FieldInfo> nullableFields = new List<FieldInfo>(8);
+    private readonly List<FieldInfo> nullableFields = new(8);
 #endif
+
+    private readonly object[] pool;
+    private int count;
+    private readonly Type type;
 
     public EntityComponentPool(Type type)
     {
@@ -34,7 +34,6 @@ public class EntityComponentPool
                 if (fType == typeof(Entity))
                     nullableFields.Add(field);
             }
-
         }
 #endif
     }
@@ -43,11 +42,11 @@ public class EntityComponentPool
     {
         if (count == 0)
             return Activator.CreateInstance(type)!;
-        
+
         count--;
         return pool[count];
     }
-    
+
     public T Get<T>()
     {
         if (count == 0)
@@ -59,13 +58,13 @@ public class EntityComponentPool
 
     public void Return(object e)
     {
-        if(e is IEntityAutoReset reset)
+        if (e is IEntityAutoReset reset)
             reset.Reset();
 
 #if DEBUG
         if (type != e.GetType())
             throw new Exception("Attempting to return incorrect type to EntityComponentPool!");
-        
+
         for (var i = 0; i < nullableFields.Count; i++)
         {
             if (nullableFields[i].FieldType.IsValueType)
@@ -85,7 +84,7 @@ public class EntityComponentPool
 
         if (count >= DefaultRetained)
             return;
-        
+
         pool[count++] = e;
     }
 }

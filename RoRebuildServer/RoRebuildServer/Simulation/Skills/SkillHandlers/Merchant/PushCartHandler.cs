@@ -21,7 +21,7 @@ public class PushCartHandler : SkillHandlerBase
     {
         if (owner.Character.Type != CharacterType.Player)
             return;
-            
+
         owner.Player.PlayerFollower &= ~PlayerFollower.AnyCart;
     }
 

@@ -18,9 +18,9 @@ public class PacketNpcClick : IClientPacketHandler
         var character = connection.Character;
 
         if (character == null || connection.Player == null
-            //|| character.State == CharacterState.Sitting
-            || character.State == CharacterState.Dead
-            || character.Player.IsInNpcInteraction)
+                              //|| character.State == CharacterState.Sitting
+                              || character.State == CharacterState.Dead
+                              || character.Player.IsInNpcInteraction)
             return;
 
         if (!character.Player.CanPerformCharacterActions() && !character.CombatEntity.HasBodyState(BodyStateFlags.Hidden))
@@ -29,13 +29,13 @@ public class PacketNpcClick : IClientPacketHandler
         connection.Player.AddInputActionDelay(InputActionCooldownType.Click);
 
         var targetNpc = World.Instance.GetEntityById(id);
-        
+
         if (targetNpc.Type != EntityType.Npc)
             return;
 
         if (targetNpc.IsNull() || !targetNpc.IsAlive())
             return;
-        
+
         var npc = targetNpc.Get<Npc>();
 
         if (!npc.HasInteract)
@@ -45,9 +45,9 @@ public class PacketNpcClick : IClientPacketHandler
         character.Player.ClearTarget();
 
         npc.OnInteract(character.Player);
-        
-        if(!character.IsMoving)
+
+        if (!character.IsMoving)
             character.LookAtEntity(ref targetNpc);
-            //character.ChangeLookDirection(ref connection.Entity, (npcChar.Position - character.Position).Normalize().GetDirectionForOffset(), HeadFacing.Center);
+        //character.ChangeLookDirection(ref connection.Entity, (npcChar.Position - character.Position).Normalize().GetDirectionForOffset(), HeadFacing.Center);
     }
 }

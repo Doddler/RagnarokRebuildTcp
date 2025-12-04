@@ -59,14 +59,14 @@ namespace RoRebuildServer.Simulation.StatusEffects._2ndJobs
             map.GatherEnemiesInArea(attacker.Character, ch.Character.Position, 2, targetList, true, true);
 
             var attackReq = new AttackRequest(CharacterSkill.VenomSplasherDetonation, 1, 1,
-                 AttackFlags.IgnoreDefense | AttackFlags.IgnoreEvasion | AttackFlags.NoDamageModifiers, AttackElement.Poison);
+                AttackFlags.IgnoreDefense | AttackFlags.IgnoreEvasion | AttackFlags.NoDamageModifiers, AttackElement.Poison);
             var atk = (int)state.Value3;
             if (atk <= 0)
                 atk = 1;
             if (atk > state.Value2)
                 atk = state.Value2;
             attackReq.MinAtk = attackReq.MaxAtk = atk;
-            
+
             var res = attacker.CalculateCombatResult(ch, attackReq);
             res.IsIndirect = true;
             res.Time = 0;
@@ -74,7 +74,7 @@ namespace RoRebuildServer.Simulation.StatusEffects._2ndJobs
             CommandBuilder.SkillExecuteTargetedSkill(attacker.Character, ch.Character, CharacterSkill.VenomSplasherDetonation, 1, res);
 
             attackReq.AttackMultiplier = 2 / 3f;
-            
+
             foreach (var e in targetList)
             {
                 if (!e.TryGet<WorldObject>(out var blastTarget) || blastTarget == ch.Character)

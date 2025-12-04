@@ -1,6 +1,5 @@
 ﻿namespace RebuildSharedData.Util;
 
-
 public enum PlayerSummaryData
 {
     Level,

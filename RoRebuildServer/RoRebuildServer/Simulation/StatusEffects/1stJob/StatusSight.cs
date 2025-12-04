@@ -20,7 +20,7 @@ public class StatusSight : StatusEffectBase
         if (!e.IsAlive())
             return StatusUpdateResult.EndStatus;
 
-        if (!e.TryGet<Npc>(out var npc)) 
+        if (!e.TryGet<Npc>(out var npc))
             return StatusUpdateResult.EndStatus;
 
         if (npc.Character.Map != ch.Character.Map || !src.IsValid())
@@ -94,7 +94,7 @@ public class SightObjectEvent : NpcBehaviorBase
         npc.AreaOfEffect = aoe;
         npc.Character.Map!.CreateAreaOfEffect(aoe);
     }
-    
+
     public override void OnAoEInteraction(Npc npc, CombatEntity target, AreaOfEffect aoe)
     {
         if (!npc.IsOwnerAlive)

@@ -33,7 +33,7 @@ public abstract class SkillHandlerTrap : SkillHandlerBase
                     return SkillValidationResult.MissingRequiredItem;
             }
         }
-        
+
         return base.ValidateTarget(source, target, position, lvl, false, false);
     }
 
@@ -44,7 +44,7 @@ public abstract class SkillHandlerTrap : SkillHandlerBase
     {
         var map = source.Character.Map;
         Debug.Assert(map != null);
-        
+
         //we check the cell here because it could have changed since regular validation via ice wall, script, etc.
         if (!map.WalkData.IsCellWalkable(position))
         {
@@ -73,7 +73,7 @@ public abstract class SkillHandlerTrap : SkillHandlerBase
     {
         var map = source.Character.Map;
         Debug.Assert(map != null);
-        
+
         if (source.Character.Type == CharacterType.Player && !source.Player.TryRemoveItemFromInventory(Catalyst(), CatalystCount(), true))
             return;
 
@@ -93,12 +93,12 @@ public abstract class TrapBaseEvent : NpcBehaviorBase
     protected abstract CharacterSkill SkillSource();
     protected abstract NpcEffectType EffectType();
     protected abstract float Duration(int skillLevel);
-    
+
     protected virtual bool Attackable => false;
     protected virtual bool AllowAutoAttackMove => false;
     protected virtual bool BlockMultipleActivations => true;
     protected virtual bool InheritOwnerFacing => false;
-    
+
     public override void InitEvent(Npc npc, int param1, int param2, int param3, int param4, string? paramString)
     {
         if (npc.Character.Type != CharacterType.BattleNpc)
@@ -163,8 +163,8 @@ public abstract class TrapBaseEvent : NpcBehaviorBase
     {
         di.Result = AttackResult.Invisible;
         //di.Damage = 1;
-        
-        if(di.AttackSkill == CharacterSkill.None && AllowAutoAttackMove)
+
+        if (di.AttackSkill == CharacterSkill.None && AllowAutoAttackMove)
             di.KnockBack = 3;
 
         if (attacker.Character.Type == CharacterType.Player)
@@ -188,11 +188,11 @@ public abstract class TrapBaseEvent : NpcBehaviorBase
             npc.EndEvent();
         }
 
-        if(npc.ValuesInt[2] > 0)
+        if (npc.ValuesInt[2] > 0)
             npc.EndEvent();
     }
 
-    public virtual void OnNaturalExpiration(Npc npc) {}
+    public virtual void OnNaturalExpiration(Npc npc) { }
 
     protected void HunterTrapExpiration(Npc npc)
     {
@@ -201,7 +201,6 @@ public abstract class TrapBaseEvent : NpcBehaviorBase
 
         var item = new GroundItem(npc.Character.Position, 1065, 1);
         npc.Character.Map?.DropGroundItem(ref item);
-
     }
 
     public abstract bool TriggerTrap(Npc npc, CombatEntity src, CombatEntity target, int skillLevel);

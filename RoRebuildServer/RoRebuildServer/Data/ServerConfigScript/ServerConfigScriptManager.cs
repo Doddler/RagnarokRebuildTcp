@@ -43,7 +43,7 @@ public class ServerConfigScriptManager
 
     public void SetMonsterSpawnTime(MonsterDatabaseInfo monster, string mapName, ref int minTime, ref int maxTime)
     {
-        foreach(var c in handlers)
+        foreach (var c in handlers)
             c.OnSetMonsterSpawnTime(monster, mapName, ref minTime, ref maxTime);
     }
 
@@ -55,7 +55,7 @@ public class ServerConfigScriptManager
 
             foreach (var c in handlers)
                 price = c.OnSetItemPurchasePrice(item.ItemClass, item.Code, item.SubCategory, price);
-            
+
             var sellValue = price;
             foreach (var c in handlers)
                 sellValue = c.OnSetItemSaleValue(item.ItemClass, item.Code, item.SubCategory, sellValue);
@@ -75,7 +75,7 @@ public class ServerConfigScriptManager
 
     public void PostServerStartEvent()
     {
-        foreach(var c in handlers)
+        foreach (var c in handlers)
             c.PostServerStartEvent();
     }
 
@@ -87,14 +87,13 @@ public class ServerConfigScriptManager
     }
 }
 
-
 public abstract class ServerConfigScriptHandlerBase
 {
-    public virtual void Init() {}
+    public virtual void Init() { }
     public virtual int OnLoadDropData(ItemClass type, string code, string subType, int rate) => rate;
-    public virtual void OnSetMonsterSpawnTime(MonsterDatabaseInfo monster, string mapName, ref int minTime, ref int maxTime) {}
+    public virtual void OnSetMonsterSpawnTime(MonsterDatabaseInfo monster, string mapName, ref int minTime, ref int maxTime) { }
     public virtual int OnSetItemPurchasePrice(ItemClass type, string code, string subType, int price) => price;
     public virtual int OnSetItemSaleValue(ItemClass type, string code, string subType, int price) => price;
-    public virtual void PostServerStartEvent() {}
+    public virtual void PostServerStartEvent() { }
     public virtual void UnloadServerConfigScript() { }
 }

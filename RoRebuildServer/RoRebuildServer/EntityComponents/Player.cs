@@ -40,7 +40,9 @@ public class Player : IEntityAutoReset
     public int StorageId { get; set; }
     public int CharacterSlot { get; set; }
     public string Name { get; set; } = "Uninitialized Player";
+
     public HeadFacing HeadFacing;
+
     //public PlayerData Data { get; set; }
     [ScriptUseable] public bool IsAdmin { get; set; }
     public bool IsInNpcInteraction { get; set; }
@@ -56,6 +58,7 @@ public class Player : IEntityAutoReset
         get;
         set;
     } = new();
+
     [EntityIgnoreNullCheck] public MapMemoLocation[] MemoLocations = new MapMemoLocation[4];
     [EntityIgnoreNullCheck] public List<SkillCastInfo> IndirectCastQueue { get; set; } = null!;
     [EntityIgnoreNullCheck] public Dictionary<int, int>? AttackVersusTag { get; set; }
@@ -106,6 +109,7 @@ public class Player : IEntityAutoReset
             return true;
         return false;
     }
+
     public int MaxLearnedLevelOfSkill(CharacterSkill skill) => LearnedSkills.TryGetValue(skill, out var learned) ? learned : 0;
 
     public int MaxAvailableLevelOfSkill(CharacterSkill skill)
@@ -114,12 +118,12 @@ public class Player : IEntityAutoReset
             LearnedSkills.TryGetValue(skill, out var learned) ? learned : 0,
             GrantedSkills != null && GrantedSkills.TryGetValue(skill, out var granted) ? granted : 0
         );
-
     }
 
     public void SetSkillSpecificCooldown(CharacterSkill skill, float time) => SkillSpecificCooldowns[skill] = Time.ElapsedTimeFloat + time;
 
-    [ScriptUseable] public int GetNpcFlag(string flag) => NpcFlags != null && NpcFlags.TryGetValue(flag, out var val) ? val : 0;
+    [ScriptUseable]
+    public int GetNpcFlag(string flag) => NpcFlags != null && NpcFlags.TryGetValue(flag, out var val) ? val : 0;
 
     [ScriptUseable]
     public void SetNpcFlag(string flag, int val)
@@ -135,6 +139,7 @@ public class Player : IEntityAutoReset
         get;
         set;
     }
+
     private float regenHpTickTime { get; set; }
     private float regenSpTickTime { get; set; }
     private bool isSittingHpTick;
@@ -142,6 +147,7 @@ public class Player : IEntityAutoReset
 
     private const float HpRegenTickTime = 6f;
     private const float SpRegenTickTime = 6f;
+
     public void ResetRegenTickTime()
     {
         regenHpTickTime = HpRegenTickTime / 2f;
@@ -337,13 +343,14 @@ public class Player : IEntityAutoReset
                 SetData(PlayerStat.Str + i, 1); //should never happen, but lookups will break if they have 0 in any stat so fix it
                 hasStatFix = true;
             }
+
         if (hasStatFix)
             ServerLogger.LogError($"Player {this} initialized with one or more stats set to 0, something must have gone wrong loading their data.");
 
         //if this is their first time logging in, they get a free Knife
         var isNewCharacter = GetData(PlayerStat.Status) == 0 || (Inventory == null && GetData(PlayerStat.Level) <= 3);
         if (GetData(PlayerStat.Level) <= 1 && GetData(PlayerStat.Job) == 0
-            && Equipment.GetEquipmentIdBySlot(EquipSlot.Weapon) <= 0 && Equipment.GetEquipmentIdBySlot(EquipSlot.Body) <= 0)
+                                           && Equipment.GetEquipmentIdBySlot(EquipSlot.Weapon) <= 0 && Equipment.GetEquipmentIdBySlot(EquipSlot.Body) <= 0)
             isNewCharacter = true;
         if (isNewCharacter)
         {
@@ -354,6 +361,7 @@ public class Player : IEntityAutoReset
                 var bagId = AddItemToInventory(item);
                 Equipment.EquipItem(bagId, EquipSlot.Weapon);
             }
+
             if (DataManager.ItemIdByName.TryGetValue("Cotton_Shirt", out var shirt))
             {
                 var item = new ItemReference(shirt, 1);
@@ -366,6 +374,7 @@ public class Player : IEntityAutoReset
                 var item = new ItemReference(apple, 15);
                 AddItemToInventory(item);
             }
+
             SetData(PlayerStat.Status, 1);
             UpdateStats(false, false); //update without sending update because we want to trigger inventory update too
             CombatEntity.FullRecovery(true, true);
@@ -417,8 +426,8 @@ public class Player : IEntityAutoReset
     {
         if (VendingState != null)
         {
-
         }
+
         ReturnToSavePoint();
     }
 
@@ -545,6 +554,7 @@ public class Player : IEntityAutoReset
                 }
             }
         }
+
         packet.Write(sendInventory);
         if (sendInventory)
         {
@@ -835,7 +845,7 @@ public class Player : IEntityAutoReset
         var speedScore = (agi + dex / 4) * 5 / 3; //agi * 1.6667
         var speedBoost = 1 + ((MathHelper.PowScaleUp(speedScore) - 1) / 4.8f);
         var statSpeedValue = 1f / speedBoost;
-        
+
         var recharge = jobAspd * aspdBonus * statSpeedValue;
         */
         //--- end old formula -------------------------------------------------------
@@ -1024,7 +1034,7 @@ public class Player : IEntityAutoReset
                 break;
             case 4: //spear
             case 5: //2hand spear
-                if(HasPeco)
+                if (HasPeco)
                     mastery = MaxLearnedLevelOfSkill(CharacterSkill.SpearMastery) * 5;
                 else
                     mastery = MaxLearnedLevelOfSkill(CharacterSkill.SpearMastery) * 4;
@@ -1072,7 +1082,7 @@ public class Player : IEntityAutoReset
             PlayerFollower = 0; //this call will double for removing the bird too
             SetData(PlayerStat.FollowerType, 0);
         }
-        
+
         RefreshWeaponMastery();
         UpdateStats(false, false);
         Character.Map?.RefreshEntity(Character);
@@ -1766,7 +1776,6 @@ public class Player : IEntityAutoReset
             {
                 CommandBuilder.RemoveItemFromInventory(this, Equipment.AmmoId, 1);
             }
-
         }
     }
 
@@ -1902,6 +1911,7 @@ public class Player : IEntityAutoReset
                     CommandBuilder.RemoveItemFromInventory(this, Equipment.AmmoId, 1);
                 }
             }
+
             return;
         }
 
@@ -2066,7 +2076,6 @@ public class Player : IEntityAutoReset
             {
                 CommandBuilder.UpdatePartyMembersOfMapChange(this, mapName);
                 CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(this, true);
-
             }
         }
 
@@ -2097,7 +2106,7 @@ public class Player : IEntityAutoReset
     public void AddInputActionDelay(float time) => InputActionCooldown += time;
 
     private bool InCombatReadyState => (Character.State == CharacterState.Idle || Character.State == CharacterState.Moving)
-        && !CombatEntity.IsCasting && Character.AttackCooldown < Time.ElapsedTimeFloat;
+                                       && !CombatEntity.IsCasting && Character.AttackCooldown < Time.ElapsedTimeFloat;
 
     private bool InMoveReadyState => (Character.State == CharacterState.Idle || Character.State == CharacterState.Moving) && !CombatEntity.IsCasting;
 

@@ -19,12 +19,12 @@ public class StatusHiding : StatusEffectBase
 
         if (ch.Character.Type != CharacterType.Player)
             return StatusUpdateResult.Continue;
-        
+
         state.Value2--;
         if (state.Value2 > 0)
             return StatusUpdateResult.Continue;
 
-        if(!ch.Player.TryTakeSpValue(1))
+        if (!ch.Player.TryTakeSpValue(1))
             return StatusUpdateResult.EndStatus;
 
         state.Value2 += state.Value1;

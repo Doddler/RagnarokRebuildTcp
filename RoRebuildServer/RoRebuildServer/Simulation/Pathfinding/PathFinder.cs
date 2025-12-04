@@ -38,7 +38,7 @@ public class PathNode : IComparable<PathNode>
         Total = total;
         Type = type;
     }
-    
+
 #if DEBUG
     public string TracePath() => Parent != null ? Parent.TracePath() + (Position - Parent.Position).GetDirectionForOffset().NumPadDirection() : "0";
     public override string ToString() => $"({Position}: Path:{TracePath()} Steps:{Steps} Cost:{Cost} Total:{Total})";
@@ -67,6 +67,7 @@ public class PathFinder
 
     private int DistanceCost(Position pos) => (Math.Max(0, Math.Abs(pos.X - target.X) - proximity) + Math.Max(0, Math.Abs(pos.Y - target.Y) - proximity)) * 10;
     private bool IsConnected(Position pos, int tx, int ty) => IsConnected(pos.X, pos.Y, tx, ty);
+
     private bool IsConnected(int x, int y, int tx, int ty)
     {
         if (!walkData.IsCellWalkable(tx, ty)) return false;
@@ -98,7 +99,7 @@ public class PathFinder
         nodeList.Clear();
         //Array.Clear(usedNodes);
     }
-    
+
     private PathNode GetNode(Position pos)
     {
         Debug.Assert(nodeCache != null);
@@ -142,6 +143,7 @@ public class PathFinder
             if (node.Type == PathNodeType.Closed)
                 node.Type = PathNodeType.Open;
         }
+
         node.Set(parent, parent.Steps + 1, newCost, newCost + DistanceCost(pos), PathNodeType.Open);
         openBag.Add(node);
     }
@@ -196,7 +198,6 @@ public class PathFinder
 
         var finalNode = BuildPath();
         return finalNode != null;
-
     }
 
     public int GetPath(MapWalkData mapWalkData, Position startPosition, Position destination, Position[] pathOut, int proximityToTarget)
@@ -235,7 +236,7 @@ public class PathFinder
         PreparePathfinder(mapWalkData, initialStep, destination, proximityToTarget);
         openBag[0].Parent = GetDummyNode(startPosition); //because we're already moving we need to make sure the path we generate starts from our current startPosition.
         openBag[0].Steps = 1;
-        
+
         //add a second starting node with the reverse of our current path, but this time we're coming from initialStep and moving back into our starting cell.
         var baseCost = (start - initialStep).IsOffsetDiagonal() ? 14 : 10;
         var doubleBackProgress = (int)((1 - currentStepProgress) * baseCost);
@@ -258,7 +259,7 @@ public class PathFinder
         var swap = totalSteps > 1 && pathOut[1] == startPosition; //check if our path has us double back to our currently occupied cell
         SanityCheck(pathOut, swap ? initialStep : startPosition, target, totalSteps, proximity);
 #endif
-        
+
         return totalSteps;
     }
 

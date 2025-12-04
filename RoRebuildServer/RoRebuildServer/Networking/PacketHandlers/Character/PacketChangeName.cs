@@ -4,7 +4,7 @@ using RebuildSharedData.Networking;
 namespace RoRebuildServer.Networking.PacketHandlers.Character;
 
 [ClientPacketHandler(PacketType.ChangeName)]
-public class PacketChangeName: IClientPacketHandler
+public class PacketChangeName : IClientPacketHandler
 {
     public void Process(NetworkConnection connection, InboundMessage msg)
     {

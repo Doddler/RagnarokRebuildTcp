@@ -39,7 +39,7 @@ public class VenomSplasherHandler : SkillHandlerBase
 
         if (!isIndirect)
             source.ApplyAfterCastDelay(1f);
-        
+
         var req = new AttackRequest(CharacterSkill.VenomSplasher, 1f, 1, AttackFlags.Physical, AttackElement.None);
         var res = source.CalculateCombatResult(target, req);
 
@@ -52,7 +52,7 @@ public class VenomSplasherHandler : SkillHandlerBase
             target.AddStatusEffect(status, true, res.AttackMotionTime + 0.1f);
         }
 
-        if(source.Character.Type == CharacterType.Player)
+        if (source.Character.Type == CharacterType.Player)
             source.Player.SetSkillSpecificCooldown(CharacterSkill.VenomSplasher, 3f);
         source.ApplyCooldownForAttackAction(target);
         source.ExecuteCombatResult(res, false);

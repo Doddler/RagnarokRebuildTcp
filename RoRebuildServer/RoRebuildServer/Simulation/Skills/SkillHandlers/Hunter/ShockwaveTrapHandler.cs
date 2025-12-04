@@ -16,7 +16,6 @@ public class ShockwaveTrapHandler : SkillHandlerTrap
     protected override int Catalyst() => 1065;
 }
 
-
 public class ShockwaveTrapEvent : TrapBaseEvent
 {
     protected override CharacterSkill SkillSource() => CharacterSkill.ShockwaveTrap;

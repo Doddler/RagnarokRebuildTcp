@@ -29,7 +29,7 @@ public class InboundMessage : IBinaryMessageReader
         Length = length;
         position = 0;
     }
-    
+
     public void Clear()
     {
         Client = null!;
@@ -65,7 +65,6 @@ public class InboundMessage : IBinaryMessageReader
     }
 
 
-
     public sbyte ReadSByte()
     {
         VerifyBufferSize(8);
@@ -73,7 +72,7 @@ public class InboundMessage : IBinaryMessageReader
         position += 8;
         return (sbyte)ret;
     }
-    
+
     public byte ReadByte()
     {
         VerifyBufferSize(8);

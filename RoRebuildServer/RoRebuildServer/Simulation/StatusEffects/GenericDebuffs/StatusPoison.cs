@@ -15,8 +15,9 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
         //val2 = attack power snapshot
         //val3 = vit penalty
         //val4 = counter so we execute only ever 2s on monsters and 3s vs players
-        
+
         public override StatusUpdateMode UpdateMode => StatusUpdateMode.OnUpdate;
+
         public override StatusUpdateResult OnUpdateTick(CombatEntity ch, ref StatusEffectState state)
         {
             state.Value4--;
@@ -38,11 +39,11 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
                 if (damage > remainingHp)
                     damage = remainingHp - 1; //players drop down to 1hp but don't die
             }
-            
+
             if (damage <= 0)
                 return StatusUpdateResult.Continue;
-            
-            
+
+
             var di = new DamageInfo()
             {
                 Damage = damage,
@@ -57,7 +58,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
                 AttackPosition = ch.Character.Position,
                 Flags = DamageApplicationFlags.NoHitLock | DamageApplicationFlags.SkipOnHitTriggers | DamageApplicationFlags.PhysicalDamage
             };
-            
+
             ch.ExecuteCombatResult(di, false, false);
 
             ch.Character.Map?.AddVisiblePlayersAsPacketRecipients(ch.Character);

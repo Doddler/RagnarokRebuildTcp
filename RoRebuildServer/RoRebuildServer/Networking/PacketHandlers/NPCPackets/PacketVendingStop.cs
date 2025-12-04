@@ -21,14 +21,14 @@ public class PacketVendingStop : IClientPacketHandler
                 npc.EndEvent();
 
             player.EndNpcInteractions();
-            if(player.VendingState != null)
+            if (player.VendingState != null)
                 player.VendingState.VendProxy = Entity.Null;
         }
         else
         {
             if (player.VendingState != null)
             {
-                if(player.VendingState.VendProxy.TryGet<Npc>(out var npc))
+                if (player.VendingState.VendProxy.TryGet<Npc>(out var npc))
                     npc.EndEvent();
                 player.VendingState.VendProxy = Entity.Null;
             }

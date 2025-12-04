@@ -16,7 +16,7 @@ public class CounterAttackHandler : SkillHandlerBase
     public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 0.4f * lvl;
 
     public override bool ShouldSkillCostSp(CombatEntity source) => false;
-    
+
     public override void OnHitEvent(CombatEntity owner, CombatEntity? attacker, SkillCastInfo info, ref AttackRequest req, ref DamageInfo di)
     {
         if (attacker == null || di.AttackSkill != CharacterSkill.None)
@@ -27,12 +27,12 @@ public class CounterAttackHandler : SkillHandlerBase
 
         if ((req.Flags & AttackFlags.Physical) == 0)
             return;
-        
+
         var diff = MathHelper.AngleFromDirection(owner.Character.FacingDirection, attacker.Character.Position - owner.Character.Position);
         if (diff < -135 || diff > 135)
             return;
 
-        if(owner.Character.Type == CharacterType.Player)
+        if (owner.Character.Type == CharacterType.Player)
             owner.Player.TakeSpValue(2);
 
         owner.CancelCast(true);

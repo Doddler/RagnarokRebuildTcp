@@ -38,7 +38,7 @@ public class BowlingBashHandler : SkillHandlerBase
         var dir = source.Character.FacingDirection;
         if (srcPos != targetPos)
             dir = (targetPos - srcPos).Normalize().GetDirectionForOffset();
-        
+
         BowlingBashAttack(map.WalkData, source, target, potentialTargets, dir, lvl, 0);
     }
 
@@ -73,7 +73,7 @@ public class BowlingBashHandler : SkillHandlerBase
             var knockDir = (Direction)GameRandom.Next(8); //knockback for chained targets is always in a random direction
 
             //max recursion level is 9 with level 10 bowling bash
-            if(recursionStep < MathF.Max(1, skillLevel - 1))
+            if (recursionStep < MathF.Max(1, skillLevel - 1))
                 BowlingBashAttack(walk, src, hit, potentialTargets, knockDir, skillLevel, recursionStep + 1);
         }
     }
@@ -88,7 +88,6 @@ public class BowlingBashHandler : SkillHandlerBase
 
         if (isSkillHit)
         {
-
             src.Character.Map?.AddVisiblePlayersAsPacketRecipients(src.Character, target.Character);
             CommandBuilder.SkillExecuteTargetedSkill(src.Character, target.Character, CharacterSkill.BowlingBash, skillLevel, res);
             CommandBuilder.ClearRecipients();

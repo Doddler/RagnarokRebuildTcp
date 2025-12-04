@@ -15,7 +15,7 @@ public class HeavensDriveHandler : SkillHandlerBase
     public override int GetAreaOfEffect(CombatEntity source, Position position, int lvl) => 2; //range 2 = 5x5
 
     public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 1f + lvl * 0.5f;
-    
+
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
         bool isItemSource)
     {
@@ -30,7 +30,7 @@ public class HeavensDriveHandler : SkillHandlerBase
         map.GatherPlayersInRange(position, ServerConfig.MaxViewDistance + 2, targetList, false, false);
         CommandBuilder.AddRecipients(targetList);
         targetList.Clear(); //reused, first we use it to gather visible targets, then players hit by the aoe
-        
+
         if (map.FillGroundAreaOfEffectMaskWithLoS(source.Character.Position, position, 2, ref effectiveArea))
         {
             map.GatherEnemiesInMaskedArea(source, position, 2, ref effectiveArea, targetList, true, true);

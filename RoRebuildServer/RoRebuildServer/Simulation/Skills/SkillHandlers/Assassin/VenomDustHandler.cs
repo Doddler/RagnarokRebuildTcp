@@ -36,7 +36,7 @@ public class VenomDustHandler : SkillHandlerBase
 
         if (source.Character.Type == CharacterType.Monster)
             position += new Position(GameRandom.NextInclusive(0, 2), GameRandom.NextInclusive(0, 2) - 1);
-        
+
         if (target != null)
             position = target.Character.Position; //monsters and indirect casts will target self, so use that position
         if (position == Position.Invalid)
@@ -69,7 +69,7 @@ public class VenomDustHandler : SkillHandlerBase
             if (source.Character.Map!.WalkData.IsCellWalkable(posList[i]))
                 source.CreateEvent("VenomDustObjectEvent", posList[i], 5 * lvl, 50 + lvl * 5);
         }
-        
+
         if (!isIndirect)
         {
             source.ApplyCooldownForSupportSkillAction();
@@ -88,6 +88,7 @@ public class VenomDustObjectEvent : NpcBehaviorBase
             npc.EndEvent();
             return;
         }
+
         var targeting = new TargetingInfo()
         {
             Faction = source.Character.Type == CharacterType.Player ? 1 : 0,

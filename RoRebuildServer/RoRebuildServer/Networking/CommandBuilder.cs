@@ -22,11 +22,9 @@ namespace RoRebuildServer.Networking;
 
 public static class CommandBuilder
 {
-    [ThreadStatic]
-    private static List<NetworkConnection>? recipients;
+    [ThreadStatic] private static List<NetworkConnection>? recipients;
 
-    [ThreadStatic]
-    private static List<NetworkConnection>? storedRecipients;
+    [ThreadStatic] private static List<NetworkConnection>? storedRecipients;
 
     public static void AddRecipient(Entity e)
     {
@@ -205,6 +203,7 @@ public static class CommandBuilder
                 packet.Write((byte)CharacterStatusEffect.PushCart);
                 packet.Write(float.MaxValue);
             }
+
             packet.Write(false); //statusEffectData
         }
         else if (type == CharacterType.Monster || type == CharacterType.Player || type == CharacterType.BattleNpc)
@@ -220,6 +219,7 @@ public static class CommandBuilder
             else
                 status.PrepareCreateEntityMessage(packet);
         }
+
         if (type == CharacterType.Player || type == CharacterType.PlayerLikeNpc)
         {
             if (type != CharacterType.PlayerLikeNpc)
@@ -280,7 +280,7 @@ public static class CommandBuilder
                 packet.Write(0); //sp
                 packet.Write(0); //maxsp
 
-                packet.Write((byte)(npc.HasCart ? PlayerFollower.Cart0 : PlayerFollower.None ));
+                packet.Write((byte)(npc.HasCart ? PlayerFollower.Cart0 : PlayerFollower.None));
                 //packet.Write(false);
             }
         }
@@ -316,8 +316,6 @@ public static class CommandBuilder
                 }
                 else
                     packet.Write(ownerCh.Id);
-
-
             }
         }
 
@@ -709,12 +707,12 @@ public static class CommandBuilder
         var hasRecipients = HasRecipients();
         if (hasRecipients)
             StoreRecipients(); //for safety's sake, in case we're triggered from within a function that expects the recipient list to remain unmodified
-        
+
         target.Map?.AddVisiblePlayersAsPacketRecipients(target);
 
         AttackMulti(attacker, target, di, showAttackMotion);
-        
-        if(hasRecipients)
+
+        if (hasRecipients)
             RestoreRecipients();
         else
             ClearRecipients();
@@ -835,7 +833,6 @@ public static class CommandBuilder
 
     //    NetworkManager.SendMessageMulti(packet, recipients);
     //}
-
     public static void SendAllMapImportantEntities(Player p, EntityList mapImportantEntities)
     {
         var packet = NetworkManager.StartPacket(PacketType.UpdateMapImportantEntityTracking, 64);
@@ -848,7 +845,7 @@ public static class CommandBuilder
             packet.Write(chara.Id);
             packet.Write(chara.Position);
             packet.Write((byte)chara.DisplayType);
-            if(chara.DisplayType == CharacterDisplayType.Effect)
+            if (chara.DisplayType == CharacterDisplayType.Effect)
                 packet.Write(chara.Type == CharacterType.NPC && chara.Npc.ParamString != null ? chara.Npc.ParamString : chara.Name);
         }
 
@@ -1016,7 +1013,6 @@ public static class CommandBuilder
 
     public static void SendRemoveEntity(WorldObject c, Player player, CharacterRemovalReason reason)
     {
-
         var packet = NetworkManager.StartPacket(PacketType.RemoveEntity, 32);
         packet.Write(c.Id);
         packet.Write((byte)reason);
@@ -1073,6 +1069,7 @@ public static class CommandBuilder
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
+
     public static void SendPlayerResurrection(WorldObject c)
     {
         var packet = NetworkManager.StartPacket(PacketType.Resurrection, 16);
@@ -1353,7 +1350,7 @@ public static class CommandBuilder
         foreach (var (bagId, item) in vendor.VendingState.SellingItems)
         {
             var price = vendor.VendingState.SellingItemValues[bagId];
-            
+
             packet.Write(bagId);
             item.SerializeWithType(packet);
             packet.Write(price);
@@ -1741,6 +1738,7 @@ public static class CommandBuilder
                     ServerLogger.LogWarning($"Calling NotifyPartyOfChange, but the member id {memberId} doesn't reference anyone currently in party.");
                     return;
                 }
+
                 party.SerializePartyMemberInfo(packet, info, memberId);
                 break;
             case PartyUpdateType.ChangeLeader:
@@ -1763,6 +1761,7 @@ public static class CommandBuilder
                     AddRecipient(partyMember.Connection);
             }
         }
+
         NetworkManager.SendMessageMulti(packet, recipients);
         ClearRecipients();
     }
@@ -1821,6 +1820,7 @@ public static class CommandBuilder
             packet.Write(c.Count);
             packet.Write(price);
         }
+
         NetworkManager.SendMessage(packet, p.Connection);
     }
 

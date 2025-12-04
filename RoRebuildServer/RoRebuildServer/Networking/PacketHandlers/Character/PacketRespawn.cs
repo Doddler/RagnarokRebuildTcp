@@ -19,7 +19,7 @@ public class PacketRespawn : IClientPacketHandler
         Debug.Assert(connection.Character.Map != null);
 
         var inPlace = msg.ReadByte() == 1;
-        
+
         var player = connection.Player;
         var ce = player.CombatEntity;
         var ch = connection.Character;
@@ -32,7 +32,7 @@ public class PacketRespawn : IClientPacketHandler
 
         if (!player.IsAdmin)
             inPlace = false;
-        
+
         ch.ResetState(true);
         ch.SetSpawnImmunity();
         ce.ClearDamageQueue();

@@ -133,6 +133,7 @@ public partial class Monster
                     return false; //we want to stay in random move while we adjust to a non stacked position
                 }
             }
+
             return true;
         }
 

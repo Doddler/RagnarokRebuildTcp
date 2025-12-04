@@ -26,7 +26,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.Setup
             };
             return statusEffect;
         }
-        
+
         public bool Equals(StatusEffectState other)
         {
             return Type.Equals(other.Type);
@@ -57,7 +57,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.Setup
         public void Serialize(IBinaryMessageWriter bw)
         {
             bw.Write((byte)Type);
-            if(Expiration < float.MaxValue)
+            if (Expiration < float.MaxValue)
                 bw.Write((float)(Expiration - Time.ElapsedTime));
             else
                 bw.Write((float)0);

@@ -33,7 +33,7 @@ public class SafetyWallHandler : SkillHandlerBase
         var effectiveArea = Area.CreateAroundPoint(position, 0);
         if (map.HasAreaOfEffectTypeInArea(effectiveArea, CharacterSkill.Pneuma, CharacterSkill.SafetyWall))
         {
-            if(source.Character.Type == CharacterType.Player)
+            if (source.Character.Type == CharacterType.Player)
                 CommandBuilder.SkillFailed(source.Player, SkillValidationResult.OverlappingAreaOfEffect);
             return false;
         }
@@ -101,7 +101,7 @@ public class SafetyWallObjectEvent : NpcBehaviorBase
         aoe.TriggerOnFirstTouch = true;
         aoe.CheckStayTouching = true;
         aoe.SkillSource = CharacterSkill.SafetyWall;
-        
+
         npc.AreaOfEffect = aoe;
         npc.Character.Map!.CreateAreaOfEffect(aoe);
         npc.StartTimer(100);

@@ -27,7 +27,7 @@ public class BlastMineEvent : TrapBaseEvent
     protected override bool Attackable => true;
     protected override bool AllowAutoAttackMove => true;
     protected override bool BlockMultipleActivations => true;
-    
+
     public override void OnNaturalExpiration(Npc npc) => HunterTrapExpiration(npc);
 
     public override bool TriggerTrap(Npc npc, CombatEntity src, CombatEntity target, int skillLevel)

@@ -33,7 +33,7 @@ public static class ScriptLoader
         else
             return CompileScripts();
     }
-    
+
     private static void StartOutOfProcessCompiler()
     {
         ServerLogger.Log("Starting out of process script compiler.");
@@ -50,11 +50,11 @@ public static class ScriptLoader
         };
 
         var process = new Process() { StartInfo = startInfo };
-        
+
         try
         {
             process.Start();
-            
+
             while (!process.StandardOutput.EndOfStream)
             {
                 var line = process.StandardOutput.ReadLine();
@@ -62,7 +62,7 @@ public static class ScriptLoader
                 if (!string.IsNullOrWhiteSpace(line))
                 {
                     var str = JsonSerializer.Deserialize<CompilerLogEvent>(line);
-                    if(str != null)
+                    if (str != null)
                         ServerLogger.GetLogger().Write(str.Level, str.Message);
                     else
                         ServerLogger.GetLogger().Write(LogEventLevel.Warning, $"Received message from out of process script compiler, but message was malformed. Message: {line}");
@@ -70,7 +70,7 @@ public static class ScriptLoader
             }
 
             process.WaitForExit();
-            
+
             return;
         }
         catch (Exception)
@@ -94,7 +94,7 @@ public static class ScriptLoader
             ServerLogger.LogError(e.Message);
         }
     }
-    
+
     public static Assembly LoadExisting()
     {
         var dll = Path.Combine(ServerConfig.DataConfig.CachePath, "Script.dll");
@@ -111,7 +111,7 @@ public static class ScriptLoader
     {
         try
         {
-            if(File.Exists(Path.Combine(ServerConfig.DataConfig.CachePath, "Script.dll")))
+            if (File.Exists(Path.Combine(ServerConfig.DataConfig.CachePath, "Script.dll")))
                 File.Delete(Path.Combine(ServerConfig.DataConfig.CachePath, "Script.dll"));
 
             var compiler = new ScriptCompiler();
@@ -144,4 +144,4 @@ public static class ScriptLoader
             throw;
         }
     }
- }
+}

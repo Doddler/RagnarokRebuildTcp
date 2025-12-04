@@ -28,6 +28,7 @@ public class StatusAngelus : StatusEffectBase
                 state.Value2 = 0;
                 return;
             }
+
             if (state.Value2 > lvl)
                 state.Value2 = lvl;
 
@@ -35,7 +36,7 @@ public class StatusAngelus : StatusEffectBase
             ch.AddStat(CharacterStat.AddResistRaceUndead, state.Value2);
         }
     }
-    
+
     public override void OnExpiration(CombatEntity ch, ref StatusEffectState state)
     {
         ch.SubStat(CharacterStat.AddSoftDefPercent, state.Value3);

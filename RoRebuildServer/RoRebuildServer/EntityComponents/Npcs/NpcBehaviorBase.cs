@@ -7,7 +7,7 @@ namespace RoRebuildServer.EntityComponents.Npcs;
 
 public abstract class NpcBehaviorBase
 {
-    public virtual void Init(Npc npc) {}
+    public virtual void Init(Npc npc) { }
 
     public virtual void InitEvent(Npc npc, int param1, int param2, int param3, int param4, string? paramString) { }
 
@@ -43,7 +43,7 @@ public abstract class NpcBehaviorBase
     public virtual void OnMobKill(Npc npc) { }
 
     public virtual EventOwnerDeathResult OnOwnerDeath(Npc npc, CombatEntity owner) => EventOwnerDeathResult.DetachEvent;
-    
+
     public enum EventOwnerDeathResult
     {
         NoAction,

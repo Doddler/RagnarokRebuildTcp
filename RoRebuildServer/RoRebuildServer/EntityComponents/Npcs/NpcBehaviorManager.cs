@@ -10,8 +10,6 @@ public interface INpcLoader
     public void Load();
 }
 
-
-
 public class NpcBehaviorManager
 {
     public Dictionary<string, List<NpcSpawnDefinition>> NpcSpawnsForMaps { get; } = new();

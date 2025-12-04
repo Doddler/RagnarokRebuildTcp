@@ -27,7 +27,7 @@ public class PacketPlayerReady : IClientPacketHandler
         connection.Player.ResetRegenTickTime();
         if (connection.Player.Party != null)
         {
-            if(!connection.Player.HasEnteredServer)
+            if (!connection.Player.HasEnteredServer)
                 CommandBuilder.AcceptPartyInvite(connection.Player, true);
             CommandBuilder.UpdatePartyMembersOfMapChange(connection.Player, connection.Character.Map.Name);
             CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(connection.Player, false);

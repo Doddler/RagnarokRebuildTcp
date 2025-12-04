@@ -23,7 +23,7 @@ public class OkolnirEventBattle : INpcLoader
     }
 
     record OkolnirDamageList(Player Player, int Damage);
-    
+
     private static void OnOkolnirEnd(Monster boss)
     {
         if (boss.Character.Map == null)
@@ -44,7 +44,7 @@ public class OkolnirEventBattle : INpcLoader
                 list.Add(new OkolnirDamageList(player, dmg));
             }
         }
-        
+
         var count = 0;
         list.Sort((a, b) => b.Damage.CompareTo(a.Damage));
 
@@ -85,6 +85,5 @@ public class OkolnirEventBattle : INpcLoader
 
             d.Player.CreateItemInInventory(new ItemReference(item, 1));
         }
-
     }
 }

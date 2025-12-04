@@ -55,7 +55,6 @@ public static class DistanceCache
         {
             distanceToSquareRange[i] = (int)(i * MathF.Sqrt(2) / 2f);
         }
-
     }
 
     public static int FitSquareRangeInCircle(int range)

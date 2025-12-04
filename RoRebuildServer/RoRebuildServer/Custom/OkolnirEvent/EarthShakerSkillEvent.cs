@@ -21,12 +21,12 @@ public class EarthShakerSkillEvent : NpcBehaviorBase
         var primaryTarget = Entity.Invalid;
         if (npc.Owner.TryGet<CombatEntity>(out var owner))
         {
-            if(owner.Character.Type == CharacterType.Monster)
+            if (owner.Character.Type == CharacterType.Monster)
                 primaryTarget = owner.Character.Monster.Target;
             if (owner.Character.Type == CharacterType.Player)
                 primaryTarget = owner.Player.Target;
         }
-        
+
         var targets = EntityListPool.Get();
         using var potentialTargets = EntityListPool.Get();
 
@@ -40,7 +40,7 @@ public class EarthShakerSkillEvent : NpcBehaviorBase
                 i--;
             }
         }
-        
+
         if (potentialTargets.Count <= 0)
             return;
 
@@ -50,7 +50,7 @@ public class EarthShakerSkillEvent : NpcBehaviorBase
         if (potentialTargets.Count <= param1)
         {
             targets.CopyEntities(potentialTargets);
-            for(var i = 0; i < targets.Count; i++)
+            for (var i = 0; i < targets.Count; i++)
                 if (potentialTargets[i].TryGet<CombatEntity>(out var ce))
                     ce.AddStatusEffect(CharacterStatusEffect.SpecialTarget, 4000);
         }
@@ -115,7 +115,7 @@ public class EarthShakerSkillEvent : NpcBehaviorBase
                     res.IsIndirect = true;
 
                     //CommandBuilder.SkillExecuteTargetedSkillAutoVis(owner.Character, target.Character, CharacterSkill.EarthShaker, 1, res);
-                    
+
                     owner.ExecuteCombatResult(res, false);
                     CommandBuilder.SkillExecuteIndirectAutoVisibility(owner.Character, target.Character, res); //damage to targeted player
 
@@ -142,7 +142,7 @@ public class EarthShakerSkillEvent : NpcBehaviorBase
                         res.AttackMotionTime = 0;
                         res.Time = Time.ElapsedTimeFloat + owner.Character.Position.DistanceTo(potentialTarget.Character.Position) * 0.02f;
                         res.IsIndirect = true;
-                        
+
                         owner.ExecuteCombatResult(res, false);
                         CommandBuilder.SkillExecuteIndirectAutoVisibility(owner.Character, potentialTarget.Character, res); //damage to player in cone
                     }

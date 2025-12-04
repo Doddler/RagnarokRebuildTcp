@@ -20,4 +20,3 @@ public class EffectTypeList
 {
     public List<EffectTypeEntry> Effects = null!;
 }
-

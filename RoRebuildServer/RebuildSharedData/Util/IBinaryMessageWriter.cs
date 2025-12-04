@@ -35,6 +35,7 @@ public interface IBinaryMessageReader
     ushort ReadUInt16();
     bool ReadBoolean();
     float ReadFloat();
+
     string ReadString();
     //Vector2Int ReadPosition();
 }
@@ -42,6 +43,7 @@ public interface IBinaryMessageReader
 public class BinaryMessageWriter(Stream output) : BinaryWriter(output), IBinaryMessageWriter
 {
     public int Length => (int)BaseStream.Length;
+
     public void Clear()
     {
         throw new NotImplementedException();
@@ -56,7 +58,6 @@ public class BinaryMessageWriter(Stream output) : BinaryWriter(output), IBinaryM
     {
         LZ4Codec.MaximumOutputSize(1);
         throw new NotImplementedException();
-        
     }
 
     public void WriteCompressedByteArray(byte[] b, int length)
@@ -68,6 +69,7 @@ public class BinaryMessageWriter(Stream output) : BinaryWriter(output), IBinaryM
 public class BinaryMessageReader(Stream input) : BinaryReader(input), IBinaryMessageReader
 {
     public int Length { get; }
+
     public void Clear()
     {
         throw new NotImplementedException();

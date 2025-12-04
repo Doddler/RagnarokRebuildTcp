@@ -10,6 +10,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Thief
     public class EnvenomHandler : SkillHandlerBase
     {
         public override int GetSkillRange(CombatEntity source, int lvl) => 2;
+
         public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl,
             bool isIndirect, bool isItemSource)
         {
@@ -33,7 +34,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Thief
 
             if (!res.IsDamageResult || poisonBarrier)
                 return;
-            
+
             var chance = 500 + lvl * 50; //50%-100%
 
             var duration = 4 + lvl * 2;

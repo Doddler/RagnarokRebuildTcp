@@ -66,7 +66,7 @@ public class ArrowShowerHandler : SkillHandlerBase
                 CommandBuilder.AttackMulti(source.Character, blastTarget, res, false);
             }
         }
-        
+
         source.ApplyCooldownForAttackAction(position);
         CommandBuilder.SkillExecuteAreaTargetedSkillAutoVis(source.Character, position, CharacterSkill.ArrowShower, lvl);
     }

@@ -23,7 +23,7 @@ public class SkidTrapEvent : TrapBaseEvent
 {
     protected override CharacterSkill SkillSource() => CharacterSkill.SkidTrap;
     protected override NpcEffectType EffectType() => NpcEffectType.SkidTrap;
-    
+
     protected override float Duration(int skillLevel) => 50f; //300f - skillLevel * 50f;
 
     public override void OnNaturalExpiration(Npc npc) => HunterTrapExpiration(npc);

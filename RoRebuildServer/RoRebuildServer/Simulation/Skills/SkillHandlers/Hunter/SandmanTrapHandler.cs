@@ -13,7 +13,6 @@ public class SandmanTrapHandler : SkillHandlerTrap
     protected override int Catalyst() => 1065;
 }
 
-
 public class SandmanTrapEvent : TrapBaseEvent
 {
     protected override CharacterSkill SkillSource() => CharacterSkill.Sandman;

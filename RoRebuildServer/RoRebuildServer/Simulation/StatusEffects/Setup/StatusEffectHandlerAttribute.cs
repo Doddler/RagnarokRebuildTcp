@@ -3,8 +3,11 @@
 namespace RoRebuildServer.Simulation.StatusEffects.Setup;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-public class StatusEffectHandlerAttribute(CharacterStatusEffect statusType, StatusClientVisibility visibility, 
-    StatusEffectFlags flags = StatusEffectFlags.None, string shareGroup = "")
+public class StatusEffectHandlerAttribute(
+    CharacterStatusEffect statusType,
+    StatusClientVisibility visibility,
+    StatusEffectFlags flags = StatusEffectFlags.None,
+    string shareGroup = "")
     : Attribute
 {
     public CharacterStatusEffect StatusType { get; } = statusType;

@@ -34,7 +34,7 @@ public class SplashAttackHandler : SkillHandlerBase
         map.GatherEnemiesInArea(source.Character, target.Character.Position, range, targetList, true, true);
 
         var hasTarget = !isIndirect;
-        
+
         var attack = new AttackRequest(CharacterSkill.SplashAttack, 1, 1, AttackFlags.Physical, AttackElement.None);
         if (isIndirect)
             attack.Flags |= AttackFlags.NoDamageModifiers | AttackFlags.NoTriggers;
@@ -71,7 +71,7 @@ public class SplashAttackHandler : SkillHandlerBase
         }
         else
             source.ApplyCooldownForAttackAction(position);
-        
+
         var skillResult = DamageInfo.SupportSkillResult(source.Entity, target.Entity, CharacterSkill.SplashAttack);
         CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.SplashAttack, lvl, skillResult, isIndirect);
     }

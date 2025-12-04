@@ -19,7 +19,7 @@ namespace RoRebuildServer.Simulation.StatusEffects._1stJob
             //if our current target matches the one that provoked this character, add a chance to do big damage
             if (info.Result == AttackResult.NormalDamage && target.Character.Id == state.Value2)
             {
-                if(ch.CheckLuckModifiedRandomChanceVsTarget(target, 10, 1000))
+                if (ch.CheckLuckModifiedRandomChanceVsTarget(target, 10, 1000))
                 {
                     info.Damage *= 2;
                     info.Result = AttackResult.CriticalDamage;
@@ -42,6 +42,7 @@ namespace RoRebuildServer.Simulation.StatusEffects._1stJob
                 atkMod /= 2;
                 matkMod /= 2;
             }
+
             return (defMod, softDefMod, atkMod, matkMod);
         }
 
@@ -53,7 +54,6 @@ namespace RoRebuildServer.Simulation.StatusEffects._1stJob
             ch.AddStat(CharacterStat.AddSoftDefPercent, softDefMod);
             ch.AddStat(CharacterStat.AddAttackPercent, atkMod);
             ch.AddStat(CharacterStat.AddMagicAttackPercent, matkMod);
-
         }
 
         public override void OnExpiration(CombatEntity ch, ref StatusEffectState state)

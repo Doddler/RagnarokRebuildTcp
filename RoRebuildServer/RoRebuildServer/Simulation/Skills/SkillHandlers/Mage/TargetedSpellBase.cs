@@ -11,7 +11,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Mage
     {
         public abstract CharacterSkill GetSkill();
         public abstract AttackElement GetElement();
-        
+
         public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl)
         {
             //return 0f;

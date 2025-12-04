@@ -170,13 +170,13 @@ public class WaterBallEvent : NpcBehaviorBase
         if (iTime >= npc.ValuesInt[3])
         {
             var map = npc.Character.Map;
-            
+
             if (npc.Owner.TryGet<CombatEntity>(out var src) && map != null)
             {
                 var targetEntity = World.Instance.GetEntityById(npc.ValuesInt[0]);
 
-                if (!targetEntity.TryGet<CombatEntity>(out var target) 
-                    || !target.IsValidTarget(src) 
+                if (!targetEntity.TryGet<CombatEntity>(out var target)
+                    || !target.IsValidTarget(src)
                     || target.Character.Position.DistanceTo(src.Character.Position) > 30)
                 {
                     npc.EndEvent();

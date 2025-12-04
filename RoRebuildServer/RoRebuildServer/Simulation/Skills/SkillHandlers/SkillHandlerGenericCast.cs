@@ -11,7 +11,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers
             bool isIndirect, bool isItemSource)
         {
             var ch = source.Character;
-            
+
             source.ApplyCooldownForAttackAction();
 
             ch.Map?.AddVisiblePlayersAsPacketRecipients(ch);

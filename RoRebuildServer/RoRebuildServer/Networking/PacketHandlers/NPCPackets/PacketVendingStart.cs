@@ -35,7 +35,7 @@ public class PacketVendingStart : IClientPacketHandler
             CommandBuilder.SkillFailed(player, SkillValidationResult.CartRequired);
             return;
         }
-        
+
         var vendName = msg.ReadString();
         if (string.IsNullOrWhiteSpace(vendName) || vendName.Length > 32)
         {
@@ -48,7 +48,7 @@ public class PacketVendingStart : IClientPacketHandler
             CommandBuilder.SkillFailed(player, SkillValidationResult.VendFailedTooCloseToNpc);
             return;
         }
-        
+
         player.VendingState ??= new VendingState();
         var vend = player.VendingState;
         vend.SellingItems.Clear();

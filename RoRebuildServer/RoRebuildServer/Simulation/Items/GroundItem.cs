@@ -23,15 +23,15 @@ public struct GroundItem : IEquatable<GroundItem>
     public GroundItem(Position tile, int id, int count)
     {
         var data = DataManager.ItemList[id];
-        if(!data.IsUnique)
-            InitializeRegularItem(tile, new RegularItem() {Id = id, Count = (short)count});
+        if (!data.IsUnique)
+            InitializeRegularItem(tile, new RegularItem() { Id = id, Count = (short)count });
         else
-            InitializeUniqueItem(tile, new UniqueItem() {Id = id, Count = (short)count, UniqueId = Guid.NewGuid()});
+            InitializeUniqueItem(tile, new UniqueItem() { Id = id, Count = (short)count, UniqueId = Guid.NewGuid() });
     }
 
     public GroundItem(Position tile, ref ItemReference item)
     {
-        if(item.Type == ItemType.RegularItem)
+        if (item.Type == ItemType.RegularItem)
             InitializeRegularItem(tile, item.Item);
         else
             InitializeUniqueItem(tile, item.UniqueItem);
@@ -72,18 +72,13 @@ public struct GroundItem : IEquatable<GroundItem>
     public ItemReference ToItemReference()
     {
 #if DEBUG
-        if(Type == ItemType.RegularItem)
+        if (Type == ItemType.RegularItem)
             Debug.Assert(Item.Id != 0 && Item.Count != 0);
-        if(Type == ItemType.UniqueItem)
+        if (Type == ItemType.UniqueItem)
             Debug.Assert(UniqueItem.Id != 0 && UniqueItem.Count != 0);
 #endif
 
-        return new ItemReference()
-        {
-            Type = Type,
-            Item = Item,
-            UniqueItem = UniqueItem
-        };
+        return new ItemReference() { Type = Type, Item = Item, UniqueItem = UniqueItem };
     }
 
     public void Serialize(OutboundMessage msg)

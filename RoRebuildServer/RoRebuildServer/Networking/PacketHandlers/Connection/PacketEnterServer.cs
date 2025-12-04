@@ -7,7 +7,6 @@ using RebuildSharedData.Enum.EntityStats;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Connection;
 
-
 [ClientPacketHandler(PacketType.EnterServer)]
 public class PacketEnterServer : IClientPacketHandler
 {
@@ -22,7 +21,6 @@ public class PacketEnterServer : IClientPacketHandler
 
         if (!isNewCharacter)
         {
-
             var req = new LoadCharacterRequest(accountId, chName);
             RoDatabase.EnqueueDbRequest(req);
             return;
@@ -46,15 +44,15 @@ public class PacketEnterServer : IClientPacketHandler
             CommandBuilder.ErrorMessage(connection, $"The character name is invalid. Names cannot contain leading or trailing whitespace.");
             return;
         }
-        
+
         var charData = ArrayPool<int>.Shared.Rent((int)PlayerStat.PlayerStatsMax);
-        for(var i = 0; i < charData.Length; i++)
+        for (var i = 0; i < charData.Length; i++)
             charData[i] = 0;
 
         var head = msg.ReadInt32();
         var hair = msg.ReadInt32();
         var slot = (int)msg.ReadByte();
-        
+
         var total = 0;
         var error = false;
         for (var i = (int)PlayerStat.Str; i <= (int)PlayerStat.Luck; i++)
@@ -65,6 +63,7 @@ public class PacketEnterServer : IClientPacketHandler
             if (stat < 1 || stat > 9)
                 error = true;
         }
+
         var isMale = msg.ReadBoolean();
 
         if (total != 33) error = true;

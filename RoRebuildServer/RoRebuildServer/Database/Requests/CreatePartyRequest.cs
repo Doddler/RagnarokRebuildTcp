@@ -26,7 +26,7 @@ public class CreatePartyRequest : IDbRequest
     {
         HasFailed = true;
         IsComplete = true;
-        if(!string.IsNullOrWhiteSpace(clientMessage))
+        if (!string.IsNullOrWhiteSpace(clientMessage))
             CommandBuilder.ErrorMessage(Connection, clientMessage);
     }
 
@@ -43,7 +43,7 @@ public class CreatePartyRequest : IDbRequest
             FailureResult("You are already in a party.");
             return;
         }
-        
+
         var partyExists = await dbContext.Parties.AnyAsync(p => p.PartyName == PartyName);
         if (partyExists)
         {
@@ -69,13 +69,14 @@ public class CreatePartyRequest : IDbRequest
                 FailureResult("A problem occured while creating your party.");
                 return;
             }
+
             Connection.Player.Party = CreatedParty;
             CommandBuilder.NotifyNearbyPlayersOfPartyChangeAutoVis(Connection.Player);
             CommandBuilder.AcceptPartyInvite(Connection.Player);
 
             IsComplete = true;
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             ServerLogger.LogWarning($"Create character failed due to exception. Exception: " + e.Message);
             FailureResult("Error: Could not create party.");

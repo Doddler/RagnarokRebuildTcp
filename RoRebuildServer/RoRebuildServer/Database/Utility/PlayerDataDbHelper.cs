@@ -22,7 +22,7 @@ namespace RoRebuildServer.Database.Utility;
 public static class PlayerDataDbHelper
 {
     public const int CurrentPlayerSaveVersion = 6;
-    
+
     public static void PackPlayerSummaryData(int[] buffer, Player p)
     {
         buffer[(int)PlayerSummaryData.Level] = p.GetData(PlayerStat.Level);
@@ -62,13 +62,13 @@ public static class PlayerDataDbHelper
     {
         var cmpBuffer = ArrayPool<byte>.Shared.Rent(LZ4Codec.MaximumOutputSize(size));
         var srcData = array.AsSpan(0, size);
-        
+
         var compressedSize = LZ4Codec.Encode(srcData, cmpBuffer);
         var bytesOut = new byte[compressedSize]; //can't avoid allocation here sadly ;_;
         Buffer.BlockCopy(cmpBuffer, 0, bytesOut, 0, compressedSize);
-        
+
         ArrayPool<byte>.Shared.Return(cmpBuffer);
-        
+
         return bytesOut;
     }
 
@@ -85,7 +85,7 @@ public static class PlayerDataDbHelper
     {
         var inventorySize = p.Inventory.TryGetSize() + p.CartInventory.TryGetSize();
         uncompressedSize = 0;
-        if(inventorySize == 0)
+        if (inventorySize == 0)
             return null;
 
         inventorySize += 1 + p.Equipment.GetExpectedSerializedSize(); //the + 1 is for the version byte
@@ -111,7 +111,6 @@ public static class PlayerDataDbHelper
 
             uncompressedSize = (int)ms.Position;
             bytesOut = CompressData(buffer, uncompressedSize);
-            
         }
         catch (Exception e)
         {
@@ -122,7 +121,7 @@ public static class PlayerDataDbHelper
         finally
         {
             ArrayPool<byte>.Shared.Return(buffer);
-            if(cmpBuffer != null)
+            if (cmpBuffer != null)
                 ArrayPool<byte>.Shared.Return(cmpBuffer);
         }
 
@@ -138,7 +137,7 @@ public static class PlayerDataDbHelper
         using var br = new BinaryMessageReader(ms);
         var version = br.ReadByte();
         req.Inventory = CharacterBag.TryRead(br);
-        if(saveVersion != 4)
+        if (saveVersion != 4)
             req.Cart = CharacterBag.TryRead(br);
         //req.Storage = CharacterBag.TryRead(br);
 
@@ -174,16 +173,16 @@ public static class PlayerDataDbHelper
         var buffer = ArrayPool<byte>.Shared.Rent(uncompressedSize);
         using var ms = new MemoryStream(buffer);
         using var bw = new BinaryMessageWriter(ms);
-        
+
         bw.Write((byte)0); //version
         p.StorageInventory.TryWrite(bw, false);
-        
+
         var srcData = buffer.AsSpan(0, (int)ms.Position);
         var cmpData = ArrayPool<byte>.Shared.Rent(LZ4Codec.MaximumOutputSize(srcData.Length));
         var compressedSize = LZ4Codec.Encode(srcData, cmpData);
         var byteOut = new byte[compressedSize];
         Buffer.BlockCopy(cmpData, 0, byteOut, 0, compressedSize);
-        
+
         ArrayPool<byte>.Shared.Return(buffer);
         ArrayPool<byte>.Shared.Return(cmpData);
 
@@ -199,7 +198,7 @@ public static class PlayerDataDbHelper
         using var br = new BinaryMessageReader(ms);
         var version = br.ReadByte();
         var bagData = CharacterBag.TryRead(br);
-        
+
         ArrayPool<byte>.Shared.Return(buffer);
 
         return bagData;
@@ -247,25 +246,25 @@ public static class PlayerDataDbHelper
             player.MemoLocations[i].Serialize(bw);
 
         decompressedSize = (int)ms.Position;
-        
+
         //compress player data
         var data = PlayerDataDbHelper.CompressData(chData, decompressedSize);
         ArrayPool<byte>.Shared.Return(chData);
-        
+
         return data;
     }
 
     public static byte[] StoreNewPlayerDataForDatabase(int[] charData, out int decompressedSize)
     {
         var realCharDataLen = (int)PlayerStat.PlayerStatsMax;
-        
+
         var dataLen = 32;
         dataLen += realCharDataLen * sizeof(int);
 
         var chData = ArrayPool<byte>.Shared.Rent(dataLen);
         var ms = new MemoryStream(chData);
         var bw = new BinaryMessageWriter(ms);
-        
+
         bw.Write((short)realCharDataLen);
         var dataSize = realCharDataLen * sizeof(int);
         Buffer.BlockCopy(charData, 0, chData, (int)ms.Position, dataSize);
@@ -284,7 +283,7 @@ public static class PlayerDataDbHelper
 
         return data;
     }
-    
+
     public static void RestorePlayerDataFromDatabaseV3(byte[] bytes, int decompressedSize, Player player, int saveVersion)
     {
         var data = DecompressData(bytes, decompressedSize);
@@ -297,7 +296,7 @@ public static class PlayerDataDbHelper
             Buffer.BlockCopy(data, (int)ms.Position, player.CharData, 0, dataLen);
         else
             ServerLogger.LogWarning($"Player '{player.Name}' character data does not match the expected size. Player will be loaded with default data.");
-        
+
         ms.Seek(dataLen, SeekOrigin.Current);
 
         if (saveVersion <= 3)
@@ -307,6 +306,7 @@ public static class PlayerDataDbHelper
         }
         else
             player.LearnedSkills = DbHelper.ReadDictionaryWithEnumStringKeys<CharacterSkill>(br) ?? new Dictionary<CharacterSkill, int>();
+
         player.NpcFlags = DbHelper.ReadDictionary(br);
         player.CombatEntity.TryDeserializeStatusContainer(br, saveVersion);
 

@@ -69,8 +69,9 @@ public class MonsterSkillAiState(Monster monsterIn)
     public bool IsHiding => monster.CombatEntity.HasBodyState(BodyStateFlags.Hidden);
 
     public bool WasMagicLocked => monster.WasMagicLocked && monster.Character.LastAttacked.TryGet<WorldObject>(out targetForSkill);
-    
+
     public MonsterAiState PreviousAiState => monster.PreviousAiState;
+
     public int TimeSinceStartChase
     {
         get
@@ -98,17 +99,17 @@ public class MonsterSkillAiState(Monster monsterIn)
         }
     }
 
-    public bool IsMasterAlive => monster.HasMaster && monster.GetMaster().TryGet<WorldObject>(out var chara) && chara.IsActive &&  chara.State != CharacterState.Dead;
+    public bool IsMasterAlive => monster.HasMaster && monster.GetMaster().TryGet<WorldObject>(out var chara) && chara.IsActive && chara.State != CharacterState.Dead;
 
     public void Reset()
     {
         //reset the skill state
         specialCooldowns?.Clear();
-        if(stateFlags != null)
+        if (stateFlags != null)
             Array.Clear(stateFlags);
         ResummonMinionCount = -1;
         MinionDeathTime = -1;
-        if(Events != null)
+        if (Events != null)
             EntityListPool.Return(Events);
         Events = null;
         CastSuccessEvent = null;
@@ -160,12 +161,12 @@ public class MonsterSkillAiState(Monster monsterIn)
     }
 
     public bool IsDisabled() => monster.GetStat(CharacterStat.Disabled) > 0;
-    
+
     //public void Debug(string hello) { ServerLogger.Log(hello); }
 
     public int Random(int low, int high) => GameRandom.NextInclusive(low, high);
     public int Random(int high) => GameRandom.NextInclusive(high);
-    
+
     public void PerformMetamorphosis(string monsterName, int count = 1)
     {
         var ch = monster.Character;
@@ -193,7 +194,7 @@ public class MonsterSkillAiState(Monster monsterIn)
     {
         monster.Die(false, false, CharacterRemovalReason.Teleport);
     }
-    
+
     public void FlagAsMvp()
     {
         monster.Character.IsImportant = true;
@@ -233,14 +234,14 @@ public class MonsterSkillAiState(Monster monsterIn)
 #endif
         if (MinionCount > ResummonMinionCount)
         {
-            if(MinionDeathTime > 2) //exception that lets us skip setting a death time via SkipNextMinionDeadTimer
+            if (MinionDeathTime > 2) //exception that lets us skip setting a death time via SkipNextMinionDeadTimer
                 MinionDeathTime = -1;
             return false;
         }
-        
+
         if (MinionDeathTime < 0)
             MinionDeathTime = Time.ElapsedTimeFloat;
-        
+
         return Time.ElapsedTimeFloat > MinionDeathTime + (time / 1000f);
     }
 
@@ -250,6 +251,7 @@ public class MonsterSkillAiState(Monster monsterIn)
     }
 
     public void HealMyMaster(int val) => HealMyMaster(val, val);
+
     public void HealMyMaster(int min, int max)
     {
         if (!IsMasterAlive)
@@ -258,7 +260,7 @@ public class MonsterSkillAiState(Monster monsterIn)
             return;
 
         var heal = min;
-        if(min != max)
+        if (min != max)
             heal = GameRandom.NextInclusive(min, max);
 
         var res = monster.CombatEntity.PrepareTargetedSkillResult(master.CombatEntity, CharacterSkill.Heal);
@@ -266,9 +268,9 @@ public class MonsterSkillAiState(Monster monsterIn)
         res.Result = AttackResult.Heal;
         res.AttackMotionTime = 0;
         res.HitCount = 1;
-        
+
         master.CombatEntity.HealHp(heal);
-        
+
         monster.Character.Map?.AddVisiblePlayersAsPacketRecipients(master);
         CommandBuilder.SkillExecuteTargetedSkill(monster.Character, master, CharacterSkill.Heal, 10, res);
         CommandBuilder.SendHealMulti(master, heal, HealType.None);
@@ -291,7 +293,7 @@ public class MonsterSkillAiState(Monster monsterIn)
         FinishedProcessing = true;
         return true;
     }
-    
+
     public bool IsNamedEventOffCooldown(string name)
     {
         if (specialCooldowns == null || !specialCooldowns.TryGetValue(name, out var cooldown))
@@ -315,9 +317,9 @@ public class MonsterSkillAiState(Monster monsterIn)
     {
         specialCooldowns?.Clear();
         monster.CombatEntity.ResetSkillCooldowns();
-        if(stateFlags != null)
+        if (stateFlags != null)
             Array.Clear(stateFlags);
-        if(timingFlags != null)
+        if (timingFlags != null)
             Array.Clear(timingFlags);
     }
 
@@ -356,6 +358,7 @@ public class MonsterSkillAiState(Monster monsterIn)
     {
         monster.GivesExperience = gives;
     }
+
     public void AdminHide()
     {
         var ch = monster.Character;
@@ -366,11 +369,11 @@ public class MonsterSkillAiState(Monster monsterIn)
         ch.Map.RemoveEntity(ref ch.Entity, CharacterRemovalReason.OutOfSight, false);
         ch.AdminHidden = true;
         ch.QueuedAction = QueuedAction.None;
-        
+
         monster.PreviousAiState = monster.CurrentAiState;
         monster.CurrentAiState = MonsterAiState.StateHidden;
         monster.UpdateStateChangeTime();
-        
+
         monster.CombatEntity.ClearDamageQueue();
     }
 
@@ -486,7 +489,7 @@ public class MonsterSkillAiState(Monster monsterIn)
             castFlags |= SkillCastFlags.NoEffect;
         var ignoreTargetRequirement = flags.HasFlag(MonsterSkillAiFlags.NoTarget);
         ExecuteEventAtStartOfCast = flags.HasFlag(MonsterSkillAiFlags.EventOnStartCast);
-        
+
         if (flags.HasFlag(MonsterSkillAiFlags.EasyInterrupt))
             ce.CastInterruptionMode = CastInterruptionMode.InterruptOnDamage;
         else if (flags.HasFlag(MonsterSkillAiFlags.NoInterrupt))
@@ -503,7 +506,7 @@ public class MonsterSkillAiState(Monster monsterIn)
         {
             var pos = Position.Zero;
             var area = Area.CreateAroundPoint(ce.Character.Position, 2);
-            
+
             var map = ce.Character.Map!;
             var hasTile = false;
 
@@ -600,7 +603,7 @@ public class MonsterSkillAiState(Monster monsterIn)
             //if we're in a state where we have a target, we only need to check if we can use this skill on that enemy
             if (target != null && !flags.HasFlag(MonsterSkillAiFlags.RandomTarget))
             {
-                if (!ce.CanAttackTarget(target, range, ignoreLoS)) 
+                if (!ce.CanAttackTarget(target, range, ignoreLoS))
                     return SkillFail();
                 if (!ce.AttemptStartSingleTargetSkillAttack(target.CombatEntity, skill, level, castTime / 1000f, castFlags))
                     return SkillFail();
@@ -665,7 +668,7 @@ public class MonsterSkillAiState(Monster monsterIn)
     {
         if (!CheckCast(skill, chance, (flags & MonsterSkillAiFlags.IgnoreCooldown) > 0))
             return SkillFail();
-        
+
         if (skill == CharacterSkill.NoCast)
             flags |= MonsterSkillAiFlags.HideSkillName;
 
@@ -764,7 +767,7 @@ public class MonsterSkillAiState(Monster monsterIn)
             var minion = World.Instance.CreateMonster(monster.Character.Map, monsterDef, area, null);
             var minionMonster = minion.Get<Monster>();
             minionMonster.ResetAiUpdateTime();
-            if(monster.HasMaster)
+            if (monster.HasMaster)
                 minionMonster.SetMaster(monster.GetMaster()); //these monsters have masters but are not minions of the parent
 
             minionMonster.GivesExperience = false;
@@ -857,7 +860,7 @@ public class MonsterSkillAiState(Monster monsterIn)
             minionMonster.ResetAiUpdateTime();
             minionMonster.AddDelay(0.6f);
             minionMonster.GivesExperience = false;
-            
+
             monster.Character.Map.AddEntityWithEvent(ref minion, CreateEntityEventType.Descend, monster.Character.Position);
             monster.AddChild(ref minion, MonsterAiType.AiMinion);
             minionMonster.ChangeAiSkillHandler(aiType);
@@ -916,7 +919,7 @@ public class MonsterSkillAiState(Monster monsterIn)
         targetForSkill = null;
         var map = monster.Character.Map;
         using var pool = EntityListPool.Get();
-        
+
         Debug.Assert(map != null);
         map.GatherAlliesInRange(monster.Character, 9, pool, true);
         if (pool.Count == 0)
@@ -953,13 +956,13 @@ public class MonsterSkillAiState(Monster monsterIn)
         Debug.Assert(monster.Character.Map != null);
 
         var players = monster.Character.Map.Players;
-        if(players.Count == 0) return false;
+        if (players.Count == 0) return false;
 
         using var pool = EntityListPool.Get();
         for (var i = 0; i < players.Count; i++)
         {
             if (players[i].TryGet<CombatEntity>(out var potentialTarget))
-                if(potentialTarget.IsValidTarget(monster.CombatEntity))
+                if (potentialTarget.IsValidTarget(monster.CombatEntity))
                     pool.Add(players[i]);
         }
 
@@ -971,7 +974,7 @@ public class MonsterSkillAiState(Monster monsterIn)
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -996,8 +999,12 @@ public class MonsterSkillAiState(Monster monsterIn)
     public void CreateEvent(string eventName, Position pos, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, 0, 0, 0, 0, valueString);
     public void CreateEvent(string eventName, Position pos, int value1, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, value1, 0, 0, 0, valueString);
     public void CreateEvent(string eventName, Position pos, int value1, int value2, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, value1, value2, 0, 0, valueString);
-    public void CreateEvent(string eventName, Position pos, int value1, int value2, int value3, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, value1, value2, value3, 0, valueString);
-    public void CreateEvent(string eventName, Position pos, int value1, int value2, int value3, int value4, string? valueString = null) => CreateEvent(eventName, pos.X, pos.Y, value1, value2, value3, value4, valueString);
+
+    public void CreateEvent(string eventName, Position pos, int value1, int value2, int value3, string? valueString = null) =>
+        CreateEvent(eventName, pos.X, pos.Y, value1, value2, value3, 0, valueString);
+
+    public void CreateEvent(string eventName, Position pos, int value1, int value2, int value3, int value4, string? valueString = null) =>
+        CreateEvent(eventName, pos.X, pos.Y, value1, value2, value3, value4, valueString);
 
     public void CreateEvent(string eventName, int x, int y, string? valueString = null) => CreateEvent(eventName, x, y, 0, 0, 0, 0, valueString);
     public void CreateEvent(string eventName, int x, int y, int value1, string? valueString = null) => CreateEvent(eventName, x, y, value1, 0, 0, 0, valueString);
@@ -1037,9 +1044,9 @@ public class MonsterSkillAiState(Monster monsterIn)
 
     public void CallSpecialMonsterEvent(string signalName)
     {
-        if(DataManager.NpcManager.MonsterSpecialDeathEvent.TryGetValue(signalName, out var specialEvent))
+        if (DataManager.NpcManager.MonsterSpecialDeathEvent.TryGetValue(signalName, out var specialEvent))
         {
-            if(specialEvent != null)
+            if (specialEvent != null)
                 specialEvent(monster);
         }
     }

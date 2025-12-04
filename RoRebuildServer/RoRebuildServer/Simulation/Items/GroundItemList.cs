@@ -1,6 +1,5 @@
 ﻿namespace RoRebuildServer.Simulation.Items;
 
-
 public class GroundItemList : IDisposable
 {
     private GroundItem[]? items;
@@ -42,6 +41,7 @@ public class GroundItemList : IDisposable
             Clear();
             return;
         }
+
         items ??= new GroundItem[otherCount];
         if (items.Length < otherCount)
             Array.Resize(ref items, otherCount);
@@ -108,7 +108,6 @@ public class GroundItemList : IDisposable
 
         for (var i = 0; i < count; i++)
         {
-
             if (items[i] == entity)
             {
                 if (i == count - 1)
@@ -142,7 +141,7 @@ public class GroundItemList : IDisposable
                     return true;
                 }
 
-                SwapFromBack(i); 
+                SwapFromBack(i);
                 return true;
             }
         }
@@ -181,9 +180,9 @@ public class GroundItemList : IDisposable
     public bool TryGet(int id, out GroundItem entity)
     {
         entity = default;
-        if(items == null)
+        if (items == null)
             return false;
-        for(var i = 0;i < count;i++)
+        for (var i = 0; i < count; i++)
         {
             if (items[i].Id == id)
             {
@@ -200,7 +199,7 @@ public class GroundItemList : IDisposable
         if (items == null)
             return false;
 
-        for(var i = 0; i < count; i++)
+        for (var i = 0; i < count; i++)
         {
             if (items[i].Id == id)
                 return true;

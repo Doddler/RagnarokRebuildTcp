@@ -48,16 +48,15 @@ public static class RoDatabase
 
 
         services.AddIdentity<RoUserAccount, UserRole>(options =>
-        {
-            options.User.RequireUniqueEmail = false;
-            options.Password.RequireDigit = false;
-            options.Password.RequireLowercase = false;
-            options.Password.RequireUppercase = false;
-            options.Password.RequireNonAlphanumeric = false;
-            options.Password.RequiredUniqueChars = 0;
-            options.Password.RequiredLength = 4; //the worst password policy known to man
-
-        })
+            {
+                options.User.RequireUniqueEmail = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredUniqueChars = 0;
+                options.Password.RequiredLength = 4; //the worst password policy known to man
+            })
             .AddEntityFrameworkStores<RoContext>()
             .AddDefaultTokenProviders();
 
@@ -103,7 +102,7 @@ public static class RoDatabase
         {
             var user = await db.Users.FirstOrDefaultAsync(a => a.NormalizedUserName == userName.ToUpperInvariant());
             if (user == null || user.LoginToken == null) return LoginResult.FailureResult(ServerConnectResult.FailedLogin);
-            
+
             var protector = scope.ServiceProvider.GetService<IDataProtectionProvider>()!;
             var code = protector.CreateProtector("RoLogin");
             var data = code.Unprotect(token);
@@ -124,7 +123,7 @@ public static class RoDatabase
         {
             //an error occured, probably while un protecting the token data. Either way it's a failure.
             ServerLogger.LogWarning($"User {userName} generated an exception while attempting to sign in: {e.Message}");
-            if(e.InnerException != null)
+            if (e.InnerException != null)
                 ServerLogger.LogWarning($"Inner exception: {e.InnerException}");
             return LoginResult.FailureResult(ServerConnectResult.InvalidOrExpiredToken);
         }
@@ -163,6 +162,7 @@ public static class RoDatabase
             ServerLogger.LogError($"Cannot get IDataProtectionProvider in order to perform LogIn task!");
             return (ServerConnectResult.ServerError, default);
         }
+
         var code = protector.CreateProtector("RoLogin");
         var data = code.Protect(tokenBytes);
 
@@ -178,7 +178,7 @@ public static class RoDatabase
         var db = scope.ServiceProvider.GetRequiredService<RoContext>();
 
         var characters = await db.Character.AsNoTracking().Where(c => c.AccountId == accountId)
-            .Select(c => new QueryPlayerSummary() {Name = c.Name, Map = c.Map, CharacterSlot = c.CharacterSlot, SummaryData = c.CharacterSummary})
+            .Select(c => new QueryPlayerSummary() { Name = c.Name, Map = c.Map, CharacterSlot = c.CharacterSlot, SummaryData = c.CharacterSummary })
             .ToListAsync();
 
         msg.Write(characters.Count);
@@ -189,7 +189,7 @@ public static class RoDatabase
             msg.Write(character.Map ?? "");
             var summaryLength = character.SummaryData?.Length ?? 0;
 
-            if(character.SummaryData == null || summaryLength < (int)PlayerSummaryData.SummaryDataMax)
+            if (character.SummaryData == null || summaryLength < (int)PlayerSummaryData.SummaryDataMax)
                 msg.Write(0);
             else
             {
@@ -263,9 +263,8 @@ public static class RoDatabase
         {
             await Task.Delay(100);
         }
-        ServerLogger.Log("Database queue is clear.");
 
-        
+        ServerLogger.Log("Database queue is clear.");
     }
 
     public static async Task Shutdown()
@@ -282,8 +281,7 @@ public static class RoDatabase
         var db = scope.ServiceProvider.GetRequiredService<RoContext>();
         db.Database.Migrate();
 
-        dbRequestChannel = Channel.CreateUnbounded<IDbRequest>(new UnboundedChannelOptions
-        { SingleReader = true, SingleWriter = false });
+        dbRequestChannel = Channel.CreateUnbounded<IDbRequest>(new UnboundedChannelOptions { SingleReader = true, SingleWriter = false });
 
         //dbProcessThread = new Thread(StartDbRequestThread);
         //dbProcessThread.Priority = ThreadPriority.Normal;

@@ -23,7 +23,7 @@ public class FireBallHandler : SkillHandlerBase
 
         //lvl = int.Clamp(lvl, 1, 10);
         var map = source.Character.Map!;
-        
+
         map.AddVisiblePlayersAsPacketRecipients(source.Character, target.Character); //combines src and target visibility lists
 
         var skillModifier = 1.4f + 0.2f * lvl;
@@ -66,7 +66,7 @@ public class FireBallHandler : SkillHandlerBase
             CommandBuilder.AttackMulti(source.Character, blastTarget, res, false);
         }
 
-        if(!isIndirect)
+        if (!isIndirect)
             source.ApplyCooldownForAttackAction(position);
         CommandBuilder.ClearRecipients();
     }

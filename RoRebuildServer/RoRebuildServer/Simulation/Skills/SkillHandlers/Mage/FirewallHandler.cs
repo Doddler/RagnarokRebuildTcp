@@ -51,7 +51,7 @@ public class FirewallHandler : SkillHandlerBase
             }
         }
 
-        if(!isIndirect)
+        if (!isIndirect)
             source.ApplyCooldownForSupportSkillAction();
 
         var ch = source.Character;
@@ -117,7 +117,7 @@ public class FirewallBaseEvent : NpcBehaviorBase
 
     private void CreateWallPiece(Npc npc, Position pos, int hitCount)
     {
-        if(npc.Character.Map!.WalkData.IsCellWalkable(pos))
+        if (npc.Character.Map!.WalkData.IsCellWalkable(pos))
             npc.CreateEvent("FirewallObjectEvent", pos, hitCount); //param is max hit count
     }
 
@@ -133,7 +133,7 @@ public class FirewallBaseEvent : NpcBehaviorBase
             return;
         }
 
-        if(newTime > npc.ValuesInt[1])
+        if (newTime > npc.ValuesInt[1])
             npc.EndAllEvents();
     }
 
@@ -177,7 +177,7 @@ public class FirewallObjectEvent : NpcBehaviorBase
         aoe.Init(npc.Character, Area.CreateAroundPoint(npc.Character.Position, 0), AoeType.DamageAoE, targeting, 15f, 0.05f, 0, 0);
         aoe.CheckStayTouching = true;
         aoe.SkillSource = CharacterSkill.FireWall;
-        
+
         npc.AreaOfEffect = aoe;
         npc.Character.Map!.CreateAreaOfEffect(aoe);
     }
@@ -219,7 +219,7 @@ public class FirewallObjectEvent : NpcBehaviorBase
         }
 
         DoAttack();
-        if(target.GetSpecialType() == CharacterSpecialType.Boss && npc.ValuesInt[0] > 0)
+        if (target.GetSpecialType() == CharacterSpecialType.Boss && npc.ValuesInt[0] > 0)
             DoAttack(0.025f); //eat tiles faster on boss monsters 2 per update tick, artificially delaying the damage by half the update rate (it becomes 40 hits per second)
     }
 }

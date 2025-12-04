@@ -32,5 +32,5 @@ public class PacketLookTowards : IClientPacketHandler
         var dir = (Direction)msg.ReadByte();
         var head = (HeadFacing)msg.ReadByte();
         connection.Character.ChangeLookDirection(player.Character.Position.AddDirectionToPosition(dir), head);
-	}
+    }
 }

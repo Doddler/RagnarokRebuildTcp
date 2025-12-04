@@ -35,7 +35,7 @@ public static class MathHelper
             //40 def -> 39.6% reduction     100 def -> 80.5% reduction
             //50 def -> 48.2% reduction     110 def -> 85.2% reduction
             //60 def -> 56.0% reduction     120 def -> 89.5% reduction
-            
+
             if (i < 300)
                 DefTable[i] = 1 - i / 1000f;
             else
@@ -66,7 +66,7 @@ public static class MathHelper
         var t1 = checkPoint.ToVector2();
         var p1 = lineStart.ToVector2();
         var p2 = lineTarget.ToVector2();
-        
+
         var dirNorm = Vector2.Normalize(p2 - p1);
         p2 = p1 + dirNorm * length;
         p1 -= dirNorm * backtrackDistance;
@@ -82,7 +82,7 @@ public static class MathHelper
         //we're within the width of the line... but are we between the two points?
         var d1 = Vector2.Distance(closest, p1);
         var d2 = Vector2.Distance(closest, p2);
-        
+
         return d1 < length && d2 < length;
     }
 

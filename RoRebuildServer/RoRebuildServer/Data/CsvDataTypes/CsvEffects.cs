@@ -3,7 +3,6 @@
 //disable null string warning on all our csv stuff
 #pragma warning disable CS8618
 
-
 public class CsvEffects
 {
     public int Id { get; set; }

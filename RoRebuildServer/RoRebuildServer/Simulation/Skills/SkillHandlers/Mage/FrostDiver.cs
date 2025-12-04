@@ -38,7 +38,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Mage
 
             source.ExecuteCombatResult(res, false);
 
-            if(res.Damage > 0)
+            if (res.Damage > 0)
                 source.TryFreezeTarget(target, 350 + lvl * 30, res.AttackMotionTime + distTime + 0.08f);
 
             CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.FrostDiver, lvl, res, isIndirect);

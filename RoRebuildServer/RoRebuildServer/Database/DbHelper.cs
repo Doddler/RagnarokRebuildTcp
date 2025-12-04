@@ -52,10 +52,10 @@ namespace RoRebuildServer.Database
         public static byte[] BorrowArrayAndWriteDictionary<T>(Dictionary<T, int>? dict) where T : Enum
         {
             var size = 4;
-            
+
             if (dict != null)
                 size = 8 * dict.Count + 1;
-            
+
             var buffer = ArrayPool<byte>.Shared.Rent(size);
             Array.Clear(buffer);
 

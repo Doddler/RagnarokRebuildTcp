@@ -94,13 +94,13 @@ public class LoadCharacterRequest : IDbRequest
                         {
                             PartyId = p.Id,
                             PartyName = p.PartyName,
-                            Characters = p.Characters.Where(m=>m.PartyId == p.Id).Select(m => new PartyLoadCharacter() {Id = m.Id, Name = m.Name}).ToList()
+                            Characters = p.Characters.Where(m => m.PartyId == p.Id).Select(m => new PartyLoadCharacter() { Id = m.Id, Name = m.Name }).ToList()
                         }).FirstOrDefaultAsync();
                     if (dbParty != null)
                     {
                         Party = new Party(dbParty);
-                        if(!World.Instance.TryAddParty(Party)) //if another query somehow beat us to the punch
-                            if(World.Instance.TryFindPartyById(ch.PartyId.Value, out party))
+                        if (!World.Instance.TryAddParty(Party)) //if another query somehow beat us to the punch
+                            if (World.Instance.TryFindPartyById(ch.PartyId.Value, out party))
                                 Party = party;
                     }
                 }
@@ -111,12 +111,7 @@ public class LoadCharacterRequest : IDbRequest
             {
                 Debug.Assert(!string.IsNullOrWhiteSpace(ch.SavePoint.MapName), "Map name should never be empty");
 
-                SavePosition = new SavePosition()
-                {
-                    MapName = ch.SavePoint.MapName,
-                    Position = new Position(ch.SavePoint.X, ch.SavePoint.Y),
-                    Area = ch.SavePoint.Area
-                };
+                SavePosition = new SavePosition() { MapName = ch.SavePoint.MapName, Position = new Position(ch.SavePoint.X, ch.SavePoint.Y), Area = ch.SavePoint.Area };
             }
             else
                 SavePosition = new SavePosition();

@@ -15,7 +15,7 @@ namespace RoRebuildServer.EntityComponents.Npcs
                     return NpcInteractionResult.WaitForInput;
                 case 1:
                     state.Step = 10;
-                    if(state.OptionResult == 0)
+                    if (state.OptionResult == 0)
                         state.OpenShop();
                     if (state.OptionResult == 1)
                         state.StartSellToNpc();

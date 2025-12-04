@@ -1,6 +1,5 @@
 ﻿namespace RebuildSharedData.Enum.EntityStats;
 
-
 public enum PlayerStat
 {
     Level,
@@ -178,7 +177,7 @@ public enum CharacterStat
     AddExpRacePlant,
     AddExpRaceDemon,
     AddExpRaceUndead,
-    
+
     AddAttackSpecialNormal,
     AddAttackSpecialBoss,
     AddAttackRangedAttack,
@@ -291,7 +290,7 @@ public enum CharacterStat
     ResistStoneStatus,
     ResistFreezeStatus,
     ResistSleepStatus,
-    
+
     DecreasePoisonStatusDamage,
     DecreaseStunDuration,
     DecreaseFreezeDuration,
@@ -308,7 +307,7 @@ public enum CharacterStat
 
     HpGainOnKill,
     SpGainOnKill,
-    
+
     HpGainOnAttackRaceFormless,
     HpGainOnAttackRaceDemihuman,
     HpGainOnAttackRaceBeast,

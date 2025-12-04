@@ -57,15 +57,15 @@ public class WarpPortalHandler : SkillHandlerBase
             if (!isIndirect && !CheckRequiredGemstone(source, BlueGemstone, false))
                 return SkillValidationResult.MissingRequiredItem;
 
-            if (source.Character.Map == null || !position.IsValid() 
-                                             || !source.Character.Map.WalkData.IsCellWalkable(position) 
+            if (source.Character.Map == null || !position.IsValid()
+                                             || !source.Character.Map.WalkData.IsCellWalkable(position)
                                              || !position.InRange(source.Character.Position, 12))
                 return SkillValidationResult.InvalidTarget;
         }
 
         return base.ValidateTarget(source, target, position, lvl, false, false);
     }
-    
+
     //failing pre-validation prevents sp from being taken
     public override bool PreProcessValidation(CombatEntity source, CombatEntity? target, Position position, int lvl,
         bool isIndirect, bool isItemSource) => !isIndirect && CheckRequiredGemstone(source, BlueGemstone);
@@ -79,7 +79,7 @@ public class WarpPortalHandler : SkillHandlerBase
             CommandBuilder.SkillExecuteAreaTargetedSkillAutoVis(source.Character, position, CharacterSkill.WarpPortal, lvl);
             return;
         }
-        
+
         var player = source.Player;
         var ch = source.Character;
         var map = source.Character.Map!;
@@ -94,7 +94,7 @@ public class WarpPortalHandler : SkillHandlerBase
 
             if (!isIndirect && !ConsumeGemstoneForSkillWithFailMessage(source, BlueGemstone))
                 return;
-        
+
             //the player has selected a destination, which is a second cast of warp portal
             var memo = player.MemoLocations[lvl - 1];
             if (string.IsNullOrWhiteSpace(memo.MapName) || !World.Instance.IsValidMap(memo.MapName))
@@ -115,7 +115,7 @@ public class WarpPortalHandler : SkillHandlerBase
             var e = World.Instance.CreateEvent(source.Entity, map, "WarpPortalBaseEvent", player.SpecialStateTarget,
                 lifeTime, memo.Position.X, memo.Position.Y, 0, memo.MapName);
             ch.AttachEvent(e);
-            
+
             player.SpecialState = SpecialPlayerActionState.None;
             player.SpecialStateTarget = Position.Invalid;
             //CommandBuilder.ChangePlayerSpecialActionState(player, SpecialPlayerActionState.None);
@@ -146,7 +146,7 @@ public class WarpPortalBaseEvent : NpcBehaviorBase
 {
     public override void InitEvent(Npc npc, int param1, int param2, int param3, int param4, string? paramString)
     {
-        if(paramString != null)
+        if (paramString != null)
             ServerLogger.LogErrorWithStackTrace($"Attempting to create WarpPortalBaseEvent without a string parameter!");
 
         npc.ValuesInt[0] = param1;
@@ -181,12 +181,8 @@ public class WarpPortalBaseEvent : NpcBehaviorBase
             return;
         }
 
-        var targeting = new TargetingInfo()
-        {
-            SourceEntity = npc.Owner,
-            TargetingType = TargetingType.Player
-        };
-        
+        var targeting = new TargetingInfo() { SourceEntity = npc.Owner, TargetingType = TargetingType.Player };
+
 
         var aoe = World.Instance.GetNewAreaOfEffect();
         aoe.Init(npc.Character, Area.CreateAroundPoint(npc.Character.Position, 0), AoeType.SpecialEffect, targeting, npc.ValuesInt[0], 0.05f, 0, 0);
@@ -220,6 +216,7 @@ public class WarpPortalBaseEvent : NpcBehaviorBase
             ServerLogger.LogWarning($"Failed to move player to {npc.ValuesString[0]}!");
             return;
         }
+
         npc.ValuesInt[3] += 1;
 
         if (npc.ValuesInt[3] >= 8)

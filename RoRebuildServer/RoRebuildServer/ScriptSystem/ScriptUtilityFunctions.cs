@@ -41,6 +41,7 @@ public static class ScriptUtilityFunctions
                 continue;
             sb.Append(s);
         }
+
         return sb.ToString();
     }
 

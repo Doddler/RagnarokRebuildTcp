@@ -40,7 +40,7 @@ public class PartyExpAccumulator
             return;
         }
 
-        foreach(var m in party.OnlineMembers)
+        foreach (var m in party.OnlineMembers)
         {
             ref var existing = ref CollectionsMarshal.GetValueRefOrNullRef(Results, m);
             if (Unsafe.IsNullRef(ref existing))
@@ -51,7 +51,7 @@ public class PartyExpAccumulator
                     continue;
 
                 var (b, j) = GetLevelModifiedExp(player.CharacterLevel, p.CharacterLevel, baseExp, jobExp);
-                if(b > 0 || j > 0)
+                if (b > 0 || j > 0)
                     Results.Add(p.Entity, new ExpResult(p, b, j));
             }
             else

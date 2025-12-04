@@ -23,7 +23,7 @@ public class Chunk
     public GroundItemList GroundItems { get; set; } = new GroundItemList(8, true);
     public List<AreaOfEffect> AreaOfEffects { get; set; } = new List<AreaOfEffect>(2);
 
-    public override string ToString() => $"Chunk ({X * Size},{Y*Size}-{(X+1)*Size},{(Y+1)*Size})[P:{Players.Count} M:{Monsters.Count} AoE:{AreaOfEffects.Count}]";
+    public override string ToString() => $"Chunk ({X * Size},{Y * Size}-{(X + 1) * Size},{(Y + 1) * Size})[P:{Players.Count} M:{Monsters.Count} AoE:{AreaOfEffects.Count}]";
 
 #if DEBUG
     public Chunk()
@@ -97,7 +97,7 @@ public class Chunk
     }
 
     public bool TryGetGroundItem(int itemId, out GroundItem item) => GroundItems.TryGet(itemId, out item);
-    
+
     public bool RemoveGroundItem(int itemId)
     {
         return GroundItems.Remove(itemId);

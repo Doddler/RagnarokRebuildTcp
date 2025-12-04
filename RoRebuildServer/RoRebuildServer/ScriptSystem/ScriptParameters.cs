@@ -36,7 +36,6 @@ public struct ScriptTopLevelParameter
     public static implicit operator int(ScriptTopLevelParameter p) => p.Int;
 }
 
-
 public class ScriptTopLevelParameters
 {
     public List<ScriptTopLevelParameter> Parameters { get; set; } = new();

@@ -50,12 +50,12 @@ public class EntityList : IDisposable
             Clear();
             return;
         }
+
         entities ??= new Entity[otherCount];
-        if(entities.Length < otherCount)
+        if (entities.Length < otherCount)
             Array.Resize(ref entities, otherCount);
         Array.Copy(otherList, entities, otherCount);
         count = otherCount;
-
     }
 
     private void ResizeIfNeeded()
@@ -76,7 +76,7 @@ public class EntityList : IDisposable
             ServerLogger.LogError($"Attempting to add entity to EntityList while the entity is not active!\n{Environment.StackTrace}");
             return;
         }
-        
+
         if (Contains(ref entity))
             return;
 
@@ -151,18 +151,17 @@ public class EntityList : IDisposable
     public void SwapFromBack(int index)
     {
         entities![index] = entities[count - 1];
-     
+
         count--;
     }
 
     public bool Remove(ref Entity entity)
     {
-        if (entities == null) 
+        if (entities == null)
             return false;
-        
+
         for (var i = 0; i < count; i++)
         {
-
             if (entities[i] == entity)
             {
                 if (i == count - 1)
@@ -241,11 +240,11 @@ public class EntityList : IDisposable
     {
         if (entities == null || count <= startIndex + 1)
             return;
-        
+
         for (var i = startIndex; i < count; i++)
         {
             var j = GameRandom.Next(startIndex, count);
-            if(i != j)
+            if (i != j)
                 (entities[j], entities[i]) = (entities[i], entities[j]);
         }
     }

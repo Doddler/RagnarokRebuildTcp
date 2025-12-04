@@ -34,8 +34,5 @@ public class DarkThunderHandler : SkillHandlerBase
         source.ExecuteCombatResult(res, false);
 
         CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.DarkThunder, lvl, res);
-
-
-
     }
 }

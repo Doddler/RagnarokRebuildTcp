@@ -352,7 +352,6 @@ public class Map
             PlayerCount++;
             Players.Add(ref entity);
             ServerLogger.Debug($"Map {Name} changed player count to {PlayerCount}.");
-
         }
 
         entityCount++;
@@ -383,7 +382,6 @@ public class Map
             PlayerCount++;
             Players.Add(ref entity);
             ServerLogger.Debug($"Map {Name} changed player count to {PlayerCount}.");
-
         }
 
         entityCount++;
@@ -519,7 +517,6 @@ public class Map
 
         foreach (Chunk chunk in GetChunkEnumeratorAroundPosition(ch.Position, ServerConfig.MaxViewDistance))
         {
-
             foreach (var target in chunk.AllEntities)
             {
                 if (!target.IsAlive())
@@ -591,7 +588,6 @@ public class Map
                         CommandBuilder.SendCreateEntity(ch, playerObj);
                     AddPlayerVisibility(playerChar, ch);
                 }
-
             }
         }
     }
@@ -613,6 +609,7 @@ public class Map
             foreach (var e in list)
                 recipientList.Add(e);
         }
+
         if (target.TryGetVisiblePlayerList(out list))
         {
             foreach (var e in list)
@@ -816,7 +813,6 @@ public class Map
     {
         foreach (Chunk c in GetChunkEnumeratorAroundPosition(character.Position, distance))
         {
-
             foreach (var m in c.AllEntities)
             {
                 var ch = m.Get<WorldObject>();
@@ -860,7 +856,6 @@ public class Map
     {
         foreach (Chunk c in GetChunkEnumeratorAroundPosition(character.Position, distance))
         {
-
             foreach (var m in c.AllEntities)
             {
                 var ch = m.Get<WorldObject>();
@@ -894,7 +889,6 @@ public class Map
 
                 list.Add(m);
             }
-
         }
     }
 
@@ -902,7 +896,6 @@ public class Map
     {
         foreach (Chunk c in GetChunkEnumeratorAroundPosition(center, distance))
         {
-
             foreach (var m in c.AllEntities)
             {
                 var ch = m.Get<WorldObject>();
@@ -921,7 +914,6 @@ public class Map
     {
         foreach (Chunk c in GetChunkEnumeratorForArea(area))
         {
-
             foreach (var m in c.AllEntities)
             {
                 var potentialTarget = m.Get<WorldObject>();
@@ -956,7 +948,6 @@ public class Map
     {
         foreach (Chunk c in GetChunkEnumeratorAroundPosition(position, distance))
         {
-
             foreach (var m in c.AllEntities)
             {
                 var potentialTarget = m.Get<WorldObject>();
@@ -1000,7 +991,7 @@ public class Map
             {
                 if (e.Type != EntityType.Npc)
                     continue;
-                
+
                 if (e.TryGet<Npc>(out var npc) && npc.DisplayType == NpcDisplayType.Sprite && !npc.IsEvent && character.Position.DistanceTo(npc.Character.Position) <= distance)
                     return true;
             }
@@ -1113,12 +1104,12 @@ public class Map
         {
             foreach (var p in c.AllEntities)
             {
-                if(!p.TryGet<CombatEntity>(out var ch) || !ch.Character.IsActive)
+                if (!p.TryGet<CombatEntity>(out var ch) || !ch.Character.IsActive)
                     continue;
 
                 if (checkImmunity && ch.Character.IsTargetImmune)
                     continue;
-            
+
                 if (!ch.IsValidTarget(attacker, false, canAttackHidden))
                     continue;
 
@@ -1130,7 +1121,7 @@ public class Map
 
                 if (!mask[maskX + maskY * width])
                     continue;
-                
+
                 if (hasList)
                     list!.Add(p);
                 count++;
@@ -1185,6 +1176,7 @@ public class Map
     }
 
     private static readonly int[] scanOrder = [0, 3, 5, 7, 2, 4, 6, 1];
+
     public Position ScanLineOfSightForWallInDirection(Position start, Position center, int distance, Direction dir)
     {
         //var dir = scanOrder[GameRandom.Next(0, 8)];
@@ -1505,7 +1497,7 @@ public class Map
         var hasMatch = false;
 
         Debug.Assert(mask.Length == width * width); //verify mask is large enough
-        
+
         for (var x = 0; x < width; x++)
         {
             for (var y = 0; y < width; y++)
@@ -1635,7 +1627,6 @@ public class Map
                     if (!a.IsActive)
                         i--; //we've ended this aoe so step back on the iterator and continue. Probably dangerous.
                 }
-
             }
         }
 
@@ -1831,6 +1822,7 @@ public class Map
                             walkable++;
                     }
                 }
+
                 Chunks[x + y * chunkWidth] = new Chunk();
                 Chunks[x + y * chunkWidth].Id = x + y * chunkWidth;
                 Chunks[x + y * chunkWidth].Size = ChunkSize;

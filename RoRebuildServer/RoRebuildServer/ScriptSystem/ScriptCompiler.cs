@@ -21,7 +21,6 @@ public class QueryLanguageErrorListener : BaseErrorListener
     }
 }
 
-
 internal class ScriptCompiler
 {
     private Dictionary<string, string> scriptFiles = new();
@@ -66,7 +65,7 @@ internal class ScriptCompiler
         var parser = new RoScriptParser(tokenStream);
 
         parser.AddErrorListener(new QueryLanguageErrorListener());
-        
+
         var str = String.Empty;
 
         try
@@ -79,7 +78,7 @@ internal class ScriptCompiler
             ServerLogger.LogError($"Failed to compile script {inputPath}!");
             throw;
         }
-        
+
         scriptFiles.Add(Path.GetRelativePath(dataPath, inputPath), str);
 
         //for testing and debug we'll write to cache even if we don't load from it
@@ -87,14 +86,14 @@ internal class ScriptCompiler
         {
             if (!Directory.Exists(cachePath))
                 Directory.CreateDirectory(cachePath);
-            
+
             File.WriteAllText(cacheFileName, str);
         }
 
         //convince antlr to release memory from the lexer/parser
         lexer.Interpreter = new LexerATNSimulator(lexer, lexer.Atn);
         parser.Interpreter = new ParserATNSimulator(parser, parser.Atn);
-        
+
         return true;
     }
 
@@ -121,7 +120,7 @@ internal class ScriptCompiler
             return false;
         }
     }
-    
+
     public Assembly Load(bool loadFromCache)
     {
         var useCache = ServerConfig.DataConfig.CacheScripts;
@@ -136,7 +135,7 @@ internal class ScriptCompiler
             }
         }
 
-        if(!useCache)
+        if (!useCache)
             ServerLogger.Log("Script caching is currently disabled. Forcing recompile.");
 
         var trees = new List<SyntaxTree>();
@@ -145,7 +144,7 @@ internal class ScriptCompiler
             var tree = CSharpSyntaxTree.ParseText(script.Value).WithFilePath(script.Key);
             trees.Add(tree);
         }
-        
+
         string assemblyName = Path.GetRandomFileName();
         var references2 = new List<MetadataReference>()
         {
@@ -167,7 +166,7 @@ internal class ScriptCompiler
         using var memoryStream = new MemoryStream();
 
         var result = compilation.Emit(memoryStream);
-        
+
         if (!result.Success)
         {
             foreach (var r in result.Diagnostics)
@@ -181,7 +180,7 @@ internal class ScriptCompiler
 
         //for testing and debug we'll write to cache even if we don't load from it
         //if(useCache)
-            File.WriteAllBytes(Path.Combine(ServerConfig.DataConfig.CachePath, "Script.dll"), bytes);
+        File.WriteAllBytes(Path.Combine(ServerConfig.DataConfig.CachePath, "Script.dll"), bytes);
 
         scriptFiles.Clear(); //no need to keep the scripts in memory anymore.
         scriptFiles = null!;

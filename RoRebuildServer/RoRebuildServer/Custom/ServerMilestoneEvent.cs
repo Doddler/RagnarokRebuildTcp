@@ -320,7 +320,6 @@ public class ServerMilestoneEvent : ServerConfigScriptHandlerBase
         }
         else
         {
-
             if (!unusedLevelRecords.TryPop(out var rec))
                 rec = new PlayerLevelRecord() { Id = p.Id, Level = level, Name = p.Name, Job = jobName };
             else
@@ -366,6 +365,7 @@ public class ServerMilestoneEvent : ServerConfigScriptHandlerBase
             else
                 sb.AppendLine($"#{i + 1} : --");
         }
+
         ScriptGlobalManager.SetString(GlobalTop10Text, sb.ToString());
     }
 
@@ -515,11 +515,11 @@ public class ServerMilestoneEvent : ServerConfigScriptHandlerBase
             }
             else
                 msg = $"<color=#99CCFF>The Okolnir challenge dungeon has been completed! '{player.Name}' was the first to kill the MVP boss {milestone.MonsterName}!</color>";
+
             msg += $"\n<color=#99CCFF><i>As a reward for achieving a server first, all online players will be rewarded {milestone.BaseExp:N0} exp (up to one full level)!</i></color>";
 
             ScriptGlobalManager.SetInt(OkolnirClearSignal, 1);
             RevealNpc(OkolnirClearSignal, false);
-
         }
 
         ServerWideMessage(msg);
@@ -593,8 +593,6 @@ public class ServerMilestoneEvent : ServerConfigScriptHandlerBase
         {
             minTime = 14 * 60 * 1000;
             maxTime = 15 * 60 * 1000;
-
         }
     }
 }
-

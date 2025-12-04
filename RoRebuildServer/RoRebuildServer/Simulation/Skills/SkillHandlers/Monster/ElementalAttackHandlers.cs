@@ -91,7 +91,7 @@ public abstract class ElementalAttackHandler : SkillHandlerBase
         var ratio = 0.8f + lvl * 0.6f;
 
         var element = GetElement();
-        
+
         var res = source.CalculateCombatResult(target, ratio, 1, AttackFlags.Physical | AttackFlags.AutoRange, GetSkill(), element);
         if (element == AttackElement.Poison)
         {
@@ -99,6 +99,7 @@ public abstract class ElementalAttackHandler : SkillHandlerBase
             if (poisonBarrier)
                 res.Damage /= 2;
         }
+
         source.ApplyCooldownForAttackAction(target);
         source.ExecuteCombatResult(res, false);
 

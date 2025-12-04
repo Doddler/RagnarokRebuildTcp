@@ -35,7 +35,7 @@ public enum NpcEffectType : byte
     TalkieBox,
     FirePillar,
     VenomDust,
-    
+
     //custom
     LightOrb,
 }

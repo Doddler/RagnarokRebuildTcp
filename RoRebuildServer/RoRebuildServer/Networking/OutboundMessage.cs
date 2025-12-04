@@ -33,7 +33,7 @@ public class OutboundMessage : IBinaryMessageWriter
     public int Length => (position + 7) / 8; //convert position in bits to bytes
 
     private int position;
-    
+
 
     public OutboundMessage()
     {
@@ -43,7 +43,7 @@ public class OutboundMessage : IBinaryMessageWriter
         IsInitialized = false;
         IsQueued = false;
     }
-    
+
     public OutboundMessage(List<NetworkConnection> clients, byte[] message, int length)
     {
         Clients = clients;

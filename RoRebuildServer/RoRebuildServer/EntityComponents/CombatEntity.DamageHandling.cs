@@ -227,7 +227,7 @@ public partial class CombatEntity
                         else
                             subDef = vit + GameRandom.NextInclusive(0, 20000) % vitRng;
                     }
-                    
+
                     subDef = subDef * (100 + GetStat(CharacterStat.AddSoftDefPercent)) / 100;
                 }
 
@@ -566,7 +566,6 @@ public partial class CombatEntity
         var vit = target.GetEffectiveStat(CharacterStat.Vit);
 
 
-
         //physical defense
         if (!flags.HasFlag(AttackFlags.IgnoreDefense))
             (defCut, subDef) = target.GetDefenseReductionForReceivedAttack(this, attackerPenalty, flags, defMod, 100);
@@ -716,15 +715,15 @@ public partial class CombatEntity
         //---------------------------------------
         // On Attack and When Attacked Triggers
         //---------------------------------------
-        
-        if(target.Character.Type == CharacterType.BattleNpc)
+
+        if (target.Character.Type == CharacterType.BattleNpc)
             target.Character.Npc.Behavior.OnCalculateDamage(target.Character.Npc, target.Character.BattleNpc, this, ref di);
 
         if (!flags.HasFlag(AttackFlags.NoTriggerOnAttackEffects))
         {
             if (target.IsCasting)
                 SkillHandler.TriggerEventOnHitWhileCasting(target, ref req, ref di);
-            
+
             if (statusContainer != null)
                 statusContainer.OnAttack(ref di);
 
@@ -747,7 +746,6 @@ public partial class CombatEntity
 
     private void ApplyQueuedCombatResult(ref DamageInfo di)
     {
-
         if (Character.State == CharacterState.Dead || !Entity.IsAlive() || Character.IsTargetImmune || Character.Map == null)
             return;
 
@@ -862,7 +860,6 @@ public partial class CombatEntity
                     CommandBuilder.StopCastMulti(Character);
                 }
             }
-
         }
 
         CommandBuilder.ClearRecipients();
@@ -906,7 +903,7 @@ public partial class CombatEntity
                     if ((player.OnAttackTriggerFlags & (AttackEffectTriggers.HpOnKill | AttackEffectTriggers.SpOnKill)) > 0)
                         player.CombatEntity.TriggerOnKillEffects(this);
                 }
-                
+
                 if (DataManager.MvpMonsterCodes.Contains(monster.MonsterBase.Code))
                     monster.RewardMVP();
 

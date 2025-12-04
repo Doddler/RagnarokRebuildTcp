@@ -48,7 +48,7 @@ public class MapWalkData
             for (var y = p.Y - distance; y <= p.Y + distance; y++)
             {
                 if (IsPositionInBounds(x, y) && (cellData[x + y * Width] & 2) == 2)
-                        count++;
+                    count++;
             }
         }
 
@@ -197,15 +197,25 @@ public class MapWalkData
         int err = (dx > dy ? dx : -dy) / 2;
         var target = chPos;
         //var dist = 0;
-        for (; ; )
+        for (;;)
         {
             if (x0 == x1 && y0 == y1) break;
             if (!IsCellWalkable(x0, y0))
                 return target;
             target = new Position(x0, y0);
             var e2 = err;
-            if (e2 > -dx) { err -= dy; x0 += sx; }
-            if (e2 < dy) { err += dx; y0 += sy; }
+            if (e2 > -dx)
+            {
+                err -= dy;
+                x0 += sx;
+            }
+
+            if (e2 < dy)
+            {
+                err += dx;
+                y0 += sy;
+            }
+
             if (chPos.DistanceTo(target) >= maxDist) return target;
         }
 
@@ -223,14 +233,23 @@ public class MapWalkData
         int dx = Math.Abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
         int dy = Math.Abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
         int err = (dx > dy ? dx : -dy) / 2;
-        for (; ; )
+        for (;;)
         {
             if (x0 == x1 && y0 == y1) break;
             if (DoesCellBlockLos(x0, y0))
                 return false;
             var e2 = err;
-            if (e2 > -dx) { err -= dy; x0 += sx; }
-            if (e2 < dy) { err += dx; y0 += sy; }
+            if (e2 > -dx)
+            {
+                err -= dy;
+                x0 += sx;
+            }
+
+            if (e2 < dy)
+            {
+                err += dx;
+                y0 += sy;
+            }
         }
 
         return true;
@@ -248,14 +267,23 @@ public class MapWalkData
         int dx = Math.Abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
         int dy = Math.Abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
         int err = (dx > dy ? dx : -dy) / 2;
-        for (; ; )
+        for (;;)
         {
             if (x0 == x1 && y0 == y1) break;
             if (!IsCellWalkable(x0, y0))
                 return false;
             var e2 = err;
-            if (e2 > -dx) { err -= dy; x0 += sx; }
-            if (e2 < dy) { err += dx; y0 += sy; }
+            if (e2 > -dx)
+            {
+                err -= dy;
+                x0 += sx;
+            }
+
+            if (e2 < dy)
+            {
+                err += dx;
+                y0 += sy;
+            }
         }
 
         return true;
@@ -269,7 +297,7 @@ public class MapWalkData
 
         var path = Path.Combine(walkPath, walkFileName);
         MapFlags = flags;
-        
+
         guaranteedWater = MapFlags.HasFlag(MapFlags.AllWater);
         noWater = MapFlags.HasFlag(MapFlags.NoWater);
 

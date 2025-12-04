@@ -43,7 +43,7 @@ public class RecallMinionHandler : SkillHandlerBase
         //    return;
 
         var area = Area.CreateAroundPoint(source.Character.Position, 2);
-        for(var i = 0; i < m.ChildCount; i++)
+        for (var i = 0; i < m.ChildCount; i++)
         {
             var minion = m.Children[i];
             if (!minion.TryGet<WorldObject>(out var ch))

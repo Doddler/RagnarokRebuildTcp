@@ -6,7 +6,6 @@ using System.Diagnostics;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;
 
-
 [ClientPacketHandler(PacketType.ChangeFollower)]
 public class PacketChangeFollower : IClientPacketHandler
 {
@@ -86,6 +85,5 @@ public class PacketChangeFollower : IClientPacketHandler
         }
 
         CommandBuilder.UpdatePlayerFollowerStateAutoVis(player);
-
     }
 }

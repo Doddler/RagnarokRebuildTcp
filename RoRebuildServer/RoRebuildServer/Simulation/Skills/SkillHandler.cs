@@ -183,7 +183,7 @@ public static class SkillHandler
         var handler = handlers[(int)info.Skill];
         if ((info.Flags & SkillCastFlags.NoEffect) > 0)
             handler = handlers[(int)CharacterSkill.NoEffectAttack];
-            
+
         if (handler != null)
         {
             var isIndirect = info.IsIndirect || info.ItemSource > 0;
@@ -197,7 +197,7 @@ public static class SkillHandler
                                    && skillAttributes[(int)info.Skill].SkillClassification == SkillClass.Magic
                                    && target.GetStat(CharacterStat.MagicImmunity) > 0)
                 {
-                    if(src.Character.Type == CharacterType.Player)
+                    if (src.Character.Type == CharacterType.Player)
                         CommandBuilder.SkillFailed(src.Player, SkillValidationResult.TargetImmuneToEffect);
                     return false;
                 }
@@ -212,5 +212,4 @@ public static class SkillHandler
 
         return false;
     }
-
 }

@@ -54,6 +54,7 @@ namespace RoRebuildServer.EntitySystem
                 Clear();
                 return;
             }
+
             entities ??= new Entity[otherCount];
             values ??= new T[otherCount];
             if (entities.Length < otherCount)
@@ -65,7 +66,6 @@ namespace RoRebuildServer.EntitySystem
             Array.Copy(otherList, entities, otherCount);
             Array.Copy(otherValueList, values, otherCount);
             count = otherCount;
-
         }
 
         private void ResizeIfNeeded()
@@ -199,7 +199,7 @@ namespace RoRebuildServer.EntitySystem
                     match++;
                     continue;
                 }
-                
+
                 SwapFromBack(i);
                 i--;
             }
@@ -240,7 +240,7 @@ namespace RoRebuildServer.EntitySystem
 
             count--;
         }
-        
+
         public bool Remove(ref Entity entity)
         {
             if (entities == null || values == null)
@@ -248,7 +248,6 @@ namespace RoRebuildServer.EntitySystem
 
             for (var i = 0; i < count; i++)
             {
-
                 if (entities[i] == entity)
                 {
                     if (i == count - 1)
@@ -303,9 +302,9 @@ namespace RoRebuildServer.EntitySystem
 
             for (var i = 0; i < count; i++)
             {
-                if (!entities[i].TryGet<WorldObject>(out var character) 
-                    || character.State == CharacterState.Dead 
-                    || !character.IsActive 
+                if (!entities[i].TryGet<WorldObject>(out var character)
+                    || character.State == CharacterState.Dead
+                    || !character.IsActive
                     || character.Map != map)
                 {
                     if (i == count - 1)

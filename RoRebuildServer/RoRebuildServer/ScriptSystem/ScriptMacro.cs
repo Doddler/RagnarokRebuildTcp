@@ -24,10 +24,9 @@ public class ScriptMacro
 
     public void DefineVariable(int paramId, string name)
     {
-        
         VariableIds.Add(name, paramId);
     }
-    
+
     public void SetValue(int id, RoScriptParser.ExpressionContext value)
     {
         Values[id] = value;

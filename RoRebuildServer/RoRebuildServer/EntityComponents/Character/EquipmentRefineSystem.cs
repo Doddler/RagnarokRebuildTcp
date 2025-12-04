@@ -40,7 +40,7 @@ public static class EquipmentRefineSystem
         else
         {
             var armor = DataManager.ArmorInfo[item.Id];
-            if(!armor.IsRefinable)
+            if (!armor.IsRefinable)
                 return RefineSuccessResult.FailedIncorrectRequirements;
         }
 
@@ -61,7 +61,7 @@ public static class EquipmentRefineSystem
             inventory.GetItem(catalyst, out var catalystItem);
             if (catalystItem.Id != item.Id || catalystItem.Type != ItemType.UniqueItem || catalystItem.UniqueItem.Refine > 0)
                 return RefineSuccessResult.FailedCatalystMismatch;
-            for(var i = 0; i < 4; i++)
+            for (var i = 0; i < 4; i++)
                 if (catalystItem.UniqueItem.SlotData(i) > 0)
                     return RefineSuccessResult.FailedCatalystMismatch;
 
@@ -75,7 +75,7 @@ public static class EquipmentRefineSystem
         }
 
         player.DropZeny(requiredZeny);
-        
+
         if (successRate < 100)
         {
             if (GameRandom.Next(0, 100) > successRate)

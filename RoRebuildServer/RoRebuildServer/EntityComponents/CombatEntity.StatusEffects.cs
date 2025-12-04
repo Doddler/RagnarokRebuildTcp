@@ -141,7 +141,7 @@ public partial class CombatEntity
             }
 
             if ((attackTriggerFlags & AttackEffectTriggers.KillOnAttack) > 0
-                    && isPhysical && target.GetSpecialType() != CharacterSpecialType.Boss)
+                && isPhysical && target.GetSpecialType() != CharacterSpecialType.Boss)
             {
                 var val = GetStat(CharacterStat.KnockOutOnAttack);
                 val += GetStat(CharacterStat.KnockOutOnAttackRaceFormless + (int)race);
@@ -486,7 +486,7 @@ public partial class CombatEntity
     {
         if (target.HasBodyState(BodyStateFlags.DisablingState) || target.HasStatusEffectOfType(CharacterStatusEffect.Petrifying) || target.GetSpecialType() == CharacterSpecialType.Boss)
             return false;
-        
+
         var mdef = target.GetEffectiveStat(CharacterStat.MDef);
         var luk = target.GetEffectiveStat(CharacterStat.Luk);
 

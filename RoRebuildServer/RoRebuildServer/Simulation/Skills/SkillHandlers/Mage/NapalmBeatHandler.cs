@@ -72,7 +72,7 @@ public class NapalmBeatHandler : SkillHandlerBase
                     continue;
 
                 res.Target = e;
-                blastTarget.ExecuteCombatResult(res, false);  //apply damage to target
+                blastTarget.ExecuteCombatResult(res, false); //apply damage to target
                 CommandBuilder.AttackMulti(source.Character, blastTarget.Character, res, false);
             }
         }

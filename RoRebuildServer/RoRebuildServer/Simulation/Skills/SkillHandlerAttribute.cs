@@ -21,7 +21,7 @@ public abstract class SkillHandlerBase
     protected const int YellowGemstone = 715;
     protected const int RedGemstone = 716;
     protected const int BlueGemstone = 717;
-    
+
     protected const int HolyWater = 523;
 
     public virtual bool IsAreaTargeted => false;
@@ -100,7 +100,7 @@ public abstract class SkillHandlerBase
             if (source.GetStat(CharacterStat.NoGemstone) > 0)
                 return true;
 
-            if(sendFailMessage)
+            if (sendFailMessage)
                 CommandBuilder.SkillFailed(source.Player, SkillValidationResult.MissingRequiredItem);
             return false;
         }
@@ -112,7 +112,7 @@ public abstract class SkillHandlerBase
     {
         if (source.Character.Type == CharacterType.Player && (source.Player.Inventory == null || !source.Player.Inventory.HasItem(itemId)))
         {
-            if(sendFailMessage)
+            if (sendFailMessage)
                 CommandBuilder.SkillFailed(source.Player, SkillValidationResult.MissingRequiredItem);
             return false;
         }
@@ -179,7 +179,7 @@ public abstract class SkillHandlerBase
         {
             if (source.Character.Map != null && !source.Character.Map.WalkData.HasLineOfSight(source.Character.Position, target.Character.Position))
                 return SkillValidationResult.NoLineOfSight;
-            
+
             if (target.IsValidTarget(source) || target.IsValidAlly(source) || source == target)
                 return SkillValidationResult.Success;
 
@@ -208,7 +208,8 @@ public abstract class SkillHandlerBase
         CommandBuilder.ClearRecipients();
     }
 
-    protected void GenericCastAndInformSupportSkill(CombatEntity source, CombatEntity? target, CharacterSkill skill, int lvl, ref readonly DamageInfo damage, bool isIndirect, bool applyCooldown = false)
+    protected void GenericCastAndInformSupportSkill(CombatEntity source, CombatEntity? target, CharacterSkill skill, int lvl, ref readonly DamageInfo damage, bool isIndirect,
+        bool applyCooldown = false)
     {
         source.Character.Map?.AddVisiblePlayersAsPacketRecipients(source.Character);
         CommandBuilder.SkillExecuteTargetedSkill(source.Character, target?.Character, skill, lvl, damage);
@@ -225,7 +226,6 @@ public abstract class SkillHandlerBase
 
     protected void ApplySkillCooldown()
     {
-
     }
 }
 
@@ -236,7 +236,8 @@ public class SkillHandlerAttribute : Attribute
     public SkillTarget SkillTarget;
     public SkillPreferredTarget SkillPreferredTarget;
 
-    public SkillHandlerAttribute(CharacterSkill skillType, SkillClass skillClassification = SkillClass.None, SkillTarget skillTarget = SkillTarget.Enemy, SkillPreferredTarget preferredTarget = SkillPreferredTarget.Any)
+    public SkillHandlerAttribute(CharacterSkill skillType, SkillClass skillClassification = SkillClass.None, SkillTarget skillTarget = SkillTarget.Enemy,
+        SkillPreferredTarget preferredTarget = SkillPreferredTarget.Any)
     {
         SkillType = skillType;
         SkillClassification = skillClassification;
@@ -275,7 +276,9 @@ public struct SkillCastInfo()
     public Entity TargetEntity;
     public Position TargetedPosition;
     public int Level;
+
     public float CastTime;
+
     //public float AfterCastDelay;
     //public float CooldownTime;
     public short ItemSource = -1;

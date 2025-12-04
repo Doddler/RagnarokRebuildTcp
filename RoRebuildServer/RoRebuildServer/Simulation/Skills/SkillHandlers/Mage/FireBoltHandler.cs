@@ -9,4 +9,3 @@ public class FireBoltHandler : TargetedSpellBase
     public override CharacterSkill GetSkill() => CharacterSkill.FireBolt;
     public override AttackElement GetElement() => AttackElement.Fire;
 }
-

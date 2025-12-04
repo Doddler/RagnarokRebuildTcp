@@ -45,7 +45,7 @@ public class CharacterBag : IResettable
 
     // Lastly we need to sometimes know if the player is holding a specific unique item, so we have a lookup for unique guid to bag id.
     public Dictionary<Guid, int> UniqueItemBagIds = new(); //is this even used?
-    
+
 
     public int UsedSlots;
     public int BagWeight;
@@ -55,7 +55,7 @@ public class CharacterBag : IResettable
 
     public static CharacterBag Borrow() => bagPool.Get();
     public static void Return(CharacterBag bag) => bagPool.Return(bag);
-    
+
     public static CharacterBag FromExisting(IBinaryMessageReader br)
     {
         var bag = Borrow();
@@ -67,7 +67,7 @@ public class CharacterBag : IResettable
 
     public int GetItemCount(int id)
     {
-        if(RegularItems.TryGetValue(id, out var regItem))
+        if (RegularItems.TryGetValue(id, out var regItem))
             return regItem.Count;
         if (UniqueItemCounts.TryGetValue(id, out var uniqueCount))
             return uniqueCount;
@@ -115,7 +115,7 @@ public class CharacterBag : IResettable
     }
 
     public Guid GetGuidByUniqueItemId(int id) => UniqueItems[id].UniqueId;
-    
+
     public int AddItem(ItemReference item)
     {
         BagWeight += item.Count * DataManager.GetWeightForItem(item.Id);
@@ -124,7 +124,7 @@ public class CharacterBag : IResettable
         else
             return AddItem(item.UniqueItem);
     }
-    
+
     //public void AddItem(GroundItem item)
     //{
     //    if (item.Type == ItemType.RegularItem)
@@ -146,7 +146,7 @@ public class CharacterBag : IResettable
         RegularItems.Add(item.Id, item);
         return item.Count;
     }
-    
+
     public int GetUniqueItemIdByGuid(Guid id)
     {
         //boring and slow linear search
@@ -231,7 +231,7 @@ public class CharacterBag : IResettable
             else
                 RegularItems[id] = regular;
 
-            itemOut = new ItemReference(new RegularItem() { Id = id, Count = (short) removeCount });
+            itemOut = new ItemReference(new RegularItem() { Id = id, Count = (short)removeCount });
             BagWeight -= removeCount * DataManager.GetWeightForItem(id);
             return true;
         }
@@ -240,7 +240,7 @@ public class CharacterBag : IResettable
         {
             if (unique.Count != removeCount)
                 throw new Exception($"Cannot split stacks on unique items!");
-            
+
             UniqueItems.Remove(id);
             UniqueItemBagIds.Remove(unique.UniqueId);
             itemOut = new ItemReference(unique);
@@ -268,6 +268,7 @@ public class CharacterBag : IResettable
         }
         else
             RegularItems[item.Id] = existing;
+
         BagWeight -= item.Count * DataManager.GetWeightForItem(item.Id);
         return true;
     }
@@ -360,7 +361,7 @@ public class CharacterBag : IResettable
 
     public void Serialize(IBinaryMessageWriter bw, bool writeBagIndexes)
     {
-        if(!writeBagIndexes)
+        if (!writeBagIndexes)
             bw.Write(0); //reserved for inventory version number (in case we need to do migrations)... but don't send to client
         bw.Write(RegularItems.Count);
         foreach (var item in RegularItems)
@@ -369,12 +370,12 @@ public class CharacterBag : IResettable
         bw.Write(UniqueItems.Count);
         foreach (var item in UniqueItems)
         {
-            if(writeBagIndexes)
+            if (writeBagIndexes)
                 bw.Write(item.Key);
             item.Value.Serialize(bw);
         }
 
-        if(!writeBagIndexes)
+        if (!writeBagIndexes)
             bw.Write(RegularItems.Count + UniqueItems.Count); //for a little safety
     }
 

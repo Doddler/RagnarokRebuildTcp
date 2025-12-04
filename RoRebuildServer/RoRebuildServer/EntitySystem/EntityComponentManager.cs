@@ -3,7 +3,9 @@ using System.Runtime.CompilerServices;
 
 namespace RoRebuildServer.EntitySystem;
 
-public sealed class EntityIgnoreNullCheckAttribute : Attribute { }
+public sealed class EntityIgnoreNullCheckAttribute : Attribute
+{
+}
 
 public sealed class EntityComponent : Attribute
 {
@@ -26,7 +28,6 @@ public interface IEntityAutoReset
     public void Reset();
 }
 
-
 public static class ComponentType<T> where T : class
 {
     public static readonly int Index;
@@ -45,35 +46,10 @@ public static class EntityComponentManager
 {
     public static int MaxComponentCount;
     public static int MaxComponentPerType;
-    private static int[] componentIndexes;
-    private static int[] componentPositions;
+    private static readonly int[] componentIndexes;
+    private static readonly int[] componentPositions;
 
-    private static EntityComponentPool[] componentPool;
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int GetComponentIndex<T>(EntityType type) where T : class
-    {
-        return componentPositions[(int)type * MaxComponentCount + ComponentType<T>.Index];
-    }
-
-    public static object? GetComponentByIndex(EntityType type, int slot)
-    {
-        var id = componentIndexes[(int)type * MaxComponentCount + slot];
-        if (id < 0)
-            return null;
-
-        return componentPool[id].Get();
-    }
-    
-    public static void RecycleComponent(EntityType type, int slot, object component)
-    {
-        var id = componentIndexes[(int)type * MaxComponentCount + slot];
-
-        if (id < 0)
-            return;
-
-        componentPool[id].Return(component);
-    }
+    private static readonly EntityComponentPool[] componentPool;
 
     static EntityComponentManager()
     {
@@ -87,7 +63,7 @@ public static class EntityComponentManager
         componentPool = new EntityComponentPool[MaxComponentCount];
 
 
-        for(var i = 0; i < MaxComponentCount; i++)
+        for (var i = 0; i < MaxComponentCount; i++)
         {
             var et = componentTypes[i];
             var index = GetComponentIndex(et);
@@ -121,7 +97,32 @@ public static class EntityComponentManager
                 MaxComponentPerType = index;
         }
     }
-    
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int GetComponentIndex<T>(EntityType type) where T : class
+    {
+        return componentPositions[(int)type * MaxComponentCount + ComponentType<T>.Index];
+    }
+
+    public static object? GetComponentByIndex(EntityType type, int slot)
+    {
+        var id = componentIndexes[(int)type * MaxComponentCount + slot];
+        if (id < 0)
+            return null;
+
+        return componentPool[id].Get();
+    }
+
+    public static void RecycleComponent(EntityType type, int slot, object component)
+    {
+        var id = componentIndexes[(int)type * MaxComponentCount + slot];
+
+        if (id < 0)
+            return;
+
+        componentPool[id].Return(component);
+    }
+
     private static int GetComponentIndex(Type type)
     {
         var m2 = typeof(ComponentType<>).MakeGenericType(type).GetField("Index", BindingFlags.Static | BindingFlags.Public);

@@ -60,7 +60,7 @@ public class World
     private readonly Lock entityLock = new();
 
     public CancellationTokenSource CancellationSource;
-    
+
     public ConcurrentStack<Action> MainThreadActions = new();
 
     public bool TryFindPartyById(int id, [NotNullWhen(true)] out Party? party) => partyLookup.TryGetValue(id, out party);
@@ -70,7 +70,7 @@ public class World
     public bool TryFindPlayerByName(string name, out Entity entity) => playerNameLookup.TryGetValue(name, out entity) && entity.IsAlive();
 
     public CancellationToken GetCancellationToken => CancellationSource.Token;
-    
+
     public World()
     {
         Instance = this;
@@ -99,7 +99,7 @@ public class World
 
         foreach (var instance in Instances)
             instance.LoadNpcs(); //we defer this till after all the maps are loaded, as some npcs will need to do cross map stuff
-        
+
         moveRequests = Channel.CreateUnbounded<MapMoveRequest>(new UnboundedChannelOptions() { AllowSynchronousContinuations = false, SingleReader = true, SingleWriter = false });
 
         ServerLogger.Log($"World created using {mapCount} maps across {Instances.Count} instances placing a total of {nextEntityId} entities in {Time.CurrentDiagnosticsTime():F2}s.");
@@ -126,7 +126,7 @@ public class World
         if (ch.Type == CharacterType.NPC)
         {
             var npc = ch.Npc;
-            
+
             npc.RemoveAreaOfEffect();
             npc.RemoveSignal();
             npc.EndAllEvents();
@@ -136,7 +136,6 @@ public class World
                 owner.Events?.Remove(ref npc.Entity);
                 owner.Events?.ClearInactive();
             }
-
         }
 
         entityList.Remove(ch.Id);
@@ -328,7 +327,7 @@ public class World
         ch.Type = isCombatEntity ? CharacterType.BattleNpc : CharacterType.NPC;
         ch.Name = eventName;
         ch.Init(ref e);
-        if(isCombatEntity)
+        if (isCombatEntity)
             ch.CombatEntity.Init(ref e, ch);
         npc.FullName = eventName;
         npc.Name = eventName;
@@ -908,7 +907,7 @@ public class World
 
     public void PanicSaveAllCharacters()
     {
-        foreach(var (guid, entity) in playerList)
+        foreach (var (guid, entity) in playerList)
         {
             if (entity.TryGet<Player>(out var player))
             {

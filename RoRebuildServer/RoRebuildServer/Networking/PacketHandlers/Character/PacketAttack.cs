@@ -15,7 +15,7 @@ public class PacketAttack : IClientPacketHandler
 {
     public void Process(NetworkConnection connection, InboundMessage msg)
     {
-		var id = msg.ReadInt32();
+        var id = msg.ReadInt32();
 
         if (!connection.IsPlayerAlive)
             return;
@@ -62,5 +62,5 @@ public class PacketAttack : IClientPacketHandler
             return;
 
         character.Player.TargetForAttack(targetCharacter);
-	}
+    }
 }

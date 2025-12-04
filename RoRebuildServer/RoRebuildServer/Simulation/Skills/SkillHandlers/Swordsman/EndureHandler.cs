@@ -21,7 +21,7 @@ public class EndureHandler : SkillHandlerBase
             source.AddStatusEffect(status);
         }
 
-        if(!isIndirect)
+        if (!isIndirect)
             source.ApplyCooldownForSupportSkillAction();
 
         CommandBuilder.SkillExecuteSelfTargetedSkillAutoVis(source.Character, CharacterSkill.Endure, lvl, isIndirect);

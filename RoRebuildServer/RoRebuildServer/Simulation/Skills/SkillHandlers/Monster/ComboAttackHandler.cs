@@ -24,7 +24,7 @@ public class ComboAttackHandler : SkillHandlerBase
     //level 9: 10 hits @ 0.46x = 4.6x
     //level 10: 11 hits @ 0.45x = 5x
     //actual damage will vary as def/vit is applied per hit
-    
+
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
         bool isItemSource)
     {
@@ -39,10 +39,10 @@ public class ComboAttackHandler : SkillHandlerBase
         var req = new AttackRequest(CharacterSkill.ComboAttack, perHit, lvl + 1, AttackFlags.Physical, AttackElement.None);
         req.AccuracyRatio = 120;
         var res = source.CalculateCombatResult(target, req);
-        
+
         source.ApplyCooldownForAttackAction(target);
         source.ExecuteCombatResult(res, false);
-        
+
         CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.ComboAttack, lvl, res);
     }
 }

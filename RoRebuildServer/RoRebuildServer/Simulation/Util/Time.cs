@@ -9,7 +9,7 @@ public static class Time
     public static float ElapsedTimeFloat;
     public static float DeltaTimeFloat;
     public static ulong UpdateCount;
-    
+
     public static byte RollingTimerGen;
     public static float RollingTimerTime;
     public static float RolloverTime;
@@ -17,7 +17,7 @@ public static class Time
     private static readonly Stopwatch StopWatch = new();
     private static readonly Stopwatch DiagnosticsTimer = new();
     private static readonly double[] PreviousFrameTimes = new double[SampleCount];
-    
+
     private static int frameIndex;
     private static int frameCount;
 
@@ -53,9 +53,8 @@ public static class Time
             UpdateCount = 0;
 
         UpdateCount++;
-        
     }
-    
+
     public static double GetExactTime()
     {
         return StopWatch.Elapsed.TotalSeconds;
@@ -116,6 +115,4 @@ public static class Time
     }
 
     public static double CurrentDiagnosticsTime() => DiagnosticsTimer.Elapsed.TotalSeconds;
-
-
 }

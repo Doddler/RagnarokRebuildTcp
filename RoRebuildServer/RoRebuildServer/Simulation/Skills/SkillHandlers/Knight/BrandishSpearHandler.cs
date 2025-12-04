@@ -14,7 +14,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Knight
     {
         public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 0.7f;
         public override int GetSkillRange(CombatEntity source, int lvl) => int.Min(1 + (lvl - 1) / 3, 3);
-        
+
         public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl,
             bool isIndirect, bool isItemSource)
         {
@@ -46,7 +46,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Knight
 
             if (target == null || !target.IsValidTarget(source) || map == null)
                 return;
-            
+
             var srcPoint = source.Character.Position;
             var endPoint = target.Character.Position;
             var dist = (int)srcPoint.FloatDistance(endPoint);

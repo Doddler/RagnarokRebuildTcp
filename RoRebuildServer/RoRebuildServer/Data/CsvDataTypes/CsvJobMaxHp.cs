@@ -10,6 +10,5 @@
         public int Acolyte { get; set; }
         public int Merchant { get; set; }
         public int Thief { get; set; }
-
     }
 }

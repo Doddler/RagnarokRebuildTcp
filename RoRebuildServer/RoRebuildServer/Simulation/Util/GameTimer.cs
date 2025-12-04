@@ -61,6 +61,4 @@ public struct GameTimer
         CheckTimerGen();
         return markedTime + time > Time.RollingTimerTime;
     }
-
-
 }

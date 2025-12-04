@@ -32,7 +32,7 @@ public static class StatusEffectPoolManager
 
     public static CharacterStatusContainer BorrowStatusContainer()
     {
-        if(statusContainers.TryTake(out var container))
+        if (statusContainers.TryTake(out var container))
             return container;
         return new CharacterStatusContainer();
     }

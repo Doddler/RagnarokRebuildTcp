@@ -14,6 +14,7 @@ public static class ServerLogger
 
     [Conditional("DEBUG")]
     public static void Debug(string message) => logger.Debug(message);
+
     public static void Log(string message) => logger.Information(message);
     public static void LogWarning(string error) => logger.Warning(error);
     public static void LogWarningWithStackTrace(string error) => logger.Warning(error + Environment.NewLine + Environment.StackTrace);

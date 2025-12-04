@@ -24,7 +24,6 @@ public enum SkillCastFlags : byte
     EventOnHit = 8,
 }
 
-
 [Serializable]
 public class SkillData
 {
@@ -39,4 +38,3 @@ public class SkillData
     public string Description;
     public CastInterruptionMode InterruptMode;
 }
-

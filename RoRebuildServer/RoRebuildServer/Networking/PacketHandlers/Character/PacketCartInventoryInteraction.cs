@@ -88,24 +88,25 @@ public class PacketCartInventoryInteraction : IClientPacketHandler
             CommandBuilder.ErrorMessage(player, "Cannot move an item while it's equipped.");
             return;
         }
-        
+
         if (item.Type == ItemType.RegularItem)
             item.Count = count;
 
         if (!CanFitItemIntoCart(player, item, cart))
             return;
 
-        if(!inventory.RemoveItemByBagId(bagId, count))
+        if (!inventory.RemoveItemByBagId(bagId, count))
         {
             CommandBuilder.ErrorMessage(player, "Failed to move item into cart.");
             return;
         }
+
         CommandBuilder.RemoveItemFromInventory(player, bagId, count);
 
         var newBagId = cart.AddItem(item);
         if (item.Type == ItemType.RegularItem)
             newBagId = bagId;
-        if(cart.GetItem(newBagId, out var newItem))
+        if (cart.GetItem(newBagId, out var newItem))
             CommandBuilder.MoveItemIntoOrOutOfCart(player, CartInteractionType.InventoryToCart, newItem, newBagId, count);
     }
 

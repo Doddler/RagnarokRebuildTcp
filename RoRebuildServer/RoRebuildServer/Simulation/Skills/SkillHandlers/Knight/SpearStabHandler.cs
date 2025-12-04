@@ -73,4 +73,3 @@ public class SpearStabHandler : SkillHandlerBase
         CommandBuilder.ClearRecipients();
     }
 }
-

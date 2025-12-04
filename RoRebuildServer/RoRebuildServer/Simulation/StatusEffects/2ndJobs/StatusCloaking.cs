@@ -44,7 +44,7 @@ public class StatusCloaking : StatusEffectBase
             return StatusUpdateResult.Continue;
 
         UpdateWallBonus(ch, ref state);
-        if(state.Value1 <= 2 && state.Value4 != 1)
+        if (state.Value1 <= 2 && state.Value4 != 1)
             return StatusUpdateResult.EndStatus;
 
         return StatusUpdateResult.Continue;

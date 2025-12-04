@@ -17,7 +17,7 @@ public struct Position : IEquatable<Position>
 
     public int PackIntoInt => X + (Y << 12);
     public static Position UnpackIntPosition(int pos) => new Position(pos & 0xFFF, pos >> 12);
-    
+
     public Position(int x, int y)
     {
         X = x;
@@ -108,7 +108,7 @@ public struct Position : IEquatable<Position>
 
     public static Position RandomPosition(Position position, int distance)
     {
-        return RandomPosition(position.X-distance, position.Y-distance, position.X+distance, position.Y+distance);
+        return RandomPosition(position.X - distance, position.Y - distance, position.X + distance, position.Y + distance);
     }
 
     public static Position RandomPosition(int maxx, int maxy)
@@ -127,13 +127,13 @@ public struct Position : IEquatable<Position>
 
     public void ClampToArea(Area bounds)
     {
-        if(X < bounds.MinX)
+        if (X < bounds.MinX)
             X = bounds.MinX;
-        if(X  > bounds.MaxX)
+        if (X > bounds.MaxX)
             X = bounds.MaxX;
-        if(Y < bounds.MinY)
+        if (Y < bounds.MinY)
             Y = bounds.MinY;
-        if(Y  > bounds.MaxY)
+        if (Y > bounds.MaxY)
             Y = bounds.MaxY;
     }
 
@@ -187,7 +187,7 @@ public struct Position : IEquatable<Position>
 
         return Direction.South;
     }
-    
+
     public Position Normalize()
     {
         var x = X;

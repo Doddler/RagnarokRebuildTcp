@@ -11,7 +11,6 @@ public class RoContext : IdentityDbContext<RoUserAccount, UserRole, int>
 {
     public RoContext(DbContextOptions<RoContext> options) : base(options)
     {
-
     }
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -19,8 +18,8 @@ public class RoContext : IdentityDbContext<RoUserAccount, UserRole, int>
         base.OnModelCreating(builder);
 
         builder.Entity<RoUserAccount>().ToTable("DbUserAccount");
-        builder.Entity<UserRole>().ToTable("DbRoles");  
-        
+        builder.Entity<UserRole>().ToTable("DbRoles");
+
         builder.Entity<IdentityUserRole<int>>().ToTable("DbUserRoles");
         builder.Entity<IdentityRoleClaim<int>>().ToTable("DbRoleClaims");
         builder.Entity<IdentityUserClaim<int>>().ToTable("DbUserClaims");
@@ -28,7 +27,7 @@ public class RoContext : IdentityDbContext<RoUserAccount, UserRole, int>
         builder.Entity<IdentityUserToken<int>>().ToTable("DbUserTokens");
 
         builder.Entity<ScriptGlobalVar>().ToTable("ScriptGlobals");
-        
+
         builder.Entity<RoUserAccount>().HasMany<DbCharacter>(c => c.Characters).WithOne(o => o.Account).HasForeignKey("AccountId");
         builder.Entity<DbCharacter>().HasIndex(c => c.Name).IsUnique();
         builder.Entity<RoUserAccount>().HasOne(u => u.CharacterStorage)

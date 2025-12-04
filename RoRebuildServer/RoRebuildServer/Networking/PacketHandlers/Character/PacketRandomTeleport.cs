@@ -29,7 +29,7 @@ public class PacketRandomTeleport : IClientPacketHandler
         var player = connection.Player;
         var ch = connection.Character;
         var map = ch.Map;
-        
+
         var p = new Position();
         var count = 0;
 
@@ -58,5 +58,5 @@ public class PacketRandomTeleport : IClientPacketHandler
 
         var ce = connection.Entity.Get<CombatEntity>();
         ce.ClearDamageQueue();
-	}
+    }
 }

@@ -6,7 +6,6 @@ namespace RoRebuildServer.EntityComponents.Messaging;
 public enum MessageType
 {
     ApplyDamage,
-
 }
 
 public struct CharacterMessage
@@ -45,4 +44,3 @@ public struct CharacterMessage
         Param6 = di.AttackPosition.PackIntoInt;
     }
 }
-

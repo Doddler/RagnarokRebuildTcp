@@ -34,7 +34,7 @@
 
         //vending gets its own skill errors here as the client can both notify the player of failure and re-open the shop without additional messages
         VendFailedTooCloseToNpc,
-        VendFailedGenericError, 
+        VendFailedGenericError,
         VendFailedNameNotValid,
         VendFailedItemsNotPreset,
         VendFailedTooManyItems,

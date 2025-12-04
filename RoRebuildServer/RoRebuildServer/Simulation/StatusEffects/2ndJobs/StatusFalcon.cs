@@ -21,7 +21,7 @@ public class StatusFalcon : StatusEffectBase
         var maxSkill = ch.Player.MaxLearnedLevelOfSkill(CharacterSkill.BlitzBeat);
         if (maxSkill == 0)
             return StatusUpdateResult.Continue;
-        
+
         var chance = 10 + ch.GetEffectiveStat(CharacterStat.Luck) * 3;
 
         //custom change: gear that adds crit boosts your base chance of triggering auto blitz

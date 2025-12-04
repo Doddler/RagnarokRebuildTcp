@@ -21,7 +21,7 @@ public class CharacterStatusContainer
 
     private SwapList<StatusEffectState>? statusEffects;
     private SwapList<PendingStatusEffect>? pendingStatusEffects;
-    
+
     private byte onAttackEffects;
     private byte onHitEffects;
     private byte onUpdateEffects;
@@ -36,7 +36,7 @@ public class CharacterStatusContainer
     private HashSet<CharacterStatusEffect>? preserveOnDeathStatuses;
 
     public int TotalStatusEffectCount => statusEffects?.Count ?? 0;
-    
+
     public void Reset()
     {
         Owner = null!;
@@ -70,6 +70,7 @@ public class CharacterStatusContainer
                 statusEffects[i] = s;
             }
         }
+
         if (pendingStatusEffects != null)
         {
             for (var i = 0; i < pendingStatusEffects.Count; i++)
@@ -425,7 +426,7 @@ public class CharacterStatusContainer
             if (nextExpirationCheck < time)
                 hasUpdate = CheckExpiredStatusEffects();
         }
-        
+
         if (pendingStatusEffects != null)
         {
             for (var i = 0; i < pendingStatusEffects.Count; i++)
@@ -448,7 +449,7 @@ public class CharacterStatusContainer
         if (hasUpdate)
             Owner.UpdateStats();
 
-        if(performUpdateTick)
+        if (performUpdateTick)
             OnUpdate();
     }
 
@@ -612,7 +613,7 @@ public class CharacterStatusContainer
 
         RemoveUpdateModeForStatus(status.Type);
     }
-    
+
     private void RemoveExistingStatusEffect(ref StatusEffectState status, bool isRefresh = false)
     {
         Debug.Assert(Owner != null);
@@ -713,10 +714,12 @@ public class CharacterStatusContainer
                     ServerLogger.LogWarning($"Could not persist status {status.Type} on character {Owner.Character.Name} as it is attempting to persist {retainLimit} effects at once.");
                     continue;
                 }
+
                 retain[retainCount] = status;
                 retainCount++;
                 continue;
             }
+
             if (StatusEffectHandler.GetStatusVisibility(status.Type) != StatusClientVisibility.None)
             {
                 Debug.Assert(Character.Map != null);
@@ -727,6 +730,7 @@ public class CharacterStatusContainer
 
             StatusEffectHandler.OnExpiration(status.Type, Owner, ref status);
         }
+
         statusEffects.Clear();
 
         for (var i = 0; i < retainCount; i++)
@@ -788,7 +792,7 @@ public class CharacterStatusContainer
             var status = StatusEffectState.Deserialize(br);
             if (StatusEffectHandler.HasFlag(status.Type, StatusEffectFlags.NoSave))
                 continue;
-            if(status.Type != CharacterStatusEffect.None && status.Expiration > Time.ElapsedTime)
+            if (status.Type != CharacterStatusEffect.None && status.Expiration > Time.ElapsedTime)
                 AddNewStatusEffect(status, true, true);
         }
     }

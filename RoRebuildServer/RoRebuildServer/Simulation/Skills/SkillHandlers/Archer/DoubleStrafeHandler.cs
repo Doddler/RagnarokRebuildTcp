@@ -14,7 +14,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Archer
         public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target,
             Position position, int lvl, bool isIndirect, bool isItemSource) =>
             ValidateTargetForAmmunitionWeapon(source, target, position, 12, AmmoType.Arrow);
-        
+
         public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl,
             bool isIndirect, bool isItemSource)
         {

@@ -16,7 +16,6 @@ public class FirePillarHandler : SkillHandlerTrap
     protected override int Catalyst() => 1065;
 }
 
-
 public class FirePillarEvent : TrapBaseEvent
 {
     protected override CharacterSkill SkillSource() => CharacterSkill.FirePillar;

@@ -17,7 +17,7 @@ public class PacketStorageInteraction : IClientPacketHandler
         Debug.Assert(connection.Player != null);
         Debug.Assert(connection.Character != null);
         Debug.Assert(connection.Character.Map != null);
-        
+
         var player = connection.Player;
         var map = connection.Character.Map;
 
@@ -63,10 +63,11 @@ public class PacketStorageInteraction : IClientPacketHandler
                 CommandBuilder.ErrorMessage(player, "Failed to move item into storage.");
                 return;
             }
+
             CommandBuilder.RemoveItemFromInventory(player, bagId, count);
 
             var newBagId = item.Id;
-            
+
             if (item.Type == ItemType.RegularItem)
                 player.StorageInventory.AddItem(item);
             else
@@ -83,8 +84,8 @@ public class PacketStorageInteraction : IClientPacketHandler
                 return;
 
             player.Inventory ??= CharacterBag.Borrow();
-            
-            if(!player.StorageInventory.GetItem(bagId, out var item))
+
+            if (!player.StorageInventory.GetItem(bagId, out var item))
             {
                 CommandBuilder.ErrorMessage(player, "Unable to find item in storage. If this persists try exiting and reloading storage.");
                 return;
@@ -103,10 +104,10 @@ public class PacketStorageInteraction : IClientPacketHandler
             var capacity = player.GetStat(CharacterStat.WeightCapacity);
             if (finalWeight > capacity)
             {
-                CommandBuilder.ErrorMessage(player, $"Insufficient weight capacity (over by {(finalWeight - capacity)/10} weight).");
+                CommandBuilder.ErrorMessage(player, $"Insufficient weight capacity (over by {(finalWeight - capacity) / 10} weight).");
                 return;
             }
-                
+
             if (!player.CanPickUpItem(item))
             {
                 CommandBuilder.ErrorMessage(player, "Insufficient inventory space.");

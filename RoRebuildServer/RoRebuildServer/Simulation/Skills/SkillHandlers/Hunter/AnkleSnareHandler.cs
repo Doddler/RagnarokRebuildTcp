@@ -25,7 +25,7 @@ public class AnkleSnareEvent : TrapBaseEvent
     protected override bool Attackable => false;
 
     protected override float Duration(int skillLevel) => 50f; //300f - skillLevel * 50f;
-    
+
     public override void OnNaturalExpiration(Npc npc)
     {
         if (npc.Owner.TryGet<WorldObject>(out var owner) && owner.Type != CharacterType.Player)
@@ -50,7 +50,7 @@ public class AnkleSnareEvent : TrapBaseEvent
         //Bosses don't have their current move stopped and have 1/5 the duration (after the minimum is applied).
 
         var duration = 4 * skillLevel * (1 - agi / 200f);
-        
+
         var minLen = 0.03f * (srcLevel + 100);
         if (minLen > 6f)
             minLen = 6f;
@@ -59,7 +59,7 @@ public class AnkleSnareEvent : TrapBaseEvent
             duration *= 1f - (0.02f * (targetLevel - srcLevel));
 
         duration = float.Max(duration, minLen);
-        
+
         if (target.GetSpecialType() == CharacterSpecialType.Boss)
             duration /= 5f;
         else

@@ -16,7 +16,7 @@ public class SuicideHandler : SkillHandlerBase
         var ch = source.Character;
         var map = source.Character.Map;
         Debug.Assert(map != null);
-        
+
         map.AddVisiblePlayersAsPacketRecipients(ch);
         CommandBuilder.SendEffectOnCharacterMulti(ch, DataManager.EffectIdForName["Suicide"]);
         CommandBuilder.ClearRecipients();

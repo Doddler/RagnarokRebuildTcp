@@ -17,7 +17,7 @@ namespace RoRebuildServer.Simulation.StatusEffects._1stJob
             if (ch.GetSpecialType() == CharacterSpecialType.Boss)
                 return;
 
-            if(state.Value4 > 0)
+            if (state.Value4 > 0)
             {
                 state.Value1 = ch.GetEffectiveStat(CharacterStat.Dex) / 2;
                 state.Value2 = ch.GetEffectiveStat(CharacterStat.Int) / 2;

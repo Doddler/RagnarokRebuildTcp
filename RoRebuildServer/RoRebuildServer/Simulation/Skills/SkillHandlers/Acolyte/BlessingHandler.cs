@@ -17,7 +17,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte
         {
             if (target == null)
                 return SkillValidationResult.InvalidTarget;
-            
+
             if (target.Character.Type == CharacterType.Player && target.IsElementBaseType(CharacterElement.Undead1))
                 return SkillValidationResult.Failure;
 

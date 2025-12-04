@@ -17,7 +17,7 @@ public class CriticalAttack : SkillHandlerBase
 
         //surely there's a better way to do it than this?
         var res = source.CalculateCombatResult(target, 0.7f + lvl * 0.3f, 1, AttackFlags.Physical | AttackFlags.GuaranteeCrit, CharacterSkill.CriticalAttack, AttackElement.Neutral);
-        
+
         source.ApplyCooldownForAttackAction(target);
         source.ExecuteCombatResult(res, false);
 

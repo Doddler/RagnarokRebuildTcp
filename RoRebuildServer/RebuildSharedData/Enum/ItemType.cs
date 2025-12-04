@@ -73,6 +73,4 @@
         Headgear = HeadUpper | HeadMid | HeadLower,
         Any = HeadUpper | HeadMid | HeadLower | Body | MainHand | OffHand | Garment | Footgear | Accessory
     }
-
-    
 }

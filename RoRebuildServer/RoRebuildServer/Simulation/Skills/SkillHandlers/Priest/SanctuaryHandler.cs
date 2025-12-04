@@ -24,7 +24,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Priest;
 public class SanctuaryHandler : SkillHandlerBase
 {
     public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 5f;
-    
+
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
         int lvl, bool isIndirect, bool isItemSource)
     {
@@ -43,7 +43,7 @@ public class SanctuaryHandler : SkillHandlerBase
     {
         if (source.Character.Map == null)
             return;
-            
+
         if (!isIndirect && !ConsumeGemstoneForSkillWithFailMessage(source, BlueGemstone))
             return;
 
@@ -149,9 +149,9 @@ public class SanctuaryBaseEvent : NpcBehaviorBase
         }
 
         if (!npc.Owner.TryGet<CombatEntity>(out var owner)
-           || !owner.Character.IsActive
-           || owner.Character.Map != npc.Character.Map
-           || owner.Character.State == CharacterState.Dead)
+            || !owner.Character.IsActive
+            || owner.Character.Map != npc.Character.Map
+            || owner.Character.State == CharacterState.Dead)
             npc.EndAllEvents();
     }
 
@@ -177,6 +177,7 @@ public class SanctuaryObjectEvent : NpcBehaviorBase
             npc.EndEvent();
             return;
         }
+
         var targeting = new TargetingInfo()
         {
             Faction = source.Character.Type == CharacterType.Player ? 1 : 0,
@@ -251,7 +252,6 @@ public class SanctuaryObjectEvent : NpcBehaviorBase
                 return;
 
             target.HealHp(power, true, HealType.HealSkill);
-
         }
 
         target.SetSkillDamageCooldown(CharacterSkill.Sanctuary, 1f);

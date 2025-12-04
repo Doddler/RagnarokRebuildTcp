@@ -78,6 +78,5 @@ public class BlitzBeatHandler : SkillHandlerBase
         }
 
         CommandBuilder.ClearRecipients();
-
     }
 }

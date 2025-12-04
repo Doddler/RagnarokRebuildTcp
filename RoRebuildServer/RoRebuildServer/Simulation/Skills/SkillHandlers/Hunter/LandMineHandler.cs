@@ -49,7 +49,7 @@ public class LandMineEvent : TrapBaseEvent
         res.Time = 0;
 
         CommandBuilder.SkillExecuteIndirectAutoVisibility(npc.Character, target.Character, res);
-        
+
         npc.ActivateAndHide(1f);
 
         src.ExecuteCombatResult(res, false);

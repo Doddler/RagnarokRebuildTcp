@@ -209,6 +209,7 @@ internal class ScriptTreeWalker
                 var v = vardef[i];
                 macro.DefineVariable(i, v.GetText());
             }
+
             macroMap.Add(macroName, macro);
         }
         else
@@ -262,8 +263,8 @@ internal class ScriptTreeWalker
         for (var i = 1; i < expr.Length; i++)
         {
             var txt = expr[i].GetText();
-            
-            if(txt == null || txt.Length <= 0)
+
+            if (txt == null || txt.Length <= 0)
                 ErrorResult(functionContext, $"Invalid combo item parameters, combo item value is empty.");
 
             txt = txt!.Substring(1, txt.Length - 2);
@@ -512,6 +513,7 @@ internal class ScriptTreeWalker
             builder.OutputRaw($"combatEntity.HealRange({hp1}, {hp2})");
             builder.EndLine(functionContext.start.Line);
         }
+
         if (sp1 > 0 || sp2 > 0)
         {
             builder.OutputRaw($"combatEntity.RecoverSpRange({sp1}, {sp2})");
@@ -525,7 +527,6 @@ internal class ScriptTreeWalker
 
     private void OutputWarpStatement(ExpressionContext expression)
     {
-
     }
 
     private void EnterWarpStatement(StandaloneFunctionContext functionContext, bool isHidden)
@@ -559,10 +560,12 @@ internal class ScriptTreeWalker
         builder.EndLine(functionContext.start.Line);
         builder.OutputRaw($"npc.RemoveIfLinksInvalid()");
         builder.EndLine(functionContext.start.Line);
-        if(isHidden){
+        if (isHidden)
+        {
             builder.OutputRaw($"npc.HideFromView()");
             builder.EndLine(functionContext.start.Line);
         }
+
         builder.StartNpcSection("OnTouch");
         builder.OutputRaw($"state.MoveTo({v["destMap"]}, {v["dx"]}, {v["dy"]}, {v["dw"]}, {v["dh"]})");
         builder.EndLine(functionContext.start.Line);
@@ -599,7 +602,6 @@ internal class ScriptTreeWalker
                 ErrorResult(blockContext);
                 break;
         }
-
     }
 
     private void VisitStatement(StatementContext statementContext)
@@ -634,6 +636,7 @@ internal class ScriptTreeWalker
                 }
                 else
                     builder.OutputReturn();
+
                 break;
             case SwitchStatementContext context:
                 VisitSwitchStatement(context);
@@ -729,6 +732,7 @@ internal class ScriptTreeWalker
                     builder.OutputBreak();
                 }
             }
+
             builder.OpenScope();
         }
         else
@@ -791,13 +795,10 @@ internal class ScriptTreeWalker
             builder.RegisterGotoDestination(breakPtr);
             builder.breakPointerStack.Pop();
         }
-
-
     }
 
     private void VisitSwitchCaseStatement(SwitchCaseContext context)
     {
-
     }
 
     private void VisitWhileLoop(WhileLoopContext whileContext)
@@ -1112,7 +1113,6 @@ internal class ScriptTreeWalker
 
     public void VisitFunctionTerminalFunctionHandler(FunctionCallContext context)
     {
-
     }
 
     public void VisitLocalDeclaration(LocalDeclarationContext localDeclarationContext)
@@ -1261,6 +1261,7 @@ internal class ScriptTreeWalker
                         ErrorResult(context, $"Could not parse string {value} into decimal, the '%' symbol was in an unexpected location.");
                     sum = (int)(float.Parse(decStringBuilder.ToString(), CultureInfo.InvariantCulture) * 10);
                 }
+
                 decStringBuilder.Clear();
             }
 
@@ -1294,8 +1295,5 @@ internal class ScriptTreeWalker
         }
         else
             throw new InvalidOperationException($"{script} line {context.start.Line}: {message}");
-
-
-
     }
 }

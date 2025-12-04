@@ -13,7 +13,6 @@ public class FlasherHandler : SkillHandlerTrap
     protected override int Catalyst() => 1065;
 }
 
-
 public class FlasherEvent : TrapBaseEvent
 {
     protected override CharacterSkill SkillSource() => CharacterSkill.Flasher;

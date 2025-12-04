@@ -44,11 +44,9 @@ public partial class CombatEntity : IEntityAutoReset
     public SkillCastInfo CastingSkill { get; set; }
     public SkillCastInfo QueuedCastingSkill { get; set; }
 
-    [EntityIgnoreNullCheck]
-    private readonly int[] statData = new int[(int)CharacterStat.MonsterStatsMax];
+    [EntityIgnoreNullCheck] private readonly int[] statData = new int[(int)CharacterStat.MonsterStatsMax];
 
-    [EntityIgnoreNullCheck]
-    private float[] timingData = new float[(int)TimingStat.TimingStatsMax];
+    [EntityIgnoreNullCheck] private float[] timingData = new float[(int)TimingStat.TimingStatsMax];
 
     [EntityIgnoreNullCheck] private Dictionary<CharacterSkill, float> skillCooldowns = new();
     [EntityIgnoreNullCheck] private Dictionary<CharacterSkill, float> damageCooldowns = new();
@@ -217,7 +215,7 @@ public partial class CombatEntity : IEntityAutoReset
         else
             statusContainer.AddPendingStatusEffect(state, replaceExisting, delay);
     }
-    
+
     [ScriptUseable]
     public bool RemoveStatusOfTypeIfExists(CharacterStatusEffect type)
     {
@@ -238,7 +236,7 @@ public partial class CombatEntity : IEntityAutoReset
 
         if (statusContainer.TryGetExistingStatus(type, out var status))
         {
-            if(status.Value4 < maxStacks)
+            if (status.Value4 < maxStacks)
                 status.Value4++;
             status.Expiration = Time.ElapsedTime + duration;
         }
@@ -289,14 +287,14 @@ public partial class CombatEntity : IEntityAutoReset
     public void TryDeserializeStatusContainer(IBinaryMessageReader br, int saveVersion)
     {
         var count = (int)br.ReadByte();
-        
+
         //Because status effects are serialized by id, we'll have a problem if the status effect ids ever change.
         //If the number of server status effects changes then, the player's status effect state is discarded.
         //We still need to deserialize though, as there's data after this we still need to load, but we won't use it.
         //At some point changing it to serializing by status name would prevent this limitation.
 
         var discardState = false;
-        if (saveVersion >= 6) 
+        if (saveVersion >= 6)
         {
             var totalEffects = (int)br.ReadInt16();
             if (totalEffects > (int)CharacterStatusEffect.StatusEffectMax)
@@ -308,7 +306,7 @@ public partial class CombatEntity : IEntityAutoReset
 
         statusContainer = StatusEffectPoolManager.BorrowStatusContainer();
         statusContainer.Owner = this;
-        
+
         if (!discardState)
             statusContainer.Deserialize(br, count);
         else
@@ -322,6 +320,7 @@ public partial class CombatEntity : IEntityAutoReset
 
     [ScriptUseable]
     public bool CanTeleport() => Character.Type == CharacterType.Player ? Character.Map?.CanTeleport ?? false : Character.Map?.CanMonstersTeleport ?? false;
+
     [ScriptUseable]
     public bool CanTeleportWithError()
     {
@@ -363,7 +362,7 @@ public partial class CombatEntity : IEntityAutoReset
 
         ClearDamageQueue();
         Character.ResetState();
-        if(Character.Type == CharacterType.Player)
+        if (Character.Type == CharacterType.Player)
             Character.SetSpawnImmunity();
         Character.Map.TeleportEntity(ref Entity, Character, pos);
         if (Character.Type == CharacterType.Player)
@@ -730,7 +729,6 @@ public partial class CombatEntity : IEntityAutoReset
                 return false;
             if (Character.Entity.Type == EntityType.BattleNpc && !Character.BattleNpc.CanBeTargeted(source, CharacterSkill.None))
                 return false;
-
         }
 
         //if (source.Entity.Type == EntityType.Player)
@@ -1006,6 +1004,7 @@ public partial class CombatEntity : IEntityAutoReset
             CommandBuilder.StartCastGroundTargetedMulti(Character, target, skillInfo.Skill, skillInfo.Level, skillInfo.Range, castTime, flags);
             CommandBuilder.ClearRecipients();
         }
+
         return true;
     }
 
@@ -1106,6 +1105,7 @@ public partial class CombatEntity : IEntityAutoReset
             CommandBuilder.StartCastMulti(Character, null, clientSkill, skillInfo.Level, castTime, flags);
             CommandBuilder.ClearRecipients();
         }
+
         return true;
     }
 
@@ -1239,6 +1239,7 @@ public partial class CombatEntity : IEntityAutoReset
                 if (target.Character.Type == CharacterType.Monster)
                     target.Character.Monster.MagicLock(this);
             }
+
             return true;
         }
         else
@@ -1295,7 +1296,7 @@ public partial class CombatEntity : IEntityAutoReset
 
         CastingSkill.Clear();
         QueuedCastingSkill.Clear();
-        if(hasImmunity && CastingSkill.Skill != CharacterSkill.Teleport)
+        if (hasImmunity && CastingSkill.Skill != CharacterSkill.Teleport)
             Character.ResetSpawnImmunity();
     }
 
@@ -1429,7 +1430,6 @@ public partial class CombatEntity : IEntityAutoReset
     }
 
 
-
     public DamageInfo PrepareTargetedSkillResult(CombatEntity? target, CharacterSkill skillSource = CharacterSkill.None)
     {
         //technically the motion time is how long it's locked in place, we use sprite timing if it's faster.
@@ -1536,7 +1536,7 @@ public partial class CombatEntity : IEntityAutoReset
         //    delayTime = attackMotionTime;
 
         //if (Character.AttackCooldown + Time.DeltaTime + 0.005d < Time.ElapsedTime)
-        if(Time.ElapsedTime + delayTime > Character.AttackCooldown)
+        if (Time.ElapsedTime + delayTime > Character.AttackCooldown)
             Character.AttackCooldown = Time.ElapsedTime + delayTime; //they are consecutively attacking
         //else
         //    Character.AttackCooldown += delayTime;
@@ -1621,7 +1621,6 @@ public partial class CombatEntity : IEntityAutoReset
 
     public void PerformMagicSkillMotion(float cooldown, ref DamageInfo res)
     {
-
     }
 
     public void ApplyAfterCastDelay(float time)
@@ -1678,9 +1677,9 @@ public partial class CombatEntity : IEntityAutoReset
             if (di.Damage > 0)
                 hasResult = true;
         }
+
         if (hasResult && Character.Type == CharacterType.Player && Player.Party != null)
             CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(Player, false); //notify party members out of sight
-
     }
 
     public void Init(ref Entity e, WorldObject ch)

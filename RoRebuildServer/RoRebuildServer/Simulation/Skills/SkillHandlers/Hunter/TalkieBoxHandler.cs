@@ -13,7 +13,6 @@ public class TalkieBoxHandler : SkillHandlerTrap
     protected override int Catalyst() => 1065;
 }
 
-
 public class TalkieBoxEvent : TrapBaseEvent
 {
     protected override CharacterSkill SkillSource() => CharacterSkill.TalkieBox;

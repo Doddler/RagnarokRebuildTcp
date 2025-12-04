@@ -45,7 +45,7 @@ public static class DataManager
     public static ReadOnlyDictionary<int, int[]> JobMaxHpLookup;
     public static ReadOnlyDictionary<int, int[]> JobMaxSpLookup;
     public static ReadOnlyDictionary<string, SavePosition> SavePoints;
-    
+
     public static ReadOnlyDictionary<string, int> WeaponClasses;
     public static ReadOnlyDictionary<string, HashSet<int>> EquipGroupInfo;
     public static ReadOnlyDictionary<int, WeaponInfo> WeaponInfo;
@@ -73,7 +73,7 @@ public static class DataManager
     public static ServerConfigScriptManager ServerConfigScriptManager;
 
     public static List<MapEntry> Maps => mapList;
-    
+
     public static ExpChart ExpChart;
     public static ElementChart ElementChart;
     public static int ServerVersionNumber;
@@ -103,9 +103,9 @@ public static class DataManager
         if (data.SpCost.Length < level)
             level = data.SpCost.Length;
 
-        return data.SpCost[level-1];
+        return data.SpCost[level - 1];
     }
-    
+
     public static void RegisterItem(string name, ItemInteractionBase item)
     {
         if (!ItemIdByName.TryGetValue(name, out var id))
@@ -135,6 +135,7 @@ public static class DataManager
                 ServerLogger.LogWarning($"Could not create ComboItem {name} as the item {item} in the set could not be found.");
                 return;
             }
+
             itemIds[i] = id;
         }
 
@@ -182,9 +183,9 @@ public static class DataManager
     public static void ReloadScripts(bool loadExistingAssembly = false)
     {
         var loader = new DataLoader();
-        
+
         Time.ResetDiagnosticsTimer();
-        
+
         ServerVersionNumber = loader.LoadVersionInfo();
         monsterStats = loader.LoadMonsterStats();
         monsterAiList = loader.LoadAiStateMachines();
@@ -215,9 +216,9 @@ public static class DataManager
         MvpMonsterCodes = loader.LoadMvpList();
 
         var dataLoadTime = Time.SampleDiagnosticsTime();
-        
+
         //load our compiled script assemblies
-        if(!loadExistingAssembly)
+        if (!loadExistingAssembly)
             ScriptAssembly = ScriptLoader.LoadAssembly();
         else
             ScriptAssembly = ScriptLoader.LoadExisting();
@@ -225,11 +226,11 @@ public static class DataManager
         var assemblyBuildTime = Time.SampleDiagnosticsTime();
 
         NpcManager = new NpcBehaviorManager();
-        if(ServerConfigScriptManager != null!)
+        if (ServerConfigScriptManager != null!)
             ServerConfigScriptManager.OnScriptReload();
         ServerConfigScriptManager = new ServerConfigScriptManager(ScriptAssembly);
         ServerConfigScriptManager.RegisterServerConfigAssembly(Assembly.GetExecutingAssembly());
-        
+
         var monsterIdLookup = new Dictionary<int, MonsterDatabaseInfo>(monsterStats.Count);
         var monsterCodeLookup = new Dictionary<string, MonsterDatabaseInfo>(monsterStats.Count);
         var monsterNameLookup = new Dictionary<string, MonsterDatabaseInfo>(monsterStats.Count);
@@ -244,7 +245,7 @@ public static class DataManager
         MonsterIdLookup = monsterIdLookup.AsReadOnly();
         MonsterCodeLookup = monsterCodeLookup.AsReadOnly();
         MonsterNameLookup = monsterNameLookup.AsReadOnly();
-        
+
         //things that require our compiled scripts
 
         loader.LoadNpcScripts(Assembly.GetAssembly(typeof(FirewallObjectEvent))!); //load from local assembly

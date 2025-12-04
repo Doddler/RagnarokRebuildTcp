@@ -61,7 +61,7 @@ public class PacketAdminLevelUp : IClientPacketHandler
 
             player.SetData(PlayerStat.JobLevel, newJob);
             player.SetData(PlayerStat.JobExp, 0);
-            
+
             character.Map?.AddVisiblePlayersAsPacketRecipients(character);
             CommandBuilder.SendEffectOnCharacterMulti(character, DataManager.EffectIdForName["JobUp"]);
             CommandBuilder.ClearRecipients();

@@ -10,7 +10,7 @@ public class ElementChart
     {
         chart = newChart;
     }
-    
+
     public int GetAttackModifier(AttackElement attack, CharacterElement defense)
     {
         return chart[(int)defense][(int)attack];

@@ -76,14 +76,11 @@ internal class DataLoader
 
         while (csv.Read())
         {
-
             if (csv.Context?.Parser?.Record == null)
                 continue; //piss off possible null exceptions
             var instance = new InstanceEntry
             {
-                Name = csv.Context.Parser.Record.ElementAt(0),
-                IsWorldInstance = csv.Context.Parser.Record.ElementAt(1) == "true",
-                Maps = csv.Context.Parser.Record.Skip(2).ToList()
+                Name = csv.Context.Parser.Record.ElementAt(0), IsWorldInstance = csv.Context.Parser.Record.ElementAt(1) == "true", Maps = csv.Context.Parser.Record.Skip(2).ToList()
             };
             if (instance.Name.StartsWith("//")) //special case for commented out instance
                 continue;
@@ -115,9 +112,9 @@ internal class DataLoader
         var config = new CsvConfiguration(CultureInfo.InvariantCulture)
         {
             BadDataFound = context =>
-        {
-            Console.WriteLine(context.Field);
-        }
+            {
+                Console.WriteLine(context.Field);
+            }
         };
 
         using var tr2 = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/ExpJobChart.csv")) as TextReader;
@@ -159,7 +156,6 @@ internal class DataLoader
                 if (int.TryParse((string)values[j + 1], out var percent))
                     chart[i][j] = percent;
             }
-
         }
 
         return new ElementChart(chart);
@@ -167,7 +163,6 @@ internal class DataLoader
 
     public Dictionary<string, SavePosition> LoadSavePoints()
     {
-
         using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/SavePoints.csv")) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
 
@@ -177,12 +172,7 @@ internal class DataLoader
 
         foreach (var e in entries)
         {
-            savePoints.Add(e.Name, new SavePosition()
-            {
-                MapName = e.Map,
-                Position = new Position(e.X, e.Y),
-                Area = e.Area,
-            });
+            savePoints.Add(e.Name, new SavePosition() { MapName = e.Map, Position = new Position(e.X, e.Y), Area = e.Area, });
         }
 
         return savePoints;
@@ -243,6 +233,7 @@ internal class DataLoader
             };
             jobs.Add(job.Id, job);
         }
+
         return jobs.AsReadOnly();
     }
 
@@ -311,7 +302,7 @@ internal class DataLoader
         foreach (var (id, tree) in skillTreeData)
         {
             var jobId = DataManager.JobIdLookup[id];
-            
+
             var treeData = tree.SkillTree;
             if (treeData == null)
                 treeData = new();
@@ -444,7 +435,7 @@ internal class DataLoader
 
             drops.Add(monster, data);
         }
-        
+
         return drops.AsReadOnly();
     }
 
@@ -939,7 +930,6 @@ internal class DataLoader
                         lastTag++;
                     }
                 }
-
             }
 
             obj.Add(new MonsterDatabaseInfo()
@@ -1108,7 +1098,6 @@ internal class DataLoader
 
     public void LoadMonsterSpawnMinions()
     {
-
         using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/SpawnMinionTable.csv")) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
 

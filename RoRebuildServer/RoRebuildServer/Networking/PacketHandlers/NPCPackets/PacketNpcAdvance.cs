@@ -11,7 +11,7 @@ public class PacketNpcAdvance : IClientPacketHandler
     {
         var player = connection.Player;
 
-        if(player == null || !player.IsInNpcInteraction)
+        if (player == null || !player.IsInNpcInteraction)
             return;
 
         if (player.NpcInteractionState.InteractionResult == NpcInteractionResult.CurrentlyVending)
@@ -23,7 +23,7 @@ public class PacketNpcAdvance : IClientPacketHandler
         if (player.NpcInteractionState.InteractionResult != NpcInteractionResult.WaitForContinue &&
             player.NpcInteractionState.InteractionResult != NpcInteractionResult.WaitForRefine)
             return;
-        
+
         if (player.InInputActionCooldown())
             return;
         player.AddInputActionDelay(InputActionCooldownType.Click);

@@ -35,5 +35,5 @@ public class PacketSitStand : IClientPacketHandler
         }
 
         connection.Character.SitStand(isSitting);
-	}
+    }
 }

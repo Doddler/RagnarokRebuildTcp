@@ -13,7 +13,6 @@ public class FreezingTrapHandler : SkillHandlerTrap
     protected override int Catalyst() => 1065;
 }
 
-
 public class FreezingTrapEvent : TrapBaseEvent
 {
     protected override CharacterSkill SkillSource() => CharacterSkill.FreezingTrap;

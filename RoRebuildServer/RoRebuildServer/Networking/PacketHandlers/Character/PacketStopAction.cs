@@ -8,7 +8,7 @@ public class PacketStopAction : IClientPacketHandler
 {
     public void Process(NetworkConnection connection, InboundMessage msg)
     {
-		if (connection.Character == null || connection.Player == null)
+        if (connection.Character == null || connection.Player == null)
             return;
 
         var player = connection.Player;
@@ -21,5 +21,5 @@ public class PacketStopAction : IClientPacketHandler
         connection.Character.ShortenMovePath();
 
         connection.Player.ClearTarget();
-	}
+    }
 }
