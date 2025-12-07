@@ -282,8 +282,11 @@ namespace Assets.Scripts.Network
             if (!ClientSkillHandler.DisplaySkillCastName(skill))
                 return;
 
-            if (SpriteAnimator.IsHidden && skill == CharacterSkill.Hiding)
+            if (skill == CharacterSkill.Hiding || skill == CharacterSkill.Cloaking)
                 return;
+            
+            // if (SpriteAnimator.IsHidden && skill == CharacterSkill.Hiding)
+            //     return;
 
             var sName = ClientDataLoader.Instance.GetSkillName(skill);
             FloatingDisplay.ShowChatBubbleMessage(sName + "!!", duration);

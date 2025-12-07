@@ -1779,13 +1779,12 @@ public class Player : IEntityAutoReset
         }
     }
 
-    public DamageInfo CalculateMeleeAttack(CombatEntity target)
+    public DamageInfo CalculateMeleeAttack(CombatEntity target, float multiplier = 1f)
     {
-        var multiplier = 1f;
         var isDualWielding = Character.Player.Equipment.IsDualWielding;
 
         if (isDualWielding)
-            multiplier = 0.5f + MaxLearnedLevelOfSkill(CharacterSkill.RightHandMastery) * 0.1f;
+            multiplier *= 0.5f + MaxLearnedLevelOfSkill(CharacterSkill.RightHandMastery) * 0.1f;
 
         var di = CombatEntity.CalculateCombatResult(target, multiplier, 1, AttackFlags.Physical | AttackFlags.CanCrit);
         var canDoubleAttack = (Character.Player.WeaponClass == 1 ||

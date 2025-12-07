@@ -55,6 +55,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 MotionTime = motionTime,
                 DamageTiming = motionTime
             };
+            
+            controllable.ShowSkillCastMessage(skill, 3);
 
             if(target == controllable.CellPosition)
                 controllable.LookInDirection(dir);

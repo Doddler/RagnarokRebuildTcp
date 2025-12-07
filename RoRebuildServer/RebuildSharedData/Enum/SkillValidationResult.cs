@@ -14,6 +14,7 @@
         InsufficientItemCount,
         InsufficientZeny,
         UnusableWhileHidden,
+        MustBeUsedWhileHidden,
         CannotTargetBossMonster,
         ItemAlreadyStolen,
         MemoLocationInvalid,

@@ -42,6 +42,7 @@ AiLooter,StateAttacking,InAttackDelayEnd,OutPerformAttack,StateAttacking
 AiLooter,StateMovingToItem,InAttacked,OutStartChase,StateChase
 AiLooter,StateMovingToItem,InItemGone,OutStopMoving,StateIdle
 AiLooter,StateMovingToItem,InReachedItem,OutPickUpItem,StateIdle
+AiLooter,StateMovingToItem,InReachedTarget,OutWaitStart,StateIdle
 AiLooter,StateAdjust,InReachedTarget,OutSearch,StateSearch
 AiLooter,StateAdjust,InAttacked,OutChangeTargets,StateSearch
 AiLooter,StateDead,InDeadTimeoutEnd,OutTryRevival,StateIdle
@@ -155,6 +156,7 @@ AiAggressiveLooter,StateSearch,InAttackRangeAny,OutStartAttacking,StateAttacking
 AiAggressiveLooter,StateMovingToItem,InAttacked,OutStartChase,StateChase
 AiAggressiveLooter,StateMovingToItem,InItemGone,OutStopMoving,StateIdle
 AiAggressiveLooter,StateMovingToItem,InReachedItem,OutPickUpItem,StateIdle
+AiAggressiveLooter,StateMovingToItem,InReachedTarget,OutWaitStart,StateIdle
 AiAggressiveLooter,StateAttacking,InEnemyOutOfSight,OutWaitStart,StateIdle
 AiAggressiveLooter,StateAttacking,InEnemyOutOfAttackRange,OutStartChase,StateChase
 AiAggressiveLooter,StateAttacking,InNeedAttackingAdjust,OutAttackingAdjust,StateAdjust
@@ -193,6 +195,7 @@ AiLooterAssist,StateAttacking,InMeleeAttacked,OutChangeTargets,StateAttacking
 AiLooterAssist,StateMovingToItem,InAttacked,OutStartChase,StateChase
 AiLooterAssist,StateMovingToItem,InItemGone,OutStopMoving,StateIdle
 AiLooterAssist,StateMovingToItem,InReachedItem,OutPickUpItem,StateIdle
+AiLooterAssist,StateMovingToItem,InReachedTarget,OutWaitStart,StateIdle
 AiLooterAssist,StateAdjust,InReachedTarget,OutSearch,StateSearch
 AiLooterAssist,StateAdjust,InAttacked,OutChangeTargets,StateSearch
 AiLooterAssist,StateDead,InDeadTimeoutEnd,OutTryRevival,StateIdle

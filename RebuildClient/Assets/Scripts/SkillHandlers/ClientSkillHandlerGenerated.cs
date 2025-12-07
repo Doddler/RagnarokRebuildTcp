@@ -142,12 +142,12 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[122] = new DefaultSkillHandler();
 			handlers[123] = new DefaultSkillHandler();
 			handlers[124] = new DefaultSkillHandler();
-			handlers[125] = new DefaultSkillHandler();
+			handlers[125] = new Assets.Scripts.SkillHandlers.Handlers.Assassin.GrimtoothHandler();
 			handlers[126] = new Assets.Scripts.SkillHandlers.Handlers.SonicBlowHandler();
 			handlers[127] = new Assets.Scripts.SkillHandlers.Handlers.CloakingHandler();
 			handlers[128] = new Assets.Scripts.SkillHandlers.Handlers.Assassin.EnchantPoisonHandler();
-			handlers[129] = new DefaultSkillHandler();
-			handlers[130] = new DefaultSkillHandler();
+			handlers[129] = new Assets.Scripts.SkillHandlers.Handlers.Assassin.PoisonReactHandler();
+			handlers[130] = new Assets.Scripts.SkillHandlers.Handlers.Assassin.VenomDustHandler();
 			handlers[131] = new Assets.Scripts.SkillHandlers.Handlers.Assassin.VenomSplasherHandler();
 			handlers[132] = new Assets.Scripts.SkillHandlers.Handlers.Assassin.VenomSplasherDetonationHandler();
 			handlers[133] = new DefaultSkillHandler();

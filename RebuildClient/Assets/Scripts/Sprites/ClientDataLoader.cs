@@ -11,6 +11,7 @@ using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Effects.EffectHandlers.Environment;
 using Assets.Scripts.Effects.EffectHandlers.General;
 using Assets.Scripts.Effects.EffectHandlers.Skills;
+using Assets.Scripts.Effects.EffectHandlers.Skills.Assassin;
 using Assets.Scripts.Effects.EffectHandlers.Skills.Priest;
 using Assets.Scripts.Misc;
 using Assets.Scripts.Network;
@@ -1059,7 +1060,8 @@ namespace Assets.Scripts.Sprites
                     //DummyGroundEffect.Create(obj, "Sanctuary");
                     break;
                 case NpcEffectType.VenomDust:
-                    DummyGroundEffect.Create(obj, "VenomDust");
+                    //DummyGroundEffect.Create(obj, "VenomDust");
+                    VenomDustEffect.Create(control);
                     break;
                 case NpcEffectType.AnkleSnare:
                     AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelAnkleSnare.prefab");

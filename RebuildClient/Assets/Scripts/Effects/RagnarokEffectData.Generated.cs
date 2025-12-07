@@ -67,6 +67,9 @@ namespace Assets.Scripts.Effects
 		SpearBoomerang,
 		EarthShaker,
 		SpecialTargetMarker,
+		GrimtoothTrail,
+		GrimtoothHit,
+		VenomDust,
 		ArcherArrow,
 		CastHolyEffect,
 		ColdHit,
@@ -174,6 +177,9 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.SpearBoomerang, new Assets.Scripts.Effects.EffectHandlers.Skills.Knight.SpearBoomerangEffect());
 			effectHandlers.Add(EffectType.EarthShaker, new Assets.Scripts.Effects.EffectHandlers.Skills.Custom.EarthShakerEffect());
 			effectHandlers.Add(EffectType.SpecialTargetMarker, new Assets.Scripts.Effects.EffectHandlers.Skills.Custom.SpecialTargetMarkerEffect());
+			effectHandlers.Add(EffectType.GrimtoothTrail, new Assets.Scripts.Effects.EffectHandlers.Skills.Assassin.GrimtoothTrailEffect());
+			effectHandlers.Add(EffectType.GrimtoothHit, new Assets.Scripts.Effects.EffectHandlers.Skills.Assassin.GrimtoothHitEffect());
+			effectHandlers.Add(EffectType.VenomDust, new Assets.Scripts.Effects.EffectHandlers.Skills.Assassin.VenomDustEffect());
 			effectHandlers.Add(EffectType.ArcherArrow, new Assets.Scripts.Effects.EffectHandlers.General.ArcherArrow());
 			effectHandlers.Add(EffectType.CastHolyEffect, new Assets.Scripts.Effects.EffectHandlers.General.CastHolyEffect());
 			effectHandlers.Add(EffectType.ColdHit, new Assets.Scripts.Effects.EffectHandlers.General.ColdHitEffect());

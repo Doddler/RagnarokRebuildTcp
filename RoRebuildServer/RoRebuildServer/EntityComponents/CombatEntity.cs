@@ -85,6 +85,8 @@ public partial class CombatEntity : IEntityAutoReset
         if (skillCooldowns.TryGetValue(skill, out var t)) skillCooldowns[skill] -= val;
     }
 
+    public bool InRangeToAttackTarget(CombatEntity target) => DistanceCache.IntDistance(Character.Position, target.Character.Position) > GetStat(CharacterStat.Range);
+
     public void Reset()
     {
         Entity = Entity.Null;
@@ -1598,21 +1600,20 @@ public partial class CombatEntity : IEntityAutoReset
             target.QueueDamage(damageInfo);
     }
 
+    public DamageInfo CalculateMeleeAttack(CombatEntity target, float multiplier = 1f)
+    {
+        if (Character.Type == CharacterType.Player)
+            return Player.CalculateMeleeAttack(target, multiplier);
+
+        var flags = AttackFlags.Physical |
+                    AttackFlags.CanHarmAllies; //they can auto attack their allies if they get hit by them
+
+        return CalculateCombatResult(target, multiplier, 1, flags);
+    }
+
     public void PerformMeleeAttack(CombatEntity target)
     {
-        DamageInfo di;
-        if (Character.Type == CharacterType.Player)
-            di = Player.CalculateMeleeAttack(target);
-        else if (Character.Type == CharacterType.Monster)
-        {
-            var flags = AttackFlags.Physical |
-                        AttackFlags.CanHarmAllies; //they can auto attack their allies if they get hit by them
-            di = CalculateCombatResult(target, 1f, 1, flags);
-            ApplyCooldownForAttackAction(target);
-        }
-        else
-            return;
-
+        var di = CalculateMeleeAttack(target);
 
         UpdateHidingStateAfterAttack();
 

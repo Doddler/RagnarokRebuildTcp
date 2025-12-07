@@ -64,6 +64,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
                 case AttackElement.Water: mat = EffectSharedMaterialManager.GetMaterial(EffectMaterialType.CastWater); break;
                 case AttackElement.Wind: mat = EffectSharedMaterialManager.GetMaterial(EffectMaterialType.CastWind); break;
                 case AttackElement.Earth: mat = EffectSharedMaterialManager.GetMaterial(EffectMaterialType.CastEarth); break;
+                case AttackElement.Poison: mat = EffectSharedMaterialManager.GetMaterial(EffectMaterialType.CastPoison); break;
                 case AttackElement.Dark:
                 case AttackElement.Holy:
                 case AttackElement.Ghost:

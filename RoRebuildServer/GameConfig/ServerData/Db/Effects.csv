@@ -134,3 +134,5 @@
 133,BrandishTarget,TRUE,TRUE,FALSE,brandish,,,0,,
 134,BrandishSelf,TRUE,TRUE,FALSE,brandish2,,,0,,
 135,VenomSplasher,TRUE,TRUE,FALSE,venomsplasher,,,0,,
+136,VenomDust,TRUE,TRUE,FALSE,venomdust,,,0,,
+137,PoisonReactSelf,TRUE,TRUE,FALSE,poisonreact_1st,,,0,,

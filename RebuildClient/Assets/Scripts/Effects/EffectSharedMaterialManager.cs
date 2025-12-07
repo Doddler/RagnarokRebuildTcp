@@ -41,6 +41,7 @@ namespace Assets.Scripts.Effects
         ParticleAdditive,
         IceMaterial,
         StoneMaterial,
+        StoneMaterialNoZCheck,
         FireRing,
         SightEffect,
         WaterBallEffect,
@@ -49,6 +50,7 @@ namespace Assets.Scripts.Effects
         CastWater,
         CastWind,
         CastEarth,
+        CastPoison,
         MagnumBreak,
         MapPillarBlue,
         MapPillarGreen,
@@ -349,6 +351,10 @@ namespace Assets.Scripts.Effects
                         stoneMat.SetInt("_ZWrite", 1);
                         stoneMat.SetInt("_myCustomCompare", (int)CompareFunction.LessEqual);
                         break;
+                    
+                    case EffectMaterialType.StoneMaterialNoZCheck:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.AlphaBlendNoZTestShader, Resources.Load<Texture2D>("stone"));
+                        break;
                     case EffectMaterialType.FireRing:
                         SetUpTextureMaterial(mat, ShaderCache.Instance.PerspectiveAlphaShader, GetOrLoadEffectTexture(EffectTextureType.RingYellow));
                         break;
@@ -390,6 +396,9 @@ namespace Assets.Scripts.Effects
                         break;
                     case EffectMaterialType.CastEarth:
                         SetUpTextureMaterial(mat, ShaderCache.Instance.InvAlphaShader, GetOrLoadEffectTexture(EffectTextureType.MagicGreen), 3001, true);
+                        break;
+                    case EffectMaterialType.CastPoison:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.InvAlphaShader, GetOrLoadEffectTexture(EffectTextureType.MagicViolet), 3001, true);
                         break;
                     case EffectMaterialType.MagnumBreak:
                         SetUpTextureMaterial(mat, ShaderCache.Instance.AlphaBlendParticleShader, Resources.Load<Texture2D>("BigBang"));

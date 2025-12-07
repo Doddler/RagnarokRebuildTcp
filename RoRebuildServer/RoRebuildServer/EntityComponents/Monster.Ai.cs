@@ -728,6 +728,7 @@ public partial class Monster
             return true;
 
         CombatEntity.PerformMeleeAttack(targetEntity);
+        CombatEntity.ApplyCooldownForAttackAction(targetEntity);
         Character.QueuedAction = QueuedAction.None;
         timeLastCombat = Time.ElapsedTimeFloat;
         timeOfStartChase = float.MaxValue;

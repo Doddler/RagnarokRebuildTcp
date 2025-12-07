@@ -233,7 +233,7 @@ Poison Resistance Effect: The next attack with a chance to poison will fail and 
 
 ::Envenom
 Deals 150% poison type damage with a chance apply poison status. Poisoning chance is reduced by the target's VIT.
-Poison Effect: Target takes half the damage dealt by envenom every 2 seconds, and has their defense reduced by 25% (10% on bosses.)
+Poison Effect: Deals 50% of evenom's damage every 2 seconds, and reduces defense by 25% (10% on bosses.) At low HP or against bosses the damage over time effect will pause if the target has not recently received damage from another source.
 Success rate: [50 + SkillLevel * 5]% chance.
 Duration: [4 + SkillLevel * 2] seconds (with a minimum of 10s).
 
@@ -353,18 +353,30 @@ Catalyst: <color=#777777>1 Blue Gemstone</color>
 Deals 8 hits at [50 + SkillLevel * 5]% to a single target, with a +50% increase to accuracy.
 
 ::EnchantPoison
-Enchant the weapon or yourself or an ally to deal poison property damage. Also adds a [2 + SkillLevel / 2]% chance to poison the enemy when performing melee attacks.
+Enchant the weapon of yourself or an ally to deal poison property damage. Also adds a [2 + SkillLevel / 2]% chance to poison the enemy when performing melee attacks.
 Unequipping or swapping weapons will cause the effect to end early.
 Duration: [15 + SkillLevel * 15]s
 
 ::VenomSplasher
 Strikes a target with 100% physical damage and inflict them with a time delayed toxin.
-While inflicted all physical damage dealt to the target will be stored, to a maximum of [600 + 150 * SkillLevel]% ATK.
-After 12 seconds elapses an explosion will occur dealing the accumulated damage as poison property damage to the target and 2/3 of the amount to nearby targets.
-The skill will detonate early if the accumulated damage either reaches the maximum amount or exceeds the target's remaining HP.
+For 12 seconds all physical damage received will be accumulated and dealt again in an explosion dealing poison property damage to the target and 2/3 of the amount to nearby targets.
+The maximum amount of damage that can be stored is [400 + 120 * SkillLevel]% ATK, with the total skill modifier increased by 5% per level of Poison React learned.
+The skill will detonate early if the maximum accumulated damage is reached or the amount exceeds the target's remaining HP.
 Catalyst: <color=#777777>1 Red Gemstone</color>
 Cast Time: 1s
 Skill Cooldown: 3s
+
+::VenomDust
+Places a toxic area on the ground that will poison any non-poison or non-undead enemy that touches it.
+Poison Effect: Deals [50 + SkillLevel * 5]% attack damage every 2 seconds, and reduces defense by 25% (10% on bosses.) At low HP or against bosses the damage over time effect will pause if the target has not recently received damage from another source.
+Catalyst: <color=#777777>1 Red Gemstone</color>
+
+::PoisonReact
+Each time you take melee-range physical damage you have a 50% chance to consume one skill charge to use Envenom on the attacker.
+If a poison property attack is used or poison property monster attacks you, the damage is blocked and all charges are consumed to poison the target and deal [50 + SkillLevel * 10]% attack multiplied by the number of charges remaining.
+Poison Effect: Deals 50% of the counter damage every 2 seconds.
+Charges: [(1 + SkillLevel) / 2]
+Duration: [30 + SkillLevel * 15]s
 
 //----------------Blacksmith-------------------
 

@@ -218,6 +218,14 @@ Type = "Debuff"
 CanDispel = false
 CanDisable = false
 
+
+[PoisonReact]
+Name = "Poison React"
+Type = "Buff"
+Icon = "포이즌리액트"
+CanDispel = true
+CanDisable = true
+
 #----------------------------------
 # Priest
 #----------------------------------

@@ -121,7 +121,7 @@ public class VenomDustObjectEvent : NpcBehaviorBase
         if (src.Character.Map != npc.Character.Map || !src.CanPerformIndirectActions())
             return;
 
-        if (target != src && !target.IsValidTarget(src, false, true))
+        if (target == src || !src.IsValidTarget(target, false, true))
             return;
 
         if (!npc.Owner.TryGet<CombatEntity>(out var owner))
@@ -133,9 +133,10 @@ public class VenomDustObjectEvent : NpcBehaviorBase
         if (target.HasStatusEffectOfType(CharacterStatusEffect.Poison))
             return;
 
-        var (min, max) = src.CalculateAttackPowerRange(false);
-        var atk = GameRandom.NextInclusive(min, max) * npc.ValuesInt[1] / 100;
-        owner.TryPoisonOnTarget(target, 100_000, true, atk, 24f, 0);
+        var req = new AttackRequest(npc.ValuesInt[1] / 100f, 1, AttackFlags.PhysicalStatusTest, AttackElement.Neutral); //element doesn't matter
+        var poisonDamage = src.CalculateCombatResult(target, req);
+
+        owner.TryPoisonOnTarget(target, 100_000, true, poisonDamage.Damage, 24f, 0);
     }
 
     public override void OnTimer(Npc npc, float lastTime, float newTime)
