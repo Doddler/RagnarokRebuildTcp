@@ -1,146 +1,59 @@
 namespace Assets.Scripts.Sprites
 {
-    public interface IRoAct
+    public class RoActData
     {
-        char[] Signature { get; set; }
-        byte VersionMinor { get; set; }
-        byte VersionMajor { get; set; }
-        ushort AnimationClipCount { get; set; }
-        AnimationClip[] AnimationClips { get; set; }
+        public char[] Signature { get; set; } //2.0
+        public byte VersionMinor { get; set; } //2.0
+        public byte VersionMajor { get; set; } //2.0
+        public ushort AnimationClipCount { get; set; } //2.0
+        public RoAnimationClip[] AnimationClips { get; set; } //2.0
+        public uint AnimationEventCount { get; set; } //2.1
+        public RoAnimationEvent[] AnimationEvents { get; set; } //2.1
+        public float[] FrameTimes { get; set; } //2.3
     }
     
-    public class RoActV20 : IRoAct
+    public class RoAnimationClip
     {
-        public char[] Signature { get; set; }
-        public byte VersionMinor { get; set; }
-        public byte VersionMajor { get; set; }
-        public ushort AnimationClipCount { get; set; }
-        public AnimationClip[] AnimationClips { get; set; }
+        public uint AnimationFrameCount; //2.0
+        public RoAnimationFrame[] AnimationFrames; //2.0
     }
+    
+    public class RoAnimationFrame
+    {
+        public uint SpriteLayerCount {get; set;} //2.0
+        public RoSpriteLayer[] SpriteLayers {get; set;} //2.0
+        public uint AnimationEventId {get; set;} //2.0
+        public uint SpriteAnchorCount {get; set;} //2.3
+        public RoSpriteAnchor[] AnchorPoints {get; set;} //2.3
+    }
+    
+    public class RoAnimationEvent
+    {
+        public char[] Name; //2.1
+    }
+    
 
-    public class RoActV21 : IRoAct
+    public class RoSpriteLayer
     {
-        public char[] Signature { get; set; }
-        public byte VersionMinor { get; set; }
-        public byte VersionMajor { get; set; }
-        public ushort AnimationClipCount { get; set; }
-        public AnimationClip[] AnimationClips { get; set; }
-        private uint AnimationEventCount { get; set; }
-        private AnimationEvent AnimationEvents { get; set; }
-    }
-
-    public class RoActV23 : IRoAct
-    {
-        public char[] Signature { get; set; }
-        public byte VersionMinor { get; set; }
-        public byte VersionMajor { get; set; }
-        public ushort AnimationClipCount { get; set; }
-        public AnimationClip[] AnimationClips { get; set; }
-        private uint AnimationEventCount { get; set; }
-        private AnimationEvent[] AnimationEvents { get; set; }
-        private float[] FrameTimes { get; set; }
+        public uint PositionU {get; set;} //2.0
+        public uint PositionV {get; set;} //2.0
+        public uint SpritesheetCellIndex {get; set;} //2.0
+        public uint IsFlippedV {get; set;} //2.0
+        public byte ColorTintRed {get; set;} //2.0
+        public byte ColorTintGreen {get; set;} //2.0
+        public byte ColorTintBlue {get; set;} //2.0
+        public byte ColorTintAlpha {get; set;} //2.0
+        public float Scale {get; set;} //2.0 - //2.3
+        public float ScaleU {get; set;} //2.4
+        public float ScaleV {get; set;} //2.4
+        public uint RotationDegrees {get; set;} //2.0
+        public uint ImageTypeID {get; set;} //2.0
+        public uint ImageWidth {get; set;} //2.5
+        public uint ImageHeight {get; set;} //2.5
     }
     
-    public class AnimationClip
-    {
-        public uint AnimationFrameCount ;
-        public IRoActAnimationFrame[] AnimationFrames;
-    }
-    
-    public class AnimationEvent
-    {
-        public char[] Name; //40 chars
-    }
-    
-    public interface IRoActAnimationFrame
-    {
-        public uint SpriteLayerCount {get; set;}
-        public IRoActSpriteLayer[] SpriteLayers {get; set;}
-        public uint AnimationEventID {get; set;}
-    }
-    
-    public class AnimationFrameV20 : IRoActAnimationFrame
-    {
-        public uint SpriteLayerCount {get; set;}
-        public IRoActSpriteLayer[] SpriteLayers {get; set;}
-        public uint AnimationEventID {get; set;}
-    }
-    
-    public class AnimationFrameV23 : IRoActAnimationFrame
-    {
-        public uint SpriteLayerCount {get; set;}
-        public IRoActSpriteLayer[] SpriteLayers {get; set;}
-        public uint AnimationEventID {get; set;}
-        public uint SpriteAnchorCount {get; set;}
-        public SpriteAnchor[] AnchorPoints {get; set;}
-    }
-
-    public interface IRoActSpriteLayer
-    {
-        public uint PositionU {get; set;}
-        public uint PositionV {get; set;}
-        public uint SpritesheetCellIndex {get; set;}
-        public uint IsFlippedV {get; set;}
-        public byte ColorTintRed {get; set;}
-        public byte ColorTintGreen {get; set;}
-        public byte ColorTintBlue {get; set;}
-        public byte ColorTintAlpha {get; set;}
-        public uint RotationDegrees {get; set;}
-        public uint ImageTypeID {get; set;}
-    }
-    
-    public class SpriteLayerV20 : IRoActSpriteLayer
-    {
-        public uint PositionU {get; set;}
-        public uint PositionV {get; set;}
-        public uint SpritesheetCellIndex {get; set;}
-        public uint IsFlippedV {get; set;}
-        public byte ColorTintRed {get; set;}
-        public byte ColorTintGreen {get; set;}
-        public byte ColorTintBlue {get; set;}
-        public byte ColorTintAlpha {get; set;}
-        public float Scale {get; set;}
-        public uint RotationDegrees {get; set;}
-        public uint ImageTypeID {get; set;}
-    }
-
-    public class SpriteLayerV24 :  IRoActSpriteLayer
-    {
-        public uint PositionU {get; set;}
-        public uint PositionV {get; set;}
-        public uint SpritesheetCellIndex {get; set;}
-        public uint IsFlippedV {get; set;}
-        public byte ColorTintRed {get; set;}
-        public byte ColorTintGreen {get; set;}
-        public byte ColorTintBlue {get; set;}
-        public byte ColorTintAlpha {get; set;}
-        public float ScaleU {get; set;}
-        public float ScaleV {get; set;}
-        public uint RotationDegrees {get; set;}
-        public uint ImageTypeID {get; set;}
-    }
-    
-    public class SpriteLayerV25 : IRoActSpriteLayer
-    {
-        public uint PositionU {get; set;}
-        public uint PositionV {get; set;}
-        public uint SpritesheetCellIndex {get; set;}
-        public uint IsFlippedV {get; set;}
-        public byte ColorTintRed {get; set;}
-        public byte ColorTintGreen {get; set;}
-        public byte ColorTintBlue {get; set;}
-        public byte ColorTintAlpha {get; set;}
-        public float ScaleU {get; set;}
-        public float ScaleV {get; set;}
-        public uint RotationDegrees {get; set;}
-        public uint ImageTypeID {get; set;}
-        public uint ImageWidth {get; set;}
-        public uint ImageHeight {get; set;}
-    }
-    
-    public class SpriteAnchor {
-        public uint PositionU;
-        public uint PositionV;
-        public uint UnknownFlag;
+    public class RoSpriteAnchor {
+        public uint PositionU; //2.3
+        public uint PositionV; //2.3
     }
 }

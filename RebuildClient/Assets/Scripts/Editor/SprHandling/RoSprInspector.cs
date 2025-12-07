@@ -9,7 +9,6 @@ namespace Assets.Scripts.Editor.SprHandling
     {
         private SerializedProperty sprName;
         private SerializedProperty sprVersion;
-        private SerializedProperty sprites;
         private SerializedProperty palette;
         private SerializedProperty atlas;
         private SerializedProperty atlasRects;
