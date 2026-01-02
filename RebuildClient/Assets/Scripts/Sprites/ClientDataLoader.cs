@@ -420,9 +420,9 @@ namespace Assets.Scripts.Sprites
             foreach (var skill in skills.Items)
             {
                 skill.Icon = "skill_" + skill.Icon;
-                skill.Description = skill.Description.Replace("\r\n", "\n");
-                skill.Description = skill.Description.Replace("<br>\n", "<br>"); //should do this elsewhere honestly...
-                skill.Description = skill.Description.Replace("\n", "<line-height=25>\n</line-height>");
+                skill.DescEn = skill.DescEn.Replace("\r\n", "\n");
+                skill.DescEn = skill.DescEn.Replace("<br>\n", "<br>"); //should do this elsewhere honestly...
+                skill.DescEn = skill.DescEn.Replace("\n", "<line-height=25>\n</line-height>");
                 skillData.Add(skill.SkillId, skill);
             }
 

@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.PlayerControl;
+using RebuildSharedData.Enum;
+using UnityEngine;
 
 namespace Assets.Scripts.Objects
 {
-    public class ModelTrigger : MonoBehaviour
+    public class ModelTrigger : MonoBehaviour, IEntityActionHandler
     {
         public RoKeyframeRotator[] Rotators;
 
@@ -15,6 +17,12 @@ namespace Assets.Scripts.Objects
             {
                 r.enabled = true;
             }
+        }
+
+        public void ChangeCharacterState(CharacterState state)
+        {
+            if (state == CharacterState.Activated)
+                Activate();
         }
     }
 }

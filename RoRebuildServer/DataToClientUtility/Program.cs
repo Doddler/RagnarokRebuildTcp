@@ -1022,8 +1022,9 @@ class Program
             skill.SkillId = Enum.Parse<CharacterSkill>(id);
             if (skill.Name == null) skill.Name = id;
             if (skill.Icon == null) skill.Icon = "nv_basic";
+            //if (string.IsNullOrWhiteSpace(skill.DescEn) && skillDesc.TryGetValue(skill.SkillId, out var desc))
             if (skillDesc.TryGetValue(skill.SkillId, out var desc))
-                skill.Description = desc;
+                skill.DescEn = desc;
             skillOut.Add(skill);
         }
 

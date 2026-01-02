@@ -335,6 +335,7 @@ Uses: <color=#777777>1 Trap</color>
 Orders your falcon to attack a target, dealing [SkillLevel] hits to all enemies in a 3x3 area.
 Damage dealt per hit is [80 + Int + (Dex / 5)], and further increased by levels of Steel Crow. Ignores evasion and defense. Not affected by weapon or attack cards, but damage can be increased by cards and equipment that boost critical damage.
 Adds a [1 + Luk / 3]% chance to automatically trigger Blitz Beat when attacking. When triggered this way damage is reduced when striking multiple targets, and the max skill level activated is limited to [1 + JobLevel / 10]. Chance of activation can be improved by cards and equipment that increase your CRIT stat.
+After manually casting Blitz Beat your chance to trigger Blitz Beat when attacking is increased by +[SkillLevel]% for 15 seconds.
 Cast Time: 1.5s
 
 //----------------Priest-------------------

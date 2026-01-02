@@ -26,18 +26,26 @@ Target = "Enemy"
 MaxLevel = 10
 SpCost = [8,8,8,8,8,15,15,15,15,15]
 AdjustableLevel = true
+DescEn = "Strikes a target for <1>% ATK with a +<2>% chance to hit."
+Params = [[130,160,190,220,250,280,310,340,370,400],[5,10,15,20,25,30,35,40,45,50]]
 
 [Endure]
 Icon = "sm_endure"
 Target = "Self"
 MaxLevel = 10
 SpCost = [1,2,3,4,5,6,7,8,9,10]
+DescEn = """Resists flinching from enemy attacks, allowing you to move without being slowed down by damage.
+Provides +<1> MDEF while active. Lasts <2> hits or <3> seconds, whichever ends first."""
+Params = [[1,2,3,4,5,6,7,8,9,10],[3,4,5,6,7,8,9,10,11,12,13],[10,13,16,19,22,25,28,31,34,37]]
 
 [IncreasedHPRecovery]
 Name = "Improved HP Recovery"
 Icon = "sm_recovery"
 MaxLevel = 10
 Target = "Passive"
+DescEn = """Adds a heal over time effect that recovers <1> HP plus <2>% of your MaxHP every 6 seconds. \
+ Additionally increases the healing effectiveness of items by <3>%."""
+Params = [[5,10,15,20,25,30,35,40,45,50],[0.2,0.4,0.6,0.8,1,1.2,1.4,1.6,1.8,2],[10,20,30,40,50,60,70,80,90,100]]
 
 [MagnumBreak]
 Name = "Magnum Break"
@@ -46,24 +54,36 @@ Target = "Self"
 MaxLevel = 10
 SpCost = [30,30,30,30,30,30,30,30,30,30]
 AdjustableLevel = false
+DescEn = """Inflicts <1>% fire damage to nearby enemies and knocking them back 2 tiles.
+For 20 seconds after using the skill all physical attacks will all deal an additional <2>% fire damage."""
+Params = [[120,140,160,180,200,220,240,260,280,300],[11,12,13,14,15,16,17,18,19,20]]
 
 [Provoke]
 Icon = "sm_provoke"
 Target = "Enemy"
 MaxLevel = 10
 SpCost = [5,5,5,5,5,5,5,5,5,5]
+DescEn = """Enrages an enemy by taunting them, causing them drop their guard for 30 seconds.
+Reduces defense by <1>% but increases attack by <2>%.
+The effectiveness of this skill is halved on boss type monsters.
+While provoked the enemy has a low chance of dealing extra damage against you specifically."""
+Params = [[10,15,20,25,30,35,40,45,50,55],[5,10,15,20,25,30,35,40,45,50]]
 
 [SwordMastery]
 Name = "Sword Mastery"
 Icon = "sm_sword"
 Target = "Passive"
 MaxLevel = 10
+DescEn = """Adds +<1> weapon attack power when using a dagger or one-handed sword."""
+Params = [[4,8,12,16,20,24,28,32,36,40]]
 
 [TwoHandSwordMastery]
 Name = "Two-Hand Sword Mastery"
 Icon = "sm_twohand"
 Target = "Passive"
 MaxLevel = 10
+DescEn = """Adds +<1> weapon attack power when using two-handed swords."""
+Params = [[4,8,12,16,20,24,28,32,36,40]]
 
 #----------------------------------
 # Mage
