@@ -110,7 +110,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.2
   far clip plane: 500
   field of view: 15
   orthographic: 0
@@ -194,6 +194,8 @@ MonoBehaviour:
   TargetRotation: 0
   DefaultRotation: 0
   ClickDelay: 0
+  WASDCommandDelay: 0
+  WASDPreviousDirection: {x: 0, y: 0}
   Rotation: 0
   Distance: 56
   Height: 50
