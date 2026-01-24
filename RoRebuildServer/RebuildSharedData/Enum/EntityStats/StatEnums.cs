@@ -92,6 +92,8 @@ public enum CharacterStat
     DoubleAttackChance,
     AddSpRecoveryPercent,
     AddHpRecoveryPercent,
+    AddSpRecoveryAbsolute,
+    AddHpRecoveryAbsolute,
     AddMaxHp,
     AddMaxSp,
     AddMaxHpPercent,
