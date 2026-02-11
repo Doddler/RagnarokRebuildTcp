@@ -34,6 +34,7 @@ namespace Assets.Scripts.Network
         private RoWalkDataProvider walkProvider;
 
         public CharacterType CharacterType;
+        public CharacterState CharacterState;
         public RoSpriteAnimator SpriteAnimator;
         public int Id;
         public int ClassId;

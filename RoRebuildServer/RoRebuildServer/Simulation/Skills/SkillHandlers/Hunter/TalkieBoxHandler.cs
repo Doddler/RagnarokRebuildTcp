@@ -26,8 +26,14 @@ public class TalkieBoxEvent : TrapBaseEvent
     protected override bool BlockMultipleActivations => true;
     protected override bool InheritOwnerFacing => false;
 
-    public override bool TriggerTrap(Npc npc, CombatEntity src, CombatEntity target, int skillLevel)
+    public override bool TriggerTrap(Npc npc, CombatEntity src, CombatEntity? target, int skillLevel)
     {
+        if (target == null)
+        {
+            ChangeToActivatedState(npc, 1f);
+            return true; //triggered by some other means, probably spring trap
+        }
+
         return true;
     }
 }

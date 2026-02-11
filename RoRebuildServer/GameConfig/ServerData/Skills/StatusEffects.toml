@@ -205,6 +205,12 @@ Type = "Buff"
 CanDispel = false
 CanDisable = false
 
+[BlitzBeatRateUp]
+Name = "Blitz Beat Rate Up"
+Type = "Buff"
+CanDispel = false
+CanDisable = false
+
 [PecoRiding]
 Name = "Peco Peco Riding"
 Type = "Buff"

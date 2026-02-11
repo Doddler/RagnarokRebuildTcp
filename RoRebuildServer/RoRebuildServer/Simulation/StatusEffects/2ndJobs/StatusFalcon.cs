@@ -27,6 +27,9 @@ public class StatusFalcon : StatusEffectBase
         //custom change: gear that adds crit boosts your base chance of triggering auto blitz
         chance += chance * (ch.GetEffectiveStat(CharacterStat.AddCrit) + ch.GetBonusCritRateVsTarget(target)) / 100;
 
+        if (ch.TryGetStatusEffect(CharacterStatusEffect.BlitzBeatRateUp, out var blitzUp))
+            chance += blitzUp.Value1;
+
         if (GameRandom.NextInclusive(1000) < chance)
         {
             var cast = new SkillCastInfo()

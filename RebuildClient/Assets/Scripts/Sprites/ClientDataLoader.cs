@@ -1006,6 +1006,7 @@ namespace Assets.Scripts.Sprites
             control.Name = param.Name;
             control.IsAlly = true;
             control.IsInteractable = false;
+            control.CharacterState = param.State;
 
             control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
             if (type < NpcEffectType.AnkleSnare || type > NpcEffectType.ShockwaveTrap)
@@ -1113,6 +1114,9 @@ namespace Assets.Scripts.Sprites
                     if (sprite != null)
                         sprite.Controllable = target;
                     target.EntityObject = obj2;
+                    
+                    if(target.EntityObject.TryGetComponent<IEntityActionHandler>(out var handler))
+                        handler.ChangeCharacterState(target.CharacterState);
                 }
             };
         }
@@ -1132,6 +1136,7 @@ namespace Assets.Scripts.Sprites
             control.Name = param.Name;
             control.IsAlly = true;
             control.IsInteractable = false;
+            control.CharacterState = param.State;
 
             control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
             control.EnsureFloatingDisplayCreated().SetUp(control, param.Name, param.MaxHp, 0, false, false);
@@ -1147,6 +1152,9 @@ namespace Assets.Scripts.Sprites
                     var sprite = obj2.GetComponent<RoSpriteAnimator>();
                     if (sprite != null)
                         sprite.Controllable = control;
+
+                    if (obj2.TryGetComponent<ServerControllable>(out var ctrl) && ctrl.EntityObject && ctrl.EntityObject.TryGetComponent<IEntityActionHandler>(out var handler))
+                        handler.ChangeCharacterState(ctrl.CharacterState);                   
                 }
             };
 

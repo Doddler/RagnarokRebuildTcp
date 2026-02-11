@@ -37,9 +37,6 @@ public class StatusPoisonReact : StatusEffectBase
             if (ch.Character.Position.DistanceTo(attacker.Character.Position) > 14)
                 return StatusUpdateResult.Continue;
 
-            if(ch.Character.State == CharacterState.Sitting)
-                ch.Character.SitStand(false);
-
             var res = ch.CalculateMeleeAttack(attacker, (0.5f + 0.1f * state.Value1) * state.Value2);
             res.AttackSkill = CharacterSkill.PoisonReact;
             res.IsIndirect = true;

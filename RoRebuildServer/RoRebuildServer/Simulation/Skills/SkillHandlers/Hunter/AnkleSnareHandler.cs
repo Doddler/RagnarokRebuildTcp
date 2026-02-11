@@ -35,8 +35,14 @@ public class AnkleSnareEvent : TrapBaseEvent
         npc.Character.Map?.DropGroundItem(ref item);
     }
 
-    public override bool TriggerTrap(Npc npc, CombatEntity src, CombatEntity target, int skillLevel)
+    public override bool TriggerTrap(Npc npc, CombatEntity src, CombatEntity? target, int skillLevel)
     {
+        if (target == null)
+        {
+            ChangeToActivatedState(npc, 3f);
+            return true; //we've been sprung, probably with spring trap, so end.
+        }
+
         if (target.IsFlying() && ServerConfig.OperationConfig.FliersIgnoreTraps)
             return false;
 
@@ -71,7 +77,7 @@ public class AnkleSnareEvent : TrapBaseEvent
         var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.AnkleSnare, duration);
         target.AddStatusEffect(status);
 
-        npc.ActivateAndHide(duration);
+        ChangeToActivatedState(npc, duration);
 
         return true;
     }

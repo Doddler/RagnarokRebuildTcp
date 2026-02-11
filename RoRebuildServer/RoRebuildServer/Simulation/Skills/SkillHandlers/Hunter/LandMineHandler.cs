@@ -29,8 +29,14 @@ public class LandMineEvent : TrapBaseEvent
     protected override bool Attackable => true;
     protected override bool BlockMultipleActivations => false;
 
-    public override bool TriggerTrap(Npc npc, CombatEntity src, CombatEntity target, int skillLevel)
+    public override bool TriggerTrap(Npc npc, CombatEntity src, CombatEntity? target, int skillLevel)
     {
+        if (target == null)
+        {
+            ChangeToActivatedState(npc, 1f);
+            return true; //triggered by some other means, probably spring trap
+        }
+
         if (target.IsFlying() && ServerConfig.OperationConfig.FliersIgnoreTraps)
             return false;
 
@@ -50,7 +56,7 @@ public class LandMineEvent : TrapBaseEvent
 
         CommandBuilder.SkillExecuteIndirectAutoVisibility(npc.Character, target.Character, res);
 
-        npc.ActivateAndHide(1f);
+        ChangeToActivatedState(npc, 1f);
 
         src.ExecuteCombatResult(res, false);
 

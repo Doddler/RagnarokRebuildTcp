@@ -1580,6 +1580,9 @@ public partial class CombatEntity : IEntityAutoReset
     {
         var target = damageInfo.Target.Get<CombatEntity>();
 
+        if (Character.State == CharacterState.Sitting)
+            Character.SitStand(false); //the client will change their motion to standing, so we may as well make sure that's right
+
         if (sendPacket)
         {
             if (damageInfo.AttackSkill == CharacterSkill.None)

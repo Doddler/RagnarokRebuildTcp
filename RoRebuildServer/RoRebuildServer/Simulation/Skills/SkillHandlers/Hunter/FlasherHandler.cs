@@ -26,7 +26,7 @@ public class FlasherEvent : TrapBaseEvent
     protected override bool BlockMultipleActivations => true;
     protected override bool InheritOwnerFacing => false;
 
-    public override bool TriggerTrap(Npc npc, CombatEntity src, CombatEntity target, int skillLevel)
+    public override bool TriggerTrap(Npc npc, CombatEntity src, CombatEntity? target, int skillLevel)
     {
         return true;
     }

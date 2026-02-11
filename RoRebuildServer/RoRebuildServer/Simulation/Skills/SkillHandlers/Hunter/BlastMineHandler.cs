@@ -30,9 +30,9 @@ public class BlastMineEvent : TrapBaseEvent
 
     public override void OnNaturalExpiration(Npc npc) => HunterTrapExpiration(npc);
 
-    public override bool TriggerTrap(Npc npc, CombatEntity src, CombatEntity target, int skillLevel)
+    public override bool TriggerTrap(Npc npc, CombatEntity src, CombatEntity? target, int skillLevel)
     {
-        if (target.IsFlying() && ServerConfig.OperationConfig.FliersIgnoreTraps)
+        if (target != null && target.IsFlying() && ServerConfig.OperationConfig.FliersIgnoreTraps)
             return false;
 
         var srcLevel = src.GetStat(CharacterStat.Level);
@@ -61,7 +61,7 @@ public class BlastMineEvent : TrapBaseEvent
             src.ExecuteCombatResult(res, false);
         }
 
-        npc.ActivateAndHide(1f);
+        ChangeToActivatedState(npc, 1f);
 
         return true;
     }

@@ -513,6 +513,15 @@ public class WorldObject : IEntityAutoReset
         }
     }
 
+    public void SwapToActivatedState()
+    {
+        if (State == CharacterState.Activated)
+            return;
+
+        State = CharacterState.Activated;
+        CommandBuilder.SendChangeActivatedStateAutoVis(this);
+    }
+
     public void StopSitting()
     {
         if (Type == CharacterType.Player || State != CharacterState.Sitting)

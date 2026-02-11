@@ -32,8 +32,14 @@ public class SkidTrapEvent : TrapBaseEvent
     protected override bool BlockMultipleActivations => false;
     protected override bool InheritOwnerFacing => true;
 
-    public override bool TriggerTrap(Npc npc, CombatEntity src, CombatEntity target, int skillLevel)
+    public override bool TriggerTrap(Npc npc, CombatEntity src, CombatEntity? target, int skillLevel)
     {
+        if (target == null)
+        {
+            ChangeToActivatedState(npc, 1f);
+            return true; //triggered by some other means, probably spring trap
+        }
+
         if (target.IsFlying() && ServerConfig.OperationConfig.FliersIgnoreTraps)
             return false;
 

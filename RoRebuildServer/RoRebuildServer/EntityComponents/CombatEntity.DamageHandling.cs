@@ -506,7 +506,7 @@ public partial class CombatEntity
 
             if (attackerType == CharacterType.Player && isPhysical) //only players and physical attacks get these bonuses
             {
-                racialMod += GetStat(CharacterStat.AddAttackRaceFormless + (int)targetRace);
+                racialMod += racialMod * GetStat(CharacterStat.AddAttackRaceFormless + (int)targetRace) / 100; //stack multiplicatively with race% resist modifiers
 
                 //damage/resist vs tag
                 if (defenderType == CharacterType.Monster)
@@ -535,7 +535,7 @@ public partial class CombatEntity
                 addDamage += GetStat(CharacterStat.WeaponMastery);
 
                 if (isRanged)
-                    rangeMod += GetStat(CharacterStat.AddAttackRangedAttack);
+                    rangeMod += rangeMod * GetStat(CharacterStat.AddAttackRangedAttack) / 100;
 
                 if (isCrit)
                     attackMultiplier *= 1 + GetStat(CharacterStat.AddCritDamageRaceFormless + (int)targetRace) / 100f;
@@ -569,81 +569,6 @@ public partial class CombatEntity
         //physical defense
         if (!flags.HasFlag(AttackFlags.IgnoreDefense))
             (defCut, subDef) = target.GetDefenseReductionForReceivedAttack(this, attackerPenalty, flags, defMod, 100);
-        //{
-        //    if (isPhysical)
-        //    {
-        //        //armor def.
-        //        var def = target.GetEffectiveStat(CharacterStat.Def);
-
-        //        //soft def
-        //        if (!flags.HasFlag(AttackFlags.IgnoreSubDefense))
-        //        {
-        //            if (target.Character.Type == CharacterType.Player)
-        //            {
-        //                //this formula is weird, but it is official
-        //                //your vit defense is a random number between 80% (30% of which steps up every 10 vit)
-        //                //you also gain a random bonus that kicks in at 46 def and increases at higher values
-        //                var vit30Percent = 3 * vit / 10;
-        //                var vitRng = vit * vit / 150 - vit30Percent;
-        //                if (vitRng < 1) vitRng = 1;
-        //                subDef = (vit30Percent + GameRandom.NextInclusive(0, 20000) % vitRng + vit / 2);
-
-        //                //attacker penalty (players only)
-        //                if (attackerPenalty > 0)
-        //                {
-        //                    def -= 5 * def * attackerPenalty / 100;
-        //                    subDef -= 5 * subDef * attackerPenalty / 100;
-        //                }
-
-        //                if (def < 0) def = 0;
-        //                if (subDef < 0) subDef = 0;
-        //            }
-        //            else
-        //            {
-        //                //monsters vit defense is also weird
-        //                var vitRng = (vit / 20) * (vit / 20);
-        //                if (vitRng <= 0)
-        //                    subDef = vit;
-        //                else
-        //                    subDef = vit + GameRandom.NextInclusive(0, 20000) % vitRng;
-        //            }
-
-
-        //            subDef = subDef * (100 + target.GetStat(CharacterStat.AddSoftDefPercent)) / 100;
-        //        }
-
-        //        if ((flags & AttackFlags.ReverseDefense) > 0 || GetStat(CharacterStat.ReverseDefense) > 0)
-        //        {
-        //            defCut = (def + subDef) * (defMod / 100f) / 100f;
-        //            subDef = 0;
-        //        }
-        //        else
-        //        {
-        //            //convert def to damage reduction %
-        //            defCut = MathHelper.DefValueLookup(def);
-
-        //            if (def >= 200)
-        //                subDef = 999999;
-        //            else if (defMod != 100)
-        //            {
-        //                defCut = defCut * defMod / 100;
-        //                subDef = subDef * defMod / 100;
-        //            }
-        //        }
-        //    }
-
-        //    //magic defense
-        //    if (isMagical)
-        //    {
-        //        var mDef = target.GetEffectiveStat(CharacterStat.MDef);
-        //        defCut = MathHelper.DefValueLookup(mDef); //for now players have different def calculations
-        //        if (!flags.HasFlag(AttackFlags.IgnoreSubDefense))
-        //            subDef = target.GetEffectiveStat(CharacterStat.Int) + vit / 2;
-
-        //        if (mDef >= 200)
-        //            subDef = 999999;
-        //    }
-        //}
 
         //------------------------------
         // Combined damage calculation

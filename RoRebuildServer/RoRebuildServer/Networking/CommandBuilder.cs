@@ -1225,6 +1225,23 @@ public static class CommandBuilder
         NetworkManager.SendMessage(packet, p.Connection);
     }
 
+    public static void SendChangeActivatedStateAutoVis(WorldObject c)
+    {
+        if (c.Map == null)
+            return;
+        
+        StoreRecipients();
+        c.Map.AddVisiblePlayersAsPacketRecipients(c);
+        
+        var packet = NetworkManager.StartPacket(PacketType.ToggleActivatedState, 48);
+
+        packet.Write(c.Id);
+        packet.Write(c.State == CharacterState.Activated);
+
+        NetworkManager.SendMessageMulti(packet, recipients);
+
+        RestoreRecipients();
+    }
 
     public static void SendExpGain(Player p, int exp, int job = 0)
     {
