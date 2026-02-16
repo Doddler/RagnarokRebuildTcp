@@ -4,6 +4,7 @@ using System.IO;
 using Assets.Scripts.MapEditor.Editor;
 using Assets.Scripts.Objects;
 using RebuildSharedData.ClientTypes;
+using Scripts.Editor;
 using UnityEditor;
 using UnityEditor.U2D;
 using UnityEngine;

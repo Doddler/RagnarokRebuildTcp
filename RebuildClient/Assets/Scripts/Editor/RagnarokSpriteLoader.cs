@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Assets.Scripts;
@@ -22,7 +22,6 @@ namespace Assets.Editor
         private BinaryReader br;
 
         private int version;
-        private int indexCount;
         private int rgbaCount;
 
         private List<SpriteFrameData> spriteFrames;
@@ -31,15 +30,21 @@ namespace Assets.Editor
         public List<Texture2D> Textures = new();
         public List<Sprite> Sprites = new();
         public List<Vector2Int> SpriteSizes = new();
-        public int SpriteFrameCount => spriteFrames.Count;
+        public int SpriteFrameCount
+        {
+            get
+            {
+                return spriteFrames.Count;
+            }
+        }
 
         public Texture2D Atlas;
 
-        public int IndexCount => indexCount;
+        public int IndexCount { get; private set; }
 
         private void ReadIndexedImage()
         {
-            for (var i = 0; i < indexCount; i++)
+            for (var i = 0; i < IndexCount; i++)
             {
                 var width = br.ReadUInt16();
                 var height = br.ReadUInt16();
@@ -60,7 +65,7 @@ namespace Assets.Editor
 
         private void ReadRleIndexedImage()
         {
-            for (var i = 0; i < indexCount; i++)
+            for (var i = 0; i < IndexCount; i++)
             {
                 var width = br.ReadUInt16();
                 var height = br.ReadUInt16();
@@ -122,7 +127,7 @@ namespace Assets.Editor
             }
         }
 
-        private void ExtendSpriteTextureData(Color[] colors, SpriteFrameData frame)
+        private static void ExtendSpriteTextureData(Color[] colors, SpriteFrameData frame)
         {
             //we're going to extend the sprite color into the transparent area around the sprite
             //this is to make bilinear filtering work good with the sprite
@@ -169,15 +174,15 @@ namespace Assets.Editor
             }
         }
 
-        private Texture2D RgbaToTexture(SpriteFrameData frame)
+        private static Texture2D RgbaToTexture(SpriteFrameData frame)
         {
-            var image = new Texture2D(frame.Width, frame.Height, TextureFormat.ARGB32, false);
-            image.wrapMode = TextureWrapMode.Clamp;
-            image.alphaIsTransparency = true;
+            var image = new Texture2D(frame.Width, frame.Height, TextureFormat.ARGB32, false)
+            {
+                wrapMode = TextureWrapMode.Clamp,
+                alphaIsTransparency = true
+            };
 
             var colors = new Color[frame.Width * frame.Height];
-
-            //Debug.Log(frame.Width + " " + frame.Height);
 
             for (var y = 0; y < frame.Height; y++)
             {
@@ -205,9 +210,11 @@ namespace Assets.Editor
 
         private Texture2D IndexedToTexture(SpriteFrameData frame)
         {
-            var image = new Texture2D(frame.Width, frame.Height, TextureFormat.ARGB32, false);
-            image.wrapMode = TextureWrapMode.Clamp;
-            image.alphaIsTransparency = true;
+            var image = new Texture2D(frame.Width, frame.Height, TextureFormat.ARGB32, false)
+            {
+                wrapMode = TextureWrapMode.Clamp,
+                alphaIsTransparency = true
+            };
 
             var colors = new Color[frame.Width * frame.Height];
 
@@ -226,7 +233,6 @@ namespace Assets.Editor
 
 
                     colors[x + (frame.Height - y - 1) * frame.Width] = color;
-                    //image.SetPixel(x, frame.Height - y - 1, color);
                 }
             }
 
@@ -244,10 +250,9 @@ namespace Assets.Editor
 
         public Texture2D LoadFirstSpriteTextureOnly(string sprPath)
         {
-            var filename = sprPath;
-            var basename = Path.GetFileNameWithoutExtension(filename);
+            var basename = Path.GetFileNameWithoutExtension(sprPath);
 
-            var bytes = File.ReadAllBytes(filename);
+            var bytes = File.ReadAllBytes(sprPath);
             ms = new MemoryStream(bytes);
             br = new BinaryReader(ms);
 
@@ -260,16 +265,13 @@ namespace Assets.Editor
             var majorVersion = br.ReadByte();
             version = majorVersion * 10 + minorVersion;
 
-            indexCount = br.ReadUInt16();
+            IndexCount = br.ReadUInt16();
             rgbaCount = 0;
 
             if (version > 11)
                 rgbaCount = br.ReadUInt16();
 
-            //Debug.Log($"RGBA count: {rgbaCount}");
-
-            var frameCount = indexCount + rgbaCount;
-            var rgbaIndex = indexCount;
+            int frameCount = IndexCount + rgbaCount;
 
             spriteFrames = new List<SpriteFrameData>(frameCount);
 
@@ -283,33 +285,12 @@ namespace Assets.Editor
             if (version > 10)
                 ReadPalette();
 
-            if (spriteFrames.Count > 0)
-            {
-                var i = 0;
+            if (spriteFrames.Count <= 0)
+                return null;
+            Texture2D image = spriteFrames[0].IsIndexed ? IndexedToTexture(spriteFrames[0]) : RgbaToTexture(spriteFrames[0]);
+            image.name = basename;
+            return image;
 
-                Texture2D image;
-                if (spriteFrames[i].IsIndexed)
-                    image = IndexedToTexture(spriteFrames[i]);
-                else
-                    image = RgbaToTexture(spriteFrames[i]);
-                image.name = basename;
-                // image.name = $"{basename}_{i:D4}";
-                // image.hideFlags = HideFlags.HideInHierarchy;
-
-                //ctx.AddObjectToAsset(image.name, image);
-
-                //var sprite = Sprite.Create(image, new Rect(0, 0, indexedFrames[i].Width, indexedFrames[i].Height),
-                //    new Vector2(0.5f, 0.5f), 100);
-
-                //sprite.name = $"sprite_{basename}_{i:D4}";
-
-                //ctx.AddObjectToAsset(sprite.name, sprite);
-
-                return image;
-                //Sprites.Add(sprite);
-            }
-
-            return null;
         }
 
         private void LoadTextures(string baseName, int frame, int paletteId = -1)
@@ -330,23 +311,17 @@ namespace Assets.Editor
 
         public void Load(string filename, string atlasPath, RoSpriteData dataObject, string paletteFile, string imfPath = null)
         {
-            //var filename = ctx.assetPath;
             var basename = Path.GetFileNameWithoutExtension(filename);
-            var dirName = Path.GetDirectoryName(filename);
 
             if (!File.Exists(filename))
             {
-                Debug.LogError($"Could not import asset {filename}, the related .spr file could not be found.");
-                return;
+                throw new FileNotFoundException($"File {filename} not found");
             }
             
             var bytes = File.ReadAllBytes(filename);
             ms = new MemoryStream(bytes);
             br = new BinaryReader(ms);
-
-            //fs = new FileStream(filename, FileMode.Open);
-            //br = new BinaryReader(fs);
-
+            
             var header = new string(br.ReadChars(2));
             if (header != "SP")
                 throw new Exception("Not sprite");
@@ -355,16 +330,13 @@ namespace Assets.Editor
             var majorVersion = br.ReadByte();
             version = majorVersion * 10 + minorVersion;
 
-            indexCount = br.ReadUInt16();
+            IndexCount = br.ReadUInt16();
             rgbaCount = 0;
 
             if (version > 11)
                 rgbaCount = br.ReadUInt16();
 
-            //Debug.Log($"RGBA count: {rgbaCount}");
-
-            var frameCount = indexCount + rgbaCount;
-            var rgbaIndex = indexCount;
+            int frameCount = IndexCount + rgbaCount;
 
             spriteFrames = new List<SpriteFrameData>(frameCount);
 
@@ -377,13 +349,6 @@ namespace Assets.Editor
 
             if (version > 10)
                 ReadPalette();
-
-            // Debug.Log($"Palette check " + Path.Combine(dirName, "Palette/", basename + "_0.pal"));
-
-
-            //var palPath = Path.Combine("G:\\Games\\RagnarokJP\\data\\palette\\몸\\costume_1", $"{basename}_0_1.pal");
-
-            //Debug.Log(palPath);
 
             if (File.Exists(paletteFile))
             {
@@ -415,48 +380,33 @@ namespace Assets.Editor
 
             }
 
-            var supertexture = new Texture2D(2, 2);
-            supertexture.name = Path.GetFileNameWithoutExtension(atlasPath);
-            var rects = supertexture.PackTextures(Textures.ToArray(), 2, 2048, false);
-            supertexture.filterMode = FilterMode.Bilinear;
-
-            //var atlasDir = Path.Combine(dirName, "atlas/");
-            //var atlasPath = Path.Combine(atlasDir, supertexture.name + "_.png");
+            var superTexture = new Texture2D(2, 2)
+            {
+                name = Path.GetFileNameWithoutExtension(atlasPath)
+            };
+            Rect[] rects = superTexture.PackTextures(Textures.ToArray(), 2, 2048, false);
+            superTexture.filterMode = FilterMode.Bilinear;
+            
             var compression = TextureImporterCompression.CompressedHQ;
             if (atlasPath.Replace("\\", "/").Contains("/Icons/"))
                 compression = TextureImporterCompression.Uncompressed;
                 
-            supertexture = TextureImportHelper.SaveAndUpdateTexture(supertexture, atlasPath, ti =>
+            superTexture = TextureImportHelper.SaveAndUpdateTexture(superTexture, atlasPath, ti =>
             {
                 ti.textureType = TextureImporterType.Sprite;
                 ti.spriteImportMode = SpriteImportMode.Single;
                 ti.textureCompression = compression;
                 ti.crunchedCompression = false;
             });
-            //
-            //var bytes2 = supertexture.EncodeToPNG();
-            //File.WriteAllBytes(atlasPath, bytes2);
-            //supertexture.Compress(true);
 
-
-            //ctx.AddObjectToAsset(supertexture.name, supertexture);
-
-
-            Atlas = supertexture;
-
-            //var byteData = supertexture.EncodeToPNG();
-            //if (!Directory.Exists(atlasDir))
-            //    Directory.CreateDirectory(atlasDir);
-            //File.WriteAllBytes(atlasPath, byteData); //we will reattach this in a bit
-            //AssetDatabase.CreateAsset(supertexture, Path.Combine(basePath, $"{supertexture.name}.texture"));
-            //supertexture = AssetDatabase.LoadAssetAtPath(Path.Combine(subdir, $"{supertexture.name}.anim"), typeof(Texture2D)) as Texture2D;
+            Atlas = superTexture;
 
             for (var i = 0; i < rects.Length; i++)
             {
-                var texrect = new Rect(rects[i].x * supertexture.width, rects[i].y * supertexture.height, rects[i].width * supertexture.width,
-                    rects[i].height * supertexture.height);
+                var texRect = new Rect(rects[i].x * superTexture.width, rects[i].y * superTexture.height, rects[i].width * superTexture.width,
+                    rects[i].height * superTexture.height);
                 SpriteSizes.Add(new Vector2Int(Textures[i].width, Textures[i].height));
-                var sprite = Sprite.Create(supertexture, texrect, new Vector2(0.5f, 0.5f), 50, 0, SpriteMeshType.FullRect);
+                var sprite = Sprite.Create(superTexture, texRect, new Vector2(0.5f, 0.5f), 50, 0, SpriteMeshType.FullRect);
 
                 sprite.name = $"sprite_{basename}_{i:D4}";
 
