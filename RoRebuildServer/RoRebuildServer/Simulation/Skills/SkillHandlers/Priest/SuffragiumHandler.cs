@@ -15,16 +15,16 @@ public class SuffragiumHandler : SkillHandlerBase
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl,
         bool isIndirect, bool isItemSource)
     {
-        //if (source == target)
-        //    return SkillValidationResult.CannotTargetSelf;
+        if (source == target)
+            return SkillValidationResult.CannotTargetSelf;
 
         return base.ValidateTarget(source, target, position, lvl, isIndirect, isItemSource);
     }
 
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect, bool isItemSource)
     {
-        //if (target == null || source == target)
-        //    return;
+        if (target == null || source == target)
+            return;
 
         if (!isIndirect)
             source.ApplyAfterCastDelay(2f);

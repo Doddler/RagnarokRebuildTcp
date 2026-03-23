@@ -68,10 +68,10 @@ public class WorldObject : IEntityAutoReset
         {
             cellPosition = value;
             WorldPosition = value; //cast to FloatPosition
-//#if DEBUG
-//            if (Map != null && !Map.GetChunkForPosition(cellPosition).AllEntities.Contains(Entity))
-//                throw new Exception("OHNO!");
-//#endif
+            //#if DEBUG
+            //            if (Map != null && !Map.GetChunkForPosition(cellPosition).AllEntities.Contains(Entity))
+            //                throw new Exception("OHNO!");
+            //#endif
         }
     }
 

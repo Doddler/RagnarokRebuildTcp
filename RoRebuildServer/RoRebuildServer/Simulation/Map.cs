@@ -754,6 +754,13 @@ public class Map
         return false;
     }
 
+    public bool IsWalkableTile(Position pos)
+    {
+        if (!MapBounds.Contains(pos))
+            return false;
+        return WalkData.IsCellWalkable(pos);
+    }
+
     public bool IsEntityStacked(WorldObject character) => IsTileOccupied(character.Position, false, character);
 
     public bool IsTileOccupied(Position pos, bool playersOnly = false, WorldObject? ignoreCharacter = null)
@@ -807,6 +814,33 @@ public class Map
         }
 
         return false;
+    }
+
+    public void GatherTargetableEntitiesInRange(Position position, int distance, EntityList list, bool checkLineOfSight)
+    {
+        foreach (Chunk c in GetChunkEnumeratorAroundPosition(position, distance))
+        {
+            foreach (var m in c.AllEntities)
+            {
+                var ch = m.Get<WorldObject>();
+                if (!ch.IsActive)
+                    continue;
+
+                if (ch.Type == CharacterType.NPC || ch.AdminHidden)
+                    continue;
+
+                if (ch.IsTargetImmune)
+                    continue;
+
+                if (!position.InRange(ch.Position, distance))
+                    continue;
+
+                if (checkLineOfSight && !WalkData.HasLineOfSight(position, ch.Position))
+                    continue;
+
+                list.Add(m);
+            }
+        }
     }
 
     public void GatherAlliesInRange(WorldObject character, int distance, EntityList list, bool checkLineOfSight, bool checkImmunity = false)
@@ -892,6 +926,21 @@ public class Map
         }
     }
 
+    public CombatEntity? GetRandomEnemyInArea(CombatEntity attacker, Position pos, int distance, bool checkLineOfSight, bool checkImmunity)
+    {
+        using var targets = EntityListPool.Get();
+        GatherEnemiesInArea(attacker.Character, pos, distance, targets, checkLineOfSight, checkImmunity);
+        if (targets.Count <= 0)
+            return null;
+
+        var target = targets[GameRandom.Next(targets.Count)];
+
+        if (target.TryGet<CombatEntity>(out var ce))
+            return ce;
+
+        return null;
+    }
+
     public void GatherMonstersInArea(Position center, int distance, EntityList list)
     {
         foreach (Chunk c in GetChunkEnumeratorAroundPosition(center, distance))
@@ -946,6 +995,11 @@ public class Map
 
     public void GatherEnemiesInArea(WorldObject character, Position position, int distance, EntityList list, bool checkLineOfSight, bool checkImmunity = false)
     {
+#if DEBUG
+        if (character.Type == CharacterType.NPC)
+            ServerLogger.LogWarningWithStackTrace($"Calling GatherEnemiesInArea for character {character.Name} but that character is an NPC.");
+#endif
+
         foreach (Chunk c in GetChunkEnumeratorAroundPosition(position, distance))
         {
             foreach (var m in c.AllEntities)
@@ -1372,7 +1426,35 @@ public class Map
         return false;
     }
 
-    public bool DoesAreaOverlapWithTrapsOrCharacters(Area area)
+    public CombatEntity? FindTrapInArea(Area area)
+    {
+        area = area.ClipArea(MapBounds);
+        if (area.IsZero)
+            return null;
+
+        foreach (var chunk in GetChunkEnumerator(GetChunksForArea(area)))
+        {
+            foreach (var a in chunk.AreaOfEffects)
+            {
+                if (a.Class == AoEClass.Trap && area.Contains(a.Area.Center))
+                {
+                    if (a.SourceEntity.TryGet<CombatEntity>(out var trap))
+                        return trap;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public enum AoEOverlapCheckType
+    {
+        NoOverlap,
+        TileInArea,
+        TileOverlapOnly,
+    }
+
+    public bool DoesAreaOverlapWithTrapsOrCharacters(Area area, AoEOverlapCheckType check)
     {
         area = area.ClipArea(MapBounds);
         if (area.IsZero)
@@ -1385,13 +1467,29 @@ public class Map
         {
             foreach (var a in chunk.AreaOfEffects)
             {
-                if (a.Class == AoEClass.Trap && area.Overlaps(a.Area))
-                    return true;
+                if (a.Class != AoEClass.Trap)
+                    continue;
+
+                switch (check)
+                {
+                    case AoEOverlapCheckType.NoOverlap:
+                        if (area.Overlaps(a.Area))
+                            return true;
+                        break;
+                    case AoEOverlapCheckType.TileInArea:
+                        if (a.Area.Contains(area.Center))
+                            return true;
+                        break;
+                    case AoEOverlapCheckType.TileOverlapOnly:
+                        if (area.Center == a.Area.Center)
+                            return true;
+                        break;
+                }
             }
 
             foreach (var e in chunk.AllEntities)
             {
-                if (e.IsBattleEntity)
+                if (!e.IsBattleEntity)
                     continue;
                 if (!e.TryGet<WorldObject>(out var ch))
                     continue;
@@ -1734,7 +1832,6 @@ public class Map
     {
         var area = MapBounds.Shrink(5, 5);
         var pos = new Position(20, 20);
-        var count = 0;
 
         for (var i = 0; i < 100; i++)
         {

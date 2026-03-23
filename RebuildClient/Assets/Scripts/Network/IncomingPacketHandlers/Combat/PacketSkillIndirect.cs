@@ -2,6 +2,7 @@
 using Assets.Scripts.SkillHandlers;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
+using UnityEngine;
 
 namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
 {
@@ -23,6 +24,10 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             var hasSource = Network.EntityList.TryGetValue(id1, out var attacker);
             var hasTarget = Network.EntityList.TryGetValue(id2, out var target);
             
+#if UNITY_EDITOR
+            if(time < 0)
+                Debug.LogWarning($"Indirect skill {skill} from {(hasSource ? attacker.Name : $"[Unknown {id1}]")} has time of {time} (dmg: {damage} hitCount: {hitCount})");
+#endif
                         
             if (result == AttackResult.InvisibleMiss)
             {
@@ -45,13 +50,15 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             // if(hasTarget)
             //     target.LookAt(pos.ToWorldPosition());
             
+            // Debug.Log($"Indirect skill hit: {skill} time: {time} dmg: {damage} hitCount: {hitCount}");
+            
             if (result == AttackResult.Miss && hasSource)
             {
                 for(var i = 0; i < attack.HitCount; i++)
                     attacker.Messages.SendMissEffect(0.2f * i);
             }
             
-            if (hasTarget && target.SpriteAnimator.IsInitialized)
+            if (hasTarget && target.SpriteAnimator != null && target.SpriteAnimator.IsInitialized)
             {
                 ClientSkillHandler.OnHitEffect(target, ref attack);
 

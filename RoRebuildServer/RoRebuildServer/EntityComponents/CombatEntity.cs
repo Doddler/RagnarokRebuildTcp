@@ -492,6 +492,7 @@ public partial class CombatEntity : IEntityAutoReset
             case CharacterStat.Range:
                 if (HasBodyState(BodyStateFlags.Blind) && stat > ServerConfig.MaxAttackRangeWhileBlind)
                     stat = ServerConfig.MaxAttackRangeWhileBlind;
+                return int.Min(stat, 14);
                 break;
             case CharacterStat.MoveSpeedBonus:
                 if (stat < -99)

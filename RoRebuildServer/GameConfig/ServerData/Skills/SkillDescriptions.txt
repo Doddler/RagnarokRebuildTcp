@@ -331,12 +331,50 @@ If the trap expires without being triggered the trap item will be returned.
 Duration: 50s
 Uses: <color=#777777>1 Trap</color>
 
+::FalconMastery
+Allows you to rent a falcon, giving you access to falcon related skills.
+While using a falcon you gain a chance to trigger Blitz Beat when attacking. When triggered this way damage is reduced when striking multiple targets, and the max skill level activated is limited to [1 + JobLevel / 10]. Chance of activation is [1 + (Luk / 3)]%, with that chance modified by 1% for every point of CRIT added by cards or equipment.
+
 ::BlitzBeat
 Orders your falcon to attack a target, dealing [SkillLevel] hits to all enemies in a 3x3 area.
-Damage dealt per hit is [80 + Int + (Dex / 5)], and further increased by levels of Steel Crow. Ignores evasion and defense. Not affected by weapon or attack cards, but damage can be increased by cards and equipment that boost critical damage.
-Adds a [1 + Luk / 3]% chance to automatically trigger Blitz Beat when attacking. When triggered this way damage is reduced when striking multiple targets, and the max skill level activated is limited to [1 + JobLevel / 10]. Chance of activation can be improved by cards and equipment that increase your CRIT stat.
+Ignores evasion and defense. Not affected by weapon or damage cards, but damage can be increased with cards and equpment that boost critical damage.
 After manually casting Blitz Beat your chance to trigger Blitz Beat when attacking is increased by +[SkillLevel]% for 15 seconds.
 Cast Time: 1.5s
+Damage: [80 + Int + (Dex / 5)] per hit
+
+::SteelCrow
+Increases damage of Blitz Beat by [6 * SkillLevel] damage per hit.
+
+::LandMine
+Deals <element>earth</element> property damage to the first enemy that steps on the trap.
+Ignores enemy evasion, defense, and is not modified by equipment or cards that increase weapon damage.
+Cannot overlap with another trap or be set next to another player or monster. If the trap expires without being triggered the trap item will be returned. Area skills with knockback (such as arrow shower) can move the trap.
+Catalyst: <item>1 Trap</item>
+Duration: 50s
+Damage: [SkillLevel * (50 + Dex / 2) * (1 + Int / 20)]
+
+::BlastMine
+Deals <element>wind</element> property damage to all enemies in a 5x5 area when the trap expires or is stepped on.
+Ignores enemy evasion, defense, and is not modified by equipment or cards that increase weapon damage.
+Cannot overlap with another trap or be set next to another player or monster. Attacking the trap knocks it away, and area skills with knockback (such as arrow shower) can move the trap.
+Catalyst: <item>1 Trap</item>
+Duration: 8s
+Damage: [SkillLevel * (50 + Dex / 2) * (1 + Int / 30)]
+
+::ClaymoreTrap
+Deals <element>fire</element> property damage to all enemies in a 7x7 area when they step on the trap. Any claymore traps within that area of effect will also detonate.
+Ignores enemy evasion, defense, and is not modified by equipment or cards that increase weapon damage.
+Cannot overlap with another trap or be set next to another player or monster. This trap will detonate if it receives damage from another claymore trap.
+Catalyst: <item>2 Traps</item>
+Duration: 50s
+Damage: [SkillLevel * (50 + Dex / 2) * (1 + Int / 30)]
+
+::SkidTrap
+Set a trap that when stepped on pushes any enemy 7 tiles in the set direction.
+The trap direction is set when placed and is always aimed away from the player.
+Cannot overlap with another trap or be set next to another player or monster. If the trap expires without being triggered the trap item will be returned. This trap can be moved with area skills that cause knockback (such as arrow shower.)
+Catalyst: <item>1 Trap</item>
+Duration: [50 + SkillLevel * 10]s
 
 //----------------Priest-------------------
 

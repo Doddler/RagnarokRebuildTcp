@@ -531,7 +531,7 @@ public class Npc : IEntityAutoReset
 
         EnsureMobListCreated();
 
-        for (int i = 0; i < count; i++)
+        for (var i = 0; i < count; i++)
             CreateSingleMonsterWithAutoOwnership(chara.Map, monster, area);
     }
 
@@ -547,7 +547,7 @@ public class Npc : IEntityAutoReset
 
         EnsureMobListCreated();
 
-        for (int i = 0; i < count; i++)
+        for (var i = 0; i < count; i++)
             CreateSingleMonsterWithAutoOwnership(chara.Map, monster, area);
     }
 
@@ -707,8 +707,8 @@ public class Npc : IEntityAutoReset
 
             var saleEntry = ItemsForSale[saleItemId];
 
-            var dcValue = saleEntry.Item2 * discount / 100;
-            totalCost += (saleEntry.Item2 - dcValue) * count;
+            var dcValue = saleEntry.id * discount / 100;
+            totalCost += (saleEntry.price - dcValue) * count;
             totalWeight += info.Weight * count;
         }
 
@@ -748,7 +748,7 @@ public class Npc : IEntityAutoReset
         CommandBuilder.SendUpdatePlayerData(player, true, false);
 
         return;
-        Error:
+Error:
         CommandBuilder.ErrorMessage(player, $"Could not complete purchase.");
     }
 
@@ -1266,6 +1266,8 @@ public class Npc : IEntityAutoReset
             AreaOfEffect = null;
         }
 
+        Behavior.OnEventEnd(this);
+
         Owner = Entity.Null;
         World.Instance.FullyRemoveEntity(ref Entity);
     }
@@ -1446,7 +1448,7 @@ public class Npc : IEntityAutoReset
 
     public void MoveLockAllMyMonsters(Area area)
     {
-        if (MobCount <= 0)
+        if (MobCount <= 0 || Mobs == null)
             return;
         foreach (var m in Mobs)
         {

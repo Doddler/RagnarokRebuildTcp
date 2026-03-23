@@ -43,14 +43,14 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
             var data = primitive.GetPrimitiveData<CylinderData>();
 
             var span = 360;
-            var v = 0f;
+            var textureSpan = 0.25f;
+            var v = textureSpan;
 
             var color = new Color(1f, 1f, 1f, data.Alpha / 255f);
 
             var outerSize = data.OuterRadius;
             var innerSize = data.InnerRadius;
 
-            var textureSpan = 0.25f;
             var allowPerspectiveMapping = true;
 
             for (var i = 0f; i < span; i += data.ArcAngle)
@@ -74,7 +74,7 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
                     var uv3 = new Vector2(v - textureSpan, 0);
 
                     v -= textureSpan;
-                    if (v < 0f)
+                    if (v < textureSpan)
                         v += 1f;
 
                     primitive.AddTexturedQuad(point1, point2, inner1, inner2, uv0, uv1, uv2, uv3, color);
@@ -96,7 +96,7 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
                     var uv3 = new Vector3((v - textureSpan) * scale1, 0, scale1);
 
                     v -= textureSpan;
-                    if (v < 0f)
+                    if (v < textureSpan)
                         v += 1f;
 
                     primitive.AddTexturedPerspectiveQuad(point1, point2, inner1, inner2, uv0, uv1, uv2, uv3, color);

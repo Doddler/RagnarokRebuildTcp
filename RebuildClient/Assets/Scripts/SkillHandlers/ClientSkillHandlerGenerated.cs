@@ -110,12 +110,12 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[90] = new DefaultSkillHandler();
 			handlers[91] = new Assets.Scripts.SkillHandlers.Handlers.EarthSpikeHandler();
 			handlers[92] = new Assets.Scripts.SkillHandlers.Handlers.HeavensDriveHandler();
-			handlers[93] = new DefaultSkillHandler();
+			handlers[93] = new Assets.Scripts.SkillHandlers.Handlers.FirePillarHandler();
 			handlers[94] = new DefaultSkillHandler();
 			handlers[95] = new DefaultSkillHandler();
 			handlers[96] = new Assets.Scripts.SkillHandlers.Handlers.JupitelThunderHandler();
 			handlers[97] = new Assets.Scripts.SkillHandlers.Handlers.LordOfVermilionHandler();
-			handlers[98] = new DefaultSkillHandler();
+			handlers[98] = new Assets.Scripts.SkillHandlers.Handlers.MeteorStormHandler();
 			handlers[99] = new DefaultSkillHandler();
 			handlers[100] = new DefaultSkillHandler();
 			handlers[101] = new DefaultSkillHandler();
@@ -127,7 +127,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[107] = new Assets.Scripts.SkillHandlers.Handlers.Hunter.BlitzBeatHandler();
 			handlers[108] = new DefaultSkillHandler();
 			handlers[109] = new DefaultSkillHandler();
-			handlers[110] = new DefaultSkillHandler();
+			handlers[110] = new Assets.Scripts.SkillHandlers.Handlers.Hunter.RemoveTrapHandler();
 			handlers[111] = new DefaultSkillHandler();
 			handlers[112] = new DefaultSkillHandler();
 			handlers[113] = new Assets.Scripts.SkillHandlers.Handlers.Hunter.AnkleSnareHandler();

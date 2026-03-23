@@ -272,9 +272,9 @@ public class NpcInteractionState
 
     public void ChangePlayerHairColorToRandom()
     {
-        Player.SetData(PlayerStat.HairId, GameRandom.NextInclusive(0, 8));
-        Player.Character.Map.RefreshEntity(Player.Character);
-        Player.UpdateStats();
+        Player?.SetData(PlayerStat.HairId, GameRandom.NextInclusive(0, 8));
+        Player?.Character.Map?.RefreshEntity(Player.Character);
+        Player?.UpdateStats();
     }
 
     public void ChangePlayerAppearanceToRandom()

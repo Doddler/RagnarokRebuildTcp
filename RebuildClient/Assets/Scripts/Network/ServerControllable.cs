@@ -469,11 +469,15 @@ namespace Assets.Scripts.Network
             RealPosition = position;
             transform.localPosition = RealPosition + PositionOffset;
 
+            var ident = Quaternion.identity;
+            if (name == "SkidTrap")
+                ident = Quaternion.Euler(0, 90, 0);
+
 
             if (SpriteMode == ClientSpriteType.Sprite)
                 SpriteAnimator.ChangeAngle(RoAnimationHelper.FacingDirectionToRotation(direction));
             else
-                gameObject.transform.rotation = Quaternion.Euler(0f, RoAnimationHelper.FacingDirectionToRotation(direction), 0f);
+                gameObject.transform.rotation = Quaternion.Euler(0f, RoAnimationHelper.FacingDirectionToRotation(direction), 0f) * ident;
         }
 
         private bool IsNeighbor(Vector2Int pos1, Vector2Int pos2)

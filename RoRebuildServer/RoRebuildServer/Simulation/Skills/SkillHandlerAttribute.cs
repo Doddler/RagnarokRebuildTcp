@@ -35,7 +35,6 @@ public abstract class SkillHandlerBase
     public virtual void NpcProcess(Npc source, CombatEntity? target, Position position, int lvl) { }
     public virtual void OnHitEvent(CombatEntity owner, CombatEntity? attacker, SkillCastInfo info, ref AttackRequest req, ref DamageInfo di) { }
 
-
     public float GetCastTime(CombatEntity source, CombatEntity? target, int lvl) => GetCastTime(source, target, Position.Invalid, lvl);
     public float GetCastTime(CombatEntity source, Position position, int lvl) => GetCastTime(source, null, position, lvl);
     public void Process(CombatEntity source, Position position, int lvl, bool isIndirect = false) => Process(source, null, position, lvl, isIndirect, false);

@@ -358,12 +358,28 @@ OnTimer 5s:
 }
 
 SkillHandler("AMON_RA") {
-StateAny:
-	TryCast(ThunderStorm, 7, 20%, 0.5s, 3s); //Normal 9 cell range
-	TryCast(ThunderStorm, 7, 20%, 0.7s, 5s, NoInterrupt | UnlimitedRange); //not actually unlimited, but anywhere he can see
+StateAttacking:
+	TryCast(BloodDrain, 1, 20%, 0s, 5s) -> SendEmote(29);
 	TryCast(DarkBlessing, 5, 20%, 0.8s, 20s, NoInterrupt | UnlimitedRange);
+	TryCast(ThunderStorm, 7, 20%, 0.5s, 5s);
+	TryCast(MeteorStorm, 15, 100%, 0s, 5s, NoInterrupt) -> SendEmote(9);
+	TryCast(FirePillar, 24, 10%, 0.3s, 5s);
 StateIdle:
-    if(CheckCast(ThunderStorm, 5%)) {
+	TryCast(BloodDrain, 1, 20%, 0s, 5s) -> SendEmote(29);
+	if(WasRangedOrMagicAttacked || WasMagicLocked)
+	{
+		//chance to summon, then 100% chance to meteor, but if it can't see the target 50% chance to meteor on self, otherwise guarantee summon
+		TryCast(CallMinion, 1, 10%, 0.3s, 5s, NoInterrupt | HideSkillName) -> { @AmonRaMinionSpawn() }
+		TryCast(MeteorStorm, 15, 100%, 0s, 0s, NoInterrupt | UnlimitedRange);
+		TryCast(MeteorStorm, 15, 50%, 0s, 0s, NoInterrupt | SelfTarget); //fallback
+		TryCast(CallMinion, 1, 100%, 0.3s, 5s, NoInterrupt | HideSkillName) -> { @AmonRaMinionSpawn() }
+	}
+	
+	TryCast(FirePillar, 24, 50%, 0s, 2s);
+	TryCast(ThunderStorm, 7, 20%, 0.5s, 3s); //Normal 9 cell range
+	TryCast(ThunderStorm, 7, 10%, 0.7s, 5s, NoInterrupt | UnlimitedRange); //not actually unlimited, but anywhere he can see
+	TryCast(DarkBlessing, 5, 20%, 0.8s, 20s, NoInterrupt | UnlimitedRange);
+	if(CheckCast(ThunderStorm, 5%)) {
         if(FindRandomPlayerOnMap()) {
 			var distance = DistanceToSelectedTarget;
 			var castTime = 0.05s * distance; //cast time increases with distance
@@ -375,7 +391,8 @@ StateIdle:
 			LookAtPosition(TargetPosition);
         }
     }
-	TryCast(CallMinion, 1, 100%, 0.3s, 5s, HideSkillName)[WasRangedOrMagicAttacked] -> { @AmonRaMinionSpawn() }
+	TryCast(MeteorStorm, 20, 100%, 0s, 5s, NoInterrupt | UnlimitedRange | IgnoreLineOfSight) -> SendEmote(9);
+	TryCast(FirePillar, 24, 100%, 0s, 4s);
 }
 
 //------------------------------------

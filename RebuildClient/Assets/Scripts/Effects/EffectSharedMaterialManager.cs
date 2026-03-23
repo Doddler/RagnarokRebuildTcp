@@ -59,6 +59,7 @@ namespace Assets.Scripts.Effects
         FireRingNoZCheck,
         BluePerspectiveCylinder,
         PerspectiveLens2Cylinder,
+        FirePillar,
         EffectMaterialMax
     }
 
@@ -427,6 +428,10 @@ namespace Assets.Scripts.Effects
                         break;
                     case EffectMaterialType.PerspectiveLens2Cylinder:
                         SetUpTextureMaterial(mat, ShaderCache.Instance.PerspectiveAlphaShader, GetOrLoadEffectTexture(EffectTextureType.Lens2));
+                        break;
+                    
+                    case EffectMaterialType.FirePillar:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.PerspectiveAlphaShader, GetOrLoadEffectTexture(EffectTextureType.MagicRed));
                         break;
                 }
             }

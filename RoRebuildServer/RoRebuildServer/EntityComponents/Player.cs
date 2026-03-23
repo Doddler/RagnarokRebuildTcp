@@ -23,6 +23,7 @@ using RoRebuildServer.Simulation.Items;
 using RoRebuildServer.Simulation.Parties;
 using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Skills;
+using RoRebuildServer.Simulation.Skills.SkillHandlers;
 using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.EntityComponents;
@@ -459,6 +460,11 @@ public class Player : IEntityAutoReset
         RoDatabase.EnqueueDbRequest(req);
     }
 
+    /// <summary>
+    /// Adds an item to inventory. Note that this does not notify the client or send an inventory update packet.
+    /// </summary>
+    /// <param name="item">The item and count to add.</param>
+    /// <returns></returns>
     public int AddItemToInventory(ItemReference item)
     {
         Inventory ??= CharacterBag.Borrow();
@@ -1845,6 +1851,15 @@ public class Player : IEntityAutoReset
         {
             ClearTarget();
             return false;
+        }
+
+        if (targetEntity.Character.Type == CharacterType.BattleNpc && targetEntity.Character.Npc.Behavior is TrapBaseEvent trap)
+        {
+            if (!trap.CanBeAutoAttacked)
+            {
+                ClearTarget();
+                return false;
+            }
         }
 
         AutoAttackLock = true;

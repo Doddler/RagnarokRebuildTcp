@@ -76,7 +76,8 @@ public class BlitzBeatHandler : SkillHandlerBase
         {
             source.ApplyCooldownForSupportSkillAction();
             source.ApplyAfterCastDelay(1f);
-            source.AddStatusEffect(new StatusEffectState { Type = CharacterStatusEffect.BlitzBeatRateUp, Expiration = 15f, Value1 = lvl });
+            var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.BlitzBeatRateUp, 15f, lvl);
+            source.AddStatusEffect(status);
         }
 
         CommandBuilder.ClearRecipients();

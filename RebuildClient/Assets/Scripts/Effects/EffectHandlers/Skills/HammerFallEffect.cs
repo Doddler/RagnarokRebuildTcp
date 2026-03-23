@@ -10,6 +10,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
         {
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.HammerFall);
             effect.SetDurationByFrames(60);
+            effect.UpdateOnlyOnFrameChange = true;
             effect.transform.position = target;
 
             var cam = CameraFollower.Instance;

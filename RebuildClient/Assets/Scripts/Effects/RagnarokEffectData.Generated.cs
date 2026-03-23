@@ -50,6 +50,7 @@ namespace Assets.Scripts.Effects
 		WarpPortal,
 		WarpPortalOpening,
 		EarthSpike,
+		FirePillar,
 		HeavensDrive,
 		JupitelBall,
 		JupitelHit,
@@ -80,6 +81,7 @@ namespace Assets.Scripts.Effects
 		RecoveryParticles,
 		RoSprite,
 		RoProjectileSprite,
+		ScreenShake,
 		Teleport,
 		BlueWaterfallEffect,
 		DiscoLights,
@@ -160,6 +162,7 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.WarpPortal, new Assets.Scripts.Effects.EffectHandlers.Skills.WarpPortalEffect());
 			effectHandlers.Add(EffectType.WarpPortalOpening, new Assets.Scripts.Effects.EffectHandlers.Skills.WarpPortalOpeningEffect());
 			effectHandlers.Add(EffectType.EarthSpike, new Assets.Scripts.Effects.EffectHandlers.Skills.EarthSpikeEffect());
+			effectHandlers.Add(EffectType.FirePillar, new Assets.Scripts.Effects.EffectHandlers.Skills.FirePillarEffect());
 			effectHandlers.Add(EffectType.HeavensDrive, new Assets.Scripts.Effects.EffectHandlers.Skills.HeavensDriveEffect());
 			effectHandlers.Add(EffectType.JupitelBall, new Assets.Scripts.Effects.EffectHandlers.Skills.JupitelBallEffect());
 			effectHandlers.Add(EffectType.JupitelHit, new Assets.Scripts.Effects.EffectHandlers.Skills.JupitelHitEffect());
@@ -190,6 +193,7 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.RecoveryParticles, new Assets.Scripts.Effects.EffectHandlers.General.RecoveryParticlesEffect());
 			effectHandlers.Add(EffectType.RoSprite, new Assets.Scripts.Effects.EffectHandlers.General.RoSpriteEffect());
 			effectHandlers.Add(EffectType.RoProjectileSprite, new Assets.Scripts.Effects.EffectHandlers.General.RoSpriteProjectileEffect());
+			effectHandlers.Add(EffectType.ScreenShake, new Assets.Scripts.Effects.EffectHandlers.General.ScreenShakeEffect());
 			effectHandlers.Add(EffectType.Teleport, new Assets.Scripts.Effects.EffectHandlers.General.TeleportEffect());
 			effectHandlers.Add(EffectType.BlueWaterfallEffect, new Assets.Scripts.Effects.EffectHandlers.Environment.BlueWaterfallEffect());
 			effectHandlers.Add(EffectType.DiscoLights, new Assets.Scripts.Effects.EffectHandlers.Environment.DiscoLightsEffect());

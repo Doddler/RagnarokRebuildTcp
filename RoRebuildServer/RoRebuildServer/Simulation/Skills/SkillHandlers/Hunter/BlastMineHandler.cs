@@ -1,4 +1,5 @@
-﻿using RebuildSharedData.Enum;
+﻿using Antlr4.Runtime.Atn;
+using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
@@ -23,43 +24,68 @@ public class BlastMineEvent : TrapBaseEvent
     protected override CharacterSkill SkillSource() => CharacterSkill.BlastMine;
     protected override NpcEffectType EffectType() => NpcEffectType.BlastMine;
 
-    protected override float Duration(int skillLevel) => 50f; //300f - skillLevel * 50f;
+    protected override float Duration(int skillLevel) => 15f; //the trap will detonate early at 8s
     protected override bool Attackable => true;
     protected override bool AllowAutoAttackMove => true;
     protected override bool BlockMultipleActivations => true;
 
-    public override void OnNaturalExpiration(Npc npc) => HunterTrapExpiration(npc);
+    public override bool OnNaturalExpiration(Npc npc) => ActivateTrapWithoutTouchEvent(npc);
+    
+    public override void OnTimer(Npc npc, float lastTime, float newTime)
+    {
+        if (npc.Character.State == CharacterState.Activated)
+        {
+            if (lastTime < 0.15f && newTime >= 0.15f)
+            {
+                using var targetList = EntityListPool.Get();
+
+                if (!npc.Owner.TryGet<CombatEntity>(out var owner))
+                    return;
+
+                var srcLevel = owner.GetStat(CharacterStat.Level);
+                var statInt = owner.GetEffectiveStat(CharacterStat.Int);
+                var statDex = owner.GetEffectiveStat(CharacterStat.Dex);
+                var skillLevel = SkillLevel(npc);
+
+                var flags = AttackFlags.IgnoreEvasion | AttackFlags.IgnoreDefense | AttackFlags.IgnoreWeaponRefine | AttackFlags.NoTriggerOnAttackEffects;
+
+                var atk = new AttackRequest(CharacterSkill.LandMine, 1f, 1, flags, AttackElement.Wind);
+                atk.MinAtk = skillLevel * (int)((50 + statDex / 2f) * (1 + statInt / 30f));
+                atk.MaxAtk = atk.MinAtk;
+
+                npc.Character.Map?.GatherEnemiesInArea(owner.Character, npc.Character.Position, 2, targetList, false, true);
+                foreach (var e in targetList)
+                {
+                    if (!e.TryGet<CombatEntity>(out var ce) || ce.Character.Map == null)
+                        continue;
+
+                    var res = owner.CalculateCombatResultUsingSetAttackPower(ce, atk);
+                    res.IsIndirect = true;
+                    res.Time = 0;
+
+                    CommandBuilder.SkillExecuteIndirectAutoVisibility(npc.Character, ce.Character, res);
+                    owner.ExecuteCombatResult(res, false);
+                }
+
+                npc.TimerEnd = 0; //expire immediately
+            }
+        }
+
+        base.OnTimer(npc, lastTime, newTime);
+    }
 
     public override bool TriggerTrap(Npc npc, CombatEntity src, CombatEntity? target, int skillLevel)
     {
         if (target != null && target.IsFlying() && ServerConfig.OperationConfig.FliersIgnoreTraps)
             return false;
 
-        var srcLevel = src.GetStat(CharacterStat.Level);
-        var statInt = src.GetEffectiveStat(CharacterStat.Int);
-        var statDex = src.GetEffectiveStat(CharacterStat.Dex);
+        if (npc.Character.Map == null)
+            return true;
 
-        var flags = AttackFlags.IgnoreEvasion | AttackFlags.IgnoreDefense | AttackFlags.IgnoreWeaponRefine | AttackFlags.NoTriggerOnAttackEffects;
-
-        var atk = new AttackRequest(CharacterSkill.LandMine, 1f, 1, flags, AttackElement.Wind);
-        atk.MinAtk = skillLevel * (srcLevel + statDex + statInt * 4);
-        atk.MaxAtk = atk.MinAtk;
-
-        using var targetList = EntityListPool.Get();
-        src.Character.Map?.GatherEnemiesInArea(npc.Character, npc.Character.Position, 1, targetList, true, true);
-
-        foreach (var e in targetList)
-        {
-            if (!e.TryGet<CombatEntity>(out var blastTarget))
-                continue;
-
-            var res = src.CalculateCombatResultUsingSetAttackPower(blastTarget, atk);
-            res.IsIndirect = true;
-            res.Time = 0;
-
-            CommandBuilder.SkillExecuteIndirectAutoVisibility(npc.Character, blastTarget.Character, res);
-            src.ExecuteCombatResult(res, false);
-        }
+        npc.Character.Map.AddVisiblePlayersAsPacketRecipients(npc.Character);
+        var id = DataManager.EffectIdForName["BlastMineExplosion"];
+        CommandBuilder.SendEffectAtLocationMulti(id, npc.Character.Position, 0);
+        CommandBuilder.ClearRecipients();
 
         ChangeToActivatedState(npc, 1f);
 

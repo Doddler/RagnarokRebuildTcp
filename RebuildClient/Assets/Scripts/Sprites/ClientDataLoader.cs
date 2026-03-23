@@ -1064,6 +1064,9 @@ namespace Assets.Scripts.Sprites
                     //DummyGroundEffect.Create(obj, "VenomDust");
                     VenomDustEffect.Create(control);
                     break;
+                case NpcEffectType.FirePillar:
+                    FirePillarEffect.Create(control);
+                    break;
                 case NpcEffectType.AnkleSnare:
                     AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelAnkleSnare.prefab");
                     break;
@@ -1076,6 +1079,7 @@ namespace Assets.Scripts.Sprites
                     break;
                 case NpcEffectType.ClaymoreTrap:
                     AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelClaymoreTrap.prefab");
+                    control.IsAttackable = true;
                     break;
                 case NpcEffectType.FlasherTrap:
                     AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelFlasherTrap.prefab");

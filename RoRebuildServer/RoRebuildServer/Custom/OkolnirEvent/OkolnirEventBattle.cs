@@ -35,7 +35,7 @@ public class OkolnirEventBattle : INpcLoader
         var list = new List<OkolnirDamageList>(boss.TotalDamageReceived.Count);
         var hashes = new HashSet<int>();
 
-        var maxChance = 10;
+        //var maxChance = 10;
         foreach (var (entity, dmg) in boss.TotalDamageReceived)
         {
             if (entity.TryGet<Player>(out var player))

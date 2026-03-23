@@ -20,10 +20,7 @@ public class ShockwaveTrapEvent : TrapBaseEvent
 {
     protected override CharacterSkill SkillSource() => CharacterSkill.ShockwaveTrap;
     protected override NpcEffectType EffectType() => NpcEffectType.ShockwaveTrap;
-
     protected override float Duration(int skillLevel) => 50f;
-
-    public override void OnNaturalExpiration(Npc npc) => HunterTrapExpiration(npc);
     protected override bool AllowAutoAttackMove => false;
     protected override bool Attackable => false;
     protected override bool BlockMultipleActivations => true;

@@ -157,9 +157,9 @@ public class ServerMilestoneEvent : ServerConfigScriptHandlerBase
     private int minibossMilestones;
     private int mvpMilestones;
 
-    private static HashSet<int> firstAchievementLevels = [10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99];
+    private static readonly HashSet<int> firstAchievementLevels = [10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99];
 
-    private Object rankListLock = new();
+    private readonly Lock rankListLock = new();
 
     public override void PostServerStartEvent()
     {
@@ -485,7 +485,7 @@ public class ServerMilestoneEvent : ServerConfigScriptHandlerBase
         var rec = new PlayerKillRecord() { Name = player.Name, Boss = monster.MonsterBase.Code, Time = DateTime.Now, Party = "" };
 
         string msg;
-        string storedMessage;
+        //string storedMessage;
         if (monster.MonsterBase.Code != "RANDGRIS")
         {
             if (player.Party != null)

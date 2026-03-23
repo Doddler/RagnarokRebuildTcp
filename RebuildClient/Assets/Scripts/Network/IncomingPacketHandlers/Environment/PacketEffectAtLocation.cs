@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Effects.EffectHandlers;
+using Assets.Scripts.Effects.EffectHandlers.General;
 using Assets.Scripts.Effects.EffectHandlers.Skills;
 using Assets.Scripts.Network.HandlerBase;
 using RebuildSharedData.Networking;
@@ -32,12 +33,17 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Environment
                 case "LoV":
                     LordOfVermilionEffect.LaunchEffect(spawn);
                     break;
+                case "Meteor1":
+                case "Meteor2":
+                case "Meteor3":
+                case "Meteor4":
+                    ScreenShakeEffect.DelayedShake(spawn, 0.7f);
+                    Camera.CreateEffect(effect, spawn, facing);
+                    break;
                 default:
                     Camera.CreateEffect(effect, spawn, facing);
                     break;
             }
-            
-            
         }
     }
 }

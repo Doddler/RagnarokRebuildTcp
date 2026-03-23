@@ -41,6 +41,7 @@ public abstract class NpcBehaviorBase
     public virtual int OnQuery(Npc npc, Npc srcNpc, string signal, int value1, int value2, int value3, int value4) => 0;
 
     public virtual void OnMobKill(Npc npc) { }
+    public virtual void OnEventEnd(Npc npc) { }
 
     public virtual EventOwnerDeathResult OnOwnerDeath(Npc npc, CombatEntity owner) => EventOwnerDeathResult.DetachEvent;
 

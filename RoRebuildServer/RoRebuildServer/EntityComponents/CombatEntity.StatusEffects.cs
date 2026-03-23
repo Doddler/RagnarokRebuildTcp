@@ -349,7 +349,7 @@ public partial class CombatEntity
         return true;
     }
 
-    public bool TryFreezeTarget(CombatEntity target, int chanceIn1000, float delayApply = 0.3f)
+    public bool TryFreezeTarget(CombatEntity target, int chanceIn1000, float delayApply = 0.3f, float baseDuration = 12f)
     {
         if (target.HasBodyState(BodyStateFlags.DisablingState))
             return false;
@@ -369,7 +369,7 @@ public partial class CombatEntity
             return false;
 
         var timeResist = MathHelper.PowScaleDown(mdef + GameRandom.Next(0, luk));
-        var len = 12f * timeResist;
+        var len = baseDuration * timeResist;
 
         var durationResist = 100 - target.GetStat(CharacterStat.DecreaseFreezeDuration);
         if (durationResist != 100)

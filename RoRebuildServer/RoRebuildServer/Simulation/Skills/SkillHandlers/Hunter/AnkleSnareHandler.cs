@@ -26,25 +26,36 @@ public class AnkleSnareEvent : TrapBaseEvent
 
     protected override float Duration(int skillLevel) => 50f; //300f - skillLevel * 50f;
 
-    public override void OnNaturalExpiration(Npc npc)
+    public override void OnEventEnd(Npc npc)
     {
-        if (npc.Owner.TryGet<WorldObject>(out var owner) && owner.Type != CharacterType.Player)
+        //ankle snare is unique in that removing the trap removes the status effect from whoever was trapped
+        var trappedId = npc.ValuesInt[(int)TrapValue.TargetData];
+        if (trappedId <= 0)
             return;
 
-        var item = new GroundItem(npc.Character.Position, 1065, 1);
-        npc.Character.Map?.DropGroundItem(ref item);
+        //only remove the status if the last application is us (value1 on the status effect will be the trap's id if it us)
+        var entity = World.Instance.GetEntityById(trappedId);
+        if (entity.TryGet<CombatEntity>(out var ce) && ce.TryGetStatusEffect(CharacterStatusEffect.AnkleSnare, out var snare) && snare.Value1 == npc.Character.Id)
+            ce.RemoveStatusOfTypeIfExists(CharacterStatusEffect.AnkleSnare);
     }
 
     public override bool TriggerTrap(Npc npc, CombatEntity src, CombatEntity? target, int skillLevel)
     {
+        if (npc.Character.Map == null)
+            return false;
+
         if (target == null)
         {
-            ChangeToActivatedState(npc, 3f);
-            return true; //we've been sprung, probably with spring trap, so end.
+            //we've been sprung using spring trap, there might still be enemies nearby (if they're flying for example) so catch one of them.
+            target = npc.Character.Map.GetRandomEnemyInArea(src, npc.Character.Position, 1, true, true);
+            if (target == null)
+            {
+                ChangeToActivatedState(npc, 3f);
+                return true;
+            }
         }
-
-        if (target.IsFlying() && ServerConfig.OperationConfig.FliersIgnoreTraps)
-            return false;
+        else if (target.IsFlying() && ServerConfig.OperationConfig.FliersIgnoreTraps)
+            return false; //flyers can't touch the trap to activate it
 
         var srcLevel = src.GetStat(CharacterStat.Level);
         var targetLevel = target.GetStat(CharacterStat.Level);
@@ -74,8 +85,10 @@ public class AnkleSnareEvent : TrapBaseEvent
             target.Character.Map?.ChangeEntityPosition3(target.Character, target.Character.WorldPosition, npc.Character.Position, false);
         }
 
-        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.AnkleSnare, duration);
+        var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.AnkleSnare, duration, npc.Character.Id);
         target.AddStatusEffect(status);
+
+        npc.ValuesInt[(int)TrapValue.TargetData] = target.Character.Id;
 
         ChangeToActivatedState(npc, duration);
 

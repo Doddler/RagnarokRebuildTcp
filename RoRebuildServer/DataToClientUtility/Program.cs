@@ -71,6 +71,7 @@ class Program
                     Sprite = e.Sprite,
                     SoundFile = e.SoundFile,
                     Offset = e.Offset,
+                    Scale = e.Scale,
                     PrefabName = e.PrefabName,
                     IsLooping = e.Flags?.Contains("Loop") ?? false,
                 });
@@ -184,12 +185,11 @@ class Program
 
     private static string FixDescriptionTags(string line)
     {
-        return line.Replace("<skill>", "<color=#0000FF>")
-                .Replace("<status>", "<color=#800000>")
-                .Replace("</skill>", "</color>")
-                .Replace("</status>", "</color>")
-                .Replace("<desc>", "<color=#808080>")
-                .Replace("</desc>", "</color>")
+        return line.Replace("<skill>", "<color=#0000FF>").Replace("</skill>", "</color>")
+                .Replace("<status>", "<color=#800000>").Replace("</status>", "</color>")
+                .Replace("<element>", "<color=#800000>").Replace("</element>", "</color>")
+                .Replace("<item>", "<color=#777777>").Replace("</item>", "</color>")
+                .Replace("<desc>", "<color=#808080>").Replace("</desc>", "</color>")
             ;
     }
 

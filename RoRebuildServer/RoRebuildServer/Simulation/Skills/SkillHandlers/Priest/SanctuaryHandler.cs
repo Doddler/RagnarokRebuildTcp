@@ -95,6 +95,9 @@ public class SanctuaryBaseEvent : NpcBehaviorBase
         var position = npc.SelfPosition;
         var map = npc.Character.Map;
 
+        if (map == null)
+            return;
+
         Span<Position> posList = stackalloc Position[25];
         var posCount = 0;
 

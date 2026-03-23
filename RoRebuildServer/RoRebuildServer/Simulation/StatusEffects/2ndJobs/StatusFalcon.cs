@@ -15,7 +15,7 @@ public class StatusFalcon : StatusEffectBase
 
     public override StatusUpdateResult OnAttack(CombatEntity ch, ref StatusEffectState state, ref DamageInfo info)
     {
-        if (ch.Character.Type != CharacterType.Player || !info.IsDamageResult || !info.Target.TryGet<CombatEntity>(out var target))
+        if (ch.Character.Type != CharacterType.Player || info.AttackSkill != CharacterSkill.None || !info.IsDamageResult || !info.Target.TryGet<CombatEntity>(out var target))
             return StatusUpdateResult.Continue;
 
         var maxSkill = ch.Player.MaxLearnedLevelOfSkill(CharacterSkill.BlitzBeat);
@@ -28,7 +28,7 @@ public class StatusFalcon : StatusEffectBase
         chance += chance * (ch.GetEffectiveStat(CharacterStat.AddCrit) + ch.GetBonusCritRateVsTarget(target)) / 100;
 
         if (ch.TryGetStatusEffect(CharacterStatusEffect.BlitzBeatRateUp, out var blitzUp))
-            chance += blitzUp.Value1;
+            chance += blitzUp.Value1 * 10;
 
         if (GameRandom.NextInclusive(1000) < chance)
         {

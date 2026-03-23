@@ -12,6 +12,7 @@ public class EffectTypeEntry
     public string? Sprite;
     public string? SoundFile;
     public float Offset;
+    public float Scale;
     public string? PrefabName;
 }
 

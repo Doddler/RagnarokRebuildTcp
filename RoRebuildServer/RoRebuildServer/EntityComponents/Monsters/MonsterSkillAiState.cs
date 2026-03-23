@@ -516,7 +516,7 @@ public class MonsterSkillAiState(Monster monsterIn)
                 if (pos == ce.Character.Position)
                     continue;
                 var tile = Area.CreateAroundPoint(pos, 0);
-                if (!map.WalkData.IsCellWalkable(pos) || map.DoesAreaOverlapWithTrapsOrCharacters(tile))
+                if (!map.WalkData.IsCellWalkable(pos) || map.DoesAreaOverlapWithTrapsOrCharacters(tile, Map.AoEOverlapCheckType.TileOverlapOnly))
                     continue;
                 hasTile = true;
                 break;
