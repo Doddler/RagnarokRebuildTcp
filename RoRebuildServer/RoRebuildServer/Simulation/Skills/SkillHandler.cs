@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using RebuildSharedData.ClientTypes;
+﻿using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
@@ -7,9 +6,11 @@ using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Util;
+using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.Skills.SkillHandlers;
 using RoRebuildServer.Simulation.Util;
+using System.Reflection;
 
 namespace RoRebuildServer.Simulation.Skills;
 
@@ -204,6 +205,12 @@ public static class SkillHandler
 
                 if (info.Skill != CharacterSkill.Cloaking && info.Skill != CharacterSkill.Hiding)
                     src.UpdateHidingStateAfterAttack();
+
+
+#if DEBUG
+                if (src.Character.Type == CharacterType.Monster && src.Character.Monster.DebugLogging)
+                    ServerLogger.Debug($"Monster {src.Character} using skill {info.Skill} lv {info.Level} (indirect: {isIndirect}).\n{Environment.StackTrace}");
+#endif
 
                 handler.Process(src, target, info.TargetedPosition, info.Level, isIndirect, info.ItemSource > 0);
                 return true;

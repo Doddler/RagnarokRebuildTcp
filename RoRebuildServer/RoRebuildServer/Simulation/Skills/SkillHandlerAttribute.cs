@@ -123,7 +123,7 @@ public abstract class SkillHandlerBase
     {
         if (source.Character.Type != CharacterType.Player)
             return StandardValidation(source, target, position);
-        if (source.Player.WeaponClass != weaponClass)
+        if (source.Player.MainWeaponClass != weaponClass)
             return SkillValidationResult.IncorrectWeapon;
         var equip = source.Player.Equipment;
         if (equip.AmmoId <= 0 || equip.AmmoType != ammoType)

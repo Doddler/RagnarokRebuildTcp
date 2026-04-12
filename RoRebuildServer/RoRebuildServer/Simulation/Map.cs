@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using RebuildSharedData.Data;
+﻿using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.Map;
@@ -13,6 +11,10 @@ using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.Items;
 using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Util;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace RoRebuildServer.Simulation;
 
@@ -44,6 +46,8 @@ public class Map
     public EntityList MapImportantEntities { get; set; } = new EntityList(8);
     public Dictionary<int, int> ItemChunkLookup = new();
 
+    private int[] ActiveAoEChunks;
+    
     //private int playerCount;
     //public int PlayerCount
     //{
@@ -134,7 +138,7 @@ public class Map
         {
             CommandBuilder.AddRecipients(list);
             CommandBuilder.SendRemoveEntityMulti(ch, reason);
-            CommandBuilder.SendCreateEntityMulti(ch);
+            CommandBuilder.SendCreateEntityMulti(ch, CreateEntityEventType.Refresh);
             CommandBuilder.ClearRecipients();
         }
     }
@@ -1385,6 +1389,8 @@ public class Map
 
     public void CreateAreaOfEffect(AreaOfEffect aoe)
     {
+        var touchAoE = aoe.CheckStayTouching;
+
         var chunkEntities = EntityListPool.Get();
         //add the aoe to every chunk touched by the aoe
         foreach (var chunk in GetChunkEnumerator(GetChunksForArea(aoe.Area)))
@@ -1399,6 +1405,9 @@ public class Map
                 if (e.TryGet<CombatEntity>(out var ce) && aoe.Area.Contains(ce.Character.Position))
                     aoe.OnAoETouch(ce.Character);
             }
+
+            if (touchAoE)
+                ActiveAoEChunks[chunk.Id]++;
         }
 
         EntityListPool.Return(chunkEntities);
@@ -1526,8 +1535,17 @@ public class Map
 
     public void RemoveAreaOfEffect(AreaOfEffect aoe)
     {
+        var touchAoE = aoe.CheckStayTouching;
         foreach (var chunk in GetChunkEnumerator(GetChunksForArea(aoe.Area)))
         {
+            if (touchAoE)
+            {
+                ActiveAoEChunks[chunk.Id]--;
+#if DEBUG
+                if (ActiveAoEChunks[chunk.Id] < 0)
+                    ServerLogger.LogWarning($"Attempting to remove active touch AoE from map {Name} chunk {chunk.MapX}/{chunk.MapY} but that chunk is not marked as having any.");
+#endif
+            }
             chunk.AreaOfEffects.Remove(aoe);
         }
     }
@@ -1714,16 +1732,24 @@ public class Map
             MapImportantEntities.ClearInactive(); //but why risk it?
         }
 
-        foreach (var c in Chunks)
+        for (var x = 0; x < chunkWidth; x++)
         {
-            for (var i = 0; i < c.AreaOfEffects.Count; i++)
+            for (var y = 0; y < chunkHeight; y++)
             {
-                var a = c.AreaOfEffects[i];
-                if (a.CheckStayTouching)
+                if (ActiveAoEChunks[x + y * chunkWidth] > 0)
                 {
-                    a.Update();
-                    if (!a.IsActive)
-                        i--; //we've ended this aoe so step back on the iterator and continue. Probably dangerous.
+                    var c = Chunks[x + y * chunkWidth];
+
+                    for (var i = 0; i < c.AreaOfEffects.Count; i++)
+                    {
+                        var a = c.AreaOfEffects[i];
+                        if (a.CheckStayTouching)
+                        {
+                            a.Update();
+                            if (!a.IsActive)
+                                i--; //we've ended this aoe so step back on the iterator and continue. Probably dangerous.
+                        }
+                    }
                 }
             }
         }
@@ -1901,6 +1927,7 @@ public class Map
         ChunkBounds = new Area(0, 0, chunkWidth - 1, chunkHeight - 1);
 
         Chunks = new Chunk[chunkWidth * chunkHeight];
+        ActiveAoEChunks = new int[chunkWidth * chunkHeight];
 
         PlayerCount = 0;
 

@@ -183,6 +183,8 @@ namespace Assets.Scripts
                 return result;
             }
         }
+
+        public static Vector2Int ToVector2Int(this Position p) => new Vector2Int(Mathf.RoundToInt(p.X), Mathf.RoundToInt(p.Y));
     }
 
     public static class RectHelper

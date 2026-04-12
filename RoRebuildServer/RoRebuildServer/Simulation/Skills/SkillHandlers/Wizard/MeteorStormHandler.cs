@@ -50,10 +50,12 @@ public class MeteorStormHandler : SkillHandlerBase
             ch.AttachEvent(e);
         }
 
-        source.ApplyCooldownForSupportSkillAction();
-
         if (!isIndirect)
+        {
+            source.ApplyCooldownForSupportSkillAction();
+            source.ApplyAfterCastDelay(2f);
             CommandBuilder.SkillExecuteAreaTargetedSkillAutoVis(ch, position, CharacterSkill.MeteorStorm, lvl);
+        }
     }
 }
 

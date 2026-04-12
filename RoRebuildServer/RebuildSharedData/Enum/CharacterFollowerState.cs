@@ -1,7 +1,7 @@
 ﻿namespace RebuildSharedData.Enum;
 
 [Flags]
-public enum PlayerFollower
+public enum CharacterFollowerState
 {
     None = 0,
     Cart0 = 1 << 1,

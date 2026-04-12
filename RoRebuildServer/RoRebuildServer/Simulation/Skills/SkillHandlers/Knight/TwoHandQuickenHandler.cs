@@ -12,7 +12,7 @@ public class TwoHandQuickenHandler : SkillHandlerBase
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
         int lvl, bool isIndirect, bool isItemSource)
     {
-        if (source.Character.Type == CharacterType.Player && source.Player.WeaponClass != 3)
+        if (source.Character.Type == CharacterType.Player && source.Player.MainWeaponClass != (int)WeaponClass.TwoHandSword)
             return SkillValidationResult.IncorrectWeapon;
         return base.ValidateTarget(source, target, position, lvl, false, false);
     }

@@ -54,7 +54,7 @@ public class PathFinder
 {
     private PathNode[]? nodeCache;
     private int cachePos;
-    public const int MaxDistance = 16;
+    public const int MaxDistance = 20;
     private const int MaxCacheSize = ((MaxDistance + 1) * 2) * ((MaxDistance + 1) * 2) + 2; //the +2 is for our dummy nodes in GetPathWithInitialStep
 
     private Position start;

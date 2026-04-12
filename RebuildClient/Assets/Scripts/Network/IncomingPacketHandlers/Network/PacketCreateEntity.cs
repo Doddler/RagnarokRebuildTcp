@@ -19,6 +19,11 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
         public override void ReceivePacket(ClientInboundMessage msg)
         {
             var control = SpawnEntity(msg);
+            if (control == null)
+            {
+                Debug.LogWarning($"PacketCreateEntity did not create entity.");
+                return;
+            }
             var eventType = (CreateEntityEventType)msg.ReadByte();
             if (eventType == CreateEntityEventType.Toss)
             {
@@ -54,6 +59,9 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
             var pos = msg.ReadPosition();
             var facing = (Direction)msg.ReadByte();
             var state = (CharacterState)msg.ReadByte();
+
+            if (type == CharacterType.Player | type == CharacterType.Monster)
+                return null;
 
             var lvl = -1;
             var maxHp = 0;
@@ -114,7 +122,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     partyName = msg.ReadString();
                 }
 
-                var follower = (PlayerFollower)msg.ReadByte();
+                var follower = (CharacterFollowerState)msg.ReadByte();
 
                 var isMain = Network.PlayerId == id;
                 if (isMain)
@@ -177,8 +185,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     State.IsMale = isMale;
                     State.HairStyleId = headId;
                     State.HairColorId = hairDyeId;
-                    State.HasCart = (follower & PlayerFollower.AnyCart) > 0;
-                    State.HasBird = (follower & PlayerFollower.Falcon) > 0;
+                    State.HasCart = (follower & CharacterFollowerState.AnyCart) > 0;
+                    State.HasBird = (follower & CharacterFollowerState.Falcon) > 0;
                     State.WeaponClass = weapon;
                     
                     UiManager.Instance.SkillManager.UpdateAvailableSkills();
@@ -302,5 +310,6 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
 
             return controllable;
         }
+
     }
 }

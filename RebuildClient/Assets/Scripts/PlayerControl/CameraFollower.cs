@@ -1775,7 +1775,8 @@ namespace Assets.Scripts
         {
             if (IsInErrorState && Input.GetKeyDown(KeyCode.Space))
             {
-                NetworkManager.IsLoaded = false;
+                GameConfig.SaveConfig();
+                NetworkManager.Instance.Disconnect();
                 SceneManager.LoadScene(0);
             }
 

@@ -165,8 +165,11 @@ StateChase:
 	TryCast(DarkStrike, 10, 20%, 0, 5s);
 	TryCast(LordOfVermilion, 10, 50%, 0.5s, 5s);
 StateAttacking:
-	TryCast(PowerUp, 5, 100%, 0.7s, 30s)[HpPercent < 30];
-	TryCast(LordOfVermilion, 10, 10%, 0.5s, 5s);
+	TryCast(BrandishSpear, 10, 20%, 0.5s, 5s, NoInterrupt) -> SendEmote(29);
+	TryCast(PowerUp, 5, 100%, 0.7s, 30s, NoInterrupt)[HpPercent < 30] -> SendEmote(6);
+	TryCast(LordOfVermilion, 10, 10%, 0.5s, 5s, NoInterrupt) -> SendEmote(29);
+	TryCast(PhysBreaker, 10, 20%, 0.8s, 5s, NoInterrupt) -> SendEmote(29);
+	TryCast(GuidedAttack, 10, 5%, 0.5s, 20s, NoInterrupt);
 }
 
 //------------------------------------

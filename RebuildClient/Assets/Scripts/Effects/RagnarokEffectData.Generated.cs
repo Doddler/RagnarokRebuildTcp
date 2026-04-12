@@ -55,6 +55,8 @@ namespace Assets.Scripts.Effects
 		JupitelBall,
 		JupitelHit,
 		LordOfVermilion,
+		Quagmire,
+		StormGust,
 		WaterBallAttack,
 		WaterBallRise,
 		Aspersio,
@@ -167,6 +169,8 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.JupitelBall, new Assets.Scripts.Effects.EffectHandlers.Skills.JupitelBallEffect());
 			effectHandlers.Add(EffectType.JupitelHit, new Assets.Scripts.Effects.EffectHandlers.Skills.JupitelHitEffect());
 			effectHandlers.Add(EffectType.LordOfVermilion, new Assets.Scripts.Effects.EffectHandlers.Skills.LordOfVermilionEffect());
+			effectHandlers.Add(EffectType.Quagmire, new Assets.Scripts.Effects.EffectHandlers.Skills.QuagmireEffect());
+			effectHandlers.Add(EffectType.StormGust, new Assets.Scripts.Effects.EffectHandlers.Skills.StormGustEffect());
 			effectHandlers.Add(EffectType.WaterBallAttack, new Assets.Scripts.Effects.EffectHandlers.Skills.WaterBallAttackEffect());
 			effectHandlers.Add(EffectType.WaterBallRise, new Assets.Scripts.Effects.EffectHandlers.Skills.WaterBallRiseEffect());
 			effectHandlers.Add(EffectType.Aspersio, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.AspersioEffect());

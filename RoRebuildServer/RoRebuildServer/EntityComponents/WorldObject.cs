@@ -42,6 +42,7 @@ public class WorldObject : IEntityAutoReset
     public CharacterType Type;
     public CharacterDisplayType DisplayType; //used for minimap icons if they're flagged as map important
     public PlayerLikeAppearanceState? OverrideAppearanceState;
+    public int OverrideClassId;
 
     public Position TargetPosition;
 
@@ -228,6 +229,7 @@ public class WorldObject : IEntityAutoReset
         MoveSpeed = 0.15f;
         MoveStep = 0;
         NextStepDuration = 0;
+        OverrideClassId = 0;
         Position = new Position();
         TargetPosition = new Position();
         FacingDirection = Direction.South;
@@ -743,7 +745,7 @@ public class WorldObject : IEntityAutoReset
         FacingDirection = (WalkPath[1] - WalkPath[0]).Normalize().GetDirectionForOffset();
         //MoveLockTime = Time.ElapsedTimeFloat;
 
-        //ServerLogger.Log($"{Name} TryMove: World:{WorldPosition} NextStepDuration: {NextStepDuration}");
+        //ServerLogger.Log($"{Name} TryMove: World:{WorldPosition} NextStepDuration: {NextStepDuration} {Environment.StackTrace}");
 
         if (HasCombatEntity && CombatEntity.IsCasting)
         {
@@ -851,7 +853,7 @@ public class WorldObject : IEntityAutoReset
 
         var newCell = (Position)newPosition;
 
-        //ServerLogger.Log($"{Name}: MoveUpdate2: {InMoveLock} {MoveStep} {MoveProgress}");
+        //ServerLogger.Log($"{Name}: MoveUpdate2: {WorldPosition} From {startPosition} to {endPosition} (last cell {lastCell} newCell {newCell}) {InMoveLock} {MoveStep} {MoveProgress}");
 
         if (lastCell != newCell)
         {
@@ -917,12 +919,14 @@ public class WorldObject : IEntityAutoReset
                 throw new Exception($"Update called on player entity {Name} ({Type}) while not attached to any map!");
 #endif
 
+            combatEntity.UpdateDamageQueue();
             player.Update();
             combatEntity.Update();
         }
 
         if (Entity.Type == EntityType.Monster)
         {
+            combatEntity.UpdateDamageQueue();
             monster.Update();
             combatEntity.Update();
         }

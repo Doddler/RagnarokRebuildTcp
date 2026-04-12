@@ -31,7 +31,7 @@ namespace Assets.Scripts.Sprites
         public int Shield;
         public int PartyId;
         public string PartyName;
-        public PlayerFollower Follower;
+        public CharacterFollowerState Follower;
         public Dictionary<CharacterStatusEffect, float> CharacterStatusEffects;
     }
 

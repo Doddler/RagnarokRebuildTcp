@@ -52,13 +52,13 @@ namespace Assets.Scripts.Network
         public bool IsPartyLeader;
         public bool IsMale;
         public bool IsMainCharacter;
-        public bool IsInteractable { get; set; }
+        public bool IsInteractable;
         public bool IsAttackable;
         public int Level;
-        public string Name { get; set; }
+        public string Name;
 
         public int Hp;
-        public int MaxHp { get; set; }
+        public int MaxHp;
         public int Sp;
         public int MaxSp;
         public int WeaponClass;
@@ -106,6 +106,10 @@ namespace Assets.Scripts.Network
         public float AttackAnimationSpeed = 1f;
         public float AttackMotionTime = 1f;
         public bool IsCharacterAlive = true;
+
+        public float MoveSpeed => moveSpeed;
+
+        public IEntityActionHandler PrefabActionHandler;
 
         private UniqueAttackAction uniqueAttackAction;
         private float uniqueAttackStart;
@@ -177,6 +181,8 @@ namespace Assets.Scripts.Network
             Angle = angle;
             if (SpriteAnimator != null)
                 SpriteAnimator.ChangeAngle(angle);
+            if(PrefabActionHandler != null)
+                PrefabActionHandler.SetAngle(angle);
         }
 
         public void LookAtOrDefault(ServerControllable target, Direction fallbackDir)
@@ -285,7 +291,7 @@ namespace Assets.Scripts.Network
 
             if (skill == CharacterSkill.Hiding || skill == CharacterSkill.Cloaking)
                 return;
-            
+
             // if (SpriteAnimator.IsHidden && skill == CharacterSkill.Hiding)
             //     return;
 
@@ -477,7 +483,12 @@ namespace Assets.Scripts.Network
             if (SpriteMode == ClientSpriteType.Sprite)
                 SpriteAnimator.ChangeAngle(RoAnimationHelper.FacingDirectionToRotation(direction));
             else
-                gameObject.transform.rotation = Quaternion.Euler(0f, RoAnimationHelper.FacingDirectionToRotation(direction), 0f) * ident;
+            {
+                // if (PrefabActionHandler == null)
+                    gameObject.transform.rotation = Quaternion.Euler(0f, RoAnimationHelper.FacingDirectionToRotation(direction), 0f) * ident;
+                // else
+                //     PrefabActionHandler.SetAngle(RoAnimationHelper.FacingDirectionToRotation(direction));
+            }
         }
 
         private bool IsNeighbor(Vector2Int pos1, Vector2Int pos2)
@@ -614,7 +625,7 @@ namespace Assets.Scripts.Network
 
         private void UpdateMovePosition()
         {
-            if (movePath == null || movePath.Count == 0 || SpriteMode == ClientSpriteType.Prefab) return;
+            if (movePath == null || movePath.Count == 0) return;
 
             var totalSteps = movePath.Count;
             var dir = SpriteAnimator.Direction;
@@ -647,7 +658,11 @@ namespace Assets.Scripts.Network
                 RealPosition = walkProvider.GetWorldPositionFor2DLocation(x, y);
                 transform.localPosition = RealPosition + PositionOffset;
                 CellPosition = RealPosition.ToTilePosition();
-                SpriteAnimator.Angle = RoAnimationHelper.AngleDir(movePath[1].ToMapPosition(), new Vector2(x, y));
+                var angle = RoAnimationHelper.AngleDir(movePath[1].ToMapPosition(), new Vector2(x, y));
+                if (SpriteMode != ClientSpriteType.Prefab)
+                    SpriteAnimator.ChangeAngle(angle);
+                else
+                    PrefabActionHandler?.SetAngle(angle);
                 // Debug.Log($"First step lerp from {MoveStartPos} to {movePath[currentMoveStep+1]} returns {transform.localPosition}");
             }
             else
@@ -657,14 +672,18 @@ namespace Assets.Scripts.Network
                 RealPosition = walkProvider.GetWorldPositionFor2DLocation(x, y);
                 transform.localPosition = RealPosition + PositionOffset;
                 CellPosition = RealPosition.ToTilePosition();
-                SpriteAnimator.ChangeAngle(RoAnimationHelper.FacingDirectionToRotation(dir));
+                var angle = RoAnimationHelper.FacingDirectionToRotation(dir);
+                if (SpriteMode != ClientSpriteType.Prefab)
+                    SpriteAnimator.ChangeAngle(angle);
+                else
+                    PrefabActionHandler?.SetAngle(RoAnimationHelper.AngleDir(movePath[currentMoveStep + 1].ToMapPosition(), new Vector2(x, y)));
                 // Debug.Log($"Lerp from {movePath[currentMoveStep]} to {movePath[currentMoveStep+1]} returns {transform.localPosition}");
             }
         }
 
         public void UpdateMove2()
         {
-            if (movePath == null || movePath.Count == 0 || SpriteMode == ClientSpriteType.Prefab) return;
+            if (movePath == null || movePath.Count == 0) return;
             var speed = 1f;
             if (tempSpeedTime > 0)
                 speed = tempSpeed / moveSpeed;
@@ -969,6 +988,9 @@ namespace Assets.Scripts.Network
 
             if (SpriteAnimator == null || SpriteAnimator.SpriteData == null)
             {
+                if (SpriteMode == ClientSpriteType.Prefab && PrefabActionHandler != null)
+                    PrefabActionHandler.SetAttackMotionTime(motionTime);
+                
                 AttackAnimationSpeed = 1;
                 return;
             }
@@ -1090,6 +1112,12 @@ namespace Assets.Scripts.Network
 
             if (!IsCharacterAlive || SpriteAnimator.State == SpriteState.Dead)
                 return;
+
+            if (SpriteMode == ClientSpriteType.Prefab)
+            {
+                PrefabActionHandler.AttackMotion();
+                return;
+            }
 
             if (SpriteAnimator.Type == SpriteType.Player)
             {
@@ -1623,6 +1651,12 @@ namespace Assets.Scripts.Network
             }
             else
             {
+                if (IsMainCharacter)
+                {
+                    FloatingDisplay.ForceHpBarOn();
+                    FloatingDisplay.RefreshHpBarDetails();
+                }
+
                 if (IsPartyMember)
                     FloatingDisplay.RefreshHpBarDetails();
 
@@ -1631,14 +1665,14 @@ namespace Assets.Scripts.Network
 
             HandleMessages();
 
-            if (SpriteMode == ClientSpriteType.Prefab)
-            {
-                RealPosition = new Vector3(RealPosition.x, walkProvider.GetHeightForPosition(RealPosition), RealPosition.z);
-                transform.position = Vector3.Lerp(transform.position, RealPosition + PositionOffset, Time.deltaTime * 20f);
-                return;
-            }
+            // if (SpriteMode == ClientSpriteType.Prefab)
+            // {
+            //     RealPosition = new Vector3(RealPosition.x, walkProvider.GetHeightForPosition(RealPosition), RealPosition.z);
+            //     transform.position = Vector3.Lerp(transform.position, RealPosition + PositionOffset, Time.deltaTime * 20f);
+            //     return;
+            // }
 
-            if (SpriteAnimator.SpriteData == null)
+            if (SpriteAnimator == null) // || SpriteAnimator.SpriteData == null)
                 return;
 
 

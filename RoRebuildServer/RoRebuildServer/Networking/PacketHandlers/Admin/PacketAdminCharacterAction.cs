@@ -84,6 +84,14 @@ public class PacketAdminCharacterAction : IClientPacketHandler
                 ch.Player.SetStat(CharacterStat.Hp, 1);
                 ch.Player.Die();
                 break;
+            case AdminCharacterAction.Disguise:
+                var id = msg.ReadInt32();
+                if (id <= 0)
+                    ch.OverrideClassId = 0;
+                else
+                    ch.OverrideClassId = id;
+                ch.Map?.RefreshEntity(ch);
+                break;
 #if DEBUG
             //as a safety god mode is only available in debug builds
             case AdminCharacterAction.GodModeSelf:

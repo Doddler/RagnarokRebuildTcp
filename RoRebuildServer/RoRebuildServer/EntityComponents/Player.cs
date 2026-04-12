@@ -87,10 +87,10 @@ public class Player : IEntityAutoReset
     public int PartyMemberId;
     public bool HasEnteredServer;
 
-    public PlayerFollower PlayerFollower;
-    public bool HasCart => (PlayerFollower & PlayerFollower.AnyCart) > 0;
-    public bool HasBird => (PlayerFollower & PlayerFollower.Falcon) > 0;
-    public bool HasPeco => (PlayerFollower & PlayerFollower.Mounted) > 0;
+    public CharacterFollowerState PlayerFollower;
+    public bool HasCart => (PlayerFollower & CharacterFollowerState.AnyCart) > 0;
+    public bool HasBird => (PlayerFollower & CharacterFollowerState.Falcon) > 0;
+    public bool HasPeco => (PlayerFollower & CharacterFollowerState.Mounted) > 0;
 
     public StatusTriggerFlags OnMeleeAttackStatusFlags;
     public StatusTriggerFlags OnRangedAttackStatusFlags;
@@ -155,7 +155,7 @@ public class Player : IEntityAutoReset
         regenSpTickTime = HpRegenTickTime / 2f;
     }
 
-    public int WeaponClass => Equipment.MainHandWeapon.WeaponClass;
+    public int MainWeaponClass => Equipment.MainHandWeapon.WeaponClass;
 
 #if DEBUG
     private float actionCooldown;
@@ -263,7 +263,7 @@ public class Player : IEntityAutoReset
         jobStatBonuses = null;
         SpecialState = SpecialPlayerActionState.None;
         SpecialStateTarget = Position.Invalid;
-        PlayerFollower = PlayerFollower.None;
+        PlayerFollower = CharacterFollowerState.None;
         JobSkillTree = null;
 
         if (AttackVersusTag != null)
@@ -478,7 +478,7 @@ public class Player : IEntityAutoReset
         if (Inventory.UsedSlots >= CharacterBag.MaxBagSlots)
             return false;
 
-        if (item.Weight * item.Count + Inventory.BagWeight > GetStat(CharacterStat.WeightCapacity))
+        if (item.Weight * item.Count + Inventory.BagWeight > GetStat(CharacterStat.WeightCapacity) && !IsAdmin)
             return false;
 
         if (item.Type == ItemType.RegularItem && Inventory.RegularItems.TryGetValue(item.Item.Id, out var existing))
@@ -799,7 +799,7 @@ public class Player : IEntityAutoReset
 
         Character.ClassId = job;
 
-        if (WeaponClass == 12) //bow
+        if (MainWeaponClass == (int)WeaponClass.Bow) //bow
             SetStat(CharacterStat.Range, int.Max(1, Equipment.WeaponRange + MaxLearnedLevelOfSkill(CharacterSkill.VultureEye)));
         else
             SetStat(CharacterStat.Range, int.Max(1, Equipment.WeaponRange));
@@ -861,7 +861,7 @@ public class Player : IEntityAutoReset
 
         var motionTime = 1f;
         var spriteTime = 0.6f;
-        if (WeaponClass == 12) //bow
+        if (MainWeaponClass == (int)WeaponClass.Bow) //bow
         {
             motionTime = recharge * 0.75f;
             spriteTime = recharge * 0.75f;
@@ -1029,34 +1029,34 @@ public class Player : IEntityAutoReset
     public void RefreshWeaponMastery()
     {
         var mastery = 0;
-        switch (WeaponClass)
+        switch ((WeaponClass)MainWeaponClass)
         {
-            case 1: //dagger
-            case 2: //sword
+            case WeaponClass.Dagger: //dagger
+            case WeaponClass.Sword: //sword
                 mastery = MaxLearnedLevelOfSkill(CharacterSkill.SwordMastery) * 4;
                 break;
-            case 3: //2hand sword
+            case WeaponClass.TwoHandSword: //2hand sword
                 mastery = MaxLearnedLevelOfSkill(CharacterSkill.TwoHandSwordMastery) * 4;
                 break;
-            case 4: //spear
-            case 5: //2hand spear
+            case WeaponClass.Spear: //spear
+            case WeaponClass.TwoHandSpear: //2hand spear
                 if (HasPeco)
                     mastery = MaxLearnedLevelOfSkill(CharacterSkill.SpearMastery) * 5;
                 else
                     mastery = MaxLearnedLevelOfSkill(CharacterSkill.SpearMastery) * 4;
                 break;
-            case 8:
-            case 9:
+            case WeaponClass.Mace:
+            case WeaponClass.TwoHandMace:
                 mastery = MaxLearnedLevelOfSkill(CharacterSkill.MaceMastery) * 4;
                 break;
-            case 16:
+            case WeaponClass.Katar:
                 mastery = MaxLearnedLevelOfSkill(CharacterSkill.KatarMastery) * 4;
                 break;
         }
 
         var appraisal = MaxLearnedLevelOfSkill(CharacterSkill.ItemAppraisal);
         if (appraisal > 0)
-            mastery += appraisal * Equipment.MainHandWeapon.WeaponLevel * 2;
+            mastery += appraisal * Equipment.MainHandWeapon.WeaponLevel;
 
         SetStat(CharacterStat.WeaponMastery, mastery);
     }
@@ -1072,7 +1072,7 @@ public class Player : IEntityAutoReset
             return;
         }
 
-        PlayerFollower |= PlayerFollower.Mounted;
+        PlayerFollower |= CharacterFollowerState.Mounted;
         SetData(PlayerStat.FollowerType, (int)PlayerFollower);
         CombatEntity.AddStatusEffect(CharacterStatusEffect.PecoRiding, int.MaxValue);
 
@@ -1569,7 +1569,7 @@ public class Player : IEntityAutoReset
         if (Character.ClassId < 100) //we don't want to override special character classes like GameMaster
             Character.ClassId = newJobId;
 
-        PlayerFollower &= ~PlayerFollower.AnyCart;
+        PlayerFollower &= ~CharacterFollowerState.AnyCart;
         SetData(PlayerStat.FollowerType, 0);
 
         Equipment.UnequipAllItems();
@@ -1709,7 +1709,7 @@ public class Player : IEntityAutoReset
             return false;
         }
 
-        if (WeaponClass == 12 && Equipment.AmmoType != AmmoType.Arrow)
+        if (MainWeaponClass == (int)WeaponClass.Bow && Equipment.AmmoType != AmmoType.Arrow)
         {
             CommandBuilder.SendServerEvent(this, ServerEvent.WrongAmmoEquipped);
             return false;
@@ -1738,7 +1738,7 @@ public class Player : IEntityAutoReset
         }
 
         var usingAmmo = false;
-        if (WeaponClass == 12)
+        if (MainWeaponClass == (int)WeaponClass.Bow)
         {
             usingAmmo = true;
             if (!ValidateAmmoBasedWeapon())
@@ -1793,7 +1793,7 @@ public class Player : IEntityAutoReset
             multiplier *= 0.5f + MaxLearnedLevelOfSkill(CharacterSkill.RightHandMastery) * 0.1f;
 
         var di = CombatEntity.CalculateCombatResult(target, multiplier, 1, AttackFlags.Physical | AttackFlags.CanCrit);
-        var canDoubleAttack = (Character.Player.WeaponClass == 1 ||
+        var canDoubleAttack = (Character.Player.MainWeaponClass == (int)WeaponClass.Dagger ||
                                Character.Player.Equipment.DoubleAttackModifiers > 0);
 
         if (canDoubleAttack)
@@ -1803,7 +1803,7 @@ public class Player : IEntityAutoReset
                 di.HitCount = 2;
         }
 
-        if (WeaponClass == 16 && di.Damage > 0) //katar
+        if (MainWeaponClass == (int)WeaponClass.Katar && di.Damage > 0) //katar
         {
             di.Time = Time.ElapsedTimeFloat + di.TimeInSeconds * 0.5f;
             di.DamageOffHand = (short)(di.Damage * (1 + MaxAvailableLevelOfSkill(CharacterSkill.DoubleAttack) * 2) / 100);
@@ -1898,7 +1898,7 @@ public class Player : IEntityAutoReset
     public void TargetForAttack(WorldObject enemy)
     {
         var usingAmmo = false;
-        if (WeaponClass == 12)
+        if (MainWeaponClass == (int)WeaponClass.Bow)
         {
             usingAmmo = true;
             if (!ValidateAmmoBasedWeapon())

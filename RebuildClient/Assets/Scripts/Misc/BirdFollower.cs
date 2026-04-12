@@ -77,7 +77,8 @@ namespace Assets.Scripts.Misc
             //spriteAnimator.PauseAnimation();
 
             transform.position = TargetCharacter.transform.position + new Vector3(0f, 5f, 0f);
-            spriteAnimator.Angle = TargetCharacter.SpriteAnimator.Angle;
+            if(TargetCharacter.SpriteAnimator != null)
+                spriteAnimator.Angle = TargetCharacter.SpriteAnimator.Angle;
         }
 
         public void LaunchAttackTarget(ServerControllable target)

@@ -72,8 +72,12 @@ namespace Assets.Scripts.PlayerControl
                         break;
                 }
             }
-            
-            src.SpriteAnimator.Color = color;
+
+            if (src.SpriteAnimator != null)
+                src.SpriteAnimator.Color = color;
+            else if (src.PrefabActionHandler != null)
+                src.PrefabActionHandler.SetColor(color);
+                
         }
         
         public static void AddStatusToTarget(ServerControllable controllable, CharacterStatusEffect status, bool isNewEntity, float duration = 0)
@@ -109,8 +113,14 @@ namespace Assets.Scripts.PlayerControl
                 case CharacterStatusEffect.Hiding:
                 case CharacterStatusEffect.Cloaking:
                 case CharacterStatusEffect.Invisible:
-                    controllable.SpriteAnimator.IsHidden = true;
-                    controllable.SpriteAnimator.HideShadow = !controllable.IsMainCharacter;
+                    if(controllable.PrefabActionHandler != null)
+                        controllable.PrefabActionHandler.SetHide(true);
+                    else
+                    {
+                        controllable.SpriteAnimator.IsHidden = true;
+                        controllable.SpriteAnimator.HideShadow = !controllable.IsMainCharacter;
+                    }
+
                     if(controllable.FollowerObject != null)
                         controllable.FollowerObject.SetActive(false); //hide cart, bird, whatever is following the player
                     if (controllable.CharacterType != CharacterType.Player)
@@ -224,6 +234,12 @@ namespace Assets.Scripts.PlayerControl
 
         public static void RemoveStatusFromTarget(ServerControllable controllable, CharacterStatusEffect status)
         {
+            if (controllable.StatusEffectState == null)
+            {
+                Debug.LogError($"Trying to remove status effect {status} from controllable {controllable.name} but it has no status effect state at all.");
+                return;
+            }
+            
             controllable.StatusEffectState?.activeStatusEffects.Remove(status);
             
             UpdateColorForStatus(controllable);
@@ -248,8 +264,14 @@ namespace Assets.Scripts.PlayerControl
                 case CharacterStatusEffect.Hiding:
                 case CharacterStatusEffect.Cloaking:
                 case CharacterStatusEffect.Invisible:
-                    controllable.SpriteAnimator.IsHidden = false;
-                    controllable.SpriteAnimator.HideShadow = false;
+                    if(controllable.PrefabActionHandler != null)
+                        controllable.PrefabActionHandler.SetHide(false);
+                    else
+                    {
+                        controllable.SpriteAnimator.IsHidden = false;
+                        controllable.SpriteAnimator.HideShadow = false;
+                    }
+
                     if(controllable.FollowerObject != null)
                         controllable.FollowerObject.SetActive(true); //unhide cart/bird
                     HideEffect.AttachHideEffect(controllable.gameObject); //smoke plays when unhiding too

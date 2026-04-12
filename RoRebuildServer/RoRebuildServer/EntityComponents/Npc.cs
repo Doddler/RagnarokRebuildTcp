@@ -1257,10 +1257,11 @@ Error:
     {
         if (!IsHidden())
             HideNpc();
-
+        
         if (AreaOfEffect != null)
         {
             Character.Map?.RemoveAreaOfEffect(AreaOfEffect);
+            Behavior.OnTerminateAoE(this, AreaOfEffect);
             AreaOfEffect.Reset();
             World.Instance.ReturnAreaOfEffect(AreaOfEffect);
             AreaOfEffect = null;

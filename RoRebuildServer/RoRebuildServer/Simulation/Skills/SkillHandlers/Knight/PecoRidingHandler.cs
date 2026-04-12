@@ -13,8 +13,8 @@ public class PecoRidingHandler : SkillHandlerBase
         if (owner.Character.Type != CharacterType.Player)
             return;
 
-        var riding = owner.Player.GetData(PlayerStat.FollowerType) & (int)PlayerFollower.Mounted;
-        owner.Player.PlayerFollower |= (PlayerFollower)riding;
+        var riding = owner.Player.GetData(PlayerStat.FollowerType) & (int)CharacterFollowerState.Mounted;
+        owner.Player.PlayerFollower |= (CharacterFollowerState)riding;
         if (riding > 0)
             owner.AddStatusEffect(CharacterStatusEffect.PecoRiding, int.MaxValue);
     }
@@ -24,7 +24,7 @@ public class PecoRidingHandler : SkillHandlerBase
         if (owner.Character.Type != CharacterType.Player)
             return;
 
-        owner.Player.PlayerFollower &= ~PlayerFollower.Mounted;
+        owner.Player.PlayerFollower &= ~CharacterFollowerState.Mounted;
         owner.RemoveStatusOfTypeIfExists(CharacterStatusEffect.PecoRiding);
     }
 

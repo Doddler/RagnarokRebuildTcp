@@ -37,8 +37,8 @@ public class JupitelThunderHandler : SkillHandlerBase
         var distTime = dist * 0.025f;
         res.Time = Time.ElapsedTimeFloat + res.AttackMotionTime * 0.7f + distTime;
 
-        if (!isIndirect)
-            source.ApplyCooldownForAttackAction(target);
+        //if (!isIndirect)
+        //    source.ApplyCooldownForAttackAction(target);
 
         var ch = source.Character;
 

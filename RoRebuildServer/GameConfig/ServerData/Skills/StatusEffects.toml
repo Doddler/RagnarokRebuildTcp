@@ -191,7 +191,36 @@ Icon = "아드레날린러쉬"
 CanDispel = true
 CanDisable = true
 
+[PowerMaximize]
+Name = "Maximize Power"
+Type = "Buff"
+Icon = "맥시마이즈파워"
+CanDispel = true
+CanDisable = true
+
+[PowerThrustSelf]
+Name = "Power Thrust"
+Type = "Buff"
+Icon = "오버트러스트"
+CanDispel = true
+CanDisable = true
+
+[PowerThrustParty]
+Name = "Power Thrust (Shared)"
+Type = "Buff"
+Icon = "오버트러스트"
+CanDispel = true
+CanDisable = true
+
+[WeaponPerfection]
+Name = "Weapon Perfection"
+Type = "Buff"
+Icon = "웨폰퍼펙션"
+CanDispel = true
+CanDisable = true
+
 [AnkleSnare]
+
 [EnchantPoison]
 Name = "Enchant Poison"
 Type = "Buff"
@@ -231,6 +260,19 @@ Type = "Buff"
 Icon = "포이즌리액트"
 CanDispel = true
 CanDisable = true
+
+[StormGustHitCounter]
+Name = "Storm Gust Hit Counter"
+Type = "Debuff"
+CanDispel = false
+CanDisable = false
+
+[Quagmire]
+Name = "Quagmire"
+Type = "Debuff"
+Icon = "콰그마이어"
+CanDispel = true
+CanDisable = false
 
 #----------------------------------
 # Priest

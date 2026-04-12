@@ -572,7 +572,7 @@ public partial class CombatEntity : IEntityAutoReset
             hp = GameRandom.NextInclusive(hp, hp2);
 
         if (Character.Type == CharacterType.Player)
-            hp += hp * 10 * Character.Player.MaxLearnedLevelOfSkill(CharacterSkill.IncreasedHPRecovery) / 100;
+            hp += hp * GetStat(CharacterStat.AddHpItemEffectivenessPercent) / 100;
 
         var curHp = GetStat(CharacterStat.Hp);
         var maxHp = GetStat(CharacterStat.MaxHp);
@@ -605,7 +605,7 @@ public partial class CombatEntity : IEntityAutoReset
             return;
 
         if (Character.Type == CharacterType.Player)
-            sp += sp * 10 * Character.Player.MaxLearnedLevelOfSkill(CharacterSkill.IncreaseSPRecovery) / 100;
+            sp += sp * Character.Player.GetStat(CharacterStat.AddSpItemEffectivenessPercent) / 100;
 
         var curSp = GetStat(CharacterStat.Sp);
         var maxSp = GetStat(CharacterStat.MaxSp);
@@ -654,6 +654,24 @@ public partial class CombatEntity : IEntityAutoReset
             SetStat(CharacterStat.Hp, GetStat(CharacterStat.MaxHp));
         if (sp)
             SetStat(CharacterStat.Sp, GetStat(CharacterStat.MaxSp));
+    }
+
+    public bool IsFriendly(CombatEntity source)
+    {
+        if (this == source)
+            return true;
+        if (Entity.IsNull() || !Entity.IsAlive())
+            return false;
+        if (!Character.IsActive)
+            return false;
+        if (Character.Type == CharacterType.NPC)
+            return true;
+        if (source.Character.Type == CharacterType.Player && Character.Type == CharacterType.Monster)
+            return false;
+        if (source.Character.Type == CharacterType.Monster && Character.Type == CharacterType.Player)
+            return false;
+
+        return true;
     }
 
     public bool IsValidAlly(CombatEntity source, bool canTargetHidden = false)
@@ -778,6 +796,11 @@ public partial class CombatEntity : IEntityAutoReset
         DamageQueue.Add(info);
         if (DamageQueue.Count > 1)
             DamageQueue.Sort((a, b) => a.Time.CompareTo(b.Time));
+    }
+
+    public void ApplyDamageImmediately(DamageInfo info)
+    {
+        ApplyQueuedCombatResult(ref info);
     }
 
     public bool HasFatalDamageQueued()
@@ -1703,6 +1726,12 @@ public partial class CombatEntity : IEntityAutoReset
         SetStat(CharacterStat.Range, 2);
     }
 
+    public void UpdateDamageQueue()
+    {
+        if (DamageQueue.Count > 0)
+            AttackUpdate();
+    }
+
     public void Update()
     {
         if (!Character.IsActive)
@@ -1713,8 +1742,8 @@ public partial class CombatEntity : IEntityAutoReset
         if (IsCasting && CastingTime < time)
             FinishCasting();
 
-        if (DamageQueue.Count > 0)
-            AttackUpdate();
+        //if (DamageQueue.Count > 0)
+        //    AttackUpdate();
 
         if (Character.Type == CharacterType.Player && Player.IndirectCastQueue.Count > 0)
             Player.IndirectCastQueueUpdate(); //we handle this in combat entity to guarantee it happens after damage queue update

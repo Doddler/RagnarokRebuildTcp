@@ -40,6 +40,9 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Environment
                     ScreenShakeEffect.DelayedShake(spawn, 0.7f);
                     Camera.CreateEffect(effect, spawn, facing);
                     break;
+                case "StormGust":
+                    StormGustEffect.Create(spawn);
+                    break;
                 default:
                     Camera.CreateEffect(effect, spawn, facing);
                     break;

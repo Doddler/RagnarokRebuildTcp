@@ -238,7 +238,7 @@ public struct Position : IEquatable<Position>
         return X == other.X && Y == other.Y;
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return obj is Position other && Equals(other);
     }

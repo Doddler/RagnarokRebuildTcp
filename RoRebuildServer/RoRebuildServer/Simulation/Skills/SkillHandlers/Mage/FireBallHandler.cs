@@ -34,7 +34,6 @@ public class FireBallHandler : SkillHandlerBase
 
         //initial hit against the targeted enemy
         var res = source.CalculateCombatResult(target, attack);
-        source.ApplyAfterCastDelay(1f);
         res.AttackMotionTime = 0.38f;
         res.IsIndirect = isIndirect;
         var baseTime = Time.ElapsedTimeFloat + res.AttackMotionTime +
@@ -67,7 +66,11 @@ public class FireBallHandler : SkillHandlerBase
         }
 
         if (!isIndirect)
-            source.ApplyCooldownForAttackAction(position);
+        {
+            source.ApplyAfterCastDelay(1f);
+            source.ApplyCooldownForSupportSkillAction();
+        }
+
         CommandBuilder.ClearRecipients();
     }
 }

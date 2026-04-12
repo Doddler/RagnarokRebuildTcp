@@ -6,6 +6,7 @@ using RebuildSharedData.Enum;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Util;
+using System.Runtime.InteropServices;
 
 namespace RoRebuildServer.EntityComponents.Util;
 
@@ -44,6 +45,7 @@ public class AreaOfEffect
 
     public double NextTick = float.MaxValue;
     public double Expiration = float.MaxValue;
+    public float TimeRemaining => (float)(Expiration - Time.ElapsedTime);
 
     public float TickRate = 99999;
 
@@ -211,7 +213,7 @@ public class AreaOfEffect
             }
         }
     }
-
+    
     public void TouchEntitiesRemainingInAoE()
     {
         if (TouchingEntities == null)

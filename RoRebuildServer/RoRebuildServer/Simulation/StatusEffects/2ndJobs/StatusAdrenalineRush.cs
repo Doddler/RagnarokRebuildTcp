@@ -28,7 +28,7 @@ public class StatusAdrenalineRush : StatusEffectBase
             return StatusUpdateResult.EndStatus;
 
         //useable only with 1h axe, 2h axe, 1h mace, 2h mace
-        if (weaponInfo.WeaponClass < 6 || weaponInfo.WeaponClass > 9)
+        if (weaponInfo.WeaponClass < (int)WeaponClass.Axe || weaponInfo.WeaponClass > (int)WeaponClass.TwoHandMace)
             return StatusUpdateResult.EndStatus;
 
         return StatusUpdateResult.Continue;

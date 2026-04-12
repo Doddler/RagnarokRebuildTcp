@@ -127,6 +127,19 @@ public partial class Monster : IEntityAutoReset
     public bool GivesExperience;
     public bool IsAiActive;
 
+
+    //private MonsterAiState _currentAiState;
+    //public MonsterAiState CurrentAiState
+    //{
+    //    get => _currentAiState;
+    //    set
+    //    {
+    //        if(DebugLogging && _currentAiState != value)
+    //            ServerLogger.Debug($"Monster {Character.Name} changing Ai State from {_currentAiState} to {value}\n{Environment.StackTrace}");
+    //        _currentAiState = value;
+    //    }
+    //}
+
     public MonsterAiState CurrentAiState;
     public MonsterAiState PreviousAiState;
     public MonsterAiState OverrideTargetState;
@@ -307,7 +320,7 @@ public partial class Monster : IEntityAutoReset
 
         InitializeStats();
 
-        character.Name = $"{monData.Name} {e}";
+        character.Name = $"{monData.Name}";
 
         PreviousAiState = MonsterAiState.StateDead;
         CurrentAiState = MonsterAiState.StateIdle;
@@ -506,7 +519,8 @@ public partial class Monster : IEntityAutoReset
             var p = newTarget.Get<Player>();
             if (p.Character.State == CharacterState.Dead)
                 ServerLogger.LogWarning($"Monster {Character.Name} is attempting to change target to a dead player!");
-            CommandBuilder.SendMonsterTarget(p, Character);
+            if(!CombatEntity.HasBodyState(BodyStateFlags.Snared))
+                CommandBuilder.SendMonsterTarget(p, Character);
         }
     }
 
@@ -1018,7 +1032,7 @@ public partial class Monster : IEntityAutoReset
         }
     }
 
-    private void DirectlyTriggerStateUpdate(MonsterInputCheck check)
+    private bool DirectlyTriggerStateUpdate(MonsterInputCheck check)
     {
         foreach (var entry in aiEntries)
         {
@@ -1027,7 +1041,10 @@ public partial class Monster : IEntityAutoReset
 
             if (entry.InputCheck == check)
             {
-                if (InputStateCheck(entry.InputCheck) && OutputStateCheck(entry.OutputCheck))
+                if (check != MonsterInputCheck.InAttacked && InputStateCheck(entry.InputCheck))
+                    return false;
+
+                if (OutputStateCheck(entry.OutputCheck))
                 {
                     PreviousAiState = CurrentAiState;
                     CurrentAiState = entry.OutputState;
@@ -1040,9 +1057,11 @@ public partial class Monster : IEntityAutoReset
                     OverrideTargetState = MonsterAiState.StateAny;
                 }
 
-                return;
+                return true;
             }
         }
+
+        return false;
     }
 
     private bool InCombatReadyState => Character.State == CharacterState.Idle && !CombatEntity.IsCasting &&
@@ -1064,6 +1083,7 @@ public partial class Monster : IEntityAutoReset
         if (nextAiUpdate > Time.ElapsedTime)
             return;
 
+        //to be more accurate to official the AI should still update when disabled, but for now we're differing slightly
         if (GetStat(CharacterStat.Disabled) > 0 || CombatEntity.IsCasting)
             return;
 

@@ -207,6 +207,14 @@ public class FirewallObjectEvent : NpcBehaviorBase
                 res.KnockBack = 0;
                 res.Flags = DamageApplicationFlags.NoHitLock | DamageApplicationFlags.UpdatePosition;
             }
+            else
+            {
+                if (target.Character.Type == CharacterType.Monster)
+                {
+                    target.Character.Monster.ResetAiUpdateTime();
+                    res.Flags |= DamageApplicationFlags.ReducedHitLock;
+                }
+            }
 
             CommandBuilder.SkillExecuteIndirectAutoVisibility(npc.Character, target.Character, res);
 

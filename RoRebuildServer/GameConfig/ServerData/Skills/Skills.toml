@@ -531,7 +531,7 @@ MaxLevel = 10
 SpCost = [0,0,0,0,0,0,0,0,0,0]
 
 [ItemAppraisal]
-Name = "Weapon Appraisal"
+Name = "Item Appraisal"
 Icon = "mc_identify"
 Target = "Passive"
 MaxLevel = 5
@@ -721,6 +721,7 @@ Icon = "wz_jupitel"
 Target = "Enemy"
 MaxLevel = 10
 SpCost = [20,23,26,29,36,35,38,41,44,47]
+AdjustableLevel = true
 
 [LordOfVermilion]
 Name = "Lord of Vermilion"
@@ -763,6 +764,7 @@ Icon = "wz_stormgust"
 Target = "Ground"
 MaxLevel = 10
 SpCost = [78,78,78,78,78,78,78,78,78,78]
+AdjustableLevel = true
 
 [WaterBall]
 Name = "Water Ball"
@@ -1024,25 +1026,78 @@ MaxLevel = 5
 SpCost = [18,16,14,12,10]
 
 [MaximizePower]
-Name = "MaximizePower"
+Name = "Maximize Power"
 Icon = "bs_maximize"
 Target = "Self"
 MaxLevel = 5
 SpCost = [10,10,10,10,10]
 
-[WeaponRepair]
-[SmithDagger]
-[SmithKnuckle]
-[SmithMace]
-[SmithSword]
-[SmithTwoHandSword]
-[SmithSpear]
-[SmithAxe]
 [IronTempering]
-[EnchantedStoneCraft]
-[OrideconResearch]
+Name = "Iron Tempering"
+Icon = "bs_iron"
+Target = "Passive"
+MaxLevel = 5
+
 [SteelTempering]
+Name = "Steel Tempering"
+Icon = "bs_steel"
+Target = "Passive"
+MaxLevel = 5
+
 [OreDiscovery]
+Name = "Ore Discovery"
+Icon = "bs_findingore"
+Target = "Passive"
+MaxLevel = 1
+
+[EnchantedStoneCraft]
+Name = "Enchanted Stone Craft"
+Icon = "bs_enchantedstone"
+Target = "Passive"
+MaxLevel = 5
+
+[OrideconResearch]
+Name = "Oridecon Research"
+Icon = "bs_orideocon"
+Target = "Passive"
+MaxLevel = 5
+
+[SmithBluntWeapon]
+Name = "Smith Blunt Weapon"
+Icon = "bs_mace"
+Target = "Passive"
+MaxLevel = 5
+
+[SmithBladeWeapon]
+Name = "Smith Bladed Weapon"
+Icon = "bs_dagger"
+Target = "Passive"
+MaxLevel = 5
+
+[SmithPiercingWeapon]
+Name = "Smith Piercing Weapon"
+Icon = "bs_spear"
+Target = "Passive"
+MaxLevel = 5
+
+[WeaponBinding]
+Name = "Weapon Binding"
+Icon = "bs_twohandsword"
+Target = "Passive"
+MaxLevel = 1
+
+[WeaponRepair]
+
+#[SmithDagger]
+#[SmithKnuckle]
+#[SmithMace]
+#[SmithSword]
+#[SmithTwoHandSword]
+#[SmithSpear]
+#[SmithAxe]
+
+
+
 
 #----------------------------------
 # Other skills

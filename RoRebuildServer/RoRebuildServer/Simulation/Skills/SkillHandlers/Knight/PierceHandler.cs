@@ -14,7 +14,7 @@ public class PierceHandler : SkillHandlerBase
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl,
         bool isIndirect, bool isItemSource)
     {
-        if (source.Character.Type == CharacterType.Player && (source.Player.WeaponClass < 4 || source.Player.WeaponClass > 5))
+        if (source.Character.Type == CharacterType.Player && (source.Player.MainWeaponClass < (int)WeaponClass.Spear || source.Player.MainWeaponClass > (int)WeaponClass.TwoHandSpear))
             return SkillValidationResult.IncorrectWeapon; //spear only
 
         return base.ValidateTarget(source, target, position, lvl, isIndirect, isItemSource);

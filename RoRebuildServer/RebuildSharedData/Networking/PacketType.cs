@@ -12,6 +12,7 @@ public enum PacketType : byte
     EnterServer,
     Ping,
     [ServerOnlyPacket] CreateEntity,
+    [ServerOnlyPacket] CreateEntity2,
     StartWalk,
     PauseMove,
     ResumeMove,

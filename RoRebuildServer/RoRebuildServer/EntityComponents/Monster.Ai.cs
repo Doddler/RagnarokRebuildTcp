@@ -22,7 +22,7 @@ public partial class Monster
     /// </summary>
     /// <returns>True if the state should change, false if the state transition should fail.</returns>
     /// TODO: Some input state checks change the monster's target, where as that shouldn't happen until the output state checks.
-    private bool InputStateCheck(MonsterInputCheck inCheckType)
+    private bool InputStateCheck(MonsterInputCheck inCheckType, bool isDirectCheck = false)
     {
         switch (inCheckType)
         {
@@ -38,8 +38,8 @@ public partial class Monster
             case MonsterInputCheck.InAttackRangeAny: return InAttackRangeAny();
             case MonsterInputCheck.InNeedAttackingAdjust: return InNeedAttackingAdjust();
             case MonsterInputCheck.InAttackDelayEnd: return InAttackDelayEnd();
-            case MonsterInputCheck.InAttacked: return InAttacked();
-            case MonsterInputCheck.InAttackedNoSwap: return InAttacked(false);
+            case MonsterInputCheck.InAttacked: return InAttacked(isDirectCheck);
+            case MonsterInputCheck.InAttackedNoSwap: return InAttacked(isDirectCheck, false);
             case MonsterInputCheck.InMeleeAttacked: return InMeleeAttacked();
             case MonsterInputCheck.InDeadTimeoutEnd: return InDeadTimeoutEnd();
             case MonsterInputCheck.InAllyInCombat: return InAllyInCombat();
@@ -157,7 +157,11 @@ public partial class Monster
         if (targetCharacter.Position == Character.Position)
             return false;
 
-        if (targetCharacter.Position.SquareDistance(Character.Position) >= ChaseSight + 1)
+        var sight = ChaseSight;
+        if (WasAttacked)
+            sight = PathFinder.MaxDistance;
+
+        if (targetCharacter.Position.SquareDistance(Character.Position) >= sight + 1)
             return true;
 
         if ((Character.MoveSpeed < 0 || CombatEntity.HasBodyState(BodyStateFlags.Hidden)) && InEnemyOutOfAttackRange())
@@ -275,11 +279,12 @@ public partial class Monster
     }
 
     /// <summary> Checks if the monster has been attacked by any player since the last AI update. </summary>
+    /// <param name="isDirectCheck">Set to true if this state check is called directly outside the regular state machine handler.</param>
     /// <param name="swapToNewAttacker">Should we cause the monster to change his target in response to being attacked?</param>
     /// TODO: We should not commit to switching target until the output state check occurs.
-    private bool InAttacked(bool swapToNewAttacker = true)
+    private bool InAttacked(bool isDirectCheck, bool swapToNewAttacker = true)
     {
-        if (!WasAttacked)
+        if (!WasAttacked || !isDirectCheck)
             return false;
 
         if (!Character.LastAttacked.TryGet<CombatEntity>(out var ce) || !ce.CanBeTargeted(CombatEntity, true))
@@ -636,7 +641,12 @@ public partial class Monster
     {
         var targetChar = targetCharacter;
         if (targetChar == null)
-            return false;
+        {
+            if (Character.LastAttacked.TryGet<WorldObject>(out targetChar))
+                Target = targetChar.Entity;
+            else
+                return false;
+        }
 
         timeLastCombat = Time.ElapsedTimeFloat;
         if (timeOfStartChase > Time.ElapsedTimeFloat)
@@ -644,6 +654,7 @@ public partial class Monster
 
         if (CombatEntity.CanAttackTarget(targetChar))
         {
+            
             //short circuit to attacking if they can attack here
             if (InAttackDelayEnd() && OutPerformAttack(false))
                 OverrideTargetState = MonsterAiState.StateAttacking;
@@ -663,6 +674,7 @@ public partial class Monster
 
         if (CurrentAiState == MonsterAiState.StateAttacking || CurrentAiState == MonsterAiState.StateAngry)
         {
+            Target = Entity.Null;
             CurrentAiState = MonsterAiState.StateIdle;
             return false;
         }

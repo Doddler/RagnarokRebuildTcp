@@ -22,6 +22,8 @@ public class CharacterStatusContainer
     private SwapList<StatusEffectState>? statusEffects;
     private SwapList<PendingStatusEffect>? pendingStatusEffects;
 
+    private Dictionary<CharacterStatusEffect, float> clientSerializationData = new();
+
     private byte onAttackEffects;
     private byte onHitEffects;
     private byte onUpdateEffects;
@@ -52,6 +54,7 @@ public class CharacterStatusContainer
         nextStatusUpdate = 0f;
         nextExpirationCheck = 0f;
         preserveOnDeathStatuses?.Clear();
+        clientSerializationData.Clear();
         if (pendingStatusEffects != null)
         {
             StatusEffectPoolManager.ReturnPendingContainer(pendingStatusEffects);
@@ -620,7 +623,7 @@ public class CharacterStatusContainer
 
         if (StatusEffectHandler.GetStatusVisibility(status.Type) != StatusClientVisibility.None)
         {
-            Debug.Assert(Character.Map != null);
+            //Debug.Assert(Character.Map != null);
             if (Character.Map != null)
             {
                 Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
@@ -766,6 +769,18 @@ public class CharacterStatusContainer
         }
 
         msg.Write(false);
+    }
+
+    public Dictionary<CharacterStatusEffect, float> GetClientSerializationContainer()
+    {
+        clientSerializationData.Clear();
+        if (statusEffects == null || statusEffects.Count == 0)
+            return clientSerializationData;
+
+        foreach (var status in statusEffects)
+            clientSerializationData.Add(status.Type, (float)(status.Expiration - Time.ElapsedTime));
+
+        return clientSerializationData;
     }
 
     public int Serialize(IBinaryMessageWriter bw)

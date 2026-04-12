@@ -1,9 +1,11 @@
-﻿using System.Diagnostics;
+﻿using MemoryPack;
+using System.Diagnostics;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RebuildSharedData.Networking;
+using RebuildSharedData.Packets;
 using RebuildZoneServer.Networking;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
@@ -12,6 +14,7 @@ using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntityComponents.Npcs;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
+using RoRebuildServer.Networking.PacketHandlers.NPCPackets;
 using RoRebuildServer.Simulation.Items;
 using RoRebuildServer.Simulation.Parties;
 using RoRebuildServer.Simulation.Pathfinding;
@@ -174,6 +177,128 @@ public static class CommandBuilder
     //        packet.Write(lockTime > 0 ? lockTime : 0f);
     //    }
     //}
+    
+    private static void SerializeEntityDataV2(OutboundMessage packet, WorldObject c, bool isSelf = false)
+    {
+        var isCombatType = c.Type != CharacterType.NPC;
+        var ce = isCombatType ? c.CombatEntity : null;
+
+        var entity = new EntitySpawnParameters()
+        {
+            ServerId = c.Id,
+            ClassId = c.ClassId,
+            OverrideClassId = c.OverrideClassId,
+            Name = c.Name,
+            Type = c.Type,
+            Facing = c.FacingDirection,
+            State = c.State,
+            Position = c.Position,
+            IsMainCharacter = isSelf
+        };
+
+        if (ce != null)
+        {
+            entity.Level = (byte)ce.GetStat(CharacterStat.Level);
+            entity.Hp = ce.GetStat(CharacterStat.Hp);
+            entity.MaxHp = ce.GetStat(CharacterStat.MaxHp);
+            entity.Sp = isSelf ? ce.GetStat(CharacterStat.Sp) : 0;
+            entity.MaxSp = isSelf ? ce.GetStat(CharacterStat.MaxSp) : 0;
+            entity.CharacterStatusEffects = ce.StatusContainer?.GetClientSerializationContainer();
+        }
+
+        packet.MemoryPackSerializeWithLength(ref entity);
+
+        if (c.Type == CharacterType.Player)
+        {
+            var player = c.Player;
+
+            var pData = new PlayerSpawnParameters()
+            {
+                HeadType = (byte)player.GetData(PlayerStat.Head),
+                HairColor = (byte)player.GetData(PlayerStat.HairId),
+                HeadFacing = player.HeadFacing,
+                WeaponClass = (byte)player.MainWeaponClass,
+                IsMale = player.IsMale,
+                Headgear1 = player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadTop),
+                Headgear2 = player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadMid),
+                Headgear3 = player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadBottom),
+                Weapon = player.Equipment.GetEquipmentIdBySlot(EquipSlot.Weapon),
+                Shield = player.Equipment.GetEquipmentIdBySlot(EquipSlot.Shield),
+                PartyId = player.Party?.PartyId ?? -1,
+                PartyName = player.Party?.PartyName ?? null,
+                Follower = player.PlayerFollower
+            };
+
+            packet.MemoryPackSerializeWithLength(ref pData);
+        }
+        
+        if (c.Type == CharacterType.PlayerLikeNpc)
+        {
+            var npc = c.OverrideAppearanceState!;
+            var pData = new PlayerSpawnParameters()
+            {
+                HeadFacing = npc.HeadFacing,
+                HeadType = (byte)npc.HeadType,
+                HairColor = (byte)npc.HairColor,
+                WeaponClass = (byte)npc.WeaponClass,
+                IsMale = npc.IsMale,
+                Headgear1 = npc.HeadTop,
+                Headgear2 = npc.HeadMid,
+                Headgear3 = npc.HeadBottom,
+                Weapon = npc.Weapon,
+                Shield = npc.Shield,
+                Follower = npc.HasCart ? CharacterFollowerState.Cart0 : CharacterFollowerState.None
+            };
+
+            packet.MemoryPackSerializeWithLength(ref pData);
+        }
+
+        if (c.Type == CharacterType.NPC || c.Type == CharacterType.BattleNpc)
+        {
+            var npc = c.Npc;
+            var display = npc.DisplayType;
+
+            if (display == NpcDisplayType.MaskedEffect && (npc.AreaOfEffect == null || !npc.AreaOfEffect.IsMaskedArea))
+                display = NpcDisplayType.Effect;
+
+            var npcData = new NpcSpawnParameters()
+            {
+                DisplayType = display,
+                Interactable = npc.HasInteract,
+                EffectType = npc.EffectType,
+            };
+
+            if (display == NpcDisplayType.VendingProxy)
+            {
+                if (!npc.Owner.TryGet<WorldObject>(out var ownerCh))
+                {
+                    ServerLogger.LogWarning($"Attempting to send vend proxy npc to client, but it's owner {npc.FullName} does not exist!");
+                    npcData.OwnerId = -1;
+                }
+                else
+                    npcData.OwnerId = ownerCh.Id;
+            }
+
+            packet.MemoryPackSerializeWithLength(ref npcData);
+
+            if (display == NpcDisplayType.MaskedEffect)
+            {
+                var aoe = npc.AreaOfEffect!;
+                packet.Write(aoe.Area);
+                var mask = aoe.GetAreaMask()!;
+                for (var i = 0; i < aoe.Area.Size; i++)
+                    packet.Write(mask[i]);
+            }
+        }
+
+        if (c.AdminHidden && !isSelf)
+            ServerLogger.LogWarning($"We are sending the data of hidden character \"{c.Name}\" to the client!");
+
+        if (c.State == CharacterState.Moving)
+        {
+            WriteWalkData2(c, packet);
+        }
+    }
 
     private static void AddFullEntityData(OutboundMessage packet, WorldObject c, bool isSelf = false)
     {
@@ -228,7 +353,7 @@ public static class CommandBuilder
                 packet.Write((byte)player.HeadFacing);
                 packet.Write((byte)player.GetData(PlayerStat.Head));
                 packet.Write((byte)player.GetData(PlayerStat.HairId));
-                packet.Write((byte)player.WeaponClass);
+                packet.Write((byte)player.MainWeaponClass);
                 packet.Write(player.IsMale);
                 packet.Write(player.Name);
                 packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadTop));
@@ -280,7 +405,7 @@ public static class CommandBuilder
                 packet.Write(0); //sp
                 packet.Write(0); //maxsp
 
-                packet.Write((byte)(npc.HasCart ? PlayerFollower.Cart0 : PlayerFollower.None));
+                packet.Write((byte)(npc.HasCart ? CharacterFollowerState.Cart0 : CharacterFollowerState.None));
                 //packet.Write(false);
             }
         }
@@ -327,6 +452,37 @@ public static class CommandBuilder
             WriteWalkData2(c, packet);
         }
     }
+
+
+    private static OutboundMessage BuildCreateEntity2(WorldObject c, CreateEntityEventType entryType, bool isSelf = false)
+    {
+        //var type = isSelf ? PacketType.EnterServer : PacketType.CreateEntity2;
+        var packet = NetworkManager.StartPacket(PacketType.CreateEntity2, 256);
+        packet.Write((byte)entryType);
+
+        if (c.AdminHidden && !isSelf)
+            ServerLogger.LogWarning($"We are unexpectedly sending data for the hidden object {c} to a player!");
+
+        SerializeEntityDataV2(packet, c, isSelf);
+
+        return packet;
+    }
+
+    private static OutboundMessage BuildCreateEntity2(WorldObject c, CreateEntityEventType entryType, Position pos, bool isSelf = false)
+    {
+        //var type = isSelf ? PacketType.EnterServer : PacketType.CreateEntity2;
+        var packet = NetworkManager.StartPacket(PacketType.CreateEntity2, 256);
+        packet.Write((byte)entryType);
+        packet.Write(pos);
+
+        if (c.AdminHidden && !isSelf)
+            ServerLogger.LogWarning($"We are unexpectedly sending data for the hidden object {c} to a player!");
+
+        SerializeEntityDataV2(packet, c, isSelf);
+
+        return packet;
+    }
+
 
     private static OutboundMessage BuildCreateEntity(WorldObject c, bool isSelf = false)
     {
@@ -399,7 +555,7 @@ public static class CommandBuilder
         packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadBottom));
         packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.Weapon));
         packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.Shield));
-        packet.Write(player.WeaponClass);
+        packet.Write(player.MainWeaponClass);
 
         player.Character.Map?.AddVisiblePlayersAsPacketRecipients(player.Character);
         EnsureRecipient(player.Entity);
@@ -973,15 +1129,25 @@ public static class CommandBuilder
         if (!HasRecipients())
             return;
 
-        var packet = BuildCreateEntity(c);
-        packet.Write((byte)entryType);
+        //var packet = BuildCreateEntity(c);
+        //packet.Write((byte)entryType);
+        //NetworkManager.SendMessageMulti(packet, recipients);
+
+        //ServerLogger.Debug($"Sending duplicate CreateEntityV2, be sure to remove this at some point.");
+
+        var packet = BuildCreateEntity2(c, entryType);
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 
     public static void SendCreateEntity(WorldObject c, Player player, CreateEntityEventType entryType = CreateEntityEventType.Normal)
     {
-        var packet = BuildCreateEntity(c);
-        packet.Write((byte)entryType);
+        //var packet = BuildCreateEntity(c);
+        //packet.Write((byte)entryType);
+        //NetworkManager.SendMessage(packet, player.Connection);
+
+        //ServerLogger.Debug($"Sending duplicate CreateEntityV2, be sure to remove this at some point.");
+
+        var packet = BuildCreateEntity2(c, entryType);
         NetworkManager.SendMessage(packet, player.Connection);
     }
 
@@ -990,9 +1156,14 @@ public static class CommandBuilder
         if (!HasRecipients())
             return;
 
-        var packet = BuildCreateEntity(c);
-        packet.Write((byte)eventType);
-        packet.Write(pos);
+        //var packet = BuildCreateEntity(c);
+        //packet.Write((byte)eventType);
+        //packet.Write(pos);
+        //NetworkManager.SendMessageMulti(packet, recipients);
+
+        //ServerLogger.Debug($"Sending duplicate CreateEntityV2, be sure to remove this at some point.");
+
+        var packet = BuildCreateEntity2(c, eventType, pos);
         NetworkManager.SendMessageMulti(packet, recipients);
     }
 

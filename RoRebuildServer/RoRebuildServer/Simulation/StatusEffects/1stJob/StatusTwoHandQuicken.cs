@@ -25,7 +25,7 @@ namespace RoRebuildServer.Simulation.StatusEffects._1stJob
                 return StatusUpdateResult.EndStatus;
 
 
-            if (!DataManager.WeaponInfo.TryGetValue(weapon, out var weaponInfo) || weaponInfo.WeaponClass != 3)
+            if (!DataManager.WeaponInfo.TryGetValue(weapon, out var weaponInfo) || weaponInfo.WeaponClass != (int)WeaponClass.TwoHandSword)
                 return StatusUpdateResult.EndStatus;
 
             return StatusUpdateResult.Continue;

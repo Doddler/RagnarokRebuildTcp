@@ -13,8 +13,8 @@ public class PushCartHandler : SkillHandlerBase
         if (owner.Character.Type != CharacterType.Player)
             return;
 
-        var activeCart = owner.Player.GetData(PlayerStat.FollowerType) & (int)PlayerFollower.AnyCart;
-        owner.Player.PlayerFollower |= (PlayerFollower)activeCart;
+        var activeCart = owner.Player.GetData(PlayerStat.FollowerType) & (int)CharacterFollowerState.AnyCart;
+        owner.Player.PlayerFollower |= (CharacterFollowerState)activeCart;
     }
 
     public override void RemovePassiveEffects(CombatEntity owner, int lvl)
@@ -22,7 +22,7 @@ public class PushCartHandler : SkillHandlerBase
         if (owner.Character.Type != CharacterType.Player)
             return;
 
-        owner.Player.PlayerFollower &= ~PlayerFollower.AnyCart;
+        owner.Player.PlayerFollower &= ~CharacterFollowerState.AnyCart;
     }
 
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl,

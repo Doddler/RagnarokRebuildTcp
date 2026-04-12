@@ -13,6 +13,7 @@ using Assets.Scripts.UI.Utility;
 using Assets.Scripts.Utility;
 using JetBrains.Annotations;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using RebuildSharedData.Networking;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -658,6 +659,44 @@ namespace PlayerControl
 
                     NetworkManager.Instance.SendChangeCart(cartId - 1);
                     return;
+                }
+
+                if (s[0] == "/disguise")
+                {
+                    if(s.Length < 2)
+                        NetworkManager.Instance.SendAdminDisguise(-1);
+                    else if (int.TryParse(s[1], out var disguiseId))
+                        NetworkManager.Instance.SendAdminDisguise(disguiseId);
+                    else
+                    {
+                        //var failed = false;
+                        var count = 1;
+                        var name = s[1];
+                        var nameMax = s.Length;
+
+                        if (s.Length >= 3 && int.TryParse(s[s.Length - 1], out var newCount))
+                        {
+                            count = newCount;
+                            nameMax--;
+                        }
+
+                        if (s.Length > 2)
+                            name = String.Join(" ", s.Skip(1).Take(nameMax - 1));
+
+                        var mon = ClientDataLoader.Instance.MonsterClassLookup.Values.FirstOrDefault(m => m.Name == name);
+                        if (mon == null)
+                        {
+                            var code = name.ToUpperInvariant();
+                            mon = ClientDataLoader.Instance.MonsterClassLookup.Values.FirstOrDefault(m => m.Code == code);
+                            if(mon == null)
+                                cameraFollower.AppendError($"The monster name '{name}' is not valid.");
+                            else
+                                NetworkManager.Instance.SendAdminDisguise(mon.Id);    
+                        }
+                        else
+                            NetworkManager.Instance.SendAdminDisguise(mon.Id);
+                    }
+                        
                 }
 
                 if (emoteList.TryGetValue(s[0], out var emote))

@@ -34,6 +34,12 @@ public struct DamageInfo
 
     public int TotalDamage => Damage * HitCount + DamageOffHand;
 
+    public void SetTimingInstant()
+    {
+        AttackMotionTime = 0;
+        Time = Simulation.Util.Time.ElapsedTimeFloat;
+    }
+
     public float TimeInSeconds
     {
         get => Single.Max(0, Time - Simulation.Util.Time.ElapsedTimeFloat);

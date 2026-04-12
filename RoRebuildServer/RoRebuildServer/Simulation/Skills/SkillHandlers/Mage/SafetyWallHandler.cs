@@ -131,6 +131,16 @@ public class SafetyWallObjectEvent : NpcBehaviorBase
         if (aoe.Value1 <= 0)
             npc.EndEvent();
     }
+
+    public override void OnEventEnd(Npc npc)
+    {
+        if (npc.AreaOfEffect == null || npc.AreaOfEffect.TouchingEntities == null)
+            return;
+
+        foreach(var touch in npc.AreaOfEffect.TouchingEntities)
+            if (touch.TryGet<CombatEntity>(out var t))
+                t.RemoveStatusOfTypeIfExists(CharacterStatusEffect.SafetyWall);
+    }
 }
 
 public class NpcLoaderSafetyWallEvents : INpcLoader

@@ -9,4 +9,5 @@ public enum AdminCharacterAction
     Die,
     GodModeSelf,
     GodModeOther,
+    Disguise,
 }

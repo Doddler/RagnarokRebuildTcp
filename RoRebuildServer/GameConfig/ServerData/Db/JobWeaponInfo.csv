@@ -69,7 +69,12 @@ Assassin,Sword,Axe,0,3,3,Assassin_M_검_도끼.spr,Assassin_M_검_도끼_검광.
 Assassin,Axe,,0,2,2,Assassin_M_도끼.spr,Assassin_M_도끼_검광.spr,Assassin_F_도끼.spr,Assassin_F_도끼_검광.spr
 Assassin,Axe,Axe,0,3,3,Assassin_M_도끼_도끼.spr,Assassin_M_도끼_도끼_검광.spr,Assassin_F_도끼_도끼.spr,Assassin_F_도끼_도끼_검광.spr
 Assassin,Katar,,0,3,3,Assassin_M_카타르_카타르.spr,Assassin_M_카타르_카타르_검광.spr,Assassin_F_카타르_카타르.spr,Assassin_F_카타르_카타르_검광.spr
-Blacksmith,Unarmed,,0,2,3,,,,
+Blacksmith,Unarmed,,0,2,2,,,,
+Blacksmith,Dagger,,0,2,2,Blacksmith_M_단검.spr,Blacksmith_M_단검_검광.spr,Blacksmith_F_단검.spr,Blacksmith_F_단검_검광.spr
+Blacksmith,Sword,,0,3,3,Blacksmith_M_검.spr,Blacksmith_M_검_검광.spr,Blacksmith_F_검.spr,Blacksmith_F_검_검광.spr
+Blacksmith,Axe,,0,3,3,Blacksmith_M_도끼.spr,Blacksmith_M_도끼_검광.spr,Blacksmith_F_도끼.spr,Blacksmith_F_도끼_검광.spr
+Blacksmith,2HAxe,,0,3,3,Blacksmith_M_양손도끼.spr,Blacksmith_M_양손도끼_검광.spr,Blacksmith_F_양손도끼.spr,Blacksmith_F_양손도끼_검광.spr
+Blacksmith,Mace,,0,3,3,Blacksmith_M_클럽.spr,,Blacksmith_F_클럽.spr,
 Crusader,Unarmed,,0,2,3,,,,
 Sage,Unarmed,,0,2,3,,,,
 Bard,Unarmed,,0,2,3,,,,

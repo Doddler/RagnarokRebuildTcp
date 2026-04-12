@@ -49,7 +49,8 @@ public class HeavensDriveHandler : SkillHandlerBase
             }
         }
 
-        source.ApplyCooldownForSupportSkillAction();
+        if(!isIndirect)
+            source.ApplyCooldownForSupportSkillAction();
 
         var mt = source.GetAttackMotionTime();
         CommandBuilder.SkillExecuteMaskedAreaTargetedSkill(source.Character, position, 2, CharacterSkill.HeavensDrive, lvl, ref effectiveArea, isIndirect, mt);

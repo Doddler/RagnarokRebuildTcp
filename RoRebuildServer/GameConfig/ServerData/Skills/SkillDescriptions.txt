@@ -33,9 +33,8 @@ For 20 seconds after using the skill all physical attacks will all deal an addit
 ::Provoke
 Enrages an enemy by taunting them, causing them drop their guard for 30 seconds.
 Reduces enemy defense by [5 + SkillLevel * 5]%.
-Increases enemy attack power by [2 + SkillLevel *3]%.
+Attacks dealt by the enemy will deal [2 + SkillLevel * 2]% more damage, doubled against the user of provoke.
 The effectiveness of this skill is halved on boss type monsters.
-While provoked the enemy has a low chance of dealing extra damage against you specifically.
 
 ::SwordMastery
 Adds +[SkillLevel * 4] weapon attack power when using a dagger or one-handed sword.
@@ -275,7 +274,7 @@ Some shops cannot be discounted. Decreases the zeny cost of Mammonite.
 Strikes a target with your cart, dealing [150 + CartWeight / 80]% damage to all enemies in a 3x3 area and knocking them away 2 tiles.
 
 ::ItemAppraisal
-A keen eye unlocks the hidden potential of weapons, increasing your weapon attack power by +[SkillLevel * WeaponLevel * 2].
+A keen eye unlocks the hidden potential of items, increasing recovery item effectiveness by +[SkillLevel * 2]% and increasing your weapon's attack power by +[SkillLevel * WeaponLevel].
 
 ::CrazyUproar
 Psyche yourself up, increasing your STR by 4.
@@ -296,6 +295,16 @@ Quickly close the gap to a single target, dealing damage and knocking them back.
 Cast time scales from 0.1s to 0.5s, and damage from 100% to 500%, depending on the distance traveled. Maximum damage is achieved at 12 tiles.
 Skill Range: 14 tiles
 Recast time: 5s
+
+::BowlingBash
+Knocks a target back 1 cell and deals 2 hits of [100 + SkillLevel * 50]% physical damage.
+If the target ends in contact with another enemy, the skill will chain to that target, who will in turn be damaged and knocked back, causing a chain reaction.
+The chain reaction will continue until each target contacted has taken damage or the chain reaction reaches a length of [SkillLevel - 1] (minimum 1).
+
+::SpearBoomerang
+Strike a target far away from you with your s pear dealing [100 + SkillLevel * 50]% ranged physical damage. Requires a spear to be equipped to use.
+Range: 5/6/8/9/11 cells depending on the skill level
+
 
 //----------------Wizard-------------------
 
@@ -419,6 +428,9 @@ Duration: [30 + SkillLevel * 15]s
 
 //----------------Blacksmith-------------------
 
+::HiltBinding
+Adds STR + 1, ATK + 5, and improves the duration of Adrenaline Rush, Power Thrust, and Weapon Perfection by 10%.
+
 ::HammerFall
 Strike the earth with a powerful hammer swing that has a [20 + SkillLvl * 10]% chance to stun enemies in a 5x5 area.
 
@@ -426,13 +438,12 @@ Strike the earth with a powerful hammer swing that has a [20 + SkillLvl * 10]% c
 Increases attack speed with axes and maces, reducing the delay between attacks by 30% for yourself and 25% for party members. 
 Duration: [SkillLevel * 30] seconds.
 
-//----------------Blacksmith-------------------
+::SkinTempering
+Increases your resistance to non-elemental damage by [SkillLvl]% and your resistance to fire element damage by [SkillLvl * 4]%.
 
-::BowlingBash
-Knocks a target back 1 cell and deals 2 hits of [100 + SkillLevel * 50]% physical damage.
-If the target ends in contact with another enemy, the skill will chain to that target, who will in turn be damaged and knocked back, causing a chain reaction.
-The chain reaction will continue until each target contacted has taken damage or the chain reaction reaches a length of [SkillLevel - 1] (minimum 1).
-
-::SpearBoomerang
-Strike a target far away from you with your s pear dealing [100 + SkillLevel * 50]% ranged physical damage. Requires a spear to be equipped to use.
-Range: 5/6/8/9/11 cells depending on the skill level
+::WeaponPerfection
+Optimizes the weapons of you and your allies to bypass an enemy's defenses.
+Increases your physical defense penetration as well as critical damage by [SkillLevel * 1.5]%. An additional [SkillLevel * 0.5]% is added when attacking an enemy of a favorable size for your weapon.
+Party members receive 1/2 of this bonus.
+Duration: [SkillLevel + 10]s
+Favorable weapons for enemy size:<br>Small: Dagger, Book, Rod, Gun<br>Medium: 1h Sword, Mace, Katar, Bow, Book, Knuckle, Instrument/Whip<br>Large: 2h Sword, Spear, Axe, Huuma Shuriken

@@ -25,8 +25,8 @@ public abstract class NpcBehaviorBase
 
     public virtual void OnAoEInteraction(Npc npc, CombatEntity target, AreaOfEffect aoe) { }
     public virtual void OnAoEEvent(Npc npc, CombatEntity target, AreaOfEffect aoe, Object? eventData) { }
-
     public virtual void OnLeaveAoE(Npc npc, CombatEntity target, AreaOfEffect aoe) { }
+    public virtual void OnTerminateAoE(Npc npc, AreaOfEffect aoe) { }
 
     public virtual void OnTimer(Npc npc, float lastTime, float newTime) { }
 

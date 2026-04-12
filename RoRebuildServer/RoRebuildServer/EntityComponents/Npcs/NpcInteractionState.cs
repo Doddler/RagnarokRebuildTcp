@@ -160,9 +160,9 @@ public class NpcInteractionState
     public void SkillReset() => Player?.SkillReset();
     public void StatPointReset() => Player?.StatPointReset();
     public bool HasLearnedSkill(CharacterSkill skill, int level = 1) => Player?.DoesCharacterKnowSkill(skill, level) ?? false;
-    public bool HasCart => ((Player?.GetData(PlayerStat.FollowerType) ?? 0) & (int)PlayerFollower.AnyCart) > 0;
-    public bool HasBird => ((Player?.GetData(PlayerStat.FollowerType) ?? 0) & (int)PlayerFollower.Falcon) > 0;
-    public bool HasPeco => ((Player?.GetData(PlayerStat.FollowerType) ?? 0) & (int)PlayerFollower.Mounted) > 0;
+    public bool HasCart => ((Player?.GetData(PlayerStat.FollowerType) ?? 0) & (int)CharacterFollowerState.AnyCart) > 0;
+    public bool HasBird => ((Player?.GetData(PlayerStat.FollowerType) ?? 0) & (int)CharacterFollowerState.Falcon) > 0;
+    public bool HasPeco => ((Player?.GetData(PlayerStat.FollowerType) ?? 0) & (int)CharacterFollowerState.Mounted) > 0;
 
     public void FocusNpc()
     {
@@ -634,17 +634,22 @@ public class NpcInteractionState
             < 91 => 3,
             _ => 4
         };
+
         var follower = cartStyle switch
         {
-            1 => PlayerFollower.Cart1,
-            2 => PlayerFollower.Cart2,
-            3 => PlayerFollower.Cart3,
-            4 => PlayerFollower.Cart4,
-            _ => PlayerFollower.Cart0
+            1 => CharacterFollowerState.Cart1,
+            2 => CharacterFollowerState.Cart2,
+            3 => CharacterFollowerState.Cart3,
+            4 => CharacterFollowerState.Cart4,
+            _ => CharacterFollowerState.Cart0
         };
 
-        Player.SetData(PlayerStat.FollowerType, cartStyle);
-        Player.PlayerFollower = follower;
+        var existing = (CharacterFollowerState)Player.GetData(PlayerStat.FollowerType) & (~CharacterFollowerState.AnyCart);
+        var newState = existing | follower;
+        
+
+        Player.SetData(PlayerStat.FollowerType, (int)newState);
+        Player.PlayerFollower = newState;
 
         CommandBuilder.UpdatePlayerFollowerStateAutoVis(Player);
     }

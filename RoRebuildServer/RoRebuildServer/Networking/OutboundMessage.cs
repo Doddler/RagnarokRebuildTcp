@@ -3,10 +3,13 @@ using System.Diagnostics;
 using System.Text;
 using K4os.Compression.LZ4;
 using Lidgren.Network;
+using MemoryPack;
 using Microsoft.Extensions.ObjectPool;
 using RebuildSharedData.Networking;
 using RebuildSharedData.Util;
+using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
+using RoRebuildServer.Simulation.Util;
 
 namespace RebuildZoneServer.Networking;
 
@@ -24,16 +27,18 @@ public class OutboundMessagePooledObjectPolicy : IPooledObjectPolicy<OutboundMes
     }
 }
 
-public class OutboundMessage : IBinaryMessageWriter
+public class OutboundMessage : IBinaryMessageWriter, IBufferWriter<byte>
 {
     public List<NetworkConnection> Clients;
     public byte[] Message;
     public bool IsInitialized;
     public bool IsQueued;
     public int Length => (position + 7) / 8; //convert position in bits to bytes
+    private SerializationBuffer? serializationBuffer;
 
     private int position;
 
+    public int Position => position;
 
     public OutboundMessage()
     {
@@ -58,6 +63,8 @@ public class OutboundMessage : IBinaryMessageWriter
         position = 0;
         IsInitialized = false;
         IsQueued = false;
+        if(serializationBuffer != null)
+            serializationBuffer.Reset();
     }
 
     public void WritePacketType(PacketType type)
@@ -172,5 +179,52 @@ public class OutboundMessage : IBinaryMessageWriter
         EnsureBufferSize(b.Length * 8 + 16);
         Write((ushort)b.Length);
         Write(b);
+    }
+
+    public void Advance(int count)
+    {
+        position += count * 8;
+    }
+
+    public Memory<byte> GetMemory(int sizeHint = 0)
+    {
+        var pos = (position + 7) / 8;
+
+        EnsureBufferSize(sizeHint + pos);
+        return new Memory<byte>(Message, pos, sizeHint);
+    }
+
+    public Span<byte> GetSpan(int sizeHint = 0)
+    {
+        var pos = (position + 7) / 8;
+        EnsureBufferSize(sizeHint + pos);
+        return new Span<byte>(Message, pos, sizeHint);
+    }
+
+    public void MemoryPackSerialize<T>(ref T obj) where T : struct
+    {
+        MemoryPackSerializer.Serialize(this, obj);
+    }
+
+    public void MemoryPackSerializeWithLength<T>(ref T obj) where T : struct
+    {
+        if (serializationBuffer == null)
+            serializationBuffer = new SerializationBuffer();
+        else
+            serializationBuffer.Clear();
+
+        MemoryPackSerializer.Serialize(serializationBuffer, obj);
+        var len = serializationBuffer.Position;
+
+        Write(len);
+
+        var pos = (position + 7) / 8;
+
+        EnsureBufferSize(len + pos);
+
+        //ServerLogger.Log($"MemoryPackSerialize pos {pos} len {len}");
+        serializationBuffer.CopyIntoBuffer(Message, pos);
+
+        position = (len + pos) * 8;
     }
 }

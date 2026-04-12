@@ -13,7 +13,7 @@ public class FalconMasteryHandler : SkillHandlerBase
         if (owner.Character.Type != CharacterType.Player)
             return;
 
-        owner.Player.PlayerFollower |= PlayerFollower.Falcon;
+        owner.Player.PlayerFollower |= CharacterFollowerState.Falcon;
         owner.AddStatusEffect(CharacterStatusEffect.Falcon, int.MaxValue);
     }
 
@@ -22,7 +22,7 @@ public class FalconMasteryHandler : SkillHandlerBase
         if (owner.Character.Type != CharacterType.Player)
             return;
 
-        owner.Player.PlayerFollower &= ~PlayerFollower.Falcon;
+        owner.Player.PlayerFollower &= ~CharacterFollowerState.Falcon;
         owner.RemoveStatusOfTypeIfExists(CharacterStatusEffect.Falcon);
     }
 

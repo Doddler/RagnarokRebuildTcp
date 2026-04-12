@@ -12,6 +12,7 @@ using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.Util;
 using Microsoft.AspNetCore.DataProtection;
+using RoRebuildServer.Logging;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -31,11 +32,13 @@ public partial class CombatEntity
 
                 var weapon = isMainHand ? Player.Equipment.MainHandWeapon : Player.Equipment.OffHandWeapon;
 
-                var mainStat = Player.WeaponClass == 12 ? dex : str;
-                var secondaryStat = Player.WeaponClass == 12 ? str : dex;
+                var isDexType = Player.MainWeaponClass >= (int)WeaponClass.Bow && Player.MainWeaponClass <= (int)WeaponClass.Whip;
+
+                var mainStat = isDexType ? dex : str;
+                var secondaryStat = isDexType ? str : dex;
                 var weaponLvl = weapon.WeaponLevel;
                 var weaponAttack = weapon.WeaponAttackPower;
-                if (Player.WeaponClass == 12) //bow
+                if (isDexType) //bow
                     atk1 = (int)(dex * (0.8f + 0.2f * weaponLvl)); //more or less pre-renewal
                 else
                     atk1 = (int)(float.Min(weaponAttack * 0.33f, mainStat) + dex * (0.8f + 0.2f * weaponLvl)); //kinda pre-renewal but primary stat makes up 1/3 of min
@@ -46,7 +49,7 @@ public partial class CombatEntity
 
                 var statAtk = GetStat(CharacterStat.AddAttackPower) + mainStat + (secondaryStat / 5) + (mainStat / 10) * (mainStat / 10);
                 var attackPercent = 100 + GetStat(CharacterStat.AddAttackPercent);
-                if (Player.WeaponClass == 12 && Player.Equipment.AmmoId > 0 && Player.Equipment.AmmoType == AmmoType.Arrow) //bow with arrow
+                if (Player.MainWeaponClass == (int)WeaponClass.Bow && Player.Equipment.AmmoId > 0 && Player.Equipment.AmmoType == AmmoType.Arrow) //bow with arrow
                     atk2 += Player.Equipment.AmmoAttackPower; //arrows don't affect min atk, only max
 
                 atk1 = (statAtk + atk1) * attackPercent / 100;
@@ -132,7 +135,7 @@ public partial class CombatEntity
                 if (attacker != null && attacker.Character.Type == CharacterType.Player)
                 {
                     attackElement = attacker.Player.Equipment.MainHandWeapon.WeaponElement;
-                    if (attacker.Player.WeaponClass == 12) //bows
+                    if (attacker.Player.MainWeaponClass == (int)WeaponClass.Bow) //bows
                     {
                         var arrowElement = attacker.Player.Equipment.AmmoElement;
                         if (arrowElement != AttackElement.None && arrowElement != AttackElement.Neutral)
@@ -342,7 +345,7 @@ public partial class CombatEntity
             if (Character.Type == CharacterType.Player)
             {
                 critRate += GetBonusCritRateVsTarget(target);
-                if (Player.WeaponClass == 16) //katar
+                if (Player.MainWeaponClass == (int)WeaponClass.Katar) //katar
                     critRate *= 2;
             }
 
@@ -381,7 +384,6 @@ public partial class CombatEntity
 
         var isRanged = IsAttackRanged(target, req, isPhysical, flags);
 
-
         if (isPhysical && !flags.HasFlag(AttackFlags.IgnoreNullifyingGroundMagic))
         {
             if (isRanged)
@@ -405,7 +407,6 @@ public partial class CombatEntity
                 }
             }
         }
-
 
         //---------------------------
         // Elemental Modifiers
@@ -538,7 +539,7 @@ public partial class CombatEntity
                     rangeMod += rangeMod * GetStat(CharacterStat.AddAttackRangedAttack) / 100;
 
                 if (isCrit)
-                    attackMultiplier *= 1 + GetStat(CharacterStat.AddCritDamageRaceFormless + (int)targetRace) / 100f;
+                    attackMultiplier *= 1 + (GetStat(CharacterStat.AddCritDamageRaceFormless + (int)targetRace) + GetStat(CharacterStat.AddCritDamageSmall + (int)defSize)) / 100f;
 
                 if (target.GetSpecialType() == CharacterSpecialType.Boss)
                     specialMod += GetStat(CharacterStat.AddAttackSpecialBoss);
@@ -547,12 +548,12 @@ public partial class CombatEntity
 
                 sizeMod += GetStat(CharacterStat.AddAttackSmallSize + (int)defSize);
 
-                defMod = int.Clamp(100 - GetStat(CharacterStat.IgnoreDefRaceFormless + (int)targetRace), 0, 100);
+                defMod = int.Clamp(100 - GetStat(CharacterStat.IgnoreDefRaceFormless + (int)targetRace) - GetStat(CharacterStat.IgnoreDefSmall + (int)defSize), 0, 100);
             }
 
             if (Character.Type == CharacterType.Player && (flags & AttackFlags.IgnoreWeaponRefine) == 0)
             {
-                var weapon = (flags & AttackFlags.OffHandWeapon) > 0 ? Player.Equipment.MainHandWeapon : Player.Equipment.OffHandWeapon;
+                var weapon = (flags & AttackFlags.OffHandWeapon) == 0 ? Player.Equipment.MainHandWeapon : Player.Equipment.OffHandWeapon;
                 addDamage += GameRandom.Next(weapon.MinRefineAtkBonus, weapon.MaxRefineAtkBonus); //works on both magic and physical!
             }
         }
@@ -629,7 +630,7 @@ public partial class CombatEntity
         di.HitCount = (byte)req.HitCount;
 
         //arrow travel time
-        if (Character.Type == CharacterType.Player && Player.WeaponClass == 12 && req.SkillSource == CharacterSkill.None)
+        if (Character.Type == CharacterType.Player && Player.MainWeaponClass == (int)WeaponClass.Bow && req.SkillSource == CharacterSkill.None)
             di.Time += Character.Position.DistanceTo(target.Character.Position) / ServerConfig.ArrowTravelTime;
 
         if (damage > 0 && isPhysical)
@@ -668,7 +669,7 @@ public partial class CombatEntity
 
         return di;
     }
-
+    
     private void ApplyQueuedCombatResult(ref DamageInfo di)
     {
         if (Character.State == CharacterState.Dead || !Entity.IsAlive() || Character.IsTargetImmune || Character.Map == null)
@@ -718,7 +719,7 @@ public partial class CombatEntity
         if (!hasHitStop)
             delayTime = 0f;
         if (di.Flags.HasFlag(DamageApplicationFlags.ReducedHitLock))
-            delayTime = 0.1f;
+            delayTime = 0.01f;
 
         var oldPosition = Character.Position;
 
@@ -750,6 +751,11 @@ public partial class CombatEntity
 
             Character.StopMovingImmediately();
             sendMove = false;
+
+            if (Character.Type == CharacterType.Monster)
+                Character.QueuedAction = QueuedAction.None;
+
+            ServerLogger.Debug($"{Character} knocked back, stop moving now. Current state: {Character.State}");
         }
 
         if (Character.Type == CharacterType.Monster)

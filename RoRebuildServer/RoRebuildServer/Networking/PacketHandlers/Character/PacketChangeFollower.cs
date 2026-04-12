@@ -80,7 +80,7 @@ public class PacketChangeFollower : IClientPacketHandler
                 return;
             }
 
-            player.PlayerFollower &= ~PlayerFollower.AnyCart;
+            player.PlayerFollower &= ~CharacterFollowerState.AnyCart;
             player.SetData(PlayerStat.FollowerType, id);
         }
 
