@@ -27,7 +27,6 @@ public class BattleNpc : IEntityAutoReset
 
     public void OnNotifyAttack()
     {
-
     }
 
     public void Update()

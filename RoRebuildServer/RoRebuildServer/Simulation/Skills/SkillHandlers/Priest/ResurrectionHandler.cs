@@ -20,7 +20,7 @@ public class ResurrectionHandler : SkillHandlerBase
             _ => 6f
         };
     }
-    
+
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect, bool isItemSource)
     {
         if (target == null || source == target || target.Character.Type != CharacterType.Player || target.Character.State != CharacterState.Dead)
@@ -35,7 +35,7 @@ public class ResurrectionHandler : SkillHandlerBase
         return SkillValidationResult.Success; //we skip the standard validation rules because it will check if the target is alive
     }
 
-    
+
     //failing pre-validation prevents sp from being taken
     public override bool PreProcessValidation(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect, bool isItemSource) =>
         isIndirect || isItemSource || CheckRequiredGemstone(source, BlueGemstone, true);
@@ -54,7 +54,7 @@ public class ResurrectionHandler : SkillHandlerBase
             return;
 
         source.ApplyCooldownForSupportSkillAction();
-        
+
         target.ClearDamageQueue();
         var hpPercent = lvl switch
         {

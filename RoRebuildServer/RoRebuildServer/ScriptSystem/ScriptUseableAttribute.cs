@@ -5,6 +5,5 @@ namespace RoRebuildServer.ScriptSystem
     [MeansImplicitUse]
     public class ScriptUseableAttribute : Attribute
     {
-
     }
 }

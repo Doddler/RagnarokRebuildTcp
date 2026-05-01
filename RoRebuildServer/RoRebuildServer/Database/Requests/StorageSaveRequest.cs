@@ -11,6 +11,7 @@ namespace RoRebuildServer.Database.Requests
         private readonly byte[] storageData;
         private readonly int storageSize;
         private readonly int existingId;
+
         public StorageSaveRequest(Player p)
         {
             //Debug.Assert(p.StorageInventory != null && p.StorageId >= 0);
@@ -28,19 +29,14 @@ namespace RoRebuildServer.Database.Requests
             if (existing > 0)
             {
                 await dbContext.StorageInventory.Where(u => u.Id == existing)
-                    .ExecuteUpdateAsync(s => 
+                    .ExecuteUpdateAsync(s =>
                         s.SetProperty(p => p.StorageData, storageData)
-                         .SetProperty(p => p.UncompressedSize, storageSize)
-                );
+                            .SetProperty(p => p.UncompressedSize, storageSize)
+                    );
             }
             else
             {
-                var storage = new StorageInventory()
-                {
-                    AccountId = Id,
-                    StorageData = storageData,
-                    UncompressedSize = storageSize
-                };
+                var storage = new StorageInventory() { AccountId = Id, StorageData = storageData, UncompressedSize = storageSize };
                 dbContext.StorageInventory.Add(storage);
                 await dbContext.SaveChangesAsync();
             }

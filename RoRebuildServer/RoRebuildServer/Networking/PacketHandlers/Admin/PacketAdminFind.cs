@@ -17,8 +17,8 @@ namespace RoRebuildServer.Networking.PacketHandlers.Admin
             var targetNameUpper = targetName.ToUpperInvariant();
             var ch = connection.Character!;
             var map = ch.Map;
-            
-            if(map == null) return;
+
+            if (map == null) return;
 
             WorldObject? closest = null;
             var distance = 999999;
@@ -28,10 +28,10 @@ namespace RoRebuildServer.Networking.PacketHandlers.Admin
                 foreach (var entity in map.Chunks[i].AllEntities)
                 {
                     var valid = false;
-                    if(entity.Type == EntityType.Monster)
+                    if (entity.Type == EntityType.Monster)
                         if (entity.Get<Monster>().MonsterBase.Code == targetNameUpper)
                             valid = true;
-                    if(entity.Type == EntityType.Player)
+                    if (entity.Type == EntityType.Player)
                         if (entity.Get<Player>().Name.ToUpper() == targetNameUpper)
                             valid = true;
 
@@ -52,7 +52,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Admin
                 }
             }
 
-            if(closest == null)
+            if (closest == null)
                 CommandBuilder.SkillFailed(connection.Player!, SkillValidationResult.Failure);
             else
             {

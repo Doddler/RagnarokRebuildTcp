@@ -20,9 +20,9 @@ public enum SkillCastFlags : byte
     None,
     HideSkillName = 1,
     HideCastBar = 2,
-    NoEffect = 4
+    NoEffect = 4,
+    EventOnHit = 8,
 }
-
 
 [Serializable]
 public class SkillData
@@ -35,7 +35,7 @@ public class SkillData
     public int MaxLevel;
     public int[] SpCost;
     public bool AdjustableLevel;
-    public string Description;
+    public string DescEn;
+    public string[][] Params;
     public CastInterruptionMode InterruptMode;
 }
-

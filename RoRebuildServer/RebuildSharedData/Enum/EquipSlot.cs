@@ -28,5 +28,4 @@ public enum EquipSlot
     Weapon = RightHand,
     Shield = LeftHand,
     None = -1,
-    
 }

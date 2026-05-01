@@ -16,9 +16,9 @@ public class MagicalAttackHandler : SkillHandlerBase
             return;
 
         var ratio = 1f + lvl * 0.5f;
-        
+
         var res = source.CalculateCombatResult(target, ratio, 1, AttackFlags.Magical, CharacterSkill.MagicalAttack);
-        
+
         source.ApplyCooldownForAttackAction(target);
         source.ExecuteCombatResult(res, false);
 

@@ -15,14 +15,15 @@ namespace RoRebuildServer.EntityComponents.Npcs
         private int speed;
         private float waitEndTime;
         private Entity currentTarget;
-        
+
         public const int StorageCount = 10;
 
         public int[] ValuesInt = new int[StorageCount];
         public string?[] ValuesString = new string[StorageCount];
 
-        public void SetSpeed(int newSpeed) => speed = newSpeed; 
+        public void SetSpeed(int newSpeed) => speed = newSpeed;
         public void Wait(int time) => waitEndTime = time / 1000f + Time.ElapsedTimeFloat;
+
         public bool FindPlayerNearby(int range)
         {
             Debug.Assert(Npc.Character.Map != null);
@@ -64,7 +65,7 @@ namespace RoRebuildServer.EntityComponents.Npcs
         //}
 
         public int Random(int min, int max) => GameRandom.Next(min, max);
-        
+
         public void LookAtTarget()
         {
             if (currentTarget.TryGet<WorldObject>(out var targetChara))
@@ -89,7 +90,7 @@ namespace RoRebuildServer.EntityComponents.Npcs
         {
             Debug.Assert(Npc.Character.Map != null);
             Npc.Character.MoveSpeed = speed / 1000f;
-            if(!Npc.Character.TryMove(new Position(x, y), 0))
+            if (!Npc.Character.TryMove(new Position(x, y), 0))
                 Npc.Character.Map.TeleportEntity(ref Npc.Entity, Npc.Character, new Position(x, y), CharacterRemovalReason.OutOfSight, false);
         }
 
@@ -115,7 +116,7 @@ namespace RoRebuildServer.EntityComponents.Npcs
             var curStep = Step;
 
             var res = Npc.Behavior.OnPath(Npc, this);
-            
+
             if (res == NpcPathUpdateResult.EndPath && Step == curStep)
                 Npc.EndPath();
 

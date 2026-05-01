@@ -33,7 +33,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.General
             var data = prim.GetPrimitiveData<EffectSpriteData>();
 
             data.FrameTime = 12;
-            data.Alpha = 255;
+            data.Alpha = color.a * 255f;
             data.Style = BillboardStyle.AxisAligned;
             data.BaseRotation = new Vector3(0, 0, 180);
             data.Color = color;

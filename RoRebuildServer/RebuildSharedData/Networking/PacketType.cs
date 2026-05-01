@@ -2,7 +2,6 @@
 
 public class ServerOnlyPacketAttribute : Attribute
 {
-
 }
 
 public enum PacketType : byte
@@ -13,6 +12,7 @@ public enum PacketType : byte
     EnterServer,
     Ping,
     [ServerOnlyPacket] CreateEntity,
+    [ServerOnlyPacket] CreateEntity2,
     StartWalk,
     PauseMove,
     ResumeMove,
@@ -70,7 +70,7 @@ public enum PacketType : byte
     ApplyStatusEffect,
     RemoveStatusEffect,
     SocketEquipment,
-    
+
     AdminRequestMove,
     AdminServerAction,
     AdminLevelUp,
@@ -83,7 +83,7 @@ public enum PacketType : byte
     AdminResetSkills,
     AdminResetStats,
     AdminCreateItem,
-    
+
     NpcClick,
     [ServerOnlyPacket] NpcInteraction,
     NpcAdvance,
@@ -103,10 +103,10 @@ public enum PacketType : byte
     [ServerOnlyPacket] ServerEvent,
     [ServerOnlyPacket] ServerResult,
     DebugEntry,
-    
+
     MemoMapLocation,
     DeleteCharacter,
-    
+
     AdminCharacterAction,
     ChangePlayerSpecialActionState,
     [ServerOnlyPacket] RefreshGrantedSkills,
@@ -126,6 +126,9 @@ public enum PacketType : byte
     VendingPurchaseFromStore,
 
     StartWalkInDirection,
+    ResetMotion,
+
+    ToggleActivatedState,
 }
 
 public enum MessageType : byte
@@ -147,6 +150,7 @@ public enum AdminAction : byte
     SignalNpc,
     ShutdownServer,
 }
+
 public enum ClientTextCommand : byte
 {
     Where,

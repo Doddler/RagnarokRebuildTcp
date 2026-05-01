@@ -17,7 +17,7 @@ public class GrowList<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Add(T item)
     {
-        if(Count >= Items.Length)
+        if (Count >= Items.Length)
             Array.Resize(ref Items, Count << 1);
 
         Items[Count++] = item;

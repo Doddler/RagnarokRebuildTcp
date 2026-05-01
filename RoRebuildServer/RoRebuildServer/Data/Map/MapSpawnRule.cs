@@ -20,7 +20,7 @@ public class MapSpawnRule
 
     public void LockToSpawnZone() => LockToSpawn = true;
 
-    public MapSpawnRule(int id, MonsterDatabaseInfo monsterDatabaseInfo, Area spawnArea, int count, int minSpawnTime, int maxSpawnTime, 
+    public MapSpawnRule(int id, MonsterDatabaseInfo monsterDatabaseInfo, Area spawnArea, int count, int minSpawnTime, int maxSpawnTime,
         CharacterDisplayType displayType, bool useStrictZone = false, bool guaranteeInZone = false)
     {
         Id = id;
@@ -34,7 +34,7 @@ public class MapSpawnRule
         GuaranteeInZone = guaranteeInZone;
         DisplayType = displayType;
     }
-    
+
     //public MapSpawnRule(int id, MonsterDatabaseInfo monsterDatabaseInfo, int count, int minSpawnTime, int maxSpawnTime, 
     //    bool useStrictZone = false, bool guaranteeInZone = false)
     //{
@@ -49,5 +49,4 @@ public class MapSpawnRule
     //}
 
     public MapSpawnRule Clone() => new MapSpawnRule(Id, MonsterDatabaseInfo, SpawnArea, Count, MinSpawnTime, MaxSpawnTime, DisplayType, UseStrictZone, GuaranteeInZone);
-
 }

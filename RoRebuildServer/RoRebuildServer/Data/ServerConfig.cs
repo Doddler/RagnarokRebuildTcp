@@ -45,7 +45,7 @@ public static class ServerConfig
 
     public static IConfiguration GetConfig()
     {
-        if(configuration != null)
+        if (configuration != null)
             return configuration;
 
         configuration = new ConfigurationBuilder()

@@ -11,7 +11,7 @@ public class PacketSay : IClientPacketHandler
     public void Process(NetworkConnection connection, InboundMessage msg)
     {
         var map = connection.Character?.Map;
-         
+
         if (!connection.IsConnectedAndInGame || map == null)
             return;
 
@@ -28,7 +28,7 @@ public class PacketSay : IClientPacketHandler
             return;
 
 #if DEBUG
-        if(type == PlayerChatType.Shout)
+        if (type == PlayerChatType.Shout)
             ServerLogger.Log($"Shout chat message from [{connection.Player!.Name}]: {text}");
         else
             ServerLogger.Log($"Chat message from [{connection.Player!.Name}]: {text}");
@@ -61,6 +61,7 @@ public class PacketSay : IClientPacketHandler
                 CommandBuilder.ErrorMessage(connection.Player, $"You must wait more time before using shout again.");
                 return;
             }
+
             ServerLogger.Log($"Shout chat message from [{connection.Player!.Name}]: {text}");
             CommandBuilder.AddAllPlayersAsRecipients();
             if (p.ShoutCooldown < Time.ElapsedTime)
@@ -70,9 +71,9 @@ public class PacketSay : IClientPacketHandler
         }
         else
             CommandBuilder.AddRecipients(map.Players); //send to everyone on the map
+
         //map.AddVisiblePlayersAsPacketRecipients(connection.Character);
         CommandBuilder.SendSayMulti(connection.Character, connection.Character!.Name, text, type);
         CommandBuilder.ClearRecipients();
     }
-
 }

@@ -24,7 +24,7 @@ public class DarkBlessing : SkillHandlerBase
         di.AttackSkill = CharacterSkill.DarkBlessing;
 
         if (source.TestHitVsEvasionWithAttackerPenalty(target))
-        {            
+        {
             var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.DarkBlessing, 1f * lvl, source.Character.Id);
             target.AddStatusEffect(status);
         }

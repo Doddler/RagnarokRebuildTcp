@@ -54,6 +54,7 @@ public struct WeaponAttackInfo
     public int WeaponClass => WeaponInfo?.WeaponClass ?? 0;
     public int WeaponAttackPower => WeaponInfo?.Attack ?? 0;
     public int WeaponLevel => WeaponInfo?.WeaponLevel ?? 0;
+
     public AttackElement WeaponElement
     {
         get
@@ -65,6 +66,7 @@ public struct WeaponAttackInfo
     }
 
     public WeaponAttackInfo() => Reset();
+
     public WeaponAttackInfo(WeaponInfo info, int minRefineAtkBonus, int maxRefineAtkBonus)
     {
         WeaponInfo = info;
@@ -175,9 +177,10 @@ public class ItemEquipState
             ItemIds[i] = -1;
             isTwoHandedWeapon = false;
         }
+
         for (var i = 0; i < 3; i++)
             headgearMultiSlotInfo[i] = HeadgearPosition.None;
-        
+
         MainHandWeapon.Reset();
         OffHandWeapon.Reset();
         RemoveEquipEffectForAmmo();
@@ -242,6 +245,7 @@ public class ItemEquipState
                 UnEquipItem(EquipSlot.Shield);
                 updateAppearance = true;
             }
+
             if (equipInfo.EquipPosition.HasFlag(EquipPosition.Armor)) UnEquipItem(EquipSlot.Body);
             if (equipInfo.EquipPosition.HasFlag(EquipPosition.Garment)) UnEquipItem(EquipSlot.Garment);
             if (equipInfo.EquipPosition.HasFlag(EquipPosition.Boots)) UnEquipItem(EquipSlot.Footgear);
@@ -296,6 +300,7 @@ public class ItemEquipState
             if (info.HeadPosition.HasFlag(HeadgearPosition.Mid)) return EquipSlot.HeadMid;
             if (info.HeadPosition.HasFlag(HeadgearPosition.Bottom)) return EquipSlot.HeadBottom;
         }
+
         if (info.EquipPosition.HasFlag(EquipPosition.Body)) return EquipSlot.Body;
         if (info.EquipPosition.HasFlag(EquipPosition.Garment)) return EquipSlot.Garment;
         if (info.EquipPosition.HasFlag(EquipPosition.Shield)) return EquipSlot.Shield;
@@ -356,7 +361,7 @@ public class ItemEquipState
 
         UnEquipItem(equipSlot);
 
-        if(equipSlot == EquipSlot.Weapon)
+        if (equipSlot == EquipSlot.Weapon)
             isTwoHandedWeapon = weaponInfo.IsTwoHanded;
 
         ItemSlots[(int)equipSlot] = bagId;
@@ -549,6 +554,7 @@ public class ItemEquipState
                     MainHandWeapon = weaponInfo;
                     WeaponRange = weapon.Range;
                 }
+
                 if (slot == EquipSlot.Shield)
                     OffHandWeapon = weaponInfo;
 
@@ -685,7 +691,8 @@ public class ItemEquipState
                     continue;
 
                 if (!DataManager.ItemList.TryGetValue(slotItem, out var slotData))
-                    throw new Exception($"Attempting to run RunAllOnEquip event for item {item.Id} (socketed in a {item.Id}), but it doesn't appear to exist in the item database."); ;
+                    throw new Exception($"Attempting to run RunAllOnEquip event for item {item.Id} (socketed in a {item.Id}), but it doesn't appear to exist in the item database.");
+                ;
 
                 SubEquipItemCount(slotData.Id);
                 slotData.Interaction?.OnUnequip(Player, Player.CombatEntity, this, default, slot);
@@ -711,6 +718,7 @@ public class ItemEquipState
                 i--; //we've moved the last element into our current position, so we step the enumerator back by 1
             }
         }
+
         if (removedGrantedSkill)
             CommandBuilder.RefreshGrantedSkills(Player);
     }
@@ -738,6 +746,7 @@ public class ItemEquipState
                     else
                         Player.AttackVersusTag[effect.Value] = newVal;
                 }
+
                 return false;
             case CharacterStat.ResistVsTag:
                 if (Player.ResistVersusTag != null &&
@@ -749,6 +758,7 @@ public class ItemEquipState
                     else
                         Player.ResistVersusTag[effect.Value] = newVal;
                 }
+
                 return false;
             case CharacterStat.DoubleAttackChance:
                 DoubleAttackModifiers--;
@@ -761,7 +771,6 @@ public class ItemEquipState
 
     private bool IsComboPrereqsMet(string comboName, int curItem = -1)
     {
-
         var itemsInSet = DataManager.ItemsInCombo[comboName];
 
         foreach (var item in itemsInSet)
@@ -888,7 +897,7 @@ public class ItemEquipState
 
         return false;
     }
-    
+
     public void AutoSpellOnAttack(CharacterSkill skill, int level, int chance, SkillPreferredTarget target = SkillPreferredTarget.Any)
     {
         var cast = new AutoSpellEffect()
@@ -1057,7 +1066,6 @@ public class ItemEquipState
             Player.CombatEntity.StatusContainer?.SetStatusToKeepOnDeath(statusEffect);
         else
             Player.CombatEntity.StatusContainer?.RemoveStatusFromKeepOnDeath(statusEffect);
-
     }
 
     public void SetArmorElement(CharacterElement element)
@@ -1086,6 +1094,7 @@ public class ItemEquipState
             if (itemId > 0)
                 bw.Write(Player.Inventory.GetGuidByUniqueItemId(itemId).ToByteArray()); //we have a bag id, we want to store the guid
         }
+
         bw.Write(AmmoId);
     }
 

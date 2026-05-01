@@ -50,7 +50,6 @@ public class ServerMapConfig : IServerMapConfig
     public void CreateSpawnEvent(string ev, int interval, string mobname, int spawnPer, int maxSpawn,
         int respawnTime)
     {
-
     }
 
     public void ApplySpawnsToMap()
@@ -60,7 +59,8 @@ public class ServerMapConfig : IServerMapConfig
             var spawn = SpawnRules[i];
 
             if (!spawn.SpawnArea.IsZero && (spawn.SpawnArea.Size < 10 || (spawn.SpawnArea.Width <= 5 && spawn.SpawnArea.Height <= 5)) && spawn.MaxSpawnTime <= ServerConfig.DebugConfig.MinSpawnTime)
-                ServerLogger.LogWarning($"Spawn of {spawn.Count}x {spawn.MonsterDatabaseInfo.Code} on map {Map.Name} is set to instantly respawn within a small area ({spawn.SpawnArea}). Is this intended?");
+                ServerLogger.LogWarning(
+                    $"Spawn of {spawn.Count}x {spawn.MonsterDatabaseInfo.Code} on map {Map.Name} is set to instantly respawn within a small area ({spawn.SpawnArea}). Is this intended?");
 
             for (var j = 0; j < spawn.Count; j++)
             {
@@ -105,9 +105,9 @@ public class ServerMapConfig : IServerMapConfig
         var minTime = ServerConfig.DebugConfig.MinSpawnTime;
         var maxTime = ServerConfig.DebugConfig.MaxSpawnTime;
 
-        if ( minTime > 0 && respawn < minTime)
+        if (minTime > 0 && respawn < minTime)
             respawn = minTime;
-        
+
         var respawnMax = respawn + variance;
 
         if (maxTime > 0 && respawn > maxTime)
@@ -116,7 +116,7 @@ public class ServerMapConfig : IServerMapConfig
             respawnMax = maxTime;
 
         DataManager.ServerConfigScriptManager.SetMonsterSpawnTime(mobStats, Map.Name, ref respawn, ref respawnMax);
-        
+
         area = area.ClipArea(Map.MapBounds);
 
         var displayType = CharacterDisplayType.Monster;
@@ -134,15 +134,15 @@ public class ServerMapConfig : IServerMapConfig
 
         SpawnRules.Add(spawn);
 
-        if(flags.HasFlag(SpawnCreateFlags.LockToSpawnZone))
+        if (flags.HasFlag(SpawnCreateFlags.LockToSpawnZone))
             spawn.LockToSpawnZone();
-        
+
         return spawn;
     }
 
     public MapSpawnRule? CreateSpawn(string mobName, int count, int respawn, int variance, SpawnCreateFlags flags = SpawnCreateFlags.None) =>
         CreateSpawn(mobName, count, Area.Zero, respawn, variance, flags);
-    
+
     public MapSpawnRule? CreateSpawn(string mobName, int count, Area area, int respawn, SpawnCreateFlags flags = SpawnCreateFlags.None) =>
         CreateSpawn(mobName, count, area, respawn, 0, flags);
 
@@ -154,5 +154,4 @@ public class ServerMapConfig : IServerMapConfig
 
     public MapSpawnRule? CreateSpawn(string mobName, int count, SpawnCreateFlags flags = SpawnCreateFlags.None) =>
         CreateSpawn(mobName, count, 0, 0, flags);
-
 }

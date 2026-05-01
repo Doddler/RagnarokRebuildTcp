@@ -89,9 +89,9 @@ namespace RoRebuildServer.Database.Requests
                 CleanUp();
                 return;
             }
-            
+
             CleanUp();
-            
+
             var req = new LoadCharacterRequest(accountId, ch.Name);
             RoDatabase.EnqueueDbRequest(req);
         }

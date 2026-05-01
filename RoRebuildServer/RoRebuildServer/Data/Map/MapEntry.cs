@@ -26,7 +26,6 @@ public class MapEntry
                 flags |= flag;
             else
                 ServerLogger.LogWarning($"Could not parse map flag {str} for map {Code}");
-
         }
 
         return flags;
@@ -34,7 +33,8 @@ public class MapEntry
 }
 
 [Flags]
-public enum MapFlags {
+public enum MapFlags
+{
     None = 0,
     CanMemo = 1 << 1,
     NoTeleport = 1 << 2,

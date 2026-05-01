@@ -176,6 +176,8 @@ namespace Assets.Scripts.Editor
                         var obj = new GameObject(e.Name);
                         var renderer = obj.AddComponent<RoEffectRenderer>();
                         var sorter = obj.AddComponent<SortingGroup>();
+                        
+                        obj.transform.localScale = new Vector3(e.Scale, e.Scale, e.Scale);
                         //var billboard = obj.AddComponent<Billboard>();
 
                         if (!string.IsNullOrWhiteSpace(e.SoundFile))

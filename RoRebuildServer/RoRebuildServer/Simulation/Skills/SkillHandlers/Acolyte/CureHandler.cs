@@ -21,7 +21,7 @@ public class CureHandler : SkillHandlerBase
 
         target.CleanseStatusEffect(StatusCleanseTarget.Blind | StatusCleanseTarget.Confusion | StatusCleanseTarget.Silence);
 
-        if(!isIndirect)
+        if (!isIndirect)
             source.ApplyAfterCastDelay(0.5f);
         var res = DamageInfo.SupportSkillResult(source.Entity, target.Entity, CharacterSkill.Cure);
         GenericCastAndInformSupportSkill(source, target, CharacterSkill.Cure, lvl, ref res, isIndirect, true);

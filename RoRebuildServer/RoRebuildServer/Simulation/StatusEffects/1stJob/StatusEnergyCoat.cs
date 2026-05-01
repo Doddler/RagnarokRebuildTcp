@@ -10,7 +10,6 @@ namespace RoRebuildServer.Simulation.StatusEffects._1stJob;
 [StatusEffectHandler(CharacterStatusEffect.EnergyCoat, StatusClientVisibility.Everyone, StatusEffectFlags.NoSave)]
 public class StatusEnergyCoat : StatusEffectBase
 {
-
     public override StatusUpdateMode UpdateMode => StatusUpdateMode.OnCalculateDamageTaken;
 
     public override StatusUpdateResult OnCalculateDamage(CombatEntity ch, ref StatusEffectState state, ref AttackRequest req, ref DamageInfo info)
@@ -30,7 +29,7 @@ public class StatusEnergyCoat : StatusEffectBase
 
         var percent = float.Clamp(curSp / (float)maxSp, 0.2f, 1f);
         reduction = percent * 0.3f;
-        
+
         spCost = (int)(maxSp * percent * 0.03f);
         if (spCost < 0)
             spCost = 1;
@@ -39,7 +38,7 @@ public class StatusEnergyCoat : StatusEffectBase
         if (spCost > curSp)
             shouldEndStatus = true;
         ch.Player.TakeSpValue(spCost);
-    
+
         //var origDamage = info.Damage;
 
         info.Damage = int.Clamp((int)(info.Damage * (1 - reduction)), 1, info.Damage);
@@ -51,11 +50,9 @@ public class StatusEnergyCoat : StatusEffectBase
 
     public override void OnApply(CombatEntity ch, ref StatusEffectState state)
     {
-        
     }
 
     public override void OnExpiration(CombatEntity ch, ref StatusEffectState state)
     {
-        
     }
 }

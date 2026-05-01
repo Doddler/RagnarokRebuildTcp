@@ -32,10 +32,13 @@ public class LordOfVermilionHandler : SkillHandlerBase
 
         var e = World.Instance.CreateEvent(source.Entity, map, "LordOfVermilionObjectEvent", position, lvl, 0, 0, 0, null);
         ch.AttachEvent(e);
-        source.ApplyCooldownForSupportSkillAction();
 
         if (!isIndirect)
+        {
+            source.ApplyAfterCastDelay(3f);
+            source.ApplyCooldownForSupportSkillAction();
             CommandBuilder.SkillExecuteAreaTargetedSkillAutoVis(ch, position, CharacterSkill.LordOfVermilion, lvl);
+        }
     }
 }
 

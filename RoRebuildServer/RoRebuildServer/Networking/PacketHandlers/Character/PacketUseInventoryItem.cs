@@ -24,7 +24,7 @@ public class PacketUseInventoryItem : IClientPacketHandler
 
         if (!connection.Player.CanPerformCharacterActions())
             return;
-        
+
         var character = connection.Character;
         var player = connection.Player;
 
@@ -36,7 +36,7 @@ public class PacketUseInventoryItem : IClientPacketHandler
         //obviously you should check if the item is in your inventory, but we have no inventory!
 
         player.AddInputActionDelay(InputActionCooldownType.UseItem);
-        
+
         if (!DataManager.ItemList.TryGetValue(itemId, out var item) || !DataManager.UseItemInfo.TryGetValue(itemId, out var useInfo))
         {
             ServerLogger.LogError($"User is attempting to use invalid item id {itemId}. Due to the error, the player will be disconnected.");

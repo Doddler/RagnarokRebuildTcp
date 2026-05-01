@@ -23,7 +23,7 @@ public class OkolnirEventBattle : INpcLoader
     }
 
     record OkolnirDamageList(Player Player, int Damage);
-    
+
     private static void OnOkolnirEnd(Monster boss)
     {
         if (boss.Character.Map == null)
@@ -35,7 +35,7 @@ public class OkolnirEventBattle : INpcLoader
         var list = new List<OkolnirDamageList>(boss.TotalDamageReceived.Count);
         var hashes = new HashSet<int>();
 
-        var maxChance = 10;
+        //var maxChance = 10;
         foreach (var (entity, dmg) in boss.TotalDamageReceived)
         {
             if (entity.TryGet<Player>(out var player))
@@ -44,7 +44,7 @@ public class OkolnirEventBattle : INpcLoader
                 list.Add(new OkolnirDamageList(player, dmg));
             }
         }
-        
+
         var count = 0;
         list.Sort((a, b) => b.Damage.CompareTo(a.Damage));
 
@@ -85,6 +85,5 @@ public class OkolnirEventBattle : INpcLoader
 
             d.Player.CreateItemInInventory(new ItemReference(item, 1));
         }
-
     }
 }

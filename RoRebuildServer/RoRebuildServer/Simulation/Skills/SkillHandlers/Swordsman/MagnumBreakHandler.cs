@@ -18,7 +18,7 @@ public class MagnumBreakHandler : SkillHandlerBase
     {
         var map = source.Character.Map;
         Debug.Assert(map != null);
-        
+
         map.AddVisiblePlayersAsPacketRecipients(source.Character);
 
         var blastDistance = 2;

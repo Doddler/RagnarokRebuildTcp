@@ -78,7 +78,7 @@ public class Party
 
         PartyId = existingParty.PartyId;
         PartyName = existingParty.PartyName;
-        
+
         foreach (var m in existingParty.Characters)
         {
             idCount++;
@@ -189,7 +189,7 @@ public class Party
         else
             RoDatabase.EnqueueDbRequest(new UpdatePartyStatusRequest(player.Id, 0));
     }
-    
+
     public void LogMemberIn(Player p)
     {
         if (!PlayerIdToMemberId.TryGetValue(p.Id, out var memberId))
@@ -275,7 +275,7 @@ public class Party
 
         //if we were cool we'd put this in a pool
     }
-    
+
     public void UpdateOfflineMembers()
     {
         foreach (var (id, m) in PartyMemberInfo)
@@ -355,7 +355,7 @@ public class Party
         if (!ZoneWorker.IsMainThread)
         {
             ServerLogger.LogWarning(
-                $"Warning! Writing to the party list while outside of the main thread is dangerous! " + 
+                $"Warning! Writing to the party list while outside of the main thread is dangerous! " +
                 "You should try to make sure all party changes are scheduled correctly on the main thread.");
             return false;
         }

@@ -11,6 +11,8 @@ namespace Assets.Scripts.Effects.PrimitiveData
         public float OuterRadiusSpeed;
         public float OuterRadiusAccel;
         public float Height;
+        public float HeightSpeed;
+        public float HeightAccel;
         public float FadeOutLength;
         public float AlphaSpeed;
         public float MaxAlpha;

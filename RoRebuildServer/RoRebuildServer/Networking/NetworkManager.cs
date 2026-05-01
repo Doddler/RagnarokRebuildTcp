@@ -101,8 +101,7 @@ public class NetworkManager
 
         inboundChannel = new NetQueue<InboundMessage>(100);
         outboundChannel = new NetQueue<OutboundMessage>(100);
-        disconnectList = Channel.CreateUnbounded<NetworkConnection>(new UnboundedChannelOptions
-        { SingleReader = true, SingleWriter = false });
+        disconnectList = Channel.CreateUnbounded<NetworkConnection>(new UnboundedChannelOptions { SingleReader = true, SingleWriter = false });
 
         outboundPool = new DefaultObjectPool<OutboundMessage>(new OutboundMessagePooledObjectPolicy(), 10);
         inboundPool = new DefaultObjectPool<InboundMessage>(new DefaultPooledObjectPolicy<InboundMessage>(), 10);
@@ -306,7 +305,6 @@ public class NetworkManager
                 Players.Remove(connection);
 
             connection.CancellationSource.Cancel();
-
         }
         finally
         {
@@ -371,7 +369,6 @@ public class NetworkManager
                 {
                     ServerLogger.Log("Ignoring message from non-confirmed client...");
                 }
-
             }
             catch (Exception e)
             {
@@ -726,7 +723,6 @@ public class NetworkManager
         try
         {
             result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), timeoutToken);
-
         }
         catch (OperationCanceledException)
         {
@@ -944,5 +940,4 @@ public class NetworkManager
 
         await disconnectList.Writer.WriteAsync(playerConnection);
     }
-
 }

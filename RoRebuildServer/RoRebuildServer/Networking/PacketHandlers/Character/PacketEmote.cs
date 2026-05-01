@@ -35,8 +35,8 @@ public class PacketEmote : IClientPacketHandler
         }
 
         var player = connection.Player;
-        if (player.InInputActionCooldown() || player.LastEmoteTime + 1.8f > Time.ElapsedTimeFloat 
-                                      || (player.CombatEntity.BodyState & (BodyStateFlags.Silence)) > 0)
+        if (player.InInputActionCooldown() || player.LastEmoteTime + 1.8f > Time.ElapsedTimeFloat
+                                           || (player.CombatEntity.BodyState & (BodyStateFlags.Silence)) > 0)
             return;
 
         if (emote >= 58 && emote <= 63)
@@ -49,7 +49,7 @@ public class PacketEmote : IClientPacketHandler
                 return;
             }
         }
-        
+
         connection.Character.Map.AddVisiblePlayersAsPacketRecipients(connection.Character);
         CommandBuilder.SendEmoteMulti(connection.Character, emote);
         CommandBuilder.ClearRecipients();

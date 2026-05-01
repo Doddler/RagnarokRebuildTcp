@@ -8,7 +8,7 @@ public static class EntityManager
 
     internal static int ComponentTypeCount;
 
-    private static ReaderWriterLockSlim clientLock = new();
+    private static readonly ReaderWriterLockSlim clientLock = new();
 
     public static void Initialize(int initialCapacity)
     {
@@ -23,9 +23,9 @@ public static class EntityManager
             Array.Resize(ref Entities, Entities.Length * 2);
 
         var data = Entities[id];
-       
+
         data.Type = type;
-        if(data.Gen == 0)
+        if (data.Gen == 0)
             data.Gen = 1;
 
         //we don't advance gen here, we advance it on recycle so we can look up
@@ -57,26 +57,25 @@ public static class EntityManager
                 var id = FreeEntities.Pop();
                 var entityData = GenerateEntityData(type, id);
 
-                return new Entity() { Id = id, Gen = entityData.Gen, TypeId = (byte)type };
+                return new Entity { Id = id, Gen = entityData.Gen, TypeId = (byte)type };
             }
 
             if (EntitiesCreated < Entities.Length)
             {
-                
                 var id = EntitiesCreated;
                 var entityData = GenerateEntityData(type, id);
                 EntitiesCreated++;
 
-                return new Entity() { Id = id, Gen = entityData.Gen, TypeId = (byte)type };
+                return new Entity { Id = id, Gen = entityData.Gen, TypeId = (byte)type };
             }
-   
+
             Array.Resize(ref Entities, Entities.Length << 1);
 
             var id2 = EntitiesCreated;
             var data = GenerateEntityData(type, id2);
             EntitiesCreated++;
 
-            return new Entity() { Id = id2, Gen = data.Gen, TypeId = (byte)type };
+            return new Entity { Id = id2, Gen = data.Gen, TypeId = (byte)type };
         }
         finally
         {
@@ -96,7 +95,7 @@ public static class EntityManager
             FreeEntities.Add(e.Id);
 
             var entity = Entities[e.Id];
-            
+
             for (var i = 0; i < EntityComponentManager.MaxComponentPerType; i++)
             {
                 EntityComponentManager.RecycleComponent(entity.Type, i, entity.Components[i]);

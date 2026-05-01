@@ -41,7 +41,7 @@
 //    public fixed int Data[4];
 
 //    public static int Size => 32; //Id(4) + Count(2) + Flags(2) + UniqueId(8) + Data(4 * 4)
-    
+
 //    public void Serialize(IBinaryMessageWriter msg)
 //    {
 //        msg.Write(Id);

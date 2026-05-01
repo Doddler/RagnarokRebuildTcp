@@ -12,6 +12,7 @@ using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Skills;
 using RoRebuildServer.Simulation.Util;
 using Microsoft.AspNetCore.DataProtection;
+using RoRebuildServer.Logging;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -31,11 +32,13 @@ public partial class CombatEntity
 
                 var weapon = isMainHand ? Player.Equipment.MainHandWeapon : Player.Equipment.OffHandWeapon;
 
-                var mainStat = Player.WeaponClass == 12 ? dex : str;
-                var secondaryStat = Player.WeaponClass == 12 ? str : dex;
+                var isDexType = Player.MainWeaponClass >= (int)WeaponClass.Bow && Player.MainWeaponClass <= (int)WeaponClass.Whip;
+
+                var mainStat = isDexType ? dex : str;
+                var secondaryStat = isDexType ? str : dex;
                 var weaponLvl = weapon.WeaponLevel;
                 var weaponAttack = weapon.WeaponAttackPower;
-                if (Player.WeaponClass == 12) //bow
+                if (isDexType) //bow
                     atk1 = (int)(dex * (0.8f + 0.2f * weaponLvl)); //more or less pre-renewal
                 else
                     atk1 = (int)(float.Min(weaponAttack * 0.33f, mainStat) + dex * (0.8f + 0.2f * weaponLvl)); //kinda pre-renewal but primary stat makes up 1/3 of min
@@ -46,7 +49,7 @@ public partial class CombatEntity
 
                 var statAtk = GetStat(CharacterStat.AddAttackPower) + mainStat + (secondaryStat / 5) + (mainStat / 10) * (mainStat / 10);
                 var attackPercent = 100 + GetStat(CharacterStat.AddAttackPercent);
-                if (Player.WeaponClass == 12 && Player.Equipment.AmmoId > 0 && Player.Equipment.AmmoType == AmmoType.Arrow) //bow with arrow
+                if (Player.MainWeaponClass == (int)WeaponClass.Bow && Player.Equipment.AmmoId > 0 && Player.Equipment.AmmoType == AmmoType.Arrow) //bow with arrow
                     atk2 += Player.Equipment.AmmoAttackPower; //arrows don't affect min atk, only max
 
                 atk1 = (statAtk + atk1) * attackPercent / 100;
@@ -132,7 +135,7 @@ public partial class CombatEntity
                 if (attacker != null && attacker.Character.Type == CharacterType.Player)
                 {
                     attackElement = attacker.Player.Equipment.MainHandWeapon.WeaponElement;
-                    if (attacker.Player.WeaponClass == 12) //bows
+                    if (attacker.Player.MainWeaponClass == (int)WeaponClass.Bow) //bows
                     {
                         var arrowElement = attacker.Player.Equipment.AmmoElement;
                         if (arrowElement != AttackElement.None && arrowElement != AttackElement.Neutral)
@@ -192,7 +195,8 @@ public partial class CombatEntity
             if (isPhysical)
             {
                 //armor def.
-                var def = GetEffectiveStat(CharacterStat.Def);
+                var def = GetStat(CharacterStat.Def);
+                var refineDef = GetStat(CharacterStat.EquipmentRefineDef);
 
                 //soft def
                 if (!flags.HasFlag(AttackFlags.IgnoreSubDefense))
@@ -226,7 +230,7 @@ public partial class CombatEntity
                         else
                             subDef = vit + GameRandom.NextInclusive(0, 20000) % vitRng;
                     }
-                    
+
                     subDef = subDef * (100 + GetStat(CharacterStat.AddSoftDefPercent)) / 100;
                 }
 
@@ -240,7 +244,7 @@ public partial class CombatEntity
                 else
                 {
                     //convert def to damage reduction %
-                    defCut = MathHelper.DefValueLookup(def);
+                    defCut = MathHelper.DefValueLookup(def, refineDef);
 
                     if (def >= 200)
                         subDef = 999999;
@@ -285,6 +289,7 @@ public partial class CombatEntity
         var attackElement = req.Element;
         var attackMultiplier = req.AttackMultiplier;
         var attackerType = Character.Type;
+        var attackerRace = GetRace();
         var defenderType = target.Character.Type;
         var defenderElement = target.GetElement();
         var isPhysical = req.Flags.HasFlag(AttackFlags.Physical);
@@ -320,9 +325,16 @@ public partial class CombatEntity
         if (isPhysical && !flags.HasFlag(AttackFlags.IgnoreEvasion))
             evade = !TestHitVsEvasion(target, req.AccuracyRatio, attackerPenalty * (5 + attackerPenalty / 2));
 
+        if (isPhysical && (GetSpecialType() == CharacterSpecialType.Boss || attackerRace == CharacterRace.Demon ||
+                           attackerRace == CharacterRace.Insect))
+        {
+            req.Flags |= AttackFlags.CanAttackHidden;
+            flags |= AttackFlags.CanAttackHidden;
+        }
+
         if (target.HasBodyState(BodyStateFlags.Hidden) && !flags.HasFlag(AttackFlags.IgnoreEvasion)
-                                                            && !flags.HasFlag(AttackFlags.CanAttackHidden)
-                                                            && !(attackElement == AttackElement.Earth && flags.HasFlag(AttackFlags.Magical))) //earth magic breaks hide
+                                                       && !flags.HasFlag(AttackFlags.CanAttackHidden)
+                                                       && !(attackElement == AttackElement.Earth && flags.HasFlag(AttackFlags.Magical))) //earth magic breaks hide
             evade = true;
 
         //critical hit
@@ -333,7 +345,7 @@ public partial class CombatEntity
             if (Character.Type == CharacterType.Player)
             {
                 critRate += GetBonusCritRateVsTarget(target);
-                if (Player.WeaponClass == 16) //katar
+                if (Player.MainWeaponClass == (int)WeaponClass.Katar) //katar
                     critRate *= 2;
             }
 
@@ -372,7 +384,6 @@ public partial class CombatEntity
 
         var isRanged = IsAttackRanged(target, req, isPhysical, flags);
 
-
         if (isPhysical && !flags.HasFlag(AttackFlags.IgnoreNullifyingGroundMagic))
         {
             if (isRanged)
@@ -396,7 +407,6 @@ public partial class CombatEntity
                 }
             }
         }
-
 
         //---------------------------
         // Elemental Modifiers
@@ -497,7 +507,7 @@ public partial class CombatEntity
 
             if (attackerType == CharacterType.Player && isPhysical) //only players and physical attacks get these bonuses
             {
-                racialMod += GetStat(CharacterStat.AddAttackRaceFormless + (int)targetRace);
+                racialMod += racialMod * GetStat(CharacterStat.AddAttackRaceFormless + (int)targetRace) / 100; //stack multiplicatively with race% resist modifiers
 
                 //damage/resist vs tag
                 if (defenderType == CharacterType.Monster)
@@ -526,10 +536,10 @@ public partial class CombatEntity
                 addDamage += GetStat(CharacterStat.WeaponMastery);
 
                 if (isRanged)
-                    rangeMod += GetStat(CharacterStat.AddAttackRangedAttack);
+                    rangeMod += rangeMod * GetStat(CharacterStat.AddAttackRangedAttack) / 100;
 
                 if (isCrit)
-                    attackMultiplier *= 1 + GetStat(CharacterStat.AddCritDamageRaceFormless + (int)targetRace) / 100f;
+                    attackMultiplier *= 1 + (GetStat(CharacterStat.AddCritDamageRaceFormless + (int)targetRace) + GetStat(CharacterStat.AddCritDamageSmall + (int)defSize)) / 100f;
 
                 if (target.GetSpecialType() == CharacterSpecialType.Boss)
                     specialMod += GetStat(CharacterStat.AddAttackSpecialBoss);
@@ -538,12 +548,12 @@ public partial class CombatEntity
 
                 sizeMod += GetStat(CharacterStat.AddAttackSmallSize + (int)defSize);
 
-                defMod = int.Clamp(100 - GetStat(CharacterStat.IgnoreDefRaceFormless + (int)targetRace), 0, 100);
+                defMod = int.Clamp(100 - GetStat(CharacterStat.IgnoreDefRaceFormless + (int)targetRace) - GetStat(CharacterStat.IgnoreDefSmall + (int)defSize), 0, 100);
             }
 
             if (Character.Type == CharacterType.Player && (flags & AttackFlags.IgnoreWeaponRefine) == 0)
             {
-                var weapon = (flags & AttackFlags.OffHandWeapon) > 0 ? Player.Equipment.MainHandWeapon : Player.Equipment.OffHandWeapon;
+                var weapon = (flags & AttackFlags.OffHandWeapon) == 0 ? Player.Equipment.MainHandWeapon : Player.Equipment.OffHandWeapon;
                 addDamage += GameRandom.Next(weapon.MinRefineAtkBonus, weapon.MaxRefineAtkBonus); //works on both magic and physical!
             }
         }
@@ -557,85 +567,9 @@ public partial class CombatEntity
         var vit = target.GetEffectiveStat(CharacterStat.Vit);
 
 
-
         //physical defense
         if (!flags.HasFlag(AttackFlags.IgnoreDefense))
             (defCut, subDef) = target.GetDefenseReductionForReceivedAttack(this, attackerPenalty, flags, defMod, 100);
-        //{
-        //    if (isPhysical)
-        //    {
-        //        //armor def.
-        //        var def = target.GetEffectiveStat(CharacterStat.Def);
-
-        //        //soft def
-        //        if (!flags.HasFlag(AttackFlags.IgnoreSubDefense))
-        //        {
-        //            if (target.Character.Type == CharacterType.Player)
-        //            {
-        //                //this formula is weird, but it is official
-        //                //your vit defense is a random number between 80% (30% of which steps up every 10 vit)
-        //                //you also gain a random bonus that kicks in at 46 def and increases at higher values
-        //                var vit30Percent = 3 * vit / 10;
-        //                var vitRng = vit * vit / 150 - vit30Percent;
-        //                if (vitRng < 1) vitRng = 1;
-        //                subDef = (vit30Percent + GameRandom.NextInclusive(0, 20000) % vitRng + vit / 2);
-
-        //                //attacker penalty (players only)
-        //                if (attackerPenalty > 0)
-        //                {
-        //                    def -= 5 * def * attackerPenalty / 100;
-        //                    subDef -= 5 * subDef * attackerPenalty / 100;
-        //                }
-
-        //                if (def < 0) def = 0;
-        //                if (subDef < 0) subDef = 0;
-        //            }
-        //            else
-        //            {
-        //                //monsters vit defense is also weird
-        //                var vitRng = (vit / 20) * (vit / 20);
-        //                if (vitRng <= 0)
-        //                    subDef = vit;
-        //                else
-        //                    subDef = vit + GameRandom.NextInclusive(0, 20000) % vitRng;
-        //            }
-
-
-        //            subDef = subDef * (100 + target.GetStat(CharacterStat.AddSoftDefPercent)) / 100;
-        //        }
-
-        //        if ((flags & AttackFlags.ReverseDefense) > 0 || GetStat(CharacterStat.ReverseDefense) > 0)
-        //        {
-        //            defCut = (def + subDef) * (defMod / 100f) / 100f;
-        //            subDef = 0;
-        //        }
-        //        else
-        //        {
-        //            //convert def to damage reduction %
-        //            defCut = MathHelper.DefValueLookup(def);
-
-        //            if (def >= 200)
-        //                subDef = 999999;
-        //            else if (defMod != 100)
-        //            {
-        //                defCut = defCut * defMod / 100;
-        //                subDef = subDef * defMod / 100;
-        //            }
-        //        }
-        //    }
-
-        //    //magic defense
-        //    if (isMagical)
-        //    {
-        //        var mDef = target.GetEffectiveStat(CharacterStat.MDef);
-        //        defCut = MathHelper.DefValueLookup(mDef); //for now players have different def calculations
-        //        if (!flags.HasFlag(AttackFlags.IgnoreSubDefense))
-        //            subDef = target.GetEffectiveStat(CharacterStat.Int) + vit / 2;
-
-        //        if (mDef >= 200)
-        //            subDef = 999999;
-        //    }
-        //}
 
         //------------------------------
         // Combined damage calculation
@@ -696,7 +630,7 @@ public partial class CombatEntity
         di.HitCount = (byte)req.HitCount;
 
         //arrow travel time
-        if (Character.Type == CharacterType.Player && Player.WeaponClass == 12 && req.SkillSource == CharacterSkill.None)
+        if (Character.Type == CharacterType.Player && Player.MainWeaponClass == (int)WeaponClass.Bow && req.SkillSource == CharacterSkill.None)
             di.Time += Character.Position.DistanceTo(target.Character.Position) / ServerConfig.ArrowTravelTime;
 
         if (damage > 0 && isPhysical)
@@ -707,12 +641,15 @@ public partial class CombatEntity
         //---------------------------------------
         // On Attack and When Attacked Triggers
         //---------------------------------------
-        
-        if(target.Character.Type == CharacterType.BattleNpc)
+
+        if (target.Character.Type == CharacterType.BattleNpc)
             target.Character.Npc.Behavior.OnCalculateDamage(target.Character.Npc, target.Character.BattleNpc, this, ref di);
 
         if (!flags.HasFlag(AttackFlags.NoTriggerOnAttackEffects))
         {
+            if (target.IsCasting)
+                SkillHandler.TriggerEventOnHitWhileCasting(target, ref req, ref di);
+
             if (statusContainer != null)
                 statusContainer.OnAttack(ref di);
 
@@ -732,10 +669,9 @@ public partial class CombatEntity
 
         return di;
     }
-
+    
     private void ApplyQueuedCombatResult(ref DamageInfo di)
     {
-
         if (Character.State == CharacterState.Dead || !Entity.IsAlive() || Character.IsTargetImmune || Character.Map == null)
             return;
 
@@ -783,7 +719,7 @@ public partial class CombatEntity
         if (!hasHitStop)
             delayTime = 0f;
         if (di.Flags.HasFlag(DamageApplicationFlags.ReducedHitLock))
-            delayTime = 0.1f;
+            delayTime = 0.01f;
 
         var oldPosition = Character.Position;
 
@@ -815,6 +751,11 @@ public partial class CombatEntity
 
             Character.StopMovingImmediately();
             sendMove = false;
+
+            if (Character.Type == CharacterType.Monster)
+                Character.QueuedAction = QueuedAction.None;
+
+            ServerLogger.Debug($"{Character} knocked back, stop moving now. Current state: {Character.State}");
         }
 
         if (Character.Type == CharacterType.Monster)
@@ -893,7 +834,7 @@ public partial class CombatEntity
                     if ((player.OnAttackTriggerFlags & (AttackEffectTriggers.HpOnKill | AttackEffectTriggers.SpOnKill)) > 0)
                         player.CombatEntity.TriggerOnKillEffects(this);
                 }
-                
+
                 if (DataManager.MvpMonsterCodes.Contains(monster.MonsterBase.Code))
                     monster.RewardMVP();
 
@@ -921,7 +862,9 @@ public partial class CombatEntity
         if (Character.Type == CharacterType.Monster && Character.Monster.CurrentAiState != MonsterAiState.StateAttacking)
         {
             if (di.Source.TryGet<WorldObject>(out var src) &&
-                src.Position.DistanceTo(Character.Position) <= Character.Monster.MonsterBase.Range)
+                src.Position.DistanceTo(Character.Position) <= Character.Monster.MonsterBase.Range &&
+                src.Type != CharacterType.NPC &&
+                src.CombatEntity.CanBeTargeted(this))
             {
                 Character.Monster.Target = di.Source;
                 Character.Monster.CurrentAiState = MonsterAiState.StateAttacking;

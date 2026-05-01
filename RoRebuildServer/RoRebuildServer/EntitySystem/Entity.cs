@@ -11,7 +11,7 @@ public enum EntityType : byte
     Player = 1,
     Monster = 2,
     Npc = 3,
-    BattleNpc = 4
+    BattleNpc = 4,
 }
 
 [StructLayout(LayoutKind.Sequential, Pack = 2)]
@@ -32,7 +32,7 @@ public struct Entity
 
     public EntityType Type => (EntityType)TypeId;
     public static Entity Null = new();
-    public static Entity Invalid = new() {Gen = 0, Id = -1, TypeId = 0};
+    public static Entity Invalid = new() { Gen = 0, Id = -1, TypeId = 0 };
 
     public bool IsBattleEntity => TypeId == 1 || TypeId == 2 || TypeId == 4;
 
@@ -62,7 +62,7 @@ public struct Entity
         var id = EntityComponentManager.GetComponentIndex<T>(data.Type);
         return (T)data.Components[id];
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool TryGet<T>([NotNullWhen(true)] out T component) where T : class
     {
@@ -84,12 +84,12 @@ public struct Entity
             component = null!;
             return false;
         }
-        
+
         component = (T)data.Components[id];
         Debug.Assert(component != null, "TryGet<T> must return valid component if returning true");
         return true;
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Has<T>() where T : class
     {
@@ -152,7 +152,7 @@ public struct Entity
 #if DEBUG
     public override string ToString()
     {
-        return IsNull() ? "Entity-Null" : $"Entity[{Type}]-{Id.ToString()}:{Gen.ToString()}({(IsAlive()?"Active":"Expired")})";
+        return IsNull() ? "Entity-Null" : $"Entity[{Type}]-{Id.ToString()}:{Gen.ToString()}({(IsAlive() ? "Active" : "Expired")})";
     }
 #endif
 }

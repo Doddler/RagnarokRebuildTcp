@@ -15,17 +15,20 @@ public class StatusFalcon : StatusEffectBase
 
     public override StatusUpdateResult OnAttack(CombatEntity ch, ref StatusEffectState state, ref DamageInfo info)
     {
-        if (ch.Character.Type != CharacterType.Player || !info.IsDamageResult || !info.Target.TryGet<CombatEntity>(out var target))
+        if (ch.Character.Type != CharacterType.Player || info.AttackSkill != CharacterSkill.None || !info.IsDamageResult || !info.Target.TryGet<CombatEntity>(out var target))
             return StatusUpdateResult.Continue;
 
         var maxSkill = ch.Player.MaxLearnedLevelOfSkill(CharacterSkill.BlitzBeat);
         if (maxSkill == 0)
             return StatusUpdateResult.Continue;
-        
+
         var chance = 10 + ch.GetEffectiveStat(CharacterStat.Luck) * 3;
 
         //custom change: gear that adds crit boosts your base chance of triggering auto blitz
         chance += chance * (ch.GetEffectiveStat(CharacterStat.AddCrit) + ch.GetBonusCritRateVsTarget(target)) / 100;
+
+        if (ch.TryGetStatusEffect(CharacterStatusEffect.BlitzBeatRateUp, out var blitzUp))
+            chance += blitzUp.Value1 * 10;
 
         if (GameRandom.NextInclusive(1000) < chance)
         {

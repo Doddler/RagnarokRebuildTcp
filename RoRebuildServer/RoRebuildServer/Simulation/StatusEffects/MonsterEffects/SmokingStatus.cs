@@ -29,11 +29,11 @@ public class SmokingStatus : StatusEffectBase
         di.Flags = DamageApplicationFlags.NoHitLock | DamageApplicationFlags.SkipOnHitTriggers;
 
         ch.ExecuteCombatResult(di, false, false);
-        
+
         ch.Character.Map?.AddVisiblePlayersAsPacketRecipients(ch.Character);
         CommandBuilder.AttackMulti(null, ch.Character, di, false); //make the client see no attacker
         CommandBuilder.ClearRecipients();
-        
+
         return StatusUpdateResult.Continue;
     }
 

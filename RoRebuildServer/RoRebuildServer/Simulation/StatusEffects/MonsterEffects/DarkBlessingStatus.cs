@@ -38,7 +38,7 @@ public class DarkBlessingStatus : StatusEffectBase
 
         ch.ClearDamageQueue(); //no attack queued prior to this effect matters now, prevents instantly dying
         ch.ExecuteCombatResult(di, false, false);
-            
+
         ch.Character.Map?.AddVisiblePlayersAsPacketRecipients(ch.Character);
         CommandBuilder.AttackMulti(null, ch.Character, di, false); //make the client see no attacker
         CommandBuilder.ClearRecipients();

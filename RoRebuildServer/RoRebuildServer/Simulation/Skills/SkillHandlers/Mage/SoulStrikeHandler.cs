@@ -29,7 +29,7 @@ public class SoulStrikeHandler : SkillHandlerBase
         res.Time = Time.ElapsedTimeFloat + 0.7f;
 
         var baseTime = 1.0f - ((lvl + 1) % 2) * 0.2f;
-        
+
         source.ApplyAfterCastDelay(baseTime + hits * 0.2f, ref res);
         source.ApplyCooldownForAttackAction(target);
         source.ExecuteCombatResult(res, false);

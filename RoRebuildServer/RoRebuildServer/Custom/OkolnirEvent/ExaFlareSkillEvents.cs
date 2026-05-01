@@ -11,7 +11,6 @@ using RoRebuildServer.Logging;
 
 namespace RoRebuildServer.Custom.OkolnirEvent;
 
-
 public class ExaflareControlEvent : NpcBehaviorBase
 {
     public override void InitEvent(Npc npc, int param1, int param2, int param3, int param4, string? paramString)
@@ -32,7 +31,7 @@ public class ExaflareControlEvent : NpcBehaviorBase
             var southY = 121;
 
             if (npc.ValuesInt[1] > 0 && GameRandom.Next(0, 4) >= 4 - npc.ValuesInt[1])
-            //if(true)
+                //if(true)
             {
                 //diagonal
                 var xSet = GameRandom.Next(0, 10);
@@ -111,7 +110,6 @@ public class ExaflareControlEvent : NpcBehaviorBase
     {
         npc.CreateEvent("ExaflareRowEvent", pos, xStep, yStep, direction);
     }
-
 }
 
 public class ExaflareOutOfEventControlEvent : NpcBehaviorBase
@@ -189,6 +187,7 @@ public class ExaflareOutOfEventControlEvent : NpcBehaviorBase
                     if (list.Count > 0 && list[GameRandom.Next(0, list.Count)].TryGet<WorldObject>(out var newTarget))
                         pos = newTarget.Position;
                 }
+
                 npc.MoveNpc(pos.X, pos.Y);
 
                 if (pos.X < westX || pos.X > eastX)
@@ -249,6 +248,7 @@ public class ExaflareRowEvent : NpcBehaviorBase
                 npc.ValuesInt[3] = 1; //we can't just end the event here or the children get removed, so we wait it out
                 return;
             }
+
             npc.CreateEvent("ExaflareBlastEvent", npc.Character.Position, 1);
             npc.SetTimer(2400);
         }
@@ -257,7 +257,6 @@ public class ExaflareRowEvent : NpcBehaviorBase
             npc.EndEvent();
     }
 }
-
 
 public class ExaflareRowSkipWallEvent : NpcBehaviorBase
 {
@@ -288,7 +287,7 @@ public class ExaflareRowSkipWallEvent : NpcBehaviorBase
             }
 
             npc.MoveNpc(newPos.X, newPos.Y);
-            
+
             //npc.Character.Position += new Position(npc.ValuesInt[0], npc.ValuesInt[1]);
             if (npc.Character.Map.WalkData.IsCellWalkable(newPos))
                 npc.CreateEvent("ExaflareBlastEvent", newPos, 1);
@@ -350,6 +349,7 @@ public class ExaflareBlastEvent : NpcBehaviorBase
                 CommandBuilder.AttackMulti(target.Character, target.Character, res, false);
                 target.QueueDamage(res);
             }
+
             CommandBuilder.ClearRecipients();
 
             npc.EndEvent();

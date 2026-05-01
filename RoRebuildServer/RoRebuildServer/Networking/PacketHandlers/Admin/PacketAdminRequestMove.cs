@@ -88,7 +88,6 @@ public class PacketAdminRequestMove : IClientPacketHandler
         }
         else
             player.WarpPlayer(mapName, pos.X, pos.Y, 1, 1, false);
-            //ch.Map.World.MovePlayerMap(ref connection.Entity, ch, map, pos);
-    
+        //ch.Map.World.MovePlayerMap(ref connection.Entity, ch, map, pos);
     }
 }

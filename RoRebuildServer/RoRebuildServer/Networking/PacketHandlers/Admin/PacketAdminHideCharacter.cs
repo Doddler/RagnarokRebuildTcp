@@ -30,6 +30,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Admin
                         continue;
                     notifyList.Add(e);
                 }
+
                 CommandBuilder.AddRecipients(notifyList);
                 CommandBuilder.SendRemoveEntityMulti(connection.Character, CharacterRemovalReason.OutOfSight);
                 CommandBuilder.ClearRecipients();
@@ -45,6 +46,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Admin
                         continue;
                     notifyList.Add(e);
                 }
+
                 CommandBuilder.AddRecipients(notifyList);
                 CommandBuilder.SendCreateEntityMulti(connection.Character, CreateEntityEventType.Normal);
                 CommandBuilder.ClearRecipients();

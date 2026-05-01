@@ -29,6 +29,7 @@ public class SkillPrereq : IList<object>
     public int IndexOf(object item) { throw new NotImplementedException(); }
     public void Insert(int index, object item) { throw new NotImplementedException(); }
     public void RemoveAt(int index) { throw new NotImplementedException(); }
+
     public object this[int index]
     {
         get => throw new NotImplementedException();

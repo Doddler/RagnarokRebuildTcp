@@ -50,20 +50,29 @@ namespace Assets.Scripts.Effects
 		WarpPortal,
 		WarpPortalOpening,
 		EarthSpike,
+		FirePillar,
 		HeavensDrive,
 		JupitelBall,
 		JupitelHit,
 		LordOfVermilion,
+		Quagmire,
+		StormGust,
 		WaterBallAttack,
 		WaterBallRise,
 		Aspersio,
 		ImpositioManus,
+		KyrieEleison,
 		LexAeterna,
 		LexDivina,
 		Revive,
 		Sanctuary,
+		BowlingBashImpact,
+		SpearBoomerang,
 		EarthShaker,
 		SpecialTargetMarker,
+		GrimtoothTrail,
+		GrimtoothHit,
+		VenomDust,
 		ArcherArrow,
 		CastHolyEffect,
 		ColdHit,
@@ -74,6 +83,7 @@ namespace Assets.Scripts.Effects
 		RecoveryParticles,
 		RoSprite,
 		RoProjectileSprite,
+		ScreenShake,
 		Teleport,
 		BlueWaterfallEffect,
 		DiscoLights,
@@ -154,20 +164,29 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.WarpPortal, new Assets.Scripts.Effects.EffectHandlers.Skills.WarpPortalEffect());
 			effectHandlers.Add(EffectType.WarpPortalOpening, new Assets.Scripts.Effects.EffectHandlers.Skills.WarpPortalOpeningEffect());
 			effectHandlers.Add(EffectType.EarthSpike, new Assets.Scripts.Effects.EffectHandlers.Skills.EarthSpikeEffect());
+			effectHandlers.Add(EffectType.FirePillar, new Assets.Scripts.Effects.EffectHandlers.Skills.FirePillarEffect());
 			effectHandlers.Add(EffectType.HeavensDrive, new Assets.Scripts.Effects.EffectHandlers.Skills.HeavensDriveEffect());
 			effectHandlers.Add(EffectType.JupitelBall, new Assets.Scripts.Effects.EffectHandlers.Skills.JupitelBallEffect());
 			effectHandlers.Add(EffectType.JupitelHit, new Assets.Scripts.Effects.EffectHandlers.Skills.JupitelHitEffect());
 			effectHandlers.Add(EffectType.LordOfVermilion, new Assets.Scripts.Effects.EffectHandlers.Skills.LordOfVermilionEffect());
+			effectHandlers.Add(EffectType.Quagmire, new Assets.Scripts.Effects.EffectHandlers.Skills.QuagmireEffect());
+			effectHandlers.Add(EffectType.StormGust, new Assets.Scripts.Effects.EffectHandlers.Skills.StormGustEffect());
 			effectHandlers.Add(EffectType.WaterBallAttack, new Assets.Scripts.Effects.EffectHandlers.Skills.WaterBallAttackEffect());
 			effectHandlers.Add(EffectType.WaterBallRise, new Assets.Scripts.Effects.EffectHandlers.Skills.WaterBallRiseEffect());
 			effectHandlers.Add(EffectType.Aspersio, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.AspersioEffect());
 			effectHandlers.Add(EffectType.ImpositioManus, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.ImpositioEffect());
+			effectHandlers.Add(EffectType.KyrieEleison, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.KyrieEleisonEffect());
 			effectHandlers.Add(EffectType.LexAeterna, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.LexAeternaEffect());
 			effectHandlers.Add(EffectType.LexDivina, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.LexDivinaEffect());
 			effectHandlers.Add(EffectType.Revive, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.ReviveEffect());
 			effectHandlers.Add(EffectType.Sanctuary, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.SanctuaryEffect());
+			effectHandlers.Add(EffectType.BowlingBashImpact, new Assets.Scripts.Effects.EffectHandlers.Skills.Knight.BowlingBashImpactEffect());
+			effectHandlers.Add(EffectType.SpearBoomerang, new Assets.Scripts.Effects.EffectHandlers.Skills.Knight.SpearBoomerangEffect());
 			effectHandlers.Add(EffectType.EarthShaker, new Assets.Scripts.Effects.EffectHandlers.Skills.Custom.EarthShakerEffect());
 			effectHandlers.Add(EffectType.SpecialTargetMarker, new Assets.Scripts.Effects.EffectHandlers.Skills.Custom.SpecialTargetMarkerEffect());
+			effectHandlers.Add(EffectType.GrimtoothTrail, new Assets.Scripts.Effects.EffectHandlers.Skills.Assassin.GrimtoothTrailEffect());
+			effectHandlers.Add(EffectType.GrimtoothHit, new Assets.Scripts.Effects.EffectHandlers.Skills.Assassin.GrimtoothHitEffect());
+			effectHandlers.Add(EffectType.VenomDust, new Assets.Scripts.Effects.EffectHandlers.Skills.Assassin.VenomDustEffect());
 			effectHandlers.Add(EffectType.ArcherArrow, new Assets.Scripts.Effects.EffectHandlers.General.ArcherArrow());
 			effectHandlers.Add(EffectType.CastHolyEffect, new Assets.Scripts.Effects.EffectHandlers.General.CastHolyEffect());
 			effectHandlers.Add(EffectType.ColdHit, new Assets.Scripts.Effects.EffectHandlers.General.ColdHitEffect());
@@ -178,6 +197,7 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.RecoveryParticles, new Assets.Scripts.Effects.EffectHandlers.General.RecoveryParticlesEffect());
 			effectHandlers.Add(EffectType.RoSprite, new Assets.Scripts.Effects.EffectHandlers.General.RoSpriteEffect());
 			effectHandlers.Add(EffectType.RoProjectileSprite, new Assets.Scripts.Effects.EffectHandlers.General.RoSpriteProjectileEffect());
+			effectHandlers.Add(EffectType.ScreenShake, new Assets.Scripts.Effects.EffectHandlers.General.ScreenShakeEffect());
 			effectHandlers.Add(EffectType.Teleport, new Assets.Scripts.Effects.EffectHandlers.General.TeleportEffect());
 			effectHandlers.Add(EffectType.BlueWaterfallEffect, new Assets.Scripts.Effects.EffectHandlers.Environment.BlueWaterfallEffect());
 			effectHandlers.Add(EffectType.DiscoLights, new Assets.Scripts.Effects.EffectHandlers.Environment.DiscoLightsEffect());

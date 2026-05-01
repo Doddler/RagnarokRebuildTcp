@@ -99,6 +99,6 @@ SkillHandler("TARGET_DUMMY") {
 	//TryCast(NoCast, 9999, 1000, 1500, 5000)[HpPercent <= 99] -> {
 	//	TossSummonMonster(5,"GTB_EGG",9,9);
 	//};
-    TryCast(Heal, 99999, 100%, 1.5s, 5s, EasyInterrupt)[HpPercent <= 99 && TimeSinceLastDamage > 8s];
+    TryCast(Heal, 99999, 100%, 1.5s, 5s, EasyInterrupt)[HpPercent <= 99 && TimeSinceLastDamage > 15s];
 }
 

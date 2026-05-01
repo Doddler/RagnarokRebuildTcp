@@ -1,5 +1,19 @@
 {
   "dependencies": {
+    "com.codewriter.textmeshpro-spriteatlas-support": {
+      "version": "https://github.com/codewriter-packages/textmeshpro-spriteatlas-support.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "660e7a55406bec8e884bb7b6b6e8b31c9bdaa760"
+    },
+    "com.github-glitchenzo.nugetforunity": {
+      "version": "https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "c2af83c9d4f8cdaada9d4a0e94de2f195d8e1d01"
+    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,

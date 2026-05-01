@@ -25,6 +25,5 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Archer
         {
             owner.SubStat(CharacterStat.AddHit, lvl);
         }
-
     }
 }

@@ -3,6 +3,7 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Tomlyn;
+#pragma warning disable RS1038 //This warning is for referencing Microsoft.CodeAnalysis.Workspaces in a generator, but the 'nuget why' says we don't have a dependency for it, so we ignore the warning
 
 namespace GameConfig.Generator
 {

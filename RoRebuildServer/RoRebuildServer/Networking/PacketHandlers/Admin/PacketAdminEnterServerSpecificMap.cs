@@ -50,7 +50,7 @@ public class PacketAdminEnterServerSpecificMap : IClientPacketHandler
 
         var player = playerEntity.Get<Player>();
 
-        for(var i = 0; i < 99; i++)
+        for (var i = 0; i < 99; i++)
             player.LevelUp();
 
         player.UpdateStats();

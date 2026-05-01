@@ -96,7 +96,7 @@ public class RuwachObjectEvent : NpcBehaviorBase
         npc.AreaOfEffect = aoe;
         npc.Character.Map!.CreateAreaOfEffect(aoe);
     }
-    
+
     public override void OnAoEInteraction(Npc npc, CombatEntity target, AreaOfEffect aoe)
     {
         if (!npc.Owner.TryGet<CombatEntity>(out var owner) || owner.Character.State == CharacterState.Dead)

@@ -12,7 +12,7 @@ public class PacketPing : IClientPacketHandler
         //If they haven't selected a character we accept keep alive packets for 20 minutes
         //If they have, we'll ignore keep alive packets if they aren't active in game yet.
         //Effectively that means they have about a minute to load the map before we time them out.
-        
+
         if (connection.Character == null)
         {
             if (connection.LoginTime + 1200 < Time.ElapsedTimeFloat)

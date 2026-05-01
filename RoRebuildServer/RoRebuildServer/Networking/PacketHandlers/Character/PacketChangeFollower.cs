@@ -1,11 +1,10 @@
-﻿using RebuildSharedData.Networking;
-using System.Diagnostics;
-using RebuildSharedData.Enum;
+﻿using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
+using RebuildSharedData.Networking;
 using RoRebuildServer.Logging;
+using System.Diagnostics;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;
-
 
 [ClientPacketHandler(PacketType.ChangeFollower)]
 public class PacketChangeFollower : IClientPacketHandler
@@ -29,15 +28,31 @@ public class PacketChangeFollower : IClientPacketHandler
 
         var id = msg.ReadInt32();
         var isRemove = id < 0;
+        var isPecoChange = player.JobId == 7 || player.JobId == 13;
 
         if (isRemove)
         {
             //player.PlayerFollower &= ~PlayerFollower.AnyCart;
             player.PlayerFollower = 0; //this call will double for removing the bird too
             player.SetData(PlayerStat.FollowerType, 0);
+
+            if (isPecoChange)
+            {
+                player.CombatEntity.RemoveStatusOfTypeIfExists(CharacterStatusEffect.PecoRiding); //this will call StopRidingMount as well, but we're already off the peco so it's fine.
+                return;
+            }
         }
         else
         {
+            if (isPecoChange)
+            {
+                if (player.HasPeco)
+                    return;
+
+                player.StartRidingMount();
+                return;
+            }
+
             if (!player.HasCart)
                 return; //can't change cart if they don't have a cart
 
@@ -65,11 +80,10 @@ public class PacketChangeFollower : IClientPacketHandler
                 return;
             }
 
-            player.PlayerFollower &= ~PlayerFollower.AnyCart;
+            player.PlayerFollower &= ~CharacterFollowerState.AnyCart;
             player.SetData(PlayerStat.FollowerType, id);
         }
 
         CommandBuilder.UpdatePlayerFollowerStateAutoVis(player);
-
     }
 }

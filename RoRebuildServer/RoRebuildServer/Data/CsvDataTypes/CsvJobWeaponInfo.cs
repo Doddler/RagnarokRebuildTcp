@@ -1,7 +1,7 @@
 ﻿namespace RoRebuildServer.Data.CsvDataTypes;
 
 public class CsvJobWeaponInfo
-{ 
+{
     public required string Job { get; set; }
     public required string Class { get; set; }
     public string Class2 { get; set; } = string.Empty;

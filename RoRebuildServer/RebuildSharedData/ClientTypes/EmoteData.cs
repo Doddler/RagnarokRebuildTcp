@@ -13,5 +13,4 @@ namespace RebuildSharedData.ClientTypes
         public float Size;
         public string Commands;
     }
-
 }

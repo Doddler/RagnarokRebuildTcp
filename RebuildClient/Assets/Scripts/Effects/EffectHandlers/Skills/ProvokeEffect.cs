@@ -15,7 +15,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
 
             var cam = CameraFollower.Instance;
             var id = cam.EffectIdLookup["Provoke"];
-            CameraFollower.Instance.AttachEffectToEntity(id, target.gameObject, target.Id);
+            cam.AttachEffectToEntity(id, target.gameObject, target.Id);
         }
 
         public bool Update(Ragnarok3dEffect effect, float pos, int step)

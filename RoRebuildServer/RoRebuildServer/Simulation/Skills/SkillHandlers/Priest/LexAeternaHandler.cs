@@ -13,6 +13,9 @@ public class LexAeternaHandler : SkillHandlerBase
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position, int lvl,
         bool isIndirect, bool isItemSource)
     {
+        if (target == null)
+            return SkillValidationResult.Failure;
+
         if (target.HasBodyState(BodyStateFlags.Frozen) || target.HasBodyState(BodyStateFlags.Petrified))
             return SkillValidationResult.TargetStateIgnoresEffect;
 

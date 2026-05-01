@@ -47,7 +47,6 @@ public struct ChunkAreaEnumerator
 
     public void Dispose()
     {
-
     }
 
     public ChunkAreaEnumerator GetEnumerator()

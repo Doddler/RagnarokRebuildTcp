@@ -21,15 +21,15 @@ public class PacketVendingPurchaseFromStore : IClientPacketHandler
 
         var player = connection.Player;
         //var map = connection.Character.Map;
-            
+
         if (!player.IsInNpcInteraction || player.NpcInteractionState.InteractionResult != NpcInteractionResult.WaitForVendShop)
             return;
 
-        if (!player.NpcInteractionState.NpcEntity.TryGet<Npc>(out var npc) 
+        if (!player.NpcInteractionState.NpcEntity.TryGet<Npc>(out var npc)
             || !npc.Owner.TryGet<Player>(out var vendor)
             || !vendor.IsInNpcInteraction
             || !vendor.HasCart
-            || vendor.NpcInteractionState.InteractionResult != NpcInteractionResult.CurrentlyVending 
+            || vendor.NpcInteractionState.InteractionResult != NpcInteractionResult.CurrentlyVending
             || vendor.VendingState == null
             || vendor.CartInventory == null)
         {
@@ -37,7 +37,7 @@ public class PacketVendingPurchaseFromStore : IClientPacketHandler
             player.NpcInteractionState.ContinueInteraction();
             return;
         }
-            
+
         player.NpcInteractionState.ContinueInteraction(); //get this out of the way, every result will end with the buy window closing
 
         var purchaseCount = msg.ReadInt32();
@@ -121,6 +121,7 @@ public class PacketVendingPurchaseFromStore : IClientPacketHandler
 
             CommandBuilder.VendingNotifyOfSale(vendor, bagIds[i], itemCounts[i]);
         }
+
         vendor.SetData(PlayerStat.Zeny, vendor.GetData(PlayerStat.Zeny) + totalCost); //do this last
 
         CommandBuilder.SendServerEvent(player, ServerEvent.TradeSuccess, -totalCost);

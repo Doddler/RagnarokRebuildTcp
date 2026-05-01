@@ -5,6 +5,7 @@ using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Items;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.Networking;
+using RoRebuildServer.Simulation.StatusEffects.Setup;
 using RoRebuildServer.Simulation.Util;
 using System;
 using System.Threading.Channels;
@@ -73,11 +74,12 @@ public class BlitzBeatHandler : SkillHandlerBase
 
         if (!isIndirect)
         {
-            //source.ApplyCooldownForSupportSkillAction();
+            source.ApplyCooldownForSupportSkillAction();
             source.ApplyAfterCastDelay(1f);
+            var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.BlitzBeatRateUp, 15f, lvl);
+            source.AddStatusEffect(status);
         }
 
         CommandBuilder.ClearRecipients();
-
     }
 }

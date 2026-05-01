@@ -23,11 +23,11 @@ public class SelfDestruct : SkillHandlerBase
         var targetList = EntityListPool.Get();
         map.GatherEnemiesInArea(ch, ch.Position, 3, targetList, true, true);
         map.GatherAlliesInRange(ch, 3, targetList, true, true);
-        
+
         var baseDamage = source.GetStat(CharacterStat.Hp) / 2;
         var minAtk = (int)(baseDamage * 0.8f);
         var maxAtk = (int)(baseDamage * 1.2f);
-        
+
         foreach (var e in targetList)
         {
             var aoeTarget = e.Get<CombatEntity>();
@@ -37,20 +37,16 @@ public class SelfDestruct : SkillHandlerBase
             var flags = AttackFlags.Physical | AttackFlags.CanHarmAllies | AttackFlags.IgnoreDefense |
                         AttackFlags.IgnoreEvasion;
 
-            var attack = new AttackRequest(CharacterSkill.SelfDestruct, 1, 1, flags, AttackElement.Special)
-            {
-                MinAtk = minAtk,
-                MaxAtk = maxAtk
-            };
+            var attack = new AttackRequest(CharacterSkill.SelfDestruct, 1, 1, flags, AttackElement.Special) { MinAtk = minAtk, MaxAtk = maxAtk };
 
             var res = source.CalculateCombatResultUsingSetAttackPower(e.Get<CombatEntity>(), attack);
             res.KnockBack = res.Damage switch
             {
-                >5000 => 7,
+                > 5000 => 7,
                 _ => 5
             };
-            
-            if(res.Damage > 0)
+
+            if (res.Damage > 0)
                 source.ExecuteCombatResult(res, true, false);
         }
 
@@ -59,11 +55,10 @@ public class SelfDestruct : SkillHandlerBase
         map.AddVisiblePlayersAsPacketRecipients(ch);
         CommandBuilder.SendEffectAtLocationMulti(DataManager.EffectIdForName["Explosion"], ch.Position, 0);
         CommandBuilder.ClearRecipients();
-        
+
         if (ch.Type == CharacterType.Player)
             ch.Player.Die();
-        if(ch.Type == CharacterType.Monster)
+        if (ch.Type == CharacterType.Monster)
             ch.Monster.Die();
     }
 }
-

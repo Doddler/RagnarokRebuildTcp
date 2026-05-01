@@ -22,7 +22,7 @@ public class PacketAdminServerAction : IClientPacketHandler
             GC.Collect();
         }
 
-        if(type == AdminAction.ReloadScripts)
+        if (type == AdminAction.ReloadScripts)
             World.Instance.TriggerReloadServerScripts();
 
         if (type == AdminAction.KillMobs)
@@ -44,8 +44,8 @@ public class PacketAdminServerAction : IClientPacketHandler
 
                 if (!m.TryGet<WorldObject>(out var mon))
                     continue;
-                
-                if(!mon.Monster.HasMaster)
+
+                if (!mon.Monster.HasMaster)
                     mon.Monster.Die(false);
             }
         }
@@ -92,19 +92,19 @@ public class PacketAdminServerAction : IClientPacketHandler
 
                 return;
             }
-            
+
             if (string.IsNullOrWhiteSpace(reason))
                 reason = "Server is shutting down for maintenance.";
 
             NetworkManager.ServerClosedReason = reason;
             NetworkManager.IsServerOpen = false;
-            
+
             var ts = TimeSpan.FromSeconds(seconds);
-            
+
             var clientMsg = $"<b>The server is shutting down. All players will be automatically logged out.</b>";
             if (seconds > 15 && seconds < 120)
                 clientMsg = "<b>The server is shutting down shortly. All players will be automatically logged out.</b>";
-            if(seconds >= 120)
+            if (seconds >= 120)
                 clientMsg = $"<b>The server is shutting down in {ts.Minutes} minutes. All players will be automatically logged out.</b>";
 
             if (seconds > 0)
@@ -121,8 +121,6 @@ public class PacketAdminServerAction : IClientPacketHandler
             CommandBuilder.AddAllPlayersAsRecipients();
             CommandBuilder.SendServerMessage(clientMsg);
             CommandBuilder.ClearRecipients();
-
-
         }
 
 #if DEBUG

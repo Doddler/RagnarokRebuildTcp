@@ -30,8 +30,8 @@ public enum MonsterSkillAiFlags
 
 public abstract class MonsterSkillAiBase
 {
-    public virtual void OnInit(MonsterSkillAiState skillState) {}
+    public virtual void OnInit(MonsterSkillAiState skillState) { }
     public virtual void OnDie(MonsterSkillAiState skillState) { }
-    public virtual void RunAiSkillUpdate(MonsterAiState aiState, MonsterSkillAiState skillState) {}
+    public virtual void RunAiSkillUpdate(MonsterAiState aiState, MonsterSkillAiState skillState) { }
     public bool IsUnassignedAiType = false;
 }

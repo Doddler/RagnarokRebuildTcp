@@ -52,10 +52,10 @@ public class ProvokeHandler : SkillHandlerBase
             if (mon.CombatEntity.CanAttackTarget(ch))
                 mon.Target = ch.Entity;
         }
-        
+
         if (target.Character.Type == CharacterType.Player)
         {
-            if(target.IsCasting && target.CastInterruptionMode <= CastInterruptionMode.InterruptOnSkill)
+            if (target.IsCasting && target.CastInterruptionMode <= CastInterruptionMode.InterruptOnSkill)
                 target.CancelCast();
         }
 

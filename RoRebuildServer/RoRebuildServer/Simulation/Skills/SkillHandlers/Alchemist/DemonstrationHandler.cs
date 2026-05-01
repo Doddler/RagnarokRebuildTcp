@@ -51,7 +51,7 @@ public class DemonstrationHandler : SkillHandlerBase
         var di = source.PrepareTargetedSkillResult(null, CharacterSkill.Demonstration);
 
         //var throwDistance =  (int)((di.AttackMotionTime + target.Character.WorldPosition.DistanceTo(position) * 0.25f) * 1000);
-        
+
         var e = World.Instance.CreateEvent(source.Entity, map, "DemonstrationObjectEvent", position, lvl, (int)(di.AttackMotionTime * 1000), 0, 0, null);
         ch.AttachEvent(e);
         source.ApplyCooldownForSupportSkillAction();
@@ -60,7 +60,6 @@ public class DemonstrationHandler : SkillHandlerBase
             CommandBuilder.SkillExecuteAreaTargetedSkillAutoVis(ch, position, CharacterSkill.Demonstration, lvl, di.AttackMotionTime);
     }
 }
-
 
 public class DemonstrationObjectEvent : NpcBehaviorBase
 {
@@ -107,7 +106,7 @@ public class DemonstrationObjectEvent : NpcBehaviorBase
 
         npc.AreaOfEffect = aoe;
         npc.Character.Map!.CreateAreaOfEffect(aoe);
-        
+
         npc.RevealAsEffect(NpcEffectType.Demonstration);
     }
 

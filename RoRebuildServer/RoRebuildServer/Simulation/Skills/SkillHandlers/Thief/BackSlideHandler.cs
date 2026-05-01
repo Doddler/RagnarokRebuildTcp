@@ -15,7 +15,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Thief
             if (ch.Map == null)
                 return;
 
-            if(ch.Type == CharacterType.Player)
+            if (ch.Type == CharacterType.Player)
                 source.ApplyCooldownForSupportSkillAction(0.7f);
             else
                 source.ApplyCooldownForAttackAction(0.9f);

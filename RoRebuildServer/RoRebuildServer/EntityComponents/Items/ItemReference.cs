@@ -38,7 +38,7 @@ public struct ItemReference
     public int Weight => Type switch
     {
         ItemType.RegularItem => DataManager.GetWeightForItem(Item.Id),
-        ItemType.UniqueItem => DataManager.GetWeightForItem(UniqueItem.Id), 
+        ItemType.UniqueItem => DataManager.GetWeightForItem(UniqueItem.Id),
         _ => 0
     };
 
@@ -96,7 +96,6 @@ public struct ItemReference
             else
                 UniqueItem.Serialize(msg);
         }
-
     }
 
     public override string ToString() => Type switch

@@ -40,7 +40,7 @@ public class NetworkConnection
 
     //when this connection has its entity removed from the world it is no longer alive. Used to prevent queueing removal while the entity is awaiting recycling.
     //this happens because the server may remove the player AND the connection might also queue the removal of the player at the same time.
-    public bool IsAlive; 
+    public bool IsAlive;
 
     public NetworkConnection(WebSocket socket)
     {

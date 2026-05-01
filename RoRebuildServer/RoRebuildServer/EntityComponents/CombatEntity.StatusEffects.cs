@@ -141,7 +141,7 @@ public partial class CombatEntity
             }
 
             if ((attackTriggerFlags & AttackEffectTriggers.KillOnAttack) > 0
-                    && isPhysical && target.GetSpecialType() != CharacterSpecialType.Boss)
+                && isPhysical && target.GetSpecialType() != CharacterSpecialType.Boss)
             {
                 var val = GetStat(CharacterStat.KnockOutOnAttack);
                 val += GetStat(CharacterStat.KnockOutOnAttackRaceFormless + (int)race);
@@ -321,7 +321,7 @@ public partial class CombatEntity
         if (resistChance != 100)
             resist = resist * resistChance / 100;
 
-        if (!CheckLuckModifiedRandomChanceVsTarget(target, (int)(chanceIn1000 * resist), 1000))
+        if (chanceIn1000 < 100_000 && !CheckLuckModifiedRandomChanceVsTarget(target, (int)(chanceIn1000 * resist), 1000))
             return false;
 
         if (baseDamage == 0)
@@ -349,7 +349,7 @@ public partial class CombatEntity
         return true;
     }
 
-    public bool TryFreezeTarget(CombatEntity target, int chanceIn1000, float delayApply = 0.3f)
+    public bool TryFreezeTarget(CombatEntity target, int chanceIn1000, float delayApply = 0.3f, float baseDuration = 12f)
     {
         if (target.HasBodyState(BodyStateFlags.DisablingState))
             return false;
@@ -369,7 +369,7 @@ public partial class CombatEntity
             return false;
 
         var timeResist = MathHelper.PowScaleDown(mdef + GameRandom.Next(0, luk));
-        var len = 12f * timeResist;
+        var len = baseDuration * timeResist;
 
         var durationResist = 100 - target.GetStat(CharacterStat.DecreaseFreezeDuration);
         if (durationResist != 100)
@@ -486,7 +486,7 @@ public partial class CombatEntity
     {
         if (target.HasBodyState(BodyStateFlags.DisablingState) || target.HasStatusEffectOfType(CharacterStatusEffect.Petrifying) || target.GetSpecialType() == CharacterSpecialType.Boss)
             return false;
-        
+
         var mdef = target.GetEffectiveStat(CharacterStat.MDef);
         var luk = target.GetEffectiveStat(CharacterStat.Luk);
 

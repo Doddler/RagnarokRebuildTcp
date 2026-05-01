@@ -3,7 +3,6 @@
 //disable null string warning on all our csv stuff
 #pragma warning disable CS8618
 
-
 public class CsvEffects
 {
     public int Id { get; set; }
@@ -15,5 +14,6 @@ public class CsvEffects
     public string? SoundFile { get; set; }
     public float Offset { get; set; }
     public string? PrefabName { get; set; }
+    public float Scale { get; set; }
     public string? Flags { get; set; }
 }

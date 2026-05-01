@@ -5,6 +5,7 @@ using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Networking;
 
@@ -17,7 +18,10 @@ public abstract class SkillHandlerBase
     public SkillClass SkillClassification = SkillClass.Unique;
     protected const int DefaultMagicCastRange = 9;
 
-    protected const int BlueGemstone = 717; //blue gemstone
+    protected const int YellowGemstone = 715;
+    protected const int RedGemstone = 716;
+    protected const int BlueGemstone = 717;
+
     protected const int HolyWater = 523;
 
     public virtual bool IsAreaTargeted => false;
@@ -29,7 +33,7 @@ public abstract class SkillHandlerBase
     public virtual bool PreProcessValidation(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect, bool isItemSource) => true;
     public abstract void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect, bool isItemSource);
     public virtual void NpcProcess(Npc source, CombatEntity? target, Position position, int lvl) { }
-
+    public virtual void OnHitEvent(CombatEntity owner, CombatEntity? attacker, SkillCastInfo info, ref AttackRequest req, ref DamageInfo di) { }
 
     public float GetCastTime(CombatEntity source, CombatEntity? target, int lvl) => GetCastTime(source, target, Position.Invalid, lvl);
     public float GetCastTime(CombatEntity source, Position position, int lvl) => GetCastTime(source, null, position, lvl);
@@ -95,7 +99,7 @@ public abstract class SkillHandlerBase
             if (source.GetStat(CharacterStat.NoGemstone) > 0)
                 return true;
 
-            if(sendFailMessage)
+            if (sendFailMessage)
                 CommandBuilder.SkillFailed(source.Player, SkillValidationResult.MissingRequiredItem);
             return false;
         }
@@ -107,7 +111,7 @@ public abstract class SkillHandlerBase
     {
         if (source.Character.Type == CharacterType.Player && (source.Player.Inventory == null || !source.Player.Inventory.HasItem(itemId)))
         {
-            if(sendFailMessage)
+            if (sendFailMessage)
                 CommandBuilder.SkillFailed(source.Player, SkillValidationResult.MissingRequiredItem);
             return false;
         }
@@ -119,7 +123,7 @@ public abstract class SkillHandlerBase
     {
         if (source.Character.Type != CharacterType.Player)
             return StandardValidation(source, target, position);
-        if (source.Player.WeaponClass != weaponClass)
+        if (source.Player.MainWeaponClass != weaponClass)
             return SkillValidationResult.IncorrectWeapon;
         var equip = source.Player.Equipment;
         if (equip.AmmoId <= 0 || equip.AmmoType != ammoType)
@@ -174,7 +178,7 @@ public abstract class SkillHandlerBase
         {
             if (source.Character.Map != null && !source.Character.Map.WalkData.HasLineOfSight(source.Character.Position, target.Character.Position))
                 return SkillValidationResult.NoLineOfSight;
-            
+
             if (target.IsValidTarget(source) || target.IsValidAlly(source) || source == target)
                 return SkillValidationResult.Success;
 
@@ -203,7 +207,8 @@ public abstract class SkillHandlerBase
         CommandBuilder.ClearRecipients();
     }
 
-    protected void GenericCastAndInformSupportSkill(CombatEntity source, CombatEntity? target, CharacterSkill skill, int lvl, ref readonly DamageInfo damage, bool isIndirect, bool applyCooldown = false)
+    protected void GenericCastAndInformSupportSkill(CombatEntity source, CombatEntity? target, CharacterSkill skill, int lvl, ref readonly DamageInfo damage, bool isIndirect,
+        bool applyCooldown = false)
     {
         source.Character.Map?.AddVisiblePlayersAsPacketRecipients(source.Character);
         CommandBuilder.SkillExecuteTargetedSkill(source.Character, target?.Character, skill, lvl, damage);
@@ -220,7 +225,6 @@ public abstract class SkillHandlerBase
 
     protected void ApplySkillCooldown()
     {
-
     }
 }
 
@@ -231,7 +235,8 @@ public class SkillHandlerAttribute : Attribute
     public SkillTarget SkillTarget;
     public SkillPreferredTarget SkillPreferredTarget;
 
-    public SkillHandlerAttribute(CharacterSkill skillType, SkillClass skillClassification = SkillClass.None, SkillTarget skillTarget = SkillTarget.Enemy, SkillPreferredTarget preferredTarget = SkillPreferredTarget.Any)
+    public SkillHandlerAttribute(CharacterSkill skillType, SkillClass skillClassification = SkillClass.None, SkillTarget skillTarget = SkillTarget.Enemy,
+        SkillPreferredTarget preferredTarget = SkillPreferredTarget.Any)
     {
         SkillType = skillType;
         SkillClassification = skillClassification;
@@ -270,7 +275,9 @@ public struct SkillCastInfo()
     public Entity TargetEntity;
     public Position TargetedPosition;
     public int Level;
+
     public float CastTime;
+
     //public float AfterCastDelay;
     //public float CooldownTime;
     public short ItemSource = -1;

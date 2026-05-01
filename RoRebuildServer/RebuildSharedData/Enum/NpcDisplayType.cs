@@ -21,6 +21,7 @@ public enum NpcEffectType : byte
     WaterBall,
     Sanctuary,
     MagnusExorcismus,
+    Quagmire,
 
     //traps
     AnkleSnare,
@@ -33,7 +34,9 @@ public enum NpcEffectType : byte
     SkidTrap,
     ShockwaveTrap,
     TalkieBox,
-    
+    FirePillar,
+    VenomDust,
+
     //custom
     LightOrb,
 }

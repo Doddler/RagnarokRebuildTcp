@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using RebuildSharedData.Data;
+﻿using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.Map;
@@ -13,6 +11,10 @@ using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.Items;
 using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Util;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace RoRebuildServer.Simulation;
 
@@ -44,6 +46,8 @@ public class Map
     public EntityList MapImportantEntities { get; set; } = new EntityList(8);
     public Dictionary<int, int> ItemChunkLookup = new();
 
+    private int[] ActiveAoEChunks;
+    
     //private int playerCount;
     //public int PlayerCount
     //{
@@ -134,7 +138,7 @@ public class Map
         {
             CommandBuilder.AddRecipients(list);
             CommandBuilder.SendRemoveEntityMulti(ch, reason);
-            CommandBuilder.SendCreateEntityMulti(ch);
+            CommandBuilder.SendCreateEntityMulti(ch, CreateEntityEventType.Refresh);
             CommandBuilder.ClearRecipients();
         }
     }
@@ -352,7 +356,6 @@ public class Map
             PlayerCount++;
             Players.Add(ref entity);
             ServerLogger.Debug($"Map {Name} changed player count to {PlayerCount}.");
-
         }
 
         entityCount++;
@@ -383,7 +386,6 @@ public class Map
             PlayerCount++;
             Players.Add(ref entity);
             ServerLogger.Debug($"Map {Name} changed player count to {PlayerCount}.");
-
         }
 
         entityCount++;
@@ -519,7 +521,6 @@ public class Map
 
         foreach (Chunk chunk in GetChunkEnumeratorAroundPosition(ch.Position, ServerConfig.MaxViewDistance))
         {
-
             foreach (var target in chunk.AllEntities)
             {
                 if (!target.IsAlive())
@@ -591,7 +592,6 @@ public class Map
                         CommandBuilder.SendCreateEntity(ch, playerObj);
                     AddPlayerVisibility(playerChar, ch);
                 }
-
             }
         }
     }
@@ -613,6 +613,7 @@ public class Map
             foreach (var e in list)
                 recipientList.Add(e);
         }
+
         if (target.TryGetVisiblePlayerList(out list))
         {
             foreach (var e in list)
@@ -757,6 +758,13 @@ public class Map
         return false;
     }
 
+    public bool IsWalkableTile(Position pos)
+    {
+        if (!MapBounds.Contains(pos))
+            return false;
+        return WalkData.IsCellWalkable(pos);
+    }
+
     public bool IsEntityStacked(WorldObject character) => IsTileOccupied(character.Position, false, character);
 
     public bool IsTileOccupied(Position pos, bool playersOnly = false, WorldObject? ignoreCharacter = null)
@@ -812,11 +820,37 @@ public class Map
         return false;
     }
 
+    public void GatherTargetableEntitiesInRange(Position position, int distance, EntityList list, bool checkLineOfSight)
+    {
+        foreach (Chunk c in GetChunkEnumeratorAroundPosition(position, distance))
+        {
+            foreach (var m in c.AllEntities)
+            {
+                var ch = m.Get<WorldObject>();
+                if (!ch.IsActive)
+                    continue;
+
+                if (ch.Type == CharacterType.NPC || ch.AdminHidden)
+                    continue;
+
+                if (ch.IsTargetImmune)
+                    continue;
+
+                if (!position.InRange(ch.Position, distance))
+                    continue;
+
+                if (checkLineOfSight && !WalkData.HasLineOfSight(position, ch.Position))
+                    continue;
+
+                list.Add(m);
+            }
+        }
+    }
+
     public void GatherAlliesInRange(WorldObject character, int distance, EntityList list, bool checkLineOfSight, bool checkImmunity = false)
     {
         foreach (Chunk c in GetChunkEnumeratorAroundPosition(character.Position, distance))
         {
-
             foreach (var m in c.AllEntities)
             {
                 var ch = m.Get<WorldObject>();
@@ -860,7 +894,6 @@ public class Map
     {
         foreach (Chunk c in GetChunkEnumeratorAroundPosition(character.Position, distance))
         {
-
             foreach (var m in c.AllEntities)
             {
                 var ch = m.Get<WorldObject>();
@@ -894,15 +927,28 @@ public class Map
 
                 list.Add(m);
             }
-
         }
+    }
+
+    public CombatEntity? GetRandomEnemyInArea(CombatEntity attacker, Position pos, int distance, bool checkLineOfSight, bool checkImmunity)
+    {
+        using var targets = EntityListPool.Get();
+        GatherEnemiesInArea(attacker.Character, pos, distance, targets, checkLineOfSight, checkImmunity);
+        if (targets.Count <= 0)
+            return null;
+
+        var target = targets[GameRandom.Next(targets.Count)];
+
+        if (target.TryGet<CombatEntity>(out var ce))
+            return ce;
+
+        return null;
     }
 
     public void GatherMonstersInArea(Position center, int distance, EntityList list)
     {
         foreach (Chunk c in GetChunkEnumeratorAroundPosition(center, distance))
         {
-
             foreach (var m in c.AllEntities)
             {
                 var ch = m.Get<WorldObject>();
@@ -917,11 +963,49 @@ public class Map
         }
     }
 
+    public void GatherEnemiesInArea(WorldObject character, Area area, EntityList list, bool checkLineOfSight, bool checkImmunity = false)
+    {
+        foreach (Chunk c in GetChunkEnumeratorForArea(area))
+        {
+            foreach (var m in c.AllEntities)
+            {
+                var potentialTarget = m.Get<WorldObject>();
+                if (!potentialTarget.IsActive)
+                    continue;
+
+                if (potentialTarget.Type == CharacterType.NPC)
+                    continue;
+
+                if (checkImmunity && potentialTarget.IsTargetImmune)
+                    continue;
+
+                if (!potentialTarget.CombatEntity.IsValidTarget(character.CombatEntity, false, true))
+                    continue;
+
+                if (area.Contains(potentialTarget.Position))
+                {
+                    if (checkLineOfSight)
+                    {
+                        if (!WalkData.HasLineOfSight(character.Position, potentialTarget.Position))
+
+                            continue;
+                    }
+
+                    list.Add(m);
+                }
+            }
+        }
+    }
+
     public void GatherEnemiesInArea(WorldObject character, Position position, int distance, EntityList list, bool checkLineOfSight, bool checkImmunity = false)
     {
+#if DEBUG
+        if (character.Type == CharacterType.NPC)
+            ServerLogger.LogWarningWithStackTrace($"Calling GatherEnemiesInArea for character {character.Name} but that character is an NPC.");
+#endif
+
         foreach (Chunk c in GetChunkEnumeratorAroundPosition(position, distance))
         {
-
             foreach (var m in c.AllEntities)
             {
                 var potentialTarget = m.Get<WorldObject>();
@@ -955,38 +1039,6 @@ public class Map
     public void GatherEnemiesInRange(WorldObject character, int distance, EntityList list, bool checkLineOfSight, bool checkImmunity = false)
     {
         GatherEnemiesInArea(character, character.Position, distance, list, checkLineOfSight, checkImmunity);
-        return;
-        //foreach (Chunk c in GetChunkEnumeratorAroundPosition(character.Position, distance))
-        //{
-
-        //    foreach (var m in c.AllEntities)
-        //    {
-        //        var ch = m.Get<WorldObject>();
-        //        if (!ch.IsActive)
-        //            continue;
-
-        //        if (ch.Type == CharacterType.NPC)
-        //            continue;
-
-        //        if (checkImmunity && ch.IsTargetImmune)
-        //            continue;
-
-        //        if (!ch.CombatEntity.IsValidTarget(character.CombatEntity))
-        //            continue;
-
-        //        if (character.Position.InRange(ch.Position, distance))
-        //        {
-        //            if (checkLineOfSight)
-        //            {
-        //                if (!WalkData.HasLineOfSight(character.Position, ch.Position))
-
-        //                        continue;
-        //            }
-
-        //            list.Add(m);
-        //        }
-        //    }
-        //}
     }
 
     public bool CheckIfNpcNearby(WorldObject character, int distance)
@@ -997,7 +1049,7 @@ public class Map
             {
                 if (e.Type != EntityType.Npc)
                     continue;
-                
+
                 if (e.TryGet<Npc>(out var npc) && npc.DisplayType == NpcDisplayType.Sprite && !npc.IsEvent && character.Position.DistanceTo(npc.Character.Position) <= distance)
                     return true;
             }
@@ -1110,12 +1162,12 @@ public class Map
         {
             foreach (var p in c.AllEntities)
             {
-                if(!p.TryGet<CombatEntity>(out var ch) || !ch.Character.IsActive)
+                if (!p.TryGet<CombatEntity>(out var ch) || !ch.Character.IsActive)
                     continue;
 
                 if (checkImmunity && ch.Character.IsTargetImmune)
                     continue;
-            
+
                 if (!ch.IsValidTarget(attacker, false, canAttackHidden))
                     continue;
 
@@ -1127,7 +1179,7 @@ public class Map
 
                 if (!mask[maskX + maskY * width])
                     continue;
-                
+
                 if (hasList)
                     list!.Add(p);
                 count++;
@@ -1182,6 +1234,7 @@ public class Map
     }
 
     private static readonly int[] scanOrder = [0, 3, 5, 7, 2, 4, 6, 1];
+
     public Position ScanLineOfSightForWallInDirection(Position start, Position center, int distance, Direction dir)
     {
         //var dir = scanOrder[GameRandom.Next(0, 8)];
@@ -1336,6 +1389,8 @@ public class Map
 
     public void CreateAreaOfEffect(AreaOfEffect aoe)
     {
+        var touchAoE = aoe.CheckStayTouching;
+
         var chunkEntities = EntityListPool.Get();
         //add the aoe to every chunk touched by the aoe
         foreach (var chunk in GetChunkEnumerator(GetChunksForArea(aoe.Area)))
@@ -1350,6 +1405,9 @@ public class Map
                 if (e.TryGet<CombatEntity>(out var ce) && aoe.Area.Contains(ce.Character.Position))
                     aoe.OnAoETouch(ce.Character);
             }
+
+            if (touchAoE)
+                ActiveAoEChunks[chunk.Id]++;
         }
 
         EntityListPool.Return(chunkEntities);
@@ -1377,7 +1435,35 @@ public class Map
         return false;
     }
 
-    public bool DoesAreaOverlapWithTrapsOrCharacters(Area area)
+    public CombatEntity? FindTrapInArea(Area area)
+    {
+        area = area.ClipArea(MapBounds);
+        if (area.IsZero)
+            return null;
+
+        foreach (var chunk in GetChunkEnumerator(GetChunksForArea(area)))
+        {
+            foreach (var a in chunk.AreaOfEffects)
+            {
+                if (a.Class == AoEClass.Trap && area.Contains(a.Area.Center))
+                {
+                    if (a.SourceEntity.TryGet<CombatEntity>(out var trap))
+                        return trap;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public enum AoEOverlapCheckType
+    {
+        NoOverlap,
+        TileInArea,
+        TileOverlapOnly,
+    }
+
+    public bool DoesAreaOverlapWithTrapsOrCharacters(Area area, AoEOverlapCheckType check)
     {
         area = area.ClipArea(MapBounds);
         if (area.IsZero)
@@ -1390,13 +1476,29 @@ public class Map
         {
             foreach (var a in chunk.AreaOfEffects)
             {
-                if (a.Class == AoEClass.Trap && area.Overlaps(a.Area))
-                    return true;
+                if (a.Class != AoEClass.Trap)
+                    continue;
+
+                switch (check)
+                {
+                    case AoEOverlapCheckType.NoOverlap:
+                        if (area.Overlaps(a.Area))
+                            return true;
+                        break;
+                    case AoEOverlapCheckType.TileInArea:
+                        if (a.Area.Contains(area.Center))
+                            return true;
+                        break;
+                    case AoEOverlapCheckType.TileOverlapOnly:
+                        if (area.Center == a.Area.Center)
+                            return true;
+                        break;
+                }
             }
 
             foreach (var e in chunk.AllEntities)
             {
-                if (e.IsBattleEntity)
+                if (!e.IsBattleEntity)
                     continue;
                 if (!e.TryGet<WorldObject>(out var ch))
                     continue;
@@ -1433,8 +1535,17 @@ public class Map
 
     public void RemoveAreaOfEffect(AreaOfEffect aoe)
     {
+        var touchAoE = aoe.CheckStayTouching;
         foreach (var chunk in GetChunkEnumerator(GetChunksForArea(aoe.Area)))
         {
+            if (touchAoE)
+            {
+                ActiveAoEChunks[chunk.Id]--;
+#if DEBUG
+                if (ActiveAoEChunks[chunk.Id] < 0)
+                    ServerLogger.LogWarning($"Attempting to remove active touch AoE from map {Name} chunk {chunk.MapX}/{chunk.MapY} but that chunk is not marked as having any.");
+#endif
+            }
             chunk.AreaOfEffects.Remove(aoe);
         }
     }
@@ -1502,7 +1613,7 @@ public class Map
         var hasMatch = false;
 
         Debug.Assert(mask.Length == width * width); //verify mask is large enough
-        
+
         for (var x = 0; x < width; x++)
         {
             for (var y = 0; y < width; y++)
@@ -1621,18 +1732,25 @@ public class Map
             MapImportantEntities.ClearInactive(); //but why risk it?
         }
 
-        foreach (var c in Chunks)
+        for (var x = 0; x < chunkWidth; x++)
         {
-            for (var i = 0; i < c.AreaOfEffects.Count; i++)
+            for (var y = 0; y < chunkHeight; y++)
             {
-                var a = c.AreaOfEffects[i];
-                if (a.CheckStayTouching)
+                if (ActiveAoEChunks[x + y * chunkWidth] > 0)
                 {
-                    a.Update();
-                    if (!a.IsActive)
-                        i--; //we've ended this aoe so step back on the iterator and continue. Probably dangerous.
-                }
+                    var c = Chunks[x + y * chunkWidth];
 
+                    for (var i = 0; i < c.AreaOfEffects.Count; i++)
+                    {
+                        var a = c.AreaOfEffects[i];
+                        if (a.CheckStayTouching)
+                        {
+                            a.Update();
+                            if (!a.IsActive)
+                                i--; //we've ended this aoe so step back on the iterator and continue. Probably dangerous.
+                        }
+                    }
+                }
             }
         }
 
@@ -1672,6 +1790,14 @@ public class Map
         var area2 = GetChunksForArea(area);
         return new ChunkAreaEnumerator(Chunks, chunkWidth, area2);
     }
+
+    public ChunkAreaEnumerator GetChunkEnumeratorForArea(Area area)
+    {
+        area = area.ClipArea(MapBounds);
+        var area2 = GetChunksForArea(area);
+        return new ChunkAreaEnumerator(Chunks, chunkWidth, area2);
+    }
+
 
     public ChunkAreaEnumerator GetChunkEnumerator(Area area)
     {
@@ -1732,7 +1858,6 @@ public class Map
     {
         var area = MapBounds.Shrink(5, 5);
         var pos = new Position(20, 20);
-        var count = 0;
 
         for (var i = 0; i < 100; i++)
         {
@@ -1802,6 +1927,7 @@ public class Map
         ChunkBounds = new Area(0, 0, chunkWidth - 1, chunkHeight - 1);
 
         Chunks = new Chunk[chunkWidth * chunkHeight];
+        ActiveAoEChunks = new int[chunkWidth * chunkHeight];
 
         PlayerCount = 0;
 
@@ -1820,6 +1946,7 @@ public class Map
                             walkable++;
                     }
                 }
+
                 Chunks[x + y * chunkWidth] = new Chunk();
                 Chunks[x + y * chunkWidth].Id = x + y * chunkWidth;
                 Chunks[x + y * chunkWidth].Size = ChunkSize;

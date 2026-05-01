@@ -1,6 +1,5 @@
 ﻿namespace RebuildSharedData.Enum.EntityStats;
 
-
 public enum PlayerStat
 {
     Level,
@@ -100,6 +99,7 @@ public enum CharacterStat
     PerfectDodge,
     AddCrit,
     AddCritDamage,
+    IgnoreDef,
     AddCastTime,
 
     AddAttackElementNeutral,
@@ -178,7 +178,7 @@ public enum CharacterStat
     AddExpRacePlant,
     AddExpRaceDemon,
     AddExpRaceUndead,
-    
+
     AddAttackSpecialNormal,
     AddAttackSpecialBoss,
     AddAttackRangedAttack,
@@ -214,6 +214,14 @@ public enum CharacterStat
     IgnoreMDefRacePlant,
     IgnoreMDefRaceDemon,
     IgnoreMDefRaceUndead,
+
+    IgnoreDefSmall,
+    IgnoreDefMedium,
+    IgnoreDefLarge,
+
+    AddCritDamageSmall,
+    AddCritDamageMedium,
+    AddCritDamageLarge,
 
     //status effects on attack and defense
     //the order of these (in their set) is important, they need to match that of StatusTriggerFlags
@@ -291,7 +299,7 @@ public enum CharacterStat
     ResistStoneStatus,
     ResistFreezeStatus,
     ResistSleepStatus,
-    
+
     DecreasePoisonStatusDamage,
     DecreaseStunDuration,
     DecreaseFreezeDuration,
@@ -308,7 +316,7 @@ public enum CharacterStat
 
     HpGainOnKill,
     SpGainOnKill,
-    
+
     HpGainOnAttackRaceFormless,
     HpGainOnAttackRaceDemihuman,
     HpGainOnAttackRaceBeast,
@@ -376,6 +384,8 @@ public enum CharacterStat
     MagicImmunity,
 
     AddHealingPower,
+    AddHpItemEffectivenessPercent,
+    AddSpItemEffectivenessPercent,
 
     SkillValue, //used to store skill unlocks in ItemEquipState
     AutoSpellOnAttacking,

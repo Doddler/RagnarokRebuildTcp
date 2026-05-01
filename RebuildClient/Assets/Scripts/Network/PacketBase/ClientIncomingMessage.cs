@@ -2,9 +2,10 @@
 using System.Diagnostics;
 using System.Text;
 using Lidgren.Network;
+using MemoryPack;
 using RebuildSharedData.Util;
 using UnityEngine;
-using Debug = System.Diagnostics.Debug;
+using Debug = UnityEngine.Debug;
 
 
 namespace Assets.Scripts.Network
@@ -15,6 +16,7 @@ namespace Assets.Scripts.Network
         public int Length { get; private set; }
 
         private int position;
+        public int Position => position;
 
         private static byte[] buffer = new byte[1024];
 
@@ -169,6 +171,32 @@ namespace Assets.Scripts.Network
             var x = ReadInt16();
             var y = ReadInt16();
             return new Vector2Int(x, y);
+        }
+
+        public ReadOnlySpan<byte> GetRemainingStream()
+        {
+            var pos = (position + 7) / 8;
+            position = pos;
+
+            return new ReadOnlySpan<byte>(Message, pos, Message.Length - pos);
+        }
+
+        public void AdvanceStream(int len)
+        {
+            position += len * 8;
+        }
+
+        public T MemoryPackDeserializeWithLength<T>() where T : struct
+        {
+            var len = ReadInt32();
+            var pos = (position + 7) / 8;
+
+            //Debug.Log($"MemoryPackDeserialize pos {pos} len {len}");
+            var val = MemoryPackSerializer.Deserialize<T>(new ReadOnlySpan<byte>(Message, pos, len));
+
+            position = (len + pos) * 8;
+
+            return val;
         }
     }
 }

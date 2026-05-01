@@ -11,6 +11,7 @@
         ElementalEffect,
         Miss,
         LuckyDodge,
-        FaceDirection
+        FaceDirection,
+        Guard
     }
 }

@@ -54,6 +54,31 @@ namespace Assets.Scripts.SkillHandlers
                 src.SpriteAnimator.PauseAnimation(); //castTime
             }
         }
+        
+        protected void HoldAttackMotionForCast(ServerControllable src, float castTime, float animSpeed = -1)
+        {
+            if (src.SpriteAnimator.State != SpriteState.Dead && src.SpriteAnimator.State != SpriteState.Walking)
+            {
+                src.SpriteAnimator.State = SpriteState.Standby;
+                switch (src.SpriteAnimator.PreferredAttackMotion)
+                {
+                    default:
+                    case 1:
+                        src.SpriteAnimator.ChangeMotion(SpriteMotion.Attack1, true);
+                        break;
+                    case 2:
+                        src.SpriteAnimator.ChangeMotion(SpriteMotion.Attack2, true);
+                        break;
+                    case 3:
+                        src.SpriteAnimator.ChangeMotion(SpriteMotion.Attack3, true);
+                        break;
+                }
+
+                src.SpriteAnimator.PauseAnimation(castTime);
+                if(animSpeed > 0)
+                    src.SpriteAnimator.AnimSpeed = animSpeed;
+            }
+        }
 
         protected void CreateGroundTargetCircle(ServerControllable src, Vector2Int target, int size, float castTime)
         {

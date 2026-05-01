@@ -26,7 +26,7 @@ public class VendNpcProxy : NpcBehaviorBase
             return;
         }
 
-        if(owner.Character.State == CharacterState.Dead && !npc.Character.AdminHidden)
+        if (owner.Character.State == CharacterState.Dead && !npc.Character.AdminHidden)
             npc.HideNpc();
 
         if (owner.Character.State != CharacterState.Dead && npc.Character.AdminHidden)
@@ -48,7 +48,6 @@ public class VendNpcProxy : NpcBehaviorBase
         return NpcInteractionResult.EndInteraction;
     }
 }
-
 
 public class VendingProxyEventLoader : INpcLoader
 {

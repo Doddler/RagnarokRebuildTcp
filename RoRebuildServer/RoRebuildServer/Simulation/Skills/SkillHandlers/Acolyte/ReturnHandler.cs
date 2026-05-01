@@ -13,5 +13,4 @@ public class ReturnHandler : SkillHandlerBase
         if (source.Character.Type == CharacterType.Player)
             source.Player.ReturnToSavePoint();
     }
-
 }

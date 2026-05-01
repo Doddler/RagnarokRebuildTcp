@@ -17,7 +17,7 @@ public struct Position : IEquatable<Position>
 
     public int PackIntoInt => X + (Y << 12);
     public static Position UnpackIntPosition(int pos) => new Position(pos & 0xFFF, pos >> 12);
-    
+
     public Position(int x, int y)
     {
         X = x;
@@ -50,6 +50,8 @@ public struct Position : IEquatable<Position>
         return pos;
     }
 
+    public Vector2 ToVector2() => new Vector2(X, Y);
+
     /// <summary>
     /// Calculate the chebyshev distance to the destination.
     /// A simplified distance check that returns the max distance along both the x and y-axes.
@@ -64,6 +66,11 @@ public struct Position : IEquatable<Position>
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int BlockDistance(Position dest) => Math.Abs(X - dest.X) + Math.Abs(Y - dest.Y);
+
+    public float FloatDistance(Position dest)
+    {
+        return MathF.Sqrt((MathF.Pow(X - dest.X, 2) + MathF.Pow(Y - dest.Y, 2)));
+    }
 
     public float Angle(Position b)
     {
@@ -83,6 +90,16 @@ public struct Position : IEquatable<Position>
         //return target.X >= X - distance && target.X <= X + distance && target.Y >= Y - distance && target.Y <= Y + distance;
     }
 
+    public static Position FromAngleDistance(float angle, int distance)
+    {
+        var radians = angle * (float)(MathF.PI / 180.0);
+
+        var x = MathF.Cos(radians);
+        var y = MathF.Sin(radians);
+
+        return new Position((int)(x * distance + 0.5f), (int)(y * distance + 0.5f)); //0.5 will cause floor to round
+    }
+
     public static Position RandomPosition(Area area)
     {
         return RandomPosition(area.MinX, area.MinY, area.MaxX, area.MaxY);
@@ -91,7 +108,7 @@ public struct Position : IEquatable<Position>
 
     public static Position RandomPosition(Position position, int distance)
     {
-        return RandomPosition(position.X-distance, position.Y-distance, position.X+distance, position.Y+distance);
+        return RandomPosition(position.X - distance, position.Y - distance, position.X + distance, position.Y + distance);
     }
 
     public static Position RandomPosition(int maxx, int maxy)
@@ -110,13 +127,13 @@ public struct Position : IEquatable<Position>
 
     public void ClampToArea(Area bounds)
     {
-        if(X < bounds.MinX)
+        if (X < bounds.MinX)
             X = bounds.MinX;
-        if(X  > bounds.MaxX)
+        if (X > bounds.MaxX)
             X = bounds.MaxX;
-        if(Y < bounds.MinY)
+        if (Y < bounds.MinY)
             Y = bounds.MinY;
-        if(Y  > bounds.MaxY)
+        if (Y > bounds.MaxY)
             Y = bounds.MaxY;
     }
 
@@ -143,6 +160,14 @@ public struct Position : IEquatable<Position>
         return false;
     }
 
+    public Direction GetDirectionTowardsTarget(Position target)
+    {
+        if (this == target)
+            return (Direction)GameRandom.Next(0, 8);
+
+        return (target - this).Normalize().GetDirectionForOffset();
+    }
+
     public Direction GetDirectionForOffset()
     {
 #if DEBUG
@@ -162,7 +187,7 @@ public struct Position : IEquatable<Position>
 
         return Direction.South;
     }
-    
+
     public Position Normalize()
     {
         var x = X;
@@ -192,6 +217,12 @@ public struct Position : IEquatable<Position>
         return this;
     }
 
+    public Position SubDirectionToPosition(Direction d)
+    {
+        var dir = (Direction)(((int)d + 4) % 8);
+        return AddDirectionToPosition(dir);
+    }
+
     public static bool operator ==(Position src, Position dest)
     {
         return src.X == dest.X && src.Y == dest.Y;
@@ -207,7 +238,7 @@ public struct Position : IEquatable<Position>
         return X == other.X && Y == other.Y;
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return obj is Position other && Equals(other);
     }

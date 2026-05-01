@@ -65,8 +65,6 @@ namespace RoRebuildServer.Networking.PacketHandlers.Admin
 
                 ServerLogger.Log($"Player '{chara.Name}' using summon monster admin command to summon {count} of monster '{mobName}'.");
             }
-
-
         }
     }
 }

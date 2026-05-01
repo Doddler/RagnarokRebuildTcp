@@ -17,7 +17,9 @@ public class SaveCharacterRequest : IDbRequest
     private readonly string? map;
     private readonly Position pos;
     private readonly SavePosition savePoint;
+
     private byte[]? data;
+
     //private byte[]? skillData;
     //private byte[]? npcData;
     private byte[]? itemData;
@@ -26,7 +28,7 @@ public class SaveCharacterRequest : IDbRequest
     private int itemDataSize;
     private int dataLength;
     private int? partyId;
-    
+
     public SaveCharacterRequest(string newCharacterName, int accountId)
     {
         AccountId = accountId;
@@ -104,7 +106,7 @@ public class SaveCharacterRequest : IDbRequest
             PartyId = partyId,
             VersionFormat = PlayerDataDbHelper.CurrentPlayerSaveVersion
         };
-        
+
         dbContext.Update(ch);
         await dbContext.SaveChangesAsync();
 

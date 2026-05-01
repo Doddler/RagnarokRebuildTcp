@@ -16,10 +16,10 @@ public class PacketClientTextCommand : IClientPacketHandler
             return;
 
         connection.Player.AddInputActionDelay(0.8f);
-        
+
         var type = (ClientTextCommand)msg.ReadByte();
 
-        if(type == ClientTextCommand.Adminify)
+        if (type == ClientTextCommand.Adminify)
         {
             var text = msg.ReadString();
             var serverPass = ServerConfig.OperationConfig.AdminifyPasscode;
@@ -29,6 +29,7 @@ public class PacketClientTextCommand : IClientPacketHandler
                 connection.Player.AddInputActionDelay(1.2f);
                 return;
             }
+
             connection.Player.IsAdmin = true;
 
             CommandBuilder.AddRecipient(connection.Entity);

@@ -33,6 +33,7 @@ public class PacketUpdateParty : IClientPacketHandler
                     CommandBuilder.ErrorMessage(p, "You must be party leader to remove someone from party.");
                     return;
                 }
+
                 p.Party.RemoveMember(msg.ReadInt32());
 
                 break;
@@ -42,6 +43,7 @@ public class PacketUpdateParty : IClientPacketHandler
                     CommandBuilder.ErrorMessage(p, "You must be party leader to assign someone else as leader.");
                     return;
                 }
+
                 p.Party.PromoteMemberToLeader(msg.ReadInt32());
                 break;
             case PartyClientAction.DisbandParty:
@@ -50,6 +52,7 @@ public class PacketUpdateParty : IClientPacketHandler
                     CommandBuilder.ErrorMessage(p, "You must be party leader to disband the party.");
                     return;
                 }
+
                 p.Party.Disband();
                 break;
             default:

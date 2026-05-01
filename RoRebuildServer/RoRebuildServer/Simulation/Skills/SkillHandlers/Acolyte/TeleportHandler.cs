@@ -2,6 +2,7 @@
 using RebuildSharedData.Enum;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.Logging;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte
 {

@@ -56,8 +56,7 @@ public class MagnusExorcismusHandler : SkillHandlerBase
         {
             var id = DataManager.EffectIdForName["MagnusExorcismus"];
             CommandBuilder.SendEffectAtLocationMulti(id, position, 0);
-        }            
-
+        }
     }
 }
 
@@ -85,6 +84,9 @@ public class MagnusExorcismusBaseEvent : NpcBehaviorBase
 
         var position = npc.SelfPosition;
         var map = npc.Character.Map;
+
+        if (map == null)
+            return;
 
         Span<Position> posList = stackalloc Position[7 * 7];
         var posCount = 0;
@@ -131,9 +133,9 @@ public class MagnusExorcismusBaseEvent : NpcBehaviorBase
         }
 
         if (!npc.Owner.TryGet<CombatEntity>(out var owner)
-           || !owner.Character.IsActive
-           || owner.Character.Map != npc.Character.Map
-           || owner.Character.State == CharacterState.Dead)
+            || !owner.Character.IsActive
+            || owner.Character.Map != npc.Character.Map
+            || owner.Character.State == CharacterState.Dead)
             npc.EndAllEvents();
     }
 
@@ -159,6 +161,7 @@ public class MagnusExorcismusObjectEvent : NpcBehaviorBase
             npc.EndEvent();
             return;
         }
+
         var targeting = new TargetingInfo()
         {
             Faction = source.Character.Type == CharacterType.Player ? 1 : 0,

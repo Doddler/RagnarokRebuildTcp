@@ -11,7 +11,7 @@ public class SightHandler : SkillHandlerBase
 {
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect, bool isItemSource)
     {
-        if(!isIndirect)
+        if (!isIndirect)
             source.ApplyCooldownForSupportSkillAction();
 
         var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Sight, 10);

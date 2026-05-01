@@ -26,7 +26,6 @@ public enum BodyStateFlags : uint
     MoveLocked = Frozen | Petrified | Hidden | Sleep | Stunned | Stopped | Snared,
 }
 
-
 //note: The order of these is important, they must match the order of the matching status effect triggers in CharacterStat
 [Flags]
 public enum StatusTriggerFlags : uint

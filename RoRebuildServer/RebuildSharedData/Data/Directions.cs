@@ -20,6 +20,12 @@ public static class Directions
         };
     }
 
+    public static Position GetVectorForDirection(Direction dir)
+    {
+        var (x, y) = GetXYForDirection(dir);
+        return new Position(x, y);
+    }
+
     public static Direction GetDirectionFromCoordinates(int x, int y)
     {
         if (x < 0 && y < 0) return Direction.SouthWest;
@@ -33,7 +39,7 @@ public static class Directions
         if (x > 0 && y > 0) return Direction.NorthEast;
         return Direction.None;
     }
-    
+
     public static Direction GetFacingForAngle(float angle)
     {
         if (angle > 157.5f) return Direction.South;
@@ -46,7 +52,7 @@ public static class Directions
         if (angle > -157.5f) return Direction.SouthEast;
         return Direction.South;
     }
-    
+
     public static Direction Get4DirFacingForAngle(float angle)
     {
         if (angle > 90f) return Direction.SouthWest;
@@ -68,7 +74,6 @@ public static class Directions
             case Direction.SouthWest: return 225f;
             case Direction.West: return 270f;
             case Direction.NorthWest: return 315f;
-            
         }
 
         return 0f;

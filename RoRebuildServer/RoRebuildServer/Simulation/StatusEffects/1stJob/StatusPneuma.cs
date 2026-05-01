@@ -9,7 +9,7 @@ namespace RoRebuildServer.Simulation.StatusEffects._1stJob;
 public class StatusPneuma : StatusEffectBase
 {
     public override StatusUpdateMode UpdateMode => StatusUpdateMode.OnMove;
-    
+
     public override StatusUpdateResult OnMove(CombatEntity ch, ref StatusEffectState state, Position src, Position dest, bool isTeleport)
     {
         var map = ch.Character.Map;

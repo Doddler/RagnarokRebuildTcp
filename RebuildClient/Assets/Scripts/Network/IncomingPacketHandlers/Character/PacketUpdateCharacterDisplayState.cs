@@ -31,12 +31,15 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                 offHand = item.SubType;
                 shield = 0;
             }
-            
-            ClientDataLoader.Instance.LoadAndAttachEquipmentSprite(controllable, headUpper, EquipPosition.HeadUpper, 6);
-            ClientDataLoader.Instance.LoadAndAttachEquipmentSprite(controllable, headMid, EquipPosition.HeadMid, 5);
-            ClientDataLoader.Instance.LoadAndAttachEquipmentSprite(controllable, headLower, EquipPosition.HeadLower, 4);
-            ClientDataLoader.Instance.LoadAndAttachWeapon(controllable, weapon, offHand);
-            ClientDataLoader.Instance.LoadAndAttachEquipmentSprite(controllable, shield, EquipPosition.Shield, 7);
+
+            if (controllable.OverrideClassId < 4000)
+            {
+                ClientDataLoader.Instance.LoadAndAttachEquipmentSprite(controllable, headUpper, EquipPosition.HeadUpper, 6);
+                ClientDataLoader.Instance.LoadAndAttachEquipmentSprite(controllable, headMid, EquipPosition.HeadMid, 5);
+                ClientDataLoader.Instance.LoadAndAttachEquipmentSprite(controllable, headLower, EquipPosition.HeadLower, 4);
+                ClientDataLoader.Instance.LoadAndAttachWeapon(controllable, weapon, offHand);
+                ClientDataLoader.Instance.LoadAndAttachEquipmentSprite(controllable, shield, EquipPosition.Shield, 7);
+            }
 
             if (controllable.IsMainCharacter)
             {

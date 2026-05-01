@@ -8,6 +8,15 @@ using UnityEngine.U2D;
 
 namespace Assets.Scripts.Effects.EffectHandlers
 {
+    public enum HitEffectType
+    {
+        Default,
+        Normal,
+        Critical,
+        Pierce,
+        SpearBoomerang,
+    }
+
     [RoEffect("HitEffect")]
     public class HitEffect : IEffectHandler
     {
@@ -29,10 +38,27 @@ namespace Assets.Scripts.Effects.EffectHandlers
                     gravity = Random.Range(10f, 40f);
                     pVelocity = -pVelocity;
                 }
+
                 var duration = 0.2f + Random.Range(0, 0.3f);
                 EffectParticleManager.Instance.AddTrailParticle(Random.Range(6f, 16f) / 10f, target, pVelocity,
                     duration, color, -pVelocity.magnitude / (1 / duration) / 2f, gravity, particleId);
             }
+        }
+        //
+        // public static Ragnarok3dEffect DirectionalHit(HitEffectType type, Vector3 src, Vector3 target, Color32 color, int particleId)
+        // {
+        //     if (type == HitEffectType.SpearBoomerang)
+        //         HitSpearBoomerang(src, target, color, particleId);
+        //     else
+        //         Hit1(src, target, color, particleId);
+        // }
+
+        public static Ragnarok3dEffect DirectionalHit(HitEffectType type, Vector3 src, Vector3 target)
+        {
+            if (type == HitEffectType.SpearBoomerang)
+                return HitSpearBoomerang(src, target, new Color32(255, 255, 255, 80), 0);
+
+            return Hit1(src, target, new Color32(255, 255, 255, 80), 0);
         }
 
         public static Ragnarok3dEffect Hit1(Vector3 src, Vector3 target) => Hit1(src, target, new Color32(255, 255, 255, 80), 0);
@@ -42,15 +68,17 @@ namespace Assets.Scripts.Effects.EffectHandlers
             //generate hit particles
             LaunchHitParticles(src, target, color, particleId);
             var dir = (src - target).normalized;
+            //
+            // //generate ring effect
+            // if (!Materials.TryGetValue("ring_blue", out var mat))
+            // {
+            //     mat = new Material(ShaderCache.Instance.PerspectiveAlphaShader);
+            //     mat.mainTexture = Resources.Load<Texture2D>("ring_blue");
+            //     mat.renderQueue = 3001;
+            //     Materials.Add("ring_blue", mat);
+            // }
 
-            //generate ring effect
-            if (!Materials.TryGetValue("ring_blue", out var mat))
-            {
-                mat = new Material(ShaderCache.Instance.PerspectiveAlphaShader);
-                mat.mainTexture = Resources.Load<Texture2D>("ring_blue");
-                mat.renderQueue = 3001;
-                Materials.Add("ring_blue", mat);
-            }
+            var mat = EffectSharedMaterialManager.GetMaterial(EffectMaterialType.BluePerspectiveCylinder);
 
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.HitEffect);
             effect.SetDurationByFrames(9);
@@ -141,6 +169,103 @@ namespace Assets.Scripts.Effects.EffectHandlers
 
                 prim.transform.localPosition = new Vector3(position.x, position.y, 0f);
                 prim.transform.localRotation = Quaternion.Euler(0, 0, -angle);
+            }
+
+            return null;
+        }
+
+        public static Ragnarok3dEffect HitPierce(Vector3 src, Vector3 target, Color32 color, int particleId)
+        {
+            //generate hit particles
+            LaunchHitParticles(src, target, color, particleId);
+            var dir = (src - target).normalized;
+            //
+            // //generate ring effect
+            // if (!Materials.TryGetValue("ring_blue", out var mat))
+            // {
+            //     mat = new Material(ShaderCache.Instance.PerspectiveAlphaShader);
+            //     mat.mainTexture = Resources.Load<Texture2D>("ring_blue");
+            //     mat.renderQueue = 3001;
+            //     Materials.Add("ring_blue", mat);
+            // }
+
+            var mat = EffectSharedMaterialManager.GetMaterial(EffectMaterialType.FireRing);
+
+            var effect = RagnarokEffectPool.Get3dEffect(EffectType.HitEffect);
+            effect.SetDurationByFrames(15);
+            // Debug.Log(effect.Duration);
+
+            var prim = effect.LaunchPrimitive(PrimitiveType.Cylinder3D, mat, effect.Duration);
+            prim.transform.rotation = Quaternion.FromToRotation(Vector3.up, dir);
+            prim.transform.position = target + dir / 5f + Vector3.up * 2f;
+            prim.transform.localScale = Vector3.one * 0.2f;
+
+            var data = prim.GetPrimitiveData<CylinderData>();
+
+            var speed = (0.7f * 60) / 5f;
+
+            data.Velocity = dir * speed;
+            data.Acceleration = -(speed / effect.Duration) / 2f;
+            data.InnerRadius = 6f;
+            data.OuterRadius = 11f;
+            data.Height = 3.5f;
+            data.Alpha = 255;
+            data.MaxAlpha = 255;
+            data.FadeOutLength = effect.Duration / 2f;
+
+            return null;
+        }
+
+
+        public static Ragnarok3dEffect HitSpearBoomerang(Vector3 src, Vector3 target, Color32 color, int particleId)
+        {
+            //particles are generated manually later because they're a bit unique
+            //LaunchHitParticles(src, target, color, particleId);
+            
+            var dir = -(src - target).normalized;
+            
+            // if(Input.GetKey(KeyCode.Tab))
+            //     Debug.Break();
+
+            AudioManager.Instance.OneShotSoundEffect(-1, $"ef_hit2.ogg", target);
+
+            var mat = EffectSharedMaterialManager.GetMaterial(EffectMaterialType.PerspectiveLens2Cylinder);
+
+            var effect = RagnarokEffectPool.Get3dEffect(EffectType.HitEffect);
+            effect.SetDurationByFrames(15);
+
+            var prim = effect.LaunchPrimitive(PrimitiveType.Cylinder3D, mat, effect.Duration);
+            prim.transform.rotation = Quaternion.FromToRotation(Vector3.up, dir);
+            prim.transform.position = target + dir / 5f + Vector3.up * 0.5f;
+            prim.transform.localScale = Vector3.one * 0.2f;
+
+            var data = prim.GetPrimitiveData<CylinderData>();
+
+            var speed = (0.7f * 60) / 5f;
+
+            data.Velocity = dir * speed;
+            data.Acceleration = -(speed / effect.Duration) / 2f;
+            data.InnerRadius = 0.5f;
+            data.OuterRadius = 4f;
+            data.Alpha = 255;
+            data.MaxAlpha = 255;
+            data.FadeOutLength = effect.Duration - effect.Duration / 3f;
+            data.Height = 0f;
+            data.HeightSpeed = 0.25f * 60f * 3;
+            data.HeightAccel = 0.15f * 60f * 3;
+
+            for (var i = 0; i < 5; i++)
+            {
+                var pVelocity = Quaternion.Euler(0, Random.Range(-40, 40), Random.Range(-50, 50)) * dir;
+                pVelocity *= Random.Range(6f, 15f) * 1.5f;
+
+                var gravity = 0f;
+                var duration = Random.Range(0.4f, 0.5f);
+                var startPos = target + dir * Random.Range(0.8f, 1.6f) + Vector3.up * 0.5f;
+                
+                EffectParticleManager.Instance.AddTrailParticle(Random.Range(6f, 16f) / 50f, startPos, pVelocity,
+                    duration, color, -(speed / duration) / 2f, gravity, particleId, 
+                    ParticleDisplayMode.Normal, 0.05f);
             }
 
             return null;

@@ -45,7 +45,7 @@ public class PneumaHandler : SkillHandlerBase
             position = target != null ? target.Character.Position : source.Character.Position;
 
         var ch = source.Character;
-        
+
         var e = World.Instance.CreateEvent(source.Entity, map, "PneumaObjectEvent", position, lvl, 0, 0, 0, null);
         ch.AttachEvent(e);
         //source.ApplyCooldownForSupportSkillAction();
@@ -75,7 +75,7 @@ public class PneumaObjectEvent : NpcBehaviorBase
             SourceEntity = npc.Owner,
             TargetingType = TargetingType.Everyone
         };
-        
+
         var aoe = World.Instance.GetNewAreaOfEffect();
         aoe.Init(npc.Character, Area.CreateAroundPoint(npc.Character.Position, 1), AoeType.SpecialEffect, targeting, 10f, 0.25f, 0, 0);
         aoe.TriggerOnFirstTouch = true;
@@ -89,7 +89,7 @@ public class PneumaObjectEvent : NpcBehaviorBase
 
     public override void OnTimer(Npc npc, float lastTime, float newTime)
     {
-        if(newTime > 10f)
+        if (newTime > 10f)
             npc.EndEvent();
     }
 

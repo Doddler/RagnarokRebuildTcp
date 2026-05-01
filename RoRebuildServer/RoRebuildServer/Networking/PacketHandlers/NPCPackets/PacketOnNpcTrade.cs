@@ -5,7 +5,6 @@ using RoRebuildServer.Logging;
 
 namespace RoRebuildServer.Networking.PacketHandlers.NPCPackets;
 
-
 [ClientPacketHandler(PacketType.NpcTradeItem)]
 public class PacketOnNpcTrade : IClientPacketHandler
 {
@@ -57,7 +56,7 @@ public class PacketOnNpcTrade : IClientPacketHandler
             throw new Exception($"Attempting to process PacketOnTrade packet but receiving too many bag IDs");
 
         Span<int> bagIds = stackalloc int[bagEntryCount];
-        for(var i = 0; i < bagEntryCount; i++)
+        for (var i = 0; i < bagEntryCount; i++)
             bagIds[i] = msg.ReadInt32();
 
         player.NpcInteractionState.FinalizeItemTrade(requestedItem, reqCount, bagIds);

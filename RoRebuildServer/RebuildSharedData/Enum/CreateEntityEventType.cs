@@ -6,6 +6,7 @@
         EnterServer,
         Warp,
         Toss,
+        Refresh,
         Descend
     };
 }

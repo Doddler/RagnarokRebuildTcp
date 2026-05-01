@@ -41,6 +41,7 @@ namespace Assets.Scripts.Effects
         ParticleAdditive,
         IceMaterial,
         StoneMaterial,
+        StoneMaterialNoZCheck,
         FireRing,
         SightEffect,
         WaterBallEffect,
@@ -49,11 +50,16 @@ namespace Assets.Scripts.Effects
         CastWater,
         CastWind,
         CastEarth,
+        CastPoison,
         MagnumBreak,
         MapPillarBlue,
         MapPillarGreen,
         MapPillarRed,
         SkillFlashEffect,
+        FireRingNoZCheck,
+        BluePerspectiveCylinder,
+        PerspectiveLens2Cylinder,
+        FirePillar,
         EffectMaterialMax
     }
 
@@ -67,6 +73,7 @@ namespace Assets.Scripts.Effects
         RingRed,
         RingBlue,
         RingYellow,
+        Lens2,
         EffectTextureMax
     }
 
@@ -198,6 +205,7 @@ namespace Assets.Scripts.Effects
                 EffectTextureType.AlphaDown => "alpha_down",
                 EffectTextureType.AlphaCenter => "alpha_center",
                 EffectTextureType.MagicViolet => "magic_violet",
+                EffectTextureType.Lens2 => "lens2",
                 _ => null
             };
             if (texName == null)
@@ -344,6 +352,10 @@ namespace Assets.Scripts.Effects
                         stoneMat.SetInt("_ZWrite", 1);
                         stoneMat.SetInt("_myCustomCompare", (int)CompareFunction.LessEqual);
                         break;
+                    
+                    case EffectMaterialType.StoneMaterialNoZCheck:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.AlphaBlendNoZTestShader, Resources.Load<Texture2D>("stone"));
+                        break;
                     case EffectMaterialType.FireRing:
                         SetUpTextureMaterial(mat, ShaderCache.Instance.PerspectiveAlphaShader, GetOrLoadEffectTexture(EffectTextureType.RingYellow));
                         break;
@@ -386,6 +398,9 @@ namespace Assets.Scripts.Effects
                     case EffectMaterialType.CastEarth:
                         SetUpTextureMaterial(mat, ShaderCache.Instance.InvAlphaShader, GetOrLoadEffectTexture(EffectTextureType.MagicGreen), 3001, true);
                         break;
+                    case EffectMaterialType.CastPoison:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.InvAlphaShader, GetOrLoadEffectTexture(EffectTextureType.MagicViolet), 3001, true);
+                        break;
                     case EffectMaterialType.MagnumBreak:
                         SetUpTextureMaterial(mat, ShaderCache.Instance.AlphaBlendParticleShader, Resources.Load<Texture2D>("BigBang"));
                         break;
@@ -402,6 +417,21 @@ namespace Assets.Scripts.Effects
                     
                     case EffectMaterialType.SkillFlashEffect:
                         SetUpTextureMaterial(mat, ShaderCache.Instance.AlphaBlendNoZTestShader, GetOrLoadEffectTexture(EffectTextureType.AlphaCenter), 3003);
+                        break;
+                    
+                    case EffectMaterialType.FireRingNoZCheck:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.AlphaBlendNoZTestShader, GetOrLoadEffectTexture(EffectTextureType.RingYellow), 3003);
+                        break;
+                    
+                    case EffectMaterialType.BluePerspectiveCylinder:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.PerspectiveAlphaShader, GetOrLoadEffectTexture(EffectTextureType.RingBlue));
+                        break;
+                    case EffectMaterialType.PerspectiveLens2Cylinder:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.PerspectiveAlphaShader, GetOrLoadEffectTexture(EffectTextureType.Lens2));
+                        break;
+                    
+                    case EffectMaterialType.FirePillar:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.PerspectiveAlphaShader, GetOrLoadEffectTexture(EffectTextureType.MagicRed));
                         break;
                 }
             }

@@ -23,7 +23,7 @@ public class StatusMagnumBreak : StatusEffectBase
             if (!info.Target.TryGet<CombatEntity>(out var target))
                 return StatusUpdateResult.Continue;
 
-            var attack = new AttackRequest(CharacterSkill.MagnumBreak, 1f, 1, 
+            var attack = new AttackRequest(CharacterSkill.MagnumBreak, 1f, 1,
                 AttackFlags.Physical | AttackFlags.IgnoreEvasion | AttackFlags.NoTriggers, AttackElement.Fire);
 
             if (info.Result == AttackResult.CriticalDamage)
@@ -44,7 +44,7 @@ public class StatusMagnumBreak : StatusEffectBase
                 target.QueueDamage(res);
                 CommandBuilder.AttackAutoVis(ch.Character, target.Character, res, false);
             }
-                //info.Damage += res.Damage * (10 + state.Value1) / 100;
+            //info.Damage += res.Damage * (10 + state.Value1) / 100;
         }
 
         return StatusUpdateResult.Continue;

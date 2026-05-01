@@ -4,7 +4,6 @@ using CsvHelper.Configuration.Attributes;
 
 namespace RoRebuildServer.Data.CsvDataTypes;
 
-
 public class CsvItemRegular
 {
     public required int Id { get; set; }
@@ -89,22 +88,19 @@ public class CsvItemEquipment
     public required int Weight { get; set; }
     public required EquipPosition Type { get; set; }
     public HeadgearPosition Position { get; set; }
-    [Optional]
-    public CharacterElement? Property { get; set; }
+    [Optional] public CharacterElement? Property { get; set; }
     public required int MinLvl { get; set; }
     public required string EquipGroup { get; set; }
     public required string Refinable { get; set; }
     public required string Breakable { get; set; }
     public required string Sprite { get; set; }
     public required string DisplaySprite { get; set; }
-
 }
 
 [Flags]
 public enum HeadgearPosition : byte
 {
-    [Name("")]
-    None = 0,
+    [Name("")] None = 0,
     Top = 1,
     Mid = 2,
     Bottom = 4,
@@ -122,7 +118,7 @@ public class CsvItemBoxSummonEntry
 }
 
 public class CsvItemMonsterSummonEntry
-{   
+{
     public required string Type { get; set; }
     public required string Monster { get; set; }
     public required int Chance { get; set; }

@@ -47,8 +47,7 @@ public class PacketVendingViewStore : IClientPacketHandler
 
         npc.OnInteract(connection.Player);
         //player.NpcInteractionState.OpenShop();
-        
+
         CommandBuilder.SendVendOpenShop(player, vendor, npc.Name);
-        
     }
 }

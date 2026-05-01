@@ -1,14 +1,16 @@
-﻿using System.Reflection;
-using RebuildSharedData.ClientTypes;
+﻿using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
+using RoRebuildServer.EntityComponents.Util;
+using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.Skills.SkillHandlers;
 using RoRebuildServer.Simulation.Util;
+using System.Reflection;
 
 namespace RoRebuildServer.Simulation.Skills;
 
@@ -156,6 +158,23 @@ public static class SkillHandler
         return src.GetEffectiveStat(CharacterStat.Range);
     }
 
+    public static void TriggerEventOnHitWhileCasting(CombatEntity self, ref AttackRequest req, ref DamageInfo di)
+    {
+        if (!self.IsCasting)
+            return;
+
+        var info = self.CastingSkill;
+
+        var handler = handlers[(int)info.Skill];
+        if (handler != null)
+        {
+            di.Source.TryGet<CombatEntity>(out var attacker);
+            handler.OnHitEvent(self, attacker, info, ref req, ref di);
+        }
+    }
+
+    public static SkillClass GetSkillClassification(CharacterSkill skill) => skillAttributes[(int)skill].SkillClassification;
+
     public static bool ExecuteSkill(SkillCastInfo info, CombatEntity src)
     {
         if (!src.Character.IsActive || src.Character.Map == null)
@@ -165,7 +184,7 @@ public static class SkillHandler
         var handler = handlers[(int)info.Skill];
         if ((info.Flags & SkillCastFlags.NoEffect) > 0)
             handler = handlers[(int)CharacterSkill.NoEffectAttack];
-            
+
         if (handler != null)
         {
             var isIndirect = info.IsIndirect || info.ItemSource > 0;
@@ -179,13 +198,19 @@ public static class SkillHandler
                                    && skillAttributes[(int)info.Skill].SkillClassification == SkillClass.Magic
                                    && target.GetStat(CharacterStat.MagicImmunity) > 0)
                 {
-                    if(src.Character.Type == CharacterType.Player)
+                    if (src.Character.Type == CharacterType.Player)
                         CommandBuilder.SkillFailed(src.Player, SkillValidationResult.TargetImmuneToEffect);
                     return false;
                 }
 
                 if (info.Skill != CharacterSkill.Cloaking && info.Skill != CharacterSkill.Hiding)
                     src.UpdateHidingStateAfterAttack();
+
+
+#if DEBUG
+                if (src.Character.Type == CharacterType.Monster && src.Character.Monster.DebugLogging)
+                    ServerLogger.Debug($"Monster {src.Character} using skill {info.Skill} lv {info.Level} (indirect: {isIndirect}).\n{Environment.StackTrace}");
+#endif
 
                 handler.Process(src, target, info.TargetedPosition, info.Level, isIndirect, info.ItemSource > 0);
                 return true;
@@ -194,5 +219,4 @@ public static class SkillHandler
 
         return false;
     }
-
 }

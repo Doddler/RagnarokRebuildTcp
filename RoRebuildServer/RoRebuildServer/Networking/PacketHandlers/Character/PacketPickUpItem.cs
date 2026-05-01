@@ -47,8 +47,9 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
                     player.Character.ItemTarget = id;
                     return;
                 }
+
                 player.Character.StopMovingImmediately();
-                if(player.TryPickup(item))
+                if (player.TryPickup(item))
                     connection.Player.AddInputActionDelay(InputActionCooldownType.PickUpItem);
                 else
                     CommandBuilder.ErrorMessage(player, "Your inventory is too full to pick up this item.");

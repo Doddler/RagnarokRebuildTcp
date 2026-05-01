@@ -100,6 +100,7 @@ namespace Assets.Scripts.Sprites
             renderer.SpriteData = sprite.SpriteData;
             renderer.SpriteOffset = sprite.SpriteOffset;
             renderer.MeshRenderer.sortingOrder = sprite.MeshRenderer.sortingOrder;
+            renderer.VerticalOffset = sprite.ShaderYOffset;
 
             
             trail.AddTrailSprite(renderer, order);

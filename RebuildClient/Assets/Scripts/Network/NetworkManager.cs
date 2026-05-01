@@ -380,6 +380,8 @@ namespace Assets.Scripts.Network
             isConnected = false;
             isReady = false;
             socket = null;
+
+            PlayerState.Instance.PlayerName = null;
         }
 
         private void StartConnectServer(string serverPath, string username, string password)
@@ -864,7 +866,7 @@ namespace Assets.Scripts.Network
 
             if (GameConfig.Data.ShowExpGainOnKill)
             {
-                if (controllable.SpriteAnimator != null)
+                if (controllable.SpriteAnimator != null && controllable.SpriteMode != ClientSpriteType.Prefab)
                     height = controllable.SpriteAnimator.SpriteData.Size / 50f;
 
                 di.DoDamage(TextIndicatorType.Experience, $"+{exp} Exp", controllable.gameObject.transform.localPosition,
@@ -1602,6 +1604,15 @@ namespace Assets.Scripts.Network
         {
             var msg = StartMessage(PacketType.AdminCharacterAction);
             msg.Write((int)AdminCharacterAction.Die);
+            
+            SendMessage(msg);
+        }
+
+        public void SendAdminDisguise(int id)
+        {
+            var msg = StartMessage(PacketType.AdminCharacterAction);
+            msg.Write((int)AdminCharacterAction.Disguise);
+            msg.Write(id);
             
             SendMessage(msg);
         }

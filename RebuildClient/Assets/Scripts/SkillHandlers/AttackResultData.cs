@@ -17,5 +17,6 @@ namespace Assets.Scripts.SkillHandlers
         public AttackResult Result;
         public byte HitCount;
         public byte SkillLevel;
+        public bool IsIndirect;
     }
 }

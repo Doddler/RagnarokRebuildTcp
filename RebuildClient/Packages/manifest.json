@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "com.codewriter.textmeshpro-spriteatlas-support": "https://github.com/codewriter-packages/textmeshpro-spriteatlas-support.git",
+    "com.github-glitchenzo.nugetforunity": "https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.addressables": "1.22.3",
     "com.unity.ai.navigation": "1.1.6",

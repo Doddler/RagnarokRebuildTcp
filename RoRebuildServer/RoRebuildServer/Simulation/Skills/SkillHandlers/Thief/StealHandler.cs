@@ -63,7 +63,7 @@ public class StealHandler : SkillHandlerBase
 
             var di = DamageInfo.EmptyResult(source.Entity, target.Entity);
             CommandBuilder.SkillExecuteTargetedSkillAutoVis(source.Character, target.Character, CharacterSkill.Steal, lvl, di);
-            
+
             target.AddStatusEffect(CharacterStatusEffect.StolenFrom, int.MaxValue);
 
             return;

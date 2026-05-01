@@ -26,7 +26,7 @@ public class LickHandler : SkillHandlerBase
             var maxSp = target.GetStat(CharacterStat.MaxSp);
 
             var drainAmnt = 100;
-            if(maxSp / 4 < drainAmnt)
+            if (maxSp / 4 < drainAmnt)
                 drainAmnt = maxSp / 4;
 
             target.Player.TakeSpValue(drainAmnt);

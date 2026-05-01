@@ -16,20 +16,19 @@ public class MonsterSnapHandler : SkillHandlerBase
 
         if (target == null || map == null || !target.IsValidTarget(source))
             return;
-        
+
         //level 2 ignores line of sight
         if (lvl == 1 && !map.WalkData.HasLineOfSight(source.Character.Position, target.Character.Position))
             return;
 
         var angle = target.Character.Position.Angle(source.Character.Position);
         var dir = Directions.GetFacingForAngle(angle);
-        
+
         var targetPos = target.Character.Position.AddDirectionToPosition(dir);
         if (!map.WalkData.IsCellWalkable(targetPos))
             targetPos = target.Character.Position;
 
         map.ChangeEntityPosition3(source.Character, source.Character.WorldPosition, targetPos, false);
         source.Character.StopMovingImmediately();
-
     }
 }

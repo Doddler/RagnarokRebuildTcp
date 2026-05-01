@@ -23,7 +23,7 @@ public class FireBallHandler : SkillHandlerBase
 
         //lvl = int.Clamp(lvl, 1, 10);
         var map = source.Character.Map!;
-        
+
         map.AddVisiblePlayersAsPacketRecipients(source.Character, target.Character); //combines src and target visibility lists
 
         var skillModifier = 1.4f + 0.2f * lvl;
@@ -34,7 +34,6 @@ public class FireBallHandler : SkillHandlerBase
 
         //initial hit against the targeted enemy
         var res = source.CalculateCombatResult(target, attack);
-        source.ApplyAfterCastDelay(1f);
         res.AttackMotionTime = 0.38f;
         res.IsIndirect = isIndirect;
         var baseTime = Time.ElapsedTimeFloat + res.AttackMotionTime +
@@ -66,8 +65,12 @@ public class FireBallHandler : SkillHandlerBase
             CommandBuilder.AttackMulti(source.Character, blastTarget, res, false);
         }
 
-        if(!isIndirect)
-            source.ApplyCooldownForAttackAction(position);
+        if (!isIndirect)
+        {
+            source.ApplyAfterCastDelay(1f);
+            source.ApplyCooldownForSupportSkillAction();
+        }
+
         CommandBuilder.ClearRecipients();
     }
 }

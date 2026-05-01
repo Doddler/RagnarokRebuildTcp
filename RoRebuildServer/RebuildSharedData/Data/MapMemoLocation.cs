@@ -15,13 +15,13 @@ public struct MapMemoLocation
             location.MapName = br.ReadString();
             location.Position = new Position(br.ReadInt16(), br.ReadInt16());
         }
-        
+
         return location;
     }
-    
+
     public void Serialize(IBinaryMessageWriter bw)
     {
-        if(string.IsNullOrWhiteSpace(MapName))
+        if (string.IsNullOrWhiteSpace(MapName))
             bw.Write((byte)0);
         else
         {

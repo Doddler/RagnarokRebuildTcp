@@ -21,7 +21,9 @@ public class CharacterStatusContainer
 
     private SwapList<StatusEffectState>? statusEffects;
     private SwapList<PendingStatusEffect>? pendingStatusEffects;
-    
+
+    private Dictionary<CharacterStatusEffect, float> clientSerializationData = new();
+
     private byte onAttackEffects;
     private byte onHitEffects;
     private byte onUpdateEffects;
@@ -36,7 +38,7 @@ public class CharacterStatusContainer
     private HashSet<CharacterStatusEffect>? preserveOnDeathStatuses;
 
     public int TotalStatusEffectCount => statusEffects?.Count ?? 0;
-    
+
     public void Reset()
     {
         Owner = null!;
@@ -52,6 +54,7 @@ public class CharacterStatusContainer
         nextStatusUpdate = 0f;
         nextExpirationCheck = 0f;
         preserveOnDeathStatuses?.Clear();
+        clientSerializationData.Clear();
         if (pendingStatusEffects != null)
         {
             StatusEffectPoolManager.ReturnPendingContainer(pendingStatusEffects);
@@ -70,6 +73,7 @@ public class CharacterStatusContainer
                 statusEffects[i] = s;
             }
         }
+
         if (pendingStatusEffects != null)
         {
             for (var i = 0; i < pendingStatusEffects.Count; i++)
@@ -425,7 +429,7 @@ public class CharacterStatusContainer
             if (nextExpirationCheck < time)
                 hasUpdate = CheckExpiredStatusEffects();
         }
-        
+
         if (pendingStatusEffects != null)
         {
             for (var i = 0; i < pendingStatusEffects.Count; i++)
@@ -448,7 +452,7 @@ public class CharacterStatusContainer
         if (hasUpdate)
             Owner.UpdateStats();
 
-        if(performUpdateTick)
+        if (performUpdateTick)
             OnUpdate();
     }
 
@@ -612,14 +616,14 @@ public class CharacterStatusContainer
 
         RemoveUpdateModeForStatus(status.Type);
     }
-    
+
     private void RemoveExistingStatusEffect(ref StatusEffectState status, bool isRefresh = false)
     {
         Debug.Assert(Owner != null);
 
         if (StatusEffectHandler.GetStatusVisibility(status.Type) != StatusClientVisibility.None)
         {
-            Debug.Assert(Character.Map != null);
+            //Debug.Assert(Character.Map != null);
             if (Character.Map != null)
             {
                 Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
@@ -713,10 +717,12 @@ public class CharacterStatusContainer
                     ServerLogger.LogWarning($"Could not persist status {status.Type} on character {Owner.Character.Name} as it is attempting to persist {retainLimit} effects at once.");
                     continue;
                 }
+
                 retain[retainCount] = status;
                 retainCount++;
                 continue;
             }
+
             if (StatusEffectHandler.GetStatusVisibility(status.Type) != StatusClientVisibility.None)
             {
                 Debug.Assert(Character.Map != null);
@@ -727,6 +733,7 @@ public class CharacterStatusContainer
 
             StatusEffectHandler.OnExpiration(status.Type, Owner, ref status);
         }
+
         statusEffects.Clear();
 
         for (var i = 0; i < retainCount; i++)
@@ -764,6 +771,18 @@ public class CharacterStatusContainer
         msg.Write(false);
     }
 
+    public Dictionary<CharacterStatusEffect, float> GetClientSerializationContainer()
+    {
+        clientSerializationData.Clear();
+        if (statusEffects == null || statusEffects.Count == 0)
+            return clientSerializationData;
+
+        foreach (var status in statusEffects)
+            clientSerializationData.Add(status.Type, (float)(status.Expiration - Time.ElapsedTime));
+
+        return clientSerializationData;
+    }
+
     public int Serialize(IBinaryMessageWriter bw)
     {
         if (statusEffects == null)
@@ -788,7 +807,7 @@ public class CharacterStatusContainer
             var status = StatusEffectState.Deserialize(br);
             if (StatusEffectHandler.HasFlag(status.Type, StatusEffectFlags.NoSave))
                 continue;
-            if(status.Type != CharacterStatusEffect.None && status.Expiration > Time.ElapsedTime)
+            if (status.Type != CharacterStatusEffect.None && status.Expiration > Time.ElapsedTime)
                 AddNewStatusEffect(status, true, true);
         }
     }

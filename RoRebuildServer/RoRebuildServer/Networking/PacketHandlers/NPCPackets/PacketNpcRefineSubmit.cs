@@ -36,11 +36,11 @@ public class PacketNpcRefineSubmit : IClientPacketHandler
             CommandBuilder.ErrorMessage(player, $"Failed to refine, the selected catalyst is incompatible.");
             return;
         }
-        
+
         var isEquipped = player.Equipment.IsItemEquipped(bagId);
-        if(isEquipped)
+        if (isEquipped)
             player.Equipment.UnEquipItem(bagId);
-        
+
         CommandBuilder.AddRecipients(recipients);
 
         if (result == RefineSuccessResult.FailedNoChange || result == RefineSuccessResult.FailedWithLevelDown)
@@ -65,7 +65,7 @@ public class PacketNpcRefineSubmit : IClientPacketHandler
         }
 
         return;
-    OnError:
+        OnError:
         CommandBuilder.ErrorMessage(player, $"Failed to refine, missing one or more requirement(s).");
     }
 }

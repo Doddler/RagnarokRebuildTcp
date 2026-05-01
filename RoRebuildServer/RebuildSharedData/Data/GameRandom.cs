@@ -6,8 +6,7 @@ public class GameRandom
 {
     private static readonly Random _global = new Random();
     private static int _seed = 0;
-    [ThreadStatic]
-    private static Random? local;
+    [ThreadStatic] private static Random? local;
 
     public static int Next() => NextInclusive(0, Int32.MaxValue);
     public static int Next(int max) => Next(0, max);

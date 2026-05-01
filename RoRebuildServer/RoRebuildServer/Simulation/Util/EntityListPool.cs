@@ -61,7 +61,6 @@ public static class EntityListPool
 #if DEBUG
         lock (_lockObject)
         {
-
             if (!ActiveLists.Remove(e.UniqueId))
             {
                 if (TrackListBorrows)
@@ -90,4 +89,3 @@ public static class EntityListPool
         Pool.Return(e);
     }
 }
-

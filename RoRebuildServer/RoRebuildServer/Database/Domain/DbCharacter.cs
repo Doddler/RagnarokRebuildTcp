@@ -8,10 +8,11 @@ namespace RoRebuildServer.Database.Domain;
 public class DbCharacter
 {
     [Key] public Guid Id { get; set; }
+
     [MaxLength(SharedConfig.MaxPlayerName, ErrorMessage = "Player name cannot exceed 32 characters in length")]
     public string Name { get; set; } = null!;
-    [MaxLength(32)]
-    public string? Map { get; set; }
+
+    [MaxLength(32)] public string? Map { get; set; }
     public int CharacterSlot { get; set; }
     public int X { get; set; }
     public int Y { get; set; }

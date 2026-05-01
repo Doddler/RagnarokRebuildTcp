@@ -677,7 +677,7 @@ namespace Assets.Scripts.MapEditor
 
                     var type = FalloffType.InverseSquared;
 
-                    Debug.Log("Setting point light falloff to: " + type);
+                    // Debug.Log("Setting point light falloff to: " + type);
 
                     for (int i = 0; i < requests.Length; i++)
                     {

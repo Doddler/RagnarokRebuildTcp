@@ -173,6 +173,15 @@ namespace Assets.Scripts.Network.Messaging
             }
         }
 
+        public void SendBlockEvent(float time)
+        {
+            var msg = EntityMessagePool.Borrow();
+            msg.ActivationTime = Time.timeSinceLevelLoad + time;
+            msg.Type = EntityMessageType.Guard;
+            
+            EnqueueMessage(msg);
+        }
+
         public void SendDamageEvent(ServerControllable src, float time, int damage, int hitCount, bool isCrit = false, bool takeWeaponSound = true, bool playSound = true)
         {
 // #if DEBUG

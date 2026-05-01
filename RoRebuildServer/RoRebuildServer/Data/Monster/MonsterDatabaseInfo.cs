@@ -7,7 +7,6 @@ public enum MonsterSpecialFlags
 {
     None = 0,
     Flying = 1 << 0
-
 }
 
 public class MonsterDatabaseInfo

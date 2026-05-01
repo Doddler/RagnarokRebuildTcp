@@ -37,7 +37,6 @@ public class PlayerWeaponData
         EffectMale = EffectMale,
         SpriteFemale = SpriteFemale,
         EffectFemale = EffectFemale,
-
     };
 }
 

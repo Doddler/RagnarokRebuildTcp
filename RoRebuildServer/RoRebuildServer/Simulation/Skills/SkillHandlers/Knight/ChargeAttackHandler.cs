@@ -20,7 +20,7 @@ public class ChargeAttackHandler : SkillHandlerBase
             return 0;
 
         var distance = source.Character.Position.DistanceTo(target.Character.Position);
-        return  float.Clamp(distance / 28f, 0.1f, 0.5f);
+        return float.Clamp(distance / 28f, 0.1f, 0.5f);
     }
 
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
@@ -60,7 +60,7 @@ public class ChargeAttackHandler : SkillHandlerBase
         req.AccuracyRatio = 100 + lvl * 5;
         var res = source.CalculateCombatResult(target, req);
 
-        if(res.IsDamageResult)
+        if (res.IsDamageResult)
             res.KnockBack = (byte)int.Clamp(1 + distance / 5, 1, 3);
 
         source.ApplyCooldownForAttackAction(target);

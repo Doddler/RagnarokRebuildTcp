@@ -15,8 +15,9 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
         //val2 = attack power snapshot
         //val3 = vit penalty
         //val4 = counter so we execute only ever 2s on monsters and 3s vs players
-        
+
         public override StatusUpdateMode UpdateMode => StatusUpdateMode.OnUpdate;
+
         public override StatusUpdateResult OnUpdateTick(CombatEntity ch, ref StatusEffectState state)
         {
             state.Value4--;
@@ -24,7 +25,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
                 return StatusUpdateResult.Continue; //only do this every 3 seconds
             state.Value4 = (byte)(ch.Character.Type == CharacterType.Player ? 3 : 2);
 
-            if (ch.Character.Type == CharacterType.Monster && ch.HpPercent < 20 && ch.Character.Monster.TimeSinceLastDamage > 3f)
+            if (ch.Character.Type == CharacterType.Monster && (ch.HpPercent < 20 || ch.GetSpecialType() == CharacterSpecialType.Boss) && ch.Character.Monster.TimeSinceLastDamage > 3f)
                 return StatusUpdateResult.Continue;
 
             var attackerEntity = World.Instance.GetEntityById(state.Value1);
@@ -38,11 +39,11 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
                 if (damage > remainingHp)
                     damage = remainingHp - 1; //players drop down to 1hp but don't die
             }
-            
+
             if (damage <= 0)
                 return StatusUpdateResult.Continue;
-            
-            
+
+
             var di = new DamageInfo()
             {
                 Damage = damage,
@@ -55,9 +56,9 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
                 Time = 0,
                 AttackMotionTime = 0,
                 AttackPosition = ch.Character.Position,
-                Flags = DamageApplicationFlags.NoHitLock | DamageApplicationFlags.SkipOnHitTriggers
+                Flags = DamageApplicationFlags.NoHitLock | DamageApplicationFlags.SkipOnHitTriggers | DamageApplicationFlags.PhysicalDamage
             };
-            
+
             ch.ExecuteCombatResult(di, false, false);
 
             ch.Character.Map?.AddVisiblePlayersAsPacketRecipients(ch.Character);

@@ -58,6 +58,7 @@ public class Npc : IEntityAutoReset
     public double TimerUpdateRate;
     public double LastTimerUpdate;
     public double TimerStart;
+    public double TimerEnd;
 
     private bool touchDisabled;
     public bool HasTouch;
@@ -70,7 +71,7 @@ public class Npc : IEntityAutoReset
     public NpcPathHandler? NpcPathHandler;
 
     private string? currentSignalTarget;
-    
+
     //private SkillCastInfo? skillInfo;
 
     public bool IsHidden() => !Entity.Get<WorldObject>().AdminHidden;
@@ -158,7 +159,7 @@ public class Npc : IEntityAutoReset
 
         if (Mobs != null)
             EntityListPool.Return(Mobs);
-        if(TargetList != null)
+        if (TargetList != null)
             EntityListPool.Return(TargetList);
         Mobs = null;
         TargetList = null;
@@ -391,7 +392,6 @@ public class Npc : IEntityAutoReset
 
     public void RevealAvatar(string name)
     {
-
     }
 
     public void RegisterMapWideEffect(string name)
@@ -474,7 +474,6 @@ public class Npc : IEntityAutoReset
 
     public void SetSittingState(bool isSitting)
     {
-
         if (!Character.StateCanSit || Character.Map == null)
             return;
 
@@ -532,7 +531,7 @@ public class Npc : IEntityAutoReset
 
         EnsureMobListCreated();
 
-        for (int i = 0; i < count; i++)
+        for (var i = 0; i < count; i++)
             CreateSingleMonsterWithAutoOwnership(chara.Map, monster, area);
     }
 
@@ -548,7 +547,7 @@ public class Npc : IEntityAutoReset
 
         EnsureMobListCreated();
 
-        for (int i = 0; i < count; i++)
+        for (var i = 0; i < count; i++)
             CreateSingleMonsterWithAutoOwnership(chara.Map, monster, area);
     }
 
@@ -619,7 +618,7 @@ public class Npc : IEntityAutoReset
 
         Character.Map.AddEntityWithEvent(ref minion, CreateEntityEventType.Descend, Character.Position);
 
-        if(!string.IsNullOrWhiteSpace(aiType))
+        if (!string.IsNullOrWhiteSpace(aiType))
             minionMonster.ChangeAiSkillHandler(aiType);
         //}
     }
@@ -696,6 +695,7 @@ public class Npc : IEntityAutoReset
                 ServerLogger.LogWarning($"Player {player} is attempting to buy item id {id} from {Character.Name}, but that item is not for sale.");
                 goto Error; //lol goto
             }
+
             if (inventory == null || !inventory.HasItem(id))
                 addItemCount++;
             var info = DataManager.GetItemInfoById(id);
@@ -707,8 +707,8 @@ public class Npc : IEntityAutoReset
 
             var saleEntry = ItemsForSale[saleItemId];
 
-            var dcValue = saleEntry.Item2 * discount / 100;
-            totalCost += (saleEntry.Item2 - dcValue) * count;
+            var dcValue = saleEntry.id * discount / 100;
+            totalCost += (saleEntry.price - dcValue) * count;
             totalWeight += info.Weight * count;
         }
 
@@ -748,7 +748,7 @@ public class Npc : IEntityAutoReset
         CommandBuilder.SendUpdatePlayerData(player, true, false);
 
         return;
-    Error:
+Error:
         CommandBuilder.ErrorMessage(player, $"Could not complete purchase.");
     }
 
@@ -772,6 +772,7 @@ public class Npc : IEntityAutoReset
                 CommandBuilder.ErrorMessage(player, $"Could not complete sale, one or more items that you have tried to sell are not available.");
                 return;
             }
+
             if (item.Count < itemCounts[i])
             {
                 CommandBuilder.ErrorMessage(player, $"Could not complete sale, the items in your request do not match the number you have in your inventory.");
@@ -886,29 +887,29 @@ public class Npc : IEntityAutoReset
     }
 
 
-    public void ActivateAndHide(float duration)
-    {
-        var chara = Entity.Get<WorldObject>();
+    //public void ActivateAndHide(float duration)
+    //{
+    //    var chara = Entity.Get<WorldObject>();
 
-        if (chara.AdminHidden)
-            return; //npc already hidden
+    //    if (chara.State == CharacterState.Activated)
+    //        return; //npc already hidden
 
-        if (chara.Map == null)
-            throw new Exception($"Npc {FullName} attempting to execute ActivateAndHide, but the npc is not currently attached to a map.");
+    //    if (chara.Map == null)
+    //        throw new Exception($"Npc {FullName} attempting to execute ActivateAndHide, but the npc is not currently attached to a map.");
 
-        chara.AdminHidden = true;
+    //    chara.SwapToActivatedState();
 
-        using var notifyList = EntityListPool.Get();
+    //    using var notifyList = EntityListPool.Get();
 
-        var visible = chara.GetVisiblePlayerList();
-        if (visible == null)
-            return;
-        foreach (var e in visible)
-            notifyList.Add(e);
-        CommandBuilder.AddRecipients(notifyList);
-        CommandBuilder.SendRemoveEntityMulti(chara, CharacterRemovalReason.Activation, duration);
-        CommandBuilder.ClearRecipients();
-    }
+    //    var visible = chara.GetVisiblePlayerList();
+    //    if (visible == null)
+    //        return;
+    //    foreach (var e in visible)
+    //        notifyList.Add(e);
+    //    CommandBuilder.AddRecipients(notifyList);
+    //    CommandBuilder.SendRemoveEntityMulti(chara, CharacterRemovalReason.Activation, duration);
+    //    CommandBuilder.ClearRecipients();
+    //}
 
 
     public void HideFromView()
@@ -934,7 +935,7 @@ public class Npc : IEntityAutoReset
         CommandBuilder.SendRemoveEntityMulti(chara, CharacterRemovalReason.OutOfSight);
         CommandBuilder.ClearRecipients();
     }
-    
+
     public void DisableTouchArea()
     {
         var chara = Entity.Get<WorldObject>();
@@ -1208,19 +1209,35 @@ public class Npc : IEntityAutoReset
             if (World.Instance.TryGetWorldMapByName(link.TargetMap, out var _))
                 return; //we're valid if we have any valid links
         }
+
         RemoveWarpNpcNoValidLinks();
     }
 
-    public void CreateEvent(string eventName, Position pos, string? valueString = null, bool swapOwnerToParent = true) => CreateEvent(eventName, pos.X, pos.Y, 0, 0, 0, 0, valueString, swapOwnerToParent);
-    public void CreateEvent(string eventName, Position pos, int value1, string? valueString = null, bool swapOwnerToParent = true) => CreateEvent(eventName, pos.X, pos.Y, value1, 0, 0, 0, valueString, swapOwnerToParent);
-    public void CreateEvent(string eventName, Position pos, int value1, int value2, string? valueString = null, bool swapOwnerToParent = true) => CreateEvent(eventName, pos.X, pos.Y, value1, value2, 0, 0, valueString, swapOwnerToParent);
-    public void CreateEvent(string eventName, Position pos, int value1, int value2, int value3, string? valueString = null, bool swapOwnerToParent = true) => CreateEvent(eventName, pos.X, pos.Y, value1, value2, value3, 0, valueString, swapOwnerToParent);
-    public void CreateEvent(string eventName, Position pos, int value1, int value2, int value3, int value4, string? valueString = null, bool swapOwnerToParent = true) => CreateEvent(eventName, pos.X, pos.Y, value1, value2, value3, value4, valueString, swapOwnerToParent);
+    public void CreateEvent(string eventName, Position pos, string? valueString = null, bool swapOwnerToParent = true) =>
+        CreateEvent(eventName, pos.X, pos.Y, 0, 0, 0, 0, valueString, swapOwnerToParent);
+
+    public void CreateEvent(string eventName, Position pos, int value1, string? valueString = null, bool swapOwnerToParent = true) =>
+        CreateEvent(eventName, pos.X, pos.Y, value1, 0, 0, 0, valueString, swapOwnerToParent);
+
+    public void CreateEvent(string eventName, Position pos, int value1, int value2, string? valueString = null, bool swapOwnerToParent = true) =>
+        CreateEvent(eventName, pos.X, pos.Y, value1, value2, 0, 0, valueString, swapOwnerToParent);
+
+    public void CreateEvent(string eventName, Position pos, int value1, int value2, int value3, string? valueString = null, bool swapOwnerToParent = true) =>
+        CreateEvent(eventName, pos.X, pos.Y, value1, value2, value3, 0, valueString, swapOwnerToParent);
+
+    public void CreateEvent(string eventName, Position pos, int value1, int value2, int value3, int value4, string? valueString = null, bool swapOwnerToParent = true) =>
+        CreateEvent(eventName, pos.X, pos.Y, value1, value2, value3, value4, valueString, swapOwnerToParent);
 
     public void CreateEvent(string eventName, int x, int y, string? valueString = null, bool swapOwnerToParent = true) => CreateEvent(eventName, x, y, 0, 0, 0, 0, valueString, swapOwnerToParent);
-    public void CreateEvent(string eventName, int x, int y, int value1, string? valueString = null, bool swapOwnerToParent = true) => CreateEvent(eventName, x, y, value1, 0, 0, 0, valueString, swapOwnerToParent);
-    public void CreateEvent(string eventName, int x, int y, int value1, int value2, string? valueString = null, bool swapOwnerToParent = true) => CreateEvent(eventName, x, y, value1, value2, 0, 0, valueString, swapOwnerToParent);
-    public void CreateEvent(string eventName, int x, int y, int value1, int value2, int value3, string? valueString = null, bool swapOwnerToParent = true) => CreateEvent(eventName, x, y, value1, value2, value3, 0, valueString, swapOwnerToParent);
+
+    public void CreateEvent(string eventName, int x, int y, int value1, string? valueString = null, bool swapOwnerToParent = true) =>
+        CreateEvent(eventName, x, y, value1, 0, 0, 0, valueString, swapOwnerToParent);
+
+    public void CreateEvent(string eventName, int x, int y, int value1, int value2, string? valueString = null, bool swapOwnerToParent = true) =>
+        CreateEvent(eventName, x, y, value1, value2, 0, 0, valueString, swapOwnerToParent);
+
+    public void CreateEvent(string eventName, int x, int y, int value1, int value2, int value3, string? valueString = null, bool swapOwnerToParent = true) =>
+        CreateEvent(eventName, x, y, value1, value2, value3, 0, valueString, swapOwnerToParent);
 
     public void CreateEvent(string eventName, int x, int y, int value1, int value2, int value3, int value4, string? valueString = null, bool swapOwnerToParent = true)
     {
@@ -1240,14 +1257,17 @@ public class Npc : IEntityAutoReset
     {
         if (!IsHidden())
             HideNpc();
-
+        
         if (AreaOfEffect != null)
         {
             Character.Map?.RemoveAreaOfEffect(AreaOfEffect);
+            Behavior.OnTerminateAoE(this, AreaOfEffect);
             AreaOfEffect.Reset();
             World.Instance.ReturnAreaOfEffect(AreaOfEffect);
             AreaOfEffect = null;
         }
+
+        Behavior.OnEventEnd(this);
 
         Owner = Entity.Null;
         World.Instance.FullyRemoveEntity(ref Entity);
@@ -1326,7 +1346,7 @@ public class Npc : IEntityAutoReset
         var chara = Entity.Get<WorldObject>();
         if (chara.Map == null)
             throw new Exception($"Npc {FullName} attempting to move npc, but the npc is not currently attached to a map.");
-        
+
         //DebugMessage($"Moving npc {Name} to {x},{y}");
 
         chara.Map.ChangeEntityPosition3(chara, chara.Position, new Position(x, y), false);
@@ -1367,7 +1387,14 @@ public class Npc : IEntityAutoReset
                     continue;
 
                 var di = new DamageInfo()
-                { Damage = (short)damage, HitCount = (byte)hitCount, KnockBack = 0, Source = Entity, Target = e, Time = 0.3f };
+                {
+                    Damage = (short)damage,
+                    HitCount = (byte)hitCount,
+                    KnockBack = 0,
+                    Source = Entity,
+                    Target = e,
+                    Time = 0.3f
+                };
 
                 chara.Map.AddVisiblePlayersAsPacketRecipients(ch);
                 CommandBuilder.TakeDamageMulti(ch, di);
@@ -1422,7 +1449,7 @@ public class Npc : IEntityAutoReset
 
     public void MoveLockAllMyMonsters(Area area)
     {
-        if (MobCount <= 0)
+        if (MobCount <= 0 || Mobs == null)
             return;
         foreach (var m in Mobs)
         {
@@ -1457,19 +1484,17 @@ public class Npc : IEntityAutoReset
         }
 
         var area = Area.CreateAroundPoint(Character.Position, width, height);
-        
+
         var item = new GroundItem(area.RandomInArea(), itemId, count);
         Character.Map?.DropGroundItem(ref item);
     }
 
     public void EndVending()
     {
-
     }
 
     public void StartVendForOwner()
     {
-
     }
 
     public bool IsStringEmpty(string str) => string.IsNullOrWhiteSpace(str);

@@ -7,7 +7,7 @@ namespace RoRebuildServer.EntityComponents.Npcs;
 
 public abstract class NpcBehaviorBase
 {
-    public virtual void Init(Npc npc) {}
+    public virtual void Init(Npc npc) { }
 
     public virtual void InitEvent(Npc npc, int param1, int param2, int param3, int param4, string? paramString) { }
 
@@ -25,8 +25,8 @@ public abstract class NpcBehaviorBase
 
     public virtual void OnAoEInteraction(Npc npc, CombatEntity target, AreaOfEffect aoe) { }
     public virtual void OnAoEEvent(Npc npc, CombatEntity target, AreaOfEffect aoe, Object? eventData) { }
-
     public virtual void OnLeaveAoE(Npc npc, CombatEntity target, AreaOfEffect aoe) { }
+    public virtual void OnTerminateAoE(Npc npc, AreaOfEffect aoe) { }
 
     public virtual void OnTimer(Npc npc, float lastTime, float newTime) { }
 
@@ -41,9 +41,10 @@ public abstract class NpcBehaviorBase
     public virtual int OnQuery(Npc npc, Npc srcNpc, string signal, int value1, int value2, int value3, int value4) => 0;
 
     public virtual void OnMobKill(Npc npc) { }
+    public virtual void OnEventEnd(Npc npc) { }
 
     public virtual EventOwnerDeathResult OnOwnerDeath(Npc npc, CombatEntity owner) => EventOwnerDeathResult.DetachEvent;
-    
+
     public enum EventOwnerDeathResult
     {
         NoAction,

@@ -71,6 +71,7 @@ class Program
                     Sprite = e.Sprite,
                     SoundFile = e.SoundFile,
                     Offset = e.Offset,
+                    Scale = e.Scale,
                     PrefabName = e.PrefabName,
                     IsLooping = e.Flags?.Contains("Loop") ?? false,
                 });
@@ -101,7 +102,6 @@ class Program
 
     private static void WritePatchNotes()
     {
-
         var patchNotes = new List<PatchNotes>();
 
         var lines = File.ReadAllLines(Path.Combine(path, "../Config/PatchNotes.txt"));
@@ -135,7 +135,6 @@ class Program
             patchNotes.Add(new PatchNotes { Date = curItem, Desc = sb.ToString().Trim() });
 
         SaveToClient("PatchNotes.txt", patchNotes);
-
     }
 
     private static void BuildJobMatrix()
@@ -186,13 +185,11 @@ class Program
 
     private static string FixDescriptionTags(string line)
     {
-
-        return line.Replace("<skill>", "<color=#0000FF>")
-                   .Replace("<status>", "<color=#800000>")
-                   .Replace("</skill>", "</color>")
-                   .Replace("</status>", "</color>")
-                   .Replace("<desc>", "<color=#808080>")
-                   .Replace("</desc>", "</color>")
+        return line.Replace("<skill>", "<color=#0000FF>").Replace("</skill>", "</color>")
+                .Replace("<status>", "<color=#800000>").Replace("</status>", "</color>")
+                .Replace("<element>", "<color=#800000>").Replace("</element>", "</color>")
+                .Replace("<item>", "<color=#777777>").Replace("</item>", "</color>")
+                .Replace("<desc>", "<color=#808080>").Replace("</desc>", "</color>")
             ;
     }
 
@@ -300,6 +297,7 @@ class Program
             }
             else
                 desc += $"<line-height=120%>\n</line-height=100%>Weight: <color=#777777>{item.Weight / 10f:0.#}</color>";
+
             itemDescriptions.Add(new ItemDescription() { Code = item.Code, Description = desc });
         }
 
@@ -329,6 +327,7 @@ class Program
             }
             else
                 desc = curDesc;
+
             desc += $"<line-height=120%>\n</line-height=100%>Weight: <color=#777777>{item.Weight / 10f}</color>";
             itemDescriptions.Add(new ItemDescription() { Code = item.Code, Description = desc });
         }
@@ -372,7 +371,7 @@ class Program
             var breakable = entry.Breakable.ToLower() == "yes";
             var refinable = entry.Refinable.ToLower() == "yes";
 
-            
+
             var equipGroup = equipGroupDescriptions.TryGetValue(entry.EquipGroup, out var groupName) ? groupName : "<i>Currently unequippable by any job</i>";
             desc += $"<line-height=120%>\n</line-height=100%>";
             //desc += $"<line-height=120%>\n</line-height=100%>Type: <color=#777777>Weapon</color>";
@@ -531,6 +530,7 @@ class Program
             }
             else
                 desc = curDesc;
+
             //desc = "<color=#808080>A card with an illustration of a monster on it.</color>";
             desc += "<line-height=120%>\n</line-height=100%>";
             desc += $"Sockets In: <color=#777777>{type}</color>";
@@ -605,7 +605,6 @@ class Program
         using (var tr = new StreamReader(tempPath, Encoding.UTF8) as TextReader)
         using (var csv = new CsvReader(tr, CultureInfo.InvariantCulture))
         {
-
             var entries = csv.GetRecords<CsvServerConfig>().ToList();
 
             //var ip = entries.FirstOrDefault(e => e.Key == "IP").Value;
@@ -644,6 +643,7 @@ class Program
             var j2 = DataManager.ExpChart.RequiredJobExp(9, i);
             txtOut.AppendLine($"{j0},{j1},{j2}");
         }
+
         File.WriteAllText(Path.Combine(outPath, "jobexpchart.txt"), txtOut.ToString());
     }
 
@@ -658,7 +658,6 @@ class Program
 
         while (csv.Read())
         {
-
             if (csv.Context?.Parser?.Record == null)
                 continue; //piss off possible null exceptions
             var instance = new InstanceEntry
@@ -845,7 +844,6 @@ class Program
         //var monsterDir = Path.Combine(outPath, "monsterclass.json");
 
         //File.WriteAllText(monsterDir, json);
-
     }
 
     public static void WriteVersionInfo()
@@ -914,8 +912,15 @@ class Program
 
         //job list
         var jobs = ConvertToClient<CsvJobs, PlayerClassData>("Jobs.csv", "playerclass.json",
-            jobs => jobs.Select(j => new PlayerClassData() { Id = j.Id, Name = j.Class, SpriteFemale = j.SpriteFemale, SpriteMale = j.SpriteMale, ExpChart = j.ExpChart}).ToList()
-            );
+            jobs => jobs.Select(j => new PlayerClassData()
+            {
+                Id = j.Id,
+                Name = j.Class,
+                SpriteFemale = j.SpriteFemale,
+                SpriteMale = j.SpriteMale,
+                ExpChart = j.ExpChart
+            }).ToList()
+        );
 
 
         PlayerWeaponData CsvWeaponDataToClient(CsvJobWeaponInfo w) => new()
@@ -954,6 +959,7 @@ class Program
 
             sb.AppendLine(line);
         }
+
         if (curSkill != CharacterSkill.None && sb.Length > 0)
             skillDesc.Add(curSkill, sb.ToString().Trim());
 
@@ -980,6 +986,7 @@ class Program
 
             sb.AppendLine(line);
         }
+
         if (curStatus != CharacterStatusEffect.None && sb.Length > 0)
             statusDesc.Add(curStatus, sb.ToString().Trim());
 
@@ -1000,6 +1007,7 @@ class Program
                     : $"<color=#FFA300>{baseName}</color>\n";
                 status.Description = name + desc;
             }
+
             statusOut.Add(status);
         }
 
@@ -1014,8 +1022,9 @@ class Program
             skill.SkillId = Enum.Parse<CharacterSkill>(id);
             if (skill.Name == null) skill.Name = id;
             if (skill.Icon == null) skill.Icon = "nv_basic";
+            //if (string.IsNullOrWhiteSpace(skill.DescEn) && skillDesc.TryGetValue(skill.SkillId, out var desc))
             if (skillDesc.TryGetValue(skill.SkillId, out var desc))
-                skill.Description = desc;
+                skill.DescEn = desc;
             skillOut.Add(skill);
         }
 
@@ -1070,6 +1079,7 @@ class Program
 
             skillTreeOut.Add(entry);
         }
+
         SaveToClient("skilltree.json", skillTreeOut);
 
         //job weapon info
@@ -1112,6 +1122,7 @@ class Program
                         }
                     }
                 }
+
                 return data;
             });
     }

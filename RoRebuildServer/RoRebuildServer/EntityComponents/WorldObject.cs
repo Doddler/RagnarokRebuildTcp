@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
@@ -12,6 +10,9 @@ using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Util;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace RoRebuildServer.EntityComponents;
 
@@ -41,7 +42,10 @@ public class WorldObject : IEntityAutoReset
     public CharacterType Type;
     public CharacterDisplayType DisplayType; //used for minimap icons if they're flagged as map important
     public PlayerLikeAppearanceState? OverrideAppearanceState;
+    public int OverrideClassId;
+
     public Position TargetPosition;
+
     //public float MoveModifier;
     //public float MoveModifierTime;
     public int StepCount;
@@ -57,6 +61,7 @@ public class WorldObject : IEntityAutoReset
 
     public FloatPosition MoveStartPosition;
     private Position cellPosition;
+
     public Position Position
     {
         get => cellPosition;
@@ -64,14 +69,15 @@ public class WorldObject : IEntityAutoReset
         {
             cellPosition = value;
             WorldPosition = value; //cast to FloatPosition
-//#if DEBUG
-//            if (Map != null && !Map.GetChunkForPosition(cellPosition).AllEntities.Contains(Entity))
-//                throw new Exception("OHNO!");
-//#endif
+            //#if DEBUG
+            //            if (Map != null && !Map.GetChunkForPosition(cellPosition).AllEntities.Contains(Entity))
+            //                throw new Exception("OHNO!");
+            //#endif
         }
     }
 
     private FloatPosition worldPosition;
+
     public FloatPosition WorldPosition
     {
         get => worldPosition;
@@ -88,7 +94,7 @@ public class WorldObject : IEntityAutoReset
     public float MoveSpeed { get; set; } //time it takes to traverse one tile
     public float MoveProgress { get; set; } //the amount of time that remains before you step to the next tile
     public float NextStepDuration { get; set; }
-    
+
 
     public bool InMoveLock { get; set; }
 
@@ -118,7 +124,7 @@ public class WorldObject : IEntityAutoReset
     //}
 
     private const float DiagonalSpeedPenalty = 0.7f;
-    
+
     public int StepsRemaining => TotalMoveSteps - (MoveStep + 1);
     public bool IsMoving => State == CharacterState.Moving;
     public bool HasMoveInProgress => WalkPath != null && WalkPath.Length > 0;
@@ -136,7 +142,7 @@ public class WorldObject : IEntityAutoReset
 #endif
 
     public Map? Map;
-    
+
     //really silly to suppress null on these when they could actually be null but, well...
     private Player player = null!;
     private Monster monster = null!;
@@ -160,6 +166,7 @@ public class WorldObject : IEntityAutoReset
             return player;
         }
     }
+
     public Monster Monster
     {
         get
@@ -171,6 +178,7 @@ public class WorldObject : IEntityAutoReset
             return monster;
         }
     }
+
     public Npc Npc
     {
         get
@@ -182,6 +190,7 @@ public class WorldObject : IEntityAutoReset
             return npc;
         }
     }
+
     public BattleNpc BattleNpc
     {
         get
@@ -193,6 +202,7 @@ public class WorldObject : IEntityAutoReset
             return battleNpc;
         }
     }
+
     public CombatEntity CombatEntity
     {
         get
@@ -219,6 +229,7 @@ public class WorldObject : IEntityAutoReset
         MoveSpeed = 0.15f;
         MoveStep = 0;
         NextStepDuration = 0;
+        OverrideClassId = 0;
         Position = new Position();
         TargetPosition = new Position();
         FacingDirection = Direction.South;
@@ -293,15 +304,15 @@ public class WorldObject : IEntityAutoReset
         else
             CommandBuilder.SendServerMessage($"{message}");
     }
-    
+
     public void ResetState(bool resetIfDead = false)
     {
         MoveProgress = 0;
         QueuedAction = QueuedAction.None;
-        
+
         if (State != CharacterState.Dead || resetIfDead)
             State = CharacterState.Idle;
-        if(Type == CharacterType.Player)
+        if (Type == CharacterType.Player)
             Player.ClearTarget();
     }
 
@@ -462,7 +473,7 @@ public class WorldObject : IEntityAutoReset
         var count = 0;
         foreach (var e in Events)
         {
-            if(e.TryGet<Npc>(out var npc) && npc.EventType == eventType)
+            if (e.TryGet<Npc>(out var npc) && npc.EventType == eventType)
                 count++;
         }
 
@@ -494,14 +505,23 @@ public class WorldObject : IEntityAutoReset
         }
 
         Events.ClearInactive();
-        
-        if(Events.Count <= 0)
+
+        if (Events.Count <= 0)
         {
             Events.Clear();
             EntityListPool.Return(Events);
             Events = null;
             return;
         }
+    }
+
+    public void SwapToActivatedState()
+    {
+        if (State == CharacterState.Activated)
+            return;
+
+        State = CharacterState.Activated;
+        CommandBuilder.SendChangeActivatedStateAutoVis(this);
     }
 
     public void StopSitting()
@@ -511,11 +531,11 @@ public class WorldObject : IEntityAutoReset
 
         SitStand(false);
     }
-    
+
     public void SitStand(bool isSitting)
     {
         Debug.Assert(Map != null);
-        
+
         if (Type != CharacterType.Player)
             return;
 
@@ -538,6 +558,19 @@ public class WorldObject : IEntityAutoReset
         CommandBuilder.ClearRecipients();
     }
 
+    public void FaceTargetWithoutClientUpdate(WorldObject target)
+    {
+        if (State == CharacterState.Moving || State == CharacterState.Dead || target.Position == Position)
+            return;
+
+        if (Type == CharacterType.Player)
+            Player.HeadFacing = HeadFacing.Center;
+        if (Type == CharacterType.NPC && OverrideAppearanceState != null)
+            OverrideAppearanceState.HeadFacing = HeadFacing.Center;
+
+        FacingDirection = DistanceCache.Direction(Position, target.Position);
+    }
+
     public void ChangeLookDirection(Position lookAt, HeadFacing facing = HeadFacing.Center)
     {
         Debug.Assert(Map != null);
@@ -551,16 +584,18 @@ public class WorldObject : IEntityAutoReset
             Player.HeadFacing = facing;
         if (Type == CharacterType.NPC && OverrideAppearanceState != null)
             OverrideAppearanceState.HeadFacing = facing;
-        
+
         Map.AddVisiblePlayersAsPacketRecipients(this);
         CommandBuilder.ChangeFacingMulti(this, lookAt);
         CommandBuilder.ClearRecipients();
     }
+
     public void LookAtEntity(ref Entity entity)
     {
-        if(entity.TryGet<WorldObject>(out var chara))
+        if (entity.TryGet<WorldObject>(out var chara))
             ChangeLookDirection(chara.Position);
     }
+
     public void StopMovingImmediately(bool resetState = true)
     {
         Debug.Assert(Map != null);
@@ -570,7 +605,7 @@ public class WorldObject : IEntityAutoReset
             Map.AddVisiblePlayersAsPacketRecipients(this);
             CommandBuilder.CharacterStopImmediateMulti(this);
             CommandBuilder.ClearRecipients();
-            if(resetState)
+            if (resetState)
                 State = CharacterState.Idle;
         }
     }
@@ -584,15 +619,15 @@ public class WorldObject : IEntityAutoReset
 
         if (MoveLockTime + 0.04f > Time.ElapsedTimeFloat && !force)
             return false;
-        
+
         if (!InMoveLock && State == CharacterState.Moving)
             StopMovingImmediately(false); //tell the client we stop, but we don't want to leave move state
 
-        if(!force || Time.ElapsedTimeFloat + delay > MoveLockTime)
+        if (!force || Time.ElapsedTimeFloat + delay > MoveLockTime)
             MoveLockTime = Time.ElapsedTimeFloat + delay;
         InMoveLock = true;
 
-        if(Type == CharacterType.Monster)
+        if (Type == CharacterType.Monster)
             Monster.AdjustAiUpdateIfShorter(MoveLockTime);
 
         return true;
@@ -614,7 +649,7 @@ public class WorldObject : IEntityAutoReset
     {
         if (State == CharacterState.Sitting || State == CharacterState.Dead)
             return false;
-        
+
         if (MoveSpeed <= 0)
             return false;
 
@@ -622,7 +657,7 @@ public class WorldObject : IEntityAutoReset
         {
             if ((CombatEntity.BodyState & BodyStateFlags.MoveLocked) > 0)
                 return false;
-            if(CombatEntity.GetStat(CharacterStat.MoveSpeedBonus) < -100)
+            if (CombatEntity.GetStat(CharacterStat.MoveSpeedBonus) < -100)
                 return false;
         }
 
@@ -637,7 +672,7 @@ public class WorldObject : IEntityAutoReset
         return MoveSpeed * distance;
     }
 
-    public bool TryMoveInDirection(Position targetDirection) 
+    public bool TryMoveInDirection(Position targetDirection)
     {
         // check how much we can move in the direction
         var stepsToMove = CheckMoveInDirection(targetDirection);
@@ -666,9 +701,9 @@ public class WorldObject : IEntityAutoReset
             return TryMove(Position + (yOnlySteps * yOnlyDirection), 0);
     }
 
-    public int CheckMoveInDirection(Position targetDirection) 
+    public int CheckMoveInDirection(Position targetDirection)
     {
-        if (Map == null) 
+        if (Map == null)
             return -1;
 
         // check how much we can move in a certain direction,
@@ -710,7 +745,7 @@ public class WorldObject : IEntityAutoReset
         FacingDirection = (WalkPath[1] - WalkPath[0]).Normalize().GetDirectionForOffset();
         //MoveLockTime = Time.ElapsedTimeFloat;
 
-        //ServerLogger.Log($"{Name} TryMove: World:{WorldPosition} NextStepDuration: {NextStepDuration}");
+        //ServerLogger.Log($"{Name} TryMove: World:{WorldPosition} NextStepDuration: {NextStepDuration} {Environment.StackTrace}");
 
         if (HasCombatEntity && CombatEntity.IsCasting)
         {
@@ -722,7 +757,7 @@ public class WorldObject : IEntityAutoReset
 
         State = CharacterState.Moving;
 
-        if(!InMoveLock)
+        if (!InMoveLock)
             Map.StartMove(ref Entity, this);
 
         ChangeToActionState(); //does stuff like recenter the player's head and removes spawn immunity
@@ -732,7 +767,6 @@ public class WorldObject : IEntityAutoReset
 
     public void RecenterOnTile()
     {
-
     }
 
     //this shortens the move path of any moving character so they only finish the next tile movement and stop
@@ -756,7 +790,7 @@ public class WorldObject : IEntityAutoReset
                 target = WalkPath[MoveStep + 1];
             }
 
-            if(!TryMove(target, 0))
+            if (!TryMove(target, 0))
                 ServerLogger.LogWarning($"We can't shorten our move path because the shorter path is... invalid?");
 
             //TotalMoveSteps = MoveStep + 2;
@@ -766,7 +800,6 @@ public class WorldObject : IEntityAutoReset
         //QueuedAction = QueuedAction.None;
 
         //Map.StartMove(ref Entity, this);
-
     }
 
     //replacement for PerformMoveUpdate that uses floating point positions
@@ -777,7 +810,7 @@ public class WorldObject : IEntityAutoReset
 
         if (InMoveLock)
         {
-            if(MoveLockTime >= Time.ElapsedTimeFloat)
+            if (MoveLockTime >= Time.ElapsedTimeFloat)
                 return;
             InMoveLock = false;
             Map.StartMove(ref Entity, this);
@@ -820,7 +853,7 @@ public class WorldObject : IEntityAutoReset
 
         var newCell = (Position)newPosition;
 
-        //ServerLogger.Log($"{Name}: MoveUpdate2: {InMoveLock} {MoveStep} {MoveProgress}");
+        //ServerLogger.Log($"{Name}: MoveUpdate2: {WorldPosition} From {startPosition} to {endPosition} (last cell {lastCell} newCell {newCell}) {InMoveLock} {MoveStep} {MoveProgress}");
 
         if (lastCell != newCell)
         {
@@ -829,7 +862,7 @@ public class WorldObject : IEntityAutoReset
             //FacingDirection = dir;
             StepCount++;
             Map.ChangeEntityPosition3(this, lastPosition, newPosition, true);
-            if(Type == CharacterType.Player || Type == CharacterType.Monster)
+            if (Type == CharacterType.Player || Type == CharacterType.Monster)
                 CombatEntity.StatusContainer?.OnMove(lastCell, newCell, false);
             Map.TriggerAreaOfEffectForCharacter(this, lastCell, newCell);
             TimeOfLastMove = Time.ElapsedTimeFloat;
@@ -878,7 +911,7 @@ public class WorldObject : IEntityAutoReset
 
         if (State == CharacterState.Moving)
             PerformMoveUpdate2();
-        
+
         if (Entity.Type == EntityType.Player)
         {
 #if DEBUG
@@ -886,12 +919,14 @@ public class WorldObject : IEntityAutoReset
                 throw new Exception($"Update called on player entity {Name} ({Type}) while not attached to any map!");
 #endif
 
+            combatEntity.UpdateDamageQueue();
             player.Update();
             combatEntity.Update();
         }
 
         if (Entity.Type == EntityType.Monster)
         {
+            combatEntity.UpdateDamageQueue();
             monster.Update();
             combatEntity.Update();
         }

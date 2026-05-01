@@ -13,7 +13,6 @@ namespace RoRebuildServer.Server;
 
 internal class ZoneWorker : BackgroundService
 {
-
     private readonly ILogger<ZoneWorker> logger;
     private readonly IServiceProvider services;
     private readonly IHostApplicationLifetime appLifetime;
@@ -47,9 +46,9 @@ internal class ZoneWorker : BackgroundService
         if (spawnTime > 0)
         {
             //Monster.MaxSpawnTimeInSeconds = spawnTime / 1000f;
-            ServerLogger.Log($"Max monster spawn time set to {spawnTime/1000f} seconds.");
+            ServerLogger.Log($"Max monster spawn time set to {spawnTime / 1000f} seconds.");
         }
-        
+
         world = new World();
         NetworkManager.Init(world);
 
@@ -69,7 +68,7 @@ internal class ZoneWorker : BackgroundService
         var worldCancellation = World.Instance.GetCancellationToken;
 
         Debug.Assert(world != null);
-        
+
         var stopwatch = new Stopwatch();
         stopwatch.Start();
 
@@ -87,13 +86,13 @@ internal class ZoneWorker : BackgroundService
         var lastLog = Time.ElapsedTime - noticeTime + 5f; //make the first check-in 5s after start no matter what
 
         var loopCount = 0;
-        
+
         try
         {
             while (!stoppingToken.IsCancellationRequested && !worldCancellation.IsCancellationRequested)
             {
                 Time.Update();
-                
+
                 var startTime = Time.GetExactTime();
 
                 await NetworkManager.ProcessIncomingMessages();
@@ -122,7 +121,7 @@ internal class ZoneWorker : BackgroundService
                 }
                 else
                     await Task.Yield();
-                
+
                 total += elapsed;
 
                 if (max < elapsed)
@@ -139,7 +138,7 @@ internal class ZoneWorker : BackgroundService
                     avg *= 1000d;
 
 #if DEBUG
-                    if(max > 0.1f)
+                    if (max > 0.1f)
                         ServerLogger.Log($"[ZoneWorker] {players} players. Stats over last {noticeTime}s : Avg {avg:F2}ms / Peak {max * 1000:F2}ms (GC Time: {GC.GetTotalPauseDuration()})");
                     else
                         ServerLogger.Debug($"[ZoneWorker] {players} players. Stats over last {noticeTime}s : Avg {avg:F2}ms / Peak {max * 1000:F2}ms (GC Time: {GC.GetTotalPauseDuration()})");
@@ -152,7 +151,7 @@ internal class ZoneWorker : BackgroundService
                     max = 0;
                     lastLog = Time.ElapsedTime;
                     noticeTime += 30;
-                    if(noticeTime > noticeMax)
+                    if (noticeTime > noticeMax)
                         noticeTime = noticeMax;
                 }
             }
@@ -170,7 +169,7 @@ internal class ZoneWorker : BackgroundService
         if (!NetworkManager.IsServerOpen)
         {
             CommandBuilder.AddAllPlayersAsRecipients();
-            if(isSafeExit)
+            if (isSafeExit)
                 CommandBuilder.SendServerMessage("The server is now shutting down, you will be disconnected shortly.");
             else
                 CommandBuilder.SendServerMessage("The server is shutting down due to an internal error.");
@@ -178,8 +177,8 @@ internal class ZoneWorker : BackgroundService
         }
 
         NetworkManager.TriggerAllCancellations();
-        
-        if(worldCancellation.IsCancellationRequested)
+
+        if (worldCancellation.IsCancellationRequested)
             logger.LogCritical("The server has left the main processing loop due to an admin initiated shutdown.");
         else
             logger.LogCritical("Oh no! We've dropped out of the processing loop! We will now shutdown.");
@@ -191,7 +190,7 @@ internal class ZoneWorker : BackgroundService
         logger.LogInformation("Server shutting down at: {time}", DateTimeOffset.Now);
 
         await NetworkManager.ScanAndDisconnect();
-        
+
         NetworkManager.Shutdown();
         //network manager shutdown should queue all players to save, so now we wait for save to finish
         await RoDatabase.Shutdown();

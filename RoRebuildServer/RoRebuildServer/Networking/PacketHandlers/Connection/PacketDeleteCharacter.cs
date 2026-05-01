@@ -9,7 +9,5 @@ public class PacketDeleteCharacter : IClientPacketHandler
     {
         if (connection.Character != null)
             return;
-
-
     }
 }

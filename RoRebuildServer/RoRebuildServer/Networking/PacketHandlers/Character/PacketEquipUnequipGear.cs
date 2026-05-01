@@ -31,7 +31,7 @@ public class PacketEquipUnequipGear : IClientPacketHandler
             //connection.Player.UpdateStats();
             return;
         }
-        
+
         switch (connection.Player.Equipment.EquipItem(bagId))
         {
             case EquipChangeResult.InvalidItem:
@@ -55,7 +55,5 @@ public class PacketEquipUnequipGear : IClientPacketHandler
                     CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(connection.Player);
                 return; //if it succeeds we'll have already sent a response
         }
-
-        
     }
 }

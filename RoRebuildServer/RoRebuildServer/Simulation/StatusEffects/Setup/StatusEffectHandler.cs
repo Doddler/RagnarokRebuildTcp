@@ -32,7 +32,7 @@ public static class StatusEffectHandler
         updateModes = new StatusUpdateMode[count];
         canCancelEffect = new bool[count];
         canDispellEffect = new bool[count];
-            
+
         foreach (var type in Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsClass && t.GetCustomAttributes<StatusEffectHandlerAttribute>().Any()))
         {
             var handler = (StatusEffectBase)Activator.CreateInstance(type)!;
@@ -74,10 +74,20 @@ public static class StatusEffectHandler
     public static void OnExpiration(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state) => handlers[(int)type].OnExpiration(ch, ref state);
     public static StatusUpdateResult OnUpdateTick(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state) => handlers[(int)type].OnUpdateTick(ch, ref state);
     public static StatusUpdateResult OnAttack(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state, ref DamageInfo info) => handlers[(int)type].OnAttack(ch, ref state, ref info);
-    public static StatusUpdateResult OnTakeDamage(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state, ref DamageInfo info) => handlers[(int)type].OnTakeDamage(ch, ref state, ref info);
-    public static StatusUpdateResult OnPreCalculateDamage(CharacterStatusEffect type, CombatEntity ch, CombatEntity? target, ref StatusEffectState state, ref AttackRequest req) => handlers[(int)type].OnPreCalculateDamage(ch, target, ref state, ref req);
-    public static StatusUpdateResult OnCalculateDamage(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state, ref AttackRequest req, ref DamageInfo info) => handlers[(int)type].OnCalculateDamage(ch, ref state, ref req, ref info);
+
+    public static StatusUpdateResult OnTakeDamage(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state, ref DamageInfo info) =>
+        handlers[(int)type].OnTakeDamage(ch, ref state, ref info);
+
+    public static StatusUpdateResult OnPreCalculateDamage(CharacterStatusEffect type, CombatEntity ch, CombatEntity? target, ref StatusEffectState state, ref AttackRequest req) =>
+        handlers[(int)type].OnPreCalculateDamage(ch, target, ref state, ref req);
+
+    public static StatusUpdateResult OnCalculateDamage(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state, ref AttackRequest req, ref DamageInfo info) =>
+        handlers[(int)type].OnCalculateDamage(ch, ref state, ref req, ref info);
+
     public static StatusUpdateResult OnChangeEquipment(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state) => handlers[(int)type].OnChangeEquipment(ch, ref state);
-    public static StatusUpdateResult OnMove(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state, Position src, Position dest, bool isTeleport) => handlers[(int)type].OnMove(ch, ref state, src, dest, isTeleport);
+
+    public static StatusUpdateResult OnMove(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state, Position src, Position dest, bool isTeleport) =>
+        handlers[(int)type].OnMove(ch, ref state, src, dest, isTeleport);
+
     public static StatusUpdateResult OnChangeMaps(CharacterStatusEffect type, CombatEntity ch, ref StatusEffectState state) => handlers[(int)type].OnChangeMaps(ch, ref state);
 }

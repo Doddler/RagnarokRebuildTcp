@@ -19,7 +19,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
 
             ch.SubStat(CharacterStat.AddFlee, state.Value1);
             ch.SubStat(CharacterStat.AddHit, state.Value2);
-            
+
             if (ch.Character.Type == CharacterType.Monster && ch.GetSpecialType() != CharacterSpecialType.Boss)
             {
                 var m = ch.Character.Monster;
@@ -30,7 +30,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.GenericDebuffs
 
             if (ch.Character.Type == CharacterType.Player)
             {
-                if(ch.GetStat(CharacterStat.Range) > 5) //the enemy will be out of attack range
+                if (ch.GetStat(CharacterStat.Range) > 5) //the enemy will be out of attack range
                     ch.Player.ClearTarget();
                 ch.SetBodyState(BodyStateFlags.Blind);
             }

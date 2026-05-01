@@ -55,6 +55,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 MotionTime = motionTime,
                 DamageTiming = motionTime
             };
+            
+            controllable.ShowSkillCastMessage(skill, 3);
 
             if(target == controllable.CellPosition)
                 controllable.LookInDirection(dir);
@@ -139,7 +141,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 MotionTime = motionTime,
                 DamageTiming = damageTiming,
                 Target = controllable2,
-                Src = controllable
+                Src = controllable,
+                IsIndirect = isIndirect
             };
             var dmgSound = ClientSkillHandler.SkillTakesWeaponSound(skill);
 
@@ -188,6 +191,12 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 if (result == AttackResult.LuckyDodge)
                 {
                     controllable2.Messages.SendMessage(EntityMessageType.LuckyDodge, motionTime);
+                    return;
+                }
+                
+                if (result == AttackResult.Block)
+                {
+                    controllable2.Messages.SendBlockEvent(damageTiming);
                     return;
                 }
 

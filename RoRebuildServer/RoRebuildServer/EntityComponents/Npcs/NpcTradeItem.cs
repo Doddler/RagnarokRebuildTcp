@@ -18,7 +18,7 @@ public class NpcTradeItem
 
     public NpcTradeItem(string itemName)
     {
-        if(!DataManager.ItemIdByName.TryGetValue(itemName, out var itemId))
+        if (!DataManager.ItemIdByName.TryGetValue(itemName, out var itemId))
             ServerLogger.LogWarning($"Failed to create NpcTradeItem, the requested item type {itemName} was invalid!");
         else
             ItemId = DataManager.ItemIdByName[itemName];
@@ -34,7 +34,7 @@ public class NpcTradeItem
 
         if (Sockets == null)
             Sockets = new List<int>();
-        
+
         Sockets.Add(DataManager.ItemIdByName[itemName]);
         return this;
     }
@@ -58,7 +58,8 @@ public class NpcTradeItem
     }
 
     public void FinalizeItem()
-    {;
+    {
+        ;
         CombinedItem = new ItemReference(ItemId, TradeCount);
         var isUnique = CombinedItem.Type == ItemType.UniqueItem;
 
@@ -75,7 +76,7 @@ public class NpcTradeItem
             sockets = 4;
         }
 
-        for (var i = 0; i < sockets; i++) 
+        for (var i = 0; i < sockets; i++)
             CombinedItem.UniqueItem.SetSlotData(i, Sockets[i]);
     }
 }

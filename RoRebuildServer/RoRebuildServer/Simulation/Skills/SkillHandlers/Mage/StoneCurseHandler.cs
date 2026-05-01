@@ -25,7 +25,7 @@ public class StoneCurseHandler : SkillHandlerBase
         if (target.GetSpecialType() == CharacterSpecialType.Boss)
             return SkillValidationResult.CannotTargetBossMonster;
 
-        if (!isIndirect && !isItemSource && !CheckRequiredGemstone(source, GemstoneId, false)) 
+        if (!isIndirect && !isItemSource && !CheckRequiredGemstone(source, GemstoneId, false))
             return SkillValidationResult.MissingRequiredItem;
 
         return base.ValidateTarget(source, target, position, lvl, false, false);
@@ -34,7 +34,7 @@ public class StoneCurseHandler : SkillHandlerBase
     //failing pre-validation prevents sp from being taken
     public override bool PreProcessValidation(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect, bool isItemSource) =>
         isIndirect || isItemSource || CheckRequiredGemstone(source, GemstoneId, true);
-    
+
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect, bool isItemSource)
     {
         //if (lvl < 0 || lvl > 10)

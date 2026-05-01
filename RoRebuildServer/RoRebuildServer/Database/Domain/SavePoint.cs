@@ -7,8 +7,7 @@ namespace RoRebuildServer.Database.Domain
     [Owned]
     public class DbSavePoint
     {
-        [MaxLength(64)]
-        public string? MapName { get; set; }
+        [MaxLength(64)] public string? MapName { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
         public int Area { get; set; }

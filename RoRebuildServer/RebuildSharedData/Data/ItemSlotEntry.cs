@@ -12,9 +12,9 @@ public unsafe struct RegularItem : ISerializableItem
     public int Id;
     public short Count;
 
-    public static int Size => 6;
+    public static readonly int Size = 6;
 
-    public void Serialize(IBinaryMessageWriter bw)
+    public readonly void Serialize(IBinaryMessageWriter bw)
     {
         bw.Write(Id);
         bw.Write(Count);
@@ -22,16 +22,12 @@ public unsafe struct RegularItem : ISerializableItem
 
     public static RegularItem Deserialize(IBinaryMessageReader br)
     {
-        var entry = new RegularItem()
-        {
-            Id = br.ReadInt32(),
-            Count = br.ReadInt16()
-        };
+        var entry = new RegularItem() { Id = br.ReadInt32(), Count = br.ReadInt16() };
 
         return entry;
     }
 
-    public static RegularItem ZeroResult() => new RegularItem() { Id = -1, Count = 0 };
+    public static RegularItem ZeroResult() => new() { Id = -1, Count = 0 };
 }
 
 [Flags]
@@ -66,7 +62,7 @@ public unsafe struct UniqueItem : ISerializableItem
             msg.Write(Data[i]);
     }
 
-    public void SerializeAsRegularItem(IBinaryMessageWriter msg)
+    public readonly void SerializeAsRegularItem(IBinaryMessageWriter msg)
     {
         msg.Write(Id);
         msg.Write(Count);

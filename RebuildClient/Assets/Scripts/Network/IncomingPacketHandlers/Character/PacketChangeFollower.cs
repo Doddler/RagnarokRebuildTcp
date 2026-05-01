@@ -17,14 +17,14 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             if (!Network.EntityList.TryGetValue(id, out var controllable))
                 return;
 
-            var follower = (PlayerFollower)msg.ReadByte();
+            var follower = (CharacterFollowerState)msg.ReadByte();
 
             if (controllable.FollowerObject != null)
             {
                 Object.Destroy(controllable.FollowerObject);
             }
 
-            if (follower == PlayerFollower.None)
+            if (follower == CharacterFollowerState.None)
             {
                 controllable.FollowerObject = null;
                 PlayerState.Instance.HasCart = false;
@@ -32,15 +32,15 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                 return;
             }
 
-            if ((follower & PlayerFollower.AnyCart) > 0)
+            if ((follower & CharacterFollowerState.AnyCart) > 0)
             {
                 var cartStyle = follower switch
                 {
-                    PlayerFollower.Cart0 => 0,
-                    PlayerFollower.Cart1 => 1,
-                    PlayerFollower.Cart2 => 2,
-                    PlayerFollower.Cart3 => 3,
-                    PlayerFollower.Cart4 => 4,
+                    CharacterFollowerState.Cart0 => 0,
+                    CharacterFollowerState.Cart1 => 1,
+                    CharacterFollowerState.Cart2 => 2,
+                    CharacterFollowerState.Cart3 => 3,
+                    CharacterFollowerState.Cart4 => 4,
                     _ => 0
                 };
                 var cartObj = new GameObject();
@@ -55,7 +55,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                     PlayerState.Instance.HasCart = true;
             }
 
-            if ((follower & PlayerFollower.Falcon) > 0)
+            if ((follower & CharacterFollowerState.Falcon) > 0)
             {
                 var birdObj = new GameObject();
                 var bird = birdObj.AddComponent<BirdFollower>();

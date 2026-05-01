@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Utility;
+using UnityEngine;
 
 namespace Assets.Scripts.Effects.PrimitiveData
 {
-    public class CircleData
+    public class CircleData : IResettable
     {
         public float Radius;
         public float RadiusSpeed;
@@ -15,5 +16,26 @@ namespace Assets.Scripts.Effects.PrimitiveData
         public float InnerSize;
         public Color Color;
         public bool FillCircle;
+        public int ChangePoint;
+        public float ChangeAccel;
+        public float ChangeSpeed;
+        
+        public void Reset()
+        {
+            Radius = 0;
+            RadiusSpeed = 0;
+            RadiusAccel = 0;
+            FadeOutLength = 0;
+            AlphaSpeed = 0f;
+            MaxAlpha = 0f;
+            Alpha = 0f;
+            ArcAngle = 36f;
+            InnerSize = 0f;
+            Color = Color.white;
+            FillCircle = false;
+            ChangePoint = 0;
+            ChangeAccel = 0;
+            ChangeSpeed = 0;
+        }
     }
 }

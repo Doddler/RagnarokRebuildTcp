@@ -32,14 +32,14 @@ public class PacketAdminChangeAppearance : IClientPacketHandler
             case 1:
                 if (subId == -1)
                     subId = GameRandom.NextInclusive(0, 8);
-                if(val >= 0 && val <= 41)
+                if (val >= 0 && val <= 41)
                     p.SetData(PlayerStat.Head, val);
                 else
                     p.SetData(PlayerStat.Head, GameRandom.NextInclusive(0, 31));
                 p.SetData(PlayerStat.HairId, subId);
                 break;
             case 2:
-                if(val >= 0 && val <= 1)
+                if (val >= 0 && val <= 1)
                     p.SetData(PlayerStat.Gender, val);
                 else
                     p.SetData(PlayerStat.Gender, GameRandom.NextInclusive(0, 1));

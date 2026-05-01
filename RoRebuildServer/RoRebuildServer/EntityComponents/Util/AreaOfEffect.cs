@@ -6,6 +6,7 @@ using RebuildSharedData.Enum;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Util;
+using System.Runtime.InteropServices;
 
 namespace RoRebuildServer.EntityComponents.Util;
 
@@ -44,6 +45,7 @@ public class AreaOfEffect
 
     public double NextTick = float.MaxValue;
     public double Expiration = float.MaxValue;
+    public float TimeRemaining => (float)(Expiration - Time.ElapsedTime);
 
     public float TickRate = 99999;
 
@@ -91,7 +93,7 @@ public class AreaOfEffect
         IsMaskedArea = false;
         Class = AoEClass.None;
 
-        if(TouchingEntities != null)
+        if (TouchingEntities != null)
             EntityListPool.Return(TouchingEntities);
         if (areaMask != null)
         {
@@ -132,7 +134,7 @@ public class AreaOfEffect
             var rel = pos - Area.Min;
             return areaMask[rel.X + rel.Y * Area.Width];
         }
-        
+
         return true;
     }
 
@@ -141,7 +143,7 @@ public class AreaOfEffect
     {
         if (IsInAoE(initial))
             return false;
-        
+
         return IsInAoE(newPos);
     }
 
@@ -183,7 +185,7 @@ public class AreaOfEffect
                 return;
             if (!character.CombatEntity.IsValidTarget(attacker))
                 return;
-            if(TriggerOnFirstTouch)
+            if (TriggerOnFirstTouch)
                 npc.Behavior.OnAoEInteraction(npc, character.CombatEntity, this);
             if (IsActive && CheckStayTouching && IsInAoE(character.Position)) //it might have moved so we check position again
             {
@@ -219,7 +221,7 @@ public class AreaOfEffect
 
         var hasNpc = SourceEntity.TryGet<Npc>(out var npc);
 
-        
+
         TouchingEntities.ClearInactive();
 
         for (var i = 0; i < TouchingEntities.Count; i++)
@@ -235,8 +237,8 @@ public class AreaOfEffect
                 i--;
                 continue;
             }
-            
-            if(hasNpc)
+
+            if (hasNpc)
                 npc.Behavior.OnAoEInteraction(npc, ch.CombatEntity, this);
             if (!IsActive)
                 return; //if the aoe ends during our interaction event we should be ready
@@ -265,7 +267,7 @@ public class AreaOfEffect
                 continue;
             if (!IsInAoE(ch.Position) || CurrentMap != ch.Map)
             {
-                if(TriggerOnLeaveArea)
+                if (TriggerOnLeaveArea)
                     OnLeaveAoE(ch);
 
                 TouchingEntities.SwapFromBack(i);
@@ -287,7 +289,7 @@ public class AreaOfEffect
 
         if (Time.ElapsedTime < NextTick)
             return;
-        
+
         NextTick += TickRate;
 
         if (!SourceEntity.IsAlive())

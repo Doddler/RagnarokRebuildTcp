@@ -42,7 +42,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
                 case SkillTarget.Ground:
                     ProcessGroundTargetedSkill(connection, msg);
                     return;
-                case SkillTarget.Enemy: 
+                case SkillTarget.Enemy:
                     ProcessSingleTargetSkill(connection, msg);
                     return;
                 case SkillTarget.Self:
@@ -101,7 +101,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
             Debug.Assert(connection.Character != null);
 
             var caster = connection.Character;
-            var groundTarget= msg.ReadPosition();
+            var groundTarget = msg.ReadPosition();
             var map = caster?.Map;
 
             if (map == null || caster == null)
@@ -110,7 +110,7 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
 
             var skill = (CharacterSkill)msg.ReadByte();
             var lvl = (int)msg.ReadByte();
-            
+
             if (connection.Player.IsSkillOnCooldown(skill)) return;
 
             if (!map.WalkData.HasLineOfSight(caster.Position, groundTarget))
@@ -151,9 +151,9 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
 
             var caster = connection.Character;
             var targetEntity = World.Instance.GetEntityById(msg.ReadInt32());
-            if(targetEntity.Type == EntityType.Npc || !targetEntity.TryGet<CombatEntity>(out var target) || caster == null)
+            if (targetEntity.Type == EntityType.Npc || !targetEntity.TryGet<CombatEntity>(out var target) || caster == null)
                 return;
-            
+
             var skill = (CharacterSkill)msg.ReadByte();
             var lvl = (int)msg.ReadByte();
 

@@ -297,6 +297,9 @@ namespace Assets.Scripts.Sprites
                 rotation %= 360;
                 
                 var angleIndex = RoAnimationHelper.GetSpriteIndexForAngle(Angle, rotation);
+                if (!is8Direction && angleIndex % 2 == 0)
+                    angleIndex++;
+                
                 // Debug.Log($"{SpriteData.Name} is8Direction:{is8Direction} Angle:{Angle} Camera:{CameraFollower.Instance.Rotation} -> {rotation} AngleIndex: {angleIndex}");
                 if (angleIndex != CurrentAngleIndex)
                 {

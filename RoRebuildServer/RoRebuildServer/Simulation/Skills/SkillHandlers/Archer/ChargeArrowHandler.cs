@@ -13,7 +13,7 @@ public class ChargeArrowHandler : SkillHandlerBase
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
         int lvl, bool isIndirect, bool isItemSource) =>
         ValidateTargetForAmmunitionWeapon(source, target, position, 12, AmmoType.Arrow);
-    
+
     public override int GetSkillRange(CombatEntity source, int lvl)
     {
         if (source.Character.Type == CharacterType.Player)

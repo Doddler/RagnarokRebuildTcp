@@ -16,9 +16,10 @@
 14,Whip,Whip,_hit_mace
 15,Book,Book,_hit_mace
 16,Katar,Katar,_hit_mace
-17,Pistol,Pistol,_hit_권총
-18,Rifle,Rifle,_hit_라이플
-19,GatlingGun,Gatling Gun,_hit_개틀링한발
-20,Shotgun,Shotgun,_hit_샷건
-21,Grenade,Grenade Launcher,_hit_그레네이드런쳐
-22,Shuriken,Huuma Shuriken,_hit_sword
+17,Knuckle,Knuckle,_hit_mace
+18,Pistol,Pistol,_hit_권총
+19,Rifle,Rifle,_hit_라이플
+20,GatlingGun,Gatling Gun,_hit_개틀링한발
+21,Shotgun,Shotgun,_hit_샷건
+22,Grenade,Grenade Launcher,_hit_그레네이드런쳐
+23,Shuriken,Huuma Shuriken,_hit_sword

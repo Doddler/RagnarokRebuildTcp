@@ -3,32 +3,31 @@ using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.EntityComponents;
 
-namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Merchant
+namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Merchant;
+
+[SkillHandler(CharacterSkill.PushCart, SkillClass.None, SkillTarget.Passive)]
+public class PushCartHandler : SkillHandlerBase
 {
-    [SkillHandler(CharacterSkill.PushCart, SkillClass.None, SkillTarget.Passive)]
-    public class PushCartHandler : SkillHandlerBase
+    public override void ApplyPassiveEffects(CombatEntity owner, int lvl)
     {
-        public override void ApplyPassiveEffects(CombatEntity owner, int lvl)
-        {
-            if (owner.Character.Type != CharacterType.Player)
-                return;
+        if (owner.Character.Type != CharacterType.Player)
+            return;
 
-            var activeCart = owner.Player.GetData(PlayerStat.FollowerType) & (int)PlayerFollower.AnyCart;
-            owner.Player.PlayerFollower |= (PlayerFollower)activeCart;
-        }
+        var activeCart = owner.Player.GetData(PlayerStat.FollowerType) & (int)CharacterFollowerState.AnyCart;
+        owner.Player.PlayerFollower |= (CharacterFollowerState)activeCart;
+    }
 
-        public override void RemovePassiveEffects(CombatEntity owner, int lvl)
-        {
-            if (owner.Character.Type != CharacterType.Player)
-                return;
-            
-            owner.Player.PlayerFollower &= ~PlayerFollower.AnyCart;
-        }
+    public override void RemovePassiveEffects(CombatEntity owner, int lvl)
+    {
+        if (owner.Character.Type != CharacterType.Player)
+            return;
 
-        public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl,
-            bool isIndirect, bool isItemSource)
-        {
-            throw new NotImplementedException();
-        }
+        owner.Player.PlayerFollower &= ~CharacterFollowerState.AnyCart;
+    }
+
+    public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl,
+        bool isIndirect, bool isItemSource)
+    {
+        throw new NotImplementedException();
     }
 }

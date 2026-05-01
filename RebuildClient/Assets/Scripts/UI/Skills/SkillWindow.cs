@@ -89,8 +89,8 @@ namespace Assets.Scripts.UI
                 }
             }
             
-            if(!string.IsNullOrWhiteSpace(data.Description))
-            tooltipBuilder.Append($"\n<line-height=5>\n</line-height>{data.Description}");
+            if(!string.IsNullOrWhiteSpace(data.DescEn))
+            tooltipBuilder.Append($"\n<line-height=5>\n</line-height>{data.DescEn}");
 
             TooltipText.text = tooltipBuilder.ToString();
 

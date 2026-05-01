@@ -316,7 +316,7 @@ namespace Assets.Scripts.MapEditor.Editor
             {
                 var path = AssetDatabase.GUIDToAssetPath(guids[i]);
                 var fName = Path.GetFileNameWithoutExtension(path);
-                if (effects.Effects.All(m => m.Name != fName) || fName.StartsWith("Model"))
+                if (effects.Effects.All(m => m.Name != fName) && effects.Effects.All(m => string.IsNullOrWhiteSpace(m.PrefabName) || Path.GetFileNameWithoutExtension(m.PrefabName) != fName))
                 {
                     // Debug.Log("Not found: " + fName + " " + effects.Effects[0].Name);
                     var existing = defGroup.GetAssetEntry(guids[i]);

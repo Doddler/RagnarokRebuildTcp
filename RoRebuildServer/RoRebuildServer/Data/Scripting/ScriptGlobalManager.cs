@@ -31,7 +31,7 @@ public static class ScriptGlobalManager
         varLock.ExitReadLock();
         return intVal;
     }
-    
+
     public static string StringValue(string varName)
     {
         varLock.EnterReadLock();
@@ -86,7 +86,6 @@ public static class ScriptGlobalManager
     }
 
 
-
     public static void SetString(string varName, string strVal)
     {
         varLock.EnterWriteLock();
@@ -97,7 +96,7 @@ public static class ScriptGlobalManager
         }
         else
         {
-            gVal = new ScriptGlobalVar() { VariableName = varName, StringValue = strVal};
+            gVal = new ScriptGlobalVar() { VariableName = varName, StringValue = strVal };
             scriptGlobals.Add(varName, gVal);
         }
 
