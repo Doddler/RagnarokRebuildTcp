@@ -1341,7 +1341,7 @@ namespace Assets.Scripts.Network
 	            ComboIndicator?.EndDamageIndicator();
 	            var di2 = RagnarokEffectPool.GetDamageIndicator();
                 di2.DoDamage(TextIndicatorType.ComboDamage, $"{totalDamage}", Vector3.zero, height,
-                    SpriteAnimator.Direction, "#FFFF00", false);
+                    direction, "#FFFF00", false);
                 di2.AttachComboIndicatorToControllable(this);
                 ComboIndicator = di2;
             }
