@@ -24,55 +24,49 @@ public class DamageIndicatorBatcher : MonoBehaviour
 	public Shader shader;
 	public GameObject atlasBakerPrefab;
 	public bool EnableInstancing;
-	
-	private Camera _camera;
+
 	private CommandBuffer _cmd;
-	private CommandBuffer _blitCmd;
-	private RenderTexture _targetTexture;
+	private Camera _ownCamera;
 
 	private const CameraEvent Event = CameraEvent.AfterForwardAlpha;
-	
+
 	private Material _material;
 	private MaterialPropertyBlock _propertyBlock;
 	private Mesh _fst;
 
 	private BakeDamageIndicatorAtlas _baker;
-	
+
 	private InstanceBufferPool<DamageIndicatorData> _pool;
 	private readonly DamageIndicatorData[] _instStage = new DamageIndicatorData[1023];
 	private readonly Matrix4x4[] _matrices = new Matrix4x4[1023];
-	
+
+	private readonly Dictionary<Camera, RenderTexture> _perCamRT = new();
+	private readonly Dictionary<Camera, CommandBuffer> _perCamBlit = new();
+	private readonly List<Camera> _scratchDeadCameras = new();
+
 	private void OnEnable()
 	{
 		Instance = this;
-		
-		UpdateRenderTexture();
-		
-		_cmd = new CommandBuffer();
-		_cmd.name = "DamageIndicatorBatcher - Render";
-		_cmd.SetRenderTarget(_targetTexture);
-		
-		_blitCmd = new CommandBuffer();
-		_blitCmd.name = "DamageIndicatorBatcher - Blit";
 
-		_camera = GetComponent<Camera>();
-		//_camera.AddCommandBuffer(Event, _cmd);
-		_camera.AddCommandBuffer(Event, _blitCmd);
+		_cmd = new CommandBuffer { name = "DamageIndicatorBatcher - Render" };
+		_ownCamera = GetComponent<Camera>();
+
+		Camera.onPreRender += OnAnyCameraPreRender;
 
 		var bakerGo = Instantiate(atlasBakerPrefab, transform);
 		bakerGo.transform.position = new Vector3(-5000, -5000, -5000);
 		_baker = bakerGo.GetComponent<BakeDamageIndicatorAtlas>();
 		_baker.BakeAtlas();
-		
+
 		_material = new Material(shader);
 		_material.SetTexture(MainTex, _baker.damageIndicatorTexture);
 		_material.enableInstancing = true;
 
 		_pool = new InstanceBufferPool<DamageIndicatorData>(1023 * 3);
 		_propertyBlock = new MaterialPropertyBlock();
-		
+
 		GenerateFullScreenTriangle();
-		
+
 		if (!SystemInfo.supportsInstancing)
 		{
 			EnableInstancing = false;
@@ -82,13 +76,23 @@ public class DamageIndicatorBatcher : MonoBehaviour
 
 	private void OnDisable()
 	{
-		Destroy(_baker.gameObject);
-		
-		_camera.RemoveCommandBuffer(Event, _blitCmd);
-	
-		_blitCmd?.Release();
-		_blitCmd = null;
-		
+		Camera.onPreRender -= OnAnyCameraPreRender;
+
+		if (_baker != null)
+			Destroy(_baker.gameObject);
+
+		foreach (var kv in _perCamBlit)
+		{
+			if (kv.Key != null)
+				kv.Key.RemoveCommandBuffer(Event, kv.Value);
+			kv.Value?.Release();
+		}
+		_perCamBlit.Clear();
+
+		foreach (var kv in _perCamRT)
+			if (kv.Value != null) kv.Value.Release();
+		_perCamRT.Clear();
+
 		_cmd?.Release();
 		_cmd = null;
 	}
@@ -98,7 +102,7 @@ public class DamageIndicatorBatcher : MonoBehaviour
         if (GameConfig.Data == null) return;
 
 		_material.SetFloat(Spacing, GameConfig.Data.DamageSpacingSize);
-		
+
 		for (int i = indicators.Count - 1; i >= 0; i--)
 		{
 			var di = indicators[i];
@@ -109,32 +113,75 @@ public class DamageIndicatorBatcher : MonoBehaviour
 				indicators.RemoveAt(i);
 			}
 		}
+
+		PruneDeadCameras();
 	}
 
-	private void OnPreRender()
+	private void PruneDeadCameras()
 	{
-		if (EnableInstancing)
+		_scratchDeadCameras.Clear();
+        foreach (var kv in _perCamRT)
+        {
+            if (kv.Key == null) _scratchDeadCameras.Add(kv.Key);
+        }
+		foreach (var kv in _perCamBlit)
+        {
+            if (kv.Key == null && !_scratchDeadCameras.Contains(kv.Key)) _scratchDeadCameras.Add(kv.Key);
+        }
+
+		foreach (var c in _scratchDeadCameras)
 		{
-			DrawInstanced();
-		}
-		else
-		{
-			DrawIndividualMeshes();
+			if (_perCamRT.TryGetValue(c, out var rt))
+			{
+				if (rt != null) rt.Release();
+				_perCamRT.Remove(c);
+			}
+			if (_perCamBlit.TryGetValue(c, out var cb))
+			{
+				cb?.Release();
+				_perCamBlit.Remove(c);
+			}
 		}
 	}
 
-	private void DrawIndividualMeshes()
+	private void OnAnyCameraPreRender(Camera cam)
 	{
-		_blitCmd.Clear();
-		
-		UpdateRenderTexture();
+		if (cam == null) return;
+		if (cam.cameraType != CameraType.SceneView && cam != _ownCamera) return;
+		if (cam.pixelWidth <= 0 || cam.pixelHeight <= 0) return;
+
+		var blitCb = GetBlitCmd(cam);
+		blitCb.Clear();
+
+		if (indicators.Count == 0) return;
+
+		var rt = GetRT(cam);
+
 		_cmd.Clear();
-		_cmd.SetRenderTarget(_targetTexture);
+		_cmd.SetRenderTarget(rt);
 		_cmd.ClearRenderTarget(true, true, Color.clear);
-		_cmd.SetViewProjectionMatrices(_camera.worldToCameraMatrix, _camera.projectionMatrix);
-		
-		var rotation = _camera.transform.rotation * Quaternion.Euler(0, 180, 0);
+		_cmd.SetViewProjectionMatrices(cam.worldToCameraMatrix, cam.projectionMatrix);
 
+		var rotation = cam.transform.rotation * Quaternion.Euler(0, 180, 0);
+
+        if (EnableInstancing)
+        {
+            BuildInstancedDraws(rotation);
+        }
+        else
+        {
+            BuildIndividualDraws(rotation);
+        }
+
+		Graphics.ExecuteCommandBuffer(_cmd);
+
+		_propertyBlock.Clear();
+		_propertyBlock.SetTexture(MainTex, rt);
+		blitCb.DrawMesh(_fst, Matrix4x4.identity, _material, 0, 1, _propertyBlock);
+	}
+
+	private void BuildIndividualDraws(Quaternion rotation)
+	{
 		for (int i = indicators.Count - 1; i >= 0; i--)
 		{
 			var di = indicators[i];
@@ -148,38 +195,22 @@ public class DamageIndicatorBatcher : MonoBehaviour
 			_propertyBlock.SetFloat("_LifeTime", di.lifeTime);
 
 			_propertyBlock.SetFloat("_CritJitter", di.critJitter);
-			
+
 			_propertyBlock.SetFloat("_IsCrit", di.type == TextIndicatorType.Critical ? 1 : 0);
 			_propertyBlock.SetFloat("_IsMiss", di.type == TextIndicatorType.Miss ? 1 : 0);
 			_propertyBlock.SetFloat("_IsAgi", di.type is TextIndicatorType.Effect or TextIndicatorType.Debuff ? 1 : 0);
 			_propertyBlock.SetFloat("_IsSlow", di.type == TextIndicatorType.Debuff ? 1 : 0);
 			_propertyBlock.SetFloat("_IsExp", di.type == TextIndicatorType.Experience ? 1 : 0);
-			
+
 			var trs = Matrix4x4.TRS(di.pos, rotation, new Vector3(di.size, di.size, 1f));
 			_cmd.DrawMesh(mesh, trs, _material, 0, 0, _propertyBlock);
 		}
-		
-		Graphics.ExecuteCommandBuffer(_cmd);
-		
-		_propertyBlock.Clear();
-		_propertyBlock.SetTexture("_MainTex", _targetTexture);
-		_blitCmd.DrawMesh(_fst, Matrix4x4.identity, _material, 0, 1, _propertyBlock);
 	}
-	
-	private void DrawInstanced()
+
+	private void BuildInstancedDraws(Quaternion rotation)
 	{
-		_blitCmd.Clear();
-		
-		UpdateRenderTexture();
-		_cmd.Clear();
-		_cmd.SetRenderTarget(_targetTexture);
-		_cmd.ClearRenderTarget(true, true, Color.clear);
-		_cmd.SetViewProjectionMatrices(_camera.worldToCameraMatrix, _camera.projectionMatrix);
-		
 		_pool.BeginFrame();
-		
-		var rotation = _camera.transform.rotation * Quaternion.Euler(0, 180, 0);
-		
+
 		int batchCount = 0;
 		for (int i = 0; i < indicators.Count; i++)
 		{
@@ -215,12 +246,6 @@ public class DamageIndicatorBatcher : MonoBehaviour
 
 		if (batchCount > 0)
 			FlushInstancedBatch(batchCount);
-		
-		Graphics.ExecuteCommandBuffer(_cmd);
-
-		_propertyBlock.Clear();
-		_propertyBlock.SetTexture(MainTex, _targetTexture);
-		_blitCmd.DrawMesh(_fst, Matrix4x4.identity, _material, 0, 1, _propertyBlock);
 	}
 
 	private void FlushInstancedBatch(int count)
@@ -233,28 +258,28 @@ public class DamageIndicatorBatcher : MonoBehaviour
 		_cmd.DrawMeshInstanced(mesh, 0, _material, 0, _matrices, count, _propertyBlock);
 	}
 
-	private void UpdateRenderTexture()
+	private RenderTexture GetRT(Camera cam)
 	{
-		if (!_targetTexture || _targetTexture.width != Screen.width || _targetTexture.height != Screen.height)
-		{
-			if (_targetTexture) _targetTexture.Release();
-			_targetTexture = new RenderTexture(Screen.width, Screen.height, 24, DefaultFormat.LDR);
-			_targetTexture.antiAliasing = 1;
-			_targetTexture.name = "Damage Indicator Target Texture";
-		}
+		if (_perCamRT.TryGetValue(cam, out var rt) && rt != null && rt.width == cam.pixelWidth && rt.height == cam.pixelHeight) return rt;
+
+		if (rt != null) rt.Release();
+		rt = new RenderTexture(cam.pixelWidth, cam.pixelHeight, 24, DefaultFormat.LDR);
+		rt.antiAliasing = 1;
+		rt.name = $"DI Target ({cam.name})";
+		_perCamRT[cam] = rt;
+		return rt;
 	}
 
-	/*private bool _curIsCritBilinear;
-	private TMP_FontAsset _curFont;
-	private void RequestRebakeIfNeeded()
+	private CommandBuffer GetBlitCmd(Camera cam)
 	{
-		
-		
-		_baker.BakeAtlas();
-		_curIsCritBilinear = false;
-		_curFont = 
-	}*/
-	
+		if (_perCamBlit.TryGetValue(cam, out var cmd) && cmd != null) return cmd;
+
+		cmd = new CommandBuffer { name = $"DI Blit ({cam.name})" };
+		cam.AddCommandBuffer(Event, cmd);
+		_perCamBlit[cam] = cmd;
+		return cmd;
+	}
+    
 	private void GenerateFullScreenTriangle()
 	{
 		_fst = new Mesh();
