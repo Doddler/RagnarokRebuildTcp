@@ -1343,7 +1343,7 @@ namespace Assets.Scripts.Network
             var height = 1f;
             var color = IsAlly ? "red" : "white";
             var direction = SpriteAnimator != null ? SpriteAnimator.Direction : RoAnimationHelper.GetFacingForAngle(Angle);
-            di.DoDamage(TextIndicatorType.Miss, "<font-weight=\"300\">Miss", new Vector3(0f, 0.6f, 0f), height, direction, color, false);
+            di.DoDamage(TextIndicatorType.Miss, "Miss", new Vector3(0f, 0.6f, 0f), height, direction, color, false);
             di.AttachDamageIndicator(this);
         }
 

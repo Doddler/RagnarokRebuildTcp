@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Text;
+using System.Globalization;
 using Assets.Scripts;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Network;
@@ -8,7 +7,6 @@ using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.Utility;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
-using TMPro;
 using UnityEngine;
 
 public enum TextIndicatorType
@@ -23,15 +21,10 @@ public enum TextIndicatorType
 	Debuff
 }
 
-public class DamageIndicator// : MonoBehaviour
+public class DamageIndicator
 {
-	public TextMeshPro TextObject;
-
     public DamageIndicatorPathData PathData;
     public ServerControllable Controllable;
-    public CriticalDamageSprite CritSprite;
-
-	private static StringBuilder sb = new StringBuilder(128);
 
 	private Vector3 start;
 	private Vector3 end;
@@ -47,9 +40,12 @@ public class DamageIndicator// : MonoBehaviour
 	public int value;
 
 	public TextIndicatorType type;
-	
+
 	public float lifeTime = 0;
-	
+
+	public bool UseTmpFallback;
+	public DamageIndicatorTmpVisual TmpVisual;
+
 	private readonly int[] jitterSequence = { 0, -10, 10, -8, 8, -6, 6, -4, 4, -2, 2, -1, 1, 0 };
 
 	public void AttachDamageIndicator(ServerControllable controllable)
@@ -57,18 +53,18 @@ public class DamageIndicator// : MonoBehaviour
 		Controllable = controllable;
 		basePosition = controllable.transform.localPosition;
 	}
-	
+
 	public void AttachComboIndicatorToControllable(ServerControllable controllable)
 	{
 		Controllable = controllable;
 		basePosition = controllable.transform.localPosition;
 	}
-	
+
 	public void DoDamage(TextIndicatorType type, string value, Vector3 startPosition, float height, Direction direction, string colorCode, bool isCrit)
 	{
 		this.type = type;
-		int.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out this.value);
-		if (type == TextIndicatorType.Experience) this.value = int.Parse(value.Split(' ')[0]);
+		this.isCrit = isCrit;
+
 		color = colorCode switch
 		{
 			null or "" => Color.white,
@@ -78,7 +74,7 @@ public class DamageIndicator// : MonoBehaviour
 			_ when ColorUtility.TryParseHtmlString(colorCode, out var parsed) => parsed,
 			_ => Color.white
 		};
-		
+
 		PathData = type switch
 		{
 			TextIndicatorType.Heal => ClientConstants.Instance.HealPath,
@@ -90,53 +86,45 @@ public class DamageIndicator// : MonoBehaviour
 			TextIndicatorType.Debuff => ClientConstants.Instance.DebuffPath,
 			_ => ClientConstants.Instance.DamagePath
 		};
-		// Debug.Log($"{Time.timeSinceLevelLoad} DoDamage {direction} {direction.GetIntercardinalDirection()}");
-		
-        direction = direction.GetIntercardinalDirection();
-		var text = value.ToString();
-		var hasColor = !string.IsNullOrEmpty(colorCode);
 
-		if (hasColor)
-			sb.Append($"<color={colorCode}>");
+		direction = direction.GetIntercardinalDirection();
 
-		var useTrueType = CameraFollower.Instance.UseTTFDamage;
-        if (!int.TryParse(value, out var _))
-            useTrueType = true;
-		//
-		// if (useTrueType)
-		// 	sb.Append("<cspace=0.4>");
+		var isBakedMiss = type == TextIndicatorType.Miss && value == "Miss";
+		var isNumeric = int.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out this.value);
+		UseTmpFallback = !isBakedMiss && !isNumeric;
 
-		foreach (var c in text)
+		if (UseTmpFallback)
 		{
-			if(!useTrueType)
-				sb.Append("<sprite=");
-			sb.Append(c);
-			if (!useTrueType)
+			TmpVisual = RagnarokEffectPool.GetTmpDamageVisual();
+			if (TmpVisual.TextObject != null)
 			{
-				if (hasColor)
-					sb.Append(" tint");
-				sb.Append(">");
+				TmpVisual.TextObject.text = value ?? string.Empty;
+				var c = color;
+				c.a = 1f;
+				TmpVisual.TextObject.color = c;
+			}
+			if (TmpVisual.CritSprite != null)
+			{
+				TmpVisual.CritSprite.gameObject.SetActive(isCrit);
+				if (isCrit)
+					TmpVisual.CritSprite.Reset();
 			}
 		}
 
-		//TextObject.text = sb.ToString();
-		//Debug.Log(sb.ToString());
-		sb.Clear();
-		
 		var vec = -direction.GetVectorValue();
 		var dirVector = new Vector3(vec.x, 0, vec.y);
 
 		start = new Vector3(startPosition.x, startPosition.y + height * 1.25f, startPosition.z);
-		//end = start;
-        if (PathData.FliesAwayFromTarget)
-            end = start + dirVector * PathData.DistanceMultiplier;
-        else
-            end = start;
+		if (PathData.FliesAwayFromTarget)
+			end = start + dirVector * PathData.DistanceMultiplier;
+		else
+			end = start;
 
-        Controllable = null;
-        basePosition = Vector3.zero;
+		Controllable = null;
+		basePosition = Vector3.zero;
+		lifeTime = 0;
 	}
-	
+
 	public void EndDamageIndicator()
 	{
 		lifeTime = 99;
@@ -153,14 +141,14 @@ public class DamageIndicator// : MonoBehaviour
 		{
 			basePosition = Controllable.transform.localPosition;
 		}
-		
+
 		if (lifeTime > 1)
 		{
 			pos = new Vector3(0, -5000, 0);
 			size = 0;
 			return;
 		}
-		
+
 		size = PathData.Size.Evaluate(lifeTime) * GameConfig.Data.DamageNumberSize;
 		pos = Vector3.Lerp(start, end, lifeTime) + basePosition;
 		pos.y += PathData.Trajectory.Evaluate(lifeTime) * PathData.HeightMultiplier;
@@ -168,7 +156,39 @@ public class DamageIndicator// : MonoBehaviour
 
 		var index = Mathf.Min(Mathf.FloorToInt((lifeTime * PathData.TweenTime) / 0.1f), jitterSequence.Length - 1);
 		critJitter = jitterSequence[index] / 70f;
-		
+
 		lifeTime += Time.deltaTime / PathData.TweenTime;
+
+        if (UseTmpFallback && TmpVisual != null)
+        {
+            ApplyToTmpVisual();
+        }
+	}
+
+	private void ApplyToTmpVisual()
+	{
+		var t = TmpVisual.transform;
+		t.localPosition = pos;
+		t.localScale = new Vector3(size, size, size);
+
+		if (TmpVisual.TextObject != null)
+		{
+			var c = color;
+			c.a = alpha;
+			TmpVisual.TextObject.color = c;
+		}
+
+		if (isCrit && TmpVisual.CritSprite != null && TmpVisual.CritSprite.SpriteRenderer != null)
+			TmpVisual.CritSprite.SpriteRenderer.color = new Color(0.8f, 0.8f, 0.8f, alpha);
+	}
+
+	public void OnRemoved()
+	{
+		if (UseTmpFallback && TmpVisual != null)
+		{
+			RagnarokEffectPool.ReturnTmpDamageVisual(TmpVisual);
+			TmpVisual = null;
+			UseTmpFallback = false;
+		}
 	}
 }

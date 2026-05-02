@@ -16,6 +16,7 @@ namespace Assets.Scripts.Editor
             {
                 myInspector.Add(new Label($"3D Effect Count: {RagnarokEffectPool.DebugGet3DEffectPoolCount()}"));
                 myInspector.Add(new Label($"Primitive Count: {RagnarokEffectPool.DebugGetPrimitivePoolCount()}"));
+                myInspector.Add(new Label($"TMP Damage Indicator Count: {RagnarokEffectPool.DebugGetDamageIndicatorCount()}"));
                 myInspector.Add(new Label($"Mesh Count: {EffectPool.DebugGetMeshCount()}"));
                 myInspector.Add(new Label($"Mesh Builder Count: {EffectPool.DebugGetBuilderCount()}"));
                 myInspector.Add(new Label($"Segment Count: {EffectPool.EffectSegmentCount()}"));

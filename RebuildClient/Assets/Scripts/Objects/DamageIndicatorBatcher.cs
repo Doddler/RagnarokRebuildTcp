@@ -95,6 +95,8 @@ public class DamageIndicatorBatcher : MonoBehaviour
 
 	private void Update()
 	{
+        if (GameConfig.Data == null) return;
+
 		_material.SetFloat(Spacing, GameConfig.Data.DamageSpacingSize);
 		
 		for (int i = indicators.Count - 1; i >= 0; i--)
@@ -103,6 +105,7 @@ public class DamageIndicatorBatcher : MonoBehaviour
 			di.OnUpdate();
 			if (!di.ShouldRender())
 			{
+				di.OnRemoved();
 				indicators.RemoveAt(i);
 			}
 		}
@@ -134,9 +137,10 @@ public class DamageIndicatorBatcher : MonoBehaviour
 
 		for (int i = indicators.Count - 1; i >= 0; i--)
 		{
-			_propertyBlock.Clear();
-
 			var di = indicators[i];
+			if (di.UseTmpFallback) continue;
+
+			_propertyBlock.Clear();
 
 			_propertyBlock.SetFloat("_Alpha", di.alpha);
 			_propertyBlock.SetInt("_Value", di.value);
@@ -176,48 +180,57 @@ public class DamageIndicatorBatcher : MonoBehaviour
 		
 		var rotation = _camera.transform.rotation * Quaternion.Euler(0, 180, 0);
 		
-		var total = indicators.Count;
-		for (int start = 0; start < total; start += 1023)
+		int batchCount = 0;
+		for (int i = 0; i < indicators.Count; i++)
 		{
-			var batchCount = Mathf.Min(1023, total - start);
+			var di = indicators[i];
+			if (di.UseTmpFallback) continue;
 
-			for (int i = 0; i < batchCount; i++)
+			uint flags = 0;
+			if (di.type == TextIndicatorType.Critical) flags |= 1 << 0;
+			if (di.type == TextIndicatorType.Miss) flags |= 1 << 1;
+			if (di.type is TextIndicatorType.Effect or TextIndicatorType.Debuff) flags |= 1 << 2;
+			if (di.type == TextIndicatorType.Debuff) flags |= 1 << 3;
+			if (di.type == TextIndicatorType.Experience) flags |= 1 << 4;
+
+			_instStage[batchCount] = new DamageIndicatorData
 			{
-				var di = indicators[start + i];
+				alpha = di.alpha,
+				value = di.value,
+				color = di.color,
+				lifeTime = di.lifeTime,
+				critJitter = di.critJitter,
+				flags = flags,
+			};
 
-				uint flags = 0;
-				if (di.type == TextIndicatorType.Critical) flags |= 1 << 0;
-				if (di.type == TextIndicatorType.Miss) flags |= 1 << 1;
-				if (di.type is TextIndicatorType.Effect or TextIndicatorType.Debuff) flags |= 1 << 2;
-				if (di.type == TextIndicatorType.Debuff) flags |= 1 << 3;
-				if (di.type == TextIndicatorType.Experience) flags |= 1 << 4;
-				
-				_instStage[i] = new DamageIndicatorData
-				{
-					alpha = di.alpha,
-					value = di.value,
-					color = di.color,
-					lifeTime = di.lifeTime,
-					critJitter = di.critJitter,
-					flags = flags,
-				};
-				
-				_matrices[i] = Matrix4x4.TRS(di.pos, rotation, new Vector3(di.size, di.size, 1f));
+			_matrices[batchCount] = Matrix4x4.TRS(di.pos, rotation, new Vector3(di.size, di.size, 1f));
+			batchCount++;
+
+			if (batchCount == 1023)
+			{
+				FlushInstancedBatch(batchCount);
+				batchCount = 0;
 			}
-			
-			var baseInstance = _pool.AppendInstances(_instStage, 0, batchCount);
-			_propertyBlock.Clear();
-			_propertyBlock.SetBuffer(Instances, _pool.Instances);
-			_propertyBlock.SetInt(BaseInstance, baseInstance);
-			
-			_cmd.DrawMeshInstanced(mesh, 0, _material, 0, _matrices, batchCount, _propertyBlock);
 		}
+
+		if (batchCount > 0)
+			FlushInstancedBatch(batchCount);
 		
 		Graphics.ExecuteCommandBuffer(_cmd);
-		
+
 		_propertyBlock.Clear();
 		_propertyBlock.SetTexture(MainTex, _targetTexture);
 		_blitCmd.DrawMesh(_fst, Matrix4x4.identity, _material, 0, 1, _propertyBlock);
+	}
+
+	private void FlushInstancedBatch(int count)
+	{
+		var baseInstance = _pool.AppendInstances(_instStage, 0, count);
+		_propertyBlock.Clear();
+		_propertyBlock.SetBuffer(Instances, _pool.Instances);
+		_propertyBlock.SetInt(BaseInstance, baseInstance);
+
+		_cmd.DrawMeshInstanced(mesh, 0, _material, 0, _matrices, count, _propertyBlock);
 	}
 
 	private void UpdateRenderTexture()
