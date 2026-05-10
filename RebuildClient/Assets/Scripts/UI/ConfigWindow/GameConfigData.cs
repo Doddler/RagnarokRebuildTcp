@@ -36,6 +36,7 @@ namespace Assets.Scripts.UI.ConfigWindow
         public bool ShowAllSkillsInSkillWindow = false;
         //character overlay
         public float DamageNumberSize = 0.85f;
+        public float DamageSpacingSize = 0.7f;
         public bool ShowExpGainOnKill = true;
         public bool ShowMonsterHpBars = true;
         public bool AutoHideFullHPBars = false;

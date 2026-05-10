@@ -9,6 +9,7 @@ namespace Assets.Scripts.UI.ConfigWindow
         public Toggle AutoLockSkillWindow;
         //character
         public Slider DamageSizeSlider;
+        public Slider DamageSpacingSlider;
         public Toggle ShowExpGainOnKill;
         public Toggle ScalePlayerHud;
         public Toggle ShowMonsterHpBars;
@@ -24,6 +25,7 @@ namespace Assets.Scripts.UI.ConfigWindow
         {
             if (!isInitialized) return; //we'll catch notifications early from Initialize if we don't do this
             GameConfig.Data.DamageNumberSize = DamageSizeSlider.value;
+            GameConfig.Data.DamageSpacingSize = DamageSpacingSlider.value;
             GameConfig.Data.ShowExpGainOnKill = ShowExpGainOnKill.isOn;
             GameConfig.Data.ShowMonsterHpBars = ShowMonsterHpBars.isOn;
             GameConfig.Data.ScalePlayerDisplayWithZoom = ScalePlayerHud.isOn;
@@ -38,6 +40,7 @@ namespace Assets.Scripts.UI.ConfigWindow
             AutoLockSkillWindow.SetIsOnWithoutNotify(GameConfig.Data.AutoLockSkillWindow);
             //character
             DamageSizeSlider.value = GameConfig.Data.DamageNumberSize;
+            DamageSpacingSlider.value = GameConfig.Data.DamageSpacingSize;
             ShowExpGainOnKill.SetIsOnWithoutNotify(GameConfig.Data.ShowExpGainOnKill);
             ScalePlayerHud.SetIsOnWithoutNotify(GameConfig.Data.ScalePlayerDisplayWithZoom);
             ShowMonsterHpBars.SetIsOnWithoutNotify(GameConfig.Data.ShowMonsterHpBars);
