@@ -1171,7 +1171,7 @@ public class Player : IEntityAutoReset
     }
 
     [ScriptUseable]
-    public void ReturnToSavePoint()
+    public bool ReturnToSavePoint()
     {
         Debug.Assert(Character.Map != null);
         SpecialState = SpecialPlayerActionState.None;
@@ -1183,7 +1183,7 @@ public class Player : IEntityAutoReset
         {
             ServerLogger.LogWarning($"Could not return player {Name} to save point {savePoint}.");
             if (!World.Instance.TryGetWorldMapByName(ServerConfig.EntryConfig.Map, out targetMap))
-                return;
+                return false;
             position = ServerConfig.EntryConfig.Position;
             area = ServerConfig.EntryConfig.Area;
         }
@@ -1191,9 +1191,14 @@ public class Player : IEntityAutoReset
         Character.StopMovingImmediately();
 
         if (!WarpPlayer(savePoint, position.X, position.Y, area, area, false))
+        {
             ServerLogger.LogWarning($"Failed to move player via ReturnToSavePoint to {savePoint}!");
+            return false;
+        }
 
         AddInputActionDelay(InputActionCooldownType.Teleport);
+
+        return true;
     }
 
     public bool HasSpForSkill(CharacterSkill skill, int level)

@@ -8,7 +8,7 @@ namespace RoRebuildServer.Simulation.StatusEffects._2ndJobs;
 //power thrust is split into two status effects so that blacksmiths won't overwrite their own self buffs
 //and they can have different visual effects (persistent aura is only on the self version)
 [StatusEffectHandler(CharacterStatusEffect.PowerThrustSelf, StatusClientVisibility.Everyone)]
-[StatusEffectHandler(CharacterStatusEffect.PowerThrustParty, StatusClientVisibility.Everyone)]
+[StatusEffectHandler(CharacterStatusEffect.PowerThrustParty, StatusClientVisibility.Ally)]
 public class StatusPowerThrust : StatusEffectBase
 {
     public override StatusUpdateMode UpdateMode => StatusUpdateMode.OnPreCalculateDamageDealt;

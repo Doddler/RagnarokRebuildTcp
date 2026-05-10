@@ -1,7 +1,7 @@
 ﻿using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
-using RoRebuildServer.Data.Map;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Util;
@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using RoRebuildServer.Data.MapData;
 
 namespace RoRebuildServer.Simulation;
 
@@ -36,8 +37,10 @@ public class Map
     public MapWalkData WalkData;
     public MapFlags Flags;
 
-    private readonly int chunkWidth;
-    private readonly int chunkHeight;
+    public CharacterStatusEffect MapWideStatusEffect;
+
+    private int chunkWidth;
+    private int chunkHeight;
 
     private int chunkCheckId;
 
@@ -47,7 +50,7 @@ public class Map
     public Dictionary<int, int> ItemChunkLookup = new();
 
     private int[] ActiveAoEChunks;
-    
+
     //private int playerCount;
     //public int PlayerCount
     //{
@@ -66,6 +69,8 @@ public class Map
 
     public bool CanTeleport;
     public bool CanMonstersTeleport;
+
+    private static int LastMapId = 0;
 
     public void AddPlayerVisibility(WorldObject player, WorldObject observer)
     {
@@ -1634,6 +1639,44 @@ public class Map
         return hasMatch;
     }
 
+    public void SetMapWideStatusEffect(CharacterStatusEffect newEffect)
+    {
+        var hasOldStatus = MapWideStatusEffect != CharacterStatusEffect.None && MapWideStatusEffect != newEffect;
+
+        for (var i = 0; i < chunkWidth * chunkHeight; i++)
+        {
+            var chunk = Chunks[i];
+            foreach (var entity in chunk.AllEntities)
+            {
+                if (entity.TryGet<CombatEntity>(out var ce))
+                {
+                    if (hasOldStatus)
+                        ce.RemoveStatusOfTypeIfExists(MapWideStatusEffect);
+                    ce.AddStatusEffect(newEffect, int.MaxValue, Id);
+                }
+            }
+        }
+
+        MapWideStatusEffect = newEffect;
+    }
+
+    public void DisableMapWideStatusEffect()
+    {
+        if (MapWideStatusEffect == CharacterStatusEffect.None)
+            return;
+
+        for (var i = 0; i < chunkWidth * chunkHeight; i++)
+        {
+            var chunk = Chunks[i];
+            foreach (var entity in chunk.AllEntities)
+            {
+                if (entity.TryGet<CombatEntity>(out var ce))
+                    ce.RemoveStatusOfTypeIfExists(MapWideStatusEffect);
+            }
+        }
+
+        MapWideStatusEffect = CharacterStatusEffect.None;
+    }
 
     private void LoadMapConfig()
     {
@@ -1897,13 +1940,64 @@ public class Map
         LoadMapConfig();
     }
 
-    public Map(World world, Instance instance, string name, string walkData, bool canTeleport)
+    public void ReturnAllPlayersToSavePoint()
+    {
+        if (PlayerCount <= 0)
+            return;
+
+        foreach (var p in Players)
+        {
+            if (!p.TryGet<Player>(out var player))
+                continue;
+
+            var hasReturned = player.ReturnToSavePoint();
+            player.Character.Map = null;
+
+            if (!hasReturned)
+            {
+                ServerLogger.LogWarning($"Failed to return player {player.Name} to their save point, we will disconnect them instead.");
+                NetworkManager.DisconnectPlayer(player.Connection);
+            }
+        }
+        Players.Clear();
+        PlayerCount = 0;
+    }
+
+    public void Uninstantiate()
+    {
+        if (PlayerCount > 0)
+        {
+            ServerLogger.LogWarning($"Attempting to uninstantiate a map while players are still on it! You should remove all players first.");
+            ReturnAllPlayersToSavePoint();
+        }
+
+        for (var i = 0; i < chunkWidth * chunkHeight; i++)
+        {
+            var chunk = Chunks[i];
+            for (var j = chunk.AllEntities.Count - 1; j >= 0; j--)
+            {
+                var entity = chunk.AllEntities[j];
+                RemoveEntity(ref entity, CharacterRemovalReason.Disconnect, true);
+            }
+
+            for (var j = chunk.AreaOfEffects.Count - 1; j >= 0; j--)
+            {
+                var aoe = chunk.AreaOfEffects[j];
+                RemoveAreaOfEffect(aoe);
+            }
+
+            chunk.ForceReset();
+        }
+    }
+
+    public void Instantiate(World world, Instance instance, string name, string walkData, bool canTeleport)
     {
 #if DEBUG
         Players.IsActive = true; //bypass EntityListPool borrow tracking
         MapImportantEntities.IsActive = true;
 #endif
 
+        Id = Interlocked.Increment(ref LastMapId);
         World = world;
         Name = name;
         MapConfig = new ServerMapConfig(this);
@@ -1913,7 +2007,7 @@ public class Map
         CanTeleport = canTeleport & (Flags & (MapFlags.NoTeleport | MapFlags.NoTeleportEvenMonsters)) == 0;
         CanMonstersTeleport = canTeleport & (Flags & MapFlags.NoTeleportEvenMonsters) == 0;
 
-        WalkData = new MapWalkData(walkData, Flags);
+        WalkData = MapDataManager.LoadMapWalkData(walkData);
 
         Width = WalkData.Width;
         Height = WalkData.Height;
@@ -1926,8 +2020,21 @@ public class Map
         MapBounds = new Area(0, 0, Width - 1, Height - 1);
         ChunkBounds = new Area(0, 0, chunkWidth - 1, chunkHeight - 1);
 
-        Chunks = new Chunk[chunkWidth * chunkHeight];
-        ActiveAoEChunks = new int[chunkWidth * chunkHeight];
+        var mapChunkCount = chunkWidth * chunkHeight;
+
+        if (Chunks == null!)
+        {
+            Chunks = new Chunk[mapChunkCount];
+            ActiveAoEChunks = new int[mapChunkCount];
+        }
+        else
+        {
+            if (mapChunkCount < Chunks.Length || mapChunkCount < ActiveAoEChunks.Length)
+            {
+                Array.Resize(ref Chunks, mapChunkCount);
+                Array.Resize(ref ActiveAoEChunks, mapChunkCount);
+            }
+        }
 
         PlayerCount = 0;
 
@@ -1947,7 +2054,8 @@ public class Map
                     }
                 }
 
-                Chunks[x + y * chunkWidth] = new Chunk();
+                if(Chunks[x + y * chunkWidth] == null!)
+                    Chunks[x + y * chunkWidth] = new Chunk();
                 Chunks[x + y * chunkWidth].Id = x + y * chunkWidth;
                 Chunks[x + y * chunkWidth].Size = ChunkSize;
                 Chunks[x + y * chunkWidth].X = x;
@@ -1960,7 +2068,15 @@ public class Map
             }
         }
 
+        if(fullUnwalkable == mapChunkCount)
+            ServerLogger.LogWarning($"Map {name} instantiated without any walkable tiles!");
+
         //LoadNpcs();
         LoadMapConfig();
+    }
+
+    public Map(World world, Instance instance, string name, string walkData, bool canTeleport)
+    {
+        Instantiate(world, instance, name, walkData, canTeleport);
     }
 }

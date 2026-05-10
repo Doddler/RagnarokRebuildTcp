@@ -1,6 +1,6 @@
 ﻿using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
-using RoRebuildServer.Data.Map;
+using RoRebuildServer.Data.MapData;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
@@ -46,7 +46,7 @@ public class Instance
                 continue;
             }
 
-            var map = new Map(world, this, md.Code, md.WalkData, md.MapMode != "Indoor");
+            var map = MapDataManager.PrepareMap(world, this, md.Code, md.WalkData, md.MapMode != "Indoor");
             Maps.Add(map);
             MapNameLookup.Add(md.Code, map);
         }

@@ -8,24 +8,24 @@ namespace Assets.Scripts.Effects.EffectHandlers
     [RoEffect("DefaultSkillCastEffect")]
     public class DefaultSkillCastEffect : IEffectHandler
     {
-        public static Material CircleMaterial;
+        // public static Material CircleMaterial;
         public static Material flashMaterial;
 
-        public static Material GetCircleMaterial()
-        {
-            if (CircleMaterial == null)
-            {
-                CircleMaterial = new Material(ShaderCache.Instance.AlphaBlendNoZTestShader);
-                CircleMaterial.mainTexture = Resources.Load<Texture2D>("alpha_down");
-                CircleMaterial.renderQueue = 3003; //this material will render above everything
-            }
-
-            return CircleMaterial;
-        }
-        
+        // public static Material GetCircleMaterial()
+        // {
+        //     if (CircleMaterial == null)
+        //     {
+        //         CircleMaterial = new Material(ShaderCache.Instance.AlphaBlendNoZTestShader);
+        //         CircleMaterial.mainTexture = Resources.Load<Texture2D>("alpha_down");
+        //         CircleMaterial.renderQueue = 3003; //this material will render above everything
+        //     }
+        //
+        //     return CircleMaterial;
+        // }
+        //
         public static Ragnarok3dEffect Create(ServerControllable source, bool showCirclePrimitive = true)
         {
-            GetCircleMaterial();
+            // GetCircleMaterial();
 
             flashMaterial = EffectSharedMaterialManager.GetMaterial(EffectMaterialType.SkillFlashEffect);
             
@@ -38,7 +38,9 @@ namespace Assets.Scripts.Effects.EffectHandlers
             effect.UpdateOnlyOnFrameChange = true;
             if (showCirclePrimitive)
             {
-                var circlePrim = effect.LaunchPrimitive(PrimitiveType.Circle2D, CircleMaterial, 0.667f);
+                var circleMat = EffectSharedMaterialManager.GetMaterial(EffectMaterialType.CircleMaterial);
+                
+                var circlePrim = effect.LaunchPrimitive(PrimitiveType.Circle2D, circleMat, 0.667f);
                 var cData = circlePrim.GetPrimitiveData<CircleData>();
 
                 circlePrim.transform.localScale = new Vector3(scale, scale, scale);

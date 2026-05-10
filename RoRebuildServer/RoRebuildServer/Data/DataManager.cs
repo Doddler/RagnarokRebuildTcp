@@ -3,7 +3,7 @@ using System.Reflection;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data.CsvDataTypes;
-using RoRebuildServer.Data.Map;
+using RoRebuildServer.Data.MapData;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.Data.Player;
 using RoRebuildServer.Data.ServerConfigScript;

@@ -28,6 +28,9 @@ namespace Assets.Scripts.PlayerControl
         {
             var color = Color.white;
             var priority = -1;
+
+            var hasPulseColor = false;
+            var pulseColor = Color.white;
             
             foreach (var (s, _) in src.StatusEffectState.activeStatusEffects)
             {
@@ -45,6 +48,15 @@ namespace Assets.Scripts.PlayerControl
                             color = new Color(0.7f, 0.7f, 0.98f);
                         priority = 0;
                         break;
+                    case CharacterStatusEffect.PowerThrustSelf:
+                        if (priority < 0)
+                            color = new Color(0.98f, 0.58f, 0.58f);
+                        priority = 0;
+                        break;
+                    // case CharacterStatusEffect.PowerThrustParty:
+                    //     hasPulseColor = true;
+                    //     pulseColor = new Color(0.98f, 0.58f, 0.58f);
+                    //     break;
                     case CharacterStatusEffect.TwoHandQuicken:
                         if(priority < 1)
                             color = new Color(1, 1, 0.7f);
@@ -74,7 +86,15 @@ namespace Assets.Scripts.PlayerControl
             }
 
             if (src.SpriteAnimator != null)
+            {
                 src.SpriteAnimator.Color = color;
+                if (hasPulseColor)
+                {
+                    src.SpriteAnimator.TransitionColor = pulseColor;
+                    src.SpriteAnimator.ColorTransitionSpeed = 0.5f;
+                }
+
+            }
             else if (src.PrefabActionHandler != null)
                 src.PrefabActionHandler.SetColor(color);
                 
@@ -139,10 +159,8 @@ namespace Assets.Scripts.PlayerControl
                 case CharacterStatusEffect.Sleep:
                     SleepEffect.AttachSleepEffect(controllable);
                     break;
+                case CharacterStatusEffect.PowerThrustSelf:
                 case CharacterStatusEffect.TwoHandQuicken:
-                    //color now set via UpdateColorForStatus
-                    RoSpriteTrailManager.Instance.AttachTrailToEntity(controllable);
-                    break;
                 case CharacterStatusEffect.EnergyCoat:
                     //color now set via UpdateColorForStatus
                     RoSpriteTrailManager.Instance.AttachTrailToEntity(controllable);
@@ -292,9 +310,8 @@ namespace Assets.Scripts.PlayerControl
                     AudioManager.Instance.AttachSoundToEntity(controllable.Id, "_stone_explosion.ogg", CameraFollower.Instance.ListenerProbe, 0.8f);
                     controllable.EndEffectOfType(EffectType.Petrifying);
                     break;
+                case CharacterStatusEffect.PowerThrustSelf:
                 case CharacterStatusEffect.TwoHandQuicken:
-                    RoSpriteTrailManager.Instance.RemoveTrailFromEntity(controllable);
-                    break;
                 case CharacterStatusEffect.EnergyCoat:
                     RoSpriteTrailManager.Instance.RemoveTrailFromEntity(controllable);
                     break;

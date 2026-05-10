@@ -23,10 +23,22 @@ public class SonicBlowHandler : SkillHandlerBase
         lvl = lvl.Clamp(1, 10);
 
         var flags = AttackFlags.Physical;
+        var multiplier = 0.5f + 0.05f * lvl;
         if (source.Character.Type == CharacterType.Player)
+        {
             flags |= AttackFlags.CanCrit;
 
-        var attack = new AttackRequest(CharacterSkill.SonicBlow, 0.5f + 0.05f * lvl, 8, flags, AttackElement.None);
+            //if more than 1 auto attack is eaten by sonic blow's fixed delay, we add the auto attack damage you're missing out on to the skill
+            var attacksPerSecond = 1 / source.GetTiming(TimingStat.AttackDelayTime);
+            if (attacksPerSecond > 1)
+            {
+                var bonus = (attacksPerSecond - 1) * lvl / 10f;
+                multiplier = (multiplier * 8 + bonus) / 8;
+            }
+        }
+
+
+        var attack = new AttackRequest(CharacterSkill.SonicBlow, multiplier, 8, flags, AttackElement.None);
         attack.AccuracyRatio = 150;
 
         //var res = source.CalculateCombatResult(target, 0.5f + 0.05f * lvl, 1, AttackFlags.Physical, CharacterSkill.SonicBlow);

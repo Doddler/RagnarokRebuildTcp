@@ -2,7 +2,7 @@
 using RebuildSharedData.Enum;
 using RoRebuildServer.Logging;
 
-namespace RoRebuildServer.Data.Map;
+namespace RoRebuildServer.Data.MapData;
 
 [Flags]
 public enum SpawnCreateFlags

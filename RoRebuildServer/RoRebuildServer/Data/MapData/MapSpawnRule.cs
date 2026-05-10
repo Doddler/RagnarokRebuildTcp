@@ -2,7 +2,7 @@
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data.Monster;
 
-namespace RoRebuildServer.Data.Map;
+namespace RoRebuildServer.Data.MapData;
 
 public class MapSpawnRule
 {

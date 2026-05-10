@@ -53,7 +53,7 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
             var textureSpan = 0.25f;
             var allowPerspectiveMapping = true;
 
-            data.ArcAngle = 36f;
+            //data.ArcAngle = 36f;
 
             for (var i = 0f; i < span; i += data.ArcAngle)
             {

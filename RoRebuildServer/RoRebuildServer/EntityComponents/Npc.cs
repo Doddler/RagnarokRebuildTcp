@@ -5,6 +5,7 @@ using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
+using RoRebuildServer.Data.MapData;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.Data.Scripting;
 using RoRebuildServer.EntityComponents.Character;
@@ -535,6 +536,28 @@ public class Npc : IEntityAutoReset
             CreateSingleMonsterWithAutoOwnership(chara.Map, monster, area);
     }
 
+    public void SummonMobsWithRespawn(int count, string name, int respawn = 0, int variance = 0)
+    {
+        var chara = Entity.Get<WorldObject>();
+
+        if (chara.Map == null)
+            return;
+
+        var monster = DataManager.MonsterCodeLookup[name];
+
+        var area = chara.Map.MapBounds;
+
+        EnsureMobListCreated();
+        var rule = new MapSpawnRule(monster.Id, monster, area, count, respawn, respawn + variance, CharacterDisplayType.Monster);
+
+        for (var i = 0; i < count; i++)
+        {
+            var entity = CreateSingleMonsterWithAutoOwnership(chara.Map, monster, area);
+            if (entity.TryGet<Monster>(out var mon))
+                mon.SpawnRule = rule;
+        }
+    }
+
     public void SummonMobsNearby(int count, string name, int width = 0, int height = 0, int offsetX = 0, int offsetY = 0)
     {
         var chara = Entity.Get<WorldObject>();
@@ -861,7 +884,13 @@ Error:
         for (var i = 0; i < npc.Mobs.Count; i++)
         {
             if (npc.Mobs[i].TryGet(out Monster mon))
-                mon.Die(false);
+            {
+                mon.SpawnRule = null;
+                if(mon.CurrentAiState == MonsterAiState.StateDead || mon.Character.State == CharacterState.Dead)
+                    World.Instance.FullyRemoveEntity(ref mon.Entity);
+                else
+                    mon.Die(false);
+            }
         }
 
         npc.Mobs.Clear();
@@ -1077,6 +1106,17 @@ Error:
         CommandBuilder.SendRemoveEntityMulti(Character, CharacterRemovalReason.OutOfSight);
         CommandBuilder.SendCreateEntityMulti(Character);
         CommandBuilder.ClearRecipients();
+    }
+
+    public void SetMapWideStatusEffect(CharacterStatusEffect status)
+    {
+        ServerLog($"Setting mapwide status effect on map {Character.Map?.Name}");
+        Character.Map?.SetMapWideStatusEffect(status);
+    }
+
+    public void RemoveMapWideStatusEffect()
+    {
+        Character.Map?.DisableMapWideStatusEffect();
     }
 
     public void RegisterGlobalSignal(string signalName)

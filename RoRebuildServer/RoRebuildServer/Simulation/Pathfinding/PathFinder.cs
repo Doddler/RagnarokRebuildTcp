@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
-using RoRebuildServer.Data.Map;
+using RoRebuildServer.Data.MapData;
 using Wintellect.PowerCollections;
 
 namespace RoRebuildServer.Simulation.Pathfinding;

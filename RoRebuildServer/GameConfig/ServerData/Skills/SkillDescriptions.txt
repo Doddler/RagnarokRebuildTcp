@@ -399,6 +399,7 @@ Catalyst: <color=#777777>1 Blue Gemstone</color>
 
 ::SonicBlow
 Deals 8 hits at [50 + SkillLevel * 5]% to a single target, with a +50% increase to accuracy.
+Additional damage is added in proportion to your attack speed.
 
 ::EnchantPoison
 Enchant the weapon of yourself or an ally to deal poison property damage. Also adds a [2 + SkillLevel / 2]% chance to poison the enemy when performing melee attacks.
@@ -447,3 +448,6 @@ Increases your physical defense penetration as well as critical damage by [Skill
 Party members receive 1/2 of this bonus.
 Duration: [SkillLevel + 10]s
 Favorable weapons for enemy size:<br>Small: Dagger, Book, Rod, Gun<br>Medium: 1h Sword, Mace, Katar, Bow, Book, Knuckle, Instrument/Whip<br>Large: 2h Sword, Spear, Axe, Huuma Shuriken
+
+::WeaponryResearch
+Adds +[SkillLevel * 2] HIT, increases your accuracy by +[SkillLevel * 2]%, and increases the damage dealt by physical attacks by +[SkillLevel * 3].

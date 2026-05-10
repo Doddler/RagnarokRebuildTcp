@@ -144,5 +144,9 @@ A nearby enemy has entangled the two of you, preventing either of you from movin
 ::StolenFrom
 You've had something recently taken and cannot be stolen from again.
 
+::DungeonMiasma
+A powerful curse is causing this dungeon to be much more dangerous than usual.
+Enemies you face will deal more damage and have higher health, but also give more experience and drops.
+
 ::AdminHide
 You cannot be seen and you cannot be targeted.

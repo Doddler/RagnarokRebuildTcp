@@ -60,6 +60,8 @@ namespace Assets.Scripts.Effects
         BluePerspectiveCylinder,
         PerspectiveLens2Cylinder,
         FirePillar,
+        CircleMaterial,
+        CircleMaterialCenter,
         EffectMaterialMax
     }
 
@@ -432,6 +434,13 @@ namespace Assets.Scripts.Effects
                     
                     case EffectMaterialType.FirePillar:
                         SetUpTextureMaterial(mat, ShaderCache.Instance.PerspectiveAlphaShader, GetOrLoadEffectTexture(EffectTextureType.MagicRed));
+                        break;
+                    case EffectMaterialType.CircleMaterial:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.AlphaBlendNoZTestShader, GetOrLoadEffectTexture(EffectTextureType.AlphaDown), 3003);
+                        break;
+                    
+                    case EffectMaterialType.CircleMaterialCenter:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.AlphaBlendNoZTestShader, GetOrLoadEffectTexture(EffectTextureType.AlphaCenter), 3003);
                         break;
                 }
             }

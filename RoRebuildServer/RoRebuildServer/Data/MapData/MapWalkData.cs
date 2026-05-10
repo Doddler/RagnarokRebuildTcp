@@ -2,7 +2,7 @@
 using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation.Pathfinding;
 
-namespace RoRebuildServer.Data.Map;
+namespace RoRebuildServer.Data.MapData;
 
 [Flags]
 public enum CellType : byte
@@ -96,7 +96,7 @@ public class MapWalkData
         return false;
     }
 
-    public Position FindWalkdableCellOnMap(int tries)
+    public Position FindWalkableCellOnMap(int tries)
     {
         var pos = Position.Invalid;
         var count = 0;

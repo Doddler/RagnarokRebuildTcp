@@ -31,7 +31,7 @@ internal class ScriptTreeWalker
             "System",
             "System.Linq",
             "System.Collections.Generic",
-            "RoRebuildServer.Data.Map",
+            "RoRebuildServer.Data.MapData",
             "RebuildSharedData.Data",
             "RoRebuildServer.Data",
             "RoRebuildServer.Data.ServerConfigScript",

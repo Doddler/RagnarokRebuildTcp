@@ -7,7 +7,7 @@ using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
-using RoRebuildServer.Data.Map;
+using RoRebuildServer.Data.MapData;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.Database;
 using RoRebuildServer.Database.Requests;
@@ -753,6 +753,9 @@ public class World
         ce.Init(ref e, ch);
         monster.Initialize(ref e, ch, ce, spawnEntry.MonsterDatabaseInfo, spawnEntry.MonsterDatabaseInfo.AiType, spawnEntry, map.Name);
 
+        if (map.MapWideStatusEffect != CharacterStatusEffect.None)
+            ce.AddStatusEffect(map.MapWideStatusEffect, int.MaxValue, map.Id);
+
         if (ch.IsImportant)
             map.RegisterImportantEntity(ch);
 
@@ -830,13 +833,15 @@ public class World
 
             var character = move.Player.Get<WorldObject>();
 
-            if (character.Map != move.SrcMap)
+            if (character.Map != null && character.Map != move.SrcMap)
                 continue; //player is no longer on the originating map
 
             ServerLogger.Log($"Performing move on player {character.Name} to map {move.DestMap.Name}.");
 
             if (character.Map != null)
             {
+                if (character.Map.MapWideStatusEffect != CharacterStatusEffect.None)
+                    character.CombatEntity.RemoveStatusOfTypeIfExists(character.Map.MapWideStatusEffect);
                 character.Map.RemoveEntity(ref move.Player, CharacterRemovalReason.OutOfSight, character.Map.Instance != move.DestMap.Instance);
             }
 
@@ -844,7 +849,15 @@ public class World
             character.ResetState();
             character.Position = move.Position;
 
+            var isLogin = character.Map == null;
+
+            if (move.DestMap.MapWideStatusEffect != CharacterStatusEffect.None)
+                character.CombatEntity.AddStatusEffect(move.DestMap.MapWideStatusEffect, int.MaxValue, move.DestMap.Id);
+
             move.DestMap.AddEntity(ref move.Player, character.Map?.Instance != move.DestMap.Instance);
+
+            if (isLogin && character.CombatEntity.StatusContainer != null)
+                character.CombatEntity.StatusContainer.OnChangeMaps();
 
             var player = character.Player;
 

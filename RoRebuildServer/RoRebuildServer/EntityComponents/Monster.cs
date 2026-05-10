@@ -4,7 +4,7 @@ using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
-using RoRebuildServer.Data.Map;
+using RoRebuildServer.Data.MapData;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.EntityComponents.Character;
 using RoRebuildServer.EntityComponents.Items;
@@ -177,7 +177,7 @@ public partial class Monster : IEntityAutoReset
     }
 #endif
 
-    [EntityIgnoreNullCheck] public static Action<Monster>? OnMonsterDieEvent;
+    //[EntityIgnoreNullCheck] public static Action<Monster>? OnMonsterDieEvent;
 
     public bool HasMaster => Master.IsAlive();
     public Entity GetMaster() => Master;
@@ -495,6 +495,26 @@ public partial class Monster : IEntityAutoReset
             Character.TryMove(Character.TargetPosition, 0);
     }
 
+    public void RefreshMaxHp(bool fullHeal = false)
+    {
+        var addHp = GetStat(CharacterStat.AddMaxHp);
+        var addPercent = 100 + GetStat(CharacterStat.AddMaxHpPercent);
+        var curHp = GetStat(CharacterStat.Hp);
+        var maxHp = (MonsterBase.HP + addHp) * addPercent / 100;
+        var healVal = fullHeal ? maxHp - curHp : 0;
+
+        SetStat(CharacterStat.MaxHp, maxHp);
+        if (curHp > maxHp || fullHeal)
+            SetStat(CharacterStat.Hp, maxHp);
+        else
+            SetStat(CharacterStat.Hp, curHp * addPercent / 100);
+
+        Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
+        CommandBuilder.SendHealMulti(Character, healVal, HealType.None);
+        CommandBuilder.ClearRecipients();
+    }
+
+
     private bool ValidateTarget()
     {
         if (Target.IsNull() || !Target.IsAlive())
@@ -519,7 +539,7 @@ public partial class Monster : IEntityAutoReset
             var p = newTarget.Get<Player>();
             if (p.Character.State == CharacterState.Dead)
                 ServerLogger.LogWarning($"Monster {Character.Name} is attempting to change target to a dead player!");
-            if(!CombatEntity.HasBodyState(BodyStateFlags.Snared))
+            if (!CombatEntity.HasBodyState(BodyStateFlags.Snared))
                 CommandBuilder.SendMonsterTarget(p, Character);
         }
     }
@@ -561,8 +581,11 @@ public partial class Monster : IEntityAutoReset
             for (var i = 0; i < drops.DropChances.Count; i++)
             {
                 var d = drops.DropChances[i];
-                totalChance += d.Chance;
-                if (GameRandom.Next(10000) <= d.Chance)
+                var chance = d.Chance;
+                chance += chance * GetStat(CharacterStat.AddDropPercent) / 100;
+
+                totalChance += chance;
+                if (GameRandom.Next(10000) <= chance)
                 {
                     var count = 1;
                     if (d.CountMax > 1)
@@ -671,6 +694,14 @@ public partial class Monster : IEntityAutoReset
         var exp = MonsterBase.Exp;
         var job = MonsterBase.JobExp;
 
+        var addExp = GetStat(CharacterStat.AddExpPercent);
+
+        if (addExp > 0)
+        {
+            exp += exp * addExp / 100;
+            job += job * addExp / 100;
+        }
+
         if (exp == 0 && job == 0)
             return;
 
@@ -693,7 +724,7 @@ public partial class Monster : IEntityAutoReset
                 acc.AddExp(player, MonsterBase, (int)float.Ceiling(exp * percent), (int)float.Ceiling(job * percent));
         }
 
-        acc.DistributeExp(MonsterBase);
+        acc.DistributeExp(this);
     }
 
     /// <summary>

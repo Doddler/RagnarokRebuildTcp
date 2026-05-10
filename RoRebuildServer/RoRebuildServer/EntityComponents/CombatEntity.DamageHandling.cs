@@ -296,6 +296,7 @@ public partial class CombatEntity
         var isMagical = req.Flags.HasFlag(AttackFlags.Magical);
         var baseElementType = GetAttackTypeForDefenderElement(defenderElement);
         var attackerPenalty = isPhysical ? target.GetAttackerPenalty(Entity) : 0; //players have defense and evasion penalized when attacked by 2 or more enemies
+        var addFinalDamage = 0;
 
         var targetRace = target.GetRace();
 
@@ -323,7 +324,10 @@ public partial class CombatEntity
 
         //evasion
         if (isPhysical && !flags.HasFlag(AttackFlags.IgnoreEvasion))
-            evade = !TestHitVsEvasion(target, req.AccuracyRatio, attackerPenalty * (5 + attackerPenalty / 2));
+        {
+            var accuracy = req.AccuracyRatio + GetStat(CharacterStat.AddAccuracyRate);
+            evade = !TestHitVsEvasion(target, accuracy, attackerPenalty * (5 + attackerPenalty / 2));
+        }
 
         if (isPhysical && (GetSpecialType() == CharacterSpecialType.Boss || attackerRace == CharacterRace.Demon ||
                            attackerRace == CharacterRace.Insect))
@@ -535,6 +539,9 @@ public partial class CombatEntity
 
                 addDamage += GetStat(CharacterStat.WeaponMastery);
 
+                if(Character.Player.MainWeaponClass > 0)
+                    addFinalDamage += GetStat(CharacterStat.AddRefineAttackPower);
+
                 if (isRanged)
                     rangeMod += rangeMod * GetStat(CharacterStat.AddAttackRangedAttack) / 100;
 
@@ -576,10 +583,9 @@ public partial class CombatEntity
         //------------------------------
 
         //add damage is applied to base damage, but in the original RO it's actually applied after multipliers... maybe revise if it's too strong.
-        var damage = (int)(((baseDamage + addDamage) * attackMultiplier * defCut - subDef) * (eleMod / 100f) * (racialMod / 100f) * (rangeMod / 100f) * (sizeMod / 100f) * (specialMod / 100f));
+        var damage = (int)(((baseDamage + addDamage) * attackMultiplier * defCut - subDef + addFinalDamage) * (eleMod / 100f) * (racialMod / 100f) * (rangeMod / 100f) * (sizeMod / 100f) * (specialMod / 100f));
         if (damage < 1)
             damage = 1;
-
 
         if (Character.Map?.Name != "que_qsch01") //take this out and make something real at some point...
         {
@@ -669,7 +675,7 @@ public partial class CombatEntity
 
         return di;
     }
-    
+
     private void ApplyQueuedCombatResult(ref DamageInfo di)
     {
         if (Character.State == CharacterState.Dead || !Entity.IsAlive() || Character.IsTargetImmune || Character.Map == null)
@@ -840,7 +846,7 @@ public partial class CombatEntity
 
                 monster.BoostDamageContributionOfFirstAttacker(); //happens after reward mvp
 
-                Monster.OnMonsterDieEvent?.Invoke(monster);
+                MonsterRewardManager.TriggerOnKillMonsterEvent(monster);
 
                 monster.Die();
                 DamageQueue.Clear();

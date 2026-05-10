@@ -1,4 +1,4 @@
-﻿namespace RoRebuildServer.Data.Map;
+﻿namespace RoRebuildServer.Data.MapData;
 
 public class ServerMapConfigAttribute : Attribute
 {

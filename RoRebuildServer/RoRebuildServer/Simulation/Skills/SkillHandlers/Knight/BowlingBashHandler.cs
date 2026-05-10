@@ -1,7 +1,6 @@
 ﻿using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
-using RoRebuildServer.Data.Map;
 using RoRebuildServer.Database.Domain;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Character;
@@ -10,6 +9,7 @@ using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.Util;
 using System.Diagnostics;
+using RoRebuildServer.Data.MapData;
 
 namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Knight;
 

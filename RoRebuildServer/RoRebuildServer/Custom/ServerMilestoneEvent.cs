@@ -168,7 +168,7 @@ public class ServerMilestoneEvent : ServerConfigScriptHandlerBase
 
         ServerLogger.Log("MilestoneEvent is currently enabled!");
 
-        Monster.OnMonsterDieEvent = OnKillMonster;
+        MonsterRewardManager.RegisterKillMonsterEvent(OnKillMonster);
         Player.OnLevelUpEvent = OnLevelUp;
 
         var topTenRecord = ScriptGlobalManager.StringValue(GlobalTop10Json);

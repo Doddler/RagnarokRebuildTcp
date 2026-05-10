@@ -34,6 +34,15 @@ public class Chunk
     }
 #endif
 
+    public void ForceReset()
+    {
+        AllEntities.Clear();
+        Players.Clear();
+        Monsters.Clear();
+        GroundItems.Clear();
+        AreaOfEffects.Clear();
+    }
+
     public void AddEntity(ref Entity entity, CharacterType type)
     {
 #if DEBUG

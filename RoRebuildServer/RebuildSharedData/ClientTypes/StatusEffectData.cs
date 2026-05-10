@@ -14,4 +14,5 @@ public class StatusEffectData
     public string Icon;
     public bool CanDispel;
     public bool CanDisable;
+    public string[] ImportantJobs;
 }

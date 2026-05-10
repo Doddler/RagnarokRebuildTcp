@@ -28,7 +28,6 @@ namespace Assets.Scripts.Effects
 		Silence,
 		Sleep,
 		Stun,
-		AdrenalineRush,
 		AgiDown,
 		AgiUp,
 		Blessing,
@@ -70,6 +69,10 @@ namespace Assets.Scripts.Effects
 		SpearBoomerang,
 		EarthShaker,
 		SpecialTargetMarker,
+		AdrenalineRush,
+		MaximizePower,
+		OverThrust,
+		WeaponPerfection,
 		GrimtoothTrail,
 		GrimtoothHit,
 		VenomDust,
@@ -142,7 +145,6 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.Silence, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.SilenceEffect());
 			effectHandlers.Add(EffectType.Sleep, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.SleepEffect());
 			effectHandlers.Add(EffectType.Stun, new Assets.Scripts.Effects.EffectHandlers.StatusEffects.StunEffect());
-			effectHandlers.Add(EffectType.AdrenalineRush, new Assets.Scripts.Effects.EffectHandlers.Skills.AdrenalineRushEffect());
 			effectHandlers.Add(EffectType.AgiDown, new Assets.Scripts.Effects.EffectHandlers.Skills.AgiDownEffect());
 			effectHandlers.Add(EffectType.AgiUp, new Assets.Scripts.Effects.EffectHandlers.Skills.AgiUpEffect());
 			effectHandlers.Add(EffectType.Blessing, new Assets.Scripts.Effects.EffectHandlers.Skills.BlessingEffect());
@@ -184,6 +186,10 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.SpearBoomerang, new Assets.Scripts.Effects.EffectHandlers.Skills.Knight.SpearBoomerangEffect());
 			effectHandlers.Add(EffectType.EarthShaker, new Assets.Scripts.Effects.EffectHandlers.Skills.Custom.EarthShakerEffect());
 			effectHandlers.Add(EffectType.SpecialTargetMarker, new Assets.Scripts.Effects.EffectHandlers.Skills.Custom.SpecialTargetMarkerEffect());
+			effectHandlers.Add(EffectType.AdrenalineRush, new Assets.Scripts.Effects.EffectHandlers.Skills.Blacksmith.AdrenalineRushEffect());
+			effectHandlers.Add(EffectType.MaximizePower, new Assets.Scripts.Effects.EffectHandlers.Skills.Blacksmith.MaximizePowerEffect());
+			effectHandlers.Add(EffectType.OverThrust, new Assets.Scripts.Effects.EffectHandlers.Skills.Blacksmith.OverThrustEffect());
+			effectHandlers.Add(EffectType.WeaponPerfection, new Assets.Scripts.Effects.EffectHandlers.Skills.Blacksmith.WeaponPerfectionEffect());
 			effectHandlers.Add(EffectType.GrimtoothTrail, new Assets.Scripts.Effects.EffectHandlers.Skills.Assassin.GrimtoothTrailEffect());
 			effectHandlers.Add(EffectType.GrimtoothHit, new Assets.Scripts.Effects.EffectHandlers.Skills.Assassin.GrimtoothHitEffect());
 			effectHandlers.Add(EffectType.VenomDust, new Assets.Scripts.Effects.EffectHandlers.Skills.Assassin.VenomDustEffect());

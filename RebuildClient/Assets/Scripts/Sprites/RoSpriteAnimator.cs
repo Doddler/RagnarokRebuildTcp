@@ -47,6 +47,8 @@ namespace Assets.Scripts.Sprites
 
         public Color BaseColor = Color.white;
         public Color Color = Color.white;
+        public Color TransitionColor = Color.white;
+        public float ColorTransitionSpeed = -1f;
         public float Alpha { get; set; }
         public int SpriteOrder;
 
@@ -711,7 +713,21 @@ namespace Assets.Scripts.Sprites
 
         public void UpdateColor()
         {
-            var c = new Color(Color.r * CurrentShade, Color.g * CurrentShade, Color.b * CurrentShade, Alpha);
+            var c = Color;
+            if (ColorTransitionSpeed > 0)
+            {
+                c = Color.Lerp(TransitionColor, c, Time.deltaTime * ColorTransitionSpeed);
+
+                if (Mathf.Approximately(c.r, TransitionColor.r) && Mathf.Approximately(c.g, TransitionColor.g) && Mathf.Approximately(c.b, TransitionColor.b))
+                {
+                    ColorTransitionSpeed = -1;
+                    c = Color;
+                }
+                    
+                TransitionColor = c;
+            }
+
+            c = new Color(c.r * CurrentShade, c.g * CurrentShade, c.b * CurrentShade, Alpha);
             c *= BaseColor;
 
             if (SpriteRenderer != null)
@@ -720,7 +736,11 @@ namespace Assets.Scripts.Sprites
 
         public void UpdateChildColor()
         {
-            var c = new Color(Parent.Color.r * Parent.CurrentShade, Parent.Color.g * Parent.CurrentShade, Parent.Color.b * Parent.CurrentShade, Parent.Alpha);
+            var c = Parent.Color;
+            if (Parent.ColorTransitionSpeed > 0)
+                c = Parent.TransitionColor;
+            
+            c = new Color(c.r * Parent.CurrentShade, c.g * Parent.CurrentShade, c.b * Parent.CurrentShade, Parent.Alpha);
             c *= Parent.BaseColor;
 
             if (SpriteRenderer != null)

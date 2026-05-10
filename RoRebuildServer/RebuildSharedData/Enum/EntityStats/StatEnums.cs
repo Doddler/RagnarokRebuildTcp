@@ -81,6 +81,10 @@ public enum CharacterStat
     AddMagicAttackPower,
     AddDefPercent,
     AddMDefPercent,
+    AddDropPercent,
+    AddExpPercent,
+    AddMaxHp,
+    AddMaxHpPercent,
     Disabled,
     OverrideElement,
     MonsterStatsMax, //any stats after this are stats only players will be able to hold.
@@ -92,15 +96,14 @@ public enum CharacterStat
     DoubleAttackChance,
     AddSpRecoveryPercent,
     AddHpRecoveryPercent,
-    AddMaxHp,
     AddMaxSp,
-    AddMaxHpPercent,
     AddMaxSpPercent,
     PerfectDodge,
     AddCrit,
     AddCritDamage,
     IgnoreDef,
     AddCastTime,
+    AddRefineAttackPower,
 
     AddAttackElementNeutral,
     AddAttackElementEarth,
@@ -285,9 +288,7 @@ public enum CharacterStat
 
     WhenAttackedFirst = WhenAttackedBlind,
     WhenAttackedLast = WhenAttackedSleep,
-
-    //WhenAttackedSilence,
-
+    
     ResistBlindStatus,
     ResistSilenceStatus,
     ResistCurseStatus,
@@ -377,6 +378,7 @@ public enum CharacterStat
     SpConsumption,
     UninterruptibleCast,
 
+    AddAccuracyRate,
     KnockbackImmune,
     ReverseDefense,
     FullRevive, //Osiris card
@@ -387,7 +389,7 @@ public enum CharacterStat
     AddHpItemEffectivenessPercent,
     AddSpItemEffectivenessPercent,
 
-    SkillValue, //used to store skill unlocks in ItemEquipState
+    SkillValue, //not directly used, but used to refer to skills granted by ItemEquipState
     AutoSpellOnAttacking,
     AutoSpellWhenAttacked,
     DamageVsTag,

@@ -1,6 +1,6 @@
 ﻿using RoRebuildServer.Logging;
 
-namespace RoRebuildServer.Data.Map;
+namespace RoRebuildServer.Data.MapData;
 
 public class MapEntry
 {

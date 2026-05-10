@@ -84,6 +84,7 @@ Type = "Buff"
 Icon = "블레싱"
 CanDispel = true
 CanDisable = true
+ImportantJobs = ["SuperNovice","Acolyte","Priest","Monk"]
 
 [IncreaseAgi]
 Name = "Increase Agility"
@@ -91,6 +92,7 @@ Type = "Buff"
 Icon = "민첩성증가"
 CanDispel = true
 CanDisable = true
+ImportantJobs = ["SuperNovice","Acolyte","Priest","Monk"]
 
 [DecreaseAgi]
 Name = "Decrease Agility"
@@ -105,6 +107,7 @@ Type = "Buff"
 Icon = "안젤루스"
 CanDispel = true
 CanDisable = true
+ImportantJobs = ["SuperNovice","Acolyte","Priest","Monk"]
 
 [SignumCrusis]
 Name = "SignumCrusis"
@@ -190,6 +193,7 @@ Type = "Buff"
 Icon = "아드레날린러쉬"
 CanDispel = true
 CanDisable = true
+ImportantJobs = ["Blacksmith"]
 
 [PowerMaximize]
 Name = "Maximize Power"
@@ -197,6 +201,7 @@ Type = "Buff"
 Icon = "맥시마이즈파워"
 CanDispel = true
 CanDisable = true
+ImportantJobs = ["Blacksmith"]
 
 [PowerThrustSelf]
 Name = "Power Thrust"
@@ -204,6 +209,7 @@ Type = "Buff"
 Icon = "오버트러스트"
 CanDispel = true
 CanDisable = true
+ImportantJobs = ["Blacksmith"]
 
 [PowerThrustParty]
 Name = "Power Thrust (Shared)"
@@ -211,6 +217,7 @@ Type = "Buff"
 Icon = "오버트러스트"
 CanDispel = true
 CanDisable = true
+ImportantJobs = ["Blacksmith"]
 
 [WeaponPerfection]
 Name = "Weapon Perfection"
@@ -218,6 +225,7 @@ Type = "Buff"
 Icon = "웨폰퍼펙션"
 CanDispel = true
 CanDisable = true
+ImportantJobs = ["Blacksmith"]
 
 [AnkleSnare]
 
@@ -283,12 +291,14 @@ Type = "Buff"
 Icon = "마니피캇"
 CanDispel = true
 CanDisable = true
+ImportantJobs = ["Priest"]
 
 [Gloria]
 Type = "Buff"
 Icon = "글로리아"
 CanDispel = true
 CanDisable = true
+ImportantJobs = ["Priest"]
 
 [ImpositioManus]
 Name = "Impositio Manus"
@@ -296,6 +306,7 @@ Type = "Buff"
 Icon = "임포시티오마누스"
 CanDispel = true
 CanDisable = true
+ImportantJobs = ["Priest"]
 
 [KyrieEleison]
 Name = "Kyrie Eleison"
@@ -303,12 +314,14 @@ Type = "Buff"
 Icon = "기리에엘레이손"
 CanDispel = true
 CanDisable = true
+ImportantJobs = ["Priest"]
 
 [Suffragium]
 Type = "Buff"
 Icon = "수프라기움"
 CanDispel = true
 CanDisable = true
+ImportantJobs = ["Priest"]
 
 [LexAeterna]
 Type = "Debuff"
@@ -321,6 +334,7 @@ Type = "Buff"
 Icon = "아스페르시오"
 CanDispel = true
 CanDisable = true
+ImportantJobs = ["Priest"]
 
 #----------------------------------
 # Item Buffs
@@ -456,6 +470,13 @@ CanDisable = false
 
 [Vulnerability] #for special events
 [SpecialTarget] #for special events
+
+[DungeonMiasma]
+Name = "Miasma"
+Icon = "hl_blind"
+Type = "Debuff"
+CanDispel = false
+CanDisable = false
 
 #----------------------------------
 # Utility Effects

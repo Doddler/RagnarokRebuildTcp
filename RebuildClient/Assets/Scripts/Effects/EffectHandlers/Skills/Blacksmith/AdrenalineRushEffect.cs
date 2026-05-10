@@ -4,7 +4,7 @@ using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
 using UnityEngine;
 
-namespace Assets.Scripts.Effects.EffectHandlers.Skills
+namespace Assets.Scripts.Effects.EffectHandlers.Skills.Blacksmith
 {
     [RoEffect("AdrenalineRush")]
     public class AdrenalineRushEffect : IEffectHandler

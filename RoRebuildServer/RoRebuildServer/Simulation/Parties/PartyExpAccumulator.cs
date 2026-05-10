@@ -96,9 +96,11 @@ public class PartyExpAccumulator
         }
     }
 
-    public void DistributeExp(MonsterDatabaseInfo src)
+    public void DistributeExp(Monster monster)
     {
         CountPlayersInEachParty();
+
+        var src = monster.MonsterBase;
 
         foreach (var (_, result) in Results)
         {
@@ -112,6 +114,8 @@ public class PartyExpAccumulator
 
             var baseExp = (int)float.Ceiling(result.BaseExp * rate);
             var jobExp = (int)float.Ceiling(result.JobExp * rate);
+
+            MonsterRewardManager.TriggerOnDistributeExperienceEvent(monster, result.Player, ref baseExp, ref jobExp);
 
             result.Player.GainBaseExpFromMonster(baseExp, src);
             result.Player.GainJobExpFromMonster(jobExp, src);

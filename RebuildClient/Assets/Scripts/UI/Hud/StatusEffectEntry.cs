@@ -18,6 +18,7 @@ namespace Assets.Scripts.UI.Hud
         [NonSerialized] public float Expiration;
         [NonSerialized] public bool CanCancel;
         [NonSerialized] public bool IsPartyMember;
+        [NonSerialized] public bool IsBuff;
 
         private int secondsRemaining;
 

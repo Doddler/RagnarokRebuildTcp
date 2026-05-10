@@ -9,7 +9,7 @@
 7,JobUp,TRUE,TRUE,FALSE,joblvup,,,0,,1.5,
 8,Resurrect,TRUE,TRUE,FALSE,resurrection,,priest_resurrection,0,,1,
 9,Death,TRUE,TRUE,FALSE,devil,,,0,,1.5,
-10,MVP,TRUE,TRUE,FALSE,mvp,,st_mvp,0,,1.5,
+10,MVP,TRUE,TRUE,FALSE,mvp,,st_mvp,0,,1,
 11,LoV,TRUE,TRUE,FALSE,lord,,,0,,1.5,
 12,Hit,TRUE,TRUE,FALSE,hit,,,0,,1,
 13,HolyHit,TRUE,TRUE,FALSE,holyhit,,,0,,1,
@@ -143,3 +143,4 @@
 142,FlasherTrapExplosion,FALSE,FALSE,TRUE,,,,0,,1,
 143,FirePillarExplosion,TRUE,TRUE,FALSE,firepillarBomb,,wizard_fire_pillar_b,0,,1,
 144,Quagmire,TRUE,TRUE,FALSE,quagmire,,,0,,1.5,
+145,WeaponPerfection,TRUE,TRUE,FALSE,weaponperfection,,black_weapon_perfection,0,,1,

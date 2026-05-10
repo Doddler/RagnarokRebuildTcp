@@ -1,0 +1,86 @@
+#event "BountySystem" //this disables this file if BountySystem is not set in OperationConfig section of appsettings
+
+macro MiasmaMap(%mapName, %signalName, %spawnInfo, %cleanupEvent)
+{
+	Npc(%mapName, "#MiasmaHelper", "CLEAR_NPC", 0, 0, SE, 1, 1)
+	{
+		RegisterGlobalSignal(%signalName);
+		HideNpc();
+	OnSignal:
+		if(Signal == "Enable")
+		{
+			RegisterMapWideEffect("DungeonMiasma");
+			SetMapWideStatusEffect(StatusDungeonMiasma);
+			MapWideMessage("A powerful curse decends upon this dungeon...");
+			
+			@%spawnInfo();
+
+			ServerLog("Signal " + %signalName + "triggered, miasma enabled for map " + %mapName);
+		}
+		if(Signal == "Disable")
+		{
+			UnregisterImportant();
+			KillMyMobs();
+			RemoveMapWideStatusEffect();
+			MapWideMessage("The curse affecting this dungeon has been lifted.");
+			@%cleanupEvent();
+			ServerLog(%mapName + " miasma disabled.");
+		}
+	}
+}
+
+macro EmptyMiasmaCleanup() {}
+
+macro MiasmaPyramid1()
+{
+		SummonMobsWithRespawn(10, "DRAINLIAR");
+}
+
+macro MiasmaPyramid2()
+{
+		SummonMobsWithRespawn(20, "SOLDIER_SKELETON");
+		SummonMobsWithRespawn(10, "ARCHER_SKELETON");
+		SummonMobsWithRespawn(10, "MUMMY");
+		SummonMobsWithRespawn(3, "ISIS");
+}
+
+macro MiasmaPyramid3()
+{
+		SummonMobsWithRespawn(10, "MATYR");
+		SummonMobsWithRespawn(10, "VERIT");
+		SummonMobsWithRespawn(30, "MUMMY", 1m, 1m);
+		SummonMobsWithRespawn(2, "ISIS");
+		SummonMobsWithRespawn(2, "MIMIC", 15m, 15m);
+		SummonMobsWithRespawn(1, "ANCIENT_MUMMY", 2m, 3m);
+}
+
+macro MiasmaPyramid4()
+{
+		SummonMobsWithRespawn(3, "MIMIC", 3m, 3m);
+		SummonMobsWithRespawn(10, "ANCIENT_MUMMY", 30s, 1m);
+		SummonMobsWithRespawn(15, "ISIS", 30s, 1m);
+		SummonMobsWithRespawn(20, "ANUBIS", 30s, 1m);
+}
+
+macro MiasmaPyramidB1()
+{
+		SummonMobsWithRespawn(30, "MINOROUS");
+		SummonMobsWithRespawn(20, "MUMMY");
+		SummonMobsWithRespawn(5, "ANCIENT_MUMMY");
+		SummonMobsWithRespawn(10, "MIMIC", 3m, 3m);
+}
+
+macro MiasmaPyramidB2()
+{
+		SummonMobsWithRespawn(10, "MAJORUROS", 10m, 20m);
+		SummonMobsWithRespawn(10, "MIMIC", 5m, 5m);
+		SummonMobsWithRespawn(10, "ARCLOUSE", 5m, 5m);
+		SummonMobsWithRespawn(30, "ANCIENT_MUMMY");
+}
+
+@MiasmaMap("moc_pryd01", "MiasmaPyramids1", MiasmaPyramid1, EmptyMiasmaCleanup);
+@MiasmaMap("moc_pryd02", "MiasmaPyramids2", MiasmaPyramid2, EmptyMiasmaCleanup);
+@MiasmaMap("moc_pryd03", "MiasmaPyramids3", MiasmaPyramid3, EmptyMiasmaCleanup);
+@MiasmaMap("moc_pryd04", "MiasmaPyramids4", MiasmaPyramid4, EmptyMiasmaCleanup);
+@MiasmaMap("moc_pryd05", "MiasmaPyramidsB1", MiasmaPyramidB1, EmptyMiasmaCleanup);
+@MiasmaMap("moc_pryd06", "MiasmaPyramidsB2", MiasmaPyramidB2, EmptyMiasmaCleanup);

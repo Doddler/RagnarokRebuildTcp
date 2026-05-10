@@ -1,0 +1,30 @@
+#event "MilestoneEvent" //this disables this file if MilestoneEvent is not set in OperationConfig section of appsettings
+
+Npc("prt_fild08", "Ultra Shady Merchant", "1_M_SIGNROGUE", 127, 362, SE, 1, 1) 
+{
+	HideNpc();
+	SellItem("Dead_Branch", 8000);
+	AddTradedItem(CreateTradedItem("Bloody_Branch").Requires("Okolnir_Key", 1));
+OnSignal:
+	if(Signal == "Show")
+	{
+		ShowNpc();
+		PlayEffectAtMyLocation("PuffOfSmoke");
+		ServerWideMessage("<color=#FF99FF>The shadiest merchant ever has joined the camp south of Prontera!</color>", "", true);
+	}
+	if(Signal == "Hide")
+	{
+		HideNpc();
+		PlayEffectAtMyLocation("PuffOfSmoke");
+		ServerWideMessage("<color=#FF99FF>The shadiest merchant ever has left!</color>", "", true);
+	}
+OnClick:
+	FocusNpc();
+	Option("Buy", "Sell", "Trade", "Cancel");
+	switch(Result)
+	{
+		case 0: OpenShop();
+		case 1: StartSellToNpc();
+		case 2: StartItemTrade();
+	}
+}

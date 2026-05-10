@@ -1331,7 +1331,7 @@ public static class CommandBuilder
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
-
+    
     public static void SendHealMulti(WorldObject p, int healAmount, HealType type)
     {
         if (!HasRecipients())

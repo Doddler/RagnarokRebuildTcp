@@ -152,14 +152,14 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[132] = new Assets.Scripts.SkillHandlers.Handlers.Assassin.VenomSplasherDetonationHandler();
 			handlers[133] = new DefaultSkillHandler();
 			handlers[134] = new DefaultSkillHandler();
-			handlers[135] = new Assets.Scripts.SkillHandlers.Handlers.AdrenalineRushHandler();
+			handlers[135] = new Assets.Scripts.SkillHandlers.Handlers.Blacksmith.AdrenalineRushHandler();
 			handlers[136] = new Assets.Scripts.SkillHandlers.Handlers.HammerFallHandler();
 			handlers[137] = new DefaultSkillHandler();
 			handlers[138] = new DefaultSkillHandler();
-			handlers[139] = new DefaultSkillHandler();
+			handlers[139] = new Assets.Scripts.SkillHandlers.Handlers.Blacksmith.WeaponPerfectionHandler();
 			handlers[140] = new DefaultSkillHandler();
-			handlers[141] = new DefaultSkillHandler();
-			handlers[142] = new DefaultSkillHandler();
+			handlers[141] = new Assets.Scripts.SkillHandlers.Handlers.Blacksmith.OverThrustHandler();
+			handlers[142] = new Assets.Scripts.SkillHandlers.Handlers.Blacksmith.MaximizePowerHandler();
 			handlers[143] = new DefaultSkillHandler();
 			handlers[144] = new DefaultSkillHandler();
 			handlers[145] = new DefaultSkillHandler();
@@ -237,7 +237,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[212] = new DefaultSkillHandler();
 			handlers[213] = new DefaultSkillHandler();
 			handlers[214] = new DefaultSkillHandler();
-			handlers[215] = new DefaultSkillHandler();
+			handlers[215] = new Assets.Scripts.SkillHandlers.Handlers.PhysBreakerHandler();
 			handlers[216] = new DefaultSkillHandler();
 			handlers[217] = new DefaultSkillHandler();
 			handlers[218] = new Assets.Scripts.SkillHandlers.Handlers.Event.RollingThunderHandler();

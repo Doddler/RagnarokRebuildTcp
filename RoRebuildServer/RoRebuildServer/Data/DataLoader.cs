@@ -9,7 +9,7 @@ using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data.CsvDataTypes;
-using RoRebuildServer.Data.Map;
+using RoRebuildServer.Data.MapData;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.Data.Player;
 using RoRebuildServer.Data.ServerConfigScript;

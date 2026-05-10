@@ -52,7 +52,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
 
             if (step == 0)
             {
-                var circlePrim = effect.LaunchPrimitive(PrimitiveType.Circle2D, DefaultSkillCastEffect.GetCircleMaterial(), 2f);
+                var circlePrim = effect.LaunchPrimitive(PrimitiveType.Circle2D, EffectSharedMaterialManager.GetMaterial(EffectMaterialType.CircleMaterial), 2f);
                 var cData = circlePrim.GetPrimitiveData<CircleData>();
                 var scale = 1f;
 

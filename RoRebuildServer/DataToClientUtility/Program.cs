@@ -11,7 +11,7 @@ using RebuildSharedData.Enum.EntityStats;
 using RebuildSharedData.Util;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.CsvDataTypes;
-using RoRebuildServer.Data.Map;
+using RoRebuildServer.Data.MapData;
 using Tomlyn;
 
 namespace DataToClientUtility;

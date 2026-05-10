@@ -2,7 +2,7 @@
 using System.Text;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
-using RoRebuildServer.Data.Map;
+using RoRebuildServer.Data.MapData;
 using RoRebuildServer.Data.Monster;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Items;
@@ -786,7 +786,7 @@ public class ScriptBuilder
         waitingFunctions.Add("MoveTo", NpcInteractionResult.EndInteraction);
 
         LoadFunctionSource(typeof(Npc), "npc");
-
+        
         return name;
     }
 
@@ -978,6 +978,11 @@ public class ScriptBuilder
             additionalVariables.Add("Value3", "value3");
             additionalVariables.Add("Value4", "value4");
             LoadFunctionSource(typeof(ScriptUtilityFunctions), "ScriptUtilityFunctions");
+
+
+            foreach (var i in Enum.GetValues<CharacterStatusEffect>())
+                additionalVariables.Add("Status" + i.ToString(), $"CharacterStatusEffect.{i}");
+
             return;
         }
 
