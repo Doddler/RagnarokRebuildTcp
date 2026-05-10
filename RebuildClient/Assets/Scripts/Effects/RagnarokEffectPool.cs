@@ -9,17 +9,18 @@ namespace Assets.Scripts.Effects
     {
         private static Stack<Ragnarok3dEffect> effectList = new();
         private static Stack<RagnarokPrimitive> primitiveList = new();
-        private static Stack<DamageIndicator> indicatorList = new();
+        private static Stack<DamageIndicatorTmpVisual> tmpVisualList = new();
 
         private static GameObject effectContainer;
         private static GameObject damageContainer;
-        
+        private static GameObject tmpVisualSource;
+
         #if UNITY_EDITOR
         public static int DebugGet3DEffectPoolCount() => effectList.Count;
         public static int DebugGetPrimitivePoolCount() => primitiveList.Count;
-        public static int DebugGetDamageIndicatorCount() => indicatorList.Count;
+        public static int DebugGetDamageIndicatorCount() => tmpVisualList.Count;
         #endif
-        
+	    
         public static Ragnarok3dEffect Get3dEffect(EffectType type)
         {
             if (effectContainer == null)
@@ -96,38 +97,59 @@ namespace Assets.Scripts.Effects
             primitiveList.Push(primitive);
         }
 
-        private static GameObject indicatorSource;
-        
         public static DamageIndicator GetDamageIndicator()
+        {
+            var i = new DamageIndicator();
+            DamageIndicatorBatcher.Instance.indicators.Add(i);
+            return i;
+        }
+
+        public static DamageIndicatorTmpVisual GetTmpDamageVisual()
         {
             if (damageContainer == null)
             {
                 damageContainer = new GameObject("DamageContainer");
-                indicatorSource = Resources.Load<GameObject>("DamageCritical");
             }
 
-            if (!indicatorList.TryPop(out var i))
+            if (tmpVisualSource == null)
             {
-                var go = GameObject.Instantiate(indicatorSource);
-                i = go.GetComponent<DamageIndicator>();
+                tmpVisualSource = Resources.Load<GameObject>("DamageCritical");
             }
-            
-            i.gameObject.transform.SetParent(damageContainer.transform);
-            
-            return i;
+
+            DamageIndicatorTmpVisual visual;
+            if (tmpVisualList.TryPop(out visual) && visual)
+            {
+                visual.gameObject.transform.SetParent(damageContainer.transform, false);
+            }
+            else
+            {
+                var go = Instantiate(tmpVisualSource, damageContainer.transform, false);
+                visual = go.GetComponent<DamageIndicatorTmpVisual>();
+            }
+
+            visual.gameObject.SetActive(true);
+            return visual;
         }
 
-        public static void ReturnDamageIndicator(DamageIndicator indicator)
+        public static void ReturnTmpDamageVisual(DamageIndicatorTmpVisual visual)
         {
-            if (indicatorList.Count > 50)
+            if (!visual) return;
+
+            if (!Instance)
             {
-                Destroy(indicator.gameObject);
+                Destroy(visual.gameObject);
                 return;
             }
 
-            indicator.gameObject.transform.SetParent(Instance.transform);
-            indicator.gameObject.SetActive(false);
-            indicatorList.Push(indicator);
+            if (tmpVisualList.Count > 50)
+            {
+                Destroy(visual.gameObject);
+                return;
+            }
+
+            visual.gameObject.transform.SetParent(Instance.transform, false);
+            visual.gameObject.SetActive(false);
+            tmpVisualList.Push(visual);
         }
     }
 }

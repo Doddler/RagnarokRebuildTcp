@@ -55,6 +55,7 @@ GameObject:
   - component: {fileID: 2559038491142319129}
   - component: {fileID: 8963847247755784938}
   - component: {fileID: 1980845207811950280}
+  - component: {fileID: 6793730432599042845}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -248,6 +249,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 268285c10f6211349b455370b7838e93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnableInstancing: 1
+--- !u!114 &6793730432599042845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930088303255894773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71f1ffe85a557824898ccedaa7e26f63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mesh: {fileID: -3152152369188721112, guid: 78cda06fc897e73409f28d6c18d4c2b8, type: 3}
+  shader: {fileID: 4800000, guid: 3d87d564762fac84a9d5b56b3d80450d, type: 3}
+  atlasBakerPrefab: {fileID: 8372582974696033626, guid: 96209f5e9e4fa0744959d913de3a4561,
+    type: 3}
   EnableInstancing: 1
 --- !u!1 &5163903571623629270
 GameObject:

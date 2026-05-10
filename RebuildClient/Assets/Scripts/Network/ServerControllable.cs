@@ -86,7 +86,7 @@ namespace Assets.Scripts.Network
 
         [NonSerialized] public ClientSpriteType SpriteMode;
         [NonSerialized] public GameObject EntityObject;
-        [NonSerialized] public GameObject ComboIndicator;
+        [NonSerialized] public DamageIndicator ComboIndicator;
         [NonSerialized] public GameObject FollowerObject;
         [NonSerialized] public GameObject BodyStateEffect;
         [NonSerialized] public StatusEffectState StatusEffectState;
@@ -1343,7 +1343,7 @@ namespace Assets.Scripts.Network
             var height = 1f;
             var color = IsAlly ? "red" : "white";
             var direction = SpriteAnimator != null ? SpriteAnimator.Direction : RoAnimationHelper.GetFacingForAngle(Angle);
-            di.DoDamage(TextIndicatorType.Miss, "<font-weight=\"300\">Miss", new Vector3(0f, 0.6f, 0f), height, direction, color, false);
+            di.DoDamage(TextIndicatorType.Miss, "Miss", new Vector3(0f, 0.6f, 0f), height, direction, color, false);
             di.AttachDamageIndicator(this);
         }
 
@@ -1387,9 +1387,11 @@ namespace Assets.Scripts.Network
 
             if (totalDamage > 0 && CharacterType != CharacterType.Player)
             {
+	            ComboIndicator?.EndDamageIndicator();
                 var di2 = RagnarokEffectPool.GetDamageIndicator();
                 di2.DoDamage(TextIndicatorType.ComboDamage, $"{totalDamage}", Vector3.zero, height, direction, color, false);
                 di2.AttachComboIndicatorToControllable(this);
+                ComboIndicator = di2;
             }
         }
 
@@ -1403,9 +1405,12 @@ namespace Assets.Scripts.Network
 
             if (totalDamage > 0 && CharacterType != CharacterType.Player)
             {
-                var di2 = RagnarokEffectPool.GetDamageIndicator();
-                di2.DoDamage(TextIndicatorType.ComboDamage, $"{totalDamage}", Vector3.zero, height, direction, "#FFFF00", false);
+	            ComboIndicator?.EndDamageIndicator();
+	            var di2 = RagnarokEffectPool.GetDamageIndicator();
+                di2.DoDamage(TextIndicatorType.ComboDamage, $"{totalDamage}", Vector3.zero, height,
+                    direction, "#FFFF00", false);
                 di2.AttachComboIndicatorToControllable(this);
+                ComboIndicator = di2;
             }
         }
 
@@ -1787,11 +1792,7 @@ namespace Assets.Scripts.Network
                 EffectList.Clear();
             }
 
-            if (ComboIndicator != null)
-            {
-                var di = ComboIndicator.GetComponent<DamageIndicator>();
-                di.EndDamageIndicator();
-            }
+            ComboIndicator?.EndDamageIndicator();
         }
 
         public void OnEffectEnd(Ragnarok3dEffect effect)

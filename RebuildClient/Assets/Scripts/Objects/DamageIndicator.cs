@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Globalization;
 using Assets.Scripts;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Network;
@@ -7,7 +7,6 @@ using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.Utility;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
-using TMPro;
 using UnityEngine;
 
 public enum TextIndicatorType
@@ -22,52 +21,60 @@ public enum TextIndicatorType
 	Debuff
 }
 
-public class DamageIndicator : MonoBehaviour
+public class DamageIndicator
 {
-	public TextMeshPro TextObject;
-
     public DamageIndicatorPathData PathData;
     public ServerControllable Controllable;
-    public CriticalDamageSprite CritSprite;
-
-	private static StringBuilder sb = new StringBuilder(128);
 
 	private Vector3 start;
 	private Vector3 end;
 	private Vector3 basePosition;
 	private bool isCrit;
 
+	public Vector3 pos;
+	public float size;
+	public float alpha;
+	public Color color;
+	public float critJitter;
+
+	public int value;
+
+	public TextIndicatorType type;
+
+	public float lifeTime = 0;
+
+	public bool UseTmpFallback;
+	public DamageIndicatorTmpVisual TmpVisual;
+
+	private readonly int[] jitterSequence = { 0, -10, 10, -8, 8, -6, 6, -4, 4, -2, 2, -1, 1, 0 };
+
 	public void AttachDamageIndicator(ServerControllable controllable)
 	{
 		Controllable = controllable;
 		basePosition = controllable.transform.localPosition;
 	}
-	
+
 	public void AttachComboIndicatorToControllable(ServerControllable controllable)
 	{
-		RemoveComboIndicatorIfExists(controllable);
 		Controllable = controllable;
-		Controllable.ComboIndicator = gameObject;
 		basePosition = controllable.transform.localPosition;
 	}
-	
-	private void RemoveComboIndicatorIfExists(ServerControllable controllable)
-	{
-		if (controllable.ComboIndicator == null)
-			return;
 
-		var di = controllable.ComboIndicator.GetComponent<DamageIndicator>();
-		if (di == null)
-		{
-			Destroy(controllable.ComboIndicator);
-			controllable.ComboIndicator = null;
-		}
-		
-		di.EndDamageIndicator();
-	}
-	
 	public void DoDamage(TextIndicatorType type, string value, Vector3 startPosition, float height, Direction direction, string colorCode, bool isCrit)
 	{
+		this.type = type;
+		this.isCrit = isCrit;
+
+		color = colorCode switch
+		{
+			null or "" => Color.white,
+			"green" => Color.green,
+			"red" => Color.red,
+			"blue" => new Color(0.251f, 0.486f, 1f, 1f),
+			_ when ColorUtility.TryParseHtmlString(colorCode, out var parsed) => parsed,
+			_ => Color.white
+		};
+
 		PathData = type switch
 		{
 			TextIndicatorType.Heal => ClientConstants.Instance.HealPath,
@@ -79,103 +86,109 @@ public class DamageIndicator : MonoBehaviour
 			TextIndicatorType.Debuff => ClientConstants.Instance.DebuffPath,
 			_ => ClientConstants.Instance.DamagePath
 		};
-	    
-		// Debug.Log($"{Time.timeSinceLevelLoad} DoDamage {direction} {direction.GetIntercardinalDirection()}");
-		
-        direction = direction.GetIntercardinalDirection();
-		var text = value.ToString();
-		var hasColor = !string.IsNullOrEmpty(colorCode);
 
-		if (hasColor)
-			sb.Append($"<color={colorCode}>");
+		direction = direction.GetIntercardinalDirection();
 
-		var useTrueType = CameraFollower.Instance.UseTTFDamage;
-        if (!int.TryParse(value, out var _))
-            useTrueType = true;
-		//
-		// if (useTrueType)
-		// 	sb.Append("<cspace=0.4>");
+		var isBakedMiss = type == TextIndicatorType.Miss && value == "Miss";
+		var isNumeric = int.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out this.value);
+		UseTmpFallback = !isBakedMiss && !isNumeric;
 
-		foreach (var c in text)
+		if (UseTmpFallback)
 		{
-			if(!useTrueType)
-				sb.Append("<sprite=");
-			sb.Append(c);
-			if (!useTrueType)
+			TmpVisual = RagnarokEffectPool.GetTmpDamageVisual();
+			if (TmpVisual.TextObject != null)
 			{
-				if (hasColor)
-					sb.Append(" tint");
-				sb.Append(">");
+				TmpVisual.TextObject.text = value ?? string.Empty;
+				var c = color;
+				c.a = 1f;
+				TmpVisual.TextObject.color = c;
+			}
+			if (TmpVisual.CritSprite != null)
+			{
+				TmpVisual.CritSprite.gameObject.SetActive(isCrit);
+				if (isCrit)
+					TmpVisual.CritSprite.Reset();
 			}
 		}
-
-		TextObject.text = sb.ToString();
-		sb.Clear();
 
 		var vec = -direction.GetVectorValue();
 		var dirVector = new Vector3(vec.x, 0, vec.y);
 
 		start = new Vector3(startPosition.x, startPosition.y + height * 1.25f, startPosition.z);
-		//end = start;
-        if (PathData.FliesAwayFromTarget)
-            end = start + dirVector * PathData.DistanceMultiplier;
-        else
-            end = start;
+		if (PathData.FliesAwayFromTarget)
+			end = start + dirVector * PathData.DistanceMultiplier;
+		else
+			end = start;
 
-        Controllable = null;
-        basePosition = Vector3.zero;
-        transform.parent = null;
-		transform.localPosition = start;
-		
-		gameObject.SetActive(true);
-
-		var lt = LeanTween.value(gameObject, OnUpdate, 0, 1, PathData.TweenTime);
-		lt.setOnComplete(onComplete: OnComplete);
-		OnUpdate(0); //do one early for our first frame
-
-		this.isCrit = isCrit;
-		CritSprite.gameObject.SetActive(isCrit);
-		if (isCrit)
-			CritSprite.Reset();
+		Controllable = null;
+		basePosition = Vector3.zero;
+		lifeTime = 0;
 	}
 
-	private void OnComplete()
+	public void EndDamageIndicator()
 	{
-		EndDamageIndicator(true);
+		lifeTime = 99;
 	}
 
-	public void EndDamageIndicator( bool skipCancelTween = false)
+	public bool ShouldRender()
 	{
-		if(!skipCancelTween)
-			LeanTween.cancel(gameObject);
-	
-		if (Controllable && Controllable.ComboIndicator == gameObject)
-			Controllable.ComboIndicator = null;
-			
-		RagnarokEffectPool.ReturnDamageIndicator(this);
+		return lifeTime <= 1;
 	}
 
-	void OnUpdate(float f)
+	public void OnUpdate()
 	{
 		if (Controllable)
-			basePosition = Controllable.transform.localPosition;
-		
-		var height = PathData.Trajectory.Evaluate(f);
-		var size = PathData.Size.Evaluate(f);
-		var pos = Vector3.Lerp(start, end, f) + basePosition;
-		var alpha = PathData.Alpha.Evaluate(f);
-
-		transform.localPosition = new Vector3(pos.x, pos.y + height * PathData.HeightMultiplier, pos.z);
-		transform.localScale = new Vector3(size, size, size) * GameConfig.Data.DamageNumberSize;
-
-		TextObject.color = new Color(1, 1, 1, alpha);
-
-		if (isCrit)
 		{
-			var c = CritSprite.SpriteRenderer.color;
-			CritSprite.SpriteRenderer.color = new Color(c.r, c.g, c.b, alpha);
+			basePosition = Controllable.transform.localPosition;
 		}
 
+		if (lifeTime > 1)
+		{
+			pos = new Vector3(0, -5000, 0);
+			size = 0;
+			return;
+		}
+
+		size = PathData.Size.Evaluate(lifeTime) * GameConfig.Data.DamageNumberSize;
+		pos = Vector3.Lerp(start, end, lifeTime) + basePosition;
+		pos.y += PathData.Trajectory.Evaluate(lifeTime) * PathData.HeightMultiplier;
+		alpha = PathData.Alpha.Evaluate(lifeTime);
+
+		var index = Mathf.Min(Mathf.FloorToInt((lifeTime * PathData.TweenTime) / 0.1f), jitterSequence.Length - 1);
+		critJitter = jitterSequence[index] / 70f;
+
+		lifeTime += Time.deltaTime / PathData.TweenTime;
+
+        if (UseTmpFallback && TmpVisual != null)
+        {
+            ApplyToTmpVisual();
+        }
 	}
 
+	private void ApplyToTmpVisual()
+	{
+		var t = TmpVisual.transform;
+		t.localPosition = pos;
+		t.localScale = new Vector3(size, size, size);
+
+		if (TmpVisual.TextObject != null)
+		{
+			var c = color;
+			c.a = alpha;
+			TmpVisual.TextObject.color = c;
+		}
+
+		if (isCrit && TmpVisual.CritSprite != null && TmpVisual.CritSprite.SpriteRenderer != null)
+			TmpVisual.CritSprite.SpriteRenderer.color = new Color(0.8f, 0.8f, 0.8f, alpha);
+	}
+
+	public void OnRemoved()
+	{
+		if (UseTmpFallback && TmpVisual != null)
+		{
+			RagnarokEffectPool.ReturnTmpDamageVisual(TmpVisual);
+			TmpVisual = null;
+			UseTmpFallback = false;
+		}
+	}
 }
