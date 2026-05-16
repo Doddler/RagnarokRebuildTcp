@@ -149,11 +149,11 @@ public class DamageIndicator
 			return;
 		}
 
-		size = PathData.Size.Evaluate(lifeTime) * GameConfig.Data.DamageNumberSize;
+		size = PathData.Size.Evaluate(lifeTime) * GameConfig.Data.DamageNumberSize * PathData.SizeScale;
 		pos = Vector3.Lerp(start, end, lifeTime) + basePosition;
 		pos.y += PathData.Trajectory.Evaluate(lifeTime) * PathData.HeightMultiplier;
 		alpha = PathData.Alpha.Evaluate(lifeTime);
-
+        
 		var index = Mathf.Min(Mathf.FloorToInt((lifeTime * PathData.TweenTime) / 0.1f), jitterSequence.Length - 1);
 		critJitter = jitterSequence[index] / 70f;
 

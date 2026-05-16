@@ -95,4 +95,6 @@ MonoBehaviour:
     m_RotationOrder: 4
   FliesAwayFromTarget: 0
   HeightMultiplier: 5
+  DistanceMultiplier: 4
   TweenTime: 1.5
+  SizeScale: 2

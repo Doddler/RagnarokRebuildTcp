@@ -12,6 +12,7 @@ namespace Assets.Scripts.Objects
         public float HeightMultiplier = 6;
         public float DistanceMultiplier = 4;
         public float TweenTime = 1f;
-        
+        public float SizeScale = 1f;
+
     }
 }

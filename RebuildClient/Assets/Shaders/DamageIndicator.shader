@@ -212,6 +212,7 @@ Shader "Unlit/DamageIndicator"
                 v.vertex.x += spacing * digitMask * rcp(di.count) * center[di.count-1];
                 v.vertex.x -= (di.count + min(di.magnitude, 1)) * digitHalf * digitMask; // Digits are 0.25m
                 v.vertex.x += _CritJitter * critMask * 0.5; // Crit mesh is 2m x 2m
+                v.vertex.y += _IsCrit & !critMask ? -0.05 : 0;
                 
                 v.vertex.x -= _IsExp ? di.count * digitHalf * textMask + 0.5 * textMask : 0;
                 v.vertex *= _IsExp ? 0.75 : 1;
@@ -234,7 +235,7 @@ Shader "Unlit/DamageIndicator"
                 clip(col.a - 0.5);
 
                 col.rgb *= i.color;
-                col.a = pow(i.alpha, rcp(2.2));
+                col.a = i.alpha; //pow(i.alpha, rcp(2.2));
                 return col;
             }
             ENDCG
