@@ -6,6 +6,7 @@ using Assets.Scripts.Objects;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
+using Assets.Scripts.UI.ClientDatabase;
 using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.UI.Hud;
 using Assets.Scripts.UI.Inventory;
@@ -44,6 +45,7 @@ public class UiManager : MonoBehaviour
     public ItemDescriptionWindow ItemDescriptionWindow;
     public ItemDescriptionWindow SubDescriptionWindow;
     public CardIllustrationWindow CardIllustrationWindow;
+    public ClientDatabaseWindow ClientDatabaseWindow;
 
     public GameObject InventoryDropArea;
     public GameObject EquipmentDropArea;
@@ -109,7 +111,7 @@ public class UiManager : MonoBehaviour
 
         //SkillManager.ShowWindow();
         SkillManager.HideWindow();
-
+        ClientDatabaseWindow.HideWindow();
         ConfigManager.ShowWindow();
         ConfigManager.HideWindow();
 
