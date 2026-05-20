@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
-using RoRebuildServer.Data.Map;
+using RoRebuildServer.Data.MapData;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Simulation;
 

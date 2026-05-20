@@ -1,4 +1,4 @@
-﻿using RoRebuildServer.Data.Map;
+﻿using RoRebuildServer.Data.MapData;
 using RoRebuildServer.Data.Monster;
 using System;
 using System.Collections.Generic;

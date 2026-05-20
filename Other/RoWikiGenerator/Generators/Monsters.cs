@@ -1,5 +1,5 @@
 ﻿using RoRebuildServer.Data;
-using RoRebuildServer.Data.Map;
+using RoRebuildServer.Data.MapData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
