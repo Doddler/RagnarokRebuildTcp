@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
@@ -6,6 +7,7 @@ using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.Inventory
@@ -29,6 +31,7 @@ namespace Assets.Scripts.UI.Inventory
 
         private InventoryItem inventoryItem;
         private bool isInit;
+        private TmpLinkHover linkHover;
 
         private void Init()
         {
@@ -39,6 +42,9 @@ namespace Assets.Scripts.UI.Inventory
             CardSocketEntries[1].OnRightClick = () => RightClickCardSlot(1);
             CardSocketEntries[2].OnRightClick = () => RightClickCardSlot(2);
             CardSocketEntries[3].OnRightClick = () => RightClickCardSlot(3);
+
+            if (ItemDescription != null)
+                linkHover = ItemDescription.GetComponent<TmpLinkHover>();
 
             isInit = true;
         }
@@ -57,6 +63,26 @@ namespace Assets.Scripts.UI.Inventory
             }
 
             win.DisplayCard(inventoryItem.ItemData);
+        }
+
+        public void OpenInDatabase()
+        {
+            var db = UiManager.Instance.ClientDatabaseWindow;
+            if (db == null || inventoryItem.ItemData == null)
+                return;
+            db.OpenAndJumpToItem(inventoryItem.ItemData.Id);
+        }
+
+        public override void OnPointerDown(PointerEventData eventData)
+        {
+            base.OnPointerDown(eventData);
+            if (ItemDescription == null) return;
+            var idx = TMP_TextUtilities.FindIntersectingLink(ItemDescription, eventData.position, null);
+            if (idx < 0) return;
+            var linkId = ItemDescription.textInfo.linkInfo[idx].GetLinkID();
+            if (!linkId.StartsWith("item:", StringComparison.Ordinal)) return;
+            if (!int.TryParse(linkId.AsSpan(5), out var itemId)) return;
+            UiManager.Instance.ClientDatabaseWindow?.OpenAndJumpToItem(itemId);
         }
 
         private void DisplayDescription(Sprite collection)
@@ -105,6 +131,9 @@ namespace Assets.Scripts.UI.Inventory
             ItemDescription.ForceMeshUpdate();
             Vector2 preferredDimensions = ItemDescription.GetPreferredValues(415, 0); //300 minus 20 for margins
             WindowRect.sizeDelta = new Vector2(626, Mathf.Max(246, preferredDimensions.y + 70));
+
+            if (linkHover != null)
+                linkHover.RefreshSource();
         }
 
         public void RightClickCardSlot(int slot)
