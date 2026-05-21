@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.ClientDatabase
@@ -30,7 +32,10 @@ namespace Assets.Scripts.UI.ClientDatabase
         [SerializeField, HideInInspector] internal TextMeshProUGUI itemDetailDescText;
         [SerializeField, HideInInspector] internal Image itemDetailIcon;
         [SerializeField, HideInInspector] internal GameObject droppedByContent;
-        
+        [SerializeField, HideInInspector] internal GameObject soldByContent;
+
+        private TmpLinkHover detailLinkHover;
+
         private void PopulateItemList()
         {
             if (itemListContent == null) return;
@@ -46,18 +51,7 @@ namespace Assets.Scripts.UI.ClientDatabase
 
             var ordered = items.Values.Where(it => it.Id >= 0).OrderBy(it => it.Id).ToList();
             if (itemListTitleText != null) itemListTitleText.text = $"Items ({ordered.Count})";
-            StartCoroutine(LoadItemsAsync(ordered));
-        }
-
-        private IEnumerator LoadItemsAsync(List<ItemData> ordered)
-        {
-            var sw = System.Diagnostics.Stopwatch.StartNew();
-            foreach (var item in ordered)
-            {
-                AddItemListRow(item);
-                if (sw.Elapsed.TotalMilliseconds >= 12f) { yield return null; sw.Restart(); }
-            }
-            itemsLoaded = true;
+            StartCoroutine(LoadListIncrementallyAsync(ordered, AddItemListRow, () => itemsLoaded = true));
         }
 
         private bool itemsLoaded;
@@ -66,16 +60,35 @@ namespace Assets.Scripts.UI.ClientDatabase
         {
             var row = CloneRow(iconRowTemplate, itemListContent.transform, 28);
             row.GetComponentInChildren<TextMeshProUGUI>(true).text = FormatItemName(item);
-
-            var iconImage = row.transform.Find("Icon").GetComponent<Image>();
-            var sprite = GetItemIcon(item.Sprite);
-            iconImage.sprite = sprite;
-            iconImage.color = sprite != null ? Color.white : new Color(1, 1, 1, 0.08f);
+            SetRowIcon(row, GetItemIcon(item.Sprite));
 
             var captured = item;
             row.GetComponent<Button>().onClick.AddListener(() => ShowItemDetail(captured));
             AttachRightClick(row, () => NetworkManager.Instance.SendAdminCreateItem(captured.Id, 1));
             itemRowEntries.Add((row, item, $"{item.Id} {item.Name} {item.Code}"));
+        }
+
+        public void OpenAndJumpToItem(int itemId)
+        {
+            ShowWindow();
+            MoveToTop();
+            if (!ItemLookup.TryGetValue(itemId, out var item))
+                return;
+            JumpToItem(item);
+        }
+
+        private bool TryHandleItemDetailLinkClick(PointerEventData eventData)
+        {
+            if (itemDetailDescText == null || !itemDetailDescText.gameObject.activeInHierarchy)
+                return false;
+            var idx = TMP_TextUtilities.FindIntersectingLink(itemDetailDescText, eventData.position, null);
+            if (idx < 0) return false;
+            var linkId = itemDetailDescText.textInfo.linkInfo[idx].GetLinkID();
+            if (!linkId.StartsWith("item:", StringComparison.Ordinal)) return false;
+            if (!int.TryParse(linkId.AsSpan(5), out var itemId)) return false;
+            if (!ItemLookup.TryGetValue(itemId, out var item)) return false;
+            JumpToItem(item);
+            return true;
         }
 
         private void ShowItemDetail(ItemData item)
@@ -93,6 +106,11 @@ namespace Assets.Scripts.UI.ClientDatabase
                 desc = SanitizeRichText(raw);
             itemDetailDescText.text = desc + BuildItemInfoFooter(item);
 
+            if (detailLinkHover == null && itemDetailDescText != null)
+                detailLinkHover = itemDetailDescText.GetComponent<TmpLinkHover>();
+            if (detailLinkHover != null)
+                detailLinkHover.RefreshSource();
+
             ClearChildren(droppedByContent.transform);
             if (!dropMap.TryGetValue(item.Id, out var droppers) || droppers.Count == 0)
             {
@@ -105,6 +123,20 @@ namespace Assets.Scripts.UI.ClientDatabase
                 foreach (var db in droppers)
                 {
                     CreateDroppedByRow(db);
+                }
+            }
+
+            if (soldByContent != null)
+            {
+                ClearChildren(soldByContent.transform);
+                if (item.SoldBy == null || item.SoldBy.Count == 0)
+                {
+                    CreateInfoRow(soldByContent.transform, "(not sold by any NPC)");
+                }
+                else
+                {
+                    foreach (var npcId in item.SoldBy)
+                        CreateSoldByRow(npcId);
                 }
             }
         }
@@ -168,6 +200,23 @@ namespace Assets.Scripts.UI.ClientDatabase
                 var captured = mon;
                 row.GetComponent<Button>().onClick.AddListener(() => JumpToMonster(captured));
                 AttachRightClick(row, () => NetworkManager.Instance.SendAdminSummonMonster(captured.Code, 1, false));
+            }
+        }
+
+        private void CreateSoldByRow(int npcId)
+        {
+            var hasNpc = npcLookup.TryGetValue(npcId, out var npc);
+            var label = hasNpc
+                ? $"{npc.Name}  <size=80%><color=#888888>({FormatMapLabel(npc.Map, withBracket: false)})</color></size>"
+                : $"NPC#{npcId}";
+
+            var row = CloneRow(rowTemplate, soldByContent.transform, 24, clickable: hasNpc);
+            row.GetComponentInChildren<TextMeshProUGUI>(true).text = label;
+            if (hasNpc)
+            {
+                var captured = npc;
+                row.GetComponent<Button>().onClick.AddListener(() => JumpToNpc(captured));
+                AttachRightClick(row, () => NetworkManager.Instance.SendMoveRequest(captured.Map, captured.X, captured.Y));
             }
         }
 

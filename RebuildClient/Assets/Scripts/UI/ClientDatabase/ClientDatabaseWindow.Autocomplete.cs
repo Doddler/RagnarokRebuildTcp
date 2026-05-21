@@ -46,6 +46,7 @@ namespace Assets.Scripts.UI.ClientDatabase
             if (field == monsterSearchField) return MonsterPredicates;
             if (field == itemSearchField) return ItemPredicates;
             if (field == mapSearchField) return MapPredicates;
+            if (field == npcSearchField) return NpcPredicates;
             return null;
         }
 
@@ -54,6 +55,7 @@ namespace Assets.Scripts.UI.ClientDatabase
             if (field == monsterSearchField) return monsterSearchGhost;
             if (field == itemSearchField) return itemSearchGhost;
             if (field == mapSearchField) return mapSearchGhost;
+            if (field == npcSearchField) return npcSearchGhost;
             return null;
         }
         
@@ -163,6 +165,7 @@ namespace Assets.Scripts.UI.ClientDatabase
             HookGhost(monsterSearchField);
             HookGhost(itemSearchField);
             HookGhost(mapSearchField);
+            HookGhost(npcSearchField);
         }
 
         private void HookGhost(TMP_InputField field)
@@ -182,6 +185,7 @@ namespace Assets.Scripts.UI.ClientDatabase
             if (monsterSearchField != null && monsterSearchField.isFocused) field = monsterSearchField;
             else if (itemSearchField != null && itemSearchField.isFocused) field = itemSearchField;
             else if (mapSearchField != null && mapSearchField.isFocused) field = mapSearchField;
+            else if (npcSearchField != null && npcSearchField.isFocused) field = npcSearchField;
             else { acPrevField = null; acPrevCaret = -1; return; }
 
             if (acField != field) RefreshAutocompleteFor(field);

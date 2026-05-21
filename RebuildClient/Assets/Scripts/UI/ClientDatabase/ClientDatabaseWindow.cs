@@ -5,6 +5,7 @@ using Assets.Scripts.Sprites;
 using RebuildSharedData.ClientTypes;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.ClientDatabase
@@ -42,6 +43,7 @@ namespace Assets.Scripts.UI.ClientDatabase
             WireDetailPortraitClicks();
             EnsureRuntimeMinimapMaterial();
             if (portalMarkerTemplate != null) portalMarkerTemplate.SetActive(false);
+            if (npcMarkerTemplate != null) npcMarkerTemplate.SetActive(false);
             if (rowTemplate != null) rowTemplate.SetActive(false);
             if (iconRowTemplate != null) iconRowTemplate.SetActive(false);
             LoadDataAndPopulate();
@@ -56,6 +58,12 @@ namespace Assets.Scripts.UI.ClientDatabase
                 Destroy(minimapMaterialInstance);
         }
 
+        public override void OnPointerDown(PointerEventData eventData)
+        {
+            base.OnPointerDown(eventData);
+            TryHandleItemDetailLinkClick(eventData);
+        }
+
         private void OnEnable()
         {
             if (!itemsLoaded) PopulateItemList();
@@ -64,15 +72,27 @@ namespace Assets.Scripts.UI.ClientDatabase
 
         private void Update()
         {
-            var frameCount = idleFrameCount;
-            if (monsterSpriteRenderer && frameCount > 1 && monsterSpriteRenderer.gameObject.activeInHierarchy)
+            var monFrames = idleFrameCount;
+            if (monsterSpriteRenderer && monFrames > 1 && monsterSpriteRenderer.gameObject.activeInHierarchy)
             {
                 frameTimer += Time.deltaTime;
                 if (frameTimer > 0.18f)
                 {
                     frameTimer = 0f;
-                    monsterSpriteRenderer.CurrentFrame = (monsterSpriteRenderer.CurrentFrame + 1) % frameCount;
+                    monsterSpriteRenderer.CurrentFrame = (monsterSpriteRenderer.CurrentFrame + 1) % monFrames;
                     monsterSpriteRenderer.SetVerticesDirty();
+                }
+            }
+
+            var npcFrames = npcIdleFrameCount;
+            if (npcSpriteRenderer && npcFrames > 1 && npcSpriteRenderer.gameObject.activeInHierarchy)
+            {
+                npcFrameTimer += Time.deltaTime;
+                if (npcFrameTimer > 0.18f)
+                {
+                    npcFrameTimer = 0f;
+                    npcSpriteRenderer.CurrentFrame = (npcSpriteRenderer.CurrentFrame + 1) % npcFrames;
+                    npcSpriteRenderer.SetVerticesDirty();
                 }
             }
 
@@ -98,6 +118,15 @@ namespace Assets.Scripts.UI.ClientDatabase
                         NetworkManager.Instance.SendAdminCreateItem(currentItemDetailId, 1);
                 });
             }
+
+            if (npcSpriteHost != null && npcSpriteHost.transform.parent != null)
+            {
+                AttachRightClick(npcSpriteHost.transform.parent.gameObject, () =>
+                {
+                    if (npcLookup.TryGetValue(currentNpcDetailId, out var n))
+                        NetworkManager.Instance.SendMoveRequest(n.Map, n.X, n.Y);
+                });
+            }
         }
 
         private void RewireStructuralButtons()
@@ -106,6 +135,7 @@ namespace Assets.Scripts.UI.ClientDatabase
             WireButton(itemsTabImage, () => ShowTab(1));
             WireButton(mapsTabImage, () => ShowTab(2));
             WireButton(helpTabImage, () => ShowTab(3));
+            WireButton(npcsTabImage, () => ShowTab(4));
 
             if (closeButton != null)
             {
@@ -128,10 +158,16 @@ namespace Assets.Scripts.UI.ClientDatabase
                 mapBackButton.onClick.RemoveAllListeners();
                 mapBackButton.onClick.AddListener(ReturnToMapList);
             }
+            if (npcBackButton != null)
+            {
+                npcBackButton.onClick.RemoveAllListeners();
+                npcBackButton.onClick.AddListener(ReturnToNpcList);
+            }
 
             WireSearchField(monsterSearchField, FilterMonsters);
             WireSearchField(itemSearchField, FilterItems);
             WireSearchField(mapSearchField, FilterMaps);
+            WireSearchField(npcSearchField, FilterNpcs);
         }
         
         private const float FilterDebounceSeconds = 0.1f;
@@ -170,10 +206,12 @@ namespace Assets.Scripts.UI.ClientDatabase
             itemsContainer.SetActive(idx == 1);
             if (mapsContainer != null) mapsContainer.SetActive(idx == 2);
             if (helpContainer != null) helpContainer.SetActive(idx == 3);
+            if (npcsContainer != null) npcsContainer.SetActive(idx == 4);
             monstersTabImage.color = idx == 0 ? s_activeTabColor : s_inactiveTabColor;
             itemsTabImage.color = idx == 1 ? s_activeTabColor : s_inactiveTabColor;
             if (mapsTabImage != null) mapsTabImage.color = idx == 2 ? s_activeTabColor : s_inactiveTabColor;
             if (helpTabImage != null) helpTabImage.color = idx == 3 ? s_activeTabColor : s_inactiveTabColor;
+            if (npcsTabImage != null) npcsTabImage.color = idx == 4 ? s_activeTabColor : s_inactiveTabColor;
         }
 
         private void JumpToItem(ItemData item)
@@ -197,36 +235,24 @@ namespace Assets.Scripts.UI.ClientDatabase
         private void LoadDataAndPopulate()
         {
             var monsterDb = LoadMonsterDatabase();
+            var npcDb = LoadNpcDatabase();
             LoadMapWarps();
             BuildMonsterReverseLookups(monsterDb);
             BuildMonsterValueIndex(monsterDb);
+            BuildNpcReverseLookups(npcDb);
 
             PopulateMonsterList(monsterDb);
             PopulateItemList();
             PopulateMapList();
+            PopulateNpcList(npcDb);
             ShowTab(0);
         }
         
-        private MonsterDbFile LoadMonsterDatabase()
-        {
-            var dbJson = LoadStreamingFile("ClientConfigGenerated/monsterdatabase.json");
-            if (string.IsNullOrEmpty(dbJson)) return null;
-            try
-            {
-                return JsonUtility.FromJson<MonsterDbFile>(dbJson);
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"Bad monsterdatabase.json: {e.Message}");
-                return null;
-            }
-        }
+        private MonsterDbFile LoadMonsterDatabase() => LoadStreamingJson<MonsterDbFile>("ClientConfigGenerated/monsterdatabase.json");
 
         private void LoadMapWarps()
         {
-            var warpJson = LoadStreamingFile("ClientConfigGenerated/mapwarps.json");
-            if (string.IsNullOrEmpty(warpJson)) return;
-            var warpData = JsonUtility.FromJson<MapWarpFile>(warpJson);
+            var warpData = LoadStreamingJson<MapWarpFile>("ClientConfigGenerated/mapwarps.json");
             if (warpData?.Items == null) return;
             foreach (var wp in warpData.Items)
             {

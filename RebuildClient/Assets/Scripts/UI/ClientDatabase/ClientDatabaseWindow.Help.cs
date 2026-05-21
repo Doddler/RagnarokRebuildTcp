@@ -27,14 +27,15 @@ namespace Assets.Scripts.UI.ClientDatabase
             AppendSection(sb, "monsters", MonsterPredicates);
             AppendSection(sb, "items", ItemPredicates);
             AppendSection(sb, "maps", MapPredicates);
+            AppendSection(sb, "npcs", NpcPredicates);
 
             sb.Append("<b>examples:</b>\n");
             sb.Append("<color=#444444>#level>=50 #element=fire1</color>\n");
-            sb.Append("<color=#444444>#tags=undead #race=demihuman</color>\n");
+            sb.Append("<color=#444444>#tags=fungus #race=plant</color>\n");
             sb.Append("<color=#444444>#itemclass=weapon #slots>=4</color>\n");
             sb.Append("<color=#444444>#description=<noparse>\"</noparse>fire bolt<noparse>\"</noparse></color>\n\n");
 
-            sb.Append("<b>GM only:</b>\nRight click on monsters to spawn them.\nRight click on items to receive them.\nRight click on map location to warp there.");
+            sb.Append("<b>GM only:</b>\nRight click on monsters to spawn them.\nRight click on items to receive them.\nRight click on map location to warp there.\nRight click on NPCs to warp to them.");
 
             return sb.ToString();
         }

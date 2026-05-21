@@ -25,7 +25,9 @@ namespace Assets.Scripts.UI.ClientDatabase
         private readonly Dictionary<string, List<MapMonsterSpawn>> mapMonstersLookup = new();
         private readonly Dictionary<string, int> portalConnectionIndex = new();
         private readonly List<GameObject> portalMarkers = new();
+        private readonly List<GameObject> npcMarkers = new();
         private const string PortalMarkerPrefix = "PortalMarker_";
+        private const string NpcMarkerPrefix = "NpcMarker_";
 
         [Serializable]
         private class PortalEntry
@@ -69,7 +71,9 @@ namespace Assets.Scripts.UI.ClientDatabase
         [SerializeField, HideInInspector] internal Image mapDetailMinimap;
         [SerializeField, HideInInspector] internal GameObject mapMonstersContent;
         [SerializeField, HideInInspector] internal GameObject mapConnectionsContent;
+        [SerializeField, HideInInspector] internal GameObject mapNpcsContent;
         [SerializeField, HideInInspector] internal GameObject portalMarkerTemplate;
+        [SerializeField, HideInInspector] internal GameObject npcMarkerTemplate;
 
         private void EnsureRuntimeMinimapMaterial()
         {
@@ -129,28 +133,15 @@ namespace Assets.Scripts.UI.ClientDatabase
                 mapListTitleText.text = $"Maps ({MapLookup.Count})";
 
             var ordered = MapLookup.Values.OrderBy(m => m.Code).ToList();
-            StartCoroutine(LoadMapsAsync(ordered));
-        }
-
-        private IEnumerator LoadMapsAsync(List<ClientMapEntry> ordered)
-        {
-            var sw = System.Diagnostics.Stopwatch.StartNew();
-            foreach (var map in ordered)
-            {
-                AddMapListRow(map);
-                if (sw.Elapsed.TotalMilliseconds >= 12f) { yield return null; sw.Restart(); }
-            }
-            mapsLoaded = true;
+            StartCoroutine(LoadListIncrementallyAsync(ordered, AddMapListRow, () => mapsLoaded = true));
         }
 
         private bool mapsLoaded;
 
         internal void AddMapListRow(ClientMapEntry map)
         {
-            var displayName = string.IsNullOrEmpty(map.Name) ? map.Code : FormatNameWithBracket(map.Name, map.Code);
-
             var row = CloneRow(rowTemplate, mapListContent.transform, 24);
-            row.GetComponentInChildren<TextMeshProUGUI>(true).text = displayName;
+            row.GetComponentInChildren<TextMeshProUGUI>(true).text = FormatMapLabel(map.Code);
             var captured = map;
             row.GetComponent<Button>().onClick.AddListener(() => ShowMapDetail(captured));
             AttachRightClick(row, () => NetworkManager.Instance.SendMoveRequest(captured.Code));
@@ -163,10 +154,11 @@ namespace Assets.Scripts.UI.ClientDatabase
             mapDetailView.SetActive(true);
             currentMapDetailCode = map.Code;
 
-            mapDetailNameText.text = string.IsNullOrEmpty(map.Name) ? map.Code : FormatNameWithBracket(map.Name, map.Code);
+            mapDetailNameText.text = FormatMapLabel(map.Code);
 
             PopulateMapConnections(map.Code);
             PopulateMapMonsters(map.Code);
+            PopulateMapNpcs(map.Code);
             LoadMinimap(map.Code);
         }
 
@@ -184,6 +176,7 @@ namespace Assets.Scripts.UI.ClientDatabase
             if (minimapMaterialInstance != null)
                 minimapMaterialInstance.SetTexture(s_secondaryTex, null);
             ClearPortalMarkers();
+            ClearNpcMarkers();
 
             var path = $"Assets/Maps/minimap/{mapCode}.png";
             if (!ClientDataLoader.DoesAddressableExist<Sprite>(path)) return;
@@ -195,6 +188,7 @@ namespace Assets.Scripts.UI.ClientDatabase
                 mapDetailMinimap.sprite = sprite;
                 mapDetailMinimap.color = Color.white;
                 DrawPortalMarkers(requested, sprite);
+                DrawNpcMarkers(requested, sprite);
             });
 
             var walkPath = $"Assets/Maps/minimap/{mapCode}_walkmask.png";
@@ -284,12 +278,9 @@ namespace Assets.Scripts.UI.ClientDatabase
                 var rowIndex = i + 1;
                 portalConnectionIndex[target] = rowIndex;
                 var hasMap = MapLookup.TryGetValue(target, out var targetMap);
-                var nameLabel = hasMap && !string.IsNullOrEmpty(targetMap.Name)
-                    ? FormatNameWithBracket(targetMap.Name, target)
-                    : target;
 
                 var row = CloneRow(rowTemplate, mapConnectionsContent.transform, 22, clickable: hasMap);
-                row.GetComponentInChildren<TextMeshProUGUI>(true).text = $"<b>{rowIndex}.</b>  {nameLabel}";
+                row.GetComponentInChildren<TextMeshProUGUI>(true).text = $"<b>{rowIndex}.</b>  {FormatMapLabel(target)}";
                 if (hasMap)
                 {
                     var captured = targetMap;
@@ -327,6 +318,84 @@ namespace Assets.Scripts.UI.ClientDatabase
             }
         }
         
+        private void PopulateMapNpcs(string mapCode)
+        {
+            if (mapNpcsContent == null) return;
+            ClearChildren(mapNpcsContent.transform);
+            if (!mapNpcsLookup.TryGetValue(mapCode, out var npcs) || npcs.Count == 0)
+            {
+                CreateInfoRow(mapNpcsContent.transform, "(no NPCs)");
+                return;
+            }
+
+            for (var i = 0; i < npcs.Count; i++)
+            {
+                var npc = npcs[i];
+                var markerIndex = i + 1;
+                var row = CloneRow(rowTemplate, mapNpcsContent.transform, 22);
+                row.GetComponentInChildren<TextMeshProUGUI>(true).text =
+                    $"<b>{markerIndex}.</b>  {npc.Name}{(npc.IsTrader ? "  <size=80%><color=#888888>[Trader]</color></size>" : "")}";
+                var captured = npc;
+                row.GetComponent<Button>().onClick.AddListener(() => JumpToNpc(captured));
+                AttachRightClick(row, () => NetworkManager.Instance.SendMoveRequest(captured.Map, captured.X, captured.Y));
+            }
+        }
+
+        private void ClearNpcMarkers()
+        {
+            for (var i = npcMarkers.Count - 1; i >= 0; i--)
+            {
+                if (npcMarkers[i] != null) Destroy(npcMarkers[i]);
+            }
+            npcMarkers.Clear();
+        }
+
+        private void DrawNpcMarkers(string mapCode, Sprite minimapSprite)
+        {
+            ClearNpcMarkers();
+            if (minimapSprite == null || npcMarkerTemplate == null) return;
+            if (!mapNpcsLookup.TryGetValue(mapCode, out var npcs)) return;
+            if (npcs == null || npcs.Count == 0) return;
+
+            var imageRT = mapDetailMinimap.rectTransform;
+            LayoutRebuilder.ForceRebuildLayoutImmediate(imageRT);
+
+            var imgW = imageRT.rect.width;
+            var imgH = imageRT.rect.height;
+            var sprW = minimapSprite.texture.width;
+            var sprH = minimapSprite.texture.height;
+            if (imgW <= 0 || imgH <= 0 || sprW <= 0 || sprH <= 0) return;
+
+            var scale = Mathf.Min(imgW / sprW, imgH / sprH);
+            var letterboxX = (imgW - sprW * scale) * 0.5f;
+            var letterboxY = (imgH - sprH * scale) * 0.5f;
+
+            for (var i = 0; i < npcs.Count; i++)
+            {
+                var npc = npcs[i];
+                var pixelYFromTop = sprH - npc.Y * MinimapPxPerTile;
+                var posX = letterboxX + npc.X * MinimapPxPerTile * scale;
+                var posY = letterboxY + pixelYFromTop * scale;
+
+                CreateNpcMarker(i + 1, posX, posY);
+            }
+        }
+
+        private void CreateNpcMarker(int number, float xFromLeft, float yFromTop)
+        {
+            if (npcMarkerTemplate == null) return;
+
+            var marker = Instantiate(npcMarkerTemplate, mapDetailMinimap.transform);
+            marker.SetActive(true);
+            marker.name = $"{NpcMarkerPrefix}{number}";
+            var mrt = marker.GetComponent<RectTransform>();
+            mrt.anchoredPosition = new Vector2(xFromLeft, -yFromTop);
+            var tmp = marker.GetComponentInChildren<TextMeshProUGUI>(true);
+            if (tmp != null) tmp.text = number.ToString();
+
+            npcMarkers.Add(marker);
+        }
+
         internal static readonly PredicateRegistry<ClientMapEntry> MapPredicates = BuildPredicateRegistry<ClientMapEntry>();
 
         private void FilterMaps(string query) => ApplyFilter(mapRowEntries, query, (m, p) => MapPredicates.TryMatch(m, p, out var r) && r);

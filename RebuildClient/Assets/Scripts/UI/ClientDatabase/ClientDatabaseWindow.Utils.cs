@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -247,6 +248,46 @@ namespace Assets.Scripts.UI.ClientDatabase
             return File.ReadAllText(path);
         }
 
+        private static T LoadStreamingJson<T>(string relativePath) where T : class
+        {
+            var json = LoadStreamingFile(relativePath);
+            if (string.IsNullOrEmpty(json)) return null;
+            try
+            {
+                return JsonUtility.FromJson<T>(json);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Bad {relativePath}: {e.Message}");
+                return null;
+            }
+        }
+
+        private static IEnumerator LoadListIncrementallyAsync<T>(IList<T> ordered, Action<T> addRow, Action onComplete = null)
+        {
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+            for (var i = 0; i < ordered.Count; i++)
+            {
+                addRow(ordered[i]);
+                if (sw.Elapsed.TotalMilliseconds >= 12f) { yield return null; sw.Restart(); }
+            }
+            onComplete?.Invoke();
+        }
+        
+        private static string FormatMapLabel(string mapCode, bool withBracket = true)
+        {
+            if (!MapLookup.TryGetValue(mapCode, out var data) || string.IsNullOrEmpty(data.Name))
+                return mapCode;
+            return withBracket ? FormatNameWithBracket(data.Name, mapCode) : data.Name;
+        }
+
+        private static void SetRowIcon(GameObject row, Sprite sprite)
+        {
+            var img = row.transform.Find("Icon").GetComponent<Image>();
+            img.sprite = sprite;
+            img.color = sprite != null ? Color.white : new Color(1, 1, 1, 0.08f);
+        }
+
         internal static GameObject NewUIObject(string name, Transform parent)
         {
             var go = new GameObject(name, typeof(RectTransform));
@@ -298,5 +339,62 @@ namespace Assets.Scripts.UI.ClientDatabase
             rch.OnRightClick.AddListener(action);
         }
 
+        private void FitDetailSpriteToFrame(
+            GameObject host, RoSpriteRendererUI renderer,
+            RoSpriteData data, int action, Direction direction,
+            float fitSize, float naturalScale)
+        {
+            var dirIdx = (int)direction;
+            var actionIdx = action + dirIdx;
+            var hostRT = (RectTransform)host.transform;
+
+            if (actionIdx >= data.Actions.Length || data.Actions[actionIdx].Frames.Length == 0)
+            {
+                hostRT.sizeDelta = new Vector2(fitSize, fitSize);
+                renderer.OffsetPosition = Vector2.zero;
+                return;
+            }
+
+            var frameCount = data.Actions[actionIdx].Frames.Length;
+            var meshCache = SpriteMeshCache.GetMeshCacheForSprite(data.Name);
+
+            var min = new Vector2(float.PositiveInfinity, float.PositiveInfinity);
+            var max = new Vector2(float.NegativeInfinity, float.NegativeInfinity);
+
+            for (var f = 0; f < frameCount; f++)
+            {
+                var id = ((action + dirIdx) << 16) + f;
+                if (!meshCache.TryGetValue(id, out var mesh))
+                {
+                    mesh = SpriteMeshBuilder.BuildSpriteMesh(data, action, dirIdx, f);
+                    if (mesh != null) meshCache.Add(id, mesh);
+                }
+                if (mesh == null) continue;
+
+                foreach (var v3 in mesh.vertices)
+                {
+                    var v = (Vector2)v3;
+                    if (v.x < min.x) min.x = v.x;
+                    if (v.y < min.y) min.y = v.y;
+                    if (v.x > max.x) max.x = v.x;
+                    if (v.y > max.y) max.y = v.y;
+                }
+            }
+
+            var size = max - min;
+            if (size.x <= 0f || size.y <= 0f || float.IsInfinity(min.x) || float.IsInfinity(max.x))
+            {
+                hostRT.sizeDelta = new Vector2(fitSize, fitSize);
+                renderer.OffsetPosition = Vector2.zero;
+                return;
+            }
+
+            var center = (min + max) * 0.5f;
+            var maxDim = Mathf.Max(size.x, size.y);
+            var scale = Mathf.Min(naturalScale, fitSize / maxDim);
+
+            hostRT.sizeDelta = new Vector2(scale, scale);
+            renderer.OffsetPosition = -center * 50f;
+        }
     }
 }

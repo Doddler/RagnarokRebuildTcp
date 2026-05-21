@@ -192,11 +192,7 @@ namespace Assets.Scripts.UI.ClientDatabase
 
             var row = CloneRow(iconRowTemplate, dropsContent.transform, 26, clickable: hasItem);
             row.GetComponentInChildren<TextMeshProUGUI>(true).text = $"{name}  —  {pct:0.##}%";
-
-            var iconImage = row.transform.Find("Icon").GetComponent<Image>();
-            var sprite = hasItem ? GetItemIcon(item.Sprite) : null;
-            iconImage.sprite = sprite;
-            iconImage.color = sprite != null ? Color.white : new Color(1, 1, 1, 0.08f);
+            SetRowIcon(row, hasItem ? GetItemIcon(item.Sprite) : null);
 
             if (hasItem)
             {
@@ -209,12 +205,9 @@ namespace Assets.Scripts.UI.ClientDatabase
         private void CreateSpawnRow(SpawnEntry s)
         {
             var hasMap = MapLookup.TryGetValue(s.Map, out var map);
-            var displayName = hasMap && !string.IsNullOrEmpty(map.Name)
-                ? FormatNameWithBracket(map.Name, s.Map)
-                : s.Map;
 
             var row = CloneRow(rowTemplate, spawnsContent.transform, 22, clickable: hasMap);
-            row.GetComponentInChildren<TextMeshProUGUI>(true).text = $"{displayName}  —  {s.Count}";
+            row.GetComponentInChildren<TextMeshProUGUI>(true).text = $"{FormatMapLabel(s.Map)}  —  {s.Count}";
             if (hasMap)
             {
                 var captured = map;
@@ -251,68 +244,12 @@ namespace Assets.Scripts.UI.ClientDatabase
             if (actionIdx < data.Actions.Length)
                 idleFrameCount = data.Actions[actionIdx].Frames.Length;
 
-            FitMonsterSpriteToFrame(data, 0, Direction.SouthEast);
+            FitDetailSpriteToFrame(monsterSpriteHost, monsterSpriteRenderer, data, 0, Direction.SouthEast, MonsterSpriteFitSize, MonsterSpriteNaturalScale);
 
             monsterSpriteHost.SetActive(true);
             monsterSpriteRenderer.SetActive(true);
             monsterSpriteRenderer.SetVerticesDirty();
             monsterSpriteRenderer.SetMaterialDirty();
-        }
-
-        private void FitMonsterSpriteToFrame(
-            RoSpriteData data, int action, Direction direction)
-        {
-            var dirIdx = (int)direction;
-            var actionIdx = action + dirIdx;
-            var hostRT = (RectTransform)monsterSpriteHost.transform;
-
-            if (actionIdx >= data.Actions.Length || data.Actions[actionIdx].Frames.Length == 0)
-            {
-                hostRT.sizeDelta = new Vector2(MonsterSpriteFitSize, MonsterSpriteFitSize);
-                monsterSpriteRenderer.OffsetPosition = Vector2.zero;
-                return;
-            }
-
-            var frameCount = data.Actions[actionIdx].Frames.Length;
-            var meshCache = SpriteMeshCache.GetMeshCacheForSprite(data.Name);
-
-            var min = new Vector2(float.PositiveInfinity, float.PositiveInfinity);
-            var max = new Vector2(float.NegativeInfinity, float.NegativeInfinity);
-
-            for (var f = 0; f < frameCount; f++)
-            {
-                var id = ((action + dirIdx) << 16) + f;
-                if (!meshCache.TryGetValue(id, out var mesh))
-                {
-                    mesh = SpriteMeshBuilder.BuildSpriteMesh(data, action, dirIdx, f);
-                    if (mesh != null) meshCache.Add(id, mesh);
-                }
-                if (mesh == null) continue;
-
-                foreach (var v3 in mesh.vertices)
-                {
-                    var v = (Vector2)v3;
-                    if (v.x < min.x) min.x = v.x;
-                    if (v.y < min.y) min.y = v.y;
-                    if (v.x > max.x) max.x = v.x;
-                    if (v.y > max.y) max.y = v.y;
-                }
-            }
-
-            var size = max - min;
-            if (size.x <= 0f || size.y <= 0f || float.IsInfinity(min.x) || float.IsInfinity(max.x))
-            {
-                hostRT.sizeDelta = new Vector2(MonsterSpriteFitSize, MonsterSpriteFitSize);
-                monsterSpriteRenderer.OffsetPosition = Vector2.zero;
-                return;
-            }
-
-            var center = (min + max) * 0.5f;
-            var maxDim = Mathf.Max(size.x, size.y);
-            var scale = Mathf.Min(MonsterSpriteNaturalScale, MonsterSpriteFitSize / maxDim);
-
-            hostRT.sizeDelta = new Vector2(scale, scale);
-            monsterSpriteRenderer.OffsetPosition = -center * 50f;
         }
 
         private void ReturnToMonsterList()
