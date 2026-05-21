@@ -1,27 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using RebuildSharedData.ClientTypes;
 using RoRebuildServer.Logging;
 
-namespace RoWikiGenerator.Generators;
-
-public class PortalEntry
-{
-    public string To { get; set; } = "";
-    public int X { get; set; }
-    public int Y { get; set; }
-}
-
-public class MapWarpEntry
-{
-    public string Map { get; set; } = "";
-    public List<string> ConnectedTo { get; set; } = new();
-    public List<PortalEntry> Portals { get; set; } = new();
-}
-
-public class MapWarpFile
-{
-    public List<MapWarpEntry> Items { get; set; } = new();
-}
+namespace DataToClientUtility;
 
 internal static class MapWarpExport
 {
@@ -29,10 +15,9 @@ internal static class MapWarpExport
         @"Warp\(\s*""([^""]+)""\s*,\s*""[^""]+""\s*,\s*(?:""[^""]+""\s*,\s*)?(-?\d+)\s*,\s*(-?\d+)\s*,\s*-?\d+\s*,\s*-?\d+\s*,\s*""([^""]+)""",
         RegexOptions.Compiled);
 
-    public static void Write()
+    public static void Write(string warpsSourcePath, string outPath)
     {
-        var warpsDir = Path.GetFullPath(Path.Combine(
-            AppSettings.ServerPath, "../GameConfig/ServerData/Script/Warps"));
+        var warpsDir = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, warpsSourcePath));
 
         if (!Directory.Exists(warpsDir))
         {
@@ -41,12 +26,9 @@ internal static class MapWarpExport
         }
 
         var perMap = new Dictionary<string, MapWarpEntry>();
-        var fileCount = 0;
-        var warpCount = 0;
 
         foreach (var path in Directory.GetFiles(warpsDir, "*.txt", SearchOption.AllDirectories))
         {
-            fileCount++;
             var content = File.ReadAllText(path);
             foreach (Match m in WarpPattern.Matches(content))
             {
@@ -57,13 +39,12 @@ internal static class MapWarpExport
                 if (from == to) continue;
 
                 if (!perMap.TryGetValue(from, out var entry))
-                    perMap[from] = entry = new MapWarpEntry { Map = from };
+                    perMap[from] = entry = new MapWarpEntry { Map = from, Portals = new List<PortalEntry>() };
 
                 entry.Portals.Add(new PortalEntry { To = to, X = x, Y = y });
-                warpCount++;
             }
         }
-        
+
         foreach (var entry in perMap.Values)
         {
             entry.ConnectedTo = entry.Portals
@@ -78,19 +59,15 @@ internal static class MapWarpExport
             Items = perMap.Values.OrderBy(e => e.Map).ToList()
         };
 
-        var options = new JsonSerializerOptions { WriteIndented = true };
+        var options = new JsonSerializerOptions { WriteIndented = true, IncludeFields = true };
         var json = JsonSerializer.Serialize(output, options);
 
-        var outDir = Path.Combine(
-            AppSettings.ClientProjectPath,
-            "Assets", "StreamingAssets", "ClientConfigGenerated");
+        var outDir = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, outPath));
         Directory.CreateDirectory(outDir);
 
-        var outPath = Path.Combine(outDir, "mapwarps.json");
-        File.WriteAllText(outPath, json);
+        var warpsPath = Path.Combine(outDir, "mapwarps.json");
+        File.WriteAllText(warpsPath, json);
 
-        Console.WriteLine(
-            $"Wrote map warps: parsed {warpCount} portals from {fileCount} files, " +
-            $"{output.Items.Count} maps → {outPath}");
+        Console.WriteLine($"Writing data to {warpsPath}");
     }
 }

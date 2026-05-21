@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using CsvHelper;
 using CsvHelper.Configuration;
 using Dahomey.Json;
@@ -19,12 +20,16 @@ namespace DataToClientUtility;
 class Program
 {
     private const string path = @"..\..\..\..\GameConfig\ServerData\Db\";
+    private const string warpsPath = @"..\..\..\..\GameConfig\ServerData\Script\Warps";
+    private const string npcsPath = @"..\..\..\..\GameConfig\ServerData\Script\Npcs";
+    private const string eventScriptsPath = @"..\..\..\..\GameConfig\ServerData\Script\Event";
     private const string outPath = @"..\..\..\..\..\RebuildClient\Assets\StreamingAssets\ClientConfigGenerated\";
     private const string outPathStreaming = @"..\..\..\..\..\RebuildClient\Assets\StreamingAssets\";
     private const string configPath = @"..\..\..\..\..\RebuildServer\";
 
     private static List<PlayerWeaponClass>? weaponClasses;
     private static Dictionary<string, string> equipGroupDescriptions = new();
+    private static Dictionary<int, List<int>> itemSoldByNpcIds = new();
 
     static void Main(string[] args)
     {
@@ -40,10 +45,19 @@ class Program
         WriteMapList();
         WriteEffectsList();
         WriteJobDataStuff();
+        WriteNpcDatabase();
         WriteItemsList();
         WritePatchNotes();
         WriteEmoteData();
+        WriteMonsterDatabase();
+        WriteMapWarps();
     }
+
+    private static void WriteMonsterDatabase() => MonsterJsonExport.Write(outPath);
+
+    private static void WriteMapWarps() => MapWarpExport.Write(warpsPath, outPath);
+
+    private static void WriteNpcDatabase() => itemSoldByNpcIds = NpcJsonExport.Write(outPath, npcsPath, eventScriptsPath);
 
     private static void WriteEffectsList()
     {
@@ -191,6 +205,58 @@ class Program
                 .Replace("<item>", "<color=#777777>").Replace("</item>", "</color>")
                 .Replace("<desc>", "<color=#808080>").Replace("</desc>", "</color>")
             ;
+    }
+
+    private static Dictionary<(string name, int slots), int>? itemNameSlotToId;
+    private static Dictionary<string, int>? itemNameToFallbackId;
+    private static readonly Regex ItemRefLinkRegex = new(@"<color=#008080>(.+?)</color>", RegexOptions.Compiled);
+    private static readonly Regex SlotSuffixRegex = new(@"\s*\[(\d+)\]$", RegexOptions.Compiled);
+
+    private static void BuildItemLinkIndex(List<ItemData> items)
+    {
+        itemNameSlotToId = new Dictionary<(string, int), int>();
+        itemNameToFallbackId = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        foreach (var it in items)
+        {
+            if (string.IsNullOrWhiteSpace(it.Name)) continue;
+            var key = (it.Name, it.Slots);
+            if (!itemNameSlotToId.TryGetValue(key, out var existing) || it.Id < existing)
+                itemNameSlotToId[key] = it.Id;
+            // Fallback prefers slots=0 (the base item), then lowest Id.
+            if (!itemNameToFallbackId.TryGetValue(it.Name, out var fbId) || it.Slots == 0 || it.Id < fbId)
+                itemNameToFallbackId[it.Name] = it.Id;
+        }
+    }
+
+    private static string InjectItemLinks(string text)
+    {
+        if (itemNameSlotToId == null || itemNameToFallbackId == null ||
+            text.IndexOf("<color=#008080>", StringComparison.Ordinal) < 0)
+            return text;
+
+        return ItemRefLinkRegex.Replace(text, m =>
+        {
+            var inner = m.Groups[1].Value;
+            var slotMatch = SlotSuffixRegex.Match(inner);
+            string baseName;
+            int slots;
+            if (slotMatch.Success)
+            {
+                baseName = inner.Substring(0, slotMatch.Index).Trim();
+                slots = int.Parse(slotMatch.Groups[1].Value);
+            }
+            else
+            {
+                baseName = inner.Trim();
+                slots = 0;
+            }
+
+            int id;
+            if (!itemNameSlotToId.TryGetValue((baseName, slots), out id) &&
+                !itemNameToFallbackId.TryGetValue(baseName, out id))
+                return m.Value;
+            return $"<link=\"item:{id}\">{m.Value}</link>";
+        });
     }
 
     private static void WriteItemsList()
@@ -577,6 +643,12 @@ class Program
             itemDescriptions.Add(new ItemDescription() { Code = item.Code, Description = desc });
         }
 
+        foreach (var item in itemList.Items)
+        {
+            if (itemSoldByNpcIds.TryGetValue(item.Id, out var npcIds) && npcIds.Count > 0)
+                item.SoldBy = npcIds;
+        }
+
         JsonSerializerOptions options = new JsonSerializerOptions();
         options.SetupExtensions();
         options.WriteIndented = true;
@@ -593,6 +665,11 @@ class Program
         File.WriteAllText(Path.Combine(outPath, "displaySpriteTable.txt"), displaySpriteList.ToString());
 
         File.WriteAllText(Path.Combine(outPath, "missingItemDescriptions.txt"), string.Join("\n", missingItemDescriptions));
+
+        BuildItemLinkIndex(itemList.Items);
+        foreach (var d in itemDescriptions)
+            d.Description = InjectItemLinks(d.Description);
+
         SaveToClient("itemDescriptions.json", itemDescriptions);
     }
 

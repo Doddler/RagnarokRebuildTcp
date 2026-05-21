@@ -186,12 +186,6 @@ public class Program
         var content = await InsertContentIntoTemplate(await Monsters.RenderMonsterPage(), "Ragnarok Rebuild Monsters");
         await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "MonsterListFull.html"), content);
 
-        //monster database JSON for the in-game client
-        await MonsterJsonExport.WriteAsync();
-
-        //map warp connections JSON for the in-game client
-        MapWarpExport.Write();
-
         //jobs
         content = await InsertContentIntoTemplate(await Jobs.GetJobPageData(0), "Ragnarok Rebuild - Novice", true);
         await File.WriteAllTextAsync(Path.Combine(AppSettings.TargetPath, "jobs/JobNovice.html"), content);

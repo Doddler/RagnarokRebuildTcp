@@ -22,6 +22,7 @@ public class ItemData
     public ItemUseType UseType;
     public EquipPosition Position;
     public string Sprite;
+    public List<int>? SoldBy;
 }
 
 [Serializable]
