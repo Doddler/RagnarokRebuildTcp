@@ -54,7 +54,7 @@ internal static class MonsterJsonExport
         }
 
         var monsters = DataManager.MonsterIdLookup.Select(m => m.Value)
-            .Where(m => m.Code != "ICE_TITAN")
+            .Where(m => m.Id >= 4000 && m.Code != "ICE_TITAN")
             .OrderBy(m => m.Exp + (m.Exp == 0 ? 99000000 : 0))
             .ToList();
 

@@ -27,6 +27,14 @@ internal static class NpcJsonExport
     private static readonly Regex LineComment = new(@"//[^\n]*", RegexOptions.Compiled);
     private static readonly Regex BlockComment = new(@"/\*.*?\*/", RegexOptions.Compiled | RegexOptions.Singleline);
 
+    private static bool TryCleanDisplayName(ref string name)
+    {
+        if (name.Length > 0 && name[0] == '#') return false;
+        var hash = name.IndexOf('#');
+        if (hash > 0) name = name.Substring(0, hash);
+        return true;
+    }
+
     public static Dictionary<int, List<int>> Write(string outPath, params string[] npcsSourcePaths)
     {
         var itemToNpcIds = new Dictionary<int, List<int>>();
@@ -64,6 +72,8 @@ internal static class NpcJsonExport
                 var x = int.Parse(m.Groups[5].Value);
                 var y = int.Parse(m.Groups[6].Value);
                 var facing = m.Groups[7].Value;
+
+                if (!TryCleanDisplayName(ref name)) continue;
 
                 var afterHeader = m.Index + m.Length;
                 var openBrace = content.IndexOf('{', afterHeader);
@@ -128,6 +138,8 @@ internal static class NpcJsonExport
                 var facing = m.Groups[5].Value;
                 var chatName = m.Groups[7].Value;
                 var sprite = m.Groups[8].Value;
+
+                if (!TryCleanDisplayName(ref chatName)) continue;
 
                 entries.Add(new NpcEntry
                 {
