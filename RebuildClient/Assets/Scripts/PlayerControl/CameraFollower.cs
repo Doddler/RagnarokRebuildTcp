@@ -2051,6 +2051,9 @@ namespace Assets.Scripts
             if (!inInputUI && Input.GetKeyDown(KeyCode.E))
                 UiManager.Instance.InventoryWindow.ToggleVisibility();
 
+            if (!inInputUI && Input.GetKeyDown(KeyCode.I) && UiManager.Instance.ClientDatabaseWindow != null)
+                UiManager.Instance.ClientDatabaseWindow.ToggleVisibility();
+
             //remove the flag to enable cinemachine recording on this
 #if UNITY_EDITOR
             if ((Input.GetKeyDown(KeyCode.F5) || Input.GetKeyDown(KeyCode.F6)) && Application.isEditor && Recorder != null)

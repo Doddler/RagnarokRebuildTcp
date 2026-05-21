@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RoRebuildServer.Data.Map;
+using RoRebuildServer.Data.MapData;
 
 namespace RoWikiGenerator.Generators;
 
