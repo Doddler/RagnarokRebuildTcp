@@ -97,7 +97,7 @@ public class DamageIndicatorBatcher : MonoBehaviour
 		_cmd = null;
 	}
 
-	private void Update()
+	private void LateUpdate()
 	{
         if (GameConfig.Data == null) return;
 

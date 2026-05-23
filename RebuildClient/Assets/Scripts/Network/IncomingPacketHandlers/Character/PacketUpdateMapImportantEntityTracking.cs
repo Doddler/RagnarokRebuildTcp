@@ -1,5 +1,7 @@
 ﻿using Assets.Scripts.Network.HandlerBase;
+using Assets.Scripts.Objects;
 using Assets.Scripts.UI.Hud;
+using Assets.Scripts.Utility;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using UnityEngine;
@@ -21,7 +23,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                 if (id == NetworkManager.Instance.PlayerId)
                     continue;
 
-                if (pos.x > 0 && pos.y > 0)
+                if (pos.x >= 0 && pos.y >= 0)
                 {
                     if (type != CharacterDisplayType.Effect)
                         MinimapController.Instance.SetEntityPosition(id, type, pos);
@@ -30,22 +32,36 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                         var name = msg.ReadString();
                         if (Network.MapEffects.ContainsKey(name))
                             return; //already added
-                        var go = GameObject.Instantiate(Resources.Load<GameObject>(name));
+                        var prefab = Resources.Load<GameObject>(name);
+                        if (prefab == null)
+                        {
+                            Debug.LogError($"Could not load asset {name} from Resources path!");
+                            return;
+                        }
+                        var go = GameObject.Instantiate(prefab);
                         if (go == null)
                             Debug.LogError($"Could not load mapimportantentity effect by name of {name}");
                         else
                             NetworkManager.Instance.MapEffects[name] = go;
+
+                        if (go.TryGetComponent<IMapEffect>(out var effect))
+                            effect.Create();
                     }
                 }
                 else
                 {
-                    if(type != CharacterDisplayType.Effect)
+                    if (type != CharacterDisplayType.Effect)
                         MinimapController.Instance.RemoveEntity(id);
                     else
                     {
                         var name = msg.ReadString();
                         if (NetworkManager.Instance.MapEffects.Remove(name, out var go))
-                            GameObject.Destroy(go);
+                        {
+                            if(go.TryGetComponent<IMapEffect>(out var effect))
+                                effect.Remove();
+                            else
+                                GameObject.Destroy(go);
+                        }
                     }
                 }
             }

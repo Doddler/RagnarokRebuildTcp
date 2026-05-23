@@ -9,27 +9,35 @@ macro MiasmaMap(%mapName, %signalName, %spawnInfo, %cleanupEvent)
 	OnSignal:
 		if(Signal == "Enable")
 		{
-			RegisterMapWideEffect("DungeonMiasma");
+			RegisterMapWideEffect("MiasmaClouds");
 			SetMapWideStatusEffect(StatusDungeonMiasma);
 			MapWideMessage("A powerful curse decends upon this dungeon...");
-			
-			@%spawnInfo();
+
+			StartTimer(1s);
 
 			ServerLog("Signal " + %signalName + "triggered, miasma enabled for map " + %mapName);
 		}
 		if(Signal == "Disable")
 		{
 			UnregisterImportant();
+			StopTimer();
 			KillMyMobs();
 			RemoveMapWideStatusEffect();
 			MapWideMessage("The curse affecting this dungeon has been lifted.");
 			@%cleanupEvent();
 			ServerLog(%mapName + " miasma disabled.");
 		}
+	OnTimer 15s:
+		@%spawnInfo();
+		StopTimer();
 	}
 }
 
 macro EmptyMiasmaCleanup() {}
+
+//-----------------------------------------------
+//  Pyramids
+//-----------------------------------------------
 
 macro MiasmaPyramid1()
 {
@@ -84,3 +92,155 @@ macro MiasmaPyramidB2()
 @MiasmaMap("moc_pryd04", "MiasmaPyramids4", MiasmaPyramid4, EmptyMiasmaCleanup);
 @MiasmaMap("moc_pryd05", "MiasmaPyramidsB1", MiasmaPyramidB1, EmptyMiasmaCleanup);
 @MiasmaMap("moc_pryd06", "MiasmaPyramidsB2", MiasmaPyramidB2, EmptyMiasmaCleanup);
+
+
+//-----------------------------------------------
+//  Payon Dungeon
+//-----------------------------------------------
+
+macro MiasmaPayonDun01()
+{
+	SummonMobsWithRespawn(20, "ZOMBIE");
+	SummonMobsWithRespawn(15, "SKELETON");
+	SummonMobsWithRespawn(10, "FARMILIAR");
+}
+
+macro MiasmaPayonDun02()
+{
+	SummonMobsWithRespawn(5, "DRAINLIAR");
+	SummonMobsWithRespawn(15, "DOKEBI");
+	SummonMobsWithRespawn(20, "SOLDIER_SKELETON");
+	SummonMobsWithRespawn(10, "ARCHER_SKELETON");
+	SummonMobsWithRespawn(2, "MUNAK");
+	SummonMobsWithRespawn(2, "BON_GUN");
+}
+
+macro MiasmaPayonDun03()
+{
+	SummonMobsWithRespawn(10, "SOLDIER_SKELETON");	
+	SummonMobsWithRespawn(5, "ARCHER_SKELETON");
+	SummonMobsWithRespawn(20, "MUNAK");
+	SummonMobsWithRespawn(20, "BON_GUN");
+	SummonMobsWithRespawn(5, "MANDRAGORA");
+	SummonMobsWithRespawn(1, "NINE_TAIL", 5m, 5m);
+}
+
+macro MiasmaPayonDun04()
+{
+	SummonMobsWithRespawn(25, "SOHEE");
+	SummonMobsWithRespawn(15, "MUNAK");
+	SummonMobsWithRespawn(15, "BON_GUN");
+	SummonMobsWithRespawn(4, "WHISPER_BOSS");
+	SummonMobsWithRespawn(3, "NINE_TAIL", 5m, 5m);
+}
+
+macro MiasmaPayonDun05()
+{
+	SummonMobsWithRespawn(5, "SKELETON_GENERAL", 1m, 1m);
+	SummonMobsWithRespawn(5, "AM_MUT", 1m, 1m);
+	SummonMobsWithRespawn(2, "CAT_O_NINE_TAIL", 5m, 5m);
+	SummonMobsWithRespawn(10, "HORONG");
+	SummonMobsWithRespawn(10, "GREATEST_GENERAL");
+	SummonMobsWithRespawn(25, "NINE_TAIL");
+}
+
+@MiasmaMap("pay_dun00", "MiasmaPayonDungeon1", MiasmaPayonDun01, EmptyMiasmaCleanup);
+@MiasmaMap("pay_dun01", "MiasmaPayonDungeon2", MiasmaPayonDun02, EmptyMiasmaCleanup);
+@MiasmaMap("pay_dun02", "MiasmaPayonDungeon3", MiasmaPayonDun03, EmptyMiasmaCleanup);
+@MiasmaMap("pay_dun03", "MiasmaPayonDungeon4", MiasmaPayonDun04, EmptyMiasmaCleanup);
+@MiasmaMap("pay_dun04", "MiasmaPayonDungeon5", MiasmaPayonDun05, EmptyMiasmaCleanup);
+
+
+//-----------------------------------------------
+//  Geffen Tower
+//-----------------------------------------------
+
+Npc("gef_dun02", "#geffendunwarp006", "WARP", 215, 68, N, 2, 1)
+{
+	UnregisterImportant();
+	HideNpc();
+OnSignal:
+	if(Signal == "Open")
+	{
+		RegisterAsPortal();
+		ShowNpc();
+	}
+	else
+		HideNpc();
+OnTouch:
+	MoveTo("gef_dun03", 196, 199);
+}
+
+//Warp("gef_dun02", "geffendunwarp006", 215, 68, 2, 1, "gef_dun03", 196, 199);
+Warp("gef_dun03", "geffendunwarp007", 203, 204, 4, 4, "gef_dun02", 215, 64);
+
+macro MiasmaGeffenTower00()
+{
+	SummonMobsWithRespawn(40, "FUNGUS");
+	SummonMobsWithRespawn(10, "ARGOS");
+	SummonMobsWithRespawn(3, "BATHORY");
+	SummonMobsWithRespawn(3, "DEATHSPORE", 5m, 1m);
+}
+
+macro MiasmaGeffenTower01()
+{
+	SummonMobsWithRespawn(30, "WHISPER");
+	SummonMobsWithRespawn(30, "BATHORY");
+	SummonMobsWithRespawn(15, "JAKK");
+	SummonMobsWithRespawn(10, "NIGHTMARE");
+}
+
+macro MiasmaGeffenTower02()
+{
+	SignalNpc("#geffendunwarp006", "Open");
+	MapWideMessage("The door to Geffenia has opened.");
+	SummonMobsWithRespawn(20, "NIGHTMARE_TERROR");
+	SummonMobsWithRespawn(10, "SUCCUBUS");
+	SummonMobsWithRespawn(10, "INCUBUS");
+}
+
+macro MiasmaGeffenTower03()
+{
+	SummonMobsWithRespawn(10, "WRAITH", 1m, 30s);
+	SummonMobsWithRespawn(20, "WRAITH_DEAD", 1m, 30s);
+	SummonMobsWithRespawn(10, "WIND_GHOST", 1m, 30s);
+	SummonMobsWithRespawn(10, "DARK_PRIEST", 1m, 30s);
+	SummonMobsWithRespawn(10, "DEVIRUCHI", 1m, 30s);
+	SummonMobsWithRespawn(15, "MINI_DEMON", 1m, 30s);
+	SummonMobsWithRespawn(15, "SUCCUBUS", 1m, 30s);
+	SummonMobsWithRespawn(15, "INCUBUS", 1m, 30s);
+	SummonMobsWithRespawn(3, "SHINING_PLANT", 5m, 5m);
+	SummonMobsWithRespawn(10, "WHITE_PLANT", 5m, 5m);
+	SummonMobsWithRespawn(1, "DOPPELGANGER", 30m, 30m);
+	SignalNpc("#GeffeniaKicker", "Open");
+}
+
+Npc("gef_dun03", "#GeffeniaKicker", "CLEAR_NPC", 5, 5, S)
+{
+	StartTimer(1s);
+	OnSignal:
+		if(Signal == "Close")
+			StartTimer(1s);
+		else
+			StopTimer();
+	OnTimer 10s:
+		MoveAllPlayersToMap("gef_dun02", 215, 64);
+		ResetTimer();
+}
+
+macro CloseGeffenia()
+{
+	SignalNpc("#geffendunwarp006", "Close");
+}
+
+
+macro EjectGeffenia()
+{
+	MapWideMessage("You will soon be forced to leave this place...");
+	SignalNpc("#GeffeniaKicker", "Close");
+}
+
+@MiasmaMap("gef_dun00", "MiasmaGeffenTower00", MiasmaGeffenTower00, EmptyMiasmaCleanup);
+@MiasmaMap("gef_dun01", "MiasmaGeffenTower01", MiasmaGeffenTower01, EmptyMiasmaCleanup);
+@MiasmaMap("gef_dun02", "MiasmaGeffenTower02", MiasmaGeffenTower02, CloseGeffenia);
+@MiasmaMap("gef_dun03", "MiasmaGeffenTower03", MiasmaGeffenTower03, EjectGeffenia);

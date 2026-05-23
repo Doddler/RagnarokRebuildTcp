@@ -52,7 +52,7 @@ MapConfig("gef_dun02")
 	CreateSpawn("SHINING_PLANT", 1, %(58, 167, 10, 10), 1800000, 900000);
 	CreateSpawn("SHINING_PLANT", 1, %(185, 83, 3, 3), 1800000, 900000);
 }
-
+/*
 MapConfig("gef_dun03")
 {
 	CreateSpawn("WRAITH", 8, 60000, 30000);
@@ -62,3 +62,4 @@ MapConfig("gef_dun03")
 	CreateSpawn("SHINING_PLANT", 3, 1800000, 900000);
 	CreateSpawn("WHITE_PLANT", 10, 180000, 90000);
 }
+*/

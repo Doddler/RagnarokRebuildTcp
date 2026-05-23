@@ -20,6 +20,7 @@ Geffen Tower,gef_tower,gef_tower.walk,Indoor,None,13.mp3
 Geffen Dungeon 1F,gef_dun00,gef_dun00.walk,Dungeon,None,21.mp3
 Geffen Dungeon 2F,gef_dun01,gef_dun01.walk,Dungeon,None,21.mp3
 Geffenia,gef_dun02,gef_dun02.walk,Dungeon,None,50.mp3
+Geffenia,gef_dun03,gef_dun03.walk,Dungeon,None,50.mp3
 Orc Village,in_orcs01,in_orcs01.walk,Indoor,None,35.mp3
 Orc Dungeon 1F,orcsdun01,orcsdun01.walk,Dungeon,None,48.mp3
 Orc Dungeon 2F,orcsdun02,orcsdun02.walk,Dungeon,None,48.mp3
@@ -271,3 +272,4 @@ Admin Room 1,sec_in01,sec_in01.walk,None,None,21.mp3
 Admin Room 2,sec_in02,sec_in02.walk,None,None,21.mp3
 Admin Room 3,sec_pri,sec_pri.walk,None,None,42.mp3
 Okolnir,que_qsch01,que_qsch01.walk,None,NoTeleportEvenMonsters,ToS-3rdWave.flac
+Rebuild Tower,rebuildtower,rebuildtower.walk,None,NoTeleportEvenMonsters,125.mp3

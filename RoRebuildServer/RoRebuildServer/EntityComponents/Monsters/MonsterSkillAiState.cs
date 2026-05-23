@@ -101,6 +101,8 @@ public class MonsterSkillAiState(Monster monsterIn)
 
     public bool IsMasterAlive => monster.HasMaster && monster.GetMaster().TryGet<WorldObject>(out var chara) && chara.IsActive && chara.State != CharacterState.Dead;
 
+    public bool HasStatusEffect(CharacterStatusEffect effect) => monster.CombatEntity.HasStatusEffectOfType(effect);
+
     public void Reset()
     {
         //reset the skill state

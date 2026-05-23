@@ -456,6 +456,13 @@ public class ScriptBuilder
 
         foreach (var i in Enum.GetValues<MonsterAiType>())
             additionalVariables.TryAdd(i.ToString(), $"MonsterAiType.{i}");
+
+        foreach (var i in Enum.GetValues<CharacterStatusEffect>())
+        {
+            var str = $"Status{i}";
+            if (!additionalVariables.ContainsKey(str))
+                additionalVariables.Add(str, $"CharacterStatusEffect.{i}");
+        }
     }
 
     public void StartMonsterEventSection(string section)

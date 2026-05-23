@@ -1026,7 +1026,7 @@ public static class CommandBuilder
 
         packet.Write((short)1);
         packet.Write(o.Id);
-        packet.Write(Position.Zero);
+        packet.Write(Position.Invalid);
         packet.Write((byte)o.DisplayType);
         if (o.DisplayType == CharacterDisplayType.Effect)
             packet.Write(o.Type == CharacterType.NPC && o.Npc.ParamString != null ? o.Npc.ParamString : o.Name);

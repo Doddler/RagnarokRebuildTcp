@@ -51,7 +51,7 @@ PecoKnight,Spear,,0,3,3,페코페코_Knight_M_창.spr,페코페코_Knight_M_창_
 PecoKnight,2HSpear,,0,3,3,페코페코_Knight_M_양손창.spr,페코페코_Knight_M_양손창_검광.spr,페코페코_Knight_F_양손창.spr,페코페코_Knight_F_양손창_검광.spr
 PecoKnight,Axe,,0,2,2,페코페코_Knight_M_도끼.spr,페코페코_Knight_M_도끼_검광.spr,페코페코_Knight_F_도끼.spr,페코페코_Knight_F_도끼_검광.spr
 PecoKnight,2HAxe,,0,2,2,페코페코_Knight_M_양손도끼.spr,페코페코_Knight_M_양손도끼_검광.spr,페코페코_Knight_F_양손도끼.spr,페코페코_Knight_F_양손도끼_검광.spr
-PecoKnight,Mace,,0,2,2,Knight_M_클럽.spr,,Knight_F_클럽.spr,
+PecoKnight,Mace,,0,2,2,페코페코_Knight_M_클럽.spr,,페코페코_Knight_F_클럽.spr,
 Wizard,Unarmed,,0,2,3,,,,
 Priest,Rod,,0,2,2,Priest_M_롯드.spr,,Priest_F_롯드.spr,
 Priest,Mace,,0,2,2,Priest_M_클럽.spr,,Priest_F_클럽.spr,

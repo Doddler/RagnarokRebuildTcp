@@ -144,7 +144,34 @@ SkillHandler("NIGHTMARE") {
 StateAttacking:
 	TryCast(Blind, 3, 5%, 0, 5s);
 	TryCast(Curse, 3, 5%, 0.8s, 5s, NoInterrupt);
+	TryCast(MentalBreaker, 1, 5%, 0.8s, 5s, NoInterrupt);
 	TryCast(GhostAttack, 5, 5%, 0, 5s);
+}
+
+SkillHandler("NIGHTMARE_TERROR") {
+StateAngry:
+    TryCast(Curse, 3, 5%, 0.8s, 5s, NoInterrupt);
+    TryCast(DarkStrike, 7, 5%, 0.7s, 5s, NoInterrupt);
+	TryCast(FireAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6);
+	TryCast(MentalBreaker, 2, 5%, 0.8s, 5s, NoInterrupt);
+StateAttacking:
+	TryCast(Curse, 3, 5%, 0.8s, 5s, NoInterrupt);
+    TryCast(DarkStrike, 7, 5%, 0.7s, 5s, NoInterrupt);
+	TryCast(FireAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6);
+	TryCast(MentalBreaker, 2, 5%, 0.8s, 5s, NoInterrupt);
+}
+
+SkillHandler("DARK_PRIEST") {
+StateIdle:
+    TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
+StateChase:
+    TryCast(DarkStrike, 9, 20%, 0.7s, 5s, NoInterrupt) -> SendEmote(9);
+    TryCast(MonsterSnap, 1, 100%, 0s, 5s)[WasRangedOrMagicAttacked]; //lv 1 is 14 range, 2 is 21
+StateAttacking: 
+    //Dark Cross 3: 50%, 0 cast time, 10s cooldown, emote 9
+        //Change Undead 1: 3%, 1s cast time, 30s cooldown, emote 9 
+	TryCast(DarkAttack, 5, 5%, 0.5s, 5s);
+    TryCast(DarkStrike, 9, 20%, 0.7s, 5s, NoInterrupt) -> SendEmote(9);
 }
 
 SkillHandler("DEVIRUCHI") {
@@ -158,6 +185,29 @@ StateAttacking:
 	TryCast(DarkAttack, 1, 20%, 0, 5s);
     TryCast(EnergyDrain, 1, 5%, 0, 5s)[HpPercent < 30] -> SendEmote(19); //swt
     TryCast(DarkThunder, 3, 5%, 1.5s, 5s) -> SendEmote(29); //heh
+}
+
+SkillHandler("MINI_DEMON") {
+StateIdle:
+    TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
+    @ResumeAiState(20%, AiStandardBoss, 18);
+    TryCast(CallMinion, 1, 100%, 0.3s, 60s, NoInterrupt)[MinionCount < 1] -> SummonMinions(2, "DEVIRUCHI");
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+    TryCast(DarkThunder, 5, 5%, 1.5s, 5s) -> SendEmote(29); //heh
+StateAttacking:
+	TryCast(DarkAttack, 2, 20%, 0, 5s);
+    TryCast(DarkThunder, 5, 5%, 1.5s, 5s) -> SendEmote(29); //heh
+}
+
+SkillHandler("ZOMBIE_MASTER") {
+StateIdle:
+    TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
+    TryCast(CallMinion, 1, 100%, 0.3s, 60s, NoInterrupt)[MinionCount < 1] -> SummonMinions(2, "GHOUL");
+StateAttacking:
+	TryCast(BrandishSpear, 5, 5%, 1s, 5s, NoInterrupt);
+	TryCast(Poison, 3, 5%, 0.8s, 5s, NoInterrupt);
+	TryCast(UndeadAttack, 2, 5%, 0.5s, 5s, NoInterrupt);
 }
 
 SkillHandler("SUCCUBUS") {
@@ -202,4 +252,17 @@ StateChase:
     TryCast(GhostAttack, 5, 5%, 0, 5s, NoInterrupt);
 StateAttacking:
     TryCast(WindAttack, 3, 5%, 0s, 5s) -> SendEmote(6);
+}
+
+SkillHandler("GIANT_HONET") {
+StateIdle:
+    TryCast(Teleport, 1, 100%, 0, 5s)[RudeAttacked];
+    @ResumeAiState(5%, AiStandardBoss, 9); //...
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+    TryCast(Silence, 5, 5%, 0, 5s, NoInterrupt);
+StateAttacking:
+    TryCast(PiercingAttack, 3, 5%, 0s, 5s) -> SendEmote(6);
+    TryCast(Stun, 3, 5%, 1.5s, 5s, NoInterrupt) -> SendEmote(6);
+    TryCast(WindAttack, 2, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(6);
 }

@@ -36,6 +36,9 @@ namespace Assets.Scripts.Utility
 
 		private static List<ClientMapEntry> mapEntries;
 		private static List<FogInfo> mapFogInfo;
+
+        public static float TimeSinceMapLoaded => Time.realtimeSinceStartup - timeOfMapLoad;
+        private static float timeOfMapLoad;
 		
 		private bool needAudioChange = false;
 
@@ -245,6 +248,8 @@ namespace Assets.Scripts.Utility
 				else
 					CameraFollower.Instance.SetCameraMode(CameraMode.Normal);
 			}
+
+            timeOfMapLoad = Time.realtimeSinceStartup;
 			
 			EffectPool.ClearPrimitiveDataPools();
 			Resources.UnloadUnusedAssets();

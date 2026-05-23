@@ -384,8 +384,9 @@ namespace Assets.Scripts.Effects
                         SetUpTextureMaterial(mat, ShaderCache.Instance.AlphaBlendParticleShader, null);
                         break;
                     case EffectMaterialType.ShadowMaterial:
-                        SetUpTextureMaterial(mat, ShaderCache.Instance.SpriteShaderNoZWriteAlt, ClientDataLoader.Instance.ShadowSprite.texture, 2999);
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.SpriteShaderNoZWrite, ClientDataLoader.Instance.ShadowSprite.texture, 2999);
                         materialList[(int)mat].SetFloat(Offset, 0.4f);
+                        materialList[(int)mat].enableInstancing = true;
                         break;
                     case EffectMaterialType.CastFire:
                         SetUpTextureMaterial(mat, ShaderCache.Instance.AdditiveShader, GetOrLoadEffectTexture(EffectTextureType.RingRed), 3001, true);

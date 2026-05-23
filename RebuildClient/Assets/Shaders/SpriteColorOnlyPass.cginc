@@ -144,10 +144,11 @@ fixed4 frag(v2f i) : SV_Target
     
     //environment ambient contribution disabled for now as it muddies the sprite
     //todo: turn ambient contribution back on if fog is disabled.
-    float4 env = float4(1, 1, 1, 1);
+    //float4 env = float4(1, 1, 1, 1);
     //return i.color;
-    //float4 env = 1 - ((1 - _RoDiffuseColor) * (1 - _RoAmbientColor));
-    //env = env * 0.3 + 0.7;// + saturate(0.5 + i.envColor);
+    float4 env = 1 - ((1 - _RoDiffuseColor) * (1 - _RoAmbientColor));
+    env = env * 0.3 + 0.7; // + saturate(0.5 + i.envColor);
+    //return env;
 
     //smoothpixel
     // apply anti-aliasing

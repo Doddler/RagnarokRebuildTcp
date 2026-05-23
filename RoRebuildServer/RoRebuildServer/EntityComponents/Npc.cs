@@ -403,6 +403,13 @@ public class Npc : IEntityAutoReset
         Character.Map?.RegisterImportantEntity(Character);
     }
 
+    public void RegisterAsPortal()
+    {
+        Character.IsImportant = true;
+        Character.DisplayType = CharacterDisplayType.Portal;
+        Character.Map?.RegisterImportantEntity(Character);
+    }
+
     public void RegisterAsWarpNpc()
     {
         Character.IsImportant = true;
@@ -536,7 +543,12 @@ public class Npc : IEntityAutoReset
             CreateSingleMonsterWithAutoOwnership(chara.Map, monster, area);
     }
 
-    public void SummonMobsWithRespawn(int count, string name, int respawn = 0, int variance = 0)
+    public void SummonMvpWithRespawn(int count, string name, int respawn = 0, int variance = 0)
+    {
+        SummonMobsWithRespawn(count, name, respawn, variance, true);
+    }
+
+    public void SummonMobsWithRespawn(int count, string name, int respawn = 0, int variance = 0, bool isMvp = false)
     {
         var chara = Entity.Get<WorldObject>();
 
@@ -548,13 +560,15 @@ public class Npc : IEntityAutoReset
         var area = chara.Map.MapBounds;
 
         EnsureMobListCreated();
-        var rule = new MapSpawnRule(monster.Id, monster, area, count, respawn, respawn + variance, CharacterDisplayType.Monster);
+        var rule = new MapSpawnRule(monster.Id, monster, area, count, respawn, respawn + variance, isMvp ? CharacterDisplayType.Mvp : CharacterDisplayType.Monster);
 
         for (var i = 0; i < count; i++)
         {
             var entity = CreateSingleMonsterWithAutoOwnership(chara.Map, monster, area);
             if (entity.TryGet<Monster>(out var mon))
+            {
                 mon.SpawnRule = rule;
+            }
         }
     }
 
@@ -1209,7 +1223,6 @@ Error:
                 return;
         }
     }
-
 
     public void StartWalkDirect(int x, int y, int speed)
     {

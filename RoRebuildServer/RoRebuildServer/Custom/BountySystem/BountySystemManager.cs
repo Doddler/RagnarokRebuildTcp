@@ -14,6 +14,8 @@ public class BountySystemManager : ServerConfigScriptHandlerBase
     private static List<MiasmaDungeonDef> MiasmaDungeons = new()
     {
         new MiasmaDungeonDef("Pyramids", new List<string>() { "MiasmaPyramids1", "MiasmaPyramids2", "MiasmaPyramids3", "MiasmaPyramids4", "MiasmaPyramidsB1", "MiasmaPyramidsB2" }),
+        new MiasmaDungeonDef("PayonDungeon", new List<string>() { "MiasmaPayonDungeon1", "MiasmaPayonDungeon2", "MiasmaPayonDungeon3", "MiasmaPayonDungeon4", "MiasmaPayonDungeon5" }),
+        new MiasmaDungeonDef("GeffenTower", new List<string>() { "MiasmaGeffenTower00", "MiasmaGeffenTower01", "MiasmaGeffenTower02", "MiasmaGeffenTower03" }),
     };
 
     private Dictionary<string, int> dungeonLookup;
