@@ -123,7 +123,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[103] = new Assets.Scripts.SkillHandlers.Handlers.WaterBallHandler();
 			handlers[104] = new DefaultSkillHandler();
 			handlers[105] = new DefaultSkillHandler();
-			handlers[106] = new DefaultSkillHandler();
+			handlers[106] = new Assets.Scripts.SkillHandlers.Handlers.Hunter.DetectHandler();
 			handlers[107] = new Assets.Scripts.SkillHandlers.Handlers.Hunter.BlitzBeatHandler();
 			handlers[108] = new DefaultSkillHandler();
 			handlers[109] = new DefaultSkillHandler();

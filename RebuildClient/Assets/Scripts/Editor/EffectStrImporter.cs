@@ -51,6 +51,7 @@ namespace Assets.Scripts.Editor
             sprites.Add(ImportEffectTexture("texture/effect/super3.bmp", "super3"));
             sprites.Add(ImportEffectTexture("texture/effect/super4.bmp", "super4"));
             sprites.Add(ImportEffectTexture("texture/effect/super5.bmp", "super5"));
+            sprites.Add(ImportEffectTexture("texture/effect/fashasha.tga", "fashasha"));
             sprites.Add(ImportEffectTexture("texture/effect/ac_center2.tga", "ac_center2"));
             sprites.Add(ImportEffectTexture("texture/effect/alpha_down.tga", "alpha_down"));
             sprites.Add(ImportEffectTexture("texture/effect/endure.tga", "endure"));

@@ -80,7 +80,10 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
             }
             else
             {
-                primitive.AddTexturedRectangleQuad(Vector3.zero, data.Size.x, data.Size.y, data.Color);
+                if (data.Sprite == null)
+                    primitive.AddTexturedRectangleQuad(Vector3.zero, data.Size.x, data.Size.y, data.Color);
+                else
+                    primitive.AddTexturedSpriteQuad(data.Sprite, Vector3.zero, data.Size.x, data.Size.y, data.Color, data.Angle);
             }
         }
     }

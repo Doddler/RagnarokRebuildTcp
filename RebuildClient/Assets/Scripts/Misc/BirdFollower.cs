@@ -81,6 +81,28 @@ namespace Assets.Scripts.Misc
                 spriteAnimator.Angle = TargetCharacter.SpriteAnimator.Angle;
         }
 
+        public void LaunchAttackToPosition(Vector3 target)
+        {
+            isAnimating = false;
+            isAttacking = true;
+            timeOfStartAttack = Time.timeSinceLevelLoad;
+
+            SwitchToAttack();
+            var targetPos = target + new Vector3(0f, 0.6f, 0f);
+            attackVector = targetPos - transform.position;
+            LookAt(target);
+            
+            // Debug.Log(attackVector.magnitude);
+
+            if (attackVector.magnitude < 6f)
+            {
+                var oldY = attackVector.y;
+                attackVector.Normalize();
+                attackVector *= 6f;
+                attackVector.y = oldY;
+            }
+        }
+        
         public void LaunchAttackTarget(ServerControllable target)
         {
             isAnimating = false;

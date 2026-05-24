@@ -67,6 +67,7 @@ namespace Assets.Scripts.Effects
 		Sanctuary,
 		BowlingBashImpact,
 		SpearBoomerang,
+		Detect,
 		EarthShaker,
 		SpecialTargetMarker,
 		AdrenalineRush,
@@ -184,6 +185,7 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.Sanctuary, new Assets.Scripts.Effects.EffectHandlers.Skills.Priest.SanctuaryEffect());
 			effectHandlers.Add(EffectType.BowlingBashImpact, new Assets.Scripts.Effects.EffectHandlers.Skills.Knight.BowlingBashImpactEffect());
 			effectHandlers.Add(EffectType.SpearBoomerang, new Assets.Scripts.Effects.EffectHandlers.Skills.Knight.SpearBoomerangEffect());
+			effectHandlers.Add(EffectType.Detect, new Assets.Scripts.Effects.EffectHandlers.Skills.Hunter.DetectEffect());
 			effectHandlers.Add(EffectType.EarthShaker, new Assets.Scripts.Effects.EffectHandlers.Skills.Custom.EarthShakerEffect());
 			effectHandlers.Add(EffectType.SpecialTargetMarker, new Assets.Scripts.Effects.EffectHandlers.Skills.Custom.SpecialTargetMarkerEffect());
 			effectHandlers.Add(EffectType.AdrenalineRush, new Assets.Scripts.Effects.EffectHandlers.Skills.Blacksmith.AdrenalineRushEffect());

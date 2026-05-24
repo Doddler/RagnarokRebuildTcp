@@ -23,6 +23,12 @@ public class DetectHandler : SkillHandlerBase
                 nearbyEnemy.RemoveStatusOfGroupIfExists("Hiding");
         }
 
+        if (!isIndirect)
+        {
+            source.ApplyCooldownForSupportSkillAction();
+            source.ApplyAfterCastDelay(0.7f);
+        }
+
         CommandBuilder.SkillExecuteAreaTargetedSkillAutoVis(source.Character, position, CharacterSkill.Detect, lvl);
     }
 }
