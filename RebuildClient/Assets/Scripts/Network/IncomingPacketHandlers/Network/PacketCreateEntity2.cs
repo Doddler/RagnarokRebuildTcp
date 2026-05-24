@@ -135,7 +135,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 
                 controllable = EntityBuilder.Instance.LoadPlayer(ref entity, ref player);
                 
-                Debug.LogError($"No handler for creating PlayerLikeNpc!!");
+                //Debug.LogError($"No handler for creating PlayerLikeNpc!!");
             }
 
             if (controllable == null)

@@ -49,6 +49,26 @@ StateAttacking:
     TryCast(Hallucination, 1, 5%, 0.5s, 5s) -> SendEmote(29);
 }
 
+SkillHandler("STING") {
+StateIdle:
+    @ResumeAiState(20%, AiAggressive, 20); //hmm
+	TryCast(NoCast, 1, 2%, 0, 5s) -> SendEmote(10); //scissors
+	TryCast(NoCast, 1, 2%, 0, 5s) -> SendEmote(11); //rock
+	TryCast(NoCast, 1, 2%, 0, 5s) -> SendEmote(12); //paper
+StateRandomMove:
+	TryCast(NoCast, 1, 8%, 0, 5s) -> SendEmote(10); //scissors
+	TryCast(NoCast, 1, 8%, 0, 5s) -> SendEmote(11); //rock
+	TryCast(NoCast, 1, 8%, 0, 5s) -> SendEmote(12); //paper
+StateChase:
+    @GiveUpChase(2%, AiPassive, 19); //sweating
+	TryCast(Quagmire, 5, 5%, 0.7s, 5s, NoInterrupt)[TimeInAiState > 3s] -> SendEmote(11); //rock
+StateAttacking:
+	TryCast(SpearStab, 10, 5%, 0.8s, 5s) -> SendEmote(11); //rock
+    TryCast(EarthAttack, 3, 5%, 0.5s, 5s, NoInterrupt) -> SendEmote(12); //paper
+	TryCast(Quagmire, 5, 5%, 0.7s, 5s) -> SendEmote(11); //rock
+	TryCast(Hiding, 1, 20%, 0, 1m)[HpPercent < 20] -> SendEmote(10); //scissors
+}
+
 SkillHandler("MIMIC") {
 StateIdle:
 	TryCast(NoCast, 1, 20%, 0, 5s) -> SendEmote(29); //heh

@@ -7,4 +7,35 @@ ScriptedImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-  script: {fileID: 11500000, guid: 49fe68463c56b9049a2275c7ed72363b, type: 3}
+  script: {instanceID: 0}
+  spriteVersion: 2.1
+  filepath: Assets/Effects/Custom/customsmoke.spr
+  sprFileName: customsmoke
+  palette: {instanceID: 0}
+  atlas: {instanceID: 0}
+  atlasRects:
+  - serializedVersion: 2
+    x: 0.4375
+    y: 0
+    width: 0.1953125
+    height: 0.3046875
+  - serializedVersion: 2
+    x: 0.234375
+    y: 0
+    width: 0.203125
+    height: 0.3515625
+  - serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0.234375
+    height: 0.390625
+  - serializedVersion: 2
+    x: 0
+    y: 0.390625
+    width: 0.234375
+    height: 0.375
+  - serializedVersion: 2
+    x: 0.6328125
+    y: 0
+    width: 0.1875
+    height: 0.3046875

@@ -177,11 +177,15 @@ public static class CommandBuilder
     //        packet.Write(lockTime > 0 ? lockTime : 0f);
     //    }
     //}
-    
+
     private static void SerializeEntityDataV2(OutboundMessage packet, WorldObject c, bool isSelf = false)
     {
         var isCombatType = c.Type != CharacterType.NPC;
         var ce = isCombatType ? c.CombatEntity : null;
+
+        var type = c.Type;
+        if (c.OverrideAppearanceState != null)
+            type = CharacterType.PlayerLikeNpc;
 
         var entity = new EntitySpawnParameters()
         {
@@ -189,7 +193,7 @@ public static class CommandBuilder
             ClassId = c.ClassId,
             OverrideClassId = c.OverrideClassId,
             Name = c.Name,
-            Type = c.Type,
+            Type = type,
             Facing = c.FacingDirection,
             State = c.State,
             Position = c.Position,
@@ -208,7 +212,7 @@ public static class CommandBuilder
 
         packet.MemoryPackSerializeWithLength(ref entity);
 
-        if (c.Type == CharacterType.Player)
+        if (type == CharacterType.Player)
         {
             var player = c.Player;
 
@@ -231,8 +235,8 @@ public static class CommandBuilder
 
             packet.MemoryPackSerializeWithLength(ref pData);
         }
-        
-        if (c.Type == CharacterType.PlayerLikeNpc)
+
+        if (type == CharacterType.PlayerLikeNpc)
         {
             var npc = c.OverrideAppearanceState!;
             var pData = new PlayerSpawnParameters()
@@ -253,7 +257,7 @@ public static class CommandBuilder
             packet.MemoryPackSerializeWithLength(ref pData);
         }
 
-        if (c.Type == CharacterType.NPC || c.Type == CharacterType.BattleNpc)
+        if (type == CharacterType.NPC || type == CharacterType.BattleNpc)
         {
             var npc = c.Npc;
             var display = npc.DisplayType;
@@ -1331,7 +1335,7 @@ public static class CommandBuilder
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
-    
+
     public static void SendHealMulti(WorldObject p, int healAmount, HealType type)
     {
         if (!HasRecipients())

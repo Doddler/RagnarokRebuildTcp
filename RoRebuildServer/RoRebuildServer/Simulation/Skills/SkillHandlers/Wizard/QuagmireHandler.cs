@@ -18,6 +18,8 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Wizard;
 [SkillHandler(CharacterSkill.Quagmire, SkillClass.Magic, SkillTarget.Ground)]
 public class QuagmireHandler : SkillHandlerBase
 {
+    public override int GetSkillRange(CombatEntity source, int lvl) => 9;
+
     public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target, Position position,
         int lvl, bool isIndirect, bool isItemSource)
     {

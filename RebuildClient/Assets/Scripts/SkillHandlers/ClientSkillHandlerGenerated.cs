@@ -116,7 +116,7 @@ namespace Assets.Scripts.SkillHandlers
 			handlers[96] = new Assets.Scripts.SkillHandlers.Handlers.JupitelThunderHandler();
 			handlers[97] = new Assets.Scripts.SkillHandlers.Handlers.LordOfVermilionHandler();
 			handlers[98] = new Assets.Scripts.SkillHandlers.Handlers.MeteorStormHandler();
-			handlers[99] = new DefaultSkillHandler();
+			handlers[99] = new Assets.Scripts.SkillHandlers.Handlers.QuagmireHandler();
 			handlers[100] = new DefaultSkillHandler();
 			handlers[101] = new DefaultSkillHandler();
 			handlers[102] = new Assets.Scripts.SkillHandlers.Handlers.StormGustSkillHandler();

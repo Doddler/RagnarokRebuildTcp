@@ -974,6 +974,7 @@ public partial class Monster : IEntityAutoReset
         //    CurrentAiState = CurrentAiState;
 
         canResetAttackedState = false;
+        var initialState = CurrentAiState;
 
         if (skillAiHandler != null
             && nextAiSkillUpdate < Time.ElapsedTimeFloat
@@ -1029,7 +1030,6 @@ public partial class Monster : IEntityAutoReset
 
             PreviousAiState = CurrentAiState;
             CurrentAiState = entry.OutputState;
-            timeofLastStateChange = Time.ElapsedTimeFloat;
 
             //some AI state actions can short circuit the output directly to a target state (particularly chase -> attacking)
             if (OverrideTargetState == MonsterAiState.StateAny)
@@ -1037,6 +1037,9 @@ public partial class Monster : IEntityAutoReset
             CurrentAiState = OverrideTargetState;
             OverrideTargetState = MonsterAiState.StateAny;
         }
+
+        if(CurrentAiState != initialState)
+            timeofLastStateChange = Time.ElapsedTimeFloat;
 
         if (canResetAttackedState)
             ResetFlagsAfterSkillHandler();

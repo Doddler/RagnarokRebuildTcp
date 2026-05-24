@@ -7,4 +7,20 @@ ScriptedImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-  script: {fileID: 11500000, guid: 49fe68463c56b9049a2275c7ed72363b, type: 3}
+  script: {instanceID: 0}
+  spriteVersion: 2.1
+  filepath: Assets/Effects/Custom/blessingedited.spr
+  sprFileName: blessingedited
+  palette: {instanceID: 0}
+  atlas: {instanceID: 0}
+  atlasRects:
+  - serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0.5625
+    height: 0.3359375
+  - serializedVersion: 2
+    x: 0
+    y: 0.3359375
+    width: 0.53125
+    height: 0.2578125

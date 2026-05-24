@@ -169,7 +169,7 @@ StateChase:
     TryCast(MonsterSnap, 1, 100%, 0s, 5s)[WasRangedOrMagicAttacked]; //lv 1 is 14 range, 2 is 21
 StateAttacking: 
     //Dark Cross 3: 50%, 0 cast time, 10s cooldown, emote 9
-        //Change Undead 1: 3%, 1s cast time, 30s cooldown, emote 9 
+    //Change Undead 1: 3%, 1s cast time, 30s cooldown, emote 9 
 	TryCast(DarkAttack, 5, 5%, 0.5s, 5s);
     TryCast(DarkStrike, 9, 20%, 0.7s, 5s, NoInterrupt) -> SendEmote(9);
 }
