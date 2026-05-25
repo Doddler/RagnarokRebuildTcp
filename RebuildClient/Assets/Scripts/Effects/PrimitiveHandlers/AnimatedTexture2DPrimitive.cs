@@ -63,10 +63,11 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
                     meshCache.Add(id, mesh);
                 }
 
+                var meshColors = mesh.colors;
                 mb.AddVertices(mesh.vertices);
                 mb.AddTriangles(mesh.triangles);
                 mb.AddUVs(mesh.uv);
-                for (var i = 0; i < mesh.colors.Length; i++)
+                for (var i = 0; i < meshColors.Length; i++)
                     mb.AddColor((Color32)c);
             }
             else

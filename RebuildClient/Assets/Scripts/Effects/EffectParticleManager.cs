@@ -58,6 +58,8 @@ namespace Assets.Scripts.Effects
         //private Vector3[] uv3s = new Vector3[4];
         private int[] tris;
 
+        private Vector2[][] spriteUvCache;
+
         private void Initialize()
         {
             mb = new MeshBuilder();
@@ -68,6 +70,11 @@ namespace Assets.Scripts.Effects
             mf.sharedMesh = mesh;
             Material.mainTexture = Sprites[0].texture; //assume they're all on the same packed sprite sheet
             camera = CameraFollower.Instance;
+
+            spriteUvCache = new Vector2[Sprites.Count][];
+            for (var i = 0; i < Sprites.Count; i++)
+                spriteUvCache[i] = Sprites[i].uv;
+
             isInit = true;
         }
 
@@ -197,12 +204,7 @@ namespace Assets.Scripts.Effects
                 verts[2] = rotation * new Vector3(-width, -height) + offset;
                 verts[3] = rotation * new Vector3(width, -height) + offset;
 
-                var sprite = Sprites[p.ParticleId];
-
-                var spriteUVs = sprite.uv;
-
-                // var spriteUVs = SpriteUtility.GetSpriteUVs(sprite, true);
-                // var rect = sprite.textureRect;
+                var spriteUVs = spriteUvCache[p.ParticleId];
 
                 uvs[0] = spriteUVs[0];
                 uvs[1] = spriteUVs[1];
@@ -218,7 +220,7 @@ namespace Assets.Scripts.Effects
                 mb.AddQuad(verts, normals, uvs, colors);
             }
 
-            if (mesh.triangles.Length != mb.TriangleCount)
+            if (mesh.GetIndexCount(0) != (uint)mb.TriangleCount)
                 mesh.Clear();
             mf.sharedMesh = mb.ApplyToMesh(mesh);
         }

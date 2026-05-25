@@ -358,7 +358,8 @@ namespace Assets.Scripts.Sprites
 	        }
 	        
 	        // We can't sort transparency, so we must fall back to standard rendering.
-	        if (MeshFilter.sharedMesh.colors.Length > 0 && MeshFilter.sharedMesh.colors[0].a < 0.5f)
+	        var sharedColors = MeshFilter.sharedMesh.colors;
+	        if (sharedColors.Length > 0 && sharedColors[0].a < 0.5f)
 	        {
 		        MeshRenderer.enabled = true;
 		        drawCall.Vertices = new[] { Vector3.zero };

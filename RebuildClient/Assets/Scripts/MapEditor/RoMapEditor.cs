@@ -658,7 +658,13 @@ namespace Assets.Scripts.MapEditor
         {
             if (mapData == null)
                 return;
-            
+
+            if (Application.isPlaying)
+            {
+                updatedLightmapper = true;
+                return;
+            }
+
             SceneView.duringSceneGui += OnSceneGUI;
             EditorApplication.playModeStateChanged += OnChangePlayMode;
 
