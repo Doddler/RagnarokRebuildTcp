@@ -1277,7 +1277,7 @@ namespace Assets.Scripts
             {
 #if DEBUG
                 if (lastTile != groundPosition)
-                    CharacterDetailBox.DebugInfo.text = groundPosition.ToString();
+                    CharacterDetailBox.DebugInfo.text = $"({groundPosition.x}, {groundPosition.y})";
 #endif
                 WalkProvider.UpdateCursorPosition(Target.transform.position, intersectLocation, hasValidPath);
             }

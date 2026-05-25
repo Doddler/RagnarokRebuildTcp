@@ -110,7 +110,7 @@ public class RoSpriteBatcher : MonoBehaviour
 		
 		_pool.BeginFrame();
 		
-		foreach (var rawCalls in drawCalls)
+		foreach (var rawCalls in drawCalls.Pairs)
 		{
 			var rawCall = rawCalls.Value;
 			var total = rawCall.Count;
