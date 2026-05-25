@@ -47,6 +47,8 @@ namespace Assets.Scripts
         private static HashSet<Vector2Int> openListPos = new HashSet<Vector2Int>();
         private static HashSet<Vector2Int> closedListPos = new HashSet<Vector2Int>();
 
+        private static readonly System.Comparison<PathNode> NodeFComparison = (a, b) => a.F.CompareTo(b.F);
+
         private static void BuildCache()
         {
             Debug.Log("Build path cache");
@@ -172,7 +174,7 @@ namespace Assets.Scripts
                         openListPos.Add(np);
                         closedListPos.Add(np);
 
-                        openList.Sort((a, b) => a.F.CompareTo(b.F));
+                        openList.Sort(NodeFComparison);
                         Profiler.EndSample();
                         //openList = openList.OrderBy(o => o.F).ToList();
                     }

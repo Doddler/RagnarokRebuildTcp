@@ -18,6 +18,16 @@ public class DamageIndicatorBatcher : MonoBehaviour
 	private static readonly int BaseInstance = Shader.PropertyToID("_BaseInstance");
 	private static readonly int MainTex = Shader.PropertyToID("_MainTex");
 	private static readonly int Spacing = Shader.PropertyToID("_Spacing");
+	private static readonly int Alpha = Shader.PropertyToID("_Alpha");
+	private static readonly int Value = Shader.PropertyToID("_Value");
+	private static readonly int ColorProp = Shader.PropertyToID("_Color");
+	private static readonly int LifeTime = Shader.PropertyToID("_LifeTime");
+	private static readonly int CritJitter = Shader.PropertyToID("_CritJitter");
+	private static readonly int IsCrit = Shader.PropertyToID("_IsCrit");
+	private static readonly int IsMiss = Shader.PropertyToID("_IsMiss");
+	private static readonly int IsAgi = Shader.PropertyToID("_IsAgi");
+	private static readonly int IsSlow = Shader.PropertyToID("_IsSlow");
+	private static readonly int IsExp = Shader.PropertyToID("_IsExp");
 
 	public List<DamageIndicator> indicators = new();
 	public Mesh mesh;
@@ -189,18 +199,18 @@ public class DamageIndicatorBatcher : MonoBehaviour
 
 			_propertyBlock.Clear();
 
-			_propertyBlock.SetFloat("_Alpha", di.alpha);
-			_propertyBlock.SetInt("_Value", di.value);
-			_propertyBlock.SetColor("_Color", di.color);
-			_propertyBlock.SetFloat("_LifeTime", di.lifeTime);
+			_propertyBlock.SetFloat(Alpha, di.alpha);
+			_propertyBlock.SetInt(Value, di.value);
+			_propertyBlock.SetColor(ColorProp, di.color);
+			_propertyBlock.SetFloat(LifeTime, di.lifeTime);
 
-			_propertyBlock.SetFloat("_CritJitter", di.critJitter);
+			_propertyBlock.SetFloat(CritJitter, di.critJitter);
 
-			_propertyBlock.SetFloat("_IsCrit", di.type == TextIndicatorType.Critical ? 1 : 0);
-			_propertyBlock.SetFloat("_IsMiss", di.type == TextIndicatorType.Miss ? 1 : 0);
-			_propertyBlock.SetFloat("_IsAgi", di.type is TextIndicatorType.Effect or TextIndicatorType.Debuff ? 1 : 0);
-			_propertyBlock.SetFloat("_IsSlow", di.type == TextIndicatorType.Debuff ? 1 : 0);
-			_propertyBlock.SetFloat("_IsExp", di.type == TextIndicatorType.Experience ? 1 : 0);
+			_propertyBlock.SetFloat(IsCrit, di.type == TextIndicatorType.Critical ? 1 : 0);
+			_propertyBlock.SetFloat(IsMiss, di.type == TextIndicatorType.Miss ? 1 : 0);
+			_propertyBlock.SetFloat(IsAgi, di.type is TextIndicatorType.Effect or TextIndicatorType.Debuff ? 1 : 0);
+			_propertyBlock.SetFloat(IsSlow, di.type == TextIndicatorType.Debuff ? 1 : 0);
+			_propertyBlock.SetFloat(IsExp, di.type == TextIndicatorType.Experience ? 1 : 0);
 
 			var trs = Matrix4x4.TRS(di.pos, rotation, new Vector3(di.size, di.size, 1f));
 			_cmd.DrawMesh(mesh, trs, _material, 0, 0, _propertyBlock);

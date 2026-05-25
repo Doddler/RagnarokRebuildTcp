@@ -28,6 +28,11 @@ namespace Assets.Scripts.UI.Hud
         private Stack<GameObject> unusedStatusEffects = new();
         private List<CharacterStatusEffect> expiredStatuses = new();
 
+        private int lastHpDisplayed = -1;
+        private int lastMaxHpDisplayed = -1;
+        private int lastSpDisplayed = -1;
+        private int lastMaxSpDisplayed = -1;
+
         [NonSerialized] public PartyPanel Parent;
         [NonSerialized] public PartyMemberInfo PartyMemberInfo;
 
@@ -112,8 +117,18 @@ namespace Assets.Scripts.UI.Hud
                 HpSlider.gameObject.SetActive(true);
                 SpSlider.gameObject.SetActive(true);
                 LocationText.gameObject.SetActive(false);
-                HpValueText.text = $"HP: {m.Hp} / {m.MaxHp}";
-                SpValueText.text = $"SP: {m.Sp} / {m.MaxSp}";
+                if (lastHpDisplayed != m.Hp || lastMaxHpDisplayed != m.MaxHp)
+                {
+                    HpValueText.text = $"HP: {m.Hp} / {m.MaxHp}";
+                    lastHpDisplayed = m.Hp;
+                    lastMaxHpDisplayed = m.MaxHp;
+                }
+                if (lastSpDisplayed != m.Sp || lastMaxSpDisplayed != m.MaxSp)
+                {
+                    SpValueText.text = $"SP: {m.Sp} / {m.MaxSp}";
+                    lastSpDisplayed = m.Sp;
+                    lastMaxSpDisplayed = m.MaxSp;
+                }
                 HpSlider.value = m.Hp / (float)m.MaxHp;
                 SpSlider.value = m.Sp / (float)m.MaxSp;
             }

@@ -36,6 +36,8 @@ namespace Assets.Scripts.Objects
 
         private static Dictionary<string, Material> materials = new Dictionary<string, Material>(8);
 
+        private static readonly int ColorProp = Shader.PropertyToID("_Color");
+
         private float time;
         private int frame;
         private float waitTime;
@@ -218,7 +220,7 @@ namespace Assets.Scripts.Objects
             var renderer = layerRenderers[layerNum];
 
             renderer.GetPropertyBlock(propBlocks[layerNum]);
-            propBlocks[layerNum].SetColor("_Color", color);
+            propBlocks[layerNum].SetColor(ColorProp, color);
             renderer.SetPropertyBlock(propBlocks[layerNum]);
 
             //mat.SetColor("_Color", color);
