@@ -70,6 +70,11 @@ namespace Assets.Scripts.Sprites
         public bool IsEffectSprite;
 
         public bool SetAsDirty;
+        
+        [NonSerialized] public int GroupIndex = -1;
+        [NonSerialized] public bool NeedsImmediateTick;
+        [NonSerialized] public Vector3 LastKnownPosition;
+        private float _lastTickTime = -1f;
 
         public ServerControllable Controllable;
         private bool isInitialized;
@@ -81,7 +86,7 @@ namespace Assets.Scripts.Sprites
         public Action OnFinishPlaying;
 
         public float CurrentShade = 1f;
-        public float TargetShade;
+        public float TargetShade = 1f;
         public float ShadeLevel = 0.85f;
 
         private const float shadeForShadow = 0.70f;
@@ -445,6 +450,7 @@ namespace Assets.Scripts.Sprites
             if (currentFrame > maxFrame)
                 currentFrame = 0;
             isDirty = true;
+            NeedsImmediateTick = true;
         }
 
         public void ChangeAction(int newActionIndex)
@@ -458,6 +464,7 @@ namespace Assets.Scripts.Sprites
             if (currentFrame > maxFrame)
                 currentFrame = 0;
             isDirty = true;
+            NeedsImmediateTick = true;
         }
 
         public void ChangeActionExact(int newActionIndex)
@@ -473,6 +480,7 @@ namespace Assets.Scripts.Sprites
                 currentFrame = 0;
             isDirty = true;
             isPaused = false;
+            NeedsImmediateTick = true;
         }
 
         public void QueueMotionTransition(SpriteMotion nextMotion, float activationTime)
@@ -499,6 +507,8 @@ namespace Assets.Scripts.Sprites
             currentFrame = 0;
             if (nextMotion == SpriteMotion.Walk)
                 currentFrame = lastWalkFrame;
+
+            NeedsImmediateTick = true;
 
             if (!isInitialized)
                 return;
@@ -693,40 +703,31 @@ namespace Assets.Scripts.Sprites
                 ShadeLevel = shadeForShadow;
             }
 
-            var srcPos = transform.position + new Vector3(0, 0.2f, 0);
-
-            var destDir = directionalLight.transform.rotation * Vector3.forward * -1;
-
-            if (shadowRaycastMask == 0)
-                shadowRaycastMask = LayerMask.GetMask("Ground", "Object");
-
-            var ray = new Ray(srcPos, destDir);
-
-            //Debug.DrawLine(srcPos, destDir, Color.yellow, 10f, false);
-            //Debug.DrawRay(srcPos, destDir, Color.yellow, 50f, false);
-
-            if (RaycastForShadow && Physics.Raycast(ray, out var hit, 50f, shadowRaycastMask))
+            if (!RaycastForShadow)
             {
-                //Debug.Log(hit.transform.gameObject);
-                TargetShade = ShadeLevel;
-            }
-            else
                 TargetShade = 1f;
+                return;
+            }
+
+            var srcPos = transform.position + new Vector3(0, 0.2f, 0);
+            RoSpriteBatcher.QueueShadowRaycast(this, srcPos, ShadeLevel);
+            // TargetShade is written back asynchronously by RoSpriteBatcher in its LateUpdate.
         }
 
-        public void UpdateColor()
+        public void UpdateColor(float dt = -1f)
         {
+            if (dt < 0f) dt = Time.deltaTime;
             var c = Color;
             if (ColorTransitionSpeed > 0)
             {
-                c = Color.Lerp(TransitionColor, c, Time.deltaTime * ColorTransitionSpeed);
+                c = Color.Lerp(TransitionColor, c, dt * ColorTransitionSpeed);
 
                 if (Mathf.Approximately(c.r, TransitionColor.r) && Mathf.Approximately(c.g, TransitionColor.g) && Mathf.Approximately(c.b, TransitionColor.b))
                 {
                     ColorTransitionSpeed = -1;
                     c = Color;
                 }
-                    
+
                 TransitionColor = c;
             }
 
@@ -758,8 +759,33 @@ namespace Assets.Scripts.Sprites
 	        Shadow.GetComponent<SpriteRenderer>().material = SpriteUtil.shadowMaterial;
         }
         
+        private void OnEnable()
+        {
+            RoSpriteBatcher.RegisterAnimator(this);
+        }
+
+        private void OnDisable()
+        {
+            RoSpriteBatcher.UnregisterAnimator(this);
+        }
+
         public void Update()
         {
+            var batcher = RoSpriteBatcher.Instance;
+            if (batcher != null && !batcher.ShouldTickAnimator(this))
+                return;
+
+            // Effective delta since this animator last ticked. In tick-group mode that may be
+            // multiple frames; outside it this equals Time.deltaTime.
+            float dt;
+            if (_lastTickTime < 0f || _lastTickTime > Time.time)
+                dt = Time.deltaTime;
+            else
+                dt = Time.time - _lastTickTime;
+            _lastTickTime = Time.time;
+            NeedsImmediateTick = false;
+            LastKnownPosition = transform.position;
+
             if (!isInitialized)
                 return;
 
@@ -773,18 +799,18 @@ namespace Assets.Scripts.Sprites
                 return;
 
             UpdateShade();
-            CurrentShade = Mathf.Lerp(CurrentShade, TargetShade, Time.deltaTime * 10f);
+            CurrentShade = Mathf.Lerp(CurrentShade, TargetShade, dt * 10f);
 
             for (var i = 0; i < ChildrenSprites.Count; i++)
                 if (ChildrenSprites[i].IsInitialized)
                     ChildrenSprites[i].UpdateChildColor();
 
-            UpdateColor();
+            UpdateColor(dt);
 
             if (currentAction == null)
                 ChangeAction(0);
 
-            pauseTime -= Time.deltaTime;
+            pauseTime -= dt;
             if (pauseTime < 0)
                 isPaused = false;
 
@@ -794,7 +820,7 @@ namespace Assets.Scripts.Sprites
                 ChangeAngle(Angle);
 
             if (Parent == null)
-                currentFrameTime -= Time.deltaTime;
+                currentFrameTime -= dt;
 
             if (queuedMotionTransition.isActive && queuedMotionTransition.TransitionTime <= Time.timeSinceLevelLoad)
             {

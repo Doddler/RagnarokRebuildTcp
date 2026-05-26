@@ -1,232 +1,570 @@
+using Assets.Scripts.Effects;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Assets.Scripts.Effects;
+using Assets.Scripts.UI.ConfigWindow;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class RoSpriteBatcher : MonoBehaviour
+public partial class RoSpriteBatcher : MonoBehaviour
 {
-	public static RoSpriteBatcher Instance;
-	private static readonly int Instances = Shader.PropertyToID("_Instances");
-	private static readonly int BaseInstance = Shader.PropertyToID("_BaseInstance");
-	private static readonly int MainTex = Shader.PropertyToID("_MainTex");
+    public static RoSpriteBatcher Instance;
+    
+    public bool EnableBatching = true;
 
-	public CollectionDictionary<Texture2D, List<RoSpriteDrawCall>, RoSpriteDrawCall> drawCalls = new();
+    internal const int VertsPerQuad = 4;
+    internal const int IndicesPerQuad = 6;
+    internal const int InitialQuadCapacity = 256;
 
-	private Camera _camera;
-	private CommandBuffer _depthCmd;
-	private CommandBuffer _colorCmd;
-	//private CommandBuffer _xrayCmd;
+    internal const MeshUpdateFlags FastUpdate =
+        MeshUpdateFlags.DontRecalculateBounds |
+        MeshUpdateFlags.DontValidateIndices |
+        MeshUpdateFlags.DontResetBoneBounds |
+        MeshUpdateFlags.DontNotifyMeshUsers;
 
-	private Material _material;
+    internal static readonly VertexAttributeDescriptor[] VertexAttributes =
+    {
+        new(VertexAttribute.Position, VertexAttributeFormat.Float32, 3),
+        new(VertexAttribute.Normal, VertexAttributeFormat.Float32, 3),
+        new(VertexAttribute.Color, VertexAttributeFormat.Float32, 4),
+        new(VertexAttribute.TexCoord0, VertexAttributeFormat.Float32, 2),
+        new(VertexAttribute.TexCoord3, VertexAttributeFormat.Float32, 3),
+        new(VertexAttribute.TexCoord4, VertexAttributeFormat.Float32, 4),
+        new(VertexAttribute.TexCoord5, VertexAttributeFormat.Float32, 4),
+        new(VertexAttribute.TexCoord6, VertexAttributeFormat.Float32, 4),
+        new(VertexAttribute.TexCoord7, VertexAttributeFormat.Float32, 1),
+    };
 
-	private InstanceBufferPool<SpriteInstanceData> _pool;
-	private readonly SpriteInstanceData[] _instStage = new SpriteInstanceData[1023];
-	private readonly Matrix4x4[] _matrices = new Matrix4x4[1023];
-	
-	private Mesh _quad;
-	private MaterialPropertyBlock _propertyBlock;
-	
-	private const CameraEvent DepthEvent = CameraEvent.BeforeForwardAlpha;
-	private const CameraEvent ColorEvent = CameraEvent.BeforeForwardAlpha;
+    private const CameraEvent DepthEvent = CameraEvent.BeforeForwardAlpha;
+    private const CameraEvent ColorEvent = CameraEvent.BeforeForwardAlpha;
+    private const CameraEvent XRayEvent = CameraEvent.AfterForwardOpaque;
 
-	[Header("EXPERIMENTAL! There are small visual artifacts and xRay is not supported.")]
-	[Space]
-	public bool EnableInstancing;
+    private Camera _camera;
+    private CommandBuffer _depthCmd;
+    private CommandBuffer _colorCmd;
+    private CommandBuffer _xrayCmd;
 
-	private void OnEnable()
-	{
-		Instance = this;
+    private readonly HashSet<Camera> _attachedCameras = new();
 
-		if (!SystemInfo.supportsInstancing)
-		{
-			EnableInstancing = false;
-			Debug.Log("System doesn't support Instancing, disabling...");
-			return;
-		}
-		
-		_depthCmd = new CommandBuffer();
-		_depthCmd.name = "RoSpriteBatcher - Depth";
-			
-		_colorCmd = new CommandBuffer();
-		_colorCmd.name = "RoSpriteBatcher - Color";
-		
-		//_xrayCmd = new CommandBuffer();
-		//_xrayCmd.name = "RoSpriteBatcher - X-Ray";
-		
-		_camera = GetComponent<Camera>();
-		
-		_camera.AddCommandBuffer(DepthEvent, _depthCmd);
-		_camera.AddCommandBuffer(ColorEvent, _colorCmd);
-		//_camera.AddCommandBuffer(CameraEvent.AfterForwardOpaque + 1, _xrayCmd);
+    private static readonly Plane[] _frustumPlanes = new Plane[6];
 
-		_material = new Material(ShaderCache.Instance.SpriteShader);
-		_material.enableInstancing = true;
-		
-		_pool = new InstanceBufferPool<SpriteInstanceData>(1023);
-		
-		_propertyBlock = new MaterialPropertyBlock();
+    private Material _baseMaterial;
+    private Material _xrayMaterial;
 
-		_quad = BuildUnitQuadMesh();
-	}
+    private readonly Dictionary<Texture2D, AtlasBatch> _atlases = new();
+    private readonly List<AtlasBatch> _atlasList = new();
 
-	private void OnDisable()
-	{
-		if (_camera && _depthCmd != null)
-		{
-			_camera.RemoveCommandBuffer(DepthEvent, _depthCmd);
-		}
-		_depthCmd?.Release();
-		_depthCmd = null;
+    private void OnEnable()
+    {
+        Instance = this;
 
-		if (_camera && _colorCmd != null)
-		{
-			_camera.RemoveCommandBuffer(ColorEvent, _colorCmd);
-		}
-		_colorCmd?.Release();
-		_colorCmd = null;
-		
-		/*if (_camera && _xrayCmd != null)
-		{
-			_camera.RemoveCommandBuffer(CameraEvent.AfterForwardOpaque, _xrayCmd);
-		}
-		_xrayCmd?.Release();
-		_xrayCmd = null;*/
-		
-		if (_material)
-		{
-			Destroy(_material);
-			_material = null;
-		}
-	}
-	
-	private void OnPreRender()
-	{
-		_depthCmd.Clear();
-		_colorCmd.Clear();
-		//_xrayCmd.Clear();
-		
-		if (!EnableInstancing) return;
-		
-		_pool.BeginFrame();
-		
-		foreach (var rawCalls in drawCalls.Pairs)
-		{
-			var rawCall = rawCalls.Value;
-			var total = rawCall.Count;
-			
-			_colorCmd.BeginSample(rawCalls.Key.ToString());
-			_depthCmd.BeginSample(rawCalls.Key.ToString());
-			
-			for (int start = 0; start < total; start += 1023)
-			{
-				var batchCount = Mathf.Min(1023, total - start);
+        _camera = GetComponent<Camera>();
 
-				for (int i = 0; i < batchCount; i++)
-				{
-					var rc = rawCall[start + i];
+        _depthCmd = new CommandBuffer { name = "RoSpriteBatcher - Depth" };
+        _colorCmd = new CommandBuffer { name = "RoSpriteBatcher - Color" };
+        _xrayCmd  = new CommandBuffer { name = "RoSpriteBatcher - XRay" };
 
-					var inst = new SpriteInstanceData
-					{
-						v0 = (rc.Vertices.Length == 4) ? rc.Vertices[0] : Vector3.zero,
-						v1 = (rc.Vertices.Length == 4) ? rc.Vertices[1] : Vector3.zero,
-						v2 = (rc.Vertices.Length == 4) ? rc.Vertices[2] : Vector3.zero,
-						v3 = (rc.Vertices.Length == 4) ? rc.Vertices[3] : Vector3.zero,
+        AttachToCamera(_camera);
 
-						u0 = (rc.UV.Length == 4) ? rc.UV[0] : Vector2.zero,
-						u1 = (rc.UV.Length == 4) ? rc.UV[1] : Vector2.zero,
-						u2 = (rc.UV.Length == 4) ? rc.UV[2] : Vector2.zero,
-						u3 = (rc.UV.Length == 4) ? rc.UV[3] : Vector2.zero,
+#if UNITY_EDITOR
+        Camera.onPreCull += OnAnyCameraPreCull;
+#endif
 
-						c0 = (rc.VColor.Length == 4) ? rc.VColor[0] : Vector4.one,
-						c1 = (rc.VColor.Length == 4) ? rc.VColor[1] : Vector4.one,
-						c2 = (rc.VColor.Length == 4) ? rc.VColor[2] : Vector4.one,
-						c3 = (rc.VColor.Length == 4) ? rc.VColor[3] : Vector4.one,
+        EnsureMaterials();
+    }
 
-						color = rc.Color,
-						isHidden = rc.IsHidden ? 1f : 0f,
-						offset = rc.Offset,
-						colorDrain = rc.ColorDrain,
-						vPos = rc.VPos,
-						width = rc.Width,
-					};
+    private void OnDisable()
+    {
+#if UNITY_EDITOR
+        Camera.onPreCull -= OnAnyCameraPreCull;
+#endif
 
-					_instStage[i] = inst;
-					_matrices[i] = rc.Transform ? rc.Transform.localToWorldMatrix : Matrix4x4.identity;
-				}
-				
-				var baseInstance = _pool.AppendInstances(_instStage, 0, batchCount);
-				
-				_propertyBlock.Clear();
-				_propertyBlock.SetBuffer(Instances, _pool.Instances);
-				_propertyBlock.SetInt(BaseInstance, baseInstance);
-				_propertyBlock.SetTexture(MainTex, rawCalls.Key);
-				
-				_depthCmd.DrawMeshInstanced(_quad, 0, _material, 0, _matrices, batchCount, _propertyBlock);
-				_colorCmd.DrawMeshInstanced(_quad, 0, _material, 1, _matrices, batchCount, _propertyBlock);
-				//_xrayCmd.DrawMeshInstanced(_quad, 0, _material, 2, _matrices, batchCount, _propertyBlock);
-				
-				_colorCmd.EndSample(rawCalls.Key.ToString());
-				_depthCmd.EndSample(rawCalls.Key.ToString());
-			}
-		}
-	}
+        foreach (var cam in _attachedCameras)
+        {
+            if (cam != null)
+            {
+                cam.RemoveCommandBuffer(DepthEvent, _depthCmd);
+                cam.RemoveCommandBuffer(ColorEvent, _colorCmd);
+                cam.RemoveCommandBuffer(XRayEvent, _xrayCmd);
+            }
+        }
+        _attachedCameras.Clear();
 
-	private static Mesh BuildUnitQuadMesh()
-	{
-		var mesh = new Mesh { name = "Sprite Base Quad" };
+        _depthCmd?.Release(); _depthCmd = null;
+        _colorCmd?.Release(); _colorCmd = null;
+        _xrayCmd?.Release();  _xrayCmd  = null;
 
-		var vertices = new Vector3[4];
-		var uvs = new Vector2[4];
-		var triangles = new[] { 0, 1, 2, 1, 3, 2 };
+        for (int i = 0; i < _atlasList.Count; i++)
+            _atlasList[i].Dispose();
+        _atlasList.Clear();
+        _atlases.Clear();
 
-		mesh.vertices = vertices;
-		mesh.uv = uvs;
-		mesh.triangles = triangles;
+        if (_baseMaterial != null) { Destroy(_baseMaterial); _baseMaterial = null; }
+        if (_xrayMaterial != null) { Destroy(_xrayMaterial); _xrayMaterial = null; }
 
-		return mesh;
-	}
+        DisposeShadowRaycasts();
+    }
+
+    private void AttachToCamera(Camera cam)
+    {
+        if (cam == null) return;
+        if (_attachedCameras.Contains(cam)) return;
+        cam.AddCommandBuffer(DepthEvent, _depthCmd);
+        cam.AddCommandBuffer(ColorEvent, _colorCmd);
+        cam.AddCommandBuffer(XRayEvent, _xrayCmd);
+        _attachedCameras.Add(cam);
+    }
+
+#if UNITY_EDITOR
+    private void OnAnyCameraPreCull(Camera cam)
+    {
+        if (cam == null) return;
+        if (cam.cameraType != CameraType.SceneView) return;
+        AttachToCamera(cam);
+    }
+#endif
+
+    private void EnsureMaterials()
+    {
+        var cache = ShaderCache.Instance;
+        if (!cache) return;
+
+        if (!_baseMaterial && cache.SpriteShader)
+        {
+            _baseMaterial = new Material(cache.SpriteShader);
+            _baseMaterial.EnableKeyword("DYNBATCH_ON");
+#if UNITY_EDITOR
+            WarmUpMaterialVariants(_baseMaterial);
+#endif
+        }
+        if (!_xrayMaterial && cache.SpriteShaderWithXRay)
+        {
+            _xrayMaterial = new Material(cache.SpriteShaderWithXRay);
+            _xrayMaterial.EnableKeyword("DYNBATCH_ON");
+#if UNITY_EDITOR
+            WarmUpMaterialVariants(_xrayMaterial);
+#endif
+        }
+    }
+
+#if UNITY_EDITOR
+    private static void WarmUpMaterialVariants(Material mat)
+    {
+        if (!mat) return;
+        int passes = mat.passCount;
+        for (int i = 0; i < passes; i++)
+            UnityEditor.ShaderUtil.CompilePass(mat, i, true);
+    }
+#endif
+
+    private void LateUpdate()
+    {
+        ProcessShadowRaycasts();
+
+        if (_depthCmd == null) return;
+
+        _depthCmd.Clear();
+        _colorCmd.Clear();
+        _xrayCmd.Clear();
+
+        if (!EnableBatching) return;
+
+        EnsureMaterials();
+        if (_baseMaterial == null || _baseMaterial.passCount < 2) return;
+
+        bool xrayWanted = GameConfig.Data != null && GameConfig.Data.EnableXRay
+            && _xrayMaterial != null && _xrayMaterial.passCount >= 3;
+
+        bool haveFrustum = _camera != null;
+        if (haveFrustum)
+            GeometryUtility.CalculateFrustumPlanes(_camera, _frustumPlanes);
+
+        for (int i = 0; i < _atlasList.Count; i++)
+        {
+            var batch = _atlasList[i];
+            if (batch.Allocated <= 0) continue;
+
+            batch.FlushUploads();
+
+            if (!batch.TryGetActiveBounds(out var bounds))
+                continue;
+
+            batch.Mesh.bounds = bounds;
+
+            if (haveFrustum && !GeometryUtility.TestPlanesAABB(_frustumPlanes, bounds))
+                continue;
+
+            _depthCmd.DrawMesh(batch.Mesh, Matrix4x4.identity, _baseMaterial, 0, 0, batch.PropertyBlock);
+            _colorCmd.DrawMesh(batch.Mesh, Matrix4x4.identity, _baseMaterial, 0, 1, batch.PropertyBlock);
+
+            if (xrayWanted)
+                _xrayCmd.DrawMesh(batch.Mesh, Matrix4x4.identity, _xrayMaterial, 0, 2, batch.PropertyBlock);
+        }
+    }
+    
+    public SpriteBatchHandle Register(Texture2D atlas, int layerCount)
+    {
+        var batch = GetOrCreateBatch(atlas);
+        var slots = new int[layerCount];
+        for (int i = 0; i < layerCount; i++)
+            slots[i] = batch.AllocSlot();
+        return new SpriteBatchHandle { atlas = atlas, slots = slots };
+    }
+
+    public void Unregister(ref SpriteBatchHandle handle)
+    {
+        if (handle.atlas == null || handle.slots == null) return;
+        if (_atlases.TryGetValue(handle.atlas, out var batch))
+        {
+            var slots = handle.slots;
+            for (int i = 0; i < slots.Length; i++)
+                batch.FreeSlot(slots[i]);
+        }
+        handle.atlas = null;
+        handle.slots = null;
+    }
+
+    public void WriteSprite(ref SpriteBatchHandle handle, Matrix4x4 localToWorld,
+        Vector3[] verts, Vector2[] uvs, Color[] vcolors,
+        in SpriteRenderParams p)
+    {
+        if (!handle.atlas || verts == null) return;
+        if (!_atlases.TryGetValue(handle.atlas, out var batch)) return;
+
+        int newLayerCount = verts.Length / VertsPerQuad;
+        EnsureSlotCount(ref handle, batch, newLayerCount);
+
+        var slots = handle.slots;
+        for (int layer = 0; layer < newLayerCount; layer++)
+        {
+            int vb = layer * VertsPerQuad;
+            batch.WriteSlot(slots[layer], localToWorld,
+                verts[vb + 0], verts[vb + 1], verts[vb + 2], verts[vb + 3],
+                uvs[vb + 0],   uvs[vb + 1],   uvs[vb + 2],   uvs[vb + 3],
+                vcolors[vb + 0], vcolors[vb + 1], vcolors[vb + 2], vcolors[vb + 3],
+                p);
+        }
+    }
+
+    private void EnsureSlotCount(ref SpriteBatchHandle handle, AtlasBatch batch, int newCount)
+    {
+        var slots = handle.slots;
+        int oldCount = slots != null ? slots.Length : 0;
+        if (oldCount == newCount) return;
+
+        if (newCount > oldCount)
+        {
+            var newSlots = new int[newCount];
+            if (slots != null)
+                Array.Copy(slots, newSlots, oldCount);
+            for (int i = oldCount; i < newCount; i++)
+                newSlots[i] = batch.AllocSlot();
+            handle.slots = newSlots;
+        }
+        else
+        {
+            for (int i = newCount; i < oldCount; i++)
+                batch.FreeSlot(slots[i]);
+            var newSlots = new int[newCount];
+            Array.Copy(slots, newSlots, newCount);
+            handle.slots = newSlots;
+        }
+    }
+
+    private AtlasBatch GetOrCreateBatch(Texture2D atlas)
+    {
+        if (!_atlases.TryGetValue(atlas, out var batch))
+        {
+            batch = new AtlasBatch(atlas, InitialQuadCapacity);
+            _atlases[atlas] = batch;
+            _atlasList.Add(batch);
+        }
+        return batch;
+    }
 }
 
-public class RoSpriteDrawCall
+public struct SpriteBatchHandle
 {
-	public Transform Transform;
-	public Vector3[] Vertices = new Vector3[4];
-	public Vector2[] UV = new Vector2[4];
-	public Color[] VColor = new Color[4];
-	public bool IsHidden;
-	public Color Color;
-	public float Offset;
-	public float ColorDrain;
-	public float VPos;
-	public float Width;
+    public Texture2D atlas;
+    public int[] slots;
+}
+
+public struct SpriteRenderParams
+{
+    public Color spriteColor;
+    public float colorDrain;
+    public float offset;
+    public float vPos;
+    public float width;
+    public bool hidden;
 }
 
 [StructLayout(LayoutKind.Sequential)]
-public struct SpriteInstanceData
+public struct SpriteVertex
 {
-	// Vertex position
-	public Vector3 v0;
-	public Vector3 v1;
-	public Vector3 v2;
-	public Vector3 v3;
+    public Vector3 position;
+    public Vector3 normal;
+    public Color color;
+    public Vector2 uv;
+    public Vector3 anchorWS;
+    public Vector4 cornerOS;
+    public Color spriteColor;
+    public Vector4 packed;
+    public float hidden;
+}
 
-	// Texture coords
-	public Vector2 u0;
-	public Vector2 u1;
-	public Vector2 u2;
-	public Vector2 u3;
+internal sealed class AtlasBatch : IDisposable
+{
+    private static readonly int MainTexId = Shader.PropertyToID("_MainTex");
 
-	// Vertex color
-	public Vector4 c0;
-	public Vector4 c1;
-	public Vector4 c2;
-	public Vector4 c3;
+    public Texture2D Atlas;
+    public Mesh Mesh;
+    public MaterialPropertyBlock PropertyBlock;
+    public NativeArray<SpriteVertex> Verts;
+    public NativeArray<ushort> Indices;
+    public readonly Stack<int> FreeSlots = new();
+    private bool[] _slotInUse;
+    public int Capacity;
+    public int Allocated;
 
-	public Vector4 color;
-	public float isHidden;
-	public float offset;
-	public float colorDrain;
-	public float vPos;
-	public float width;
+    private int _dirtyMin = int.MaxValue;
+    private int _dirtyMax = int.MinValue;
+    private bool _submeshDirty;
+
+    private Bounds _cachedBounds;
+    private bool _hasCachedBounds;
+    private bool _boundsDirty = true;
+
+    public AtlasBatch(Texture2D atlas, int initialCapacity)
+    {
+        Atlas = atlas;
+        Capacity = initialCapacity;
+        Allocated = 0;
+
+        Mesh = new Mesh { name = $"RoSpriteBatch - {atlas?.name}" };
+        Mesh.MarkDynamic();
+        Mesh.indexFormat = IndexFormat.UInt16;
+
+        _slotInUse = new bool[Capacity];
+        Verts = new NativeArray<SpriteVertex>(Capacity * RoSpriteBatcher.VertsPerQuad, Allocator.Persistent);
+        Indices = new NativeArray<ushort>(Capacity * RoSpriteBatcher.IndicesPerQuad, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
+
+        FillIndices(0, Capacity);
+
+        Mesh.SetVertexBufferParams(Capacity * RoSpriteBatcher.VertsPerQuad, RoSpriteBatcher.VertexAttributes);
+        Mesh.SetIndexBufferParams(Capacity * RoSpriteBatcher.IndicesPerQuad, IndexFormat.UInt16);
+        Mesh.SetIndexBufferData(Indices, 0, 0, Capacity * RoSpriteBatcher.IndicesPerQuad, RoSpriteBatcher.FastUpdate);
+        Mesh.subMeshCount = 1;
+        Mesh.SetSubMesh(0, new SubMeshDescriptor(0, 0), RoSpriteBatcher.FastUpdate);
+
+        PropertyBlock = new MaterialPropertyBlock();
+        if (atlas)
+            PropertyBlock.SetTexture(MainTexId, atlas);
+    }
+
+    private void FillIndices(int startQuad, int endQuad)
+    {
+        for (int q = startQuad; q < endQuad; q++)
+        {
+            int vb = q * RoSpriteBatcher.VertsPerQuad;
+            int ib = q * RoSpriteBatcher.IndicesPerQuad;
+            Indices[ib + 0] = (ushort)(vb + 0);
+            Indices[ib + 1] = (ushort)(vb + 1);
+            Indices[ib + 2] = (ushort)(vb + 2);
+            Indices[ib + 3] = (ushort)(vb + 1);
+            Indices[ib + 4] = (ushort)(vb + 3);
+            Indices[ib + 5] = (ushort)(vb + 2);
+        }
+    }
+
+    public int AllocSlot()
+    {
+        int slot;
+        if (FreeSlots.Count > 0)
+        {
+            slot = FreeSlots.Pop();
+        }
+        else
+        {
+            if (Allocated >= Capacity)
+                Grow();
+            slot = Allocated++;
+            _submeshDirty = true;
+        }
+        _slotInUse[slot] = true;
+        _boundsDirty = true;
+        return slot;
+    }
+
+    public void FreeSlot(int slot)
+    {
+        int vb = slot * RoSpriteBatcher.VertsPerQuad;
+        var zero = default(SpriteVertex);
+        Verts[vb + 0] = zero;
+        Verts[vb + 1] = zero;
+        Verts[vb + 2] = zero;
+        Verts[vb + 3] = zero;
+        MarkDirty(slot);
+        _slotInUse[slot] = false;
+        _boundsDirty = true;
+        FreeSlots.Push(slot);
+    }
+
+    public void WriteSlot(int slot, Matrix4x4 localToWorld,
+        Vector3 c0, Vector3 c1, Vector3 c2, Vector3 c3,
+        Vector2 u0, Vector2 u1, Vector2 u2, Vector2 u3,
+        Color vc0, Color vc1, Color vc2, Color vc3,
+        in SpriteRenderParams p)
+    {
+        int vb = slot * RoSpriteBatcher.VertsPerQuad;
+        float hiddenF = p.hidden ? 1f : 0f;
+        var packed = new Vector4(p.colorDrain, p.offset, p.vPos, p.width);
+        var sprColor = p.spriteColor;
+
+        var anchor = new Vector3(localToWorld.m03, localToWorld.m13, localToWorld.m23);
+        
+        var spriteUp = localToWorld.MultiplyVector(Vector3.up);
+
+        var corner0 = localToWorld.MultiplyVector(c0);
+        var corner1 = localToWorld.MultiplyVector(c1);
+        var corner2 = localToWorld.MultiplyVector(c2);
+        var corner3 = localToWorld.MultiplyVector(c3);
+
+        var origin0 = localToWorld.MultiplyVector(new Vector3(c0.x, 0f, 0f));
+        var origin1 = localToWorld.MultiplyVector(new Vector3(c1.x, 0f, 0f));
+        var origin2 = localToWorld.MultiplyVector(new Vector3(c2.x, 0f, 0f));
+        var origin3 = localToWorld.MultiplyVector(new Vector3(c3.x, 0f, 0f));
+
+        Verts[vb + 0] = new SpriteVertex
+        {
+            position = origin0, normal = spriteUp, color = vc0, uv = u0,
+            anchorWS = anchor, cornerOS = new Vector4(corner0.x, corner0.y, corner0.z, c0.y),
+            spriteColor = sprColor, packed = packed, hidden = hiddenF,
+        };
+        Verts[vb + 1] = new SpriteVertex
+        {
+            position = origin1, normal = spriteUp, color = vc1, uv = u1,
+            anchorWS = anchor, cornerOS = new Vector4(corner1.x, corner1.y, corner1.z, c1.y),
+            spriteColor = sprColor, packed = packed, hidden = hiddenF,
+        };
+        Verts[vb + 2] = new SpriteVertex
+        {
+            position = origin2, normal = spriteUp, color = vc2, uv = u2,
+            anchorWS = anchor, cornerOS = new Vector4(corner2.x, corner2.y, corner2.z, c2.y),
+            spriteColor = sprColor, packed = packed, hidden = hiddenF,
+        };
+        Verts[vb + 3] = new SpriteVertex
+        {
+            position = origin3, normal = spriteUp, color = vc3, uv = u3,
+            anchorWS = anchor, cornerOS = new Vector4(corner3.x, corner3.y, corner3.z, c3.y),
+            spriteColor = sprColor, packed = packed, hidden = hiddenF,
+        };
+
+        MarkDirty(slot);
+        _boundsDirty = true;
+    }
+
+    private void MarkDirty(int slot)
+    {
+        if (slot < _dirtyMin) _dirtyMin = slot;
+        if (slot > _dirtyMax) _dirtyMax = slot;
+    }
+
+    private void Grow()
+    {
+        int oldCapacity = Capacity;
+        int newCapacity = Capacity * 2;
+
+        var newVerts = new NativeArray<SpriteVertex>(newCapacity * RoSpriteBatcher.VertsPerQuad, Allocator.Persistent, NativeArrayOptions.ClearMemory);
+        var newIndices = new NativeArray<ushort>(newCapacity * RoSpriteBatcher.IndicesPerQuad, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
+        NativeArray<SpriteVertex>.Copy(Verts, newVerts, oldCapacity * RoSpriteBatcher.VertsPerQuad);
+        NativeArray<ushort>.Copy(Indices, newIndices, oldCapacity * RoSpriteBatcher.IndicesPerQuad);
+        Verts.Dispose();
+        Indices.Dispose();
+        Verts = newVerts;
+        Indices = newIndices;
+        Capacity = newCapacity;
+        Array.Resize(ref _slotInUse, newCapacity);
+        FillIndices(oldCapacity, newCapacity);
+
+        Mesh.SetVertexBufferParams(Capacity * RoSpriteBatcher.VertsPerQuad, RoSpriteBatcher.VertexAttributes);
+        Mesh.SetIndexBufferParams(Capacity * RoSpriteBatcher.IndicesPerQuad, IndexFormat.UInt16);
+        Mesh.SetIndexBufferData(Indices, 0, 0, Capacity * RoSpriteBatcher.IndicesPerQuad, RoSpriteBatcher.FastUpdate);
+        
+        _dirtyMin = 0;
+        _dirtyMax = Allocated - 1;
+        _submeshDirty = true;
+    }
+
+    public bool TryGetActiveBounds(out Bounds bounds)
+    {
+        if (!_boundsDirty)
+        {
+            bounds = _cachedBounds;
+            return _hasCachedBounds;
+        }
+
+        var min = new Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity);
+        var max = new Vector3(float.NegativeInfinity, float.NegativeInfinity, float.NegativeInfinity);
+        bool any = false;
+        for (int s = 0; s < Allocated; s++)
+        {
+            if (!_slotInUse[s]) continue;
+            var a = Verts[s * RoSpriteBatcher.VertsPerQuad].anchorWS;
+            if (a.x < min.x) min.x = a.x;
+            if (a.y < min.y) min.y = a.y;
+            if (a.z < min.z) min.z = a.z;
+            if (a.x > max.x) max.x = a.x;
+            if (a.y > max.y) max.y = a.y;
+            if (a.z > max.z) max.z = a.z;
+            any = true;
+        }
+
+        _boundsDirty = false;
+
+        if (!any)
+        {
+            _hasCachedBounds = false;
+            bounds = default;
+            return false;
+        }
+        
+        var padding = new Vector3(2f, 5f, 2f);
+        var center = (min + max) * 0.5f;
+        var size = max - min + padding * 2f;
+        _cachedBounds = new Bounds(center, size);
+        _hasCachedBounds = true;
+        bounds = _cachedBounds;
+        return true;
+    }
+
+    public void FlushUploads()
+    {
+        if (_dirtyMin <= _dirtyMax && Allocated > 0)
+        {
+            int vertStart = _dirtyMin * RoSpriteBatcher.VertsPerQuad;
+            int vertCount = (_dirtyMax - _dirtyMin + 1) * RoSpriteBatcher.VertsPerQuad;
+            Mesh.SetVertexBufferData(Verts, vertStart, vertStart, vertCount, 0, RoSpriteBatcher.FastUpdate);
+            _dirtyMin = int.MaxValue;
+            _dirtyMax = int.MinValue;
+        }
+
+        if (_submeshDirty)
+        {
+            Mesh.SetSubMesh(0, new SubMeshDescriptor(0, Allocated * RoSpriteBatcher.IndicesPerQuad, MeshTopology.Triangles), RoSpriteBatcher.FastUpdate);
+            _submeshDirty = false;
+        }
+    }
+
+    public void Dispose()
+    {
+        if (Verts.IsCreated) Verts.Dispose();
+        if (Indices.IsCreated) Indices.Dispose();
+        if (Mesh != null)
+        {
+            UnityEngine.Object.Destroy(Mesh);
+            Mesh = null;
+        }
+    }
 }

@@ -236,7 +236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1406d2d4e158c0149b9cb83ef359b06c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnableInstancing: 0
+  EnableBatching: 1
 --- !u!114 &1980845207811950280
 MonoBehaviour:
   m_ObjectHideFlags: 0

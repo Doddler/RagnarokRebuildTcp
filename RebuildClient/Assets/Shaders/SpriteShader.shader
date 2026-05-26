@@ -42,11 +42,12 @@ Shader"Ragnarok/CharacterSpriteShader - Depth Color"
             #pragma fragment frag
 
             #pragma multi_compile _ GROUND_ITEM
-            
+
+            #pragma multi_compile_local _ DYNBATCH_ON
             #pragma multi_compile_instancing
             #pragma instancing_options assumeuniformscaling nolodfade nolightprobe nolightmap
             #pragma multi_compile _ INSTANCING_ON
-            
+
 
             #include "SpriteDepthOnlyPass.cginc"
             ENDCG
@@ -56,7 +57,7 @@ Shader"Ragnarok/CharacterSpriteShader - Depth Color"
         {
             Name "Color"
             ZWrite Off
-            
+
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -70,10 +71,11 @@ Shader"Ragnarok/CharacterSpriteShader - Depth Color"
             #pragma shader_feature _ COLOR_DRAIN
             #pragma multi_compile _ GROUND_ITEM
 
+            #pragma multi_compile_local _ DYNBATCH_ON
             #pragma multi_compile_instancing
             #pragma instancing_options assumeuniformscaling nolodfade nolightprobe nolightmap
             #pragma multi_compile _ INSTANCING_ON
-            
+
             //#define SMOOTHPIXEL
 
             #include "SpriteColorOnlyPass.cginc"

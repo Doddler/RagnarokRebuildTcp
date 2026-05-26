@@ -27,7 +27,7 @@ Shader"Ragnarok/CharacterSpriteShader - Color"
         {
             Name "Color"
             ZWrite Off
-            
+
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -44,7 +44,7 @@ Shader"Ragnarok/CharacterSpriteShader - Color"
             #pragma multi_compile_instancing
             #pragma instancing_options assumeuniformscaling nolodfade nolightprobe nolightmap
             #pragma multi_compile _ INSTANCING_ON
-            
+
             //#define SMOOTHPIXEL
 
             #include "SpriteColorOnlyPass.cginc"

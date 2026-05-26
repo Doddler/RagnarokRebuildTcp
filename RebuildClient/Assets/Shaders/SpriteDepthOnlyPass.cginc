@@ -6,8 +6,16 @@
 struct appdata_t
 {
     float4 positionOS : POSITION;
+    float3 normal : NORMAL;
     float4 color : COLOR;
     float2 texcoord : TEXCOORD0;
+    #ifdef DYNBATCH_ON
+    float3 anchorWS    : TEXCOORD3;
+    float4 cornerOS    : TEXCOORD4;
+    float4 spriteColor : TEXCOORD5;
+    float4 packed      : TEXCOORD6;
+    float  hidden      : TEXCOORD7;
+    #endif
     #ifdef INSTANCING_ON
     uint vid : SV_VertexID;
     uint instanceID : SV_InstanceID;
@@ -26,9 +34,22 @@ fixed4 _Color;
 
 v2f vert(appdata_t v)
 {
+    v2f o;
     UNITY_SETUP_INSTANCE_ID(v);
 
-    #ifdef INSTANCING_ON
+    #ifdef DYNBATCH_ON
+    float3 anchorWS = v.anchorWS + v.packed.z * v.normal;
+    float3 cornerOffset = v.cornerOS.xyz;
+    float3 originOffset = v.positionOS.xyz;
+    float posY = v.cornerOS.w;
+    Billboard billboard = GetBillboardDB(anchorWS, cornerOffset, originOffset, posY, 0);
+    o.pos = billboard.positionCS;
+    o.pos.z += 0.001;
+    if (v.hidden > 0.5)
+        o.pos = float4(2, 2, 2, 1);
+    o.color = v.color * v.spriteColor;
+    #else
+    #if defined(INSTANCING_ON) && defined(GROUND_ITEM)
     float isHidden = 0;
     float _Offset = 0;
     float _ColorDrain = 0;
@@ -36,17 +57,15 @@ v2f vert(appdata_t v)
     SetupInstancingData(v.instanceID, v.vid, v.positionOS.xyz, v.texcoord.xy, v.color, _Color, isHidden, _Offset, _ColorDrain, _VPos, _Width);
     #endif
 
-    v2f o;
-
     v.positionOS.y += _VPos;
     Billboard billboard = GetBillboard(v.positionOS, 0);
     o.pos = billboard.positionCS;
-
-    #ifdef  INSTANCING_ON
+    #if defined(INSTANCING_ON) && defined(GROUND_ITEM)
     o.pos.z += 0.001;
     #endif
-                
     o.color = v.color * _Color;
+    #endif
+
     o.texcoord = v.texcoord;
     return o;
 }
