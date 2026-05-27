@@ -218,19 +218,10 @@ namespace Assets.Scripts.Sprites
                 MeshRenderer.sharedMaterial = OverrideMaterial;
             }
 
-            if (SpriteData.ReverseSortingWhenFacingNorth && CurrentAngleIndex >= 2 && CurrentAngleIndex <= 5)
-            {
-                SortingGroup.sortingOrder =
-                    SortingOrder < 0 ? -SortingOrder : SortingOrder - 10;
-                if (ZOffset != 0)
-                    transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, -ZOffset);
-            }
-            else
-            {
-                SortingGroup.sortingOrder = SortingOrder;
-                if (ZOffset != 0)
-                    transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, ZOffset);
-            }
+            var reverseNorth = SpriteData.ReverseSortingWhenFacingNorth && CurrentAngleIndex >= 2 && CurrentAngleIndex <= 5;
+            SortingGroup.sortingOrder = EffectiveSortingOrder();
+            if (ZOffset != 0)
+                transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, reverseNorth ? -ZOffset : ZOffset);
 
             _mesh = GetMeshForFrame();
             var cMesh = GetColliderForFrame();
@@ -264,6 +255,13 @@ namespace Assets.Scripts.Sprites
             _lastRebuiltSortingOrder = SortingOrder;
             _lastRebuiltOverride = OverrideMaterial;
             _lastRebuiltVerticalOffset = VerticalOffset;
+        }
+        
+        internal int EffectiveSortingOrder()
+        {
+            if (SpriteData && SpriteData.ReverseSortingWhenFacingNorth && CurrentAngleIndex >= 2 && CurrentAngleIndex <= 5)
+                return SortingOrder < 0 ? -SortingOrder : SortingOrder - 10;
+            return SortingOrder;
         }
 
         private void StampMeshArrays()
@@ -474,6 +472,7 @@ namespace Assets.Scripts.Sprites
                 vPos = ShaderYOffset,
                 width = SpriteData.AverageWidth / 25f,
                 hidden = IsHidden,
+                sortOrder = EffectiveSortingOrder(),
             };
 
             batcher.WriteSprite(ref _batchHandle, transform.localToWorldMatrix,

@@ -16,6 +16,9 @@ public partial class RoSpriteBatcher : MonoBehaviour
     internal const int VertsPerQuad = 4;
     internal const int IndicesPerQuad = 6;
     internal const int InitialQuadCapacity = 256;
+    
+    internal const int SortLayerStride = 64;
+    internal const int SortOrderClamp = 256;
 
     internal const MeshUpdateFlags FastUpdate =
         MeshUpdateFlags.DontRecalculateBounds |
@@ -29,6 +32,7 @@ public partial class RoSpriteBatcher : MonoBehaviour
         new(VertexAttribute.Normal, VertexAttributeFormat.Float32, 3),
         new(VertexAttribute.Color, VertexAttributeFormat.Float32, 4),
         new(VertexAttribute.TexCoord0, VertexAttributeFormat.Float32, 2),
+        new(VertexAttribute.TexCoord1, VertexAttributeFormat.Float32, 1),
         new(VertexAttribute.TexCoord3, VertexAttributeFormat.Float32, 3),
         new(VertexAttribute.TexCoord4, VertexAttributeFormat.Float32, 4),
         new(VertexAttribute.TexCoord5, VertexAttributeFormat.Float32, 4),
@@ -243,8 +247,15 @@ public partial class RoSpriteBatcher : MonoBehaviour
                 verts[vb + 0], verts[vb + 1], verts[vb + 2], verts[vb + 3],
                 uvs[vb + 0],   uvs[vb + 1],   uvs[vb + 2],   uvs[vb + 3],
                 vcolors[vb + 0], vcolors[vb + 1], vcolors[vb + 2], vcolors[vb + 3],
-                p);
+                p, ComputeSortKey(p.sortOrder, layer));
         }
+    }
+
+    internal static float ComputeSortKey(int sortOrder, int layer)
+    {
+        if (sortOrder > SortOrderClamp) sortOrder = SortOrderClamp;
+        else if (sortOrder < -SortOrderClamp) sortOrder = -SortOrderClamp;
+        return sortOrder * SortLayerStride + layer;
     }
 
     private void EnsureSlotCount(ref SpriteBatchHandle handle, AtlasBatch batch, int newCount)
@@ -298,6 +309,7 @@ public struct SpriteRenderParams
     public float vPos;
     public float width;
     public bool hidden;
+    public int sortOrder;
 }
 
 [StructLayout(LayoutKind.Sequential)]
@@ -307,6 +319,7 @@ public struct SpriteVertex
     public Vector3 normal;
     public Color color;
     public Vector2 uv;
+    public float sortKey;
     public Vector3 anchorWS;
     public Vector4 cornerOS;
     public Color spriteColor;
@@ -415,7 +428,7 @@ internal sealed class AtlasBatch : IDisposable
         Vector3 c0, Vector3 c1, Vector3 c2, Vector3 c3,
         Vector2 u0, Vector2 u1, Vector2 u2, Vector2 u3,
         Color vc0, Color vc1, Color vc2, Color vc3,
-        in SpriteRenderParams p)
+        in SpriteRenderParams p, float sortKey)
     {
         int vb = slot * RoSpriteBatcher.VertsPerQuad;
         float hiddenF = p.hidden ? 1f : 0f;
@@ -440,25 +453,25 @@ internal sealed class AtlasBatch : IDisposable
         {
             position = origin0, normal = spriteUp, color = vc0, uv = u0,
             anchorWS = anchor, cornerOS = new Vector4(corner0.x, corner0.y, corner0.z, c0.y),
-            spriteColor = sprColor, packed = packed, hidden = hiddenF,
+            spriteColor = sprColor, packed = packed, hidden = hiddenF, sortKey = sortKey,
         };
         Verts[vb + 1] = new SpriteVertex
         {
             position = origin1, normal = spriteUp, color = vc1, uv = u1,
             anchorWS = anchor, cornerOS = new Vector4(corner1.x, corner1.y, corner1.z, c1.y),
-            spriteColor = sprColor, packed = packed, hidden = hiddenF,
+            spriteColor = sprColor, packed = packed, hidden = hiddenF, sortKey = sortKey,
         };
         Verts[vb + 2] = new SpriteVertex
         {
             position = origin2, normal = spriteUp, color = vc2, uv = u2,
             anchorWS = anchor, cornerOS = new Vector4(corner2.x, corner2.y, corner2.z, c2.y),
-            spriteColor = sprColor, packed = packed, hidden = hiddenF,
+            spriteColor = sprColor, packed = packed, hidden = hiddenF, sortKey = sortKey,
         };
         Verts[vb + 3] = new SpriteVertex
         {
             position = origin3, normal = spriteUp, color = vc3, uv = u3,
             anchorWS = anchor, cornerOS = new Vector4(corner3.x, corner3.y, corner3.z, c3.y),
-            spriteColor = sprColor, packed = packed, hidden = hiddenF,
+            spriteColor = sprColor, packed = packed, hidden = hiddenF, sortKey = sortKey,
         };
 
         MarkDirty(slot);
