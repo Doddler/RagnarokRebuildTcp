@@ -117,11 +117,11 @@
                 float noise2;
                 float noise3;
 
-                Unity_SimpleNoise_float(texCoord + _SinTime.z, 20, noise);
+                Unity_SimpleNoise_float(texCoord + _SinTime.z / 2, 20, noise);
                 Unity_SimpleNoise_float(texCoord + _SinTime.y, 20, noise2);
-                Unity_SimpleNoise_float(texCoord + _SinTime.y * 3.14, 5, noise3);
+                Unity_SimpleNoise_float(texCoord + _SinTime.y, 5, noise3);
 
-                texCoord = lerp(texCoord, float2(noise, noise2) + noise3, _Strength * 0.035);
+                texCoord = lerp(texCoord, float2(noise, noise2) + noise3 * 2, _Strength * 0.035 * 0.5);
                 
                 fixed4 col = tex2D(_MainTex, texCoord);
                 return col;

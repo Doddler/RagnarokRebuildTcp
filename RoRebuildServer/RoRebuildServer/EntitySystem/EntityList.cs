@@ -112,7 +112,7 @@ public class EntityList : IDisposable
 #endif
         if (!entity.IsAlive())
         {
-            ServerLogger.LogError($"Attempting to add entity to EntityList while the entity is not active!\n{Environment.StackTrace}");
+            ServerLogger.LogErrorWithStackTrace($"Attempting to add entity to EntityList while the entity is not active!");
             return;
         }
 
@@ -131,7 +131,7 @@ public class EntityList : IDisposable
 #endif
         if (!entity.IsAlive())
         {
-            ServerLogger.LogError($"Attempting to add entity to EntityList while the entity is not active!\n{Environment.StackTrace}");
+            ServerLogger.LogErrorWithStackTrace($"Attempting to add entity to EntityList while the entity is not active!");
             return;
         }
 

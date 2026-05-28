@@ -81,7 +81,7 @@ public class PacketAdminCharacterAction : IClientPacketHandler
                     break;
                 }
             case AdminCharacterAction.Die:
-                ch.Player.SetStat(CharacterStat.Hp, 1);
+                ch.Player.SetStat(CharacterStat.Hp, 0);
                 ch.Player.Die();
                 break;
             case AdminCharacterAction.Disguise:

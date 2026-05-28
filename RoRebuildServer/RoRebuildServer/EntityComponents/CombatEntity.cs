@@ -203,7 +203,7 @@ public partial class CombatEntity : IEntityAutoReset
     {
         //if (!Character.IsActive)
         //    return;
-        if (Character.State == CharacterState.Dead)
+        if (Character.State == CharacterState.Dead && !StatusEffectHandler.HasFlag(state.Type, StatusEffectFlags.StayOnClear))
             return; //cannot status a dead target
 
         if (statusContainer == null)

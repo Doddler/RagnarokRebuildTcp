@@ -186,6 +186,9 @@ Turtle Island
 	2,tur_dun02
 	3,tur_dun03
 	4,tur_dun04
+Nogg Road
+	1,mag_dun01
+	2,mag_dun02
 Comodo Area
 	1,cmd_fild01
 	2,cmd_fild02

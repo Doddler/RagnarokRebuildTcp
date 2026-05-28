@@ -314,9 +314,16 @@ public class World
         var ch = e.Get<WorldObject>();
         var npc = e.Get<Npc>();
 
+#if DEBUG
         if (!DataManager.NpcManager.EventBehaviorLookup.TryGetValue(eventName, out var behavior))
             throw new Exception($"Unable to create event \"{eventName}\" as the matching script could not be found.");
-
+#else
+        if (!DataManager.NpcManager.EventBehaviorLookup.TryGetValue(eventName, out var behavior))
+        {
+            ServerLogger.LogErrorWithStackTrace($"Unable to create event \"{eventName}\" as the matching script could not be found.");
+            return Entity.Null;
+        }
+#endif
 
         ch.IsActive = true;
         ch.AdminHidden = true;

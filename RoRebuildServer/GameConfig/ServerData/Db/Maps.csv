@@ -272,4 +272,6 @@ Admin Room 1,sec_in01,sec_in01.walk,None,None,21.mp3
 Admin Room 2,sec_in02,sec_in02.walk,None,None,21.mp3
 Admin Room 3,sec_pri,sec_pri.walk,None,None,42.mp3
 Okolnir,que_qsch01,que_qsch01.walk,None,NoTeleportEvenMonsters,ToS-3rdWave.flac
+Nogg Road B1,mag_dun01,mag_dun01.walk,Dungeon,None,06.mp3
+Nogg Road B2,mag_dun02,mag_dun02.walk,Dungeon,None,06.mp3
 Rebuild Tower,rebuildtower,rebuildtower.walk,None,NoTeleportEvenMonsters,125.mp3

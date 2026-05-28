@@ -28,7 +28,7 @@ public class PacketChangeFollower : IClientPacketHandler
 
         var id = msg.ReadInt32();
         var isRemove = id < 0;
-        var isPecoChange = player.JobId == 7 || player.JobId == 13;
+        var isPecoChange = player.JobId == 7 || player.JobId == 13 || player.CombatEntity.HasStatusEffectOfType(CharacterStatusEffect.PecoRiding);
 
         if (isRemove)
         {

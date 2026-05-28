@@ -242,8 +242,8 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4239,TURTLE_GENERAL,Turtle General,84,245937,114,70,71,95,38,105,1188,1783,2,50,43,247663,165162,10,12,Large,Beast,Earth2,900,500,1000,200,Boss,AiStandardBoss,624,turtle_general.spr,0,0.5,1,#FFFFFFFF,
 4240,GRAND_PECO,Grand Peco,58,8192,61,43,45,53,35,56,520,635,2,30,29,4372,3034,10,12,Large,Beast,Fire2,1460,432,960,165,Normal,AiAssist,432,grand_peco.spr,0,0.5,1,#FFFFFFFF,
 4241,KIND_OF_BEETLE,Beetle King,34,2383,28,27,28,36,21,16,130,159,1,12,11,831,594,10,12,Small,Insect,Earth1,1247,576,768,165,Normal,AiPassive,240,kind_of_beetle.spr,0,0.5,1,#FFFFFFFF,
-4242,DELETER,Deleter,66,14678,63,60,41,65,43,41,494,603,1,30,33,9399,5784,10,12,Medium,Dragon,Fire2,1020,384,720,175,Normal,AiAggressiveAssist,336,deleter.spr,0,0.5,1,#FFFFFFFF,Flying
-4243,DELETER_,Deleter,65,12343,63,60,62,65,43,41,478,585,1,29,32,9069,5581,10,12,Medium,Dragon,Fire2,1024,336,624,175,Normal,AiAggressiveAssist,336,deleter_.spr,0,0.5,1,#FFFFFFFF,
+4242,DELETER,Sky Deleter,66,17809,69,56,45,65,60,25,426,577,1,33,46,12106,7646,10,12,Medium,Dragon,Fire2,1020,384,720,175,Normal,AiAggressiveAssist,350,deleter.spr,0,0.5,1,#FFFFFFFF,Flying
+4243,DELETER_,Earth Deleter,65,15429,83,56,45,78,34,25,482,653,1,49,28,11378,7567,10,12,Medium,Dragon,Fire2,1024,336,624,175,Normal,AiAggressiveAssist,350,deleter_.spr,0,0.5,1,#FFFFFFFF,
 4244,GEOGRAPHER,Geographer,56,8978,35,104,70,57,31,25,401,490,3,29,21,4445,2950,10,12,Medium,Plant,Earth3,1308,480,1008,-1,Normal,AiAggressiveImmobile,480,geographer.spr,0,0.5,1,#FFFFFFFF,
 4245,RAFFLESIA,Rafflesia,37,3007,30,8,30,38,21,10,153,188,3,0,2,821,577,10,12,Small,Plant,Earth1,512,240,528,150,Normal,AiAggressive,432,rafflesia.spr,0,0.5,1,#FFFFFFFF,
 4246,ARCHANGELING,Archangeling,60,48743,65,84,71,72,46,112,655,800,1,31,40,29543,21506,10,12,Medium,Angel,Holy3,1072,480,672,180,Boss,AiAggressive,312,archangeling.spr,0,0.5,1,#FFFFFFFF,
@@ -300,12 +300,19 @@ Id,Code,Name,Level,HP,Str,Int,Vit,Dex,Agi,Luk,AtkMin,AtkMax,Range,Def,MDef,Exp,J
 4297,POISON_TOAD,Poison Toad,46,5907,52,7,19,50,24,34,292,395,3,4,6,2614,1289,10,12,Medium,Beast,Poison2,1148,864,1728,160,Normal,AiPassive,624,poison_toad.spr,0,0.5,1,#FFFFFFFF,
 4298,ANGRY_TARGET_DUMMY,Angry Target Dummy,99,100000,41,20,20,200,1,1,500,500,3,20,20,0,0,10,12,Large,Demon,Earth4,1000,1,200,-1,Boss,AiAggressiveImmobile,200,barricade.spr,0,-1,1,#FFFFFFFF,
 4299,GIANT_HONET,Giant Hornet,56,12357,52,55,50,66,36,32,473,578,1,21,21,6391,4755,10,12,Small,Insect,Wind1,1292,340,792,155,Normal,AiAngry,825,giant_honet.spr,0,0.5,1,#FFFFFFFF,Flying
-4300,NIGHTMARE_TERROR,Nightmare Terror,78,15098,78,73,63,87,47,36,976,1193,1,27,25,17607,10923,10,12,Large,Demon,Dark3,1216,432,816,165,Normal,AiStandardBoss,850,nightmare_terror.spr,0,0.5,1,#FFFFFFFF,
+4300,NIGHTMARE_TERROR,Nightmare Terror,78,17363,46,73,54,79,61,25,927,1134,1,31,31,17952,11142,10,12,Large,Demon,Dark3,1216,432,816,165,Normal,AiAngry,850,nightmare_terror.spr,0,0.5,1,#FFFFFFFF,
 4301,DARK_PRIEST,Dark Priest,79,26145,49,88,42,72,35,12,848,1037,2,19,50,17008,13113,10,12,Medium,Demon,Undead4,864,476,1252,200,Boss,AiStandardBoss,400,dark_priest.spr,0,0.5,1,#FFFFFFFF,
 4302,SUCCUBUS,Succubus,85,17899,85,80,69,95,51,40,1145,1400,2,29,27,25404,17060,10,12,Medium,Demon,Dark3,1306,288,1056,155,Normal,AiStandardBoss,576,succubus.spr,0,0.5,1,#FFFFFFFF,
 4303,INCUBUS,Incubus,75,13971,75,70,61,84,45,35,906,1107,2,26,24,16364,10562,10,12,Medium,Demon,Dark3,850,336,600,165,Normal,AiStandardBoss,420,incubus.spr,0,0.5,1,#FFFFFFFF,
 4304,MINI_DEMON,Mini Demon,68,11323,67,63,54,75,40,31,737,900,1,22,21,10261,6793,10,12,Small,Demon,Dark1,1000,384,600,150,Normal,AiStandardBoss,1000,mini_demon.spr,0,0.5,1,#FFFFFFFF,
 4305,ZOMBIE_MASTER,Zombie Master,62,12818,38,42,33,68,33,12,481,588,1,14,23,6516,4107,10,12,Medium,Undead,Undead1,2612,288,912,175,Normal,AiAngry,950,zombie_master.spr,0,0.5,1,#FFFFFFFF,
+4306,BLAZZER,Blazer,60,8404,59,56,43,67,50,27,596,729,2,19,25,10679,4868,10,12,Medium,Demon,Fire2,1732,540,1332,180,Normal,AiAggressiveSense,481,blazzer.spr,0,0.5,1,#FFFFFFFF,Flying
+4307,EXPLOSION,Explosion,58,6689,42,33,47,58,56,20,365,446,1,33,25,5719,4058,10,12,Small,Beast,Fire3,1260,336,960,165,Normal,AiAngry,496,explosion.spr,0,0.5,1,#FFFFFFFF,Flying
+4308,GRIZZLY,Grizzly,68,11889,78,47,70,67,53,26,883,1080,1,61,38,14185,7980,10,12,Large,Beast,Fire3,1492,192,1092,165,Normal,AiAngry,870,grizzly.spr,0,0.5,1,#FFFFFFFF,
+4309,KAHO,Kaho,60,7298,49,86,39,84,44,38,184,737,1,7,43,10696,2161,10,12,Medium,Demon,Fire4,1700,500,1000,150,Normal,AiAngry,444,kaho.spr,0,0.5,1,#FFFFFFFF,
+4310,LAVA_GOLEM,Lava Golem,77,28109,89,61,84,71,37,51,1693,2070,1,69,46,31008,23977,10,12,Large,Formless,Fire4,2190,336,2040,400,Normal,AiAggressive,744,lava_golem.spr,0,0.5,1,#FFFFFFFF,
+4311,DIABOLIC,Diabolic,67,9374,48,65,39,69,79,31,756,924,1,59,22,11828,6038,10,12,Small,Demon,Dark2,1080,180,780,150,Normal,AiAngry,900,diabolic.spr,0,0.5,1,#FFFFFFFF,
+4312,GIG,Gig,60,7077,39,49,44,58,60,38,375,458,1,39,27,6701,4727,10,12,Small,Beast,Fire2,1264,576,864,170,Normal,AiAngry,400,gig.spr,0,0.5,1,#FFFFFFFF,
 5000,PORING50,Poring,50,4739,22,34,37,35,19,20,273,302,1,10,10,2539,1840,10,12,Medium,Plant,Water1,1872,480,672,400,Normal,AiLooter,288,poring.spr,0,0.5,1.1,#FFFFFFFF,
 6000,MOONLIGHT_CLONE,Moonlight Flower,65,16793,87,98,51,105,52,90,628,849,1,9,32,0,0,10,12,Medium,Demon,Fire3,1276,288,576,150,Boss,AiStandardBoss,180,moonlight.spr,0,0.5,1,#FFFFFFAA,
 6001,GTB_EGG,Thief Bug Egg,13,661,4,14,13,6,5,1,2,3,0,22,18,0,0,1,1,Small,Insect,Dark3,701,1,1,-1,Normal,AiPlant,288,thief_bug_egg.spr,0,-1,1.2,#FFFFFFFF,

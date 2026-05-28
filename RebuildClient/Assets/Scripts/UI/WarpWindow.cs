@@ -77,10 +77,14 @@ public class WarpWindow : WindowBase
 
                 var name = s[0].Trim();
                 var code = s[1].Trim();
-                
+
                 if (validMaps != null && validMaps.All(m => m.Code.ToLower() != code.ToLower()))
+                {
+                    if(Application.isEditor)
+                        Debug.Log($"Warp window entry {code} discarded, map not on valid map list.");
                     continue;
-                
+                }
+
                 if(s.Length >= 4 && int.TryParse(s[2].Trim(), out var i1) && int.TryParse(s[3].Trim(), out var i2))
                     curSection.Add(new MapWarpEntry() {Name = name, Code = code, Position = new Vector2Int(i1, i2)} );
                 else

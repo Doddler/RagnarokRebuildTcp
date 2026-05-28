@@ -9,7 +9,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.Misc;
 [StatusEffectHandler(CharacterStatusEffect.DungeonMiasma, StatusClientVisibility.Owner, StatusEffectFlags.StayOnClear)]
 public class DungeonMiasmaStatus : StatusEffectBase
 {
-    public override StatusUpdateMode UpdateMode => StatusUpdateMode.OnMove | StatusUpdateMode.OnPreCalculateDamageDealt;
+    public override StatusUpdateMode UpdateMode => StatusUpdateMode.OnMove;
 
     public override StatusUpdateResult OnChangeMaps(CombatEntity ch, ref StatusEffectState state)
     {

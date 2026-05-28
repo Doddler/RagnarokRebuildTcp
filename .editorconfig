@@ -16,6 +16,9 @@ insert_final_newline = true
 charset = utf-8-bom
 max_line_length = 200
 
+[*.txt]
+indent_style = tab
+
 # XML project files
 [*.{csproj,vbproj,vcxproj,vcxproj.filters,proj,projitems,shproj}]
 indent_size = 4

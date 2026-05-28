@@ -16,5 +16,6 @@ public class TrapLoaders : INpcLoader
         DataManager.RegisterEvent(nameof(SkidTrapEvent), new SkidTrapEvent());
         DataManager.RegisterEvent(nameof(TalkieBoxEvent), new TalkieBoxEvent());
         DataManager.RegisterEvent(nameof(ShockwaveTrapEvent), new ShockwaveTrapEvent());
+        DataManager.RegisterEvent(nameof(FreezingTrapEvent), new FreezingTrapEvent());
     }
 }
