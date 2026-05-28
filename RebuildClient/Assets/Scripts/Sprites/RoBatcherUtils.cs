@@ -102,6 +102,8 @@ public class CollectionDictionary<TKey, TCollection, TValue> : IEnumerable
 	{
 		return GetEnumerator();
 	}
+
+	public Dictionary<TKey, TCollection> Pairs => InternalDictionary;
 }
 
 internal sealed class GrowableBuffer<T> : IDisposable where T : struct

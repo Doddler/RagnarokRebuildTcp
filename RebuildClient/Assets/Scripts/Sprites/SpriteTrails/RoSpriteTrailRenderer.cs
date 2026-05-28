@@ -17,6 +17,11 @@ namespace Assets.Scripts.Sprites
         //private bool skipFrame = true;
         
         private static readonly int VPos = Shader.PropertyToID("_VPos");
+        private static readonly int MainTex = Shader.PropertyToID("_MainTex");
+        private static readonly int ColorProp = Shader.PropertyToID("_Color");
+        private static readonly int EnvColor = Shader.PropertyToID("_EnvColor");
+        private static readonly int Width = Shader.PropertyToID("_Width");
+        private static readonly int Offset = Shader.PropertyToID("_Offset");
 
         public void Init()
         {
@@ -42,16 +47,15 @@ namespace Assets.Scripts.Sprites
         {
             var envColor = RoMapRenderSettings.GetBakedLightContribution(new Vector2(transform.position.x, transform.position.z));
             
-            propertyBlock.SetTexture("_MainTex", SpriteData.Atlas);
-            propertyBlock.SetColor("_Color", Parent.Color);
-            propertyBlock.SetColor("_EnvColor", envColor);
-            propertyBlock.SetFloat("_Width", SpriteData.AverageWidth / 25f);
-            // propertyBlock.SetFloat("_Offset", 0);
+            propertyBlock.SetTexture(MainTex, SpriteData.Atlas);
+            propertyBlock.SetColor(ColorProp, Parent.Color);
+            propertyBlock.SetColor(EnvColor, envColor);
+            propertyBlock.SetFloat(Width, SpriteData.AverageWidth / 25f);
             //
             if (Mathf.Approximately(0, SpriteOffset))
-                propertyBlock.SetFloat("_Offset", Mathf.Max(SpriteData.Size / 125f, 1f));
+                propertyBlock.SetFloat(Offset, Mathf.Max(SpriteData.Size / 125f, 1f));
             else
-                propertyBlock.SetFloat("_Offset", SpriteOffset);
+                propertyBlock.SetFloat(Offset, SpriteOffset);
             //
             propertyBlock.SetFloat(VPos, VerticalOffset);
             MeshRenderer.SetPropertyBlock(propertyBlock);

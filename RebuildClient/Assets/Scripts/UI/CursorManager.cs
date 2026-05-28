@@ -55,7 +55,7 @@ namespace Assets.Scripts.UI
         private float timeInAnimation;
         private float frameTime;
         private int frameCount;
-        private string lastFrame;
+        private Texture2D lastFrameTexture;
         private int lastCursorType;
         private Dictionary<int, List<Texture2D>> cursorTextures;
         private Vector2 hotSpot;
@@ -173,14 +173,13 @@ namespace Assets.Scripts.UI
             var frame = Mathf.FloorToInt(timeInAnimation * frameTime) % frameCount;
 
             lastCursorType = cursorType;
-            if (lastFrame == activeCursor[frame].name)
+            var frameTexture = activeCursor[frame];
+            if (lastFrameTexture == frameTexture)
                 return;
 
-            // Debug.Log($"CursorType:{cursorType} Mode:{mode} TimeInAnimation:{timeInAnimation} Frame:{frame} Texture:{activeCursor[frame]} Hotspot:{hotSpot}");
+            lastFrameTexture = frameTexture;
 
-            lastFrame = activeCursor[frame].name;
-
-            Cursor.SetCursor(activeCursor[frame], hotSpot, CursorMode.Auto);
+            Cursor.SetCursor(frameTexture, hotSpot, CursorMode.Auto);
             return;
             /*
 

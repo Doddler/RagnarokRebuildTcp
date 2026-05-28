@@ -66,6 +66,18 @@ namespace Assets.Scripts.Sprites
         public bool IsHidden;
         
         private RoSpriteDrawCall drawCall;
+        private bool meshIsTransparent;
+
+        private static readonly Vector3[] transparentFallbackVertices = { Vector3.zero };
+
+        private struct MeshArrays
+        {
+            public Vector2[] Uv;
+            public Vector3[] Vertices;
+            public Color[] Colors;
+        }
+
+        private static readonly Dictionary<Mesh, MeshArrays> meshArrayCache = new();
 
         //public Direction Direction;
         public Direction Direction
@@ -206,7 +218,31 @@ namespace Assets.Scripts.Sprites
             SetPropertyBlock();
             MeshRenderer.SetPropertyBlock(propertyBlock, 0);
 
+            StampDrawCallMesh();
+
             //Debug.Log($"Generating Mesh Data for {SpriteData.Atlas.name} at frame {Time.frameCount}");
+        }
+
+        private void StampDrawCallMesh()
+        {
+            if (_mesh == null)
+                return;
+            if (!meshArrayCache.TryGetValue(_mesh, out var arrays))
+            {
+                arrays = new MeshArrays
+                {
+                    Uv = _mesh.uv,
+                    Vertices = _mesh.vertices,
+                    Colors = _mesh.colors,
+                };
+                meshArrayCache[_mesh] = arrays;
+            }
+            meshIsTransparent = arrays.Colors.Length > 0 && arrays.Colors[0].a < 0.5f;
+            if (drawCall == null)
+                return;
+            drawCall.UV = arrays.Uv;
+            drawCall.Vertices = arrays.Vertices;
+            drawCall.VColor = arrays.Colors;
         }
 
         private void SetPropertyBlock()
@@ -330,6 +366,7 @@ namespace Assets.Scripts.Sprites
 	        }
 
 	        UpdateDrawCall();
+	        StampDrawCallMesh();
 	        RoSpriteBatcher.Instance.drawCalls.AddItem(SpriteData.Atlas, drawCall);
         }
         
@@ -358,22 +395,21 @@ namespace Assets.Scripts.Sprites
 	        }
 	        
 	        // We can't sort transparency, so we must fall back to standard rendering.
-	        if (MeshFilter.sharedMesh.colors.Length > 0 && MeshFilter.sharedMesh.colors[0].a < 0.5f)
+	        if (meshIsTransparent)
 	        {
 		        MeshRenderer.enabled = true;
-		        drawCall.Vertices = new[] { Vector3.zero };
+		        drawCall.Vertices = transparentFallbackVertices;
 		        drawCall.Color = Color.clear;
 		        return;
 	        }
 
 	        MeshRenderer.enabled = false;
 	        if (!isInitialized) return;
-	        
+
+	        if (drawCall.Vertices == transparentFallbackVertices)
+	            StampDrawCallMesh();
+
 	        drawCall.Transform = transform;
-	        
-	        drawCall.UV = _mesh.uv;
-	        drawCall.Vertices = _mesh.vertices;
-	        drawCall.VColor = _mesh.colors;
 	        drawCall.IsHidden = IsHidden;
 	        
 	        if (propertyBlock != null)

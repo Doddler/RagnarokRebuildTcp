@@ -299,7 +299,7 @@ namespace Assets.Scripts.Utility
 
         public Mesh ApplyToMesh(Mesh mesh, bool buildSecondaryUVs = false)
         {
-            if(mesh.vertices.Length != vertices.Count)
+            if(mesh.vertexCount != vertices.Count)
                 mesh.Clear();
 
             

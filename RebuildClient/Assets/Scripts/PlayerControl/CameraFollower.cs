@@ -839,14 +839,14 @@ namespace Assets.Scripts
         }
 
 
-        private RoSpriteAnimator GetClosestOrEnemy(RaycastHit[] hits, bool preferEnemy)
+        private RoSpriteAnimator GetClosestOrEnemy(RaycastHit[] hits, int hitCount, bool preferEnemy)
         {
             var closestAnim = GetHitAnimator(hits[0]);
             var closestHit = hits[0];
 
-            //var log = $"{hits.Length} {closestAnim.Controllable.gameObject.name}{closestHit.distance}{closestAnim.Controllable.IsAlly}";
+            //var log = $"{hitCount} {closestAnim.Controllable.gameObject.name}{closestHit.distance}{closestAnim.Controllable.IsAlly}";
 
-            if (hits.Length == 1)
+            if (hitCount == 1)
             {
                 if (closestAnim.State == SpriteState.Dead && closestAnim.Type != SpriteType.Player)
                     return null;
@@ -860,7 +860,7 @@ namespace Assets.Scripts
             var wantDead = hasSkillOnCursor && cursorSkill == CharacterSkill.Resurrection;
             var hitLastTarget = closestAnim.Controllable != null && closestAnim.Controllable == LastTargetedEnemy;
 
-            for (var i = 1; i < hits.Length; i++)
+            for (var i = 1; i < hitCount; i++)
             {
                 var hit = hits[i];
                 var anim = GetHitAnimator(hit);
@@ -943,15 +943,17 @@ namespace Assets.Scripts
             return false;
         }
 
+        private static readonly RaycastHit[] characterHitBuffer = new RaycastHit[32];
+
         private bool FindEntityUnderCursor(Ray ray, bool preferEnemy, out ServerControllable target)
         {
             //one of these days we'll be able to target allies and that preferEnemy value will matter
             target = null;
-            var characterHits = Physics.RaycastAll(ray, MaxClickDistance, (1 << LayerMask.NameToLayer("Characters")));
-            if (characterHits.Length == 0)
+            var hitCount = Physics.RaycastNonAlloc(ray, characterHitBuffer, MaxClickDistance, (1 << LayerMask.NameToLayer("Characters")));
+            if (hitCount == 0)
                 return false;
 
-            var anim = GetClosestOrEnemy(characterHits, preferEnemy);
+            var anim = GetClosestOrEnemy(characterHitBuffer, hitCount, preferEnemy);
             if (anim == null)
                 return false;
 
@@ -1274,7 +1276,8 @@ namespace Assets.Scripts
             if (!isOverUi && canClickGround)
             {
 #if DEBUG
-                CharacterDetailBox.DebugInfo.text = groundPosition.ToString();
+                if (lastTile != groundPosition)
+                    CharacterDetailBox.DebugInfo.text = $"({groundPosition.x}, {groundPosition.y})";
 #endif
                 WalkProvider.UpdateCursorPosition(Target.transform.position, intersectLocation, hasValidPath);
             }

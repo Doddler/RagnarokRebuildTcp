@@ -111,7 +111,7 @@ public class RoGroundItemBatcher : MonoBehaviour
 
 		_pool.BeginFrame();
 
-		foreach (var kvp in drawCalls)
+		foreach (var kvp in drawCalls.Pairs)
 		{
 			var texture = kvp.Key;
 			var calls = kvp.Value;

@@ -93,6 +93,8 @@ namespace Assets.Scripts.Sprites
         public bool IgnoreShadows;
         public bool RaycastForShadow = true;
 
+        private static int shadowRaycastMask;
+
         public SpriteMotion CurrentMotion;
         // private SpriteMotion _currentMotion;
         //
@@ -695,14 +697,15 @@ namespace Assets.Scripts.Sprites
 
             var destDir = directionalLight.transform.rotation * Vector3.forward * -1;
 
-            var mask = LayerMask.GetMask("Ground") | LayerMask.GetMask("Object");
+            if (shadowRaycastMask == 0)
+                shadowRaycastMask = LayerMask.GetMask("Ground", "Object");
 
             var ray = new Ray(srcPos, destDir);
 
             //Debug.DrawLine(srcPos, destDir, Color.yellow, 10f, false);
             //Debug.DrawRay(srcPos, destDir, Color.yellow, 50f, false);
 
-            if (RaycastForShadow && Physics.Raycast(ray, out var hit, 50f, mask))
+            if (RaycastForShadow && Physics.Raycast(ray, out var hit, 50f, shadowRaycastMask))
             {
                 //Debug.Log(hit.transform.gameObject);
                 TargetShade = ShadeLevel;

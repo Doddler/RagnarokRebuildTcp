@@ -86,12 +86,17 @@ namespace Assets.Scripts.Sprites
 
             if (mesh == null)
                 return; // this happens when leaving play mode so we won't report on it. Hopefully won't bite us.
-            
-            for(var i = 0; i < mesh.vertices.Length; i++)
-                vh.AddVert(((Vector2)mesh.vertices[i] + OffsetPosition / 50f) * rectTransform.sizeDelta, mesh.colors32[i], mesh.uv[i]);
 
-            for(var i = 0; i < mesh.triangles.Length; i+=3)
-                vh.AddTriangle(mesh.triangles[i], mesh.triangles[i+1], mesh.triangles[i+2]);
+            var meshVertices = mesh.vertices;
+            var meshUv = mesh.uv;
+            var meshColors32 = mesh.colors32;
+            var meshTriangles = mesh.triangles;
+
+            for(var i = 0; i < meshVertices.Length; i++)
+                vh.AddVert(((Vector2)meshVertices[i] + OffsetPosition / 50f) * rectTransform.sizeDelta, meshColors32[i], meshUv[i]);
+
+            for(var i = 0; i < meshTriangles.Length; i+=3)
+                vh.AddTriangle(meshTriangles[i], meshTriangles[i+1], meshTriangles[i+2]);
 
             SpriteData.Atlas.filterMode = FilterMode.Bilinear;
 

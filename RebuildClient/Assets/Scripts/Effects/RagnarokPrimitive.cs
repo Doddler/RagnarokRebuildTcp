@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
 // using UnityEditor.Sprites;
@@ -65,6 +66,18 @@ namespace Assets.Scripts.Effects
         private Vector2[] uvs = new Vector2[4];
         private Vector3[] uv3s = new Vector3[4];
         private int[] tris;
+
+        private static readonly Dictionary<Sprite, Vector2[]> spriteUvCache = new();
+
+        private static Vector2[] GetSpriteUVs(Sprite sprite)
+        {
+            if (!spriteUvCache.TryGetValue(sprite, out var cached))
+            {
+                cached = sprite.uv;
+                spriteUvCache[sprite] = cached;
+            }
+            return cached;
+        }
 
         public Mesh GetMesh() => mesh;
 
@@ -321,7 +334,7 @@ namespace Assets.Scripts.Effects
             verts[2] = rotation * new Vector3(-width, -height) + offset;
             verts[3] = rotation * new Vector3(width, -height) + offset;
 
-            var spriteUVs = sprite.uv;
+            var spriteUVs = GetSpriteUVs(sprite);
 
             uvs[0] = spriteUVs[0];
             uvs[1] = spriteUVs[1];
@@ -353,7 +366,7 @@ namespace Assets.Scripts.Effects
                 verts[2] = rotation * (Vector3)VectorHelper.Rotate(new Vector2(-width,-height), angle) + offset;
                 verts[3] = rotation * (Vector3)VectorHelper.Rotate(new Vector2(width, -height), angle) + offset;
             
-                var spriteUVs = sprite.uv;
+                var spriteUVs = GetSpriteUVs(sprite);
             
                 uvs[0] = spriteUVs[0];
                 uvs[1] = spriteUVs[1];
@@ -418,7 +431,7 @@ namespace Assets.Scripts.Effects
                 verts[3] = (Vector3)VectorHelper.Rotate(new Vector2(width, -height), angle) + offset;
             }
 
-            var spriteUVs = sprite.uv;
+            var spriteUVs = GetSpriteUVs(sprite);
             
             uvs[0] = spriteUVs[0];
             uvs[1] = spriteUVs[1];

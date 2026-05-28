@@ -39,7 +39,8 @@ namespace Assets.Scripts.UI.Hud
                 return;
 
             RemainingTime.gameObject.SetActive(true);
-            
+            secondsRemaining = seconds;
+
             if (seconds <= 60)
                 RemainingTime.text = $"{seconds}s";
             else if (seconds <= 3600)

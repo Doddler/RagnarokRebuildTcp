@@ -658,7 +658,13 @@ namespace Assets.Scripts.MapEditor
         {
             if (mapData == null)
                 return;
-            
+
+            if (Application.isPlaying)
+            {
+                updatedLightmapper = true;
+                return;
+            }
+
             SceneView.duringSceneGui += OnSceneGUI;
             EditorApplication.playModeStateChanged += OnChangePlayMode;
 
@@ -752,15 +758,8 @@ namespace Assets.Scripts.MapEditor
         
         private void LateUpdate()
         {
-            if (Application.isPlaying)
-            {
-                SceneView.duringSceneGui -= OnSceneGUI;
-                EditorApplication.playModeStateChanged -= OnChangePlayMode;
-            }
-
             if (!Application.isEditor && HasSelection)
                 HighlightMapSelection(null, SelectedRegion);
-
         }
 
         public void Update()

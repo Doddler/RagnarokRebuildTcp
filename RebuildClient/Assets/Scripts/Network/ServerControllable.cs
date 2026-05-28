@@ -573,10 +573,10 @@ namespace Assets.Scripts.Network
             LeanTween.cancel(gameObject);
             isMoving = true;
 
-            var sb = new StringBuilder();
-            sb.Append(movePath[0]);
-            for (var i = 1; i < stepCount; i++)
-                sb.Append(", " + movePath[i]);
+            //var sb = new StringBuilder();
+            //sb.Append(movePath[0]);
+            //for (var i = 1; i < stepCount; i++)
+            //    sb.Append(", " + movePath[i]);
             // Debug.Log($"Starting move from {startPosition} (but really we're starting from {MoveStartPos}). MoveData: \n{sb.ToString()}");
         }
 
