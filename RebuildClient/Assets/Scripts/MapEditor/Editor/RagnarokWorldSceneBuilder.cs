@@ -5,6 +5,7 @@ using Assets.Scripts.Effects;
 using Assets.Scripts.Objects;
 using Assets.Scripts.Sprites;
 using Objects;
+using Scripts.Editor;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
