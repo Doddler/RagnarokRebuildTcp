@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -13,6 +13,9 @@ namespace Assets.Scripts
 
     public class TextureImportHelper
     {
+        private static readonly Dictionary<string, bool> FileSystemCaseSensitivityCache =
+            new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
+
         public static void SetTexturesReadable(List<Texture2D> textures)
         {
             var hasChanges = false;
@@ -20,13 +23,13 @@ namespace Assets.Scripts
             {
                 if (!t.isReadable)
                 {
-                    var texPath = AssetDatabase.GetAssetPath(t);
-                    var tImporter = AssetImporter.GetAtPath(texPath) as TextureImporter;
-                    if (tImporter != null)
+                    var texturePath = AssetDatabase.GetAssetPath(t);
+                    var textureImporter = AssetImporter.GetAtPath(texturePath) as TextureImporter;
+                    if (textureImporter != null)
                     {
-                        tImporter.isReadable = true;
+                        textureImporter.isReadable = true;
 
-                        AssetDatabase.ImportAsset(texPath);
+                        AssetDatabase.ImportAsset(texturePath);
                         hasChanges = true;
                     }
                 }
@@ -77,44 +80,224 @@ namespace Assets.Scripts
             return texture;
         }
         
+        private static string NormalizeTextureRelativePath(string textureName)
+        {
+            return textureName
+                .TrimStart('\\', '/')
+                .Replace('\\', Path.DirectorySeparatorChar)
+                .Replace('/', Path.DirectorySeparatorChar);
+        }
+
+        private static string ResolvePathCaseInsensitive(string candidatePath)
+        {
+            candidatePath = candidatePath
+                .Replace('\\', Path.DirectorySeparatorChar)
+                .Replace('/', Path.DirectorySeparatorChar);
+
+            if (File.Exists(candidatePath) || Directory.Exists(candidatePath))
+                return candidatePath;
+
+            if (!IsFileSystemCaseSensitive(candidatePath))
+                return candidatePath;
+
+            var root = Path.GetPathRoot(candidatePath);
+            var current = string.IsNullOrEmpty(root) ? Directory.GetCurrentDirectory() : root;
+            var remainder = string.IsNullOrEmpty(root) ? candidatePath : candidatePath.Substring(root.Length);
+
+            foreach (var pathPart in remainder.Split(Path.DirectorySeparatorChar))
+            {
+                if (string.IsNullOrEmpty(pathPart))
+                    continue;
+
+                if (!Directory.Exists(current))
+                    return candidatePath;
+
+                var exact = Path.Combine(current, pathPart);
+                if (File.Exists(exact) || Directory.Exists(exact))
+                {
+                    current = exact;
+                    continue;
+                }
+
+                string matchingEntry = null;
+                foreach (var entry in Directory.EnumerateFileSystemEntries(current))
+                {
+                    if (string.Equals(Path.GetFileName(entry), pathPart, StringComparison.OrdinalIgnoreCase))
+                    {
+                        matchingEntry = entry;
+                        break;
+                    }
+                }
+
+                if (matchingEntry == null)
+                    return candidatePath;
+
+                current = matchingEntry;
+            }
+
+            return current;
+        }
+
+        private static bool IsFileSystemCaseSensitive(string candidatePath)
+        {
+            var probeDirectory = GetCaseSensitivityProbeDirectory(candidatePath);
+            if (string.IsNullOrWhiteSpace(probeDirectory))
+                return true;
+
+            var cacheKey = Path.GetFullPath(probeDirectory);
+
+            bool cachedIsCaseSensitive;
+            if (FileSystemCaseSensitivityCache.TryGetValue(cacheKey, out cachedIsCaseSensitive))
+                return cachedIsCaseSensitive;
+
+            var probeName = ".case-sensitivity-probe-" + Guid.NewGuid().ToString("N");
+            var lowerProbePath = Path.Combine(probeDirectory, probeName.ToLowerInvariant());
+            var upperProbePath = Path.Combine(probeDirectory, probeName.ToUpperInvariant());
+
+            try
+            {
+                File.WriteAllText(lowerProbePath, string.Empty);
+                var isCaseSensitive = !File.Exists(upperProbePath);
+                FileSystemCaseSensitivityCache[cacheKey] = isCaseSensitive;
+                return isCaseSensitive;
+            }
+            catch
+            {
+                return true;
+            }
+            finally
+            {
+                try
+                {
+                    if (File.Exists(lowerProbePath))
+                        File.Delete(lowerProbePath);
+
+                    if (File.Exists(upperProbePath))
+                        File.Delete(upperProbePath);
+                }
+                catch
+                {
+                    // Best-effort cleanup only.
+                }
+            }
+        }
+
+        private static string GetCaseSensitivityProbeDirectory(string candidatePath)
+        {
+            var current = Directory.Exists(candidatePath)
+                ? candidatePath
+                : Path.GetDirectoryName(candidatePath);
+
+            while (!string.IsNullOrWhiteSpace(current))
+            {
+                if (Directory.Exists(current))
+                    return current;
+
+                current = Path.GetDirectoryName(current);
+            }
+
+            return Directory.Exists(Application.temporaryCachePath)
+                ? Application.temporaryCachePath
+                : null;
+        }
+
+        private static string ResolveTexturePath(string textureName, string importPath)
+        {
+            var normalizedTextureName = NormalizeTextureRelativePath(textureName);
+
+            var candidates = new[]
+            {
+                Path.Combine(importPath, "texture", normalizedTextureName),
+                Path.Combine(importPath, normalizedTextureName),
+                importPath
+            };
+
+            foreach (var candidate in candidates)
+            {
+                var resolved = ResolvePathCaseInsensitive(candidate);
+                if (File.Exists(resolved))
+                    return resolved;
+            }
+
+            return candidates[0];
+        }
+
+        private static string ToProjectRelativeAssetPath(string path)
+        {
+            path = path.Replace('\\', '/');
+
+            var assetsIndex = path.IndexOf("Assets/", StringComparison.Ordinal);
+            path = assetsIndex >= 0 ? path.Substring(assetsIndex) : path;
+
+            if (path.Equals("Assets/Maps", StringComparison.OrdinalIgnoreCase))
+                return "Assets/Maps";
+
+            if (path.StartsWith("Assets/Maps/", StringComparison.OrdinalIgnoreCase))
+                path = "Assets/Maps/" + path.Substring("Assets/Maps/".Length);
+
+            if (path.StartsWith("Assets/Maps/Texture/", StringComparison.OrdinalIgnoreCase))
+                path = "Assets/Maps/Texture/" + path.Substring("Assets/Maps/Texture/".Length);
+
+            return path;
+        }
+
         public static Texture2D GetOrImportTextureToProject(string textureName, string importPath, string outputPath, bool keyOnBlack = false)
         {
 
-            var texPath = Path.Combine(importPath, "texture", textureName);
+            var texturePath = ResolveTexturePath(textureName, importPath);
 
-            if (!File.Exists(texPath))
-                texPath = Path.Combine(importPath, textureName);
+            //Debug.Log(texturePath);
 
-            if (!File.Exists(texPath))
-                texPath = importPath;
-
-            //Debug.Log(texPath);
-
-            if (File.Exists(texPath))
+            if (File.Exists(texturePath))
             {
-                var bpath = Path.GetDirectoryName(textureName);
-                var fname = Path.GetFileNameWithoutExtension(textureName);
-                var texOutPath = Path.Combine(outputPath, DirectoryHelper.GetRelativeDirectory(importPath, Path.GetDirectoryName(texPath)));
-                var pngPath = Path.Combine(texOutPath, fname + ".png");
+                var textureBaseName = Path.GetFileNameWithoutExtension(NormalizeTextureRelativePath(textureName));
+                var textureOutputDirectory = Path.Combine(outputPath, DirectoryHelper.GetRelativeDirectory(importPath, Path.GetDirectoryName(texturePath)));
+                var pngPath = ToProjectRelativeAssetPath(Path.Combine(textureOutputDirectory, textureBaseName + ".png"));
                 
                 if (!File.Exists(pngPath))
                 {
-                    var tex2D = LoadTexture(texPath, keyOnBlack);
+                    var texture = LoadTexture(texturePath, keyOnBlack);
 
-                    tex2D.name = textureName;
+                    try
+                    {
+                        texture.name = Path.GetFileNameWithoutExtension(texturePath);
 
-                    PathHelper.CreateDirectoryIfNotExists(texOutPath);
+                        PathHelper.CreateDirectoryIfNotExists(Path.GetDirectoryName(pngPath));
 
-                    File.WriteAllBytes(pngPath, tex2D.EncodeToPNG());
+                        File.WriteAllBytes(pngPath, texture.EncodeToPNG());
 
-                    //Debug.Log("Png file does not exist: " + pngPath);
-
-                    AssetDatabase.Refresh();
+                        //Debug.Log("Png file does not exist: " + pngPath);
+                    }
+                    finally
+                    {
+                        if (texture != null)
+                            UnityEngine.Object.DestroyImmediate(texture);
+                    }
                 }
 
-                var texout = AssetDatabase.LoadAssetAtPath(pngPath, typeof(Texture2D)) as Texture2D;
+                var importedTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(pngPath);
+                if (importedTexture == null)
+                {
+                    AssetDatabase.ImportAsset(pngPath, ImportAssetOptions.ForceUpdate | ImportAssetOptions.ForceSynchronousImport);
+                    importedTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(pngPath);
+                }
 
-                return texout;
+                if (importedTexture == null)
+                {
+                    AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+                    AssetDatabase.ImportAsset(pngPath, ImportAssetOptions.ForceUpdate | ImportAssetOptions.ForceSynchronousImport);
+                    importedTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(pngPath);
+                }
+
+                if (importedTexture == null)
+                {
+                    Debug.LogWarning($"Imported texture {textureName} from {texturePath} to {pngPath}, but Unity could not load it as Texture2D. Falling back to readable source texture for atlas packing.");
+                    var fallbackTexture = LoadTexture(texturePath, keyOnBlack);
+                    fallbackTexture.name = Path.GetFileNameWithoutExtension(texturePath);
+                    return fallbackTexture;
+                }
+
+                return importedTexture;
             }
 
             throw new Exception($"Could not find texture {textureName} in the import path {importPath}");

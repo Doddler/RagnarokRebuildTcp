@@ -167,7 +167,7 @@ Shader "Unlit/BillboardVerticalZDepthDirect"
             #pragma multi_compile _ BLINDEFFECT_ON
             
             #include "UnityCG.cginc"
-            #include "Billboard.cginc"
+            #include "billboard.cginc"
 
             #pragma multi_compile_instancing
             
