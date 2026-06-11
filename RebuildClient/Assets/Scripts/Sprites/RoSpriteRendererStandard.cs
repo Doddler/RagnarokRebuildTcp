@@ -85,6 +85,7 @@ namespace Assets.Scripts.Sprites
         private float _lastWriteOffset;
         private bool _lastWriteHidden;
         private int _lastWriteRootOrder;
+        private float _lastWriteVPos;
         private bool _hasBeenPositioned;
         
         private bool _hasRebuiltOnce;
@@ -508,7 +509,8 @@ namespace Assets.Scripts.Sprites
                 && ColorDrain == _lastWriteDrain
                 && SpriteOffset == _lastWriteOffset
                 && IsHidden == _lastWriteHidden
-                && rootOrder == _lastWriteRootOrder)
+                && rootOrder == _lastWriteRootOrder
+                && ShaderYOffset == _lastWriteVPos)
             {
                 return;
             }
@@ -545,6 +547,7 @@ namespace Assets.Scripts.Sprites
             _lastWriteOffset = SpriteOffset;
             _lastWriteHidden = IsHidden;
             _lastWriteRootOrder = rootOrder;
+            _lastWriteVPos = ShaderYOffset;
             _dirty = false;
         }
 
