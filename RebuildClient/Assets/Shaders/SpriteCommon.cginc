@@ -7,6 +7,11 @@
 float4 _MainTex_TexelSize;
 fixed _VPos;
 
+#ifdef DYNBATCH_ON
+UNITY_DECLARE_TEX2DARRAY(_AtlasArray);
+static const float _AtlasArraySize = 2048;
+#endif
+
 #ifdef GROUND_ITEM
 struct InstanceData
 {

@@ -327,6 +327,7 @@ namespace Assets.Scripts.Sprites
                 stdRenderer.SecondPassForWater = !LockAngle; //anything you'd want to lock angle for probably doesn't need a water pass
                 stdRenderer.UpdateAngleWithCamera = !LockAngle;
                 stdRenderer.SortingOrder = SpriteOrder;
+                stdRenderer.OwnerAnimator = this;
                 SpriteRenderer = stdRenderer;
             }
 
@@ -429,12 +430,12 @@ namespace Assets.Scripts.Sprites
                 }
             }
             
+            SpriteRenderer.Rebuild(); //must precede UpdateRenderer or the batcher writes last frame's mesh
+
             if(Parent != null)
                 ChildUpdate(); //this will call UpdateRenderer after updating the angle to match the parent
             else
                 SpriteRenderer.UpdateRenderer();
-            
-            SpriteRenderer.Rebuild();
         }
 
         public void ChangeAngle(float angle)

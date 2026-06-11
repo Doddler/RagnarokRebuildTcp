@@ -3,6 +3,7 @@ Shader"Ragnarok/CharacterSpriteShader - Depth Color"
     Properties
     {
         [PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
+        _AtlasArray("Atlas Array", 2DArray) = "" {}
         //[PerRendererData] _PalTex("Palette Texture", 2D) = "white" {}
         [PerRendererData] _Color("Tint", Color) = (1,1,1,1)
         [PerRendererData] _EnvColor("Environment", Color) = (1,1,1,1)

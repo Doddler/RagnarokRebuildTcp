@@ -14,7 +14,9 @@ struct appdata_t
     float4 cornerOS    : TEXCOORD4;
     float4 spriteColor : TEXCOORD5;
     float4 packed      : TEXCOORD6;
-    float  hidden      : TEXCOORD7;
+    float2 hiddenX     : TEXCOORD7;
+    float  slice       : TEXCOORD1;
+    float4 uvRect      : TEXCOORD2;
     #endif
     #ifdef INSTANCING_ON
     uint vid : SV_VertexID;
@@ -39,6 +41,8 @@ struct v2f
     UNITY_FOG_COORDS(3)
     #ifdef DYNBATCH_ON
     fixed2 spriteParams : TEXCOORD4;
+    float slice : TEXCOORD5;
+    float4 uvRect : TEXCOORD6;
     #endif
     UNITY_VERTEX_OUTPUT_STEREO
 };
@@ -83,28 +87,23 @@ v2f vert(appdata_t v)
     float3 worldPos;
 
     #ifdef DYNBATCH_ON
-    float3 anchorWSOrig = v.anchorWS;
+    float3 anchorWS = v.anchorWS;
     float vPosShift = v.packed.z;
-    // Apply VPos along the sprite's own up-vector (rotated, supplied via the NORMAL attribute)
-    // so it matches the legacy path's `v.positionOS.y += _VPos` followed by unity_ObjectToWorld.
-    float3 anchorWS = anchorWSOrig + vPosShift * v.normal;
-    float3 cornerOffset = v.cornerOS.xyz;
+    float3 cornerOffset = v.cornerOS.xyz + vPosShift * v.normal;
     float3 originOffset = v.positionOS.xyz;
-    float posY = v.cornerOS.w;
+    float posY = v.cornerOS.w + vPosShift;
     float offset_ = v.packed.y;
     Billboard billboard = GetBillboardDB(anchorWS, cornerOffset, originOffset, posY, offset_);
     worldPos = billboard.positionWS;
     o.positionCS = billboard.positionCS;
-    o.positionCS.z += 0.001;
-    if (v.hidden > 0.5)
+    if (v.hiddenX.x > 0.5)
         o.positionCS = float4(2, 2, 2, 1);
     o.color = v.color * v.spriteColor;
 
     o.spriteParams = fixed2(v.packed.x, v.packed.w);
+    o.slice = v.slice;
+    o.uvRect = v.uvRect;
 
-    // Fog must be computed from the unfudged clip-space position, matching the legacy path's
-    // UnityObjectToClipPos(v.positionOS) — the billboard depth-fudge in o.positionCS would
-    // otherwise drift the fog factor.
     float4 fogClip = mul(UNITY_MATRIX_VP, float4(worldPos, 1));
     UNITY_TRANSFER_FOG(o, fogClip);
 
@@ -113,9 +112,10 @@ v2f vert(appdata_t v)
     o.lighting = float4(ShadeVertexLightsSprite(anchorWS), 1.0);
 
     #ifndef WATER_OFF
-    float wp_y = anchorWSOrig.y + (posY + vPosShift) * 1.5;
+    float scaleY = length(v.normal);
+    float wp_y = anchorWS.y + posY * scaleY * 1.5;
     o.screenPos = ComputeScreenPos(o.positionCS);
-    o.worldPos = float4(cornerOffset.x, wp_y, 0, 0);
+    o.worldPos = float4(v.hiddenX.y, wp_y, 0, 0);
     #endif
 
     #if BLINDEFFECT_ON
@@ -199,6 +199,24 @@ fixed4 frag(v2f i) : SV_Target
     float4 env = 1 - ((1 - _RoDiffuseColor) * (1 - _RoAmbientColor));
     env = env * 0.3 + 0.7;
 
+    #ifdef DYNBATCH_ON
+    #ifdef SMOOTHPIXEL
+    float2 texturePosition = i.texcoord.xy * _AtlasArraySize;
+    float2 nearestBoundary = round(texturePosition);
+    float2 delta = float2(abs(ddx(texturePosition.x)) + abs(ddx(texturePosition.y)),
+                        abs(ddy(texturePosition.x)) + abs(ddy(texturePosition.y)));
+
+    float2 samplePosition = (texturePosition - nearestBoundary) / delta;
+    samplePosition = clamp(samplePosition, -0.5, 0.5) + nearestBoundary;
+
+    float2 suv = clamp(samplePosition / _AtlasArraySize, i.uvRect.xy, i.uvRect.zw);
+    fixed4 diff = UNITY_SAMPLE_TEX2DARRAY_LOD(_AtlasArray, float3(suv, i.slice), 0);
+    #else
+    float2 suv = clamp(i.texcoord.xy, i.uvRect.xy, i.uvRect.zw);
+    fixed4 diff = UNITY_SAMPLE_TEX2DARRAY_LOD(_AtlasArray, float3(suv, i.slice), 0);
+    #endif
+
+    #else
     #ifdef SMOOTHPIXEL
     float2 texturePosition = i.texcoord * _MainTex_TexelSize.zw;
     float2 nearestBoundary = round(texturePosition);
@@ -211,6 +229,7 @@ fixed4 frag(v2f i) : SV_Target
     fixed4 diff = tex2D(_MainTex, samplePosition * _MainTex_TexelSize.xy);
     #else
     fixed4 diff = tex2D(_MainTex, i.texcoord.xy);
+    #endif
     #endif
 
     float4 fogColor = float4(1, 1, 1, 1);

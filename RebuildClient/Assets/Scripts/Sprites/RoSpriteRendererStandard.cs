@@ -65,11 +65,18 @@ namespace Assets.Scripts.Sprites
         public RoSpriteData SpriteData;
         public bool IsHidden;
 
+        internal RoSpriteAnimator OwnerAnimator;
+
         private SpriteBatchHandle _batchHandle;
         private bool _registered;
         private bool _useFallback;
         private MeshArrays _meshArrays;
-        
+        private RoSpriteRendererStandard _rootRenderer;
+        private Texture2D _registeredAtlas;
+        private bool _batchRejected;
+        private int _rejectedGeneration;
+        private int _instanceId;
+
         private bool _dirty = true;
         private Vector3 _lastWritePos;
         private Quaternion _lastWriteRot;
@@ -77,6 +84,7 @@ namespace Assets.Scripts.Sprites
         private float _lastWriteDrain;
         private float _lastWriteOffset;
         private bool _lastWriteHidden;
+        private int _lastWriteRootOrder;
         private bool _hasBeenPositioned;
         
         private bool _hasRebuiltOnce;
@@ -362,9 +370,13 @@ namespace Assets.Scripts.Sprites
                 }
             }
 
+            var batcher = RoSpriteBatcher.Instance;
+            if (_batchRejected && batcher != null && _rejectedGeneration != batcher.Generation)
+                _batchRejected = false;
             bool wantFallback = OverrideMaterial != null
-                || RoSpriteBatcher.Instance == null
-                || !RoSpriteBatcher.Instance.EnableBatching;
+                || batcher == null
+                || !batcher.BatchingAvailable
+                || _batchRejected;
             if (wantFallback != _useFallback)
             {
                 _useFallback = wantFallback;
@@ -420,16 +432,43 @@ namespace Assets.Scripts.Sprites
                 MeshRenderer.material.shader = wantShader;
         }
 
+        internal int CachedInstanceId => _instanceId != 0 ? _instanceId : _instanceId = GetInstanceID();
+
+        private RoSpriteRendererStandard ResolveRootRenderer()
+        {
+            if (_rootRenderer != null) return _rootRenderer;
+            if (OwnerAnimator == null || OwnerAnimator.Parent == null)
+            {
+                _rootRenderer = this;
+                return _rootRenderer;
+            }
+            if (OwnerAnimator.Parent.SpriteRenderer is RoSpriteRendererStandard parentRenderer)
+            {
+                _rootRenderer = parentRenderer;
+                return _rootRenderer;
+            }
+            return this;
+        }
+
         private void WriteToBatcher()
         {
             var batcher = RoSpriteBatcher.Instance;
             if (batcher == null) return;
             if (_meshArrays.Vertices == null) return;
 
-            if (_registered && _batchHandle.atlas != SpriteData.Atlas)
+            if (_registered && !batcher.IsValidHandle(_batchHandle))
+            {
+                _registered = false;
+                _batchHandle = default;
+                _registeredAtlas = null;
+                _dirty = true;
+            }
+
+            if (_registered && _registeredAtlas != SpriteData.Atlas)
             {
                 batcher.Unregister(ref _batchHandle);
                 _registered = false;
+                _registeredAtlas = null;
                 _dirty = true;
             }
 
@@ -437,14 +476,20 @@ namespace Assets.Scripts.Sprites
             {
                 int layerCount = _meshArrays.Vertices.Length / 4;
                 if (layerCount <= 0) return;
-                _batchHandle = batcher.Register(SpriteData.Atlas, layerCount);
+                if (!batcher.TryRegister(SpriteData.Atlas, layerCount, out _batchHandle))
+                {
+                    _batchRejected = true;
+                    _rejectedGeneration = batcher.Generation;
+                    return;
+                }
+                _registeredAtlas = SpriteData.Atlas;
                 _registered = true;
                 _dirty = true;
             }
 
             var pos = transform.position;
             var rot = transform.rotation;
-            
+
             if (!_hasBeenPositioned)
             {
                 if (pos.sqrMagnitude < 0.0001f)
@@ -452,14 +497,18 @@ namespace Assets.Scripts.Sprites
                 _hasBeenPositioned = true;
                 _dirty = true;
             }
-            
+
+            var root = ResolveRootRenderer();
+            int rootOrder = root.EffectiveSortingOrder();
+
             if (!_dirty
                 && pos == _lastWritePos
                 && rot == _lastWriteRot
                 && Color == _lastWriteColor
                 && ColorDrain == _lastWriteDrain
                 && SpriteOffset == _lastWriteOffset
-                && IsHidden == _lastWriteHidden)
+                && IsHidden == _lastWriteHidden
+                && rootOrder == _lastWriteRootOrder)
             {
                 return;
             }
@@ -473,10 +522,21 @@ namespace Assets.Scripts.Sprites
                 width = SpriteData.AverageWidth / 25f,
                 hidden = IsHidden,
                 sortOrder = EffectiveSortingOrder(),
+                rootKey = root.CachedInstanceId,
+                rootOrder = rootOrder,
+                rootPos = root.transform.position,
             };
 
-            batcher.WriteSprite(ref _batchHandle, transform.localToWorldMatrix,
-                _meshArrays.Vertices, _meshArrays.Uv, _meshArrays.Colors, p);
+            if (!batcher.WriteSprite(ref _batchHandle, transform.localToWorldMatrix,
+                _meshArrays.Vertices, _meshArrays.Uv, _meshArrays.Colors, p))
+            {
+                _registered = false;
+                _batchHandle = default;
+                _registeredAtlas = null;
+                _batchRejected = true;
+                _rejectedGeneration = batcher.Generation;
+                return;
+            }
 
             _lastWritePos = pos;
             _lastWriteRot = rot;
@@ -484,6 +544,7 @@ namespace Assets.Scripts.Sprites
             _lastWriteDrain = ColorDrain;
             _lastWriteOffset = SpriteOffset;
             _lastWriteHidden = IsHidden;
+            _lastWriteRootOrder = rootOrder;
             _dirty = false;
         }
 

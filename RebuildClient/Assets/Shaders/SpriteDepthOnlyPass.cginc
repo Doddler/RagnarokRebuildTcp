@@ -14,7 +14,9 @@ struct appdata_t
     float4 cornerOS    : TEXCOORD4;
     float4 spriteColor : TEXCOORD5;
     float4 packed      : TEXCOORD6;
-    float  hidden      : TEXCOORD7;
+    float2 hiddenX     : TEXCOORD7;
+    float  slice       : TEXCOORD1;
+    float4 uvRect      : TEXCOORD2;
     #endif
     #ifdef INSTANCING_ON
     uint vid : SV_VertexID;
@@ -27,6 +29,10 @@ struct v2f
     float4 pos : SV_POSITION;
     fixed4 color : COLOR;
     float2 texcoord : TEXCOORD0;
+    #ifdef DYNBATCH_ON
+    float slice : TEXCOORD1;
+    float4 uvRect : TEXCOORD2;
+    #endif
 };
 
 sampler2D _MainTex;
@@ -38,16 +44,17 @@ v2f vert(appdata_t v)
     UNITY_SETUP_INSTANCE_ID(v);
 
     #ifdef DYNBATCH_ON
-    float3 anchorWS = v.anchorWS + v.packed.z * v.normal;
-    float3 cornerOffset = v.cornerOS.xyz;
+    float vPosShift = v.packed.z;
+    float3 cornerOffset = v.cornerOS.xyz + vPosShift * v.normal;
     float3 originOffset = v.positionOS.xyz;
-    float posY = v.cornerOS.w;
-    Billboard billboard = GetBillboardDB(anchorWS, cornerOffset, originOffset, posY, 0);
+    float posY = v.cornerOS.w + vPosShift;
+    Billboard billboard = GetBillboardDB(v.anchorWS, cornerOffset, originOffset, posY, 0);
     o.pos = billboard.positionCS;
-    o.pos.z += 0.001;
-    if (v.hidden > 0.5)
+    if (v.hiddenX.x > 0.5)
         o.pos = float4(2, 2, 2, 1);
     o.color = v.color * v.spriteColor;
+    o.slice = v.slice;
+    o.uvRect = v.uvRect;
     #else
     #if defined(INSTANCING_ON) && defined(GROUND_ITEM)
     float isHidden = 0;
@@ -72,7 +79,12 @@ v2f vert(appdata_t v)
 
 half4 frag(v2f i) : SV_Target
 {
+    #ifdef DYNBATCH_ON
+    float2 suv = clamp(i.texcoord, i.uvRect.xy, i.uvRect.zw);
+    fixed4 c = UNITY_SAMPLE_TEX2DARRAY_LOD(_AtlasArray, float3(suv, i.slice), 0);
+    #else
     fixed4 c = tex2D(_MainTex, i.texcoord);
+    #endif
     c *= i.color;
 
     clip(c.a - 0.5);
