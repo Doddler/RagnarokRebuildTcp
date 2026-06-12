@@ -456,6 +456,7 @@ namespace Assets.Scripts.Sprites
             var batcher = RoSpriteBatcher.Instance;
             if (batcher == null) return;
             if (_meshArrays.Vertices == null) return;
+            if (!isActiveAndEnabled) return; //a dying renderer must not re-register after OnDisable already unregistered
 
             if (_registered && !batcher.IsValidHandle(_batchHandle))
             {

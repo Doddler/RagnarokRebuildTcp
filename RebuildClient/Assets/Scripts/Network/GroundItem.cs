@@ -22,12 +22,19 @@ namespace Assets.Scripts.Network
         private float velocity;
         private bool isReady = false;
 
-        private Color _color;
-        private RoGroundItemDrawCall _drawCall;
-        
+        private Color _color = Color.white;
+        private SpriteBatchHandle _batchHandle;
+        private bool _registered;
+        private int _instanceId;
+
         private static Material spriteMaterial;
         private static readonly int OffsetPropID = Shader.PropertyToID("_Offset");
         private const float Offset = 0.5f;
+        private const float QuadSize = 0.24f; //matched visually with the sprite renderer at scale 3
+
+        private static readonly Vector3[] BatchVerts = new Vector3[4];
+        private static readonly Vector2[] BatchUvs = new Vector2[4];
+        private static readonly Color[] BatchColors = { Color.white, Color.white, Color.white, Color.white };
 
         public static GroundItem Create(int entityId, int id, int count, Vector2 position, bool showAnimation)
         {
@@ -144,50 +151,101 @@ namespace Assets.Scripts.Network
             var shader = GameConfig.Data.EnableXRay ? ShaderCache.Instance.SpriteShaderWithXRay : ShaderCache.Instance.SpriteShader;
             if (spriteMaterial.shader != shader) spriteMaterial.shader = shader;
             
-            UpdateDrawCall();
+            UpdateBatch();
         }
         
         private void OnEnable()
         {
-	        StartCoroutine(WaitSpriteThenCreateDrawCall());
+            StartCoroutine(WaitSpriteThenRegister());
         }
 
-        private IEnumerator WaitSpriteThenCreateDrawCall()
+        private IEnumerator WaitSpriteThenRegister()
         {
-	        while (!Sprite)
-	        {
-		        yield return null;
-	        }
+            while (!Sprite)
+            {
+                yield return null;
+            }
 
-	        UpdateDrawCall();
-	        RoGroundItemBatcher.Instance.drawCalls.AddItem(Sprite.texture, _drawCall);
+            UpdateBatch();
         }
-        
+
         private void OnDisable()
         {
-	        if (_drawCall == null) return;
-	        RoGroundItemBatcher.Instance.drawCalls.RemoveItem(Sprite.texture, _drawCall);
+            if (_registered && RoSpriteBatcher.Instance != null)
+                RoSpriteBatcher.Instance.Unregister(ref _batchHandle);
+            _registered = false;
         }
-        
-        private void UpdateDrawCall()
+
+        private void UpdateBatch()
         {
-	        _drawCall ??= new RoGroundItemDrawCall();
-	        
-	        if (!RoGroundItemBatcher.Instance.EnableInstancing)
-	        {
-		        SpriteRenderer.enabled = true;
-		        return;
-	        }
-	        
-	        SpriteRenderer.enabled = false;
-	        _drawCall.UVRect = Sprite.textureRect;
-	        
-	        _drawCall.Transform = SpriteRenderer.transform;
-	        _drawCall.Pivot = Sprite.pivot;
-	        _drawCall.SpriteResolution = Sprite.rect.size;
-	        
-	        _drawCall.Color = _color;
-	        _drawCall.Offset = Offset;
+            if (!Sprite || SpriteRenderer == null)
+                return;
+
+            var batcher = RoSpriteBatcher.Instance;
+            var available = batcher != null && batcher.BatchingAvailable;
+
+            if (_registered && (!available || !batcher.IsValidHandle(_batchHandle)))
+            {
+                if (batcher != null)
+                    batcher.Unregister(ref _batchHandle);
+                _registered = false;
+            }
+
+            if (!available)
+            {
+                SpriteRenderer.enabled = true;
+                return;
+            }
+
+            if (!_registered)
+            {
+                if (!batcher.TryRegister(Sprite.texture, 1, out _batchHandle))
+                {
+                    SpriteRenderer.enabled = true;
+                    return;
+                }
+                _registered = true;
+            }
+
+            SpriteRenderer.enabled = false;
+
+            var resolution = Sprite.rect.size;
+            var pivot = Sprite.pivot;
+            var pivotOffset = new Vector3(
+                (0.5f - pivot.x / resolution.x) * QuadSize,
+                (0.5f - pivot.y / resolution.y) * QuadSize, 0f);
+            const float h = QuadSize * 0.5f;
+            BatchVerts[0] = pivotOffset + new Vector3(-h, -h, 0f);
+            BatchVerts[1] = pivotOffset + new Vector3(h, -h, 0f);
+            BatchVerts[2] = pivotOffset + new Vector3(-h, h, 0f);
+            BatchVerts[3] = pivotOffset + new Vector3(h, h, 0f);
+
+            var texRect = Sprite.textureRect;
+            var tex = Sprite.texture;
+            float uMin = texRect.xMin / tex.width, uMax = texRect.xMax / tex.width;
+            float vMin = texRect.yMin / tex.height, vMax = texRect.yMax / tex.height;
+            BatchUvs[0] = new Vector2(uMin, vMin);
+            BatchUvs[1] = new Vector2(uMax, vMin);
+            BatchUvs[2] = new Vector2(uMin, vMax);
+            BatchUvs[3] = new Vector2(uMax, vMax);
+
+            if (_instanceId == 0)
+                _instanceId = GetInstanceID();
+
+            var p = new SpriteRenderParams
+            {
+                spriteColor = _color,
+                offset = Offset,
+                rootKey = _instanceId,
+                rootPos = transform.position,
+            };
+
+            if (!batcher.WriteSprite(ref _batchHandle, SpriteRenderer.transform.localToWorldMatrix,
+                BatchVerts, BatchUvs, BatchColors, p))
+            {
+                _registered = false;
+                SpriteRenderer.enabled = true;
+            }
         }
     }
 }

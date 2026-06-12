@@ -81,7 +81,8 @@ public partial class RoSpriteBatcher : MonoBehaviour
         public bool Hidden;
         public Texture2D Atlas;
         public SpriteAtlasRegion Region;
-        public int[] Slots;
+        public int[] Slots; //capacity only grows, SlotCount is the live prefix
+        public int SlotCount;
         public Vector3 RootPos;
         public int RootKey;
         public int RootOrder;
@@ -90,6 +91,7 @@ public partial class RoSpriteBatcher : MonoBehaviour
     }
 
     private BatchEntry[] _entries = new BatchEntry[InitialEntryCapacity];
+    private int[] _entrySeq = new int[InitialEntryCapacity]; //bumped on free so stale handles can't touch reused entries
     private readonly Stack<int> _freeEntries = new();
     private int _entryHighWater;
 
@@ -308,6 +310,7 @@ public partial class RoSpriteBatcher : MonoBehaviour
             if (_entryHighWater >= _entries.Length)
             {
                 Array.Resize(ref _entries, _entries.Length * 2);
+                Array.Resize(ref _entrySeq, _entries.Length);
                 Array.Resize(ref _sortKeys, _entries.Length);
                 Array.Resize(ref _sortValues, _entries.Length);
             }
@@ -320,9 +323,10 @@ public partial class RoSpriteBatcher : MonoBehaviour
             Atlas = atlas,
             Region = region,
             Slots = slots,
+            SlotCount = layerCount,
         };
 
-        handle = new SpriteBatchHandle { EntryId = entryId, Generation = Generation };
+        handle = new SpriteBatchHandle { EntryId = entryId, Generation = Generation, Seq = _entrySeq[entryId] };
         return true;
     }
 
@@ -332,11 +336,12 @@ public partial class RoSpriteBatcher : MonoBehaviour
         {
             ref var entry = ref _entries[handle.EntryId];
             var slots = entry.Slots;
-            for (var i = 0; i < slots.Length; i++)
+            for (var i = 0; i < entry.SlotCount; i++)
                 _freeQuads.Push(slots[i]);
             if (_atlasArray != null && entry.Atlas != null)
                 _atlasArray.Release(entry.Atlas);
             _entries[handle.EntryId] = default;
+            _entrySeq[handle.EntryId]++;
             _freeEntries.Push(handle.EntryId);
         }
         handle = default;
@@ -347,7 +352,8 @@ public partial class RoSpriteBatcher : MonoBehaviour
         return handle.Generation == Generation
             && handle.EntryId >= 0
             && handle.EntryId < _entryHighWater
-            && _entries[handle.EntryId].InUse;
+            && _entries[handle.EntryId].InUse
+            && _entrySeq[handle.EntryId] == handle.Seq;
     }
 
     public bool WriteSprite(ref SpriteBatchHandle handle, Matrix4x4 localToWorld,
@@ -392,35 +398,37 @@ public partial class RoSpriteBatcher : MonoBehaviour
     private bool EnsureSlotCount(ref SpriteBatchHandle handle, int newCount)
     {
         ref var entry = ref _entries[handle.EntryId];
-        var slots = entry.Slots;
-        int oldCount = slots != null ? slots.Length : 0;
+        int oldCount = entry.SlotCount;
         if (oldCount == newCount) return true;
 
         if (newCount > oldCount)
         {
-            var newSlots = new int[newCount];
-            if (slots != null)
-                Array.Copy(slots, newSlots, oldCount);
+            if (entry.Slots == null || entry.Slots.Length < newCount)
+            {
+                var grown = new int[Mathf.Max(newCount, entry.Slots != null ? entry.Slots.Length * 2 : 4)];
+                if (entry.Slots != null)
+                    Array.Copy(entry.Slots, grown, oldCount);
+                entry.Slots = grown;
+            }
             for (int i = oldCount; i < newCount; i++)
             {
-                newSlots[i] = AllocQuad();
-                if (newSlots[i] < 0)
+                int quad = AllocQuad();
+                if (quad < 0)
                 {
                     for (int j = oldCount; j < i; j++)
-                        _freeQuads.Push(newSlots[j]);
+                        _freeQuads.Push(entry.Slots[j]);
                     return false;
                 }
+                entry.Slots[i] = quad;
             }
-            entry.Slots = newSlots;
         }
         else
         {
             for (int i = newCount; i < oldCount; i++)
-                _freeQuads.Push(slots[i]);
-            var newSlots = new int[newCount];
-            Array.Copy(slots, newSlots, newCount);
-            entry.Slots = newSlots;
+                _freeQuads.Push(entry.Slots[i]);
         }
+
+        entry.SlotCount = newCount;
         return true;
     }
 
@@ -534,6 +542,7 @@ public partial class RoSpriteBatcher : MonoBehaviour
     private void LateUpdate()
     {
         ProcessShadowRaycasts();
+        _atlasArray?.SweepExpired();
 
         if (_xrayCmd == null) return;
 
@@ -600,8 +609,9 @@ public partial class RoSpriteBatcher : MonoBehaviour
         int indexCount = 0;
         for (var s = 0; s < sortCount; s++)
         {
-            var slots = _entries[_sortValues[s]].Slots;
-            for (var q = 0; q < slots.Length; q++)
+            ref var sorted = ref _entries[_sortValues[s]];
+            var slots = sorted.Slots;
+            for (var q = 0; q < sorted.SlotCount; q++)
             {
                 int vb = slots[q] * VertsPerQuad;
                 _indices[indexCount + 0] = (ushort)(vb + 0);
@@ -656,6 +666,7 @@ public struct SpriteBatchHandle
 {
     public int EntryId;
     public int Generation;
+    public int Seq;
 }
 
 public struct SpriteRenderParams

@@ -20,6 +20,8 @@ namespace Assets.Scripts.Sprites
         public const int SliceSize = 2048;
         public const int DefaultSliceCount = 16;
         public const int MaxSliceCount = 64;
+        //unused atlases linger so a respawn of the same monster reuses the copy
+        private const float EvictDelay = 30f;
 
         private Texture2DArray _array;
         private Texture2DArray _clearTemplate;
@@ -46,6 +48,8 @@ namespace Assets.Scripts.Sprites
             public SpriteAtlasRegion Region;
             public int RefCount;
             public int X, Y, Width, Height;
+            public bool Pending;
+            public float ExpireTime;
         }
 
         private struct FreeRect
@@ -56,6 +60,9 @@ namespace Assets.Scripts.Sprites
         private readonly List<Page> _pages = new();
         private readonly Dictionary<Texture2D, Entry> _entries = new();
         private readonly List<FreeRect> _freeRects = new();
+        private readonly List<Texture2D> _pendingEviction = new();
+        private int _referencedCount;
+        private float _nextSweep;
 
         public Texture2DArray Texture => _array;
         public int EntryCount => _entries.Count;
@@ -83,6 +90,11 @@ namespace Assets.Scripts.Sprites
 
             if (_entries.TryGetValue(atlas, out var existing))
             {
+                if (existing.RefCount == 0)
+                {
+                    existing.Pending = false;
+                    _referencedCount++;
+                }
                 existing.RefCount++;
                 region = existing.Region;
                 return true;
@@ -127,6 +139,7 @@ namespace Assets.Scripts.Sprites
                 },
             };
             _entries[atlas] = entry;
+            _referencedCount++;
             region = entry.Region;
             return true;
         }
@@ -138,25 +151,53 @@ namespace Assets.Scripts.Sprites
             entry.RefCount--;
             if (entry.RefCount > 0) return;
 
-            _entries.Remove(atlas);
-            if (_entries.Count == 0)
+            _referencedCount--;
+            if (_referencedCount <= 0)
             {
                 ResetLayout();
                 return;
             }
-            if (_array != null && _clearTemplate != null)
-                Graphics.CopyTexture(_clearTemplate, 0, 0, entry.X, entry.Y, entry.Width, entry.Height,
-                    _array, entry.Region.Slice, 0, entry.X, entry.Y);
-            _freeRects.Add(new FreeRect
+
+            entry.Pending = true;
+            entry.ExpireTime = Time.time + EvictDelay;
+            _pendingEviction.Add(atlas);
+        }
+
+        public void SweepExpired()
+        {
+            if (_pendingEviction.Count == 0 || Time.time < _nextSweep) return;
+            _nextSweep = Time.time + 1f;
+
+            for (var i = _pendingEviction.Count - 1; i >= 0; i--)
             {
-                Slice = entry.Region.Slice,
-                X = entry.X, Y = entry.Y,
-                Width = entry.Width, Height = entry.Height,
-            });
+                var atlas = _pendingEviction[i];
+                if (!_entries.TryGetValue(atlas, out var entry) || !entry.Pending)
+                {
+                    _pendingEviction.RemoveAt(i);
+                    continue;
+                }
+                if (Time.time < entry.ExpireTime)
+                    continue;
+
+                _entries.Remove(atlas);
+                _pendingEviction.RemoveAt(i);
+                if (_array != null && _clearTemplate != null)
+                    Graphics.CopyTexture(_clearTemplate, 0, 0, entry.X, entry.Y, entry.Width, entry.Height,
+                        _array, entry.Region.Slice, 0, entry.X, entry.Y);
+                _freeRects.Add(new FreeRect
+                {
+                    Slice = entry.Region.Slice,
+                    X = entry.X, Y = entry.Y,
+                    Width = entry.Width, Height = entry.Height,
+                });
+            }
         }
 
         private void ResetLayout()
         {
+            _entries.Clear();
+            _pendingEviction.Clear();
+            _referencedCount = 0;
             _freeRects.Clear();
             if (SliceCount > _initialSliceCount && _array != null)
             {
@@ -257,7 +298,6 @@ namespace Assets.Scripts.Sprites
 
         private bool TryAllocate(int w, int h, out int slice, out int x, out int y)
         {
-            int alignedW = Align4(w);
             int potH = NextPot(Align4(h));
 
             for (var i = 0; i < _freeRects.Count; i++)
@@ -269,10 +309,10 @@ namespace Assets.Scripts.Sprites
                 return true;
             }
 
+            //exact-height shelf, earliest slice
             for (var p = 0; p < _pages.Count; p++)
             {
                 var page = _pages[p];
-
                 for (var s = 0; s < page.Shelves.Count; s++)
                 {
                     var shelf = page.Shelves[s];
@@ -280,31 +320,51 @@ namespace Assets.Scripts.Sprites
                     if (shelf.X + w > SliceSize) continue;
                     return PlaceInShelf(page, shelf, w, out slice, out x, out y);
                 }
-
-                if (page.NextShelfY + potH <= SliceSize)
-                {
-                    var shelf = new Shelf { Y = page.NextShelfY, Height = potH, X = 0 };
-                    page.Shelves.Add(shelf);
-                    page.NextShelfY = Align4(page.NextShelfY + potH);
-                    return PlaceInShelf(page, shelf, w, out slice, out x, out y);
-                }
             }
 
-            //scavenge leftover width in taller shelves before failing
+            //best-fit reuse of a taller shelf when height waste stays under half
+            if (FindBestShelf(w, potH, potH * 2, out var bestPage, out var bestShelf))
+                return PlaceInShelf(bestPage, bestShelf, w, out slice, out x, out y);
+
+            //new exact-height shelf, earliest slice with vertical room
+            for (var p = 0; p < _pages.Count; p++)
+            {
+                var page = _pages[p];
+                if (page.NextShelfY + potH > SliceSize) continue;
+                var shelf = new Shelf { Y = page.NextShelfY, Height = potH, X = 0 };
+                page.Shelves.Add(shelf);
+                page.NextShelfY = Align4(page.NextShelfY + potH);
+                return PlaceInShelf(page, shelf, w, out slice, out x, out y);
+            }
+
+            //last resort: any taller shelf, smallest first
+            if (FindBestShelf(w, potH, int.MaxValue, out bestPage, out bestShelf))
+                return PlaceInShelf(bestPage, bestShelf, w, out slice, out x, out y);
+
+            slice = x = y = 0;
+            return false;
+        }
+
+        private bool FindBestShelf(int w, int minHeight, int maxHeight, out Page bestPage, out Shelf bestShelf)
+        {
+            bestPage = null;
+            bestShelf = null;
+            var bestHeight = int.MaxValue;
             for (var p = 0; p < _pages.Count; p++)
             {
                 var page = _pages[p];
                 for (var s = 0; s < page.Shelves.Count; s++)
                 {
                     var shelf = page.Shelves[s];
-                    if (shelf.Height < potH) continue;
+                    if (shelf.Height <= minHeight || shelf.Height > maxHeight) continue;
                     if (shelf.X + w > SliceSize) continue;
-                    return PlaceInShelf(page, shelf, w, out slice, out x, out y);
+                    if (shelf.Height >= bestHeight) continue;
+                    bestHeight = shelf.Height;
+                    bestPage = page;
+                    bestShelf = shelf;
                 }
             }
-
-            slice = x = y = 0;
-            return false;
+            return bestShelf != null;
         }
 
         private static bool PlaceInShelf(Page page, Shelf shelf, int w, out int slice, out int x, out int y)
@@ -326,7 +386,7 @@ namespace Assets.Scripts.Sprites
         public string DumpOccupancy()
         {
             var sb = new StringBuilder();
-            sb.AppendLine($"SpriteAtlasArray: {_entries.Count} atlases in {SliceCount}/{MaxSliceCount} slices, {RejectedCount} rejected, {_freeRects.Count} free rects, format={_format}");
+            sb.AppendLine($"SpriteAtlasArray: {_entries.Count} atlases ({_referencedCount} referenced, {_pendingEviction.Count} pending eviction) in {SliceCount}/{MaxSliceCount} slices, {RejectedCount} rejected, {_freeRects.Count} free rects, format={_format}");
             foreach (var page in _pages)
             {
                 if (page.Shelves.Count == 0) continue;

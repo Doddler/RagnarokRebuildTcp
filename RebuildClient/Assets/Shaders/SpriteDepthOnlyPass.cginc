@@ -18,10 +18,6 @@ struct appdata_t
     float  slice       : TEXCOORD1;
     float4 uvRect      : TEXCOORD2;
     #endif
-    #ifdef INSTANCING_ON
-    uint vid : SV_VertexID;
-    uint instanceID : SV_InstanceID;
-    #endif
 };
 
 struct v2f
@@ -56,20 +52,9 @@ v2f vert(appdata_t v)
     o.slice = v.slice;
     o.uvRect = v.uvRect;
     #else
-    #if defined(INSTANCING_ON) && defined(GROUND_ITEM)
-    float isHidden = 0;
-    float _Offset = 0;
-    float _ColorDrain = 0;
-    float _Width = 0;
-    SetupInstancingData(v.instanceID, v.vid, v.positionOS.xyz, v.texcoord.xy, v.color, _Color, isHidden, _Offset, _ColorDrain, _VPos, _Width);
-    #endif
-
     v.positionOS.y += _VPos;
     Billboard billboard = GetBillboard(v.positionOS, 0);
     o.pos = billboard.positionCS;
-    #if defined(INSTANCING_ON) && defined(GROUND_ITEM)
-    o.pos.z += 0.001;
-    #endif
     o.color = v.color * _Color;
     #endif
 

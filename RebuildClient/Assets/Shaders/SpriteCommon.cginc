@@ -12,40 +12,6 @@ UNITY_DECLARE_TEX2DARRAY(_AtlasArray);
 static const float _AtlasArraySize = 2048;
 #endif
 
-#ifdef GROUND_ITEM
-struct InstanceData
-{
-    float4 color;
-    float4 uvRect;
-    float offset;
-};
-
-StructuredBuffer<InstanceData> _Instances;
-int _BaseInstance;
-
-inline void SetupInstancingData
-(
-    uint instanceID, uint vertexID,
-    inout float3 positionOS,
-    inout float2 uv,
-    inout float4 vcol,
-    inout float4 color,
-    inout float isHidden,
-    inout float offset,
-    inout float colorDrain,
-    inout float vPos,
-    inout float width)
-{
-    InstanceData inst = _Instances[_BaseInstance + instanceID];
-
-    float4 rect = inst.uvRect;
-    uv = rect.xy * _MainTex_TexelSize.xy + uv * rect.zw * _MainTex_TexelSize.xy;
-
-    color = inst.color;
-    offset = inst.offset;
-}
-#endif
-
 float3 ShadeVertexLightsSprite(float3 pos)
 {
     float3 viewpos = UnityWorldToViewPos(pos);

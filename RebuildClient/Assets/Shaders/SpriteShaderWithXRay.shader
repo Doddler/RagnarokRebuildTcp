@@ -42,12 +42,8 @@ Shader"Ragnarok/CharacterSpriteShader - Depth Color XRay"
             #pragma vertex vert
             #pragma fragment frag
 
-            #pragma multi_compile _ GROUND_ITEM
             
             #pragma multi_compile_local _ DYNBATCH_ON
-            #pragma multi_compile_instancing
-            #pragma instancing_options assumeuniformscaling nolodfade nolightprobe nolightmap
-            #pragma multi_compile _ INSTANCING_ON
             
 
             #include "SpriteDepthOnlyPass.cginc"
@@ -70,12 +66,8 @@ Shader"Ragnarok/CharacterSpriteShader - Depth Color XRay"
             #pragma multi_compile _ BLINDEFFECT_ON
             //#pragma shader_feature _ WATER_OFF
             #pragma shader_feature _ COLOR_DRAIN
-            #pragma multi_compile _ GROUND_ITEM
 
             #pragma multi_compile_local _ DYNBATCH_ON
-            #pragma multi_compile_instancing
-            #pragma instancing_options assumeuniformscaling nolodfade nolightprobe nolightmap
-            #pragma multi_compile _ INSTANCING_ON
 
             //#define SMOOTHPIXEL
 
@@ -101,12 +93,8 @@ Shader"Ragnarok/CharacterSpriteShader - Depth Color XRay"
             #pragma multi_compile _ BLINDEFFECT_ON
             //#pragma shader_feature _ WATER_OFF
             #pragma shader_feature _ COLOR_DRAIN
-            #pragma multi_compile _ GROUND_ITEM
 
             #pragma multi_compile_local _ DYNBATCH_ON
-            #pragma multi_compile_instancing
-            #pragma instancing_options assumeuniformscaling nolodfade nolightprobe nolightmap
-            #pragma multi_compile _ INSTANCING_ON
 
             #define XRAY
             //#define SMOOTHPIXEL

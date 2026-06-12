@@ -42183,27 +42183,27 @@ PrefabInstance:
     - target: {fileID: 5173101843428904180, guid: ddf829f6f33d52c4eb2e1ac808035ecd,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5173101843428904180, guid: ddf829f6f33d52c4eb2e1ac808035ecd,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5173101843428904180, guid: ddf829f6f33d52c4eb2e1ac808035ecd,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 572
       objectReference: {fileID: 0}
     - target: {fileID: 5173101843428904180, guid: ddf829f6f33d52c4eb2e1ac808035ecd,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 292
       objectReference: {fileID: 0}
     - target: {fileID: 5173101843428904180, guid: ddf829f6f33d52c4eb2e1ac808035ecd,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -18
       objectReference: {fileID: 0}
     - target: {fileID: 5459022177347974543, guid: ddf829f6f33d52c4eb2e1ac808035ecd,
         type: 3}
@@ -46772,7 +46772,18 @@ PrefabInstance:
       propertyPath: CharacterDetailBox
       value: 
       objectReference: {fileID: 744361254}
-    m_RemovedComponents: []
+    - target: {fileID: 8963847247755784938, guid: 7cb1e2a9a8a5c8d418e25368571c9a56,
+        type: 3}
+      propertyPath: AtlasSliceCount
+      value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 8963847247755784938, guid: 7cb1e2a9a8a5c8d418e25368571c9a56,
+        type: 3}
+      propertyPath: AtlasInitialSliceCount
+      value: 16
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1980845207811950280, guid: 7cb1e2a9a8a5c8d418e25368571c9a56, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
