@@ -20,6 +20,7 @@ namespace Assets.Scripts.Sprites
         public const int SliceSize = 2048;
         public const int DefaultSliceCount = 16;
         public const int MaxSliceCount = 64;
+        private static int MaxDeviceSlices => Mathf.Min(MaxSliceCount, SystemInfo.maxTextureArraySlices);
         //unused atlases linger so a respawn of the same monster reuses the copy
         private const float EvictDelay = 30f;
 
@@ -71,7 +72,7 @@ namespace Assets.Scripts.Sprites
 
         public SpriteAtlasArray(int initialSliceCount = DefaultSliceCount)
         {
-            _initialSliceCount = Mathf.Clamp(initialSliceCount, 1, MaxSliceCount);
+            _initialSliceCount = Mathf.Clamp(initialSliceCount, 1, MaxDeviceSlices);
             SliceCount = _initialSliceCount;
             RebuildPages();
         }
@@ -271,7 +272,7 @@ namespace Assets.Scripts.Sprites
         private bool TryGrowAndAllocate(int w, int h, out int slice, out int x, out int y)
         {
             slice = x = y = 0;
-            if (_array == null || SliceCount >= MaxSliceCount)
+            if (_array == null || SliceCount >= MaxDeviceSlices)
                 return false;
 
             Grow(SliceCount + 1);

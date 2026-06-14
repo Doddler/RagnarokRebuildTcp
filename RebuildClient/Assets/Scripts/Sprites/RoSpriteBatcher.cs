@@ -104,12 +104,9 @@ public partial class RoSpriteBatcher : MonoBehaviour
 
         _camera = GetComponent<Camera>();
 
-#if UNITY_WEBGL && !UNITY_EDITOR
-        _platformSupported = false;
-#else
+        const CopyTextureSupport requiredCopySupport = CopyTextureSupport.Basic | CopyTextureSupport.DifferentTypes;
         _platformSupported = SystemInfo.supports2DArrayTextures
-            && SystemInfo.copyTextureSupport != CopyTextureSupport.None;
-#endif
+            && (SystemInfo.copyTextureSupport & requiredCopySupport) == requiredCopySupport;
 
         Generation++;
 
