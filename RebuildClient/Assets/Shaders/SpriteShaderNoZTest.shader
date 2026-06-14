@@ -42,7 +42,7 @@ Shader"Ragnarok/CharacterSpriteShaderNoZTest"
 
 			#include "UnityCG.cginc"
 			#include "UnityUI.cginc"
-			#include "Billboard.cginc"
+			#include "billboard.cginc"
 
 			struct appdata_t
 			{

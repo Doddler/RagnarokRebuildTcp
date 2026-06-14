@@ -14,6 +14,29 @@ public class ActImporter : ScriptedImporter
 {
     public int PaletteCount;
 
+    public static string ResolveSiblingFileCaseInsensitive(string expectedPath)
+    {
+        expectedPath = expectedPath.Replace("\\", "/");
+
+        if (File.Exists(expectedPath))
+            return expectedPath;
+
+        var dir = Path.GetDirectoryName(expectedPath);
+        var fileName = Path.GetFileName(expectedPath);
+
+        if (string.IsNullOrWhiteSpace(dir) || !Directory.Exists(dir))
+            return expectedPath;
+
+        foreach (var file in Directory.GetFiles(dir))
+        {
+            if (string.Equals(Path.GetFileName(file), fileName, StringComparison.OrdinalIgnoreCase))
+                return file.Replace("\\", "/");
+        }
+
+        return expectedPath;
+    }
+
+
     public override void OnImportAsset(AssetImportContext ctx)
     {
         // var asset = ScriptableObject.CreateInstance<RagnarokActFile>();
@@ -50,8 +73,9 @@ public class ActImporter : ScriptedImporter
         var asset = ScriptableObject.CreateInstance<RoSpriteData>();
         AssetDatabase.CreateAsset(asset, Path.Combine(targetFolder, $"{baseName}.asset"));
 
+        var spritePath = ResolveSiblingFileCaseInsensitive(Path.ChangeExtension(actPath, ".spr"));
         var loader = new RagnarokSpriteLoader();
-        loader.Load(actPath.Replace(".act", ".spr"), atlasPath, asset, null);
+        loader.Load(spritePath, atlasPath, asset, null);
         SetUpSpriteData(loader, asset, dir, baseName, baseName);
 
         for (var i = 0; i < palettes.Count; i++)
@@ -61,29 +85,32 @@ public class ActImporter : ScriptedImporter
 
             atlasPath = Path.Combine(targetFolder, "Atlas/", $"{baseName}_{i}_atlas.png").Replace("\\", "/");
             loader = new RagnarokSpriteLoader();
-            loader.Load(actPath.Replace(".act", ".spr"), atlasPath, asset, palettes[i]);
+            loader.Load(spritePath, atlasPath, asset, palettes[i]);
             SetUpSpriteData(loader, asset, dir, baseName, $"{baseName}_{i}");
         }
 
         AssetDatabase.SaveAssets();
     }
 
-    private static void SetUpSpriteData(RagnarokSpriteLoader spr, RoSpriteData asset, string basePath, string baseName, string outName)
+    private static void SetUpSpriteData(RagnarokSpriteLoader spriteLoader, RoSpriteData asset, string basePath, string baseName, string outputName)
     {
         var actName = Path.Combine(basePath, baseName + ".act");
-        var imfFile = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectorySafe, "imf/", baseName + ".imf");
-        if (!File.Exists(imfFile))
-            imfFile = null;
+        var dataDir = RagnarokDirectory.GetRagnarokDataDirectorySafe;
+        var imfPath = string.IsNullOrWhiteSpace(dataDir)
+            ? null
+            : Path.Combine(dataDir, "imf/", baseName + ".imf");
+        if (imfPath != null && !File.Exists(imfPath))
+            imfPath = null;
         
         var actLoader = new RagnarokActLoader();
-        var actions = actLoader.Load(spr, actName, imfFile);
+        var actions = actLoader.Load(spriteLoader, actName, imfPath);
 
         asset.Actions = actions.ToArray();
-        asset.Sprites = spr.Sprites.ToArray();
-        asset.SpriteSizes = spr.SpriteSizes.ToArray();
-        asset.Name = outName;
-        asset.Atlas = spr.Atlas;
-        asset.SpritesPerPalette = spr.SpriteFrameCount;
+        asset.Sprites = spriteLoader.Sprites.ToArray();
+        asset.SpriteSizes = spriteLoader.SpriteSizes.ToArray();
+        asset.Name = outputName;
+        asset.Atlas = spriteLoader.Atlas;
+        asset.SpritesPerPalette = spriteLoader.SpriteFrameCount;
 
         if (actLoader.Sounds != null)
         {
@@ -238,13 +265,13 @@ public class ActPostProcessor : AssetPostprocessor
     {
         foreach (var importedAsset in importedAssets)
         {
-            if (!importedAsset.EndsWith(".act"))
+            if (!importedAsset.EndsWith(".act", StringComparison.OrdinalIgnoreCase))
                 continue;
             
-            var sprName = Path.Combine(Path.GetDirectoryName(importedAsset), Path.GetFileNameWithoutExtension(importedAsset) + ".spr");
-            if (!File.Exists(sprName))
+            var spritePath = ActImporter.ResolveSiblingFileCaseInsensitive(Path.Combine(Path.GetDirectoryName(importedAsset), Path.GetFileNameWithoutExtension(importedAsset) + ".spr"));
+            if (!File.Exists(spritePath))
             {
-                Debug.LogError($"Could not load sprite {importedAsset} as it did not have an associated .spr sprite data file.");
+                Debug.LogError($"Could not load sprite {importedAsset} as it did not have an associated .spr/.Spr sprite data file.");
                 continue;
             }
 

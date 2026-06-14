@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -7,12 +7,27 @@ namespace Assets.Scripts.MapEditor.Editor
 {
     class RagnarokDirectory : EditorWindow
     {
+        private static string NormalizeDataPath(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+                return null;
+
+            try
+            {
+                return Path.GetFullPath(path);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         public static string GetRagnarokDataDirectory
         {
             get
             {
-                var path = EditorPrefs.GetString("RagnarokDataPath", null);
-                if(path == null)
+                var path = NormalizeDataPath(EditorPrefs.GetString("RagnarokDataPath", null));
+                if (path == null)
                     throw new Exception("You must set a ragnarok data directory first!");
                 return path;
             }
@@ -23,8 +38,7 @@ namespace Assets.Scripts.MapEditor.Editor
         {
             get
             {
-                var path = EditorPrefs.GetString("RagnarokDataPath", null);
-                return path;
+                return NormalizeDataPath(EditorPrefs.GetString("RagnarokDataPath", null));
             }
         }
 
@@ -32,16 +46,15 @@ namespace Assets.Scripts.MapEditor.Editor
         [MenuItem("Ragnarok/Set Ragnarok Data Directory", priority = 0)]
         public static void SetDataDirectory()
         {
-            var defaultName = "Data";
-            var oldPath = EditorPrefs.GetString("RagnarokDataPath", null);
-            if (!string.IsNullOrWhiteSpace(oldPath) && Directory.Exists(oldPath))
-            {
-                var di = new DirectoryInfo(oldPath);
-                oldPath = di.Parent.FullName;
-                defaultName = di.Name;
-            }
-            var path = EditorUtility.SaveFolderPanel("Locate Ragnarok Data Folder", oldPath, defaultName);
-            if (Directory.Exists(path))
+            var oldPath = NormalizeDataPath(EditorPrefs.GetString("RagnarokDataPath", null));
+            var startPath = oldPath;
+
+            if (string.IsNullOrWhiteSpace(startPath) || !Directory.Exists(startPath))
+                startPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+
+            var path = NormalizeDataPath(EditorUtility.OpenFolderPanel("Locate Ragnarok Data Folder", startPath, ""));
+
+            if (!string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
             {
                 EditorPrefs.SetString("RagnarokDataPath", path);
                 Debug.Log("Ragnarok data directory set to: " + path);

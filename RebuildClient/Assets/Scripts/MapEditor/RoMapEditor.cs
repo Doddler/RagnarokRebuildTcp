@@ -397,7 +397,7 @@ namespace Assets.Scripts.MapEditor
                     w.Images = new Texture2D[32];
 
                     for (var i = 0; i < 32; i++)
-                        w.Images[i] = AssetDatabase.LoadAssetAtPath<Texture2D>($"Assets/Maps/texture/water/water{w.Type}{i:D2}.jpg");
+                        w.Images[i] = AssetDatabase.LoadAssetAtPath<Texture2D>($"Assets/Maps/Texture/Water/water{w.Type}{i:D2}.jpg");
 
                     EditorUtility.SetDirty(MapData);
                 }
