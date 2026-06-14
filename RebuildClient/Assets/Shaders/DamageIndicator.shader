@@ -12,17 +12,24 @@ Shader "Unlit/DamageIndicator"
         Pass // Damage Indicators
         {
             Name "Damage Indicators - Render"
+            
+            Cull Off
+            ZWrite Off
+            ZTest Always
+            Blend SrcAlpha OneMinusSrcAlpha
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-
+            
+            #pragma target 3.5
+            #pragma target 4.5 DI_STRUCTURED_BUFFER
             #pragma multi_compile_instancing
             #pragma instancing_options assumeuniformscaling nolodfade nolightprobe nolightmap
-            #pragma multi_compile _ INSTANCING_ON
-            
+            #pragma multi_compile_local _ DI_STRUCTURED_BUFFER DI_CBUFFER_INSTANCING
+
             #include "UnityCG.cginc"
 
-            #ifdef INSTANCING_ON
+            #ifdef DI_STRUCTURED_BUFFER
             struct DamageIndicatorData
             {
 	            float alpha;
@@ -42,17 +49,25 @@ Shader "Unlit/DamageIndicator"
             StructuredBuffer<DamageIndicatorData> _Instances;
             int _BaseInstance;
             #endif
-            
+
+            #ifdef DI_CBUFFER_INSTANCING
+            // Per-instance data packed into 3 float4s (value/flags carried as floats, exact below 2^24).
+            //   _DIParams0 = (alpha, value, lifeTime, critJitter)
+            //   _DIParams1 = (flags, _, _, _)
+            UNITY_INSTANCING_BUFFER_START(DamageIndicatorProps)
+                UNITY_DEFINE_INSTANCED_PROP(float4, _DIColor)
+                UNITY_DEFINE_INSTANCED_PROP(float4, _DIParams0)
+                UNITY_DEFINE_INSTANCED_PROP(float4, _DIParams1)
+            UNITY_INSTANCING_BUFFER_END(DamageIndicatorProps)
+            #endif
+
             struct appdata
             {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
                 float2 index : TEXCOORD1;
                 float4 vcol : COLOR0;
-                #ifdef INSTANCING_ON
-                uint instanceID : SV_InstanceID;
-                #endif
-                
+                UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
             struct v2f
@@ -67,7 +82,7 @@ Shader "Unlit/DamageIndicator"
             float4 _MainTex_ST;
             float _Spacing;
             
-            #ifndef INSTANCING_ON
+            #if !defined(DI_STRUCTURED_BUFFER) && !defined(DI_CBUFFER_INSTANCING)
             float4 _Color;
             float _Alpha;
             bool _IsCrit;
@@ -147,8 +162,8 @@ Shader "Unlit/DamageIndicator"
                 float digitMask = v.vcol.g;
                 float textMask = v.vcol.b;
 
-                #ifdef INSTANCING_ON
-                
+                #if defined(DI_STRUCTURED_BUFFER) || defined(DI_CBUFFER_INSTANCING)
+
                 float4 _Color = 0;
                 float _Alpha = 0;
                 bool _IsCrit = 0;
@@ -159,8 +174,9 @@ Shader "Unlit/DamageIndicator"
                 int _Value = 0;
                 float _LifeTime = 0;
                 float _CritJitter = 0;
-                
-                uint id = _BaseInstance + v.instanceID;
+
+                #if defined(DI_STRUCTURED_BUFFER)
+                uint id = _BaseInstance + unity_InstanceID;
                 DamageIndicatorData d = _Instances[id];
                 _IsCrit = IsCrit(d);
                 _IsMiss = IsMiss(d);
@@ -172,6 +188,22 @@ Shader "Unlit/DamageIndicator"
                 _Color = d.color;
                 _LifeTime = d.lifeTime;
                 _CritJitter = d.critJitter;
+                #else // DI_CBUFFER_INSTANCING
+                float4 p0 = UNITY_ACCESS_INSTANCED_PROP(DamageIndicatorProps, _DIParams0);
+                float4 p1 = UNITY_ACCESS_INSTANCED_PROP(DamageIndicatorProps, _DIParams1);
+                _Color = UNITY_ACCESS_INSTANCED_PROP(DamageIndicatorProps, _DIColor);
+                _Alpha = p0.x;
+                _Value = (int)round(p0.y);
+                _LifeTime = p0.z;
+                _CritJitter = p0.w;
+                uint flags = (uint)round(p1.x);
+                _IsCrit = (flags & (1u << 0)) != 0u;
+                _IsMiss = (flags & (1u << 1)) != 0u;
+                _IsAgi  = (flags & (1u << 2)) != 0u;
+                _IsSlow = (flags & (1u << 3)) != 0u;
+                _IsExp  = (flags & (1u << 4)) != 0u;
+                #endif
+
                 #endif
                 v.vertex *= _IsCrit ? 1 : !critMask;
                 v.vertex *= _IsMiss | _IsAgi | _IsExp ? 1 : !textMask;
@@ -222,7 +254,6 @@ Shader "Unlit/DamageIndicator"
                 
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.vertex.z = lerp(0.99, 0.01, _LifeTime);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 o.color = lerp(1, _Color, !critMask) * lerp(1, 0.8, _IsCrit * critMask);
                 o.alpha = _Alpha;
@@ -236,53 +267,6 @@ Shader "Unlit/DamageIndicator"
 
                 col.rgb *= i.color;
                 col.a = i.alpha; //pow(i.alpha, rcp(2.2));
-                return col;
-            }
-            ENDCG
-        }
-
-        Pass // Blit
-        {
-            Name "Damage Indicators - Blit"
-            //Cull Off
-            Blend SrcAlpha OneMinusSrcAlpha
-            ZTest Always
-            CGPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
-
-            #include "UnityCG.cginc"
-
-            struct appdata
-            {
-                float4 vertex : POSITION;
-                float2 uv : TEXCOORD0;
-            };
-
-            struct v2f
-            {
-                float2 uv : TEXCOORD0;
-                float4 vertex : SV_POSITION;
-            };
-
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
-            
-            v2f vert (appdata v)
-            {
-                v2f o;
-                o.vertex = v.vertex;
-                #if UNITY_UV_STARTS_AT_TOP
-                o.uv = float2(v.uv.x, 1-v.uv.y);
-                #else
-                o.uv = v.uv;
-                #endif
-                return o;
-            }
-
-            fixed4 frag (v2f i) : SV_Target
-            {
-                fixed4 col = tex2D(_MainTex, i.uv);
                 return col;
             }
             ENDCG

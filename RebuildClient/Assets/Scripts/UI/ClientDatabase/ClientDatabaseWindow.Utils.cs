@@ -239,13 +239,13 @@ namespace Assets.Scripts.UI.ClientDatabase
 
         private static string LoadStreamingFile(string relativePath)
         {
-            var path = Path.Combine(Application.streamingAssetsPath, relativePath);
-            if (!File.Exists(path))
+            var json = ClientDataLoader.ReadStreamingAssetFile(relativePath);
+            if (string.IsNullOrEmpty(json))
             {
-                Debug.LogError($"Streaming file not found: {path}");
+                Debug.LogError($"Streaming file not found: {relativePath}");
                 return null;
             }
-            return File.ReadAllText(path);
+            return json;
         }
 
         private static T LoadStreamingJson<T>(string relativePath) where T : class

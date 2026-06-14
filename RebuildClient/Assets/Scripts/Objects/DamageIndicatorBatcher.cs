@@ -4,7 +4,6 @@ using System.Runtime.InteropServices;
 using Assets.Scripts.UI.ConfigWindow;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
 using UnityEngine.Rendering;
 
 #if UNITY_EDITOR
@@ -35,30 +34,41 @@ public class DamageIndicatorBatcher : MonoBehaviour
 	public GameObject atlasBakerPrefab;
 	public bool EnableInstancing;
 
-	private CommandBuffer _cmd;
+	private CommandBuffer _renderCmd;
 	private Camera _ownCamera;
 
 	private const CameraEvent Event = CameraEvent.AfterForwardAlpha;
 
 	private Material _material;
 	private MaterialPropertyBlock _propertyBlock;
-	private Mesh _fst;
 
 	private BakeDamageIndicatorAtlas _baker;
+
+	private enum InstancingMode { None, StructuredBuffer, ConstantBuffer }
+	private InstancingMode _mode = InstancingMode.None;
+
+	private const string KwStructured = "DI_STRUCTURED_BUFFER";
+	private const string KwCBuffer = "DI_CBUFFER_INSTANCING";
+    
+	private const int CBufferBatchSize = 250;
+	private static readonly int DIColor = Shader.PropertyToID("_DIColor");
+	private static readonly int DIParams0 = Shader.PropertyToID("_DIParams0");
+	private static readonly int DIParams1 = Shader.PropertyToID("_DIParams1");
+	private readonly Vector4[] _diColors = new Vector4[CBufferBatchSize];
+	private readonly Vector4[] _diParams0 = new Vector4[CBufferBatchSize];
+	private readonly Vector4[] _diParams1 = new Vector4[CBufferBatchSize];
 
 	private InstanceBufferPool<DamageIndicatorData> _pool;
 	private readonly DamageIndicatorData[] _instStage = new DamageIndicatorData[1023];
 	private readonly Matrix4x4[] _matrices = new Matrix4x4[1023];
 
-	private readonly Dictionary<Camera, RenderTexture> _perCamRT = new();
-	private readonly Dictionary<Camera, CommandBuffer> _perCamBlit = new();
+	private readonly Dictionary<Camera, CommandBuffer> _perCamCmd = new();
 	private readonly List<Camera> _scratchDeadCameras = new();
 
 	private void OnEnable()
 	{
 		Instance = this;
 
-		_cmd = new CommandBuffer { name = "DamageIndicatorBatcher - Render" };
 		_ownCamera = GetComponent<Camera>();
 
 		Camera.onPreRender += OnAnyCameraPreRender;
@@ -70,18 +80,32 @@ public class DamageIndicatorBatcher : MonoBehaviour
 
 		_material = new Material(shader);
 		_material.SetTexture(MainTex, _baker.damageIndicatorTexture);
-		_material.enableInstancing = true;
 
-		_pool = new InstanceBufferPool<DamageIndicatorData>(1023 * 3);
-		_propertyBlock = new MaterialPropertyBlock();
+		_mode = SelectInstancingMode();
+		_material.enableInstancing = _mode != InstancingMode.None;
+		_material.DisableKeyword(KwStructured);
+		_material.DisableKeyword(KwCBuffer);
 
-		GenerateFullScreenTriangle();
-
-		if (!SystemInfo.supportsInstancing)
+		if (_mode == InstancingMode.StructuredBuffer)
 		{
-			EnableInstancing = false;
-			Debug.Log("System doesn't support Instancing, disabling...");
+			_material.EnableKeyword(KwStructured);
+			_pool = new InstanceBufferPool<DamageIndicatorData>(1023 * 3);
 		}
+		else if (_mode == InstancingMode.ConstantBuffer)
+		{
+			_material.EnableKeyword(KwCBuffer);
+		}
+
+		_propertyBlock = new MaterialPropertyBlock();
+	}
+    
+	private InstancingMode SelectInstancingMode()
+	{
+		if (!EnableInstancing || !SystemInfo.supportsInstancing)
+			return InstancingMode.None;
+		if (SystemInfo.supportsComputeShaders)
+			return InstancingMode.StructuredBuffer;
+		return InstancingMode.ConstantBuffer;
 	}
 
 	private void OnDisable()
@@ -91,20 +115,16 @@ public class DamageIndicatorBatcher : MonoBehaviour
 		if (_baker != null)
 			Destroy(_baker.gameObject);
 
-		foreach (var kv in _perCamBlit)
+		foreach (var kv in _perCamCmd)
 		{
 			if (kv.Key != null)
 				kv.Key.RemoveCommandBuffer(Event, kv.Value);
 			kv.Value?.Release();
 		}
-		_perCamBlit.Clear();
+		_perCamCmd.Clear();
 
-		foreach (var kv in _perCamRT)
-			if (kv.Value != null) kv.Value.Release();
-		_perCamRT.Clear();
-
-		_cmd?.Release();
-		_cmd = null;
+		_pool?.Dispose();
+		_pool = null;
 	}
 
 	private void LateUpdate()
@@ -130,51 +150,37 @@ public class DamageIndicatorBatcher : MonoBehaviour
 	private void PruneDeadCameras()
 	{
 		_scratchDeadCameras.Clear();
-        foreach (var kv in _perCamRT)
+        foreach (var kv in _perCamCmd)
         {
-            if (kv.Key == null) _scratchDeadCameras.Add(kv.Key);
-        }
-		foreach (var kv in _perCamBlit)
-        {
-            if (kv.Key == null && !_scratchDeadCameras.Contains(kv.Key)) _scratchDeadCameras.Add(kv.Key);
+            if (!kv.Key) _scratchDeadCameras.Add(kv.Key);
         }
 
 		foreach (var c in _scratchDeadCameras)
 		{
-			if (_perCamRT.TryGetValue(c, out var rt))
-			{
-				if (rt != null) rt.Release();
-				_perCamRT.Remove(c);
-			}
-			if (_perCamBlit.TryGetValue(c, out var cb))
+			if (_perCamCmd.TryGetValue(c, out var cb))
 			{
 				cb?.Release();
-				_perCamBlit.Remove(c);
+				_perCamCmd.Remove(c);
 			}
 		}
 	}
 
 	private void OnAnyCameraPreRender(Camera cam)
 	{
-		if (cam == null) return;
+		if (!cam) return;
 		if (cam.cameraType != CameraType.SceneView && cam != _ownCamera) return;
 		if (cam.pixelWidth <= 0 || cam.pixelHeight <= 0) return;
 
-		var blitCb = GetBlitCmd(cam);
-		blitCb.Clear();
+		var cmd = GetIndicatorCmd(cam);
+		cmd.Clear();
 
 		if (indicators.Count == 0) return;
-
-		var rt = GetRT(cam);
-
-		_cmd.Clear();
-		_cmd.SetRenderTarget(rt);
-		_cmd.ClearRenderTarget(true, true, Color.clear);
-		_cmd.SetViewProjectionMatrices(cam.worldToCameraMatrix, cam.projectionMatrix);
+        
+		_renderCmd = cmd;
 
 		var rotation = cam.transform.rotation * Quaternion.Euler(0, 180, 0);
 
-        if (EnableInstancing)
+        if (_mode != InstancingMode.None)
         {
             BuildInstancedDraws(rotation);
         }
@@ -182,12 +188,6 @@ public class DamageIndicatorBatcher : MonoBehaviour
         {
             BuildIndividualDraws(rotation);
         }
-
-		Graphics.ExecuteCommandBuffer(_cmd);
-
-		_propertyBlock.Clear();
-		_propertyBlock.SetTexture(MainTex, rt);
-		blitCb.DrawMesh(_fst, Matrix4x4.identity, _material, 0, 1, _propertyBlock);
 	}
 
 	private void BuildIndividualDraws(Quaternion rotation)
@@ -213,13 +213,16 @@ public class DamageIndicatorBatcher : MonoBehaviour
 			_propertyBlock.SetFloat(IsExp, di.type == TextIndicatorType.Experience ? 1 : 0);
 
 			var trs = Matrix4x4.TRS(di.pos, rotation, new Vector3(di.size, di.size, 1f));
-			_cmd.DrawMesh(mesh, trs, _material, 0, 0, _propertyBlock);
+			_renderCmd.DrawMesh(mesh, trs, _material, 0, 0, _propertyBlock);
 		}
 	}
 
 	private void BuildInstancedDraws(Quaternion rotation)
 	{
-		_pool.BeginFrame();
+		if (_mode == InstancingMode.StructuredBuffer)
+			_pool.BeginFrame();
+
+		var maxBatch = _mode == InstancingMode.ConstantBuffer ? CBufferBatchSize : 1023;
 
 		int batchCount = 0;
 		for (int i = 0; i < indicators.Count; i++)
@@ -234,20 +237,29 @@ public class DamageIndicatorBatcher : MonoBehaviour
 			if (di.type == TextIndicatorType.Debuff) flags |= 1 << 3;
 			if (di.type == TextIndicatorType.Experience) flags |= 1 << 4;
 
-			_instStage[batchCount] = new DamageIndicatorData
+			if (_mode == InstancingMode.StructuredBuffer)
 			{
-				alpha = di.alpha,
-				value = di.value,
-				color = di.color,
-				lifeTime = di.lifeTime,
-				critJitter = di.critJitter,
-				flags = flags,
-			};
+				_instStage[batchCount] = new DamageIndicatorData
+				{
+					alpha = di.alpha,
+					value = di.value,
+					color = di.color,
+					lifeTime = di.lifeTime,
+					critJitter = di.critJitter,
+					flags = flags,
+				};
+			}
+			else
+			{
+				_diColors[batchCount] = di.color;
+				_diParams0[batchCount] = new Vector4(di.alpha, di.value, di.lifeTime, di.critJitter);
+				_diParams1[batchCount] = new Vector4(flags, 0f, 0f, 0f);
+			}
 
 			_matrices[batchCount] = Matrix4x4.TRS(di.pos, rotation, new Vector3(di.size, di.size, 1f));
 			batchCount++;
 
-			if (batchCount == 1023)
+			if (batchCount == maxBatch)
 			{
 				FlushInstancedBatch(batchCount);
 				batchCount = 0;
@@ -260,52 +272,32 @@ public class DamageIndicatorBatcher : MonoBehaviour
 
 	private void FlushInstancedBatch(int count)
 	{
-		var baseInstance = _pool.AppendInstances(_instStage, 0, count);
 		_propertyBlock.Clear();
-		_propertyBlock.SetBuffer(Instances, _pool.Instances);
-		_propertyBlock.SetInt(BaseInstance, baseInstance);
 
-		_cmd.DrawMeshInstanced(mesh, 0, _material, 0, _matrices, count, _propertyBlock);
+		if (_mode == InstancingMode.StructuredBuffer)
+		{
+			var baseInstance = _pool.AppendInstances(_instStage, 0, count);
+			_propertyBlock.SetBuffer(Instances, _pool.Instances);
+			_propertyBlock.SetInt(BaseInstance, baseInstance);
+		}
+		else
+		{
+			_propertyBlock.SetVectorArray(DIColor, _diColors);
+			_propertyBlock.SetVectorArray(DIParams0, _diParams0);
+			_propertyBlock.SetVectorArray(DIParams1, _diParams1);
+		}
+
+		_renderCmd.DrawMeshInstanced(mesh, 0, _material, 0, _matrices, count, _propertyBlock);
 	}
 
-	private RenderTexture GetRT(Camera cam)
+	private CommandBuffer GetIndicatorCmd(Camera cam)
 	{
-		if (_perCamRT.TryGetValue(cam, out var rt) && rt != null && rt.width == cam.pixelWidth && rt.height == cam.pixelHeight) return rt;
+		if (_perCamCmd.TryGetValue(cam, out var cmd) && cmd != null) return cmd;
 
-		if (rt != null) rt.Release();
-		rt = new RenderTexture(cam.pixelWidth, cam.pixelHeight, 24, DefaultFormat.LDR);
-		rt.antiAliasing = 1;
-		rt.name = $"DI Target ({cam.name})";
-		_perCamRT[cam] = rt;
-		return rt;
-	}
-
-	private CommandBuffer GetBlitCmd(Camera cam)
-	{
-		if (_perCamBlit.TryGetValue(cam, out var cmd) && cmd != null) return cmd;
-
-		cmd = new CommandBuffer { name = $"DI Blit ({cam.name})" };
+		cmd = new CommandBuffer { name = $"DI Indicators ({cam.name})" };
 		cam.AddCommandBuffer(Event, cmd);
-		_perCamBlit[cam] = cmd;
+		_perCamCmd[cam] = cmd;
 		return cmd;
-	}
-    
-	private void GenerateFullScreenTriangle()
-	{
-		_fst = new Mesh();
-		_fst.vertices = new[]
-		{
-			new Vector3(-1f, -1f, 0f),
-			new Vector3(-1f,  3f, 0f),
-			new Vector3( 3f, -1f, 0f)
-		};
-		_fst.uv = new[]
-		{
-			new Vector2(0f, 0f),
-			new Vector2(0f, 2f),
-			new Vector2(2f, 0f)
-		};
-		_fst.triangles = new[] { 0, 2, 1 };
 	}
 }
 
