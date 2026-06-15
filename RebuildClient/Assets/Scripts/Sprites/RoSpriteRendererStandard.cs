@@ -549,6 +549,7 @@ namespace Assets.Scripts.Sprites
             };
 
             if (!batcher.WriteSprite(ref _batchHandle, localToWorld,
+                transform, root.transform,
                 _meshArrays.Vertices, _meshArrays.Uv, _meshArrays.Colors, p))
             {
                 RejectBatching(batcher);

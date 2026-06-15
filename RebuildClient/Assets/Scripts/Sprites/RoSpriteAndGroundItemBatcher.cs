@@ -91,6 +91,8 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
         public Vector3 CullCenter;
         public float SortDepth;
         public float Radius;
+        public Transform Xform; //live transforms so throttled sprites can follow movement between ticks
+        public Transform RootXform;
     }
 
     private BatchEntry[] _entries = new BatchEntry[InitialEntryCapacity];
@@ -402,6 +404,7 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
     }
 
     public bool WriteSprite(ref SpriteBatchHandle handle, Matrix4x4 localToWorld,
+        Transform xform, Transform rootXform,
         Vector3[] verts, Vector2[] uvs, Color[] vcolors,
         in SpriteRenderParams p)
     {
@@ -435,6 +438,8 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
         entry.RootOrder = p.rootOrder;
         entry.MemberOrder = p.sortOrder;
         entry.CullCenter = new Vector3(localToWorld.m03, localToWorld.m13, localToWorld.m23);
+        entry.Xform = xform;
+        entry.RootXform = rootXform;
 
         var region = entry.Region;
         var slots = entry.Slots;
@@ -641,6 +646,8 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
             }
         }
 
+        SyncBatchedTransforms();
+
         int sortCount = 0;
         for (var i = 0; i < _entryHighWater; i++)
         {
@@ -699,6 +706,37 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
 
         if (xrayWanted)
             _xrayCmd.DrawMesh(_mesh, Matrix4x4.identity, _xrayMaterial, 0, 2);
+    }
+
+    private void SyncBatchedTransforms()
+    {
+        for (var i = 0; i < _entryHighWater; i++)
+        {
+            ref var entry = ref _entries[i];
+            if (!entry.InUse || !entry.Written || entry.Hidden || entry.Xform == null) continue;
+
+            var anchor = entry.Xform.position;
+            if (anchor == entry.CullCenter) continue; //Vector3 == is epsilon-tolerant; stationary sprites cost one read
+
+            entry.CullCenter = anchor;
+            if (entry.RootXform != null)
+                entry.RootPos = entry.RootXform.position;
+
+            var slots = entry.Slots;
+            for (var q = 0; q < entry.SlotCount; q++)
+            {
+                int slot = slots[q];
+                int vb = slot * VertsPerQuad;
+                for (var v = 0; v < VertsPerQuad; v++)
+                {
+                    var sv = _verts[vb + v];
+                    sv.anchorWS = anchor;
+                    _verts[vb + v] = sv;
+                }
+                if (slot < _dirtyMin) _dirtyMin = slot;
+                if (slot > _dirtyMax) _dirtyMax = slot;
+            }
+        }
     }
 
     private static bool IsCulled(Vector3 center, float radius)
