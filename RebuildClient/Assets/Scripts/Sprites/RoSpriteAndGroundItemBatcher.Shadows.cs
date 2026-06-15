@@ -3,7 +3,7 @@ using Assets.Scripts.Sprites;
 using Unity.Collections;
 using UnityEngine;
 
-public partial class RoSpriteBatcher
+public partial class RoSpriteAndGroundItemBatcher
 {
     private struct ShadowQuery
     {

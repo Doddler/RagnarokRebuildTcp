@@ -9,9 +9,9 @@ using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public partial class RoSpriteBatcher : MonoBehaviour
+public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
 {
-    public static RoSpriteBatcher Instance;
+    public static RoSpriteAndGroundItemBatcher Instance;
 
     public bool EnableBatching = true;
     public int AtlasInitialSliceCount = SpriteAtlasArray.DefaultSliceCount;
@@ -110,7 +110,7 @@ public partial class RoSpriteBatcher : MonoBehaviour
 
         Generation++;
 
-        _xrayCmd = new CommandBuffer { name = "RoSpriteBatcher - XRay" };
+        _xrayCmd = new CommandBuffer { name = "RoSpriteAndGroundItemBatcher - XRay" };
 
         AttachToCamera(_camera);
 

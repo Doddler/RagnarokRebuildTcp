@@ -371,7 +371,7 @@ namespace Assets.Scripts.Sprites
                 }
             }
 
-            var batcher = RoSpriteBatcher.Instance;
+            var batcher = RoSpriteAndGroundItemBatcher.Instance;
             if (_batchRejected && batcher != null && _rejectedGeneration != batcher.Generation)
                 _batchRejected = false;
             bool wantFallback = OverrideMaterial != null
@@ -383,8 +383,8 @@ namespace Assets.Scripts.Sprites
                 _useFallback = wantFallback;
                 if (_useFallback && _registered)
                 {
-                    if (RoSpriteBatcher.Instance != null)
-                        RoSpriteBatcher.Instance.Unregister(ref _batchHandle);
+                    if (RoSpriteAndGroundItemBatcher.Instance != null)
+                        RoSpriteAndGroundItemBatcher.Instance.Unregister(ref _batchHandle);
                     _registered = false;
                 }
             }
@@ -453,7 +453,7 @@ namespace Assets.Scripts.Sprites
 
         private void WriteToBatcher()
         {
-            var batcher = RoSpriteBatcher.Instance;
+            var batcher = RoSpriteAndGroundItemBatcher.Instance;
             if (batcher == null) return;
             if (_meshArrays.Vertices == null) return;
             if (!isActiveAndEnabled) return; //a dying renderer must not re-register after OnDisable already unregistered
@@ -580,8 +580,8 @@ namespace Assets.Scripts.Sprites
         {
             if (_registered)
             {
-                if (RoSpriteBatcher.Instance != null)
-                    RoSpriteBatcher.Instance.Unregister(ref _batchHandle);
+                if (RoSpriteAndGroundItemBatcher.Instance != null)
+                    RoSpriteAndGroundItemBatcher.Instance.Unregister(ref _batchHandle);
                 _registered = false;
             }
         }

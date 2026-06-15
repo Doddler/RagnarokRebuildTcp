@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Assets.Scripts.Sprites;
 using UnityEngine;
 
-public partial class RoSpriteBatcher
+public partial class RoSpriteAndGroundItemBatcher
 {
     public bool EnableTickGroups = true;
     [HideInInspector] public int TickThreshold = 200;

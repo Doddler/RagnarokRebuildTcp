@@ -711,8 +711,8 @@ namespace Assets.Scripts.Sprites
             }
 
             var srcPos = transform.position + new Vector3(0, 0.2f, 0);
-            RoSpriteBatcher.QueueShadowRaycast(this, srcPos, ShadeLevel);
-            // TargetShade is written back asynchronously by RoSpriteBatcher in its LateUpdate.
+            RoSpriteAndGroundItemBatcher.QueueShadowRaycast(this, srcPos, ShadeLevel);
+            // TargetShade is written back asynchronously by RoSpriteAndGroundItemBatcher in its LateUpdate.
         }
 
         public void UpdateColor(float dt = -1f)
@@ -762,17 +762,17 @@ namespace Assets.Scripts.Sprites
         
         private void OnEnable()
         {
-            RoSpriteBatcher.RegisterAnimator(this);
+            RoSpriteAndGroundItemBatcher.RegisterAnimator(this);
         }
 
         private void OnDisable()
         {
-            RoSpriteBatcher.UnregisterAnimator(this);
+            RoSpriteAndGroundItemBatcher.UnregisterAnimator(this);
         }
 
         public void Update()
         {
-            var batcher = RoSpriteBatcher.Instance;
+            var batcher = RoSpriteAndGroundItemBatcher.Instance;
             if (batcher != null && !batcher.ShouldTickAnimator(this))
                 return;
 
