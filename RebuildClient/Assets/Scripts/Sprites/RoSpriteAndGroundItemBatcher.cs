@@ -8,6 +8,7 @@ using Assets.Scripts.Utility;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
 public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
 {
@@ -87,6 +88,8 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
         public int RootKey;
         public int RootOrder;
         public int MemberOrder;
+        public Vector3 CullCenter;
+        public float SortDepth;
         public float Radius;
     }
 
@@ -95,12 +98,41 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
     private readonly Stack<int> _freeEntries = new();
     private int _entryHighWater;
 
-    private ulong[] _sortKeys = new ulong[InitialEntryCapacity];
     private int[] _sortValues = new int[InitialEntryCapacity];
+    private EntrySortComparer _entrySortComparer;
+
+    private sealed class EntrySortComparer : IComparer<int>
+    {
+        private readonly RoSpriteAndGroundItemBatcher _owner;
+
+        public EntrySortComparer(RoSpriteAndGroundItemBatcher owner)
+        {
+            _owner = owner;
+        }
+
+        public int Compare(int x, int y)
+        {
+            ref var a = ref _owner._entries[x];
+            ref var b = ref _owner._entries[y];
+
+            int result = a.RootOrder.CompareTo(b.RootOrder);
+            if (result != 0) return result;
+
+            result = b.SortDepth.CompareTo(a.SortDepth);
+            if (result != 0) return result;
+
+            result = a.RootKey.CompareTo(b.RootKey);
+            if (result != 0) return result;
+
+            result = a.MemberOrder.CompareTo(b.MemberOrder);
+            return result != 0 ? result : x.CompareTo(y);
+        }
+    }
 
     private void OnEnable()
     {
         Instance = this;
+        _entrySortComparer ??= new EntrySortComparer(this);
 
         _camera = GetComponent<Camera>();
 
@@ -113,6 +145,8 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
         _xrayCmd = new CommandBuffer { name = "RoSpriteAndGroundItemBatcher - XRay" };
 
         AttachToCamera(_camera);
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
 
 #if UNITY_EDITOR
         Camera.onPreCull += OnAnyCameraPreCull;
@@ -123,6 +157,11 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
 
     private void OnDisable()
     {
+        if (Instance == this)
+            Instance = null;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneUnloaded -= OnSceneUnloaded;
+
 #if UNITY_EDITOR
         Camera.onPreCull -= OnAnyCameraPreCull;
 #endif
@@ -166,6 +205,16 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
         if (_xrayMaterial != null) { Destroy(_xrayMaterial); _xrayMaterial = null; }
 
         DisposeShadowRaycasts();
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        InvalidateShadowLightCache();
+    }
+
+    private void OnSceneUnloaded(Scene scene)
+    {
+        InvalidateShadowLightCache();
     }
 
     private void AttachToCamera(Camera cam)
@@ -308,7 +357,6 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
             {
                 Array.Resize(ref _entries, _entries.Length * 2);
                 Array.Resize(ref _entrySeq, _entries.Length);
-                Array.Resize(ref _sortKeys, _entries.Length);
                 Array.Resize(ref _sortValues, _entries.Length);
             }
             entryId = _entryHighWater++;
@@ -357,7 +405,20 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
         Vector3[] verts, Vector2[] uvs, Color[] vcolors,
         in SpriteRenderParams p)
     {
-        if (!IsValidHandle(handle) || verts == null) return false;
+        if (!IsValidHandle(handle))
+            return false;
+
+        if (verts == null
+            || verts.Length == 0
+            || verts.Length % VertsPerQuad != 0
+            || uvs == null
+            || uvs.Length < verts.Length
+            || vcolors == null
+            || vcolors.Length < verts.Length)
+        {
+            Unregister(ref handle);
+            return false;
+        }
 
         int newLayerCount = verts.Length / VertsPerQuad;
         if (!EnsureSlotCount(ref handle, newLayerCount))
@@ -373,6 +434,7 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
         entry.RootKey = p.rootKey;
         entry.RootOrder = p.rootOrder;
         entry.MemberOrder = p.sortOrder;
+        entry.CullCenter = new Vector3(localToWorld.m03, localToWorld.m13, localToWorld.m23);
 
         var region = entry.Region;
         var slots = entry.Slots;
@@ -563,11 +625,20 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
             && _xrayMaterial != null && _xrayMaterial.passCount >= 3;
 
         var camPos = Vector3.zero;
+        var sortAxis = Vector3.forward;
+        bool useSortAxis = false;
         bool haveFrustum = _camera != null;
         if (haveFrustum)
         {
             GeometryUtility.CalculateFrustumPlanes(_camera, _frustumPlanes);
             camPos = _camera.transform.position;
+            useSortAxis = _camera.transparencySortMode == TransparencySortMode.CustomAxis;
+            if (useSortAxis)
+            {
+                sortAxis = _camera.transparencySortAxis.normalized;
+                if (sortAxis.sqrMagnitude < 0.0001f)
+                    sortAxis = _camera.transform.forward;
+            }
         }
 
         int sortCount = 0;
@@ -576,21 +647,12 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
             ref var entry = ref _entries[i];
             if (!entry.InUse || !entry.Written || entry.Hidden) continue;
 
-            if (haveFrustum && IsCulled(entry.RootPos, entry.Radius))
+            if (haveFrustum && IsCulled(entry.CullCenter, entry.Radius))
                 continue;
 
-            //sorted back to front like the transparent queue: root order, then root
-            //distance, grouped per character, then member order within the character
-            float depth = (entry.RootPos - camPos).magnitude;
-            ulong depthQ = (ulong)Mathf.Clamp((int)((2048f - depth) * 512f), 0, (1 << 20) - 1);
-            ulong rootOrderQ = (ulong)Mathf.Clamp(entry.RootOrder + 512, 0, 1023);
-            ulong memberOrderQ = (ulong)Mathf.Clamp(entry.MemberOrder + 512, 0, 1023);
-
-            _sortKeys[sortCount] = (rootOrderQ << 54)
-                | (depthQ << 34)
-                | (((ulong)(uint)entry.RootKey & 0xFFF) << 22)
-                | (memberOrderQ << 12)
-                | ((ulong)(uint)i & 0xFFF);
+            entry.SortDepth = useSortAxis
+                ? Vector3.Dot(entry.RootPos - camPos, sortAxis)
+                : (entry.RootPos - camPos).magnitude;
             _sortValues[sortCount] = i;
             sortCount++;
         }
@@ -601,7 +663,7 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
             return;
         }
 
-        Array.Sort(_sortKeys, _sortValues, 0, sortCount);
+        Array.Sort(_sortValues, 0, sortCount, _entrySortComparer);
 
         int indexCount = 0;
         for (var s = 0; s < sortCount; s++)

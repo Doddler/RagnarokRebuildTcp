@@ -75,11 +75,12 @@ namespace Assets.Scripts.Sprites
         private Texture2D _registeredAtlas;
         private bool _batchRejected;
         private int _rejectedGeneration;
+        private float _nextBatchRetryTime;
         private int _instanceId;
+        private const float BatchRetryDelay = 1f;
 
         private bool _dirty = true;
-        private Vector3 _lastWritePos;
-        private Quaternion _lastWriteRot;
+        private Matrix4x4 _lastWriteMatrix;
         private Color _lastWriteColor;
         private float _lastWriteDrain;
         private float _lastWriteOffset;
@@ -372,7 +373,8 @@ namespace Assets.Scripts.Sprites
             }
 
             var batcher = RoSpriteAndGroundItemBatcher.Instance;
-            if (_batchRejected && batcher != null && _rejectedGeneration != batcher.Generation)
+            if (_batchRejected && batcher != null
+                && (_rejectedGeneration != batcher.Generation || Time.unscaledTime >= _nextBatchRetryTime))
                 _batchRejected = false;
             bool wantFallback = OverrideMaterial != null
                 || batcher == null
@@ -391,11 +393,7 @@ namespace Assets.Scripts.Sprites
 
             if (_useFallback)
             {
-                MeshRenderer.enabled = !IsHidden;
-                EnsureFallbackMaterial();
-                MeshRenderer.GetPropertyBlock(propertyBlock, 0);
-                SetPropertyBlock();
-                MeshRenderer.SetPropertyBlock(propertyBlock, 0);
+                UpdateFallbackRenderer();
             }
             else
             {
@@ -431,6 +429,28 @@ namespace Assets.Scripts.Sprites
                 MeshRenderer.material = new Material(wantShader);
             else if (MeshRenderer.material.shader != wantShader)
                 MeshRenderer.material.shader = wantShader;
+        }
+
+        private void UpdateFallbackRenderer()
+        {
+            if (MeshRenderer == null) return;
+            MeshRenderer.enabled = !IsHidden;
+            EnsureFallbackMaterial();
+            MeshRenderer.GetPropertyBlock(propertyBlock, 0);
+            SetPropertyBlock();
+            MeshRenderer.SetPropertyBlock(propertyBlock, 0);
+        }
+
+        private void RejectBatching(RoSpriteAndGroundItemBatcher batcher)
+        {
+            _registered = false;
+            _batchHandle = default;
+            _registeredAtlas = null;
+            _batchRejected = true;
+            _rejectedGeneration = batcher.Generation;
+            _nextBatchRetryTime = Time.unscaledTime + BatchRetryDelay;
+            _useFallback = true;
+            UpdateFallbackRenderer();
         }
 
         internal int CachedInstanceId => _instanceId != 0 ? _instanceId : _instanceId = GetInstanceID();
@@ -480,8 +500,7 @@ namespace Assets.Scripts.Sprites
                 if (layerCount <= 0) return;
                 if (!batcher.TryRegister(SpriteData.Atlas, layerCount, out _batchHandle))
                 {
-                    _batchRejected = true;
-                    _rejectedGeneration = batcher.Generation;
+                    RejectBatching(batcher);
                     return;
                 }
                 _registeredAtlas = SpriteData.Atlas;
@@ -490,7 +509,7 @@ namespace Assets.Scripts.Sprites
             }
 
             var pos = transform.position;
-            var rot = transform.rotation;
+            var localToWorld = transform.localToWorldMatrix;
 
             if (!_hasBeenPositioned)
             {
@@ -504,8 +523,7 @@ namespace Assets.Scripts.Sprites
             int rootOrder = root.EffectiveSortingOrder();
 
             if (!_dirty
-                && pos == _lastWritePos
-                && rot == _lastWriteRot
+                && localToWorld == _lastWriteMatrix
                 && Color == _lastWriteColor
                 && ColorDrain == _lastWriteDrain
                 && SpriteOffset == _lastWriteOffset
@@ -530,25 +548,21 @@ namespace Assets.Scripts.Sprites
                 rootPos = root.transform.position,
             };
 
-            if (!batcher.WriteSprite(ref _batchHandle, transform.localToWorldMatrix,
+            if (!batcher.WriteSprite(ref _batchHandle, localToWorld,
                 _meshArrays.Vertices, _meshArrays.Uv, _meshArrays.Colors, p))
             {
-                _registered = false;
-                _batchHandle = default;
-                _registeredAtlas = null;
-                _batchRejected = true;
-                _rejectedGeneration = batcher.Generation;
+                RejectBatching(batcher);
                 return;
             }
 
-            _lastWritePos = pos;
-            _lastWriteRot = rot;
+            _lastWriteMatrix = localToWorld;
             _lastWriteColor = Color;
             _lastWriteDrain = ColorDrain;
             _lastWriteOffset = SpriteOffset;
             _lastWriteHidden = IsHidden;
             _lastWriteRootOrder = rootOrder;
             _lastWriteVPos = ShaderYOffset;
+            _batchRejected = false;
             _dirty = false;
         }
 

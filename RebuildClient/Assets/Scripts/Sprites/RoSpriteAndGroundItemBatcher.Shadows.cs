@@ -20,9 +20,15 @@ public partial class RoSpriteAndGroundItemBatcher
     private NativeArray<RaycastHit> _raycastResults;
     private int _raycastCapacity;
 
+    private static void InvalidateShadowLightCache()
+    {
+        _shadowDirLight = null;
+        _shadowMask = 0;
+    }
+
     public static void QueueShadowRaycast(RoSpriteAnimator animator, Vector3 origin, float shadeLevel)
     {
-        if (!animator) return;
+        if (!animator || Instance == null || !Instance.isActiveAndEnabled) return;
         _shadowQueries.Add(new ShadowQuery
         {
             Animator = animator,
@@ -42,6 +48,11 @@ public partial class RoSpriteAndGroundItemBatcher
             if (dl) _shadowDirLight = dl.GetComponent<Light>();
             if (!_shadowDirLight)
             {
+                for (int i = 0; i < count; i++)
+                {
+                    var animator = _shadowQueries[i].Animator;
+                    if (animator) animator.TargetShade = 1f;
+                }
                 _shadowQueries.Clear();
                 return;
             }
@@ -91,6 +102,7 @@ public partial class RoSpriteAndGroundItemBatcher
         if (_raycastCommands.IsCreated) _raycastCommands.Dispose();
         if (_raycastResults.IsCreated) _raycastResults.Dispose();
         _shadowQueries.Clear();
+        InvalidateShadowLightCache();
         _raycastCapacity = 0;
     }
 }

@@ -72,6 +72,7 @@ namespace Assets.Scripts.Sprites
         public bool SetAsDirty;
         
         [NonSerialized] public int GroupIndex = -1;
+        [NonSerialized] public int RootGroupIndex = -1;
         [NonSerialized] public bool NeedsImmediateTick;
         [NonSerialized] public Vector3 LastKnownPosition;
         private float _lastTickTime = -1f;
@@ -80,8 +81,6 @@ namespace Assets.Scripts.Sprites
         private bool isInitialized;
 
         private string spriteName;
-
-        private Light directionalLight;
 
         public Action OnFinishPlaying;
 
@@ -610,8 +609,6 @@ namespace Assets.Scripts.Sprites
                 
                 if (currentFrameTime < 0)
                     currentFrameTime += (float)delay / 1000f * AnimSpeed;
-                if (currentFrameTime < 0)
-                    currentFrameTime = 0; //if we're more than a full frame behind lets just reset the clock
             }
 
             if (!isPaused)
@@ -647,7 +644,6 @@ namespace Assets.Scripts.Sprites
                 Angle = Parent.Angle;
                 SpriteRenderer.SetAngle(Angle);
                 currentAngleIndex = Parent.currentAngleIndex;
-                SpriteRenderer.UpdateRenderer();
             }
 
             if (!IgnoreAnchor)
@@ -658,19 +654,24 @@ namespace Assets.Scripts.Sprites
                 if (ourAnchor == Vector2.zero)
                 {
                     transform.localPosition = new Vector3(0f, 0f, 0f);
-                    return;
-                }
-
-                var diff = parentAnchor - ourAnchor;
-
-                if (SpriteRenderer is RoSpriteRendererStandard std)
-                {
-                    transform.localPosition = new Vector3(diff.x / 50f, 0, -SpriteOrder * 0.003f);
-                    std.ShaderYOffset = -diff.y / 50f;
+                    if (SpriteRenderer is RoSpriteRendererStandard std)
+                        std.ShaderYOffset = 0f;
                 }
                 else
-                    transform.localPosition = new Vector3(diff.x / 50f, -diff.y / 50f, -SpriteOrder * 0.01f);
+                {
+                    var diff = parentAnchor - ourAnchor;
+
+                    if (SpriteRenderer is RoSpriteRendererStandard std)
+                    {
+                        transform.localPosition = new Vector3(diff.x / 50f, 0, -SpriteOrder * 0.003f);
+                        std.ShaderYOffset = -diff.y / 50f;
+                    }
+                    else
+                        transform.localPosition = new Vector3(diff.x / 50f, -diff.y / 50f, -SpriteOrder * 0.01f);
+                }
             }
+
+            SpriteRenderer?.UpdateRenderer();
         }
 
         private int GetFrameForHeadTurn(RoSpriteAnimator animator)
@@ -695,21 +696,13 @@ namespace Assets.Scripts.Sprites
                 return;
             }
 
-            if (directionalLight == null)
-            {
-                directionalLight = GameObject.Find("DirectionalLight").GetComponent<Light>();
-                var lightPower = (directionalLight.color.r + directionalLight.color.g + directionalLight.color.b) / 3f;
-                lightPower = (lightPower * directionalLight.intensity + 1) / 2f;
-                lightPower *= directionalLight.shadowStrength;
-                ShadeLevel = shadeForShadow;
-            }
-
             if (!RaycastForShadow)
             {
                 TargetShade = 1f;
                 return;
             }
 
+            ShadeLevel = shadeForShadow;
             var srcPos = transform.position + new Vector3(0, 0.2f, 0);
             RoSpriteAndGroundItemBatcher.QueueShadowRaycast(this, srcPos, ShadeLevel);
             // TargetShade is written back asynchronously by RoSpriteAndGroundItemBatcher in its LateUpdate.
@@ -762,6 +755,7 @@ namespace Assets.Scripts.Sprites
         
         private void OnEnable()
         {
+            _lastTickTime = -1f;
             RoSpriteAndGroundItemBatcher.RegisterAnimator(this);
         }
 
@@ -772,6 +766,9 @@ namespace Assets.Scripts.Sprites
 
         public void Update()
         {
+            if (Parent != null)
+                return;
+
             var batcher = RoSpriteAndGroundItemBatcher.Instance;
             if (batcher != null && !batcher.ShouldTickAnimator(this))
                 return;
@@ -795,9 +792,6 @@ namespace Assets.Scripts.Sprites
                 isDirty = true;
                 SetAsDirty = false;
             }
-
-            if (Parent != null)
-                return;
 
             UpdateShade();
             CurrentShade = Mathf.Lerp(CurrentShade, TargetShade, dt * 10f);
@@ -836,8 +830,25 @@ namespace Assets.Scripts.Sprites
                 }
             }
 
-            if (currentFrameTime < 0 || currentFrame > maxFrame)
-                AdvanceFrame();
+            const int maxCatchUpFrames = 8;
+            bool movementDriven = State == SpriteState.Walking && CurrentMotion == SpriteMotion.Walk;
+            if (movementDriven)
+            {
+                if (currentFrameTime < 0 || currentFrame > maxFrame)
+                    AdvanceFrame();
+                currentFrameTime = 0f;
+            }
+            else
+            {
+                int catchUpFrames = 0;
+                while ((currentFrameTime < 0 || currentFrame > maxFrame) && catchUpFrames < maxCatchUpFrames)
+                {
+                    AdvanceFrame();
+                    catchUpFrames++;
+                }
+                if (catchUpFrames == maxCatchUpFrames && currentFrameTime < 0)
+                    currentFrameTime = 0f;
+            }
             //
             // if (Controllable != null && Controllable.CharacterType == CharacterType.Player)
             //     Debug.Log($"{_currentMotion} isPaused:{isPaused}");
