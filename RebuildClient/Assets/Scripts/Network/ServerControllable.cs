@@ -1760,7 +1760,7 @@ namespace Assets.Scripts.Network
                     SpriteAnimator.ChangeMotion(SpriteMotion.Idle);
                 }
 
-                //RealPosition may not have the correct height so we force it to update — but only when we're not yet settled at the target.
+                //RealPosition may not have the correct height so we force it to update, but only when we're not yet settled at the target.
                 var settledTarget = RealPosition + PositionOffset;
                 if ((transform.position - settledTarget).sqrMagnitude < 0.0001f)
                 {
