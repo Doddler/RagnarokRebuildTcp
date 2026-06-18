@@ -171,8 +171,8 @@ namespace Assets.Scripts.Network
 
         private void OnDisable()
         {
-            if (_registered && RoSpriteBatcher.Instance != null)
-                RoSpriteBatcher.Instance.Unregister(ref _batchHandle);
+            if (_registered && RoSpriteAndGroundItemBatcher.Instance != null)
+                RoSpriteAndGroundItemBatcher.Instance.Unregister(ref _batchHandle);
             _registered = false;
         }
 
@@ -181,7 +181,7 @@ namespace Assets.Scripts.Network
             if (!Sprite || SpriteRenderer == null)
                 return;
 
-            var batcher = RoSpriteBatcher.Instance;
+            var batcher = RoSpriteAndGroundItemBatcher.Instance;
             var available = batcher != null && batcher.BatchingAvailable;
 
             if (_registered && (!available || !batcher.IsValidHandle(_batchHandle)))
@@ -241,6 +241,7 @@ namespace Assets.Scripts.Network
             };
 
             if (!batcher.WriteSprite(ref _batchHandle, SpriteRenderer.transform.localToWorldMatrix,
+                SpriteRenderer.transform, transform,
                 BatchVerts, BatchUvs, BatchColors, p))
             {
                 _registered = false;
