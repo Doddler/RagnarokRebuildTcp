@@ -11,8 +11,13 @@ public class SerializationBuffer : IBufferWriter<byte>, IDisposable
 
     public void Reset()
     {
-        if(buffer != null)
+        if (buffer != null)
+        {
             ArrayPool<byte>.Shared.Return(buffer);
+            buffer = null;
+        }
+
+        position = 0;
     }
 
     public void Clear()
@@ -58,7 +63,6 @@ public class SerializationBuffer : IBufferWriter<byte>, IDisposable
 
     public void Dispose()
     {
-        if(buffer != null)
-            ArrayPool<byte>.Shared.Return(buffer);
+        Reset();
     }
 }
