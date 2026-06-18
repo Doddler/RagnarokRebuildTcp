@@ -153,12 +153,6 @@ namespace Assets.Scripts.Sprites
             if (entry.RefCount > 0) return;
 
             _referencedCount--;
-            if (_referencedCount <= 0)
-            {
-                ResetLayout();
-                return;
-            }
-
             entry.Pending = true;
             entry.ExpireTime = Time.time + EvictDelay;
             _pendingEviction.Add(atlas);

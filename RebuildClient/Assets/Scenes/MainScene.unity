@@ -46780,7 +46780,7 @@ PrefabInstance:
     - target: {fileID: 8963847247755784938, guid: 7cb1e2a9a8a5c8d418e25368571c9a56,
         type: 3}
       propertyPath: AtlasInitialSliceCount
-      value: 16
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1980845207811950280, guid: 7cb1e2a9a8a5c8d418e25368571c9a56, type: 3}

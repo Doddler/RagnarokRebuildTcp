@@ -235,7 +235,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1406d2d4e158c0149b9cb83ef359b06c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnableTickGroups: 1
+  TickThreshold: 200
+  TickMaxGroups: 6
+  TickHotRadius: 15
   EnableBatching: 1
+  AtlasInitialSliceCount: 3
+  AtlasArrayView: {fileID: 0}
 --- !u!114 &6793730432599042845
 MonoBehaviour:
   m_ObjectHideFlags: 0
