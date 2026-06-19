@@ -644,6 +644,7 @@ namespace Assets.Scripts.Sprites
                 Angle = Parent.Angle;
                 SpriteRenderer.SetAngle(Angle);
                 currentAngleIndex = Parent.currentAngleIndex;
+                (SpriteRenderer as RoSpriteRendererStandard)?.UpdateCameraFacing();
             }
 
             if (!IgnoreAnchor)

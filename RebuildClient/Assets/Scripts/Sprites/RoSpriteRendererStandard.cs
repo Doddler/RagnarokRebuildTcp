@@ -345,32 +345,36 @@ namespace Assets.Scripts.Sprites
             return newMesh;
         }
 
+        public bool UpdateCameraFacing()
+        {
+            if (!isInitialized || !UpdateAngleWithCamera)
+                return false;
+
+            var rotation = 360 - (int)CameraFollower.Instance.Rotation;
+            if (is8Direction)
+                rotation += 22;
+            rotation %= 360;
+
+            var angleIndex = RoAnimationHelper.GetSpriteIndexForAngle(Angle, rotation);
+            if (!is8Direction && angleIndex % 2 == 0)
+                angleIndex++;
+
+            if (angleIndex != CurrentAngleIndex)
+            {
+                CurrentAngleIndex = angleIndex;
+                Rebuild();
+                return true;
+            }
+
+            return false;
+        }
+
         public bool UpdateRenderer()
         {
             if (!isInitialized)
                 return false;
 
-            bool rebuilt = false;
-
-            if (UpdateAngleWithCamera)
-            {
-                var rotation = 360 - (int)CameraFollower.Instance.Rotation;
-                if (is8Direction)
-                    rotation += 22;
-                rotation %= 360;
-
-                var angleIndex = RoAnimationHelper.GetSpriteIndexForAngle(Angle, rotation);
-                if (!is8Direction && angleIndex % 2 == 0)
-                    angleIndex++;
-
-                if (angleIndex != CurrentAngleIndex)
-                {
-                    CurrentAngleIndex = angleIndex;
-
-                    Rebuild();
-                    rebuilt = true;
-                }
-            }
+            bool rebuilt = UpdateCameraFacing();
 
             var batcher = RoSpriteAndGroundItemBatcher.Instance;
             if (_batchRejected && batcher != null
