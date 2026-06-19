@@ -11,6 +11,8 @@ namespace Assets.Scripts.Sprites
         public Color Color;
         public BillboardObject Billboard;
         public SortingGroup SortingGroup;
+        public int RootKey;
+        public int RootOrder;
         private RoSpriteTrailManager manager;
 
         // public List<MeshRenderer> Renderers;

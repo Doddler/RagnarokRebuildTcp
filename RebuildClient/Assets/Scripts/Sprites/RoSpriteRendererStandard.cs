@@ -289,6 +289,31 @@ namespace Assets.Scripts.Sprites
             }
         }
 
+        internal static bool TryGetMeshArrays(Mesh mesh, out Vector3[] vertices, out Vector2[] uv, out Color[] colors)
+        {
+            vertices = null;
+            uv = null;
+            colors = null;
+            if (mesh == null)
+                return false;
+
+            if (!meshArrayCache.TryGetValue(mesh, out var arrays))
+            {
+                arrays = new MeshArrays
+                {
+                    Uv = mesh.uv,
+                    Vertices = mesh.vertices,
+                    Colors = mesh.colors,
+                };
+                meshArrayCache[mesh] = arrays;
+            }
+
+            vertices = arrays.Vertices;
+            uv = arrays.Uv;
+            colors = arrays.Colors;
+            return vertices != null && vertices.Length > 0;
+        }
+
         private void SetPropertyBlock()
         {
             var envColor = RoMapRenderSettings.GetBakedLightContribution(new Vector2(transform.position.x, transform.position.z));
