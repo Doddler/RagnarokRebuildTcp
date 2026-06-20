@@ -70,18 +70,22 @@ namespace Assets.Scripts.Sprites
         public bool IsEffectSprite;
 
         public bool SetAsDirty;
+        
+        [NonSerialized] public int GroupIndex = -1;
+        [NonSerialized] public int RootGroupIndex = -1;
+        [NonSerialized] public bool NeedsImmediateTick;
+        [NonSerialized] public Vector3 LastKnownPosition;
+        private float _lastTickTime = -1f;
 
         public ServerControllable Controllable;
         private bool isInitialized;
 
         private string spriteName;
 
-        private Light directionalLight;
-
         public Action OnFinishPlaying;
 
         public float CurrentShade = 1f;
-        public float TargetShade;
+        public float TargetShade = 1f;
         public float ShadeLevel = 0.85f;
 
         private const float shadeForShadow = 0.70f;
@@ -322,6 +326,7 @@ namespace Assets.Scripts.Sprites
                 stdRenderer.SecondPassForWater = !LockAngle; //anything you'd want to lock angle for probably doesn't need a water pass
                 stdRenderer.UpdateAngleWithCamera = !LockAngle;
                 stdRenderer.SortingOrder = SpriteOrder;
+                stdRenderer.OwnerAnimator = this;
                 SpriteRenderer = stdRenderer;
             }
 
@@ -424,12 +429,12 @@ namespace Assets.Scripts.Sprites
                 }
             }
             
+            SpriteRenderer.Rebuild(); //must precede UpdateRenderer or the batcher writes last frame's mesh
+
             if(Parent != null)
                 ChildUpdate(); //this will call UpdateRenderer after updating the angle to match the parent
             else
                 SpriteRenderer.UpdateRenderer();
-            
-            SpriteRenderer.Rebuild();
         }
 
         public void ChangeAngle(float angle)
@@ -445,6 +450,7 @@ namespace Assets.Scripts.Sprites
             if (currentFrame > maxFrame)
                 currentFrame = 0;
             isDirty = true;
+            NeedsImmediateTick = true;
         }
 
         public void ChangeAction(int newActionIndex)
@@ -458,6 +464,7 @@ namespace Assets.Scripts.Sprites
             if (currentFrame > maxFrame)
                 currentFrame = 0;
             isDirty = true;
+            NeedsImmediateTick = true;
         }
 
         public void ChangeActionExact(int newActionIndex)
@@ -473,6 +480,7 @@ namespace Assets.Scripts.Sprites
                 currentFrame = 0;
             isDirty = true;
             isPaused = false;
+            NeedsImmediateTick = true;
         }
 
         public void QueueMotionTransition(SpriteMotion nextMotion, float activationTime)
@@ -499,6 +507,8 @@ namespace Assets.Scripts.Sprites
             currentFrame = 0;
             if (nextMotion == SpriteMotion.Walk)
                 currentFrame = lastWalkFrame;
+
+            NeedsImmediateTick = true;
 
             if (!isInitialized)
                 return;
@@ -599,8 +609,6 @@ namespace Assets.Scripts.Sprites
                 
                 if (currentFrameTime < 0)
                     currentFrameTime += (float)delay / 1000f * AnimSpeed;
-                if (currentFrameTime < 0)
-                    currentFrameTime = 0; //if we're more than a full frame behind lets just reset the clock
             }
 
             if (!isPaused)
@@ -636,7 +644,7 @@ namespace Assets.Scripts.Sprites
                 Angle = Parent.Angle;
                 SpriteRenderer.SetAngle(Angle);
                 currentAngleIndex = Parent.currentAngleIndex;
-                SpriteRenderer.UpdateRenderer();
+                (SpriteRenderer as RoSpriteRendererStandard)?.UpdateCameraFacing();
             }
 
             if (!IgnoreAnchor)
@@ -647,19 +655,24 @@ namespace Assets.Scripts.Sprites
                 if (ourAnchor == Vector2.zero)
                 {
                     transform.localPosition = new Vector3(0f, 0f, 0f);
-                    return;
-                }
-
-                var diff = parentAnchor - ourAnchor;
-
-                if (SpriteRenderer is RoSpriteRendererStandard std)
-                {
-                    transform.localPosition = new Vector3(diff.x / 50f, 0, -SpriteOrder * 0.003f);
-                    std.ShaderYOffset = -diff.y / 50f;
+                    if (SpriteRenderer is RoSpriteRendererStandard std)
+                        std.ShaderYOffset = 0f;
                 }
                 else
-                    transform.localPosition = new Vector3(diff.x / 50f, -diff.y / 50f, -SpriteOrder * 0.01f);
+                {
+                    var diff = parentAnchor - ourAnchor;
+
+                    if (SpriteRenderer is RoSpriteRendererStandard std)
+                    {
+                        transform.localPosition = new Vector3(diff.x / 50f, 0, -SpriteOrder * 0.003f);
+                        std.ShaderYOffset = -diff.y / 50f;
+                    }
+                    else
+                        transform.localPosition = new Vector3(diff.x / 50f, -diff.y / 50f, -SpriteOrder * 0.01f);
+                }
             }
+
+            SpriteRenderer?.UpdateRenderer();
         }
 
         private int GetFrameForHeadTurn(RoSpriteAnimator animator)
@@ -684,49 +697,32 @@ namespace Assets.Scripts.Sprites
                 return;
             }
 
-            if (directionalLight == null)
+            if (!RaycastForShadow)
             {
-                directionalLight = GameObject.Find("DirectionalLight").GetComponent<Light>();
-                var lightPower = (directionalLight.color.r + directionalLight.color.g + directionalLight.color.b) / 3f;
-                lightPower = (lightPower * directionalLight.intensity + 1) / 2f;
-                lightPower *= directionalLight.shadowStrength;
-                ShadeLevel = shadeForShadow;
-            }
-
-            var srcPos = transform.position + new Vector3(0, 0.2f, 0);
-
-            var destDir = directionalLight.transform.rotation * Vector3.forward * -1;
-
-            if (shadowRaycastMask == 0)
-                shadowRaycastMask = LayerMask.GetMask("Ground", "Object");
-
-            var ray = new Ray(srcPos, destDir);
-
-            //Debug.DrawLine(srcPos, destDir, Color.yellow, 10f, false);
-            //Debug.DrawRay(srcPos, destDir, Color.yellow, 50f, false);
-
-            if (RaycastForShadow && Physics.Raycast(ray, out var hit, 50f, shadowRaycastMask))
-            {
-                //Debug.Log(hit.transform.gameObject);
-                TargetShade = ShadeLevel;
-            }
-            else
                 TargetShade = 1f;
+                return;
+            }
+
+            ShadeLevel = shadeForShadow;
+            var srcPos = transform.position + new Vector3(0, 0.2f, 0);
+            RoSpriteAndGroundItemBatcher.QueueShadowRaycast(this, srcPos, ShadeLevel);
+            // TargetShade is written back asynchronously by RoSpriteAndGroundItemBatcher in its LateUpdate.
         }
 
-        public void UpdateColor()
+        public void UpdateColor(float dt = -1f)
         {
+            if (dt < 0f) dt = Time.deltaTime;
             var c = Color;
             if (ColorTransitionSpeed > 0)
             {
-                c = Color.Lerp(TransitionColor, c, Time.deltaTime * ColorTransitionSpeed);
+                c = Color.Lerp(TransitionColor, c, dt * ColorTransitionSpeed);
 
                 if (Mathf.Approximately(c.r, TransitionColor.r) && Mathf.Approximately(c.g, TransitionColor.g) && Mathf.Approximately(c.b, TransitionColor.b))
                 {
                     ColorTransitionSpeed = -1;
                     c = Color;
                 }
-                    
+
                 TransitionColor = c;
             }
 
@@ -758,8 +754,37 @@ namespace Assets.Scripts.Sprites
 	        Shadow.GetComponent<SpriteRenderer>().material = SpriteUtil.shadowMaterial;
         }
         
+        private void OnEnable()
+        {
+            _lastTickTime = -1f;
+            RoSpriteAndGroundItemBatcher.RegisterAnimator(this);
+        }
+
+        private void OnDisable()
+        {
+            RoSpriteAndGroundItemBatcher.UnregisterAnimator(this);
+        }
+
         public void Update()
         {
+            if (Parent != null)
+                return;
+
+            var batcher = RoSpriteAndGroundItemBatcher.Instance;
+            if (batcher != null && !batcher.ShouldTickAnimator(this))
+                return;
+
+            // Effective delta since this animator last ticked. In tick-group mode that may be
+            // multiple frames; outside it this equals Time.deltaTime.
+            float dt;
+            if (_lastTickTime < 0f || _lastTickTime > Time.time)
+                dt = Time.deltaTime;
+            else
+                dt = Time.time - _lastTickTime;
+            _lastTickTime = Time.time;
+            NeedsImmediateTick = false;
+            LastKnownPosition = transform.position;
+
             if (!isInitialized)
                 return;
 
@@ -769,22 +794,19 @@ namespace Assets.Scripts.Sprites
                 SetAsDirty = false;
             }
 
-            if (Parent != null)
-                return;
-
             UpdateShade();
-            CurrentShade = Mathf.Lerp(CurrentShade, TargetShade, Time.deltaTime * 10f);
+            CurrentShade = Mathf.Lerp(CurrentShade, TargetShade, dt * 10f);
 
             for (var i = 0; i < ChildrenSprites.Count; i++)
                 if (ChildrenSprites[i].IsInitialized)
                     ChildrenSprites[i].UpdateChildColor();
 
-            UpdateColor();
+            UpdateColor(dt);
 
             if (currentAction == null)
                 ChangeAction(0);
 
-            pauseTime -= Time.deltaTime;
+            pauseTime -= dt;
             if (pauseTime < 0)
                 isPaused = false;
 
@@ -794,7 +816,7 @@ namespace Assets.Scripts.Sprites
                 ChangeAngle(Angle);
 
             if (Parent == null)
-                currentFrameTime -= Time.deltaTime;
+                currentFrameTime -= dt;
 
             if (queuedMotionTransition.isActive && queuedMotionTransition.TransitionTime <= Time.timeSinceLevelLoad)
             {
@@ -809,8 +831,25 @@ namespace Assets.Scripts.Sprites
                 }
             }
 
-            if (currentFrameTime < 0 || currentFrame > maxFrame)
-                AdvanceFrame();
+            const int maxCatchUpFrames = 8;
+            bool movementDriven = State == SpriteState.Walking && CurrentMotion == SpriteMotion.Walk;
+            if (movementDriven)
+            {
+                if (currentFrameTime < 0 || currentFrame > maxFrame)
+                    AdvanceFrame();
+                currentFrameTime = 0f;
+            }
+            else
+            {
+                int catchUpFrames = 0;
+                while ((currentFrameTime < 0 || currentFrame > maxFrame) && catchUpFrames < maxCatchUpFrames)
+                {
+                    AdvanceFrame();
+                    catchUpFrames++;
+                }
+                if (catchUpFrames == maxCatchUpFrames && currentFrameTime < 0)
+                    currentFrameTime = 0f;
+            }
             //
             // if (Controllable != null && Controllable.CharacterType == CharacterType.Player)
             //     Debug.Log($"{_currentMotion} isPaused:{isPaused}");

@@ -106,6 +106,10 @@ namespace Assets.Scripts.Sprites
             "ClientConfig/AdminWarpList.txt",
             "ClientConfig/fogData.json",
             MapDataPath,
+            // Client database window data; loaded on-demand at runtime so they must stay resident (not init-only).
+            "ClientConfigGenerated/monsterdatabase.json",
+            "ClientConfigGenerated/npcdatabase.json",
+            "ClientConfigGenerated/mapwarps.json",
         };
 
         private string[] initializeOnlyStreamingAssets = new[]
@@ -140,6 +144,8 @@ namespace Assets.Scripts.Sprites
         // private static int EffectClassId = 3999;
 
         private bool isInitialized;
+
+        public bool IsInitialized => isInitialized;
 
         public bool IsValidMonsterName(string name) => validMonsterClasses.Contains(name);
         public bool IsValidMonsterCode(string name) => validMonsterCodes.Contains(name);

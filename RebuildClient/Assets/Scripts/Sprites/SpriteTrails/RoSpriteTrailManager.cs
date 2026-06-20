@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Assets.Scripts.Effects;
 using Assets.Scripts.Network;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -19,6 +20,20 @@ namespace Assets.Scripts.Sprites
         private List<ActiveTrail> Trails = new();
         private Stack<RoSpriteTrail> TrailPool = new();
         private Stack<RoSpriteTrailRenderer> RendererPool = new();
+
+        private Material trailMaterial;
+
+        private Material GetTrailMaterial()
+        {
+            if (trailMaterial == null)
+            {
+                var shader = ShaderCache.Instance != null ? ShaderCache.Instance.SpriteShader : null;
+                if (shader != null)
+                    trailMaterial = new Material(shader);
+            }
+
+            return trailMaterial;
+        }
 
         public void ReturnRenderer(RoSpriteTrailRenderer renderer)
         {
@@ -94,7 +109,9 @@ namespace Assets.Scripts.Sprites
             
 
             renderer.Init();
-            renderer.MeshRenderer.sharedMaterial = sprite.MeshRenderer.sharedMaterial;
+            renderer.MeshRenderer.sharedMaterial = sprite.MeshRenderer.sharedMaterial != null
+                ? sprite.MeshRenderer.sharedMaterial
+                : GetTrailMaterial();
             renderer.MeshFilter.sharedMesh = sprite.MeshFilter.sharedMesh;
             renderer.SortingGroup.sortingOrder = order;
             renderer.SpriteData = sprite.SpriteData;
@@ -102,7 +119,11 @@ namespace Assets.Scripts.Sprites
             renderer.MeshRenderer.sortingOrder = sprite.MeshRenderer.sortingOrder;
             renderer.VerticalOffset = sprite.ShaderYOffset;
 
-            
+            if (RoSpriteRendererStandard.TryGetMeshArrays(sprite.MeshFilter.sharedMesh, out var verts, out var uvs, out var colors))
+                renderer.SetBatchSource(verts, uvs, colors, sprite.SpriteData != null ? sprite.SpriteData.Atlas : null, trail.RootKey, trail.RootOrder, order);
+            else
+                renderer.SetBatchSource(null, null, null, null, trail.RootKey, trail.RootOrder, order);
+
             trail.AddTrailSprite(renderer, order);
             
             renderer.transform.localRotation = sprite.gameObject.transform.localRotation;
@@ -139,6 +160,9 @@ namespace Assets.Scripts.Sprites
             trail.RemainingTime = data.Lifetime;
 
             trail.SortingGroup.sortingOrder = animator.State == SpriteState.Walking ? 0 : -1;
+
+            trail.RootKey = trail.GetInstanceID();
+            trail.RootOrder = renderer.EffectiveSortingOrder() + trail.SortingGroup.sortingOrder;
             //
             // var hue = (int)(Time.timeSinceLevelLoad * 255) % 255;
             // var c = Color.HSVToRGB(hue/255f, 1f, 0.5f);

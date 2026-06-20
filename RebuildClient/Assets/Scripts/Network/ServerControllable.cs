@@ -1760,9 +1760,17 @@ namespace Assets.Scripts.Network
                     SpriteAnimator.ChangeMotion(SpriteMotion.Idle);
                 }
 
-                //RealPosition may not have the correct height so we force it to update
-                RealPosition = new Vector3(RealPosition.x, walkProvider.GetHeightForPosition(RealPosition), RealPosition.z);
-                transform.position = Vector3.Lerp(transform.position, RealPosition + PositionOffset, Time.deltaTime * 20f);
+                //RealPosition may not have the correct height so we force it to update, but only when we're not yet settled at the target.
+                var settledTarget = RealPosition + PositionOffset;
+                if ((transform.position - settledTarget).sqrMagnitude < 0.0001f)
+                {
+                    transform.position = settledTarget;
+                }
+                else
+                {
+                    RealPosition = new Vector3(RealPosition.x, walkProvider.GetHeightForPosition(RealPosition), RealPosition.z);
+                    transform.position = Vector3.Lerp(transform.position, RealPosition + PositionOffset, Time.deltaTime * 20f);
+                }
             }
 
             if (StatusEffectState != null && StatusEffectState.HasStatusEffect(CharacterStatusEffect.Frozen))

@@ -87,4 +87,50 @@ Billboard GetBillboard(float4 positionOS, float offset)
     return b;
 }
 
+// Dynamic Batching
+Billboard GetBillboardDB(float3 anchor, float3 cornerOffset, float3 originOffset, float posY, float offset)
+{
+    float3 worldPos = anchor + cornerOffset;
+    float3 originPos = anchor + originOffset;
+    float3 upPos = originPos + float3(0, 1, 0);
+
+    float outDist = abs(posY);
+
+    float angleA = Angle(originPos, upPos, worldPos);
+    float angleB = Angle(worldPos, _WorldSpaceCameraPos.xyz, originPos);
+    float camDist = distance(_WorldSpaceCameraPos.xyz, worldPos.xyz);
+
+    if (posY > 0)
+    {
+        angleA = 90 - (angleA - 90);
+        angleB = 90 - (angleB - 90);
+    }
+
+    float angleC = 180 - angleA - angleB;
+
+    float fixDist = 0;
+    if (posY > 0)
+        fixDist = (outDist / sin(radians(angleC))) * sin(radians(angleA));
+
+    float decRate = (fixDist * 0.7 - offset / 4) / camDist;
+    float decRate2 = (fixDist) / camDist;
+
+    float4 view = mul(UNITY_MATRIX_V, float4(worldPos, 1));
+    float4 pro = mul(UNITY_MATRIX_P, view);
+
+    #if UNITY_UV_STARTS_AT_TOP
+    view.z -= abs(UNITY_NEAR_CLIP_VALUE - view.z) * decRate2;
+    pro.z -= abs(UNITY_NEAR_CLIP_VALUE - pro.z) * decRate;
+    #else
+    view.z += abs(UNITY_NEAR_CLIP_VALUE) * decRate2;
+    pro.z += abs(UNITY_NEAR_CLIP_VALUE) * decRate;
+    #endif
+
+    Billboard b;
+    b.positionCS = pro;
+    b.positionWS = worldPos;
+    b.positionVS = view;
+    return b;
+}
+
 #endif

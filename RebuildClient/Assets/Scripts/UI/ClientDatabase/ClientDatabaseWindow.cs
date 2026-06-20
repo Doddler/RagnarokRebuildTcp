@@ -46,10 +46,10 @@ namespace Assets.Scripts.UI.ClientDatabase
             if (npcMarkerTemplate != null) npcMarkerTemplate.SetActive(false);
             if (rowTemplate != null) rowTemplate.SetActive(false);
             if (iconRowTemplate != null) iconRowTemplate.SetActive(false);
-            LoadDataAndPopulate();
             if (helpContentText != null) helpContentText.text = BuildHelpText();
+            ShowTab(0);
         }
-        
+
         public new void OnDestroy()
         {
             if (UiManager.Instance)
@@ -68,6 +68,7 @@ namespace Assets.Scripts.UI.ClientDatabase
         {
             if (!itemsLoaded) PopulateItemList();
             if (!mapsLoaded) PopulateMapList();
+            if (!dbDataLoaded) LoadDatabaseData();
         }
 
         private void Update()
@@ -232,20 +233,26 @@ namespace Assets.Scripts.UI.ClientDatabase
             ShowMapDetail(map);
         }
         
-        private void LoadDataAndPopulate()
+        private bool dbDataLoaded;
+        
+        private void LoadDatabaseData()
         {
+            if (ClientDataLoader.Instance == null || !ClientDataLoader.Instance.IsInitialized)
+                return;
+
             var monsterDb = LoadMonsterDatabase();
             var npcDb = LoadNpcDatabase();
+            if (monsterDb?.Items == null || npcDb?.Items == null)
+                return;
+
             LoadMapWarps();
             BuildMonsterReverseLookups(monsterDb);
             BuildMonsterValueIndex(monsterDb);
             BuildNpcReverseLookups(npcDb);
 
             PopulateMonsterList(monsterDb);
-            PopulateItemList();
-            PopulateMapList();
             PopulateNpcList(npcDb);
-            ShowTab(0);
+            dbDataLoaded = true;
         }
         
         private MonsterDbFile LoadMonsterDatabase() => LoadStreamingJson<MonsterDbFile>("ClientConfigGenerated/monsterdatabase.json");

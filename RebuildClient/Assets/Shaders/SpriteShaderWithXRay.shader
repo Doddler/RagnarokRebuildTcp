@@ -3,6 +3,7 @@ Shader"Ragnarok/CharacterSpriteShader - Depth Color XRay"
     Properties
     {
         [PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
+        _AtlasArray("Atlas Array", 2DArray) = "" {}
         //[PerRendererData] _PalTex("Palette Texture", 2D) = "white" {}
         [PerRendererData] _Color("Tint", Color) = (1,1,1,1)
         [PerRendererData] _EnvColor("Environment", Color) = (1,1,1,1)
@@ -41,11 +42,8 @@ Shader"Ragnarok/CharacterSpriteShader - Depth Color XRay"
             #pragma vertex vert
             #pragma fragment frag
 
-            #pragma multi_compile _ GROUND_ITEM
             
-            #pragma multi_compile_instancing
-            #pragma instancing_options assumeuniformscaling nolodfade nolightprobe nolightmap
-            #pragma multi_compile _ INSTANCING_ON
+            #pragma multi_compile_local _ DYNBATCH_ON
             
 
             #include "SpriteDepthOnlyPass.cginc"
@@ -56,7 +54,7 @@ Shader"Ragnarok/CharacterSpriteShader - Depth Color XRay"
         {
             Name "Color"
             ZWrite Off
-            
+
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -68,12 +66,9 @@ Shader"Ragnarok/CharacterSpriteShader - Depth Color XRay"
             #pragma multi_compile _ BLINDEFFECT_ON
             //#pragma shader_feature _ WATER_OFF
             #pragma shader_feature _ COLOR_DRAIN
-            #pragma multi_compile _ GROUND_ITEM
 
-            #pragma multi_compile_instancing
-            #pragma instancing_options assumeuniformscaling nolodfade nolightprobe nolightmap
-            #pragma multi_compile _ INSTANCING_ON
-            
+            #pragma multi_compile_local _ DYNBATCH_ON
+
             //#define SMOOTHPIXEL
 
             #include "SpriteColorOnlyPass.cginc"
@@ -98,11 +93,8 @@ Shader"Ragnarok/CharacterSpriteShader - Depth Color XRay"
             #pragma multi_compile _ BLINDEFFECT_ON
             //#pragma shader_feature _ WATER_OFF
             #pragma shader_feature _ COLOR_DRAIN
-            #pragma multi_compile _ GROUND_ITEM
 
-            #pragma multi_compile_instancing
-            #pragma instancing_options assumeuniformscaling nolodfade nolightprobe nolightmap
-            #pragma multi_compile _ INSTANCING_ON
+            #pragma multi_compile_local _ DYNBATCH_ON
 
             #define XRAY
             //#define SMOOTHPIXEL
