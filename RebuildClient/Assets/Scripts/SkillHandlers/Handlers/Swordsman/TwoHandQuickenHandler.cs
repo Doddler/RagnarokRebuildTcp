@@ -8,6 +8,8 @@ namespace Assets.Scripts.SkillHandlers.Handlers
     {
         public override void ExecuteSkillTargeted(ServerControllable src, ref AttackResultData attack)
         {
+            if (!attack.IsIndirect && src.CharacterType != CharacterType.Monster)
+                src.PerformSkillMotion();
             CameraFollower.Instance.AttachEffectToEntity("TwoHandQuicken", src.gameObject, src.Id);
 
             
