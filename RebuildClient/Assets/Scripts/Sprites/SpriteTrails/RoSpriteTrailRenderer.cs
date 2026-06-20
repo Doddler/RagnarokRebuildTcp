@@ -125,8 +125,8 @@ namespace Assets.Scripts.Sprites
                 rootPos = transform.position,
             };
 
-            if (!batcher.WriteSprite(ref _batchHandle, transform.localToWorldMatrix, transform, transform,
-                    _verts, _uvs, _colors, p))
+            if (!batcher.WriteSprite(ref _batchHandle, RoSpriteAndGroundItemBatcher.BillboardBakeMatrix(transform), transform, transform,
+                    _verts, _uvs, _colors, p, true))
             {
                 _registered = false;
                 return false;

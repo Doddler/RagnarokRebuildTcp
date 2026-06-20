@@ -79,6 +79,9 @@ namespace Assets.Scripts.Sprites
         private int _instanceId;
         private const float BatchRetryDelay = 1f;
 
+        private BillboardObject _billboard;
+        private bool _billboardResolved;
+
         private bool _dirty = true;
         private Matrix4x4 _lastWriteMatrix;
         private Color _lastWriteColor;
@@ -538,7 +541,16 @@ namespace Assets.Scripts.Sprites
             }
 
             var pos = transform.position;
-            var localToWorld = transform.localToWorldMatrix;
+            if (!_billboardResolved)
+            {
+                _billboard = GetComponentInParent<BillboardObject>(true);
+                _billboardResolved = true;
+            }
+            var cameraFacing = _billboard != null
+                && (_billboard.Style == BillboardStyle.Character || _billboard.Style == BillboardStyle.Normal);
+            var localToWorld = cameraFacing
+                ? RoSpriteAndGroundItemBatcher.BillboardBakeMatrix(transform)
+                : transform.localToWorldMatrix;
 
             if (!_hasBeenPositioned)
             {
@@ -579,7 +591,7 @@ namespace Assets.Scripts.Sprites
 
             if (!batcher.WriteSprite(ref _batchHandle, localToWorld,
                 transform, root.transform,
-                _meshArrays.Vertices, _meshArrays.Uv, _meshArrays.Colors, p))
+                _meshArrays.Vertices, _meshArrays.Uv, _meshArrays.Colors, p, cameraFacing))
             {
                 RejectBatching(batcher);
                 return;

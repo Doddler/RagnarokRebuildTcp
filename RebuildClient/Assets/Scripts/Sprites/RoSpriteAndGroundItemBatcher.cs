@@ -21,7 +21,7 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
     internal const int VertsPerQuad = 4;
     internal const int IndicesPerQuad = 6;
     private const int InitialQuadCapacity = 1024;
-    private const int MaxQuadCapacity = 16384; //ushort index limit, 16384 * 4 = 65536 verts
+    private const int MaxQuadCapacity = 16384;
     private const int InitialEntryCapacity = 256;
 
     internal const MeshUpdateFlags FastUpdate =
@@ -82,7 +82,7 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
         public bool Hidden;
         public Texture2D Atlas;
         public SpriteAtlasRegion Region;
-        public int[] Slots; //capacity only grows, SlotCount is the live prefix
+        public int[] Slots;
         public int SlotCount;
         public Vector3 RootPos;
         public int RootKey;
@@ -91,12 +91,14 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
         public Vector3 CullCenter;
         public float SortDepth;
         public float Radius;
-        public Transform Xform; //live transforms so throttled sprites can follow movement between ticks
+        public Transform Xform;
         public Transform RootXform;
+        public bool CameraFacing;
+        public Quaternion CornerRotation;
     }
 
     private BatchEntry[] _entries = new BatchEntry[InitialEntryCapacity];
-    private int[] _entrySeq = new int[InitialEntryCapacity]; //bumped on free so stale handles can't touch reused entries
+    private int[] _entrySeq = new int[InitialEntryCapacity];
     private readonly Stack<int> _freeEntries = new();
     private int _entryHighWater;
 
@@ -403,10 +405,36 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
             && _entrySeq[handle.EntryId] == handle.Seq;
     }
 
+    private static Camera _billboardCamera;
+
+    internal static Quaternion BillboardCameraRotation()
+    {
+        if (_billboardCamera == null)
+            _billboardCamera = Camera.main;
+        return _billboardCamera != null ? _billboardCamera.transform.rotation : Quaternion.identity;
+    }
+
+    internal static Matrix4x4 BillboardBakeMatrix(Transform t)
+    {
+        var ltw = t.localToWorldMatrix;
+        if (_billboardCamera == null)
+            _billboardCamera = Camera.main;
+        if (_billboardCamera == null)
+            return ltw;
+
+        var delta = _billboardCamera.transform.rotation * Quaternion.Inverse(t.rotation);
+        if (delta == Quaternion.identity)
+            return ltw;
+
+        var corrected = Matrix4x4.Rotate(delta) * ltw;
+        corrected.SetColumn(3, ltw.GetColumn(3));
+        return corrected;
+    }
+
     public bool WriteSprite(ref SpriteBatchHandle handle, Matrix4x4 localToWorld,
         Transform xform, Transform rootXform,
         Vector3[] verts, Vector2[] uvs, Color[] vcolors,
-        in SpriteRenderParams p)
+        in SpriteRenderParams p, bool cameraFacing = false)
     {
         if (!IsValidHandle(handle))
             return false;
@@ -440,6 +468,8 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
         entry.CullCenter = new Vector3(localToWorld.m03, localToWorld.m13, localToWorld.m23);
         entry.Xform = xform;
         entry.RootXform = rootXform;
+        entry.CameraFacing = cameraFacing;
+        entry.CornerRotation = cameraFacing ? BillboardCameraRotation() : Quaternion.identity;
 
         var region = entry.Region;
         var slots = entry.Slots;
@@ -710,17 +740,37 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
 
     private void SyncBatchedTransforms()
     {
+        var camRot = BillboardCameraRotation();
+        bool haveCam = _billboardCamera != null;
+
         for (var i = 0; i < _entryHighWater; i++)
         {
             ref var entry = ref _entries[i];
             if (!entry.InUse || !entry.Written || entry.Hidden || entry.Xform == null) continue;
 
             var anchor = entry.Xform.position;
-            if (anchor == entry.CullCenter) continue; //Vector3 == is epsilon-tolerant; stationary sprites cost one read
+            bool anchorChanged = anchor != entry.CullCenter; //Vector3 == is epsilon-tolerant; stationary sprites cost one read
+            
+            bool rotate = false;
+            var delta = Quaternion.identity;
+            if (entry.CameraFacing && haveCam)
+            {
+                delta = camRot * Quaternion.Inverse(entry.CornerRotation);
+                if (delta != Quaternion.identity)
+                {
+                    rotate = true;
+                    entry.CornerRotation = camRot;
+                }
+            }
 
-            entry.CullCenter = anchor;
-            if (entry.RootXform != null)
-                entry.RootPos = entry.RootXform.position;
+            if (!anchorChanged && !rotate) continue;
+
+            if (anchorChanged)
+            {
+                entry.CullCenter = anchor;
+                if (entry.RootXform != null)
+                    entry.RootPos = entry.RootXform.position;
+            }
 
             var slots = entry.Slots;
             for (var q = 0; q < entry.SlotCount; q++)
@@ -730,7 +780,16 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
                 for (var v = 0; v < VertsPerQuad; v++)
                 {
                     var sv = _verts[vb + v];
-                    sv.anchorWS = anchor;
+                    if (anchorChanged)
+                        sv.anchorWS = anchor;
+                    if (rotate)
+                    {
+                        var c = sv.cornerOS;
+                        var rc = delta * new Vector3(c.x, c.y, c.z);
+                        sv.cornerOS = new Vector4(rc.x, rc.y, rc.z, c.w);
+                        sv.normal = delta * sv.normal;
+                        sv.position = delta * sv.position;
+                    }
                     _verts[vb + v] = sv;
                 }
                 if (slot < _dirtyMin) _dirtyMin = slot;
