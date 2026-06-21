@@ -1,9 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Assets.Scripts.Network;
 using Assets.Scripts.Sprites;
+using Assets.Scripts.UI.Utility;
 using Assets.Scripts.Utility;
 using RebuildSharedData.ClientTypes;
 using TMPro;
@@ -17,7 +16,7 @@ namespace Assets.Scripts.UI.ClientDatabase
         private static readonly int s_secondaryTex = Shader.PropertyToID("_SecondaryTex");
         private const float MinimapPxPerTile = 1f;
 
-        private readonly List<(GameObject go, ClientMapEntry entry, string searchText)> mapRowEntries = new();
+        private readonly List<ClientMapEntry> filteredMaps = new();
         private string currentMapDetailCode;
         private Material minimapMaterialInstance;
         private readonly Dictionary<string, List<string>> mapWarpLookup = new();
@@ -58,20 +57,8 @@ namespace Assets.Scripts.UI.ClientDatabase
             public int Count;
         }
 
-        [SerializeField, HideInInspector] internal GameObject mapsContainer;
-        [SerializeField, HideInInspector] internal Image mapsTabImage;
-        [SerializeField, HideInInspector] internal Button mapBackButton;
-        [SerializeField, HideInInspector] internal TMP_InputField mapSearchField;
         [SerializeField, HideInInspector] internal TextMeshProUGUI mapSearchGhost;
-        [SerializeField, HideInInspector] internal GameObject mapListView;
-        [SerializeField, HideInInspector] internal GameObject mapDetailView;
-        [SerializeField, HideInInspector] internal TextMeshProUGUI mapListTitleText;
-        [SerializeField, HideInInspector] internal GameObject mapListContent;
-        [SerializeField, HideInInspector] internal TextMeshProUGUI mapDetailNameText;
         [SerializeField, HideInInspector] internal Image mapDetailMinimap;
-        [SerializeField, HideInInspector] internal GameObject mapMonstersContent;
-        [SerializeField, HideInInspector] internal GameObject mapConnectionsContent;
-        [SerializeField, HideInInspector] internal GameObject mapNpcsContent;
         [SerializeField, HideInInspector] internal GameObject portalMarkerTemplate;
         [SerializeField, HideInInspector] internal GameObject npcMarkerTemplate;
 
@@ -119,42 +106,24 @@ namespace Assets.Scripts.UI.ClientDatabase
 
         private void PopulateMapList()
         {
-            if (mapListContent == null) return;
-            ClearChildren(mapListContent.transform);
-            mapRowEntries.Clear();
-
-            if (MapLookup.Count == 0)
-            {
-                if (mapListTitleText != null) mapListTitleText.text = "Maps";
-                return;
-            }
-
-            if (mapListTitleText != null)
-                mapListTitleText.text = $"Maps ({MapLookup.Count})";
-
-            var ordered = MapLookup.Values.OrderBy(m => m.Code).ToList();
-            StartCoroutine(LoadListIncrementallyAsync(ordered, AddMapListRow, () => mapsLoaded = true));
+            mapPage.Refresh();
         }
 
-        private bool mapsLoaded;
-
-        internal void AddMapListRow(ClientMapEntry map)
+        private void BindMapListRow(DatabaseListRow row, ClientMapEntry map, int index)
         {
-            var row = CloneRow(rowTemplate, mapListContent.transform, 24);
-            row.GetComponentInChildren<TextMeshProUGUI>(true).text = FormatMapLabel(map.Code);
-            var captured = map;
-            row.GetComponent<Button>().onClick.AddListener(() => ShowMapDetail(captured));
-            AttachRightClick(row, () => NetworkManager.Instance.SendMoveRequest(captured.Code));
-            mapRowEntries.Add((row, map, $"{map.Code} {map.Name}"));
+            row.SetLabel(FormatMapLabel(map.Code));
+            row.SetIcon(null);
+            row.SetActions(
+                () => ShowMapDetail(map),
+                () => NetworkManager.Instance.SendMoveRequest(map.Code));
         }
 
         private void ShowMapDetail(ClientMapEntry map)
         {
-            mapListView.SetActive(false);
-            mapDetailView.SetActive(true);
+            mapPage.ShowDetail();
             currentMapDetailCode = map.Code;
 
-            mapDetailNameText.text = FormatMapLabel(map.Code);
+            mapPage.DetailTitleText.text = FormatMapLabel(map.Code);
 
             PopulateMapConnections(map.Code);
             PopulateMapMonsters(map.Code);
@@ -162,10 +131,9 @@ namespace Assets.Scripts.UI.ClientDatabase
             LoadMinimap(map.Code);
         }
 
-        private void ReturnToMapList()
+        public void ReturnToMapList()
         {
-            if (mapListView != null) mapListView.SetActive(true);
-            if (mapDetailView != null) mapDetailView.SetActive(false);
+            mapPage.ShowList();
         }
 
         private void LoadMinimap(string mapCode)
@@ -206,7 +174,8 @@ namespace Assets.Scripts.UI.ClientDatabase
         {
             for (var i = portalMarkers.Count - 1; i >= 0; i--)
             {
-                if (portalMarkers[i] != null) Destroy(portalMarkers[i]);
+                if (portalMarkers[i] != null)
+                    portalMarkers[i].SetActive(false);
             }
             portalMarkers.Clear();
         }
@@ -251,8 +220,10 @@ namespace Assets.Scripts.UI.ClientDatabase
                 return;
             }
 
-            var marker = Instantiate(portalMarkerTemplate, mapDetailMinimap.transform);
-            marker.SetActive(true);
+            var marker = GetPooledObject(
+                portalMarkerTemplate,
+                mapDetailMinimap.transform,
+                () => Instantiate(portalMarkerTemplate, mapDetailMinimap.transform));
             marker.name = $"{PortalMarkerPrefix}{number}";
             var mrt = marker.GetComponent<RectTransform>();
             mrt.anchoredPosition = new Vector2(xFromLeft, -yFromTop);
@@ -264,11 +235,11 @@ namespace Assets.Scripts.UI.ClientDatabase
 
         private void PopulateMapConnections(string mapCode)
         {
-            ClearChildren(mapConnectionsContent.transform);
+            ReleaseDetailRows(mapPage.PrimaryContent);
             portalConnectionIndex.Clear();
             if (!mapWarpLookup.TryGetValue(mapCode, out var connected) || connected.Count == 0)
             {
-                CreateInfoRow(mapConnectionsContent.transform, "(no connections)");
+                CreateInfoRow(mapPage.PrimaryContent, "(no connections)");
                 return;
             }
 
@@ -279,7 +250,7 @@ namespace Assets.Scripts.UI.ClientDatabase
                 portalConnectionIndex[target] = rowIndex;
                 var hasMap = MapLookup.TryGetValue(target, out var targetMap);
 
-                var row = CloneRow(rowTemplate, mapConnectionsContent.transform, 22, clickable: hasMap);
+                var row = GetDetailRow(rowTemplate, mapPage.PrimaryContent, 22, clickable: hasMap);
                 row.GetComponentInChildren<TextMeshProUGUI>(true).text = $"<b>{rowIndex}.</b>  {FormatMapLabel(target)}";
                 if (hasMap)
                 {
@@ -294,10 +265,10 @@ namespace Assets.Scripts.UI.ClientDatabase
 
         private void PopulateMapMonsters(string mapCode)
         {
-            ClearChildren(mapMonstersContent.transform);
+            ReleaseDetailRows(mapPage.SecondaryContent);
             if (!mapMonstersLookup.TryGetValue(mapCode, out var spawns) || spawns.Count == 0)
             {
-                CreateInfoRow(mapMonstersContent.transform, "(no monsters)");
+                CreateInfoRow(mapPage.SecondaryContent, "(no monsters)");
                 return;
             }
 
@@ -307,7 +278,7 @@ namespace Assets.Scripts.UI.ClientDatabase
             foreach (var s in spawns)
             {
                 var hasMon = monsterLookup.TryGetValue(s.MonsterId, out var mon);
-                var row = CloneRow(rowTemplate, mapMonstersContent.transform, 22, clickable: hasMon);
+                var row = GetDetailRow(rowTemplate, mapPage.SecondaryContent, 22, clickable: hasMon);
                 row.GetComponentInChildren<TextMeshProUGUI>(true).text = $"{s.MonsterName}  —  {s.Count}";
                 if (hasMon)
                 {
@@ -320,11 +291,10 @@ namespace Assets.Scripts.UI.ClientDatabase
         
         private void PopulateMapNpcs(string mapCode)
         {
-            if (mapNpcsContent == null) return;
-            ClearChildren(mapNpcsContent.transform);
+            ReleaseDetailRows(mapPage.TertiaryContent);
             if (!mapNpcsLookup.TryGetValue(mapCode, out var npcs) || npcs.Count == 0)
             {
-                CreateInfoRow(mapNpcsContent.transform, "(no NPCs)");
+                CreateInfoRow(mapPage.TertiaryContent, "(no NPCs)");
                 return;
             }
 
@@ -332,7 +302,7 @@ namespace Assets.Scripts.UI.ClientDatabase
             {
                 var npc = npcs[i];
                 var markerIndex = i + 1;
-                var row = CloneRow(rowTemplate, mapNpcsContent.transform, 22);
+                var row = GetDetailRow(rowTemplate, mapPage.TertiaryContent, 22);
                 row.GetComponentInChildren<TextMeshProUGUI>(true).text =
                     $"<b>{markerIndex}.</b>  {npc.Name}{(npc.IsTrader ? "  <size=80%><color=#888888>[Trader]</color></size>" : "")}";
                 var captured = npc;
@@ -345,7 +315,8 @@ namespace Assets.Scripts.UI.ClientDatabase
         {
             for (var i = npcMarkers.Count - 1; i >= 0; i--)
             {
-                if (npcMarkers[i] != null) Destroy(npcMarkers[i]);
+                if (npcMarkers[i] != null)
+                    npcMarkers[i].SetActive(false);
             }
             npcMarkers.Clear();
         }
@@ -385,8 +356,10 @@ namespace Assets.Scripts.UI.ClientDatabase
         {
             if (npcMarkerTemplate == null) return;
 
-            var marker = Instantiate(npcMarkerTemplate, mapDetailMinimap.transform);
-            marker.SetActive(true);
+            var marker = GetPooledObject(
+                npcMarkerTemplate,
+                mapDetailMinimap.transform,
+                () => Instantiate(npcMarkerTemplate, mapDetailMinimap.transform));
             marker.name = $"{NpcMarkerPrefix}{number}";
             var mrt = marker.GetComponent<RectTransform>();
             mrt.anchoredPosition = new Vector2(xFromLeft, -yFromTop);
@@ -398,6 +371,18 @@ namespace Assets.Scripts.UI.ClientDatabase
 
         internal static readonly PredicateRegistry<ClientMapEntry> MapPredicates = BuildPredicateRegistry<ClientMapEntry>();
 
-        private void FilterMaps(string query) => ApplyFilter(mapRowEntries, query, (m, p) => MapPredicates.TryMatch(m, p, out var r) && r);
+        private void FilterMaps(string query) =>
+            ApplyDatabaseFilter<ClientMapEntry, DatabaseListRow>(
+                MapLookup.Values,
+                filteredMaps,
+                query,
+                mapPage.VirtualList,
+                nameof(mapPage),
+                "Maps",
+                mapPage.TitleText,
+                BindMapListRow,
+                static map => $"{map.Code} {map.Name}",
+                MapPredicates,
+                sort: static (left, right) => string.Compare(left.Code, right.Code, StringComparison.Ordinal));
     }
 }

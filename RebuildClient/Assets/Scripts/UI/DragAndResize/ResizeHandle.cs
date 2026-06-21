@@ -79,9 +79,9 @@ public class ResizeHandle : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
             if (SnapToStep)
             {
-                var stepCount = new Vector2((newSize.x - BaseSize.x) / StepSize, (newSize.y - BaseSize.y) / StepSize);
+                var stepCount = new Vector2((newSize.x - BaseSize.x) / StepSize, (newSize.y - BaseSize.y) / StepSizeY);
                 CurrentStepSize = new Vector2Int(Mathf.RoundToInt(stepCount.x), Mathf.RoundToInt(stepCount.y));
-                newSize = BaseSize + CurrentStepSize * StepSize;
+                newSize = BaseSize + new Vector2(CurrentStepSize.x * StepSize, CurrentStepSize.y * StepSizeY);
             }
 
             newSize = new Vector2(Mathf.Max(newSize.x, MinSize.x), Mathf.Max(newSize.y, MinSize.y));
@@ -93,7 +93,7 @@ public class ResizeHandle : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
             if (SnapToStep)
                 CurrentStepSize = new Vector2Int(
                     Mathf.RoundToInt((newSize.x - BaseSize.x) / StepSize), 
-                    Mathf.RoundToInt((newSize.y - BaseSize.y) / StepSize));
+                    Mathf.RoundToInt((newSize.y - BaseSize.y) / StepSizeY));
 
             OnDragEvent.Invoke();
             lastMousePosition = curPos;

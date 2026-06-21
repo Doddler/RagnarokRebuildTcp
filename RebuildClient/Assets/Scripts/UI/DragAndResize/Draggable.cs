@@ -52,12 +52,26 @@ namespace Assets.Scripts.UI
         {
 
             var pos = Target.position;
-            // var halfx = rect.sizeDelta.x * rect.transform.lossyScale.x / 2f;
 
-            pos = new Vector3(Mathf.Clamp(pos.x, 0, Screen.width - Target.sizeDelta.x * Target.transform.lossyScale.x),
-                Mathf.Clamp(pos.y, Target.sizeDelta.y * Target.transform.lossyScale.y, Screen.height), pos.z);
+            pos = ClampFullyInScreen(pos);
             
             Target.position = pos;
+        }
+
+        private Vector3 ClampFullyInScreen(Vector3 pos)
+        {
+            var width = Target.rect.width * Target.transform.lossyScale.x;
+            var height = Target.rect.height * Target.transform.lossyScale.y;
+
+            var minX = width * Target.pivot.x;
+            var maxX = Screen.width - width * (1f - Target.pivot.x);
+            var minY = height * Target.pivot.y;
+            var maxY = Screen.height - height * (1f - Target.pivot.y);
+
+            return new Vector3(
+                Mathf.Clamp(pos.x, minX, maxX),
+                Mathf.Clamp(pos.y, minY, maxY),
+                pos.z);
         }
 
         public void Update()
@@ -79,10 +93,8 @@ namespace Assets.Scripts.UI
 
 
 
-                
                 if (LockFullyInBounds)
-                pos = new Vector3(Mathf.Clamp(pos.x, 0, Screen.width - Target.sizeDelta.x * Target.transform.lossyScale.x),
-                    Mathf.Clamp(pos.y, Target.sizeDelta.y * Target.transform.lossyScale.y, Screen.height), pos.z);
+                    pos = ClampFullyInScreen(pos);
                 else
                     pos = new Vector3(Mathf.Clamp(pos.x, -halfx, Screen.width - halfx),
                         Mathf.Clamp(pos.y, Target.sizeDelta.y * Target.transform.lossyScale.y / 2f, Screen.height), pos.z);

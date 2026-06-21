@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Assets.Scripts.Network;
+﻿using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using RebuildSharedData.Enum;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,8 +12,6 @@ namespace Assets.Scripts.UI.Inventory
 {
     public class PlayerInventoryWindow : WindowBase
     {
-        public Button[] UiTabButtons;
-        public GameObject[] UiButtonGroups;
         public Vector2 UnitSize;
         public RectTransform ItemBoxRoot;
         public RectTransform ViewBoxTransform;
@@ -21,12 +19,10 @@ namespace Assets.Scripts.UI.Inventory
         public ScrollRect ScrollArea;
         private List<InventoryEntry> entryList = new();
         public TextMeshProUGUI WeightText;
-        public Button CartButton;
+        public TextMeshProUGUI ItemCountText;
+        public TextMeshProUGUI ZenyText;
         private int activeEntryCount;
         private int activeItemSection;
-        private bool isInit;
-        
-        
 
         public void Awake()
         {
@@ -38,42 +34,10 @@ namespace Assets.Scripts.UI.Inventory
         {
             base.ShowWindow();
             UpdateActiveVisibleBag();
-            CartButton.gameObject.SetActive(PlayerState.Instance.HasCart);
-        }
-
-        public void ToggleCart()
-        {
-            if(PlayerState.Instance.HasCart)
-                UiManager.Instance.CartWindow.ShowWindow();
         }
         
         public void ClickTabButton(int tab)
         {
-            switch (tab)
-            {
-                case 0:
-                    UiButtonGroups[1].transform.SetAsLastSibling();
-                    UiButtonGroups[2].transform.SetAsLastSibling();
-                    UiButtonGroups[0].transform.SetAsLastSibling();
-                    break;
-                case 1:
-                    UiButtonGroups[0].transform.SetAsLastSibling();
-                    UiButtonGroups[2].transform.SetAsLastSibling();
-                    UiButtonGroups[1].transform.SetAsLastSibling();
-                    break;
-                case 2:
-                    UiButtonGroups[0].transform.SetAsLastSibling();
-                    UiButtonGroups[1].transform.SetAsLastSibling();
-                    UiButtonGroups[2].transform.SetAsLastSibling();
-                    break;
-            }
-
-            UiTabButtons[0].transform.localPosition = new Vector3(tab == 0 ? -30 : -24, UiTabButtons[0].transform.localPosition.y, 0);
-            UiTabButtons[1].transform.localPosition = new Vector3(tab == 1 ? -30 : -24, UiTabButtons[1].transform.localPosition.y, 0);
-            UiTabButtons[2].transform.localPosition = new Vector3(tab == 2 ? -30 : -24, UiTabButtons[2].transform.localPosition.y, 0);
-            UiTabButtons[0].interactable = tab != 0;
-            UiTabButtons[1].interactable = tab != 1;
-            UiTabButtons[2].interactable = tab != 2;
             activeItemSection = tab;
 
             UpdateActiveVisibleBag();
@@ -157,10 +121,13 @@ namespace Assets.Scripts.UI.Inventory
 
             var weightPercent = curWeight * 100 / totalWeight;
             var countText = bagItems.Count < 190 ? $"{bagItems.Count}/200" : $"<color=red>{bagItems.Count}</color>/200";
-            var percentText = weightPercent < 90 ? $"{weightPercent}%" : $"<color=red>{weightPercent}%</color>";
-            
-            WeightText.text = $"Items: {countText}  Weight: {curWeight}/{totalWeight} ({percentText})";
-            
+            var weightText = weightPercent < 90 ? $"{curWeight}/{totalWeight}" : $"<color=red>{curWeight}</color>/{totalWeight}";
+
+            WeightText.text = weightText;
+            ItemCountText.text = countText;
+            ZenyText.text = $"{state.Zeny:N0}";
+            LayoutRebuilder.ForceRebuildLayoutImmediate(WeightText.rectTransform.parent as RectTransform);
+
             foreach (var bagEntry in bagItems)
             {
                 var item = bagEntry.Value;
@@ -191,6 +158,9 @@ namespace Assets.Scripts.UI.Inventory
                 itemEntry.gameObject.SetActive(true);
                 itemEntry.DragItem.gameObject.SetActive(true);
                 itemEntry.DragItem.OnRightClick = () => OnRightClick(item);
+                if (item.ItemData.IsUnique)
+                    itemEntry.DragItem.HideCount();
+
                 if (state.EquippedItems.Contains(item.BagSlotId))
                 {
                     itemEntry.DragItem.SetEquipped();

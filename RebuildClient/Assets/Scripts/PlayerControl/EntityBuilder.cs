@@ -468,6 +468,7 @@ namespace Assets.Scripts.PlayerControl
                 if (control.IsMainCharacter)
                 {
                     PlayerState.Instance.HasCart = false;
+                    UiManager.Instance.RefreshCartVisibility();
                     UiManager.Instance.EquipmentWindow.RefreshEquipmentWindow();
                 }
 

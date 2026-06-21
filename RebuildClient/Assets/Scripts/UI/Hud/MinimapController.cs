@@ -1,14 +1,15 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.PlayerControl;
 using RebuildSharedData.Enum;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.Hud
 {
-    public class MinimapController : MonoBehaviour
+    public class MinimapController : MonoBehaviour, IScrollHandler
     {
         public GameObject ContentContainer;
         public GameObject Viewport;
@@ -24,8 +25,7 @@ namespace Assets.Scripts.UI.Hud
         public Sprite PortalIcon;
         public Sprite WarpNpcIcon;
         public Sprite KafraIcon;
-        public Slider ZoomSlider;
-    
+
         private GameObject playerMapIconObject;
         private Dictionary<int, MinimapEntityData> mapIcons = new();
 
@@ -33,6 +33,7 @@ namespace Assets.Scripts.UI.Hud
 
         public float ObjectScaleFactor = 1f;
         public float MinimapPixelsPerTile = 5f;
+        public float MouseWheelZoomStep = 0.2f;
 
         public float minScale;
         public float maxScale;
@@ -42,14 +43,14 @@ namespace Assets.Scripts.UI.Hud
 
         private float offsetX;
         private float offsetY;
-    
+
         private static MinimapController instance;
 
         private Coroutine loadCoroutine;
 
         private Sprite mapSprite;
         public Sprite walkSprite;
-    
+
         private class MinimapEntityData
         {
             public GameObject MapIcon;
@@ -57,7 +58,7 @@ namespace Assets.Scripts.UI.Hud
             public CharacterDisplayType Type;
         }
 
-   
+
 
         public static MinimapController Instance
         {
@@ -73,7 +74,7 @@ namespace Assets.Scripts.UI.Hud
         public void RemoveAllEntities()
         {
             if (mapIcons == null) return;
-        
+
             foreach(var icon in mapIcons)
                 Destroy(icon.Value.MapIcon);
             mapIcons.Clear();
@@ -91,7 +92,7 @@ namespace Assets.Scripts.UI.Hud
         {
             var state = PlayerState.Instance;
             var isInParty = state.IsInParty;
-            
+
             foreach (var (entityId, mapEntry) in mapIcons)
             {
                 if (mapEntry.MapIcon == null || entityId == state.EntityId || mapEntry.Type != CharacterDisplayType.Player)
@@ -153,7 +154,7 @@ namespace Assets.Scripts.UI.Hud
 
                 iconData.MapIcon = mapIcon;
             }
-        
+
             var r = mapIcon.GetComponent<RectTransform>();
 
             r.anchorMin = Vector2.zero;
@@ -179,7 +180,7 @@ namespace Assets.Scripts.UI.Hud
             ContentContainer.GetComponent<RectTransform>().anchoredPosition = new Vector3(scrollx, scrolly, 0f);
 
             var s = scale * ObjectScaleFactor * (1 / curSize);
-        
+
             mapIcon.transform.localScale = Vector3.one * s;
 
             playerMapIconObject?.transform.SetAsLastSibling();
@@ -199,10 +200,10 @@ namespace Assets.Scripts.UI.Hud
                 var img = playerMapIconObject.AddComponent<Image>();
                 img.sprite = PlayerIcon;
 
-         
+
                 //var w = mapSprite.texture.width;
                 //var h = mapSprite.texture.height;
-         
+
             }
             //Debug.Log(pos + " " + new Vector3(pos.x * 10f, pos.y * 10f, 0f));
 
@@ -241,7 +242,7 @@ namespace Assets.Scripts.UI.Hud
             playerMapIconObject.transform.localRotation = Quaternion.Euler(0f, 0f, -angle);
 
             var s = 0.3f * ObjectScaleFactor * (1 / curSize);
-        
+
             playerMapIconObject.transform.localScale = Vector3.one * s;
         }
 
@@ -308,12 +309,13 @@ namespace Assets.Scripts.UI.Hud
                     SetEntityPosition(icon.Key, icon.Value.Type, icon.Value.Position);
         }
 
-        public void UpdateZoomFromSlider()
+        public void OnScroll(PointerEventData eventData)
         {
-        
-            SetZoom(LeanTween.easeInQuad(minScale, maxScale, ZoomSlider.value/ZoomSlider.maxValue));
-        
-            //SetZoom(ZoomSlider.value.Remap(ZoomSlider.minValue, ZoomSlider.maxValue, minScale, maxScale));
+            if (mapSprite == null || Mathf.Approximately(eventData.scrollDelta.y, 0f))
+                return;
+
+            var zoomMultiplier = Mathf.Pow(1f + MouseWheelZoomStep, eventData.scrollDelta.y);
+            SetZoom(curSize * zoomMultiplier);
         }
 
         private void UpdateMapMaterial()
@@ -366,7 +368,7 @@ namespace Assets.Scripts.UI.Hud
             UpdateMapMaterial();
 
             minScale = 250f / mapSprite.texture.width;
-        
+
             if (250f / mapSprite.texture.height < minScale)
                 minScale = 250f / mapSprite.texture.height;
 
@@ -383,7 +385,7 @@ namespace Assets.Scripts.UI.Hud
 
             ContentContainer.transform.localPosition = new Vector3(0, 0, 0f);
 
-            UpdateZoomFromSlider();
+            SetZoom(minScale);
 
             ContentContainer.gameObject.SetActive(true);
 
@@ -404,7 +406,7 @@ namespace Assets.Scripts.UI.Hud
         // Start is called before the first frame update
         void Start()
         {
-        
+
         }
 
         // Update is called once per frame

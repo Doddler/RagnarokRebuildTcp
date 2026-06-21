@@ -258,6 +258,7 @@ MonoBehaviour:
   MapType: 0
   ObjectScaleFactor: 1
   MinimapPixelsPerTile: 2
+  MouseWheelZoomStep: 0.2
   minScale: 0
   maxScale: 0
   curSize: 0
@@ -710,7 +711,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2410879546384044026
 RectTransform:
   m_ObjectHideFlags: 0

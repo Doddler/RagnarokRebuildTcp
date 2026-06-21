@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -441,18 +441,25 @@ namespace Assets.Scripts.Network
 
             var cf = CameraFollower.Instance;
             var rect = FloatingDisplay.transform as RectTransform;
+            var canvasRect = cf.UiCanvas.transform as RectTransform;
+
             var screenPos = cf.Camera.WorldToScreenPoint(transform.position);
 
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                canvasRect,
+                screenPos,
+                null,
+                out var localPoint
+            );
+
+            rect.anchoredPosition = localPoint;
+
             var d = 70 / cf.Distance;
-            var reverseScale = 1f / cf.CanvasScaler.scaleFactor;
 
             if (!GameConfig.Data.ScalePlayerDisplayWithZoom)
                 d = 1f;
-            var screenScale = Screen.height / 1920f * 2f;
-            d *= screenScale;
 
             rect.localScale = new Vector3(d, d, d);
-            rect.anchoredPosition = new Vector2(screenPos.x * reverseScale, (screenPos.y - cf.UiCanvas.pixelRect.height) * reverseScale);
         }
 
         public void ConfigureEntity(int id, Vector2Int worldPos, Direction direction)

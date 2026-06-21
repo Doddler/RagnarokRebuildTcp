@@ -99,6 +99,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     State.HairStyleId = player.HeadType;
                     State.HairColorId = player.HairColor;
                     State.HasCart = (player.Follower & CharacterFollowerState.AnyCart) > 0;
+                    UiManager.Instance.RefreshCartVisibility();
                     State.HasBird = (player.Follower & CharacterFollowerState.Falcon) > 0;
                     State.WeaponClass = player.WeaponClass;
                     

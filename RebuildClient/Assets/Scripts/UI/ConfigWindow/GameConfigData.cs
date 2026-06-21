@@ -43,7 +43,7 @@ namespace Assets.Scripts.UI.ConfigWindow
         public bool ScalePlayerDisplayWithZoom = true;
         public bool ShowLevelsInOverlay = true;
         //ui
-        public float MasterUIScale = 0.75f;
+        public float MasterUIScale = 0.5f;
 
         public bool ShowBaseExpValue = true;
         public bool ShowBaseExpPercent = true;

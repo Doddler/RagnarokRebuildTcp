@@ -47,6 +47,7 @@ namespace Assets.Scripts.Sprites
     public class ClientDataLoader : MonoBehaviour
     {
         public static ClientDataLoader Instance;
+        public static event Action InitializationCompleted;
 
         public SpriteAtlas ItemIconAtlas;
         public Sprite ShadowSprite;
@@ -141,12 +142,24 @@ namespace Assets.Scripts.Sprites
 
         public Sprite GetIconAtlasSprite(string name) => EffectSharedMaterialManager.GetAtlasSprite(ItemIconAtlas, name);
 
+        private void PreloadItemIcons()
+        {
+            var iconNames = new HashSet<string>(StringComparer.Ordinal);
+
+            foreach (var item in ItemIdLookup.Values)
+            {
+                if (!string.IsNullOrEmpty(item.Sprite))
+                    iconNames.Add(item.Sprite);
+            }
+
+            foreach (var iconName in iconNames)
+                GetIconAtlasSprite(iconName);
+        }
+
         // private static int EffectClassId = 3999;
 
         private bool isInitialized;
-
         public bool IsInitialized => isInitialized;
-
         public bool IsValidMonsterName(string name) => validMonsterClasses.Contains(name);
         public bool IsValidMonsterCode(string name) => validMonsterCodes.Contains(name);
 
@@ -391,6 +404,8 @@ namespace Assets.Scripts.Sprites
                 Sprite = "Apple"
             });
 
+            PreloadItemIcons();
+
             foreach (var l in Regex.Split(ReadStreamingAssetFile(EquipmentSpriteDataPath), "\n|\r|\r\n"))
             {
                 if (string.IsNullOrWhiteSpace(l))
@@ -497,6 +512,7 @@ namespace Assets.Scripts.Sprites
             builder.Initialize();
             
             isInitialized = true;
+            InitializationCompleted?.Invoke();
         }
 
         private List<RoSpriteAnimator> tempList;

@@ -75,7 +75,10 @@ namespace Assets.Scripts.UI
         {
             if (OnRightClick != null && eventData.button == PointerEventData.InputButton.Right 
                                      && (Type == DragItemType.Item || Type == DragItemType.Equipment || Type == DragItemType.SocketedItem || Type == DragItemType.CartItem))
+            {
                 OnRightClick();
+                UiManager.Instance.HideTooltip(gameObject);
+            }
             if (OnDoubleClick != null && Type != DragItemType.None && eventData.button == PointerEventData.InputButton.Left 
                 && eventData.clickCount >= 2 && OnDoubleClick != null)
             {

@@ -692,12 +692,19 @@ namespace Assets.Scripts
 
         public void UpdateCameraSize()
         {
-            if (Screen.width == 0)
-                return; //wut?
-            var scale = 1f / (1080f / Screen.height);
-            CanvasScaler.scaleFactor = GameConfig.Data.MasterUIScale;
+            if (Screen.width == 0 || Screen.height == 0)
+                return;
+
+            var uiScale = Mathf.Max(GameConfig.Data.MasterUIScale, 0.01f);
+
+            CanvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            CanvasScaler.referenceResolution = new Vector2(1920f / uiScale, 1080f / uiScale);
+            CanvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+            CanvasScaler.matchWidthOrHeight = 0.5f;
+
             lastWidth = Screen.width;
             lastHeight = Screen.height;
+
             UiManager.Instance.FitFloatingWindowsIntoPlayArea();
         }
 
