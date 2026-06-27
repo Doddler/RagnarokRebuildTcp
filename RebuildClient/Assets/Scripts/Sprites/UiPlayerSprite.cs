@@ -137,7 +137,6 @@ namespace Assets.Scripts.Sprites
                 sprites[i].IsActive = false;
                 sprites[i].SpriteData = null;
                 sprites[i].SpriteName = null;
-                sprites[i].SpriteRenderer.gameObject.SetActive(false);
             }
 
             loadCount = 0;

@@ -836,15 +836,17 @@ namespace Assets.Scripts.Sprites
             }
 
             var attachPosition = isEffect ? EquipPosition.Accessory : EquipPosition.Weapon; //it's not an accessory but too lazy to make a new option
+            GameObject oldObj = null;
             if (ctrl.AttachedComponents.TryGetValue(attachPosition, out var existing))
             {
                 ctrl.SpriteAnimator.ChildrenSprites.Remove(existing.GetComponent<RoSpriteAnimator>());
                 ctrl.AttachedComponents.Remove(attachPosition);
-                Destroy(existing);
+                oldObj = existing;
             }
 
             if (ctrl.WeaponClass == 0)
             {
+                Destroy(oldObj);
                 if (!isEffect)
                 {
                     if (PlayerWeaponLookup.TryGetValue(ctrl.OverrideClassId, out var weaponsByJob2))
@@ -852,7 +854,6 @@ namespace Assets.Scripts.Sprites
                             ctrl.SpriteAnimator.PreferredAttackMotion = ctrl.IsMale ? unarmed.AttackMale : unarmed.AttackFemale;
                     LoadAndAttachWeapon(ctrl, int.MaxValue);
                 }
-
                 return;
             }
 
@@ -868,7 +869,10 @@ namespace Assets.Scripts.Sprites
             }
 
             if (!PlayerWeaponLookup.TryGetValue(ctrl.OverrideClassId, out var weaponsByJob))
+            {
+                Destroy(oldObj);
                 return;
+            }
 
             if (!weaponsByJob.TryGetValue(weaponClass, out var weapon))
             {
@@ -876,6 +880,7 @@ namespace Assets.Scripts.Sprites
                     Debug.Log($"Could not load default weapon sprite for weapon class {ctrl.WeaponClass} for job {ctrl.OverrideClassId}");
                 else
                     Debug.Log($"Could not load default weapon sprite for weapon class {ctrl.WeaponClass}/{offHand} for job {ctrl.OverrideClassId}");
+                Destroy(oldObj);
                 return;
             }
 
@@ -887,9 +892,10 @@ namespace Assets.Scripts.Sprites
             }
 
             if (string.IsNullOrWhiteSpace(weaponSpriteFile) && isEffect)
+            {
+                Destroy(oldObj);
                 return;
-
-            var bodyTransform = ctrl.SpriteAnimator.transform;
+            }
 
             var weaponObj = new GameObject("Weapon");
             weaponObj.layer = LayerMask.NameToLayer("Characters");
@@ -909,22 +915,30 @@ namespace Assets.Scripts.Sprites
 
             ctrl.AttachedComponents[attachPosition] = weaponObj;
 
-            AddressableUtility.LoadRoSpriteData(ctrl.gameObject, weaponSpriteFile, weaponSprite.OnSpriteDataLoad);
+            AddressableUtility.LoadRoSpriteData(ctrl.gameObject, weaponSpriteFile, spriteData =>
+            {
+                Destroy(oldObj);
+                weaponSprite.OnSpriteDataLoad(spriteData);
+            });
             if (!isEffect) LoadAndAttachWeapon(ctrl, int.MaxValue); //attach effect sprite too
         }
 
 
         public void LoadAndAttachEquipmentSprite(ServerControllable ctrl, int itemId, EquipPosition position, int priority)
         {
+            GameObject oldObj = null;
             if (ctrl.AttachedComponents.TryGetValue(position, out var existing))
             {
                 ctrl.SpriteAnimator.ChildrenSprites.Remove(existing.GetComponent<RoSpriteAnimator>());
                 ctrl.AttachedComponents.Remove(position);
-                Destroy(existing);
+                oldObj = existing;
             }
 
             if (!ItemIdLookup.TryGetValue(itemId, out var hat) || !DisplaySpriteList.TryGetValue(hat.Code, out var hatSprite))
+            {
+                Destroy(oldObj);
                 return;
+            }
 
             var headgearObj = new GameObject(position.ToString());
             headgearObj.layer = LayerMask.NameToLayer("Characters");
@@ -954,9 +968,16 @@ namespace Assets.Scripts.Sprites
             ctrl.AttachedComponents[position] = headgearObj;
 
             if (!DoesAddressableExist<RoSpriteData>(spriteName))
+            {
                 Debug.LogWarning($"Could not load equipment sprite at path: {spriteName}");
+                Destroy(oldObj);
+            }
             else
-                AddressableUtility.LoadRoSpriteData(ctrl.gameObject, spriteName, headgearSprite.OnSpriteDataLoad);
+                AddressableUtility.LoadRoSpriteData(ctrl.gameObject, spriteName, spriteData =>
+                {
+                    Destroy(oldObj);
+                    headgearSprite.OnSpriteDataLoad(spriteData);
+                });
         }
 
         public void AttachEmote(ServerControllable target, int emoteId)

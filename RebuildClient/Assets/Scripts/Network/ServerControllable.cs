@@ -262,7 +262,7 @@ namespace Assets.Scripts.Network
             if (!string.IsNullOrWhiteSpace(PartyName))
                 RefreshPartyValues();
 
-            if ((GameConfig.Data.AutoHideFullHPBars && hp >= MaxHp) || !IsInteractable)
+            if ((GameConfig.Data.AutoHideFullHPBars && hp >= MaxHp && !IsMainCharacter && !IsPartyMember) || !IsInteractable)
             {
                 if (FloatingDisplay == null)
                     return;

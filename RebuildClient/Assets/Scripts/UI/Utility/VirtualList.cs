@@ -117,9 +117,15 @@ namespace Assets.Scripts.UI.Utility
             if (itemBinder == null)
                 throw new ArgumentNullException(nameof(itemBinder));
 
+            var componentCache = new Dictionary<GameObject, TRow>();
             SetItemCount(
                 items.Count,
-                (item, index) => itemBinder(item.GetComponent<TRow>(), items[index], index),
+                (go, index) =>
+                {
+                    if (!componentCache.TryGetValue(go, out var row))
+                        componentCache[go] = row = go.GetComponent<TRow>();
+                    itemBinder(row, items[index], index);
+                },
                 resetScrollPosition);
         }
 
@@ -242,6 +248,13 @@ namespace Assets.Scripts.UI.Utility
                     GameObject = item,
                     RectTransform = itemTransform
                 });
+            }
+
+            while (pooledItems.Count > requiredCount)
+            {
+                var last = pooledItems[pooledItems.Count - 1];
+                pooledItems.RemoveAt(pooledItems.Count - 1);
+                Destroy(last.GameObject);
             }
         }
 
