@@ -309,12 +309,12 @@ public class UVPreviewWindow : EditorWindow
 
         if (!lineMaterial)
         {
-#pragma warning disable CS0618
-            lineMaterial = new Material("Shader \"Lines/Colored Blended\" {" +
-               "SubShader { Pass { BindChannels { Bind \"Color\",color } " +
-               "Blend SrcAlpha OneMinusSrcAlpha ZWrite Off Cull Off Fog { Mode Off } } } }"
-            );
-#pragma warning restore
+            var shader = Shader.Find("Hidden/Internal-Colored");
+            lineMaterial = new Material(shader);
+            lineMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            lineMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            lineMaterial.SetInt("_Cull", (int)UnityEngine.Rendering.CullMode.Off);
+            lineMaterial.SetInt("_ZWrite", 0);
             
             lineMaterial.hideFlags = HideFlags.HideAndDontSave;
             lineMaterial.shader.hideFlags = HideFlags.HideAndDontSave;
