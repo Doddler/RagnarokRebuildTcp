@@ -9,9 +9,10 @@ namespace Assets.Scripts.UI
         public bool CanCloseWithEscape = true;
         public bool AutomaticallyFitIntoPlayArea = true;
 
-        public void OnDestroy()
+        public virtual void OnDestroy()
         {
-            UiManager.Instance.WindowStack.Remove(this);
+            if (UiManager.Instance)
+                UiManager.Instance.WindowStack.Remove(this);
         }
 
         public virtual void CloseWindow()

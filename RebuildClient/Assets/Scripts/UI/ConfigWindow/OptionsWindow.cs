@@ -69,10 +69,10 @@ namespace Assets.Scripts.UI.ConfigWindow
             }
         }
 
-        private new void OnDestroy()
+        public override void OnDestroy()
         {
-            base.OnDestroy();
             GameConfig.SaveConfig();
+            base.OnDestroy();
         }
 
     }

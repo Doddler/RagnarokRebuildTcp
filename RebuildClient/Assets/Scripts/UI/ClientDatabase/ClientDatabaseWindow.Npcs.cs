@@ -1,12 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Assets.Scripts.Network;
 using Assets.Scripts.Sprites;
-using Assets.Scripts.Utility;
+using Assets.Scripts.UI.Utility;
 using RebuildSharedData.ClientTypes;
-using RebuildSharedData.Enum;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,16 +14,15 @@ namespace Assets.Scripts.UI.ClientDatabase
     public partial class ClientDatabaseWindow
     {
         private const string NpcSpriteBasePath = "Assets/Sprites/Npcs/";
-        private const float NpcSpriteFitSize = 160f;
-        private const float NpcSpriteNaturalScale = 100f;
         private const int FirstMonsterClassId = 4000;
 
         private float npcFrameTimer;
-        private int npcIdleFrameCount;
+        private int npcFrame;
         private int currentNpcDetailId = -1;
         private bool npcClassByCodeBuilt;
 
-        private readonly List<(GameObject go, NpcEntry entry, string searchText)> npcRowEntries = new();
+        private IReadOnlyList<NpcEntry> npcEntries = Array.Empty<NpcEntry>();
+        private readonly List<NpcEntry> filteredNpcs = new();
         private readonly Dictionary<int, NpcEntry> npcLookup = new();
         private readonly Dictionary<string, List<NpcEntry>> mapNpcsLookup = new();
         private readonly Dictionary<string, MonsterClassData> npcClassByCode = new(StringComparer.OrdinalIgnoreCase);
@@ -46,20 +43,9 @@ namespace Assets.Scripts.UI.ClientDatabase
 
         [Serializable] private class NpcDbFile { public List<NpcEntry> Items; }
 
-        [SerializeField, HideInInspector] internal GameObject npcsContainer;
-        [SerializeField, HideInInspector] internal Image npcsTabImage;
-        [SerializeField, HideInInspector] internal Button npcBackButton;
-        [SerializeField, HideInInspector] internal TMP_InputField npcSearchField;
         [SerializeField, HideInInspector] internal TextMeshProUGUI npcSearchGhost;
-        [SerializeField, HideInInspector] internal GameObject npcListView;
-        [SerializeField, HideInInspector] internal GameObject npcDetailView;
-        [SerializeField, HideInInspector] internal TextMeshProUGUI npcListTitleText;
-        [SerializeField, HideInInspector] internal GameObject npcListContent;
-        [SerializeField, HideInInspector] internal TextMeshProUGUI npcDetailNameText;
         [SerializeField, HideInInspector] internal TextMeshProUGUI npcDetailStatsText;
-        [SerializeField, HideInInspector] internal GameObject npcSellsContent;
-        [SerializeField, HideInInspector] internal GameObject npcSpriteHost;
-        [SerializeField, HideInInspector] internal RoSpriteRendererUI npcSpriteRenderer;
+        [SerializeField, HideInInspector] internal UiPlayerSprite npcSprite;
 
         private NpcDbFile LoadNpcDatabase() => LoadStreamingJson<NpcDbFile>("ClientConfigGenerated/npcdatabase.json");
 
@@ -94,42 +80,27 @@ namespace Assets.Scripts.UI.ClientDatabase
 
         private void PopulateNpcList(NpcDbFile data)
         {
-            if (npcListContent == null) return;
-            ClearChildren(npcListContent.transform);
-            npcRowEntries.Clear();
-
-            if (data?.Items == null)
-            {
-                if (npcListTitleText != null) npcListTitleText.text = "NPCs";
-                return;
-            }
-
-            if (npcListTitleText != null)
-                npcListTitleText.text = $"NPCs ({data.Items.Count})";
-
-            var ordered = data.Items.OrderBy(n => n.Map).ThenBy(n => n.Name).ToList();
-            StartCoroutine(LoadListIncrementallyAsync(ordered, AddNpcListRow));
+            npcEntries = data?.Items ?? (IReadOnlyList<NpcEntry>)Array.Empty<NpcEntry>();
+            npcPage.Refresh();
         }
 
-        internal void AddNpcListRow(NpcEntry n)
+        private void BindNpcListRow(DatabaseListRow row, NpcEntry n, int index)
         {
             var mapLabel = FormatMapLabel(n.Map, withBracket: false);
             var label = $"{n.Name}  <size=80%><color=#888888>({mapLabel})</color></size>";
 
-            var row = CloneRow(rowTemplate, npcListContent.transform, 24);
-            row.GetComponentInChildren<TextMeshProUGUI>(true).text = label;
-            var captured = n;
-            row.GetComponent<Button>().onClick.AddListener(() => ShowNpcDetail(captured));
-            AttachRightClick(row, () => NetworkManager.Instance.SendMoveRequest(captured.Map, captured.X, captured.Y));
-            npcRowEntries.Add((row, n, $"{n.Id} {n.Name} {n.Map} {mapLabel} {n.SpriteCode}"));
+            row.SetLabel(label);
+            row.SetIcon(null);
+            row.SetActions(
+                () => ShowNpcDetail(n),
+                () => NetworkManager.Instance.SendMoveRequest(n.Map, n.X, n.Y));
         }
 
         private void ShowNpcDetail(NpcEntry n)
         {
-            npcListView.SetActive(false);
-            npcDetailView.SetActive(true);
+            npcPage.ShowDetail();
             currentNpcDetailId = n.Id;
-            npcDetailNameText.text = FormatNameWithBracket(n.Name, n.Id.ToString());
+            npcPage.DetailTitleText.text = FormatNameWithBracket(n.Name, n.Id.ToString());
 
             var sb = new StringBuilder();
             sb.AppendLine($"<b>Map:</b> {FormatMapLabel(n.Map)}");
@@ -137,10 +108,10 @@ namespace Assets.Scripts.UI.ClientDatabase
             sb.AppendLine($"<b>Type:</b> {(n.IsTrader ? "Trader" : "NPC")}");
             npcDetailStatsText.text = sb.ToString();
 
-            ClearChildren(npcSellsContent.transform);
+            ReleaseDetailRows(npcPage.SecondaryContent);
             if (n.SellsItems == null || n.SellsItems.Count == 0)
             {
-                CreateInfoRow(npcSellsContent.transform, "(this NPC does not sell anything)");
+                CreateInfoRow(npcPage.SecondaryContent, "(this NPC does not sell anything)");
             }
             else
             {
@@ -158,7 +129,7 @@ namespace Assets.Scripts.UI.ClientDatabase
             var price = hasItem ? item.Price : 0;
             var label = price > 0 ? $"{itemName}  —  {price}z" : itemName;
 
-            var row = CloneRow(iconRowTemplate, npcSellsContent.transform, 26, clickable: hasItem);
+            var row = GetDetailRow(rowTemplate, npcPage.SecondaryContent, 26, clickable: hasItem);
             row.GetComponentInChildren<TextMeshProUGUI>(true).text = label;
             SetRowIcon(row, hasItem ? GetItemIcon(item.Sprite) : null);
 
@@ -172,9 +143,9 @@ namespace Assets.Scripts.UI.ClientDatabase
 
         private void LoadNpcSprite(string spriteCode)
         {
-            if (npcSpriteHost == null) return;
-            npcSpriteHost.SetActive(false);
-            npcIdleFrameCount = 0;
+            npcSprite.Clear();
+            npcSprite.gameObject.SetActive(false);
+            npcFrame = 0;
             npcFrameTimer = 0f;
 
             if (string.IsNullOrEmpty(spriteCode)) return;
@@ -183,45 +154,44 @@ namespace Assets.Scripts.UI.ClientDatabase
                 return;
 
             var path = NpcSpriteBasePath + cls.SpriteName;
-            AddressableUtility.LoadRoSpriteData(npcSpriteHost, path, OnNpcSpriteLoaded);
-        }
-
-        private void OnNpcSpriteLoaded(RoSpriteData data)
-        {
-            if (data == null || npcSpriteRenderer == null) return;
-            npcSpriteRenderer.SpriteData = data;
-            npcSpriteRenderer.ActionId = 0;
-            npcSpriteRenderer.Direction = Direction.South;
-            npcSpriteRenderer.CurrentFrame = 0;
-
-            var actionIdx = (int)Direction.South;
-            if (actionIdx < data.Actions.Length)
-                npcIdleFrameCount = data.Actions[actionIdx].Frames.Length;
-
-            FitDetailSpriteToFrame(npcSpriteHost, npcSpriteRenderer, data, 0, Direction.SouthEast, NpcSpriteFitSize, NpcSpriteNaturalScale);
-
-            npcSpriteHost.SetActive(true);
-            npcSpriteRenderer.SetActive(true);
-            npcSpriteRenderer.SetVerticesDirty();
-            npcSpriteRenderer.SetMaterialDirty();
+            npcSprite.gameObject.SetActive(true);
+            npcSprite.DisplaySprite(path, scaleToFit: true);
         }
 
         private void JumpToNpc(NpcEntry npc)
         {
-            ShowTab(4);
+            tabGroup.SelectTab(2);
             ShowNpcDetail(npc);
         }
 
-        private void ReturnToNpcList()
+        public void ReturnToNpcList()
         {
-            if (npcListView != null) npcListView.SetActive(true);
-            if (npcDetailView != null) npcDetailView.SetActive(false);
-            if (npcSpriteHost != null) npcSpriteHost.SetActive(false);
-            npcIdleFrameCount = 0;
+            npcPage.ShowList();
+            npcSprite.Clear();
+            npcSprite.gameObject.SetActive(false);
+            npcFrame = 0;
         }
 
         internal static readonly PredicateRegistry<NpcEntry> NpcPredicates = BuildPredicateRegistry<NpcEntry>();
 
-        private void FilterNpcs(string query) => ApplyFilter(npcRowEntries, query, (n, p) => NpcPredicates.TryMatch(n, p, out var r) && r);
+        private void FilterNpcs(string query) =>
+            ApplyDatabaseFilter<NpcEntry, DatabaseListRow>(
+                npcEntries,
+                filteredNpcs,
+                query,
+                npcPage.VirtualList,
+                nameof(npcPage),
+                "NPCs",
+                npcPage.TitleText,
+                BindNpcListRow,
+                npc => $"{npc.Id} {npc.Name} {npc.Map} {FormatMapLabel(npc.Map, withBracket: false)} {npc.SpriteCode}",
+                NpcPredicates,
+                sort: static (left, right) =>
+                {
+                    var mapComparison = string.Compare(left.Map, right.Map, StringComparison.Ordinal);
+                    return mapComparison != 0
+                        ? mapComparison
+                        : string.Compare(left.Name, right.Name, StringComparison.Ordinal);
+                });
     }
 }

@@ -34,6 +34,7 @@ public class UiManager : MonoBehaviour
     public ToastNotificationArea ToastNotificationArea;
     public RightClickMenuWindow RightClickMenuWindow;
     public VendAndChatManager VendAndChatManager;
+    public GameObject CartIcon;
 
     public ItemOverlay ItemOverlay;
     public CharacterChat TooltipOverlay;
@@ -145,6 +146,12 @@ public class UiManager : MonoBehaviour
 
         canvas.enabled = false;
         cameraFollower = CameraFollower.Instance;
+        RefreshCartVisibility();
+    }
+
+    public void RefreshCartVisibility()
+    {
+        CartIcon.SetActive(PlayerState.Instance.HasCart);
     }
 
     public void ShowTooltip(GameObject src, string text)
@@ -344,6 +351,8 @@ public class UiManager : MonoBehaviour
             case DragItemType.Item:
             {
                 var itemData = ClientDataLoader.Instance.GetItemById(dragItem.ItemId);
+                if (itemData.IsUnique)
+                    DragItemObject.HideCount();
                 if (itemData.IsUnique || itemData.ItemClass == ItemClass.Ammo)
                     EquipmentDropArea.SetActive(true);
                 if (StorageUI.Instance != null)

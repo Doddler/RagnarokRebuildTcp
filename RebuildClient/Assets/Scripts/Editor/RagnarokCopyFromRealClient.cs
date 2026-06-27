@@ -43,17 +43,10 @@ namespace Assets.Editor
 
         private static string UpdateSpriteName(string name)
         {
-            name = name.Replace("성직자_", "Acolyte_");
-            name = name.Replace("궁수_", "Archer_");
-            name = name.Replace("마법사_", "Mage_");
-            name = name.Replace("상인_", "Merchant_");
-            name = name.Replace("초보자_", "Novice_");
-            name = name.Replace("검사_", "Swordsman_");
-            name = name.Replace("도둑_", "Thief_");
-            name = name.Replace("여_", "F_");
-            name = name.Replace("남_", "M_");
+            foreach (var mapping in RagnarokClientDataImportDefinitions.JobSpriteMappings)
+                name = name.Replace(mapping.SourceName + "_", mapping.DestinationName + "_");
 
-            return name;
+            return name.Replace("여_", "F_").Replace("남_", "M_");
         }
 
 
@@ -466,10 +459,7 @@ namespace Assets.Editor
 
             private static string UpdateJobSpriteName(string path)
             {
-                foreach (var mapping in RagnarokClientDataImportDefinitions.JobSpriteMappings)
-                    path = path.Replace(mapping.SourceName, mapping.DestinationName);
-
-                return path.Replace("여_", "F_").Replace("남_", "M_");
+                return UpdateSpriteName(path);
             }
 
             private static bool ShouldImportJobSpriteMapping(

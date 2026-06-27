@@ -1,12 +1,12 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Assets.Scripts.Network;
 using Assets.Scripts.Sprites;
+using Assets.Scripts.UI.Utility;
 using RebuildSharedData.ClientTypes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.ClientDatabase
 {
@@ -16,15 +16,19 @@ namespace Assets.Scripts.UI.ClientDatabase
         public Material MinimapMaterial;
 
         [SerializeField, HideInInspector] internal RectTransform panelRT;
-        [SerializeField, HideInInspector] internal Button closeButton;
         [SerializeField, HideInInspector] internal GameObject rowTemplate;
-        [SerializeField, HideInInspector] internal GameObject iconRowTemplate;
         [SerializeField, HideInInspector] internal Material flatTmpMaterial;
         [SerializeField, HideInInspector] internal GameObject helpContainer;
-        [SerializeField, HideInInspector] internal Image helpTabImage;
+        [SerializeField] private TabGroupVisual tabGroup;
         
         private readonly Dictionary<int, MonsterEntry> monsterLookup = new();
         private readonly Dictionary<int, List<DroppedBy>> dropMap = new();
+        private bool tabIconsInitialized;
+
+        [SerializeField] private ClientDatabasePage monsterPage;
+        [SerializeField] private ClientDatabasePage itemPage;
+        [SerializeField] private ClientDatabasePage npcPage;
+        [SerializeField] private ClientDatabasePage mapPage;
         
         private static Dictionary<int, ItemData> ItemLookup => ClientDataLoader.Instance?.ItemIdLookup ?? EmptyItemLookup;
         private static Dictionary<int, MonsterClassData> ClassLookup => ClientDataLoader.Instance?.MonsterClassLookup ?? EmptyClassLookup;
@@ -38,24 +42,25 @@ namespace Assets.Scripts.UI.ClientDatabase
 
         private void Start()
         {
-            RewireStructuralButtons();
+            InitializePages();
             WireAutocompleteGhosts();
             WireDetailPortraitClicks();
             EnsureRuntimeMinimapMaterial();
             if (portalMarkerTemplate != null) portalMarkerTemplate.SetActive(false);
             if (npcMarkerTemplate != null) npcMarkerTemplate.SetActive(false);
             if (rowTemplate != null) rowTemplate.SetActive(false);
-            if (iconRowTemplate != null) iconRowTemplate.SetActive(false);
+            LoadDatabaseData();
+            InitializeTabIcons();
             if (helpContentText != null) helpContentText.text = BuildHelpText();
-            ShowTab(0);
+            ShowSelectedTab();
         }
-
-        public new void OnDestroy()
+        
+        public override void OnDestroy()
         {
-            if (UiManager.Instance)
-                UiManager.Instance.WindowStack.Remove(this);
+            ClientDataLoader.InitializationCompleted -= RefreshLookupPages;
             if (minimapMaterialInstance)
                 Destroy(minimapMaterialInstance);
+            base.OnDestroy();
         }
 
         public override void OnPointerDown(PointerEventData eventData)
@@ -66,45 +71,73 @@ namespace Assets.Scripts.UI.ClientDatabase
 
         private void OnEnable()
         {
-            if (!itemsLoaded) PopulateItemList();
-            if (!mapsLoaded) PopulateMapList();
-            if (!dbDataLoaded) LoadDatabaseData();
+            InitializePages();
+            ClientDataLoader.InitializationCompleted += RefreshLookupPages;
+            if (ClientDataLoader.Instance?.IsInitialized == true)
+                RefreshLookupPages();
+        }
+
+        private void OnDisable()
+        {
+            ClientDataLoader.InitializationCompleted -= RefreshLookupPages;
         }
 
         private void Update()
         {
-            var monFrames = idleFrameCount;
-            if (monsterSpriteRenderer && monFrames > 1 && monsterSpriteRenderer.gameObject.activeInHierarchy)
+            var monFrames = monsterSprite.FrameCount;
+            if (monFrames > 1 && monsterSprite.gameObject.activeInHierarchy)
             {
                 frameTimer += Time.deltaTime;
                 if (frameTimer > 0.18f)
                 {
                     frameTimer = 0f;
-                    monsterSpriteRenderer.CurrentFrame = (monsterSpriteRenderer.CurrentFrame + 1) % monFrames;
-                    monsterSpriteRenderer.SetVerticesDirty();
+                    monsterFrame = (monsterFrame + 1) % monFrames;
+                    monsterSprite.SetFrame(monsterFrame);
                 }
             }
 
-            var npcFrames = npcIdleFrameCount;
-            if (npcSpriteRenderer && npcFrames > 1 && npcSpriteRenderer.gameObject.activeInHierarchy)
+            var npcFrames = npcSprite.FrameCount;
+            if (npcFrames > 1 && npcSprite.gameObject.activeInHierarchy)
             {
                 npcFrameTimer += Time.deltaTime;
                 if (npcFrameTimer > 0.18f)
                 {
                     npcFrameTimer = 0f;
-                    npcSpriteRenderer.CurrentFrame = (npcSpriteRenderer.CurrentFrame + 1) % npcFrames;
-                    npcSpriteRenderer.SetVerticesDirty();
+                    npcFrame = (npcFrame + 1) % npcFrames;
+                    npcSprite.SetFrame(npcFrame);
                 }
             }
 
             HandleAutocompleteInput();
         }
+
+        private void RefreshLookupPages()
+        {
+            LoadDatabaseData();
+            InitializeTabIcons();
+            PopulateItemList();
+            PopulateMapList();
+        }
+
+        private void InitializeTabIcons()
+        {
+            if (tabIconsInitialized || ClientDataLoader.Instance?.IsInitialized != true)
+                return;
+
+            tabIconsInitialized = true;
+
+            tabGroup.SetTabIconFromRoSprite(0, "Assets/Sprites/Npcs/4_orcwarrior2.spr");
+            tabGroup.SetTabIconFromItemAtlas(1, "Angel's_Cardigan");
+            tabGroup.SetTabIconFromRoSprite(2, "Assets/Sprites/Npcs/4_f_kafra1.spr");
+            tabGroup.SetTabIconFromItemAtlas(3, "Torn_Scroll");
+            tabGroup.SetTabIconFromRoSprite(4, "Assets/Sprites/Misc/emotion.spr", "sprite_emotion_0018");
+        }
         
         private void WireDetailPortraitClicks()
         {
-            if (monsterSpriteHost != null && monsterSpriteHost.transform.parent != null)
+            if (monsterSprite != null && monsterSprite.transform.parent != null)
             {
-                AttachRightClick(monsterSpriteHost.transform.parent.gameObject, () =>
+                AttachRightClick(monsterSprite.transform.parent.gameObject, () =>
                 {
                     if (monsterLookup.TryGetValue(currentMonsterDetailId, out var m))
                         NetworkManager.Instance.SendAdminSummonMonster(m.Code, 1);
@@ -120,9 +153,9 @@ namespace Assets.Scripts.UI.ClientDatabase
                 });
             }
 
-            if (npcSpriteHost != null && npcSpriteHost.transform.parent != null)
+            if (npcSprite != null && npcSprite.transform.parent != null)
             {
-                AttachRightClick(npcSpriteHost.transform.parent.gameObject, () =>
+                AttachRightClick(npcSprite.transform.parent.gameObject, () =>
                 {
                     if (npcLookup.TryGetValue(currentNpcDetailId, out var n))
                         NetworkManager.Instance.SendMoveRequest(n.Map, n.X, n.Y);
@@ -130,106 +163,63 @@ namespace Assets.Scripts.UI.ClientDatabase
             }
         }
 
-        private void RewireStructuralButtons()
+        private void InitializePages()
         {
-            WireButton(monstersTabImage, () => ShowTab(0));
-            WireButton(itemsTabImage, () => ShowTab(1));
-            WireButton(mapsTabImage, () => ShowTab(2));
-            WireButton(helpTabImage, () => ShowTab(3));
-            WireButton(npcsTabImage, () => ShowTab(4));
-
-            if (closeButton != null)
-            {
-                closeButton.onClick.RemoveAllListeners();
-                closeButton.onClick.AddListener(HideWindow);
-            }
-
-            if (monsterBackButton != null)
-            {
-                monsterBackButton.onClick.RemoveAllListeners();
-                monsterBackButton.onClick.AddListener(ReturnToMonsterList);
-            }
-            if (itemBackButton != null)
-            {
-                itemBackButton.onClick.RemoveAllListeners();
-                itemBackButton.onClick.AddListener(ReturnToItemList);
-            }
-            if (mapBackButton != null)
-            {
-                mapBackButton.onClick.RemoveAllListeners();
-                mapBackButton.onClick.AddListener(ReturnToMapList);
-            }
-            if (npcBackButton != null)
-            {
-                npcBackButton.onClick.RemoveAllListeners();
-                npcBackButton.onClick.AddListener(ReturnToNpcList);
-            }
-
-            WireSearchField(monsterSearchField, FilterMonsters);
-            WireSearchField(itemSearchField, FilterItems);
-            WireSearchField(mapSearchField, FilterMaps);
-            WireSearchField(npcSearchField, FilterNpcs);
-        }
-        
-        private const float FilterDebounceSeconds = 0.1f;
-        private UnityEngine.Events.UnityAction<string> pendingFilterHandler;
-        private string pendingFilterQuery;
-
-        private void WireSearchField(TMP_InputField field, UnityEngine.Events.UnityAction<string> handler)
-        {
-            if (field == null) return;
-            field.onValueChanged.RemoveAllListeners();
-            field.onValueChanged.AddListener(q => ScheduleFilter(handler, q));
+            monsterPage.Initialize("Monsters", rowTemplate, FilterMonsters, null, "Drops", "Spawns");
+            itemPage.Initialize("Items", rowTemplate, FilterItems, null, "Dropped By", "Sold By");
+            npcPage.Initialize("NPCs", rowTemplate, FilterNpcs, null, "Sells", null);
+            mapPage.Initialize("Maps", rowTemplate, FilterMaps, "Connections", "Monsters", "NPCs");
         }
 
-        private void ScheduleFilter(UnityEngine.Events.UnityAction<string> handler, string query)
+        private void ShowSelectedTab()
         {
-            pendingFilterHandler = handler;
-            pendingFilterQuery = query;
-            CancelInvoke(nameof(RunPendingFilter));
-            Invoke(nameof(RunPendingFilter), FilterDebounceSeconds);
+            if (tabGroup.SelectedTabIndex < 0)
+                tabGroup.SelectTab(0);
+            else
+                OnTabSelected(tabGroup.SelectedTabIndex);
         }
 
-        private void RunPendingFilter() => pendingFilterHandler?.Invoke(pendingFilterQuery);
-
-        private static void WireButton(Image tabImage, UnityEngine.Events.UnityAction action)
+        public void OnTabSelected(int selectedTabIndex)
         {
-            if (tabImage == null) return;
-            var btn = tabImage.GetComponent<Button>();
-            if (btn == null) return;
-            btn.onClick.RemoveAllListeners();
-            btn.onClick.AddListener(action);
-        }
+            InitializePages();
+            monsterPage.SetActive(selectedTabIndex == 0);
+            itemPage.SetActive(selectedTabIndex == 1);
+            npcPage.SetActive(selectedTabIndex == 2);
+            mapPage.SetActive(selectedTabIndex == 3);
+            helpContainer.SetActive(selectedTabIndex == 4);
 
-        private void ShowTab(int idx)
-        {
-            monstersContainer.SetActive(idx == 0);
-            itemsContainer.SetActive(idx == 1);
-            if (mapsContainer != null) mapsContainer.SetActive(idx == 2);
-            if (helpContainer != null) helpContainer.SetActive(idx == 3);
-            if (npcsContainer != null) npcsContainer.SetActive(idx == 4);
-            monstersTabImage.color = idx == 0 ? s_activeTabColor : s_inactiveTabColor;
-            itemsTabImage.color = idx == 1 ? s_activeTabColor : s_inactiveTabColor;
-            if (mapsTabImage != null) mapsTabImage.color = idx == 2 ? s_activeTabColor : s_inactiveTabColor;
-            if (helpTabImage != null) helpTabImage.color = idx == 3 ? s_activeTabColor : s_inactiveTabColor;
-            if (npcsTabImage != null) npcsTabImage.color = idx == 4 ? s_activeTabColor : s_inactiveTabColor;
+            switch (selectedTabIndex)
+            {
+                case 0:
+                    ReturnToMonsterList();
+                    break;
+                case 1:
+                    ReturnToItemList();
+                    break;
+                case 2:
+                    ReturnToNpcList();
+                    break;
+                case 3:
+                    ReturnToMapList();
+                    break;
+            }
         }
 
         private void JumpToItem(ItemData item)
         {
-            ShowTab(1);
+            tabGroup.SelectTab(1);
             ShowItemDetail(item);
         }
 
         private void JumpToMonster(MonsterEntry mon)
         {
-            ShowTab(0);
+            tabGroup.SelectTab(0);
             ShowMonsterDetail(mon);
         }
 
         private void JumpToMap(ClientMapEntry map)
         {
-            ShowTab(2);
+            tabGroup.SelectTab(3);
             ShowMapDetail(map);
         }
         
@@ -237,7 +227,7 @@ namespace Assets.Scripts.UI.ClientDatabase
         
         private void LoadDatabaseData()
         {
-            if (ClientDataLoader.Instance == null || !ClientDataLoader.Instance.IsInitialized)
+            if (dbDataLoaded || ClientDataLoader.Instance == null || !ClientDataLoader.Instance.IsInitialized)
                 return;
 
             var monsterDb = LoadMonsterDatabase();

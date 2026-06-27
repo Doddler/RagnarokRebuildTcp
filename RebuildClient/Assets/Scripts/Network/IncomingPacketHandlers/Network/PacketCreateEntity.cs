@@ -186,6 +186,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     State.HairStyleId = headId;
                     State.HairColorId = hairDyeId;
                     State.HasCart = (follower & CharacterFollowerState.AnyCart) > 0;
+                    UiManager.Instance.RefreshCartVisibility();
                     State.HasBird = (follower & CharacterFollowerState.Falcon) > 0;
                     State.WeaponClass = weapon;
                     

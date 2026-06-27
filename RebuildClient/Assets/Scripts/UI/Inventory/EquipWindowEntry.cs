@@ -30,7 +30,6 @@ namespace Assets.Scripts.UI.Inventory
             Image.sprite = Sprite;
             Image.rectTransform.sizeDelta = Sprite.rect.size * 2;
             ItemName.text = item.ProperName();
-            
             Background.gameObject.SetActive(false);
             Image.gameObject.SetActive(true);
             ItemName.gameObject.SetActive(true);

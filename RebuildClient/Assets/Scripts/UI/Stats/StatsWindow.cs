@@ -4,14 +4,14 @@ using Assets.Scripts.PlayerControl;
 using RebuildSharedData.Enum.EntityStats;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.Stats
 {
     public class StatsWindow : WindowBase
     {
-        public List<TextMeshProUGUI> BaseStatText;
-        public List<TextMeshProUGUI> AddStatText;
+        public List<TextMeshProUGUI> AttributeValue;
         public List<TextMeshProUGUI> StatPointCostText;
         public List<TextMeshProUGUI> AttributeText;
 
@@ -105,27 +105,32 @@ namespace Assets.Scripts.UI.Stats
 
         private void UpdateStat(int index, int stat, int bonus, int diff = 0)
         {
+            var displayStat = stat + diff;
+            var statText = displayStat.ToString();
+
             if (diff == 0)
-                BaseStatText[index].text = stat.ToString();
+                statText = stat.ToString();
             if (diff < 0)
-                BaseStatText[index].text = $"<color=red>{stat + diff}</color>";
+                statText = $"<color=red>{displayStat}</color>";
             if (diff > 0)
-                BaseStatText[index].text = $"<color=blue>{stat + diff}</color>";
-            AddStatText[index].text = bonus switch
+                statText = $"<color=blue>{displayStat}</color>";
+
+            AttributeValue[index].text = bonus switch
             {
-                > 0 => $"+{bonus}",
-                < 0 => $"{bonus}",
-                _ => ""
+                > 0 => $"{statText}+{bonus}",
+                < 0 => $"{statText}−{bonus}",
+                _ => statText
             };
-            var cost = 2 + (stat + diff - 1) / 10;
+
+            var cost = 2 + (displayStat - 1) / 10;
             if (stat >= 99)
-                StatPointCostText[index].text = "-";
+                StatPointCostText[index].text = "−";
             else
                 StatPointCostText[index].text = cost.ToString();
 
             DecreaseStatButtons[index].interactable = diff > 0;
             IncreaseStatButtons[index].interactable =
-                stat + diff < 99 && statPointsRequired + cost <= PlayerState.Instance.GetData(PlayerStat.StatPoints);
+                displayStat < 99 && statPointsRequired + cost <= PlayerState.Instance.GetData(PlayerStat.StatPoints);
         }
 
         public void UpdateCharacterStats()

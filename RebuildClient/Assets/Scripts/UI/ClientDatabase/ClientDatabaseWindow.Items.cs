@@ -1,9 +1,8 @@
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Assets.Scripts.Network;
 using Assets.Scripts.Sprites;
+using Assets.Scripts.UI.Utility;
 using Assets.Scripts.Utility;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum;
@@ -16,56 +15,27 @@ namespace Assets.Scripts.UI.ClientDatabase
 {
     public partial class ClientDatabaseWindow
     {
-        private readonly List<(GameObject go, ItemData entry, string searchText)> itemRowEntries = new();
+        private readonly List<ItemData> filteredItems = new();
         private int currentItemDetailId = -1;
 
-        [SerializeField, HideInInspector] internal GameObject itemsContainer;
-        [SerializeField, HideInInspector] internal Image itemsTabImage;
-        [SerializeField, HideInInspector] internal Button itemBackButton;
-        [SerializeField, HideInInspector] internal TMP_InputField itemSearchField;
         [SerializeField, HideInInspector] internal TextMeshProUGUI itemSearchGhost;
-        [SerializeField, HideInInspector] internal GameObject itemListView;
-        [SerializeField, HideInInspector] internal GameObject itemDetailView;
-        [SerializeField, HideInInspector] internal TextMeshProUGUI itemListTitleText;
-        [SerializeField, HideInInspector] internal GameObject itemListContent;
-        [SerializeField, HideInInspector] internal TextMeshProUGUI itemDetailNameText;
         [SerializeField, HideInInspector] internal TextMeshProUGUI itemDetailDescText;
         [SerializeField, HideInInspector] internal Image itemDetailIcon;
-        [SerializeField, HideInInspector] internal GameObject droppedByContent;
-        [SerializeField, HideInInspector] internal GameObject soldByContent;
 
         private TmpLinkHover detailLinkHover;
 
         private void PopulateItemList()
         {
-            if (itemListContent == null) return;
-            ClearChildren(itemListContent.transform);
-            itemRowEntries.Clear();
-
-            var items = ItemLookup;
-            if (items.Count == 0)
-            {
-                if (itemListTitleText != null) itemListTitleText.text = "Items";
-                return;
-            }
-
-            var ordered = items.Values.Where(it => it.Id >= 0).OrderBy(it => it.Id).ToList();
-            if (itemListTitleText != null) itemListTitleText.text = $"Items ({ordered.Count})";
-            StartCoroutine(LoadListIncrementallyAsync(ordered, AddItemListRow, () => itemsLoaded = true));
+            itemPage.Refresh();
         }
 
-        private bool itemsLoaded;
-
-        private void AddItemListRow(ItemData item)
+        private void BindItemListRow(DatabaseListRow row, ItemData item, int index)
         {
-            var row = CloneRow(iconRowTemplate, itemListContent.transform, 28);
-            row.GetComponentInChildren<TextMeshProUGUI>(true).text = FormatItemName(item);
-            SetRowIcon(row, GetItemIcon(item.Sprite));
-
-            var captured = item;
-            row.GetComponent<Button>().onClick.AddListener(() => ShowItemDetail(captured));
-            AttachRightClick(row, () => NetworkManager.Instance.SendAdminCreateItem(captured.Id, 1));
-            itemRowEntries.Add((row, item, $"{item.Id} {item.Name} {item.Code}"));
+            row.SetLabel(FormatItemName(item));
+            row.SetIcon(GetItemIcon(item.Sprite));
+            row.SetActions(
+                () => ShowItemDetail(item),
+                () => NetworkManager.Instance.SendAdminCreateItem(item.Id, 1));
         }
 
         public void OpenAndJumpToItem(int itemId)
@@ -93,9 +63,8 @@ namespace Assets.Scripts.UI.ClientDatabase
 
         private void ShowItemDetail(ItemData item)
         {
-            itemListView.SetActive(false);
-            itemDetailView.SetActive(true);
-            itemDetailNameText.text = FormatNameWithBracket(FormatItemName(item), item.Id.ToString());
+            itemPage.ShowDetail();
+            itemPage.DetailTitleText.text = FormatNameWithBracket(FormatItemName(item), item.Id.ToString());
 
             currentItemDetailId = item.Id;
             SetItemPortraitImmediate(null);
@@ -111,10 +80,10 @@ namespace Assets.Scripts.UI.ClientDatabase
             if (detailLinkHover != null)
                 detailLinkHover.RefreshSource();
 
-            ClearChildren(droppedByContent.transform);
+            ReleaseDetailRows(itemPage.SecondaryContent);
             if (!dropMap.TryGetValue(item.Id, out var droppers) || droppers.Count == 0)
             {
-                CreateInfoRow(droppedByContent.transform, "(not dropped by any monster)");
+                CreateInfoRow(itemPage.SecondaryContent, "(not dropped by any monster)");
             }
             else
             {
@@ -126,18 +95,15 @@ namespace Assets.Scripts.UI.ClientDatabase
                 }
             }
 
-            if (soldByContent != null)
+            ReleaseDetailRows(itemPage.TertiaryContent);
+            if (item.SoldBy == null || item.SoldBy.Count == 0)
             {
-                ClearChildren(soldByContent.transform);
-                if (item.SoldBy == null || item.SoldBy.Count == 0)
-                {
-                    CreateInfoRow(soldByContent.transform, "(not sold by any NPC)");
-                }
-                else
-                {
-                    foreach (var npcId in item.SoldBy)
-                        CreateSoldByRow(npcId);
-                }
+                CreateInfoRow(itemPage.TertiaryContent, "(not sold by any NPC)");
+            }
+            else
+            {
+                foreach (var npcId in item.SoldBy)
+                    CreateSoldByRow(npcId);
             }
         }
 
@@ -193,7 +159,7 @@ namespace Assets.Scripts.UI.ClientDatabase
             var hasMonster = monsterLookup.TryGetValue(db.MonsterId, out var mon);
             var pct = db.Chance / 100f;
 
-            var row = CloneRow(rowTemplate, droppedByContent.transform, 24, clickable: hasMonster);
+            var row = GetDetailRow(rowTemplate, itemPage.SecondaryContent, 24, clickable: hasMonster);
             row.GetComponentInChildren<TextMeshProUGUI>(true).text = $"{db.MonsterName}  —  {pct:0.##}%";
             if (hasMonster)
             {
@@ -210,7 +176,7 @@ namespace Assets.Scripts.UI.ClientDatabase
                 ? $"{npc.Name}  <size=80%><color=#888888>({FormatMapLabel(npc.Map, withBracket: false)})</color></size>"
                 : $"NPC#{npcId}";
 
-            var row = CloneRow(rowTemplate, soldByContent.transform, 24, clickable: hasNpc);
+            var row = GetDetailRow(rowTemplate, itemPage.TertiaryContent, 24, clickable: hasNpc);
             row.GetComponentInChildren<TextMeshProUGUI>(true).text = label;
             if (hasNpc)
             {
@@ -220,10 +186,9 @@ namespace Assets.Scripts.UI.ClientDatabase
             }
         }
 
-        private void ReturnToItemList()
+        public void ReturnToItemList()
         {
-            if (itemListView != null) itemListView.SetActive(true);
-            if (itemDetailView != null) itemDetailView.SetActive(false);
+            itemPage.ShowList();
         }
 
         private static readonly PredicateRegistry<ItemData> ItemPredicates = BuildItemPredicates();
@@ -236,6 +201,19 @@ namespace Assets.Scripts.UI.ClientDatabase
             return reg;
         }
 
-        private void FilterItems(string query) => ApplyFilter(itemRowEntries, query, (it, p) => ItemPredicates.TryMatch(it, p, out var r) && r);
+        private void FilterItems(string query) =>
+            ApplyDatabaseFilter<ItemData, DatabaseListRow>(
+                ItemLookup.Values,
+                filteredItems,
+                query,
+                itemPage.VirtualList,
+                nameof(itemPage),
+                "Items",
+                itemPage.TitleText,
+                BindItemListRow,
+                static item => $"{item.Id} {item.Name} {item.Code}",
+                ItemPredicates,
+                static item => item.Id >= 0,
+                static (left, right) => left.Id.CompareTo(right.Id));
     }
 }

@@ -6,6 +6,7 @@ using Assets.Scripts.UI.ConfigWindow;
 using RebuildSharedData.Util;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.TitleScreen
 {
@@ -17,7 +18,7 @@ namespace Assets.Scripts.UI.TitleScreen
         
         public GameObject InfoArea1;
         public GameObject InfoArea2;
-        
+
         public TextMeshProUGUI OkButtonText;
         public TextMeshProUGUI CharacterName;
         public TextMeshProUGUI Job;
@@ -76,7 +77,7 @@ namespace Assets.Scripts.UI.TitleScreen
             summaries = characters;
             
             DisplayPane.SetActive(true);
-            
+
             var charCount = characters.Count;
             // if (charCount > 1)
             //     charCount = 1; //hack

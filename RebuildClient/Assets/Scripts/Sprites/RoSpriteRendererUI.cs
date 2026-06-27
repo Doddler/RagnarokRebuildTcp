@@ -65,7 +65,7 @@ namespace Assets.Scripts.Sprites
             throw new NotImplementedException();
         }
 
-        public override Texture mainTexture => SpriteData.Atlas;
+        public override Texture mainTexture => SpriteData?.Atlas ?? Texture2D.whiteTexture;
         
         protected override void OnRectTransformDimensionsChange()
         {
