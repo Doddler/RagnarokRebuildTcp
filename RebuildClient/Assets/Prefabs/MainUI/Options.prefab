@@ -7478,7 +7478,6 @@ GameObject:
   - component: {fileID: 203681842521186053}
   - component: {fileID: 6524033321618283850}
   - component: {fileID: 7165036314845588943}
-  - component: {fileID: 8613266484261920589}
   - component: {fileID: 7446624782688762809}
   m_Layer: 5
   m_Name: Options
@@ -7603,39 +7602,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8613266484261920589
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3193328275167974226}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a91b74491a7a68e4bbc8727299a51091, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Target: {fileID: 7654368371344003142}
-  CanvasGroup: {fileID: 7446624782688762809}
-  ShouldReturn: 0
-  LockFullyInBounds: 0
-  SnapToStep: 0
-  StepSize: 0
-  OnDragEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 203681842521186053}
-        m_TargetAssemblyTypeName: Assets.Scripts.UI.WindowBase, Assembly-CSharp
-        m_MethodName: MoveToTop
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!225 &7446624782688762809
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -22648,6 +22614,11 @@ PrefabInstance:
       propertyPath: CanvasGroup
       value: 
       objectReference: {fileID: 7446624782688762809}
+    - target: {fileID: 5059560009451139662, guid: ea728462a1a30974a950f8e4887ff40c,
+        type: 3}
+      propertyPath: LockFullyInBounds
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5059560009451139662, guid: ea728462a1a30974a950f8e4887ff40c,
         type: 3}
       propertyPath: OnDragEvent.m_PersistentCalls.m_Calls.Array.size

@@ -702,6 +702,8 @@ namespace Assets.Scripts
             CanvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
             CanvasScaler.matchWidthOrHeight = 0.5f;
 
+            Canvas.ForceUpdateCanvases();
+
             lastWidth = Screen.width;
             lastHeight = Screen.height;
 

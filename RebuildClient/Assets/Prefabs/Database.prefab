@@ -509,10 +509,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4967654010360029161}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 207, y: -6}
-  m_SizeDelta: {x: 402, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &8671252247969790461
 CanvasRenderer:
@@ -3137,7 +3137,7 @@ PrefabInstance:
     - target: {fileID: 760126643252151691, guid: 9941c4e58128a6248a50b84416fde6e9,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000022888184
+      value: -0.0000076293945
       objectReference: {fileID: 0}
     - target: {fileID: 918724592901923025, guid: 9941c4e58128a6248a50b84416fde6e9,
         type: 3}
@@ -3292,7 +3292,7 @@ PrefabInstance:
     - target: {fileID: 1938760328796820546, guid: 9941c4e58128a6248a50b84416fde6e9,
         type: 3}
       propertyPath: m_Size
-      value: 1
+      value: 0.9788358
       objectReference: {fileID: 0}
     - target: {fileID: 1938760328796820546, guid: 9941c4e58128a6248a50b84416fde6e9,
         type: 3}
@@ -3357,7 +3357,7 @@ PrefabInstance:
     - target: {fileID: 2562747770422530847, guid: 9941c4e58128a6248a50b84416fde6e9,
         type: 3}
       propertyPath: m_Size
-      value: 1
+      value: 0.9794872
       objectReference: {fileID: 0}
     - target: {fileID: 2562747770422530847, guid: 9941c4e58128a6248a50b84416fde6e9,
         type: 3}
@@ -3512,7 +3512,7 @@ PrefabInstance:
     - target: {fileID: 6500056419274612019, guid: 9941c4e58128a6248a50b84416fde6e9,
         type: 3}
       propertyPath: m_Size
-      value: 1
+      value: 0.97402596
       objectReference: {fileID: 0}
     - target: {fileID: 7034514434118599795, guid: 9941c4e58128a6248a50b84416fde6e9,
         type: 3}
@@ -3522,7 +3522,7 @@ PrefabInstance:
     - target: {fileID: 7034514434118599795, guid: 9941c4e58128a6248a50b84416fde6e9,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -0.000061035156
       objectReference: {fileID: 0}
     - target: {fileID: 7264611055265347574, guid: 9941c4e58128a6248a50b84416fde6e9,
         type: 3}

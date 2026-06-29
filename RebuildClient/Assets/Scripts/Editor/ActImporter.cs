@@ -92,6 +92,36 @@ public class ActImporter : ScriptedImporter
         AssetDatabase.SaveAssets();
     }
 
+    // Highest point above the origin across a frame's layers (i.e. the rendered top of the sprite), in sprite pixels.
+    private static float MeasureFrameTop(RoFrame frame, Sprite[] sprites)
+    {
+        var maxHeight = 0f;
+        foreach (var l in frame.Layers)
+        {
+            if (l.Index < 0)
+                continue;
+            var height = sprites[l.Index].rect.height / 2 - l.Position.y; //y is negative
+            if (height > maxHeight)
+                maxHeight = height;
+        }
+        return maxHeight;
+    }
+
+    // How far the lowest layer dips below the origin across a frame (>= 0, the seated body's drop past the feet), in sprite pixels.
+    private static float MeasureFrameBottom(RoFrame frame, Sprite[] sprites)
+    {
+        var minBottom = 0f;
+        foreach (var l in frame.Layers)
+        {
+            if (l.Index < 0)
+                continue;
+            var bottom = -sprites[l.Index].rect.height / 2 - l.Position.y; //y is negative
+            if (bottom < minBottom)
+                minBottom = bottom;
+        }
+        return -minBottom;
+    }
+
     private static void SetUpSpriteData(RagnarokSpriteLoader spriteLoader, RoSpriteData asset, string basePath, string baseName, string outputName)
     {
         var actName = Path.Combine(basePath, baseName + ".act");
@@ -233,25 +263,29 @@ public class ActImporter : ScriptedImporter
         asset.StandingHeight = 20;
         try
         {
-            var maxHeight = 0f;
-            var firstFrame = asset.Actions[0].Frames[0];
-            for (var i = 0; i < firstFrame.Layers.Length; i++)
-            {
-                var l = firstFrame.Layers[i];
-                if (l.Index < 0)
-                    continue;
-                var curSpr = asset.Sprites[l.Index];
-                var height = curSpr.rect.height / 2 - l.Position.y; //y is negative
-                if (height > maxHeight)
-                    maxHeight = height;
-            }
-
+            var maxHeight = MeasureFrameTop(asset.Actions[0].Frames[0], asset.Sprites);
             if (maxHeight > asset.StandingHeight)
                 asset.StandingHeight = maxHeight;
         }
         catch (Exception)
         {
             Debug.Log($"Couldn't process standing height for sprite {asset.Name}");
+        }
+
+        //only player body sprites have a sit pose worth measuring; other sprite types leave these at 0
+        if (basePath.Replace("\\", "/").Contains("/Characters/Body"))
+        {
+            try
+            {
+                var sitId = RoAnimationHelper.GetMotionIdForSprite(SpriteType.Player, SpriteMotion.Sit);
+                var sitFrame = asset.Actions[sitId].Frames[0];
+                asset.SittingHeight = MeasureFrameTop(sitFrame, asset.Sprites);
+                asset.SitDepth = MeasureFrameBottom(sitFrame, asset.Sprites);
+            }
+            catch (Exception)
+            {
+                Debug.Log($"Couldn't process sitting height for sprite {asset.Name}");
+            }
         }
         
         

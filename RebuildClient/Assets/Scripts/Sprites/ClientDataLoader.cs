@@ -1000,8 +1000,15 @@ namespace Assets.Scripts.Sprites
             emote.Target = target.gameObject;
 
             var height = 50f;
-            if (target.SpriteAnimator?.SpriteData != null)
-                height = target.SpriteAnimator.SpriteData.StandingHeight;
+            var spriteData = target.SpriteAnimator?.SpriteData;
+            if (spriteData != null)
+            {
+                //seated players use their (lower) sitting height, falling back to standing if it wasn't baked
+                var seated = target.CharacterType == CharacterType.Player
+                    && target.SpriteAnimator.State == SpriteState.Sit
+                    && spriteData.SittingHeight > 0;
+                height = seated ? spriteData.SittingHeight : spriteData.StandingHeight;
+            }
             if (target.CharacterType == CharacterType.Player)
                 height += 12;
             if (height > 100)
@@ -1200,7 +1207,7 @@ namespace Assets.Scripts.Sprites
             control.CharacterState = param.State;
 
             control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
-            control.EnsureFloatingDisplayCreated().SetUp(control, param.Name, param.MaxHp, 0, false, false);
+            control.EnsureFloatingDisplayCreated();
 
             var loader = Addressables.LoadAssetAsync<GameObject>(prefabName);
             loader.Completed += ah =>

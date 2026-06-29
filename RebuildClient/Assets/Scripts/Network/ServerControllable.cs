@@ -157,7 +157,10 @@ namespace Assets.Scripts.Network
         public CharacterFloatingDisplay EnsureFloatingDisplayCreated(bool makeEnabled = false)
         {
             if (FloatingDisplay == null)
+            {
                 FloatingDisplay = NetworkManager.Instance.OverlayManager.GetNewFloatingDisplay();
+                FloatingDisplay.AttachTo(this);
+            }
             if (makeEnabled)
                 FloatingDisplay.gameObject.SetActive(true);
             return FloatingDisplay;
@@ -214,7 +217,6 @@ namespace Assets.Scripts.Network
             EnsureFloatingDisplayCreated();
             MaxSp = maxSp;
             Sp = sp;
-            FloatingDisplay.UpdateMaxMp(maxSp);
             FloatingDisplay.UpdateMp(sp);
 
             if (!string.IsNullOrWhiteSpace(PartyName))
@@ -245,7 +247,6 @@ namespace Assets.Scripts.Network
 
             MaxHp = maxHp;
             Hp = hp;
-            FloatingDisplay.UpdateMaxHp(maxHp);
             SetHp(hp, animate);
             if (!string.IsNullOrWhiteSpace(PartyName))
                 RefreshPartyValues();
@@ -314,7 +315,7 @@ namespace Assets.Scripts.Network
                 var sName = ClientDataLoader.Instance.GetSkillName(skill);
 
                 if (!HideCastName && skill != CharacterSkill.NoCast &&
-                    (skill != CharacterSkill.Hiding || !SpriteAnimator.IsHidden)) //don't show skill name when unhiding
+                    (skill != CharacterSkill.Hiding || !(SpriteAnimator?.IsHidden ?? false))) //don't show skill name when unhiding
                 {
                     if (CharacterType == CharacterType.Player)
                         FloatingDisplay.ShowChatBubbleMessage(sName + "!!");
@@ -453,6 +454,7 @@ namespace Assets.Scripts.Network
             );
 
             rect.anchoredPosition = localPoint;
+            FloatingDisplay.RefreshPositionsIfChanged();
 
             var d = 70 / cf.Distance;
 
@@ -1246,6 +1248,9 @@ namespace Assets.Scripts.Network
 
             FloatingDisplay.Close();
             FloatingDisplay = null;
+
+            // the corpse stays visible while fading out, but should no longer be selectable
+            SpriteAnimator?.SetColliderEnabled(false);
 
             StopCasting();
 

@@ -229,7 +229,7 @@ MonoBehaviour:
   Target: {fileID: 0}
   CanvasGroup: {fileID: 0}
   ShouldReturn: 0
-  LockFullyInBounds: 0
+  LockFullyInBounds: 1
   SnapToStep: 0
   StepSize: 0
   OnDragEvent:

@@ -49,7 +49,6 @@ namespace Assets.Scripts.UI.Hud
             if (!np.TryPop(out var obj))
                 obj = Instantiate(template);
             obj.transform.SetParent(parent.transform);
-            //obj.transform.GetComponent<RectTransform>().anchoredPosition = lp;
             obj.transform.localPosition = lp;
             obj.transform.localScale = Vector3.one;
             if(enable)

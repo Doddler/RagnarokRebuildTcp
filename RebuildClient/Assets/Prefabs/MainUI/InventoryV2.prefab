@@ -2228,6 +2228,11 @@ PrefabInstance:
       objectReference: {fileID: 967822533802479958}
     - target: {fileID: 5059560009451139662, guid: ea728462a1a30974a950f8e4887ff40c,
         type: 3}
+      propertyPath: LockFullyInBounds
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5059560009451139662, guid: ea728462a1a30974a950f8e4887ff40c,
+        type: 3}
       propertyPath: OnDragEvent.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}

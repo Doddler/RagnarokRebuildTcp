@@ -190,6 +190,14 @@ namespace Assets.Scripts.Sprites
             isDirty = true;
         }
 
+        // toggle the raycast collider without affecting the visible sprite
+        public void SetColliderEnabled(bool isEnabled)
+        {
+            var collider = GetComponent<MeshCollider>();
+            if (collider != null)
+                collider.enabled = isEnabled;
+        }
+
         public void SetRenderActive(bool isActive)
         {
             // if (Shadow)

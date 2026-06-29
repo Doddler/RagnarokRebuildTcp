@@ -144,8 +144,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 Debug.LogError($"SpawnEntity failed to create a valid server controllable (Type:{entity.Type} ClassId:{entity.ClassId} Name:{entity.Name})");
                 return null;
             }
-            
-            controllable.EnsureFloatingDisplayCreated().SetUp(controllable, controllable.Name, entity.MaxHp, entity.MaxSp, entity.Type == CharacterType.Player, controllable.IsMainCharacter);
+
+            controllable.EnsureFloatingDisplayCreated();
             if (controllable.IsMainCharacter)
             {
                 Camera.UpdatePlayerHP(entity.Hp, entity.MaxHp);

@@ -335,8 +335,8 @@ namespace Assets.Scripts.PlayerControl
             
             
             control.ConfigureEntity(spawn.ServerId, spawn.Position.ToVector2Int(), spawn.Facing);
-            control.EnsureFloatingDisplayCreated().SetUp(control, spawn.Name, spawn.MaxHp, 0, false, false);
-            
+            control.EnsureFloatingDisplayCreated();
+
             ClientDataLoader.Instance.AttachPrefabToControllable(control, prefabName);
         }
 

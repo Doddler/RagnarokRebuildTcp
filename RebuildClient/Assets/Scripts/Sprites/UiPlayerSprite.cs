@@ -311,7 +311,7 @@ namespace Assets.Scripts.Sprites
             if (availableSize.x <= 0 || availableSize.y <= 0 || characterSize.x <= 0 || characterSize.y <= 0)
                 return;
 
-            var renderSize = Mathf.Min(availableSize.x / characterSize.x, availableSize.y / characterSize.y);
+            var renderSize = Mathf.Min(availableSize.x / characterSize.x, availableSize.y / characterSize.y, 100f);
             var centeredOffset = -(min + max) * 0.5f * renderSize;
 
             for (var i = 0; i < sprites.Count; i++)
