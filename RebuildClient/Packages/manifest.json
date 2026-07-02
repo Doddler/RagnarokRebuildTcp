@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "com.codewriter.textmeshpro-spriteatlas-support": "https://github.com/codewriter-packages/textmeshpro-spriteatlas-support.git",
+    "com.coplaydev.unity-mcp": "https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main",
     "com.github-glitchenzo.nugetforunity": "https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.addressables": "2.9.1",
@@ -14,6 +15,7 @@
     "com.unity.postprocessing": "3.5.4",
     "com.unity.probuilder": "6.0.9",
     "com.unity.recorder": "5.1.6",
+    "com.unity.render-pipelines.universal": "17.3.0",
     "com.unity.scriptablebuildpipeline": "2.6.1",
     "com.unity.shadergraph": "17.3.0",
     "com.unity.test-framework": "1.6.0",

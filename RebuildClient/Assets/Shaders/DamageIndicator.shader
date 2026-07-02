@@ -6,38 +6,43 @@ Shader "Unlit/DamageIndicator"
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "RenderType"="Opaque" "RenderPipeline"="UniversalPipeline" }
         LOD 100
 
         Pass // Damage Indicators
         {
             Name "Damage Indicators - Render"
-            
+            Tags { "LightMode" = "UniversalForward" }
+
             Cull Off
             ZWrite Off
             ZTest Always
             Blend SrcAlpha OneMinusSrcAlpha
-            CGPROGRAM
+            HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            
+
             #pragma target 3.5
             #pragma target 4.5 DI_STRUCTURED_BUFFER
             #pragma multi_compile_instancing
             #pragma instancing_options assumeuniformscaling nolodfade nolightprobe nolightmap
             #pragma multi_compile_local _ DI_STRUCTURED_BUFFER DI_CBUFFER_INSTANCING
 
-            #include "UnityCG.cginc"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
-            #ifdef DI_STRUCTURED_BUFFER
+            #if defined(DI_STRUCTURED_BUFFER) && (SHADER_TARGET >= 45)
+            #define DI_STRUCTURED_ACTIVE
+            #endif
+
+            #ifdef DI_STRUCTURED_ACTIVE
             struct DamageIndicatorData
             {
-	            float alpha;
-	            int value;
-	            float4 color;
-	            float lifeTime;
-	            float critJitter;
-	            uint flags;
+                float alpha;
+                int value;
+                float4 color;
+                float lifeTime;
+                float critJitter;
+                uint flags;
             };
 
             bool IsCrit(DamageIndicatorData d) { return (d.flags & 1 << 0) != 0; }
@@ -51,9 +56,6 @@ Shader "Unlit/DamageIndicator"
             #endif
 
             #ifdef DI_CBUFFER_INSTANCING
-            // Per-instance data packed into 3 float4s (value/flags carried as floats, exact below 2^24).
-            //   _DIParams0 = (alpha, value, lifeTime, critJitter)
-            //   _DIParams1 = (flags, _, _, _)
             UNITY_INSTANCING_BUFFER_START(DamageIndicatorProps)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _DIColor)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _DIParams0)
@@ -74,14 +76,18 @@ Shader "Unlit/DamageIndicator"
             {
                 float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
-                float4 color : COLOR0;
+                half4 color : COLOR0;
                 float alpha : TEXCOORD1;
             };
 
-            sampler2D _MainTex;
+            TEXTURE2D(_MainTex);
+            SAMPLER(sampler_MainTex);
+
+            CBUFFER_START(UnityPerMaterial)
             float4 _MainTex_ST;
             float _Spacing;
-            
+            CBUFFER_END
+
             #if !defined(DI_STRUCTURED_BUFFER) && !defined(DI_CBUFFER_INSTANCING)
             float4 _Color;
             float _Alpha;
@@ -94,7 +100,7 @@ Shader "Unlit/DamageIndicator"
             float _LifeTime;
             float _CritJitter;
             #endif
-            
+
             struct DamageIndicator
             {
                 int digits[5];
@@ -134,7 +140,7 @@ Shader "Unlit/DamageIndicator"
                     di.magnitude = mag;
                     return di;
                 }
-                
+
                 uint tmp = scaled;
                 int idx = 4;
                 UNITY_UNROLL
@@ -153,11 +159,11 @@ Shader "Unlit/DamageIndicator"
                 di.magnitude = mag;
                 return di;
             }
-            
+
             v2f vert (appdata v)
             {
                 UNITY_SETUP_INSTANCE_ID(v);
-                
+
                 float critMask = v.vcol.r;
                 float digitMask = v.vcol.g;
                 float textMask = v.vcol.b;
@@ -175,8 +181,12 @@ Shader "Unlit/DamageIndicator"
                 float _LifeTime = 0;
                 float _CritJitter = 0;
 
-                #if defined(DI_STRUCTURED_BUFFER)
-                uint id = _BaseInstance + unity_InstanceID;
+                #if defined(DI_STRUCTURED_ACTIVE)
+                #if UNITY_ANY_INSTANCING_ENABLED
+                uint id = (uint)_BaseInstance + unity_InstanceID;
+                #else
+                uint id = (uint)_BaseInstance;
+                #endif
                 DamageIndicatorData d = _Instances[id];
                 _IsCrit = IsCrit(d);
                 _IsMiss = IsMiss(d);
@@ -188,7 +198,7 @@ Shader "Unlit/DamageIndicator"
                 _Color = d.color;
                 _LifeTime = d.lifeTime;
                 _CritJitter = d.critJitter;
-                #else // DI_CBUFFER_INSTANCING
+                #elif defined(DI_CBUFFER_INSTANCING)
                 float4 p0 = UNITY_ACCESS_INSTANCED_PROP(DamageIndicatorProps, _DIParams0);
                 float4 p1 = UNITY_ACCESS_INSTANCED_PROP(DamageIndicatorProps, _DIParams1);
                 _Color = UNITY_ACCESS_INSTANCED_PROP(DamageIndicatorProps, _DIColor);
@@ -211,7 +221,7 @@ Shader "Unlit/DamageIndicator"
 
                 float offset = 0.1;
                 int digitIndex = v.index * (1/offset);
-                
+
                 DamageIndicator di = GetDamageIndicator(_Value);
 
                 switch (di.magnitude)
@@ -238,38 +248,38 @@ Shader "Unlit/DamageIndicator"
                 const float digitHalf = digitSize * 0.5;
                 const int totalDigits = 5;
                 const float center[5] = {0,0.5,1.5,3,5};
-                
+
                 float spacing = _IsExp ? 0 : (1-_Spacing);
                 v.vertex.x -= (spacing * (totalDigits - digitIndex) * digitSize * digitMask) - (digitSize * spacing * digitMask);
                 v.vertex.x += spacing * digitMask * rcp(di.count) * center[di.count-1];
-                v.vertex.x -= (di.count + min(di.magnitude, 1)) * digitHalf * digitMask; // Digits are 0.25m
-                v.vertex.x += _CritJitter * critMask * 0.5; // Crit mesh is 2m x 2m
+                v.vertex.x -= (di.count + min(di.magnitude, 1)) * digitHalf * digitMask;
+                v.vertex.x += _CritJitter * critMask * 0.5;
                 v.vertex.y += _IsCrit & !critMask ? -0.05 : 0;
-                
+
                 v.vertex.x -= _IsExp ? di.count * digitHalf * textMask + 0.5 * textMask : 0;
                 v.vertex *= _IsExp ? 0.75 : 1;
                 v.vertex.x += _IsExp ? di.count * digitHalf * 0.5 + 0.25 : 0;
                 v.uv.y -= (_IsAgi ? 0.2 : _IsExp ? 0.4 : 0) * textMask;
                 v.uv.x += (_IsSlow ? 0.2 : 0) * textMask;
-                
+
                 v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
+                o.vertex = TransformObjectToHClip(v.vertex.xyz);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 o.color = lerp(1, _Color, !critMask) * lerp(1, 0.8, _IsCrit * critMask);
                 o.alpha = _Alpha;
                 return o;
             }
 
-            fixed4 frag (v2f i) : SV_Target
+            half4 frag (v2f i) : SV_Target
             {
-                fixed4 col = tex2D(_MainTex, i.uv);
+                half4 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
                 clip(col.a - 0.5);
 
-                col.rgb *= i.color;
-                col.a = i.alpha; //pow(i.alpha, rcp(2.2));
+                col.rgb *= i.color.rgb;
+                col.a = i.alpha;
                 return col;
             }
-            ENDCG
+            ENDHLSL
         }
     }
 }

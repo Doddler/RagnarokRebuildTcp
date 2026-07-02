@@ -23,6 +23,7 @@ Shader "Custom/UI/UiSmoothPixel"
             "RenderType"="Transparent"
             "PreviewType"="Plane"
             "CanUseSpriteAtlas"="True"
+            "RenderPipeline"="UniversalPipeline"
         }
 
         Stencil
@@ -35,7 +36,6 @@ Shader "Custom/UI/UiSmoothPixel"
         }
 
         Cull Off
-        Lighting Off
         ZWrite Off
         ZTest [unity_GUIZTestMode]
         Blend SrcAlpha OneMinusSrcAlpha
@@ -43,14 +43,14 @@ Shader "Custom/UI/UiSmoothPixel"
 
         Pass
         {
-            CGPROGRAM
+            Tags{ "LightMode" = "UniversalForward" }
+
+            HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            //#pragma multi_compile _ SMOOTHPIXEL
             #define SMOOTH_PIXEL 1
 
-            #include "UnityCG.cginc"
-            #include "UnityUI.cginc"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
             struct appdata_t
             {
@@ -62,13 +62,13 @@ Shader "Custom/UI/UiSmoothPixel"
             struct v2f
             {
                 float4 vertex : SV_POSITION;
-                fixed4 color : COLOR;
-                half2 texcoord : TEXCOORD0;
+                half4 color : COLOR;
+                float4 texcoord : TEXCOORD0;
                 float4 worldPosition : TEXCOORD1;
             };
 
-            fixed4 _Color;
-            fixed4 _TextureSampleAdd;
+            half4 _Color;
+            half4 _TextureSampleAdd;
 
             bool _UseClipRect;
             float4 _ClipRect;
@@ -77,17 +77,19 @@ Shader "Custom/UI/UiSmoothPixel"
             uniform float _EffectAmount;
             uniform float _BrightnessAmount;
 
+            float UiGet2DClipping(float2 position, float4 clipRect)
+            {
+                float2 inside = step(clipRect.xy, position.xy) * step(position.xy, clipRect.zw);
+                return inside.x * inside.y;
+            }
+
             v2f vert(appdata_t IN)
             {
-                v2f OUT;
+                v2f OUT = (v2f)0;
                 OUT.worldPosition = IN.vertex;
-                OUT.vertex = UnityObjectToClipPos(OUT.worldPosition);
+                OUT.vertex = TransformObjectToHClip(OUT.worldPosition.xyz);
 
-                OUT.texcoord = IN.texcoord;
-
-                #ifdef UNITY_HALF_TEXEL_OFFSET
-				OUT.vertex.xy += (_ScreenParams.zw-1.0)*float2(-1,1);
-                #endif
+                OUT.texcoord = float4(IN.texcoord, 0, 0);
 
                 //smoothpixelshader stuff here
                 #ifdef SMOOTH_PIXEL
@@ -101,16 +103,16 @@ Shader "Custom/UI/UiSmoothPixel"
                 return OUT;
             }
 
-            sampler2D _MainTex;
+            TEXTURE2D(_MainTex);
+            SAMPLER(sampler_MainTex);
             float4 _MainTex_TexelSize;
 
-            fixed4 frag(v2f IN) : SV_Target
+            half4 frag(v2f IN) : SV_Target
             {
-                //half4 color = (tex2D(_MainTex, IN.texcoord) + _TextureSampleAdd) * IN.color;
                 #ifdef SMOOTH_PIXEL
 				//smoothpixel
 				// apply anti-aliasing
-				float2 texturePosition = IN.texcoord * _MainTex_TexelSize.zw;
+				float2 texturePosition = IN.texcoord.xy * _MainTex_TexelSize.zw;
 				float2 nearestBoundary = round(texturePosition);
 				float2 delta = float2(abs(ddx(texturePosition.x)) + abs(ddx(texturePosition.y)),
 					abs(ddy(texturePosition.x)) + abs(ddy(texturePosition.y)));
@@ -118,21 +120,21 @@ Shader "Custom/UI/UiSmoothPixel"
 				float2 samplePosition = (texturePosition - nearestBoundary) / delta;
 				samplePosition = clamp(samplePosition, -0.5, 0.5) + nearestBoundary;
 
-				half4 color = (tex2D(_MainTex, samplePosition * _MainTex_TexelSize.xy) + _TextureSampleAdd) * IN.color;
+				half4 color = (SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, samplePosition * _MainTex_TexelSize.xy) + _TextureSampleAdd) * IN.color;
 				//endsmoothpixel
                 #else
-                half4 color = tex2D(_MainTex, IN.texcoord) * IN.color;
+                half4 color = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, IN.texcoord.xy) * IN.color;
                 #endif
 
                 if (_UseClipRect)
-                    color *= UnityGet2DClipping(IN.worldPosition.xy, _ClipRect);
+                    color *= UiGet2DClipping(IN.worldPosition.xy, _ClipRect);
 
                 if (_UseAlphaClip)
                     clip(color.a - 0.001);
 
                 return color;
             }
-            ENDCG
+            ENDHLSL
         }
     }
     FallBack "UI/Default"

@@ -2,14 +2,15 @@
 using Assets.Scripts.Network;
 using Assets.Scripts.Sprites;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace Assets.Scripts.Utility
 {
     public static class SpriteUtil
     {
+	    private static readonly int OffsetId = Shader.PropertyToID("_Offset");
 	    public static Material shadowMaterial;
-	    
+	    private static MaterialPropertyBlock shadowBlock;
+
 	    public static void CacheShadowMaterial()
 	    {
 		    if (shadowMaterial != null) return;
@@ -23,8 +24,26 @@ namespace Assets.Scripts.Utility
 		    shadowMaterial.color = new Color(1f, 1f, 1f, 0.5f);
 		    shadowMaterial.renderQueue = 2999;
 		    shadowMaterial.enableInstancing = true;
+		    shadowMaterial.EnableKeyword("WATER_OFF");
 	    }
-	    
+
+	    public static void ApplyShadowMaterial(SpriteRenderer sprite, float offset = 1f)
+	    {
+		    CacheShadowMaterial();
+		    sprite.sharedMaterial = shadowMaterial;
+
+		    if (Mathf.Approximately(offset, 1f))
+		    {
+			    sprite.SetPropertyBlock(null);
+			    return;
+		    }
+
+		    shadowBlock ??= new MaterialPropertyBlock();
+		    sprite.GetPropertyBlock(shadowBlock);
+		    shadowBlock.SetFloat(OffsetId, offset);
+		    sprite.SetPropertyBlock(shadowBlock);
+	    }
+
         public static void AttachShadowToGameObject(GameObject gameObject, float size = 1f, bool addBillboard = false)
         {
             AddressableUtility.LoadSprite(gameObject, "shadow", sprite => PerformShadowAttach(gameObject, sprite, size, addBillboard));
@@ -44,23 +63,16 @@ namespace Assets.Scripts.Utility
             var sprite = go.AddComponent<SpriteRenderer>();
             sprite.sprite = spriteObj;
 
-            CacheShadowMaterial();
-            sprite.material = shadowMaterial;
-
+            ApplyShadowMaterial(sprite);
             sprite.sortingOrder = -1;
 
             var control = gameObject.GetComponent<ServerControllable>();
             if (control != null)
-            {
-                var spriteAnimator = control.SpriteAnimator;
-                spriteAnimator.Shadow = go;
-                spriteAnimator.ShadowSortingGroup = go.AddComponent<SortingGroup>();
-                spriteAnimator.ShadowSortingGroup.sortingOrder = -20001;
-            }
+                control.SpriteAnimator.Shadow = go;
 
             if (addBillboard)
                 gameObject.AddComponent<BillboardObject>();
-            
+
         }
     }
 }

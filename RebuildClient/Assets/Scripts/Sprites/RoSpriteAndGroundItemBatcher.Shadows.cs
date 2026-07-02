@@ -42,6 +42,8 @@ public partial class RoSpriteAndGroundItemBatcher
         int count = _shadowQueries.Count;
         if (count == 0) return;
 
+        using var _ = _markerShadowRaycasts.Auto();
+
         if (!_shadowDirLight)
         {
             var dl = GameObject.Find("DirectionalLight");

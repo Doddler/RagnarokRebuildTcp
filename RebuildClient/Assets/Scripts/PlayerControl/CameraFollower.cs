@@ -108,11 +108,6 @@ namespace Assets.Scripts
         // public TextMeshProUGUI CharacterJob;
         // public TextMeshProUGUI CharacterZeny;
 
-        public Camera WaterCamera;
-        public RenderTexture WaterTexture;
-        public RenderTexture WaterDepthTexture;
-        public Shader WaterDepthShader;
-
         private Texture2D currentCursor;
 
         private Vector2Int[] tempPath;
@@ -1629,47 +1624,6 @@ namespace Assets.Scripts
             };
         }
 
-        public void UpdateWaterTexture()
-        {
-            Camera.depthTextureMode = DepthTextureMode.Depth;
-
-            if (WaterTexture == null)
-            {
-                WaterTexture = new RenderTexture(Screen.width / 4, Screen.height / 4, 32, RenderTextureFormat.ARGBHalf);
-                WaterDepthTexture = new RenderTexture(Screen.width / 4, Screen.height / 4, 16, RenderTextureFormat.Depth);
-
-                WaterCamera.SetTargetBuffers(WaterTexture.colorBuffer, WaterDepthTexture.depthBuffer);
-                WaterCamera.SetReplacementShader(ShaderCache.Instance.WaterShader, null);
-                WaterCamera.backgroundColor = new Color(0, 0, -1000);
-
-                Shader.SetGlobalTexture("_WaterDepth", WaterTexture);
-            }
-
-            if (WaterTexture.width != Screen.width / 4 || WaterTexture.height != Screen.height / 4)
-            {
-                var oldWaterTexture = WaterTexture;
-                var oldWaterDepth = WaterDepthTexture;
-
-                WaterTexture = new RenderTexture(Screen.width / 4, Screen.height / 4, 32, RenderTextureFormat.ARGBHalf);
-                WaterDepthTexture = new RenderTexture(Screen.width / 4, Screen.height / 4, 16, RenderTextureFormat.Depth);
-
-                WaterCamera.SetTargetBuffers(WaterTexture.colorBuffer, WaterDepthTexture.depthBuffer);
-                WaterCamera.SetReplacementShader(ShaderCache.Instance.WaterShader, null);
-                WaterCamera.backgroundColor = new Color(0, 0, -1000);
-
-                Shader.SetGlobalTexture("_WaterDepth", WaterTexture);
-
-                oldWaterTexture.Release();
-                oldWaterDepth.Release();
-            }
-        }
-
-        public void OnPostRender()
-        {
-            //WaterCamera.RenderWithShader(WaterDepthShader, "WaterDepth");
-            //WaterCamera.Render();
-        }
-
         public void CinemachineFollow()
         {
             if (CinemachineHidePlayerObject)
@@ -1681,7 +1635,6 @@ namespace Assets.Scripts
                 transform.position = Recorder.transform.position;
                 transform.localRotation = Recorder.transform.rotation;
 
-                WaterCamera.fieldOfView = Recorder.GetComponent<Camera>().fieldOfView;
                 Camera.main.fieldOfView = Recorder.GetComponent<Camera>().fieldOfView;
 
                 // Debug.Log(transform.position);
@@ -1801,8 +1754,6 @@ namespace Assets.Scripts
 
             if (Screen.height != lastHeight)
                 UpdateCameraSize();
-
-            UpdateWaterTexture();
 
             var pointerOverUi = EventSystem.current.IsPointerOverGameObject();
             var selected = EventSystem.current.currentSelectedGameObject;

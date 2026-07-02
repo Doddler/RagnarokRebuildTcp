@@ -6,7 +6,7 @@ Shader "Custom/UI/Grayscale"
 	{
 		[PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
 		_Color ("Tint", Color) = (1,1,1,1)
-		
+
 		_StencilComp ("Stencil Comparison", Float) = 8
 		_Stencil ("Stencil ID", Float) = 0
 		_StencilOp ("Stencil Operation", Float) = 0
@@ -22,25 +22,25 @@ Shader "Custom/UI/Grayscale"
 	SubShader
 	{
 		Tags
-		{ 
-			"Queue"="Transparent" 
-			"IgnoreProjector"="True" 
-			"RenderType"="Transparent" 
+		{
+			"Queue"="Transparent"
+			"IgnoreProjector"="True"
+			"RenderType"="Transparent"
 			"PreviewType"="Plane"
 			"CanUseSpriteAtlas"="True"
+			"RenderPipeline"="UniversalPipeline"
 		}
-		
+
 		Stencil
 		{
 			Ref [_Stencil]
 			Comp [_StencilComp]
-			Pass [_StencilOp] 
+			Pass [_StencilOp]
 			ReadMask [_StencilReadMask]
 			WriteMask [_StencilWriteMask]
 		}
 
 		Cull Off
-		Lighting Off
 		ZWrite Off
 		ZTest [unity_GUIZTestMode]
 		Blend SrcAlpha OneMinusSrcAlpha
@@ -48,13 +48,14 @@ Shader "Custom/UI/Grayscale"
 
 		Pass
 		{
-		CGPROGRAM
+			Tags{ "LightMode" = "UniversalForward" }
+
+		HLSLPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
 
-			#include "UnityCG.cginc"
-			#include "UnityUI.cginc"
-			
+			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+
 			struct appdata_t
 			{
 				float4 vertex   : POSITION;
@@ -65,14 +66,14 @@ Shader "Custom/UI/Grayscale"
 			struct v2f
 			{
 				float4 vertex   : SV_POSITION;
-				fixed4 color    : COLOR;
+				half4 color    : COLOR;
 				half2 texcoord  : TEXCOORD0;
 				float4 worldPosition : TEXCOORD1;
 			};
-			
-			fixed4 _Color;
-			fixed4 _TextureSampleAdd;
-	
+
+			half4 _Color;
+			half4 _TextureSampleAdd;
+
 			bool _UseClipRect;
 			float4 _ClipRect;
 
@@ -80,31 +81,34 @@ Shader "Custom/UI/Grayscale"
 			uniform float _EffectAmount;
 			uniform float _BrightnessAmount;
 
+			float UiGet2DClipping(float2 position, float4 clipRect)
+			{
+				float2 inside = step(clipRect.xy, position.xy) * step(position.xy, clipRect.zw);
+				return inside.x * inside.y;
+			}
+
 			v2f vert(appdata_t IN)
 			{
-				v2f OUT;
+				v2f OUT = (v2f)0;
 				OUT.worldPosition = IN.vertex;
-				OUT.vertex = UnityObjectToClipPos(OUT.worldPosition);
+				OUT.vertex = TransformObjectToHClip(OUT.worldPosition.xyz);
 
 				OUT.texcoord = IN.texcoord;
-				
-				#ifdef UNITY_HALF_TEXEL_OFFSET
-				OUT.vertex.xy += (_ScreenParams.zw-1.0)*float2(-1,1);
-				#endif
-				
+
 				OUT.color = IN.color * _Color;
 				return OUT;
 			}
 
-			sampler2D _MainTex;
+			TEXTURE2D(_MainTex);
+			SAMPLER(sampler_MainTex);
 
-			fixed4 frag(v2f IN) : SV_Target
+			half4 frag(v2f IN) : SV_Target
 			{
-				half4 color = (tex2D(_MainTex, IN.texcoord) + _TextureSampleAdd) * IN.color;
+				half4 color = (SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, IN.texcoord) + _TextureSampleAdd) * IN.color;
 
 				if (_UseClipRect)
-					color *= UnityGet2DClipping(IN.worldPosition.xy, _ClipRect);
-				
+					color *= UiGet2DClipping(IN.worldPosition.xy, _ClipRect);
+
 				if (_UseAlphaClip)
 					clip (color.a - 0.001);
 
@@ -112,7 +116,7 @@ Shader "Custom/UI/Grayscale"
 				color.rgb = lerp(brtColor, dot(brtColor, float3(0.3, 0.59, 0.11)), _EffectAmount);
 				return color;
 			}
-		ENDCG
+		ENDHLSL
 		}
 	}
 	FallBack "UI/Default"

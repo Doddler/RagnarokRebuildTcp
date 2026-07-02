@@ -1024,31 +1024,23 @@ namespace Assets.Scripts.Network
         {
             if (gameObject == null)
                 return;
+            if (Mathf.Approximately(0, ShadowSize))
+                ShadowSize = 0.5f;
+
             var go = new GameObject("Shadow");
             go.layer = LayerMask.NameToLayer("Characters");
             go.transform.SetParent(transform, false);
             go.transform.localPosition = Vector3.zero;
             go.transform.localScale = new Vector3(ShadowSize, ShadowSize, ShadowSize);
 
-            if (Mathf.Approximately(0, ShadowSize))
-                ShadowSize = 0.5f;
-
             var sprite = go.AddComponent<SpriteRenderer>();
             sprite.sprite = spriteObj;
             shadowSprite = sprite;
 
-            var shader = ShaderCache.Instance.SpriteShaderNoZWrite;
-            var mat = new Material(shader);
-            mat.SetFloat("_Offset", 0.4f);
-            mat.color = new Color(1f, 1f, 1f, 0.5f);
-            mat.renderQueue = 2999;
-            sprite.material = mat;
-
+            SpriteUtil.ApplyShadowMaterial(sprite, 0.4f);
             sprite.sortingOrder = -1;
 
             SpriteAnimator.Shadow = go;
-            SpriteAnimator.ShadowSortingGroup = go.AddComponent<SortingGroup>();
-            SpriteAnimator.ShadowSortingGroup.sortingOrder = -20001;
             if (SpriteAnimator.State == SpriteState.Sit)
                 go.SetActive(false);
         }
