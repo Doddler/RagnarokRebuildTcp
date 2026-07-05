@@ -478,7 +478,7 @@ public class UiManager : MonoBehaviour
             SkillHotbar.UpdateHotkeyPresses();
         }
 
-        if (IsDraggingItem || cameraFollower.InTextBox)
+        if (IsDraggingItem)
             TooltipOverlay.gameObject.SetActive(false);
 
         UpdateOverlayPosition();

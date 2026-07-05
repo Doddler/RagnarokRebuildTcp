@@ -362,9 +362,8 @@ namespace Assets.Scripts.UI.Hud
             PlaceStacked(chatBubble?.transform, 0f, anchorY, 1f, ref cursor, ref first);
         }
 
-        // Stacks one element in the given direction (+1 = up, -1 = down). The first present element's near edge
-        // sits at the anchor; each later one is offset by its gap from the previous element's far edge (negative
-        // gap = overlap). Pivot-aware: localPosition maps to the pivot, so we derive it from the bottom edge.
+        // Stacks one element in the given direction (+1 = up, -1 = down): the first sits at the anchor, each later
+        // one is offset by its gap from the previous element's far edge. Pivot-aware via the bottom edge.
         private static void PlaceStacked(Transform t, float gap, float anchorY, float direction, ref float cursor, ref bool first)
         {
             if (t == null) return;

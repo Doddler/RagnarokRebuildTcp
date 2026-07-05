@@ -142,20 +142,6 @@ namespace Assets.Scripts.Sprites
 
         public Sprite GetIconAtlasSprite(string name) => EffectSharedMaterialManager.GetAtlasSprite(ItemIconAtlas, name);
 
-        private void PreloadItemIcons()
-        {
-            var iconNames = new HashSet<string>(StringComparer.Ordinal);
-
-            foreach (var item in ItemIdLookup.Values)
-            {
-                if (!string.IsNullOrEmpty(item.Sprite))
-                    iconNames.Add(item.Sprite);
-            }
-
-            foreach (var iconName in iconNames)
-                GetIconAtlasSprite(iconName);
-        }
-
         // private static int EffectClassId = 3999;
 
         private bool isInitialized;
@@ -403,8 +389,6 @@ namespace Assets.Scripts.Sprites
                 Name = "Unknown Item",
                 Sprite = "Apple"
             });
-
-            PreloadItemIcons();
 
             foreach (var l in Regex.Split(ReadStreamingAssetFile(EquipmentSpriteDataPath), "\n|\r|\r\n"))
             {

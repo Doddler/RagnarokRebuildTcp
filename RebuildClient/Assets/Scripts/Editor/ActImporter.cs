@@ -92,7 +92,6 @@ public class ActImporter : ScriptedImporter
         AssetDatabase.SaveAssets();
     }
 
-    // Highest point above the origin across a frame's layers (i.e. the rendered top of the sprite), in sprite pixels.
     private static float MeasureFrameTop(RoFrame frame, Sprite[] sprites)
     {
         var maxHeight = 0f;
@@ -107,7 +106,6 @@ public class ActImporter : ScriptedImporter
         return maxHeight;
     }
 
-    // How far the lowest layer dips below the origin across a frame (>= 0, the seated body's drop past the feet), in sprite pixels.
     private static float MeasureFrameBottom(RoFrame frame, Sprite[] sprites)
     {
         var minBottom = 0f;

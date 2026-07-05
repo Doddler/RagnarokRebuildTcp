@@ -182,11 +182,6 @@ namespace Assets.Scripts.UI.ClientDatabase
         public void OnTabSelected(int selectedTabIndex)
         {
             InitializePages();
-            monsterPage.SetActive(selectedTabIndex == 0);
-            itemPage.SetActive(selectedTabIndex == 1);
-            npcPage.SetActive(selectedTabIndex == 2);
-            mapPage.SetActive(selectedTabIndex == 3);
-            helpContainer.SetActive(selectedTabIndex == 4);
 
             switch (selectedTabIndex)
             {

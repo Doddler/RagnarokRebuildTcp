@@ -190,7 +190,7 @@ namespace Assets.Scripts.Utility
             var newMap = mapEntries.FirstOrDefault(m => m.Code == newScene);
             
             LightProbes.Tetrahedralize();
-            UiManager.Instance.ConfigManager.RefreshAudioLevels(); //why unity does doing this in onAwake do literally nothing?
+            GameConfig.ApplyAudio();
             UiManager.Instance.StatusWindow.ResetStatChanges(); //clear existing changes
 
             PlayerState.Instance.MapName = newMap.Code;

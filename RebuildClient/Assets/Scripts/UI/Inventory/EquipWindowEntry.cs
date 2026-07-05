@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.Inventory
 {
-    public class EquipWindowEntry : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerClickHandler
+    public class EquipWindowEntry : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {
         public GameObject Background;
         public Image Image;
@@ -21,6 +21,7 @@ namespace Assets.Scripts.UI.Inventory
         public EquipSlot Slot;
         [NonSerialized] public InventoryItem InventoryItem;
         private bool isActive;
+        private bool isHovered;
 
         public void RefreshSlot(InventoryItem item)
         {
@@ -34,6 +35,7 @@ namespace Assets.Scripts.UI.Inventory
             Image.gameObject.SetActive(true);
             ItemName.gameObject.SetActive(true);
             isActive = true;
+            ShowTooltipIfHovered();
         }
 
         public void ClearSlot()
@@ -44,7 +46,7 @@ namespace Assets.Scripts.UI.Inventory
             ItemId = 0;
             ItemName.text = "";
             isActive = false;
-
+            UiManager.Instance.HideTooltip(gameObject);
         }
         
         public void OnDrag(PointerEventData eventData)
@@ -65,7 +67,7 @@ namespace Assets.Scripts.UI.Inventory
         {
             if (!isActive)
                 return;
-            
+
             UiManager.Instance.EndItemDrag();
             // Image.gameObject.SetActive(true);
             // ItemName.gameObject.SetActive(true);
@@ -86,6 +88,32 @@ namespace Assets.Scripts.UI.Inventory
                 return;
             
             NetworkManager.Instance.SendUnEquipItem(InventoryItem.BagSlotId);
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            isHovered = true;
+            ShowTooltipIfHovered();
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            isHovered = false;
+            UiManager.Instance.HideTooltip(gameObject);
+        }
+
+        private void OnDisable()
+        {
+            isHovered = false;
+            if (UiManager.Instance != null)
+                UiManager.Instance.HideTooltip(gameObject);
+        }
+
+        private void ShowTooltipIfHovered()
+        {
+            if (!isHovered || !isActive || UiManager.Instance.IsDraggingItem)
+                return;
+            UiManager.Instance.ShowTooltip(gameObject, InventoryItem.ProperName());
         }
     }
 }

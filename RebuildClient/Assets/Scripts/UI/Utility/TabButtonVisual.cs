@@ -12,6 +12,7 @@ namespace Assets.Scripts.UI.Utility
         [SerializeField] private Button button;
         [SerializeField] private Image tabImage;
         [SerializeField] private Image childImage;
+        [SerializeField] private GameObject linkedContent;
 
         private TabGroupVisual group;
         private Sprite fallbackIcon;
@@ -113,7 +114,7 @@ namespace Assets.Scripts.UI.Utility
 
         private void CaptureFallbackIcon()
         {
-            if (fallbackIconCaptured)
+            if (fallbackIconCaptured || childImage == null)
                 return;
 
             fallbackIcon = childImage.sprite;
@@ -122,6 +123,9 @@ namespace Assets.Scripts.UI.Utility
 
         private void ApplyIcon(Sprite icon)
         {
+            if (childImage == null)
+                return;
+
             childImage.sprite = icon != null ? icon : fallbackIcon;
         }
 
@@ -131,6 +135,9 @@ namespace Assets.Scripts.UI.Utility
             isSelected = selected;
 
             button.interactable = !selected;
+
+            if (linkedContent != null)
+                linkedContent.SetActive(selected);
 
             UpdateVisual();
         }
@@ -157,6 +164,10 @@ namespace Assets.Scripts.UI.Utility
             var iconMaterial = group.GetIconMaterial(isSelected, isHovered);
 
             tabImage.sprite = group.GetTabSprite(isSelected);
+
+            if (childImage == null)
+                return;
+
             childImage.material = iconMaterial;
 
             if (childImage.TryGetComponent<UiPlayerSprite>(out var playerSprite))

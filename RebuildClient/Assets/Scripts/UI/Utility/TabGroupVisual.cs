@@ -20,6 +20,7 @@ namespace Assets.Scripts.UI.Utility
         [SerializeField] private Vector2 tabSize = new(60, 72);
         [SerializeField] private float spacing;
         [SerializeField] private float firstTabTopOffset = 5f;
+        [SerializeField] private float firstTabLeftOffset;
         [SerializeField] private float selectedTabRightOffset = 2.5f;
         [SerializeField] private float selectedExtraWidth;
         [SerializeField] private float selectedExtraHeight;
@@ -172,7 +173,7 @@ namespace Assets.Scripts.UI.Utility
                 else
                     position += new Vector2(visibleIndex * (tabSize.x + spacing), 0);
 
-                if (i == selectedTabIndex)
+                if (i == selectedTabIndex && layoutDirection == LayoutDirection.Vertical)
                     position.x += GetSelectedXOffset();
 
                 rect.sizeDelta = tabSize + (i == selectedTabIndex ? new Vector2(selectedExtraWidth, selectedExtraHeight) : Vector2.zero);
@@ -183,6 +184,9 @@ namespace Assets.Scripts.UI.Utility
 
         private Vector2 GetFirstTabPosition()
         {
+            if (layoutDirection == LayoutDirection.Horizontal)
+                return new Vector2(firstTabLeftOffset, firstTabTopOffset);
+
             return new Vector2(-tabSize.x / 2f, firstTabTopOffset - (tabSize.y + selectedExtraHeight) / 2f);
         }
 
