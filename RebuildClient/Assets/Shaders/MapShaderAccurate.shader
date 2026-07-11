@@ -24,6 +24,7 @@ Shader "Custom/MapShaderAccurate"
 				#pragma fragment frag
 				#pragma multi_compile_fog
 				#pragma multi_compile _ LIGHTMAP_ON
+				#pragma multi_compile _ DIRLIGHTMAP_COMBINED
 				#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE
 				#pragma multi_compile _ _SHADOWS_SOFT
 				#pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
@@ -82,6 +83,19 @@ Shader "Custom/MapShaderAccurate"
 				float4 _RoBlindFocus;
 				float _RoBlindDistance;
 #endif
+#if defined(LIGHTMAP_ON) && defined(DIRLIGHTMAP_COMBINED)
+				SAMPLER(samplerunity_LightmapInd);
+#endif
+
+				half4 SampleAmbientOcclusionLightmap(float2 staticLightmapUV)
+				{
+#if defined(LIGHTMAP_ON) && defined(DIRLIGHTMAP_COMBINED)
+					half4 ao = SAMPLE_TEXTURE2D(unity_LightmapInd, samplerunity_LightmapInd, staticLightmapUV);
+					return ao * _RoLightmapAOStrength + (1 - _RoLightmapAOStrength);
+#else
+					return half4(1, 1, 1, 1);
+#endif
+				}
 
 				v2f vert(appdata v)
 				{
@@ -121,8 +135,8 @@ Shader "Custom/MapShaderAccurate"
 #if LIGHTMAP_ON
 					lm = float4(SampleLightmap(i.lightmapUV, N), 1);
 					lm = lerp(float4(0, 0, 0, 0), lm, _LightmapFactor);
+					ambienttex = SampleAmbientOcclusionLightmap(i.lightmapUV);
 #endif
-
 					float shadowStr = 1 - (saturate(1 - attenuation * NdotL * 2) * _Opacity); //NdotL here is to force things facing away from sun to be unlit
 					float4 env = 1 - ((1 - _RoDiffuseColor) * (1 - _RoAmbientColor));
 

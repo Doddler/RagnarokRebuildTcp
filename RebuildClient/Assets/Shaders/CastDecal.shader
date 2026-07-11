@@ -4,7 +4,7 @@ Shader "Custom/CastDecal"
     {
         _MainTex ("Cookie", 2D) = "white" {}
         _Color ("Color", Color) = (1,1,1,1)
-        _Attenuation ("Falloff", Range(0,1)) = 1.0
+        _Attenuation ("Falloff", Range(0,1)) = 0.1
     }
 
     SubShader
@@ -75,15 +75,17 @@ Shader "Custom/CastDecal"
                 float3 positionWS = ComputeWorldSpacePosition(screenUV, depth, UNITY_MATRIX_I_VP);
 
                 float3 positionDS = TransformWorldToObject(positionWS);
-                positionDS *= float3(1.0, -1.0, 1.0);
+                positionDS *= float3(1, -1, 1);
                 clip(0.5 - Max3(abs(positionDS).x, abs(positionDS).y, abs(positionDS).z));
-
+                
                 float2 decalUV = positionDS.xz + 0.5;
                 float2 uv = TRANSFORM_TEX(decalUV, _MainTex);
                 half4 cookie = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv);
-                half4 col = 1.0 - (1.0 - _Color) * (1.0 - cookie);
+                half4 col = 1 - (1 - _Color) * (1 - cookie);
                 col.a = _Color.a * cookie.a;
-                col *= saturate(1.0 - abs(positionDS.y * 2.0) + _Attenuation);
+                half yBelow = max(-positionDS.y, 0.0);
+                col *= saturate(1 - yBelow * 2 / max(_Attenuation, 1e-4));
+                col *= smoothstep(0.1, 0.05, positionDS.y);
                 return col;
             }
             ENDHLSL

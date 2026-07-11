@@ -31,6 +31,7 @@ Shader "Custom/ObjectShader"
             #pragma fragment frag
             #pragma multi_compile_fog
             #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE
             #pragma multi_compile _ _SHADOWS_SOFT
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
@@ -90,6 +91,19 @@ Shader "Custom/ObjectShader"
                 return 1 - (1 - a) * (1 - b);
             }
 
+#if defined(LIGHTMAP_ON) && defined(DIRLIGHTMAP_COMBINED)
+            SAMPLER(samplerunity_LightmapInd);
+#endif
+
+            half4 SampleAmbientOcclusionLightmap(float2 staticLightmapUV)
+            {
+#if defined(LIGHTMAP_ON) && defined(DIRLIGHTMAP_COMBINED)
+                return SAMPLE_TEXTURE2D(unity_LightmapInd, samplerunity_LightmapInd, staticLightmapUV);
+#else
+                return half4(1, 1, 1, 1);
+#endif
+            }
+
             v2f vert(appdata v)
             {
                 v2f o = (v2f)0;
@@ -131,6 +145,10 @@ Shader "Custom/ObjectShader"
                 lm = clamp(lm, 0, 0.5);
                 #endif
                 float4 ambienttex = float4(1, 1, 1, 1);
+
+#if LIGHTMAP_ON
+                ambienttex = SampleAmbientOcclusionLightmap(i.lightmapUV);
+#endif
 
                 Light mainLight = GetMainLight(TransformWorldToShadowCoord(i.positionWS));
                 float3 L = normalize(mainLight.direction);
@@ -177,7 +195,7 @@ Shader "Custom/ObjectShader"
 
                 finalColor.rgb *= i.color.rgb;
                 finalColor = saturate(finalColor);
-
+                
                 return finalColor;
             }
             ENDHLSL
