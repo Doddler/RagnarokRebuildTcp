@@ -57,10 +57,10 @@ public class ActImporter : ScriptedImporter
         
         for (var i = 0; i < 10; i++)
         {
-            var pName = Path.Combine(palettePath, $"{baseName}_{i}_1.pal");
+            var pName = Path.Combine(palettePath, $"{baseName}_{i}_1.pal").Replace("\\", "/");
             if (File.Exists(pName))
                 palettes.Add(pName);
-            pName = Path.Combine(palettePath, $"{baseName}_{i}.pal");
+            pName = Path.Combine(palettePath, $"{baseName}_{i}.pal").Replace("\\", "/");
             if (File.Exists(pName))
                 palettes.Add(pName);
         }
