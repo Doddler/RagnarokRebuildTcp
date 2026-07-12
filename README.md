@@ -4,8 +4,6 @@ Server and client for a Ragnarok Online-like game. Some assembly required.
 
 **Note**: This repository contains no game assets from Ragnarok Online. You will need to provide those yourself.
 
-**Warning**: The code is horrifying, would not recommend reading.
-
 ## Requirements
 
 * Unity 6000.3.19f1 or higher
