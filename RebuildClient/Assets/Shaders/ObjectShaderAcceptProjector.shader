@@ -1,4 +1,4 @@
-﻿Shader "Custom/ObjectShaderAcceptProjector"
+Shader "Custom/ObjectShaderAcceptProjector"
 {
     Properties
     {
@@ -13,28 +13,28 @@
     }
         SubShader
         {
-                Tags {"Queue" = "AlphaTest" "IgnoreProjector" = "False" "RenderType" = "TransparentCutout" "BW" = "TrueProbes" "LightMode" = "ForwardBase"}
+            Tags {"Queue" = "AlphaTest" "IgnoreProjector" = "False" "RenderType" = "TransparentCutout" "RenderPipeline" = "UniversalPipeline"}
 
             LOD 200
-            //Lighting Off
 
     Pass
     {
-        CGPROGRAM
+        Tags { "LightMode" = "UniversalForward" }
+
+        HLSLPROGRAM
         #pragma vertex vert
         #pragma fragment frag
-        // make fog work
         #pragma multi_compile_fog
-        #pragma multi_compile_fwdbase
         #pragma multi_compile _ LIGHTMAP_ON
-        #pragma target 2.0
-        #pragma multi_compile_fog
+        #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+        #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE
+        #pragma multi_compile _ _SHADOWS_SOFT
+        #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+        #pragma multi_compile _ _CLUSTER_LIGHT_LOOP
 
-
-
-
-        #include "UnityCG.cginc"
-        #include "AutoLight.cginc"
+        #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+        #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+        #include "RoAdditionalLights.hlsl"
 
         struct appdata
         {
@@ -43,40 +43,31 @@
             float2 uv : TEXCOORD0;
             float2 uv2 : TEXCOORD1;
             float3 normal : NORMAL;
-
-
         };
 
         struct v2f
         {
             float2 uv : TEXCOORD0;
-            float2 uv2 : TEXCOORD1;
+            DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 1);
             float4 color    : COLOR;
             float4 pos : SV_POSITION;
-            float3 normal : TEXCOORD2;
-            float3 lightDir : TEXCOORD3;
-
-            UNITY_FOG_COORDS(4)
-            LIGHTING_COORDS(5, 6)
-
+            float3 normalWS : TEXCOORD2;
+            float3 positionWS : TEXCOORD3;
+            half fogFactor : TEXCOORD4;
         };
 
-        sampler2D _MainTex;
+        TEXTURE2D(_MainTex);
+        SAMPLER(sampler_MainTex);
+
+        CBUFFER_START(UnityPerMaterial)
         float4 _MainTex_ST;
-        fixed4 _Color;
-        fixed _Cutoff;
-        fixed _AmbientIntensity;
-        fixed _LightmapIntensity;
-
-
-#ifdef DIRLIGHTMAP_COMBINED
-            SamplerState samplerunity_LightmapInd;
-#endif
-
-
-
-            //unity defined variables
-            uniform float4 _LightColor0;
+        half4 _Color;
+        half _Cutoff;
+        half _AmbientIntensity;
+        half _LightmapIntensity;
+        half _Glossiness;
+        half _Specular;
+        CBUFFER_END
 
             //from our globals
             float4 _RoAmbientColor;
@@ -84,89 +75,143 @@
             float _RoLightmapAOStrength;
             float _Opacity;
 
+            float4x4 unity_Projector;
+            float4x4 unity_ProjectorClip;
 
             float4 Screen(float4 a, float4 b)
             {
                 return 1 - (1 - a) * (1 - b);
             }
 
+#if defined(LIGHTMAP_ON) && defined(DIRLIGHTMAP_COMBINED)
+            SAMPLER(samplerunity_LightmapInd);
+#endif
+
+            half4 SampleAmbientOcclusionLightmap(float2 staticLightmapUV)
+            {
+#if defined(LIGHTMAP_ON) && defined(DIRLIGHTMAP_COMBINED)
+                return SAMPLE_TEXTURE2D(unity_LightmapInd, samplerunity_LightmapInd, staticLightmapUV);
+#else
+                return half4(1, 1, 1, 1);
+#endif
+            }
+
             v2f vert(appdata v)
             {
-                v2f o;
-                o.pos = UnityObjectToClipPos(v.vertex);
+                v2f o = (v2f)0;
+                float3 positionWS = TransformObjectToWorld(v.vertex.xyz);
+                o.positionWS = positionWS;
+                o.pos = TransformWorldToHClip(positionWS);
                 o.color = v.color;
-                o.normal = normalize(v.normal).xyz;
+                o.normalWS = TransformObjectToWorldNormal(v.normal);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-                o.lightDir = normalize(ObjSpaceLightDir(v.vertex));
-                o.uv2 = v.uv2.xy * unity_LightmapST.xy + unity_LightmapST.zw;
-                //o.worldpos = mul(unity_ObjectToWorld, v.vertex);
+                OUTPUT_LIGHTMAP_UV(v.uv2, unity_LightmapST, o.lightmapUV);
+#ifndef LIGHTMAP_ON
+                OUTPUT_SH(o.normalWS, o.vertexSH);
+#endif
 
-
-                UNITY_TRANSFER_FOG(o, o.pos);
-                TRANSFER_VERTEX_TO_FRAGMENT(o);
+                o.fogFactor = ComputeFogFactor(o.pos.z);
                 return o;
             }
 
-            fixed4 frag(v2f i) : SV_Target
+            half4 frag(v2f i) : SV_Target
             {
-                float4 diffuse = tex2D(_MainTex, i.uv);
-
+                float4 diffuse = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
 
                 clip(diffuse.a - _Cutoff);
 
+                float3 N = normalize(i.normalWS);
+
 #if LIGHTMAP_ON
-                float4 lm = float4(DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, i.uv2)), 1) * _LightmapIntensity;
+                float4 lm = float4(SampleLightmap(i.lightmapUV, N), 1) * _LightmapIntensity;
 #else
-                float4 lm = float4(ShadeSH9(float4(i.normal, 1)),1);
+                float4 lm = float4(SampleSHPixel(i.vertexSH, N), 1);
 #endif
                 float4 ambienttex = float4(1, 1, 1, 1);
 
-#ifdef DIRLIGHTMAP_COMBINED
-                ///float4 lm2 = float4(DecodeLightmap(UNITY_SAMPLE_TEX2D_SAMPLER(unity_LightmapInd, unity_Lightmap, i.uv2)), 1);
-
-                fixed4 bakedDirTex = UNITY_SAMPLE_TEX2D_SAMPLER(unity_LightmapInd, unity_LightmapInd, i.uv2);
-                //return float4(bakedDirTex.r, 1, 1, 1);
-                ambienttex = bakedDirTex.rrrr;
-
+#if LIGHTMAP_ON
+                ambienttex = SampleAmbientOcclusionLightmap(i.lightmapUV);
 #endif
-                float3 L = normalize(i.lightDir);
-                float3 N = normalize(i.normal);
 
-                float attenuation = LIGHT_ATTENUATION(i);
+                Light mainLight = GetMainLight(TransformWorldToShadowCoord(i.positionWS));
+                float3 L = normalize(mainLight.direction);
+
+                float attenuation = mainLight.shadowAttenuation * mainLight.distanceAttenuation;
                 float4 ambient = _RoAmbientColor;
-
 
                 float shadowStr = saturate(attenuation * _Opacity + (1 - _Opacity));
 
                 float NdotL = saturate(dot(N, L));
-                float4 diffuseTerm = NdotL * shadowStr; //* _DiffuseTint 
+                float4 diffuseTerm = NdotL * shadowStr;
 
                 lm *= (0.5 + saturate(NdotL * 2) * 0.5);
 
-                fixed ambientStrength = _RoLightmapAOStrength * _AmbientIntensity;
+                half ambientStrength = _RoLightmapAOStrength * _AmbientIntensity;
 
                 ambienttex = ambienttex * ambientStrength + (1 - ambientStrength);
 
-
-                float4 finalColor = diffuse; // *(ambient + diffuseTerm);
+                float4 finalColor = diffuse;
 
                 float env = 1 - ((1 - _RoDiffuseColor) * (1 - _RoAmbientColor));
 
-                finalColor = saturate(NdotL * _RoDiffuseColor + clamp(_RoAmbientColor, 0, 0.5)) * shadowStr * diffuse * env + lm * 2 * (diffuse);;
+                finalColor = saturate(NdotL * _RoDiffuseColor + clamp(_RoAmbientColor, 0, 0.5)) * shadowStr * diffuse * env + lm * 2 * (diffuse);
 
                 finalColor *= ambienttex;
 
                 finalColor *= 1 + (ambientStrength / 10);
 
-                UNITY_APPLY_FOG(i.fogCoord, finalColor);
+#if defined(_ADDITIONAL_LIGHTS)
+                uint addLightCount = GetAdditionalLightsCount();
+                half3 addDiffuse = 0;
+                InputData inputData = (InputData)0;
+                inputData.positionWS = i.positionWS;
+                inputData.normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(i.pos);
+                LIGHT_LOOP_BEGIN(addLightCount)
+                    Light al = GetAdditionalLight(lightIndex, i.positionWS);
+                    half ndl = saturate(dot(N, al.direction));
+                    half addAtten = RoSoftAdditionalAttenuation(lightIndex, i.positionWS);
+                    addDiffuse += al.color * (addAtten * al.shadowAttenuation * ndl);
+                LIGHT_LOOP_END
+                finalColor.rgb += diffuse.rgb * addDiffuse;
+#endif
+
+                finalColor.rgb = MixFog(finalColor.rgb, i.fogFactor);
 
                 return finalColor;
-
             }
 
-            ENDCG
+            ENDHLSL
+        }
+
+        Pass
+        {
+            Name "ShadowCaster"
+            Tags { "LightMode" = "ShadowCaster" }
+            ZWrite On ZTest LEqual ColorMask 0
+            Cull Off
+
+            HLSLPROGRAM
+            #pragma vertex RoShadowVert
+            #pragma fragment RoShadowFrag
+            #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
+
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+
+            TEXTURE2D(_MainTex);
+            SAMPLER(sampler_MainTex);
+            CBUFFER_START(UnityPerMaterial)
+            float4 _MainTex_ST;
+            half4 _Color;
+            half _Cutoff;
+            half _AmbientIntensity;
+            half _LightmapIntensity;
+            half _Glossiness;
+            half _Specular;
+            CBUFFER_END
+
+            #include "RoShadowCaster.hlsl"
+            ENDHLSL
         }
 
         }
-            FallBack "Legacy Shaders/Transparent/Cutout/VertexLit"
 }

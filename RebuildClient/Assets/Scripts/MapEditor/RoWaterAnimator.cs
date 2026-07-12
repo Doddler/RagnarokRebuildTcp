@@ -31,6 +31,9 @@ namespace Assets.Scripts.MapEditor
         {
             if (Water == null || Water.Images == null || Water.Images.Length <= 0)
             {
+                // still publish so the water-depth pass doesn't read the previous map's values
+                if (Water != null)
+                    PublishWaveGlobals();
                 isActive = false;
                 return;
             }
@@ -44,6 +47,8 @@ namespace Assets.Scripts.MapEditor
             Material.SetFloat("_WaveHeight", Water.WaveHeight / 5f);
             Material.SetFloat("_WaveSpeed", Water.WaveSpeed);
             Material.SetFloat("_WavePitch", Water.WavePitch);
+
+            PublishWaveGlobals();
 
             isActive = true;
         }
@@ -70,7 +75,19 @@ namespace Assets.Scripts.MapEditor
             Material.SetFloat("_WaveHeight", Water.WaveHeight / 5f);
             Material.SetFloat("_WaveSpeed", Water.WaveSpeed);
             Material.SetFloat("_WavePitch", Water.WavePitch);
+            PublishWaveGlobals();
 #endif
+        }
+
+        private static readonly int RoWaterWaveHeightId = Shader.PropertyToID("_RoWaterWaveHeight");
+        private static readonly int RoWaterWaveSpeedId = Shader.PropertyToID("_RoWaterWaveSpeed");
+        private static readonly int RoWaterWavePitchId = Shader.PropertyToID("_RoWaterWavePitch");
+
+        private void PublishWaveGlobals()
+        {
+            Shader.SetGlobalFloat(RoWaterWaveHeightId, Water.WaveHeight / 5f);
+            Shader.SetGlobalFloat(RoWaterWaveSpeedId, Water.WaveSpeed);
+            Shader.SetGlobalFloat(RoWaterWavePitchId, Water.WavePitch);
         }
     }
 }

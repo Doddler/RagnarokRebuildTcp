@@ -6,7 +6,6 @@ using Assets.Scripts.Utility;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace Assets.Scripts.Sprites
 {
@@ -61,7 +60,6 @@ namespace Assets.Scripts.Sprites
         public RoSpriteAnimator Parent;
         public GameObject Shadow;
         public GameObject LightProbeAnchor;
-        public SortingGroup ShadowSortingGroup { get; set; }
         public float VerticalOffset;
 
         public bool IgnoreAnchor = false;
@@ -751,7 +749,9 @@ namespace Assets.Scripts.Sprites
 	        if (!Shadow) return;
 	        
 	        SpriteUtil.CacheShadowMaterial();
-	        Shadow.GetComponent<SpriteRenderer>().material = SpriteUtil.shadowMaterial;
+	        var shadowRenderer = Shadow.GetComponent<SpriteRenderer>();
+	        if (shadowRenderer != null)
+		        shadowRenderer.sharedMaterial = SpriteUtil.shadowMaterial;
         }
         
         private void OnEnable()

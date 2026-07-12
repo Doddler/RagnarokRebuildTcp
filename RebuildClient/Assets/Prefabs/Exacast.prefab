@@ -33,25 +33,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 852959102784492969}
   m_LocalEulerAnglesHint: {x: 90, y: -90, z: 0}
---- !u!119 &852959102048508167
-Projector:
+--- !u!114 &852959102048508167
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 852959102048508165}
   m_Enabled: 1
-  serializedVersion: 2
-  m_NearClipPlane: 0.1
-  m_FarClipPlane: 3
-  m_FieldOfView: 60
-  m_AspectRatio: 1
-  m_Orthographic: 1
-  m_OrthographicSize: 5
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0777d029ed3dffa4692f417d4aba19ca, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
   m_Material: {fileID: 2100000, guid: 2fd522bbc3aea634f8098753d59aeb61, type: 2}
-  m_IgnoreLayers:
-    serializedVersion: 2
-    m_Bits: 0
+  m_DrawDistance: 1000
+  m_FadeScale: 0.9
+  m_StartAngleFade: 180
+  m_EndAngleFade: 180
+  m_UVScale: {x: 1, y: 1}
+  m_UVBias: {x: 0, y: 0}
+  m_ScaleMode: 0
+  m_Offset: {x: 0, y: 0, z: 0.5}
+  m_Size: {x: 10, y: 10, z: 4}
+  m_FadeFactor: 1
 --- !u!114 &3554217434769590286
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99,25 +103,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 852959102784492969}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!119 &852959102582397726
-Projector:
+--- !u!114 &852959102582397726
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 852959102582397725}
   m_Enabled: 1
-  serializedVersion: 2
-  m_NearClipPlane: 0.1
-  m_FarClipPlane: 3
-  m_FieldOfView: 60
-  m_AspectRatio: 1
-  m_Orthographic: 1
-  m_OrthographicSize: 4
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0777d029ed3dffa4692f417d4aba19ca, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
   m_Material: {fileID: 2100000, guid: f4a215ce4ad99d84893c79200399cc7d, type: 2}
-  m_IgnoreLayers:
-    serializedVersion: 2
-    m_Bits: 0
+  m_DrawDistance: 1000
+  m_FadeScale: 0.9
+  m_StartAngleFade: 180
+  m_EndAngleFade: 180
+  m_UVScale: {x: 1, y: 1}
+  m_UVBias: {x: 0, y: 0}
+  m_ScaleMode: 0
+  m_Offset: {x: 0, y: 0, z: 0.5}
+  m_Size: {x: 8, y: 8, z: 4}
+  m_FadeFactor: 1
 --- !u!114 &865787231
 MonoBehaviour:
   m_ObjectHideFlags: 0

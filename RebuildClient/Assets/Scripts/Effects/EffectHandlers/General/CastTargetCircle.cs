@@ -26,7 +26,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
 
             if (baseMaterial == null)
             {
-                baseMaterial = new Material(ShaderCache.Instance.ProjectorAdditiveShader);
+                baseMaterial = new Material(ShaderCache.Instance.CastDecalShader);
                 baseMaterial.color = Color.white;
             }
 
@@ -41,7 +41,6 @@ namespace Assets.Scripts.Effects.EffectHandlers
 
             mat.color = color;
             mat.mainTexture = tex;
-            mat.SetTexture("_ShadowTex", tex);
 
             effect.transform.localPosition = position + new Vector3(0f, 1.5f, 0f);
             effect.SetDurationByTime(duration);

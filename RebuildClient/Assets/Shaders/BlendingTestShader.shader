@@ -8,24 +8,24 @@ Shader "Unlit/BlendingTestShader"
     {
     Tags
             {
-                "RenderType" = "Transparent""Queue" = "Transparent"
+                "RenderType" = "Transparent" "Queue" = "Transparent" "RenderPipeline" = "UniversalPipeline"
             }
 
             Cull Off
-            Lighting Off
-            ZWrite Off         
+            ZWrite Off
         Blend One OneMinusSrcAlpha
-        //Blend SrcAlpha OneMinusSrcAlpha
 
         Pass
         {
-            CGPROGRAM
+            Tags{ "LightMode" = "UniversalForward" }
+
+            HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
             #pragma multi_compile_fog
 
-            #include "UnityCG.cginc"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
 
             struct appdata
             {
@@ -41,33 +41,29 @@ Shader "Unlit/BlendingTestShader"
                 float4 screenPos : TEXCOORD1;
             };
 
-            UNITY_DECLARE_DEPTH_TEXTURE(_CameraDepthTexture);
-
             v2f vert (appdata v)
             {
-                v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
+                v2f o = (v2f)0;
+                o.vertex = TransformObjectToHClip(v.vertex.xyz);
                 o.color = v.color;
-                
+
                 // compute depth
                 o.screenPos = ComputeScreenPos(o.vertex);
-                COMPUTE_EYEDEPTH(o.screenPos.z);
+                o.screenPos.z = -TransformWorldToView(TransformObjectToWorld(v.vertex.xyz)).z;
                 return o;
             }
 
-            fixed4 frag (v2f i) : SV_Target
+            half4 frag (v2f i) : SV_Target
             {
-                // sample the texture
-//                fixed4 col = tex2D(_MainTex, i.uv);
+                float2 screenUV = i.screenPos.xy / i.screenPos.w;
+                float depth = SampleSceneDepth(screenUV);
+                depth = Linear01Depth(depth, _ZBufferParams);
 
-            float depth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.screenPos);  // sample from depth texture
-            depth = Linear01Depth(depth);
+                clip(0.01 - depth);
 
-            clip(0.01 - depth);
-
-            return i.color; // *depth;
+                return i.color;
             }
-            ENDCG
+            ENDHLSL
         }
     }
 }

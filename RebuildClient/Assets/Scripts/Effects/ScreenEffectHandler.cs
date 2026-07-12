@@ -1,28 +1,14 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Assets.Scripts.Effects
 {
     public class ScreenEffectHandler : MonoBehaviour
     {
-        private static readonly int Strength = Shader.PropertyToID("_Strength");
-        public Shader EffectShader = null;
-        public Material EffectMaterial;
-        private float strength = 0;
-        private float targetStrength = 1;
-        private float startTransitionTime = 0;
-        private bool isEnabled = false;
-    
-        void Start()
-        {
-            if (EffectShader == null)
-            {
-                Debug.LogError("no screen effect shader.");
-                EffectMaterial = null;
-                return;
-            }
+        public static float HallucinationStrength { get; private set; }
 
-            EffectMaterial = new Material(EffectShader);
-        }
+        private const float TargetStrength = 1f;
+        private float strength;
+        private bool isEnabled;
 
         public void StartHallucination()
         {
@@ -32,23 +18,31 @@ namespace Assets.Scripts.Effects
 
         public void EndHallucination()
         {
-            startTransitionTime = Time.timeSinceLevelLoad;
             isEnabled = false;
         }
 
-        void OnRenderImage(RenderTexture source, RenderTexture destination)
+        private void OnDisable()
+        {
+            HallucinationStrength = 0f;
+        }
+
+        private void Update()
         {
             if (isEnabled)
-                strength = Mathf.Lerp(strength, targetStrength, Time.deltaTime);
+                strength = Mathf.Lerp(strength, TargetStrength, Time.deltaTime);
             else
             {
-                strength = Mathf.Lerp(strength, 0, Time.deltaTime * 3);
+                strength = Mathf.Lerp(strength, 0f, Time.deltaTime * 3f);
                 if (strength <= 0.005f)
+                {
+                    strength = 0f;
+                    HallucinationStrength = 0f;
                     enabled = false;
+                    return;
+                }
             }
-            EffectMaterial.SetFloat(Strength, strength);
 
-            Graphics.Blit(source, destination, EffectMaterial);
+            HallucinationStrength = strength;
         }
     }
 }

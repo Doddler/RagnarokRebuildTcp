@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Sprites;
-using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.Utility;
 using Unity.Collections;
+using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
@@ -45,21 +45,25 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
         new(VertexAttribute.TexCoord7, VertexAttributeFormat.Float32, 2),
     };
 
-    private const CameraEvent XRayEvent = CameraEvent.AfterForwardOpaque;
-
     private static readonly int AtlasArrayId = Shader.PropertyToID("_AtlasArray");
 
+    private static readonly ProfilerMarker _markerWriteSprite = new("RoSpriteBatcher.WriteSprite");
+    private static readonly ProfilerMarker _markerLateUpdate = new("RoSpriteBatcher.LateUpdate");
+    private static readonly ProfilerMarker _markerShadowRaycasts = new("RoSpriteBatcher.ShadowRaycasts");
+    private static readonly ProfilerMarker _markerSyncTransforms = new("RoSpriteBatcher.SyncBatchedTransforms");
+    private static readonly ProfilerMarker _markerCullCollect = new("RoSpriteBatcher.CullAndCollect");
+    private static readonly ProfilerMarker _markerSort = new("RoSpriteBatcher.SortEntries");
+    private static readonly ProfilerMarker _markerBuildIndices = new("RoSpriteBatcher.BuildIndices");
+    private static readonly ProfilerMarker _markerUploadMesh = new("RoSpriteBatcher.UploadMesh");
+
     private Camera _camera;
-    private CommandBuffer _xrayCmd;
     private GameObject _batchRendererGo;
     private MeshRenderer _batchRenderer;
 
-    private readonly HashSet<Camera> _attachedCameras = new();
-
     private static readonly Plane[] _frustumPlanes = new Plane[6];
 
+    // Single 3-pass material (Depth + Color + XRay). The XRay pass is drawn by RoSpriteXRayFeature.
     private Material _baseMaterial;
-    private Material _xrayMaterial;
 
     private bool _platformSupported = true;
     public int Generation { get; private set; }
@@ -146,15 +150,8 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
 
         Generation++;
 
-        _xrayCmd = new CommandBuffer { name = "RoSpriteAndGroundItemBatcher - XRay" };
-
-        AttachToCamera(_camera);
         SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.sceneUnloaded += OnSceneUnloaded;
-
-#if UNITY_EDITOR
-        Camera.onPreCull += OnAnyCameraPreCull;
-#endif
 
         EnsureMaterials();
     }
@@ -165,20 +162,6 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
             Instance = null;
         SceneManager.sceneLoaded -= OnSceneLoaded;
         SceneManager.sceneUnloaded -= OnSceneUnloaded;
-
-#if UNITY_EDITOR
-        Camera.onPreCull -= OnAnyCameraPreCull;
-#endif
-
-        foreach (var cam in _attachedCameras)
-        {
-            if (cam != null)
-                cam.RemoveCommandBuffer(XRayEvent, _xrayCmd);
-        }
-        _attachedCameras.Clear();
-
-        _xrayCmd?.Release();
-        _xrayCmd = null;
 
         if (_batchRendererGo != null)
         {
@@ -206,7 +189,6 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
         AtlasArrayView = null;
 
         if (_baseMaterial != null) { Destroy(_baseMaterial); _baseMaterial = null; }
-        if (_xrayMaterial != null) { Destroy(_xrayMaterial); _xrayMaterial = null; }
 
         DisposeShadowRaycasts();
     }
@@ -221,42 +203,17 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
         InvalidateShadowLightCache();
     }
 
-    private void AttachToCamera(Camera cam)
-    {
-        if (cam == null) return;
-        if (_attachedCameras.Contains(cam)) return;
-        cam.AddCommandBuffer(XRayEvent, _xrayCmd);
-        _attachedCameras.Add(cam);
-    }
-
-#if UNITY_EDITOR
-    private void OnAnyCameraPreCull(Camera cam)
-    {
-        if (cam == null) return;
-        if (cam.cameraType != CameraType.SceneView) return;
-        AttachToCamera(cam);
-    }
-#endif
-
     private void EnsureMaterials()
     {
         var cache = ShaderCache.Instance;
         if (!cache) return;
 
-        if (!_baseMaterial && cache.SpriteShader)
+        if (!_baseMaterial && cache.SpriteShaderWithXRay)
         {
-            _baseMaterial = new Material(cache.SpriteShader);
+            _baseMaterial = new Material(cache.SpriteShaderWithXRay);
             _baseMaterial.EnableKeyword("DYNBATCH_ON");
 #if UNITY_EDITOR
             WarmUpMaterialVariants(_baseMaterial);
-#endif
-        }
-        if (!_xrayMaterial && cache.SpriteShaderWithXRay)
-        {
-            _xrayMaterial = new Material(cache.SpriteShaderWithXRay);
-            _xrayMaterial.EnableKeyword("DYNBATCH_ON");
-#if UNITY_EDITOR
-            WarmUpMaterialVariants(_xrayMaterial);
 #endif
         }
 
@@ -270,8 +227,6 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
         AtlasArrayView = tex;
         if (_baseMaterial != null && _baseMaterial.GetTexture(AtlasArrayId) != tex)
             _baseMaterial.SetTexture(AtlasArrayId, tex);
-        if (_xrayMaterial != null && _xrayMaterial.GetTexture(AtlasArrayId) != tex)
-            _xrayMaterial.SetTexture(AtlasArrayId, tex);
         if (_batchRenderer != null && _batchRenderer.sharedMaterial != _baseMaterial)
             _batchRenderer.sharedMaterial = _baseMaterial;
     }
@@ -451,42 +406,45 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
             return false;
         }
 
-        int newLayerCount = verts.Length / VertsPerQuad;
-        if (!EnsureSlotCount(ref handle, newLayerCount))
+        using (_markerWriteSprite.Auto())
         {
-            Unregister(ref handle);
-            return false;
+            int newLayerCount = verts.Length / VertsPerQuad;
+            if (!EnsureSlotCount(ref handle, newLayerCount))
+            {
+                Unregister(ref handle);
+                return false;
+            }
+
+            ref var entry = ref _entries[handle.EntryId];
+            entry.Written = true;
+            entry.Hidden = p.hidden;
+            entry.RootPos = p.rootPos;
+            entry.RootKey = p.rootKey;
+            entry.RootOrder = p.rootOrder;
+            entry.MemberOrder = p.sortOrder;
+            entry.CullCenter = new Vector3(localToWorld.m03, localToWorld.m13, localToWorld.m23);
+            entry.Xform = xform;
+            entry.RootXform = rootXform;
+            entry.CameraFacing = cameraFacing;
+            entry.CornerRotation = cameraFacing ? BillboardCameraRotation() : Quaternion.identity;
+
+            var region = entry.Region;
+            var slots = entry.Slots;
+            float maxCornerSq = 0f;
+            for (int layer = 0; layer < newLayerCount; layer++)
+            {
+                int vb = layer * VertsPerQuad;
+                float cornerSq = WriteSlot(slots[layer], localToWorld, region,
+                    verts[vb + 0], verts[vb + 1], verts[vb + 2], verts[vb + 3],
+                    uvs[vb + 0],   uvs[vb + 1],   uvs[vb + 2],   uvs[vb + 3],
+                    vcolors[vb + 0], vcolors[vb + 1], vcolors[vb + 2], vcolors[vb + 3],
+                    p);
+                if (cornerSq > maxCornerSq) maxCornerSq = cornerSq;
+            }
+
+            entry.Radius = Mathf.Sqrt(maxCornerSq) + Mathf.Abs(p.vPos) + 1f;
+            return true;
         }
-
-        ref var entry = ref _entries[handle.EntryId];
-        entry.Written = true;
-        entry.Hidden = p.hidden;
-        entry.RootPos = p.rootPos;
-        entry.RootKey = p.rootKey;
-        entry.RootOrder = p.rootOrder;
-        entry.MemberOrder = p.sortOrder;
-        entry.CullCenter = new Vector3(localToWorld.m03, localToWorld.m13, localToWorld.m23);
-        entry.Xform = xform;
-        entry.RootXform = rootXform;
-        entry.CameraFacing = cameraFacing;
-        entry.CornerRotation = cameraFacing ? BillboardCameraRotation() : Quaternion.identity;
-
-        var region = entry.Region;
-        var slots = entry.Slots;
-        float maxCornerSq = 0f;
-        for (int layer = 0; layer < newLayerCount; layer++)
-        {
-            int vb = layer * VertsPerQuad;
-            float cornerSq = WriteSlot(slots[layer], localToWorld, region,
-                verts[vb + 0], verts[vb + 1], verts[vb + 2], verts[vb + 3],
-                uvs[vb + 0],   uvs[vb + 1],   uvs[vb + 2],   uvs[vb + 3],
-                vcolors[vb + 0], vcolors[vb + 1], vcolors[vb + 2], vcolors[vb + 3],
-                p);
-            if (cornerSq > maxCornerSq) maxCornerSq = cornerSq;
-        }
-
-        entry.Radius = Mathf.Sqrt(maxCornerSq) + Mathf.Abs(p.vPos) + 1f;
-        return true;
     }
 
     private bool EnsureSlotCount(ref SpriteBatchHandle handle, int newCount)
@@ -638,10 +596,6 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
         ProcessShadowRaycasts();
         _atlasArray?.SweepExpired();
 
-        if (_xrayCmd == null) return;
-
-        _xrayCmd.Clear();
-
         if (!BatchingAvailable || _mesh == null)
         {
             if (_batchRenderer != null) _batchRenderer.enabled = false;
@@ -656,90 +610,99 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
             return;
         }
 
-        bool xrayWanted = GameConfig.Data != null && GameConfig.Data.EnableXRay
-            && _xrayMaterial != null && _xrayMaterial.passCount >= 3;
-
-        var camPos = Vector3.zero;
-        var sortAxis = Vector3.forward;
-        bool useSortAxis = false;
-        bool haveFrustum = _camera != null;
-        if (haveFrustum)
+        using (_markerLateUpdate.Auto())
         {
-            GeometryUtility.CalculateFrustumPlanes(_camera, _frustumPlanes);
-            camPos = _camera.transform.position;
-            useSortAxis = _camera.transparencySortMode == TransparencySortMode.CustomAxis;
-            if (useSortAxis)
+            var camPos = Vector3.zero;
+            var sortAxis = Vector3.forward;
+            bool useSortAxis = false;
+            bool haveFrustum = _camera != null;
+            if (haveFrustum)
             {
-                sortAxis = _camera.transparencySortAxis.normalized;
-                if (sortAxis.sqrMagnitude < 0.0001f)
-                    sortAxis = _camera.transform.forward;
+                GeometryUtility.CalculateFrustumPlanes(_camera, _frustumPlanes);
+                camPos = _camera.transform.position;
+                useSortAxis = _camera.transparencySortMode == TransparencySortMode.CustomAxis;
+                if (useSortAxis)
+                {
+                    sortAxis = _camera.transparencySortAxis.normalized;
+                    if (sortAxis.sqrMagnitude < 0.0001f)
+                        sortAxis = _camera.transform.forward;
+                }
             }
-        }
 
-        SyncBatchedTransforms();
+            SyncBatchedTransforms();
 
-        int sortCount = 0;
-        for (var i = 0; i < _entryHighWater; i++)
-        {
-            ref var entry = ref _entries[i];
-            if (!entry.InUse || !entry.Written || entry.Hidden) continue;
-
-            if (haveFrustum && IsCulled(entry.CullCenter, entry.Radius))
-                continue;
-
-            entry.SortDepth = useSortAxis
-                ? Vector3.Dot(entry.RootPos - camPos, sortAxis)
-                : (entry.RootPos - camPos).magnitude;
-            _sortValues[sortCount] = i;
-            sortCount++;
-        }
-
-        if (sortCount == 0)
-        {
-            _batchRenderer.enabled = false;
-            return;
-        }
-
-        Array.Sort(_sortValues, 0, sortCount, _entrySortComparer);
-
-        int indexCount = 0;
-        for (var s = 0; s < sortCount; s++)
-        {
-            ref var sorted = ref _entries[_sortValues[s]];
-            var slots = sorted.Slots;
-            for (var q = 0; q < sorted.SlotCount; q++)
+            int sortCount = 0;
+            using (_markerCullCollect.Auto())
             {
-                int vb = slots[q] * VertsPerQuad;
-                _indices[indexCount + 0] = (ushort)(vb + 0);
-                _indices[indexCount + 1] = (ushort)(vb + 1);
-                _indices[indexCount + 2] = (ushort)(vb + 2);
-                _indices[indexCount + 3] = (ushort)(vb + 1);
-                _indices[indexCount + 4] = (ushort)(vb + 3);
-                _indices[indexCount + 5] = (ushort)(vb + 2);
-                indexCount += IndicesPerQuad;
+                for (var i = 0; i < _entryHighWater; i++)
+                {
+                    ref var entry = ref _entries[i];
+                    if (!entry.InUse || !entry.Written || entry.Hidden) continue;
+
+                    if (haveFrustum && IsCulled(entry.CullCenter, entry.Radius))
+                        continue;
+
+                    entry.SortDepth = useSortAxis
+                        ? Vector3.Dot(entry.RootPos - camPos, sortAxis)
+                        : (entry.RootPos - camPos).magnitude;
+                    _sortValues[sortCount] = i;
+                    sortCount++;
+                }
             }
+
+            if (sortCount == 0)
+            {
+                _batchRenderer.enabled = false;
+                return;
+            }
+
+            using (_markerSort.Auto())
+                Array.Sort(_sortValues, 0, sortCount, _entrySortComparer);
+
+            int indexCount = 0;
+            using (_markerBuildIndices.Auto())
+            {
+                for (var s = 0; s < sortCount; s++)
+                {
+                    ref var sorted = ref _entries[_sortValues[s]];
+                    var slots = sorted.Slots;
+                    for (var q = 0; q < sorted.SlotCount; q++)
+                    {
+                        int vb = slots[q] * VertsPerQuad;
+                        _indices[indexCount + 0] = (ushort)(vb + 0);
+                        _indices[indexCount + 1] = (ushort)(vb + 1);
+                        _indices[indexCount + 2] = (ushort)(vb + 2);
+                        _indices[indexCount + 3] = (ushort)(vb + 1);
+                        _indices[indexCount + 4] = (ushort)(vb + 3);
+                        _indices[indexCount + 5] = (ushort)(vb + 2);
+                        indexCount += IndicesPerQuad;
+                    }
+                }
+            }
+
+            using (_markerUploadMesh.Auto())
+            {
+                if (_dirtyMin <= _dirtyMax)
+                {
+                    int vertStart = _dirtyMin * VertsPerQuad;
+                    int vertCount = (_dirtyMax - _dirtyMin + 1) * VertsPerQuad;
+                    _mesh.SetVertexBufferData(_verts, vertStart, vertStart, vertCount, 0, FastUpdate);
+                    _dirtyMin = int.MaxValue;
+                    _dirtyMax = int.MinValue;
+                }
+
+                _mesh.SetIndexBufferData(_indices, 0, 0, indexCount, FastUpdate);
+                _mesh.SetSubMesh(0, new SubMeshDescriptor(0, indexCount), FastUpdate);
+            }
+
+            _batchRenderer.enabled = true;
         }
-
-        if (_dirtyMin <= _dirtyMax)
-        {
-            int vertStart = _dirtyMin * VertsPerQuad;
-            int vertCount = (_dirtyMax - _dirtyMin + 1) * VertsPerQuad;
-            _mesh.SetVertexBufferData(_verts, vertStart, vertStart, vertCount, 0, FastUpdate);
-            _dirtyMin = int.MaxValue;
-            _dirtyMax = int.MinValue;
-        }
-
-        _mesh.SetIndexBufferData(_indices, 0, 0, indexCount, FastUpdate);
-        _mesh.SetSubMesh(0, new SubMeshDescriptor(0, indexCount), FastUpdate);
-
-        _batchRenderer.enabled = true;
-
-        if (xrayWanted)
-            _xrayCmd.DrawMesh(_mesh, Matrix4x4.identity, _xrayMaterial, 0, 2);
     }
 
     private void SyncBatchedTransforms()
     {
+        using var _ = _markerSyncTransforms.Auto();
+
         var camRot = BillboardCameraRotation();
         bool haveCam = _billboardCamera != null;
 
@@ -750,7 +713,7 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
 
             var anchor = entry.Xform.position;
             bool anchorChanged = anchor != entry.CullCenter; //Vector3 == is epsilon-tolerant; stationary sprites cost one read
-            
+
             bool rotate = false;
             var delta = Quaternion.identity;
             if (entry.CameraFacing && haveCam)

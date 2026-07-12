@@ -3,7 +3,7 @@ Shader"Ragnarok/CharacterSpriteShader - Color"
     Properties
     {
         [PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
-        //[PerRendererData] _PalTex("Palette Texture", 2D) = "white" {}
+        _AtlasArray("Atlas Array", 2DArray) = "" {}
         [PerRendererData] _Color("Tint", Color) = (1,1,1,1)
         [PerRendererData] _EnvColor("Environment", Color) = (1,1,1,1)
         [PerRendererData] _Offset("Offset", Float) = 0
@@ -15,36 +15,32 @@ Shader"Ragnarok/CharacterSpriteShader - Color"
 
     SubShader
     {
-
-        Tags{"Queue" = "Transparent" "LightMode" = "Vertex" "IgnoreProjector" = "True" "RenderType" = "Transparent"}
+        Tags{"Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent" "RenderPipeline" = "UniversalPipeline"}
 
         Cull Off
-        Lighting Off
         ZWrite Off
         Blend One OneMinusSrcAlpha
-        
+
         Pass
         {
             Name "Color"
+            Tags{"LightMode" = "UniversalForward"}
             ZWrite Off
 
-            CGPROGRAM
+            HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            #pragma multi_compile_fwdbase
             #pragma multi_compile_fog
-            //#pragma multi_compile _ PIXELSNAP_ON
-            //#pragma multi_compile _ PALETTE_ON
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+            #pragma multi_compile _ _CLUSTER_LIGHT_LOOP
             #pragma multi_compile _ SMOOTHPIXEL
             #pragma multi_compile _ BLINDEFFECT_ON
-            //#pragma shader_feature _ WATER_OFF
             #pragma shader_feature _ COLOR_DRAIN
 
-
-            //#define SMOOTHPIXEL
+            #pragma multi_compile_local _ DYNBATCH_ON
 
             #include "SpriteColorOnlyPass.cginc"
-            ENDCG
+            ENDHLSL
         }
     }
 }

@@ -9,18 +9,19 @@ Shader "Unlit/GroundBlendTest"
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "RenderType"="Opaque" "RenderPipeline" = "UniversalPipeline" }
         LOD 100
 
         Pass
         {
-            CGPROGRAM
+            Tags{ "LightMode" = "UniversalForward" }
+
+            HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
             #pragma multi_compile_fog
 
-            #include "UnityCG.cginc"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
             struct appdata
             {
@@ -31,50 +32,45 @@ Shader "Unlit/GroundBlendTest"
             struct v2f
             {
                 float2 uv : TEXCOORD0;
-                UNITY_FOG_COORDS(1)
+                half fogFactor : TEXCOORD1;
                 float4 vertex : SV_POSITION;
             };
 
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
-            sampler2D _Lightmap;
-            float4 _Lightmap_ST;
+            TEXTURE2D(_MainTex);
+            SAMPLER(sampler_MainTex);
+            TEXTURE2D(_Lightmap);
+            SAMPLER(sampler_Lightmap);
 
-            fixed4 _Ambient;
-            fixed4 _Diffuse;
+            CBUFFER_START(UnityPerMaterial)
+            float4 _MainTex_ST;
+            float4 _Lightmap_ST;
+            half4 _Ambient;
+            half4 _Diffuse;
+            CBUFFER_END
 
             v2f vert (appdata v)
             {
-                v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
+                v2f o = (v2f)0;
+                o.vertex = TransformObjectToHClip(v.vertex.xyz);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-                UNITY_TRANSFER_FOG(o,o.vertex);
+                o.fogFactor = ComputeFogFactor(o.vertex.z);
                 return o;
             }
 
-            fixed4 frag (v2f i) : SV_Target
+            half4 frag (v2f i) : SV_Target
             {
-                // sample the texture
-                fixed4 col = tex2D(_MainTex, i.uv);
-                fixed4 lm = tex2D(_Lightmap, i.uv/30);
-                // apply fog
-                //UNITY_APPLY_FOG(i.fogCoord, col + lm);
-
-                //lm *= lm.a;
-
-                //return col * _Ambient + lm;
+                half4 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
+                half4 lm = SAMPLE_TEXTURE2D(_Lightmap, sampler_Lightmap, i.uv/30);
 
                 return lm;
 
-                fixed4 light = saturate(_Ambient + _Diffuse)/2 * lm.a;
+                half4 light = saturate(_Ambient + _Diffuse)/2 * lm.a;
 
                 return col * light + lm;
 
-
-                //return a * lm;
                 return col*_Ambient*lm.a+lm;
             }
-            ENDCG
+            ENDHLSL
         }
     }
 }
