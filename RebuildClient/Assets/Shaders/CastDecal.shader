@@ -83,9 +83,9 @@ Shader "Custom/CastDecal"
                 half4 cookie = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv);
                 half4 col = 1 - (1 - _Color) * (1 - cookie);
                 col.a = _Color.a * cookie.a;
-                half yBelow = max(-positionDS.y, 0.0);
-                col *= saturate(1 - yBelow * 2 / max(_Attenuation, 1e-4));
-                col *= smoothstep(0.1, 0.05, positionDS.y);
+                //half yBelow = max(-positionDS.y, 0.0);
+                //col *= saturate(1 - yBelow * 2 / max(_Attenuation, 1e-4));
+                col *= smoothstep(0.3, 0.05, abs(positionDS.y) / 2);
                 return col;
             }
             ENDHLSL
