@@ -25638,7 +25638,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2000122720}
   m_HandleRect: {fileID: 2000122719}
   m_Direction: 2
-  m_Value: 1.0000005
+  m_Value: 1.0000007
   m_Size: 0.55382216
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -41092,7 +41092,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -47328,6 +47328,12 @@ PrefabInstance:
       objectReference: {fileID: 2007945105}
     - target: {fileID: 3806810817248551957, guid: 7cb1e2a9a8a5c8d418e25368571c9a56,
         type: 3}
+      propertyPath: RenderVolume
+      value: 
+      objectReference: {fileID: 11400000, guid: 26f5c18a689241349ac96eaecaf0951f,
+        type: 2}
+    - target: {fileID: 3806810817248551957, guid: 7cb1e2a9a8a5c8d418e25368571c9a56,
+        type: 3}
       propertyPath: ErrorNoticeUi
       value: 
       objectReference: {fileID: 359467888}
@@ -47336,6 +47342,12 @@ PrefabInstance:
       propertyPath: NpcOptionPanel
       value: 
       objectReference: {fileID: 1761897299}
+    - target: {fileID: 3806810817248551957, guid: 7cb1e2a9a8a5c8d418e25368571c9a56,
+        type: 3}
+      propertyPath: RenderPipeline
+      value: 
+      objectReference: {fileID: 11400000, guid: a00fb44b556a05449b350b1cd69279cb,
+        type: 2}
     - target: {fileID: 3806810817248551957, guid: 7cb1e2a9a8a5c8d418e25368571c9a56,
         type: 3}
       propertyPath: TextBoxInputField

@@ -64,7 +64,7 @@ Shader "Unlit/BillboardVerticalZDepth"
                 float4 viewPivot = mul(UNITY_MATRIX_V, worldCoord);
 
                 // construct rotation matrix
-                float3 forward = -normalize(viewPivot);
+                float3 forward = -normalize(viewPivot.xyz);
                 float3 up = mul(UNITY_MATRIX_V, float3(0,1,0)).xyz;
                 float3 right = normalize(cross(up,forward));
                 up = cross(forward,right);

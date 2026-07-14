@@ -42,7 +42,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
             mat.color = color;
             mat.mainTexture = tex;
 
-            effect.transform.localPosition = position + new Vector3(0f, 0.6f, 0f);
+            effect.transform.localPosition = position + new Vector3(0f, 0.5f, 0f);
             effect.SetDurationByTime(duration);
             effect.UpdateOnlyOnFrameChange = false;
             effect.DestroyOnTargetLost = false;

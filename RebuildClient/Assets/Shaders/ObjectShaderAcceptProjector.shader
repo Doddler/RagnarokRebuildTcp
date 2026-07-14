@@ -1,4 +1,4 @@
-Shader "Custom/ObjectShaderAcceptProjector"
+﻿Shader "Custom/ObjectShaderAcceptProjector"
 {
     Properties
     {
@@ -150,11 +150,9 @@ Shader "Custom/ObjectShaderAcceptProjector"
 
                 ambienttex = ambienttex * ambientStrength + (1 - ambientStrength);
 
-                float4 finalColor = diffuse;
+                float4 env = 1 - ((1 - _RoDiffuseColor) * (1 - _RoAmbientColor));
 
-                float env = 1 - ((1 - _RoDiffuseColor) * (1 - _RoAmbientColor));
-
-                finalColor = saturate(NdotL * _RoDiffuseColor + clamp(_RoAmbientColor, 0, 0.5)) * shadowStr * diffuse * env + lm * 2 * (diffuse);
+                float4 finalColor = saturate(NdotL * _RoDiffuseColor + clamp(_RoAmbientColor, 0, 0.5)) * shadowStr * diffuse * env + lm * 2 * (diffuse);
 
                 finalColor *= ambienttex;
 

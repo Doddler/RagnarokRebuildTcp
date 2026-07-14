@@ -14,7 +14,7 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
             decal.material = primitive.Material;
             decal.pivot = Vector3.zero;
             decal.scaleMode = DecalScaleMode.InheritFromHierarchy;
-            decal.size = new Vector3(2f, 2f, 6f);
+            decal.size = new Vector3(2f, 2f, 5f);
 
             primitive.GetComponent<MeshRenderer>().enabled = false;
             primitive.SetDisposableComponent(decal);

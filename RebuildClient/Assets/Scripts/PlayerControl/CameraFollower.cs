@@ -29,6 +29,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utility;
@@ -187,6 +188,9 @@ namespace Assets.Scripts
         public PromptType ActivePromptType;
 
         private List<RaycastResult> raycastResults;
+
+        public UniversalRenderPipelineAsset RenderPipeline;
+        public VolumeProfile RenderVolume;
 
 #if DEBUG
         private const float MaxClickDistance = 500;

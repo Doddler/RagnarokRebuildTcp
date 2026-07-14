@@ -1,4 +1,4 @@
-Shader "Ragnarok/RoWaterShader"
+﻿Shader "Ragnarok/RoWaterShader"
 {
     Properties
     {
@@ -114,7 +114,7 @@ Shader "Ragnarok/RoWaterShader"
                 half4 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
 
                 half a = 0.5625;
-                float env = 1 - ((1 - _RoDiffuseColor) * (1 - _RoAmbientColor));
+                float4 env = 1 - ((1 - _RoDiffuseColor) * (1 - _RoAmbientColor));
                 env = env * 0.5 + 0.5;
 
                 col.rgb = MixFog(col.rgb, i.fogFactor);

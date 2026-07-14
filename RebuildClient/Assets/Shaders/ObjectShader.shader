@@ -169,7 +169,7 @@ Shader "Custom/ObjectShader"
 
                 float4 finalColor = diffuse;
 
-                float env = 1 - ((1 - _RoDiffuseColor) * (1 - _RoAmbientColor));
+                float4 env = 1 - ((1 - _RoDiffuseColor) * (1 - _RoAmbientColor));
 
                 finalColor = saturate(NdotL * _RoDiffuseColor + clamp(_RoAmbientColor, 0, 0.5)) * shadowStr * diffuse *
                     env + lm * 2 * (diffuse) * _LightmapIntensity * 0.8;

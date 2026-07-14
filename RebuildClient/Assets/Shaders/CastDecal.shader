@@ -85,7 +85,8 @@ Shader "Custom/CastDecal"
                 col.a = _Color.a * cookie.a;
                 //half yBelow = max(-positionDS.y, 0.0);
                 //col *= saturate(1 - yBelow * 2 / max(_Attenuation, 1e-4));
-                col *= smoothstep(0.3, 0.05, abs(positionDS.y) / 2);
+                float str = abs(positionDS.y * 2); 
+                col.a = saturate(col.a * (1 - smoothstep(0.2, 1, str)));
                 return col;
             }
             ENDHLSL

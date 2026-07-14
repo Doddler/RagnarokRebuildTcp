@@ -48,7 +48,7 @@ MonoBehaviour:
   m_RendererFeatureMap: d3b9309f49cf452c892505402a1a1044daea561a3ff9a8e3
   m_UseNativeRenderPass: 0
   xrSystemData: {fileID: 0}
-  postProcessData: {fileID: 0}
+  postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   m_AssetVersion: 3
   m_PrepassLayerMask:
     serializedVersion: 2
@@ -102,6 +102,27 @@ MonoBehaviour:
   m_Name: RoSpriteXRayFeature
   m_EditorClassIdentifier: Assembly-CSharp::RoSpriteXRayFeature
   m_Active: 1
+--- !u!114 &7712044698213355001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1614fc811f8f184697d9bee70ab9fe5, type: 3}
+  m_Name: DecalRendererFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  m_Settings:
+    technique: 2
+    maxDrawDistance: 1000
+    decalLayers: 0
+    dBufferSettings:
+      surfaceData: 2
+    screenSpaceSettings:
+      normalBlend: 0
 --- !u!114 &8829110293847562001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,24 +137,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RoScreenEffectFeature
   m_Active: 1
   effectShader: {fileID: 4800000, guid: a12da8d0e4e24f6f9607a94d9f569b14, type: 3}
---- !u!114 &7712044698213355001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1614fc811f8f184697d9bee70ab9fe5, type: 3}
-  m_Name: DecalRendererFeature
-  m_EditorClassIdentifier:
-  m_Active: 1
-  m_Settings:
-    technique: 2
-    maxDrawDistance: 1000
-    decalLayers: 0
-    dBufferSettings:
-      surfaceData: 2
-    screenSpaceSettings:
-      normalBlend: 0

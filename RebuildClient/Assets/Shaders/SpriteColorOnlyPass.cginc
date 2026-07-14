@@ -108,7 +108,7 @@ v2f vert(appdata_t v)
     #endif
 
     #if BLINDEFFECT_ON
-    float d = distance(worldPos, _RoBlindFocus);
+    float d = distance(worldPos.xyz, _RoBlindFocus.xyz);
     d = 1.5 - (d / _RoBlindDistance) * 1.5 + clamp((_RoBlindDistance - 50) / 120, -0.2, 0);
     o.color2.rgb = clamp(1 * d, -1, 1);
     #endif
