@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.UI.Utility;
@@ -51,7 +51,7 @@ namespace Assets.Scripts.UI.Inventory
             var price = ItemPriceList[bagId];
 
             var zeny = price * count;
-            if(count == 1)
+            if (count == 1)
                 CameraFollower.Instance.AppendChatText($"Sold {saleItem.ProperName()} for {zeny:N0}z.");
             else
                 CameraFollower.Instance.AppendChatText($"Sold {count}x {saleItem.ProperName()} for {zeny:N0}z.");
@@ -64,11 +64,9 @@ namespace Assets.Scripts.UI.Inventory
             }
             else
                 itemList[bagId] = saleItem;
-            
-            PlayerState.Instance.Zeny += zeny;
-            
-            CameraFollower.Instance.CharacterDetailBox.CharacterZeny.text = $"Zeny: {PlayerState.Instance.Zeny:N0}";
-            
+
+            // PlayerState.Instance.Zeny += zeny;
+            PlayerState.Instance.SetZeny(zeny);
             IconContainer.RefreshItemList();
         }
     }

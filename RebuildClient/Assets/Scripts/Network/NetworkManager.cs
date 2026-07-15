@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -480,7 +480,7 @@ namespace Assets.Scripts.Network
             //we should use a pool for these
             return new ClientOutgoingMessage();
         }
-        
+
         public ClientOutgoingMessage StartMessage(PacketType packetType)
         {
             //we should use a pool for these
@@ -569,8 +569,8 @@ namespace Assets.Scripts.Network
             var isInMoveDelay = msg.ReadBoolean();
             if (!isInMoveDelay) //we need to remove this and handle this properly
             {
-                var height = 0f; 
-                if(CameraFollower.WalkProvider != null)
+                var height = 0f;
+                if (CameraFollower.WalkProvider != null)
                     CameraFollower.WalkProvider.GetHeightForPosition(new Vector3(realPos.x, 0, realPos.y)); //happens on initial load...
                 var newRealPos = new Vector3(realPos.x, height, realPos.y);
                 ctrl.StartMove2(moveSpeed, moveDistance, totalSteps, curStep, startPos, pathData);
@@ -711,7 +711,7 @@ namespace Assets.Scripts.Network
             {
                 src.StopImmediate(pos, false);
                 //src.SpriteAnimator.Direction = dir;
-                if(src.SpriteAnimator != null)
+                if (src.SpriteAnimator != null)
                     src.SpriteAnimator.State = SpriteState.Standby;
             }
         }
@@ -841,22 +841,23 @@ namespace Assets.Scripts.Network
             var job = msg.ReadInt32();
 
             // Show exp-gain in chat window if the given setting was activated
-            if (GameConfig.Data.ShowExpGainInChat == true && (exp > 0 || job > 0)) {
+            if (GameConfig.Data.ShowExpGainInChat == true && (exp > 0 || job > 0))
+            {
                 CameraFollower.AppendChatText($"You gained {exp} base and {job} job exp.", TextColor.System);
             }
 
             //Debug.Log("Gain Exp:" + exp + " " + total);
 
-            PlayerState.Instance.Exp = total;
+            PlayerState.Instance.BaseExp = total;
 
             if (!EntityList.TryGetValue(PlayerId, out var controllable))
                 return;
-            
+
             var max = CameraFollower.Instance.ExpForLevel(controllable.Level);
             var jobMax = ClientDataLoader.Instance.GetJobExpRequired(PlayerState.Instance.JobId, PlayerState.Instance.GetData(PlayerStat.JobLevel));
-            CameraFollower.Instance.UpdatePlayerExp(PlayerState.Instance.Exp, max);
+            CameraFollower.Instance.UpdatePlayerExp(PlayerState.Instance.BaseExp, max);
             CameraFollower.Instance.UpdatePlayerJobExp(jobTotal, jobMax);
-            
+
             if (exp == 0)
                 return;
 
@@ -902,11 +903,9 @@ namespace Assets.Scripts.Network
                 //                                   + "Speak to the bard south of Prontera to get started.</i></color>");
 
                 var req = CameraFollower.Instance.ExpForLevel(lvl);
-                PlayerState.Instance.Exp = curExp;
-                PlayerState.Instance.Level = lvl;
-                CameraFollower.Instance.UpdatePlayerExp(PlayerState.Instance.Exp, req);
-                //CameraFollower.Instance.CharacterDetailBox.CharacterName.text = $"Lv. {controllable.Level} {controllable.Name}";
-                CameraFollower.Instance.CharacterDetailBox.BaseLvlDisplay.text = $"Base Lv. {controllable.Level}";
+                PlayerState.Instance.SetBaseLevel(lvl);
+                PlayerState.Instance.SetBaseExp(curExp, req);
+                CameraFollower.Instance.UpdatePlayerExp(curExp, req);
             }
         }
 
@@ -965,7 +964,7 @@ namespace Assets.Scripts.Network
             controllable.Name = text;
 
             if (controllable.IsMainCharacter)
-                CameraFollower.Instance.CharacterDetailBox.CharacterName.text = controllable.Name;
+                PlayerState.Instance.SetPlayerName(controllable.Name);
         }
 
 
@@ -978,65 +977,65 @@ namespace Assets.Scripts.Network
             switch (type)
             {
                 case NpcInteractionType.NpcDialog:
-                {
-                    var name = msg.ReadString();
-                    var text = msg.ReadString();
-                     var isBig = msg.ReadBoolean();
-                    
-                    // int count = 0;
-                    // int n = 0;
-                    //
-                    // while ((n = text.IndexOf('\n', n)) != -1)
-                    // {
-                    //     n++;
-                    //     count++;
-                    // }
+                    {
+                        var name = msg.ReadString();
+                        var text = msg.ReadString();
+                        var isBig = msg.ReadBoolean();
 
-                    //CameraFollower.AppendChatText(name + ": " + text);
-                    CameraFollower.IsInNPCInteraction = true;
-                    var window = CameraFollower.DialogPanel.GetComponent<DialogWindow>();
-                    if(isBig)
-                         window.MakeBig();
-                    else
-                     window.MakeNormalSize();
-                    
-                    window.SetDialog(name, text);
-                    break;
-                }
+                        // int count = 0;
+                        // int n = 0;
+                        //
+                        // while ((n = text.IndexOf('\n', n)) != -1)
+                        // {
+                        //     n++;
+                        //     count++;
+                        // }
+
+                        //CameraFollower.AppendChatText(name + ": " + text);
+                        CameraFollower.IsInNPCInteraction = true;
+                        var window = CameraFollower.DialogPanel.GetComponent<DialogWindow>();
+                        if (isBig)
+                            window.MakeBig();
+                        else
+                            window.MakeNormalSize();
+
+                        window.SetDialog(name, text);
+                        break;
+                    }
                 case NpcInteractionType.NpcFocusNpc:
-                {
-                    var id = msg.ReadInt32();
-                    if (!EntityList.TryGetValue(id, out var controllable))
-                        return;
-                    var isFocus = msg.ReadBoolean();
+                    {
+                        var id = msg.ReadInt32();
+                        if (!EntityList.TryGetValue(id, out var controllable))
+                            return;
+                        var isFocus = msg.ReadBoolean();
 
-                    CameraFollower.OverrideTarget = isFocus ? controllable.gameObject : null;
-                    break;
-                }
+                        CameraFollower.OverrideTarget = isFocus ? controllable.gameObject : null;
+                        break;
+                    }
                 case NpcInteractionType.NpcShowSprite:
-                {
-                    var sprite = msg.ReadString();
-                    Debug.Log($"Show npc sprite {sprite}");
-                    CameraFollower.DialogPanel.GetComponent<DialogWindow>().ShowImage(sprite);
-                    break;
-                }
+                    {
+                        var sprite = msg.ReadString();
+                        Debug.Log($"Show npc sprite {sprite}");
+                        CameraFollower.DialogPanel.GetComponent<DialogWindow>().ShowImage(sprite);
+                        break;
+                    }
                 case NpcInteractionType.NpcOption:
-                {
-                    var options = new List<string>();
-                    var len = msg.ReadInt32();
-                    for (var i = 0; i < len; i++)
-                        options.Add(msg.ReadString());
+                    {
+                        var options = new List<string>();
+                        var len = msg.ReadInt32();
+                        for (var i = 0; i < len; i++)
+                            options.Add(msg.ReadString());
 
-                    CameraFollower.NpcOptionPanel.GetComponent<NpcOptionWindow>().ShowOptionWindow(options);
-                    break;
-                }
+                        CameraFollower.NpcOptionPanel.GetComponent<NpcOptionWindow>().ShowOptionWindow(options);
+                        break;
+                    }
                 case NpcInteractionType.NpcEndInteraction:
                     CameraFollower.OverrideTarget = null;
                     CameraFollower.IsInNPCInteraction = false;
                     CameraFollower.DialogPanel.GetComponent<DialogWindow>().HideUI();
-                    if(RefineItemWindow.Instance != null)
+                    if (RefineItemWindow.Instance != null)
                         Destroy(RefineItemWindow.Instance);
-                    if(StorageUI.Instance != null)
+                    if (StorageUI.Instance != null)
                         Destroy(StorageUI.Instance);
                     break;
                 case NpcInteractionType.NpcOpenRefineWindow:
@@ -1104,7 +1103,7 @@ namespace Assets.Scripts.Network
             {
                 if (controllable.SpriteAnimator.State == SpriteState.Walking)
                     controllable.StopImmediate(casterPos, false);
-                if(target == controllable.CellPosition)
+                if (target == controllable.CellPosition)
                     controllable.LookInDirection(dir);
                 else
                     controllable.LookAt(target.ToWorldPosition());
@@ -1368,7 +1367,7 @@ namespace Assets.Scripts.Network
                 CameraFollower.AppendError("You can't send a shout chat message while you have shout chat disabled in the options.");
                 return;
             }
-            
+
             var msg = StartMessage();
 
             if (type == PlayerChatType.Say && text.StartsWith("%"))
@@ -1481,11 +1480,11 @@ namespace Assets.Scripts.Network
         public void SendSocketItem(int targetItem, int srcItem)
         {
             var msg = StartMessage();
-            
+
             msg.Write((byte)PacketType.SocketEquipment);
             msg.Write(targetItem);
             msg.Write(srcItem);
-            
+
             SendMessage(msg);
         }
 
@@ -1535,11 +1534,11 @@ namespace Assets.Scripts.Network
         public void SendServerShutdown(int seconds, string reason)
         {
             var msg = StartMessage(PacketType.AdminServerAction);
-            
+
             msg.Write((byte)AdminAction.ShutdownServer);
             msg.Write(seconds);
             msg.Write(reason);
-            
+
             SendMessage(msg);
         }
 
@@ -1572,7 +1571,7 @@ namespace Assets.Scripts.Network
 
             SendMessage(msg);
         }
-        
+
         public void SendAdminCreateEvent(string eventName, int v1, int v2, int v3, int v4)
         {
             var msg = StartMessage(PacketType.AdminCharacterAction);
@@ -1604,7 +1603,7 @@ namespace Assets.Scripts.Network
         {
             var msg = StartMessage(PacketType.AdminCharacterAction);
             msg.Write((int)AdminCharacterAction.Die);
-            
+
             SendMessage(msg);
         }
 
@@ -1613,7 +1612,7 @@ namespace Assets.Scripts.Network
             var msg = StartMessage(PacketType.AdminCharacterAction);
             msg.Write((int)AdminCharacterAction.Disguise);
             msg.Write(id);
-            
+
             SendMessage(msg);
         }
 
@@ -1623,29 +1622,29 @@ namespace Assets.Scripts.Network
             msg.Write((int)AdminCharacterAction.UnlockSkill);
             msg.Write((int)skill);
             msg.Write(level);
-            
+
             SendMessage(msg);
         }
-        
+
         public void SendAdminGodModeSelf(bool enable)
         {
             var msg = StartMessage(PacketType.AdminCharacterAction);
             msg.Write((int)AdminCharacterAction.GodModeSelf);
             msg.Write(enable);
-            
+
             SendMessage(msg);
         }
-        
+
         public void SendAdminGodModeOther(string other, bool enable)
         {
             var msg = StartMessage(PacketType.AdminCharacterAction);
             msg.Write((int)AdminCharacterAction.GodModeOther);
             msg.Write(other);
             msg.Write(enable);
-            
+
             SendMessage(msg);
         }
-        
+
         public void SendAiLogging()
         {
             var msg = StartMessage();
@@ -1699,22 +1698,22 @@ namespace Assets.Scripts.Network
         public void SendNpcRefineAttempt(int bagId, int oreId, int catalystId)
         {
             var msg = StartMessage(PacketType.NpcRefineSubmit);
-            
+
             msg.Write(bagId);
             msg.Write(oreId);
             msg.Write(catalystId);
-            
+
             SendMessage(msg);
         }
 
         public void SendAdminRefineAttempt(int bagId, int target)
         {
             var msg = StartMessage(PacketType.AdminCharacterAction);
-            
+
             msg.Write((int)AdminCharacterAction.RefineItem);
             msg.Write(bagId);
             msg.Write(target);
-            
+
             SendMessage(msg);
         }
 
@@ -1819,7 +1818,7 @@ namespace Assets.Scripts.Network
         {
             var msg = StartMessage(PacketType.MemoMapLocation);
             msg.Write((byte)slot);
-            
+
             SendMessage(msg);
         }
 
@@ -1837,40 +1836,40 @@ namespace Assets.Scripts.Network
         public void SendEndStorage()
         {
             var msg = StartMessage(PacketType.StorageInteraction);
-            
+
             msg.Write((byte)0);
-            
+
             SendMessage(msg);
         }
 
         public void SendMoveStorageItem(int bagId, int count, bool isMoveToStorage)
         {
             var msg = StartMessage(PacketType.StorageInteraction);
-            
+
             msg.Write((byte)(isMoveToStorage ? 1 : 2));
             msg.Write(bagId);
             msg.Write(count);
-            
+
             SendMessage(msg);
         }
 
         public void CartItemInteraction(CartInteractionType moveType, int bagId, int count)
         {
             var msg = StartMessage(PacketType.CartInventoryInteraction);
-            
+
             msg.Write(bagId);
             msg.Write((short)count);
             msg.Write((byte)moveType);
-            
+
             SendMessage(msg);
         }
-        
+
         public void SendCancelTrade()
         {
             var msg = StartMessage(PacketType.NpcTradeItem);
-            
+
             msg.Write(-1);
-            
+
             SendMessage(msg);
         }
 
@@ -1914,7 +1913,7 @@ namespace Assets.Scripts.Network
         public void SubmitVendingPurchase(Dictionary<int, ItemListEntryV2> items)
         {
             var msg = StartMessage(PacketType.VendingPurchaseFromStore);
-            
+
             msg.Write(items.Count);
 
             foreach (var (bagId, entry) in items)
@@ -1922,14 +1921,14 @@ namespace Assets.Scripts.Network
                 msg.Write(bagId);
                 msg.Write(entry.ItemCount);
             }
-            
+
             SendMessage(msg);
         }
 
         public void VendingStart(string shopName, Dictionary<int, ItemListEntryV2> entries)
         {
             var msg = StartMessage(PacketType.VendingStart);
-            
+
             msg.Write(shopName);
             msg.Write(entries.Count);
 
@@ -1939,32 +1938,32 @@ namespace Assets.Scripts.Network
                 msg.Write(entry.ItemCount);
                 msg.Write(int.TryParse(entry.InputField.text, out var price) ? price : 0);
             }
-            
+
             SendMessage(msg);
         }
 
         public void VendingEnd()
         {
             var msg = StartMessage(PacketType.VendingStop);
-            
+
             SendMessage(msg);
         }
 
         public void VendingOpenStore(int npcId)
         {
             var msg = StartMessage(PacketType.VendingViewStore);
-            
+
             msg.Write(npcId);
-            
+
             SendMessage(msg);
         }
-        
+
         public void OrganizeParty(string partyName, int entityId = -1)
         {
             var msg = StartMessage(PacketType.CreateParty);
             msg.Write(partyName);
             msg.Write(entityId);
-            
+
             SendMessage(msg);
         }
 
@@ -1976,7 +1975,7 @@ namespace Assets.Scripts.Network
 
             SendMessage(msg);
         }
-        
+
         public void PartyUpdateAction(int id, PartyClientAction action)
         {
             var msg = StartMessage(PacketType.UpdateParty);
@@ -1985,7 +1984,7 @@ namespace Assets.Scripts.Network
 
             SendMessage(msg);
         }
-        
+
         public void PartyInviteByName(string name)
         {
             var msg = StartMessage(PacketType.InvitePartyMember);
@@ -1994,7 +1993,7 @@ namespace Assets.Scripts.Network
 
             SendMessage(msg);
         }
-        
+
         public void PartyAcceptInvite(int partyId)
         {
             var msg = StartMessage(PacketType.AcceptPartyInvite);
@@ -2007,7 +2006,7 @@ namespace Assets.Scripts.Network
         {
             var msg = StartMessage(PacketType.UpdateParty);
             msg.Write((byte)PartyClientAction.LeaveParty);
-            
+
             SendMessage(msg);
         }
 
@@ -2015,7 +2014,7 @@ namespace Assets.Scripts.Network
         {
             var msg = StartMessage(PacketType.RemoveStatusEffect);
             msg.Write((int)status);
-            
+
             SendMessage(msg);
         }
 
@@ -2051,9 +2050,9 @@ namespace Assets.Scripts.Network
         public void SendChangeCart(int cartId)
         {
             var msg = StartMessage(PacketType.ChangeFollower);
-            
+
             msg.Write(cartId);
-            
+
             SendMessage(msg);
         }
 
@@ -2087,42 +2086,42 @@ namespace Assets.Scripts.Network
                     lastPing = Time.time;
                 }
             }
-//
-//             if (state == WebSocketState.Open && isReady && !isConnected)
-//             {
-//                 Debug.Log("We've been accepted! Lets try to enter the game.");
-//                 SendPing();
-//                 var msg = StartMessage();
-// #if DEBUG
-//                 if (!string.IsNullOrWhiteSpace(SpawnMap))
-//                 {
-//                     msg.Write((byte)PacketType.AdminEnterServerSpecificMap);
-//                     msg.Write(SpawnMap);
-//
-//                     var prefx = PlayerPrefs.GetInt("DebugStartX", -1);
-//                     var prefy = PlayerPrefs.GetInt("DebugStartY", -1);
-//
-//                     //Debug.Log(prefx + " : " + prefy);
-//
-//                     if (prefx > 0 && prefy > 0)
-//                     {
-//                         msg.Write(true);
-//                         msg.Write((short)prefx);
-//                         msg.Write((short)prefy);
-//                         PlayerPrefs.DeleteKey("DebugStartX");
-//                         PlayerPrefs.DeleteKey("DebugStartY");
-//                     }
-//
-//                     msg.Write(false);
-//                 }
-//                 else
-//                     msg.Write((byte)PacketType.EnterServer);
-// #else
-// 				msg.Write((byte)PacketType.EnterServer);
-// #endif
-//                 SendMessage(msg);
-//                 isConnected = true;
-//             }
+            //
+            //             if (state == WebSocketState.Open && isReady && !isConnected)
+            //             {
+            //                 Debug.Log("We've been accepted! Lets try to enter the game.");
+            //                 SendPing();
+            //                 var msg = StartMessage();
+            // #if DEBUG
+            //                 if (!string.IsNullOrWhiteSpace(SpawnMap))
+            //                 {
+            //                     msg.Write((byte)PacketType.AdminEnterServerSpecificMap);
+            //                     msg.Write(SpawnMap);
+            //
+            //                     var prefx = PlayerPrefs.GetInt("DebugStartX", -1);
+            //                     var prefy = PlayerPrefs.GetInt("DebugStartY", -1);
+            //
+            //                     //Debug.Log(prefx + " : " + prefy);
+            //
+            //                     if (prefx > 0 && prefy > 0)
+            //                     {
+            //                         msg.Write(true);
+            //                         msg.Write((short)prefx);
+            //                         msg.Write((short)prefy);
+            //                         PlayerPrefs.DeleteKey("DebugStartX");
+            //                         PlayerPrefs.DeleteKey("DebugStartY");
+            //                     }
+            //
+            //                     msg.Write(false);
+            //                 }
+            //                 else
+            //                     msg.Write((byte)PacketType.EnterServer);
+            // #else
+            // 				msg.Write((byte)PacketType.EnterServer);
+            // #endif
+            //                 SendMessage(msg);
+            //                 isConnected = true;
+            //             }
 
             if (isConnected && state != WebSocketState.Open && state != WebSocketState.Connecting)
             {
