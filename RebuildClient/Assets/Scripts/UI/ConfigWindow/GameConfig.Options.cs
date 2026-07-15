@@ -11,15 +11,15 @@ namespace Assets.Scripts.UI.ConfigWindow
     public enum BoolOption
     {
         ShowAllSkillsInSkillWindow, AutoLockSkillWindow,
-        ShowExpGainOnKill, ScalePlayerDisplayWithZoom, ShowMonsterHpBars, ShowLevelsInOverlay, AutoHideFullHPBars,
-        UseUnfilteredSprites, UseSpriteBasedDamageNumbers, AllowTabToShowWalkTable, HideShoutChat, EnableXRay, EnableWASDControls,
+        ShowExpGainOnKill, ScalePlayerDisplayWithZoom, ShowMonsterHpBars, ShowLevelsInOverlay, AutoHideFullHPBars, AdjustOverlayWhenSitting,
+        EnableSpriteFiltering, UseSpriteBasedDamageNumbers, AllowTabToShowWalkTable, HideShoutChat, EnableXRay, EnableWASDControls,
         ShowBaseExpValue, ShowBaseExpPercent, ShowJobExpValue, ShowJobExpPercent, ShowExpGainInChat,
         EnableMaster, EnableBgm, EnableEffects, EnableEnvironment
     }
 
     public enum RangeOption
     {
-        DamageNumberSize, DamageSpacingSize, MasterUIScale,
+        DamageNumberSize, DamageSpacingSize, MasterUIScale, FloatingDisplaySize,
         VolumeMaster, VolumeBgm, VolumeEffects, VolumeEnvironment
     }
 
@@ -57,6 +57,7 @@ namespace Assets.Scripts.UI.ConfigWindow
             var map = ReflectMap<RangeOption, float>();
             // Slider works in tenths; config stores the scale factor (slider / 10).
             map[RangeOption.MasterUIScale] = new(() => D.MasterUIScale * 10f, v => D.MasterUIScale = v / 10f);
+            map[RangeOption.FloatingDisplaySize] = new(() => D.FloatingDisplaySize * 10f, v => D.FloatingDisplaySize = v / 10f);
             map[RangeOption.VolumeMaster]      = VolumeBinding(ConfigAudioChannel.Master);
             map[RangeOption.VolumeBgm]         = VolumeBinding(ConfigAudioChannel.Music);
             map[RangeOption.VolumeEffects]     = VolumeBinding(ConfigAudioChannel.Effects);
@@ -138,8 +139,8 @@ namespace Assets.Scripts.UI.ConfigWindow
                 case BoolOption.EnableEffects:     ApplyAudioChannel(ConfigAudioChannel.Effects); break;
                 case BoolOption.EnableEnvironment: ApplyAudioChannel(ConfigAudioChannel.Environment); break;
 
-                case BoolOption.UseUnfilteredSprites:
-                    CameraFollower.Instance.SetSmoothPixel(!D.UseUnfilteredSprites);
+                case BoolOption.EnableSpriteFiltering:
+                    CameraFollower.Instance.SetSmoothPixel(!D.EnableSpriteFiltering);
                     break;
                 case BoolOption.UseSpriteBasedDamageNumbers:
                     CameraFollower.Instance.UseTTFDamage = !D.UseSpriteBasedDamageNumbers;

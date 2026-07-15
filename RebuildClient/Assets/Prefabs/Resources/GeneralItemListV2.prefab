@@ -2442,6 +2442,26 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2538101575084792181, guid: ea728462a1a30974a950f8e4887ff40c,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7783244261296909373}
+    - target: {fileID: 2538101575084792181, guid: ea728462a1a30974a950f8e4887ff40c,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HideWindow
+      objectReference: {fileID: 0}
+    - target: {fileID: 2538101575084792181, guid: ea728462a1a30974a950f8e4887ff40c,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Assets.Scripts.UI.GenericItemListV2, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2538101575084792181, guid: ea728462a1a30974a950f8e4887ff40c,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2605740846637987011, guid: ea728462a1a30974a950f8e4887ff40c,
         type: 3}
       propertyPath: m_Name

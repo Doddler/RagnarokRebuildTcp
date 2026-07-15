@@ -1,5 +1,6 @@
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
+using Assets.Scripts.PlayerControl;
 using Assets.Scripts.UI.ConfigWindow;
 using RebuildSharedData.Enum;
 using TMPro;
@@ -27,12 +28,11 @@ namespace Assets.Scripts.UI.Hud
 
         private bool isHovering;
         private bool isTargeting;
-        private float cachedUIScale = -1f;
+        private float cachedInvScale = -1f;
         private bool cachedSitting;
         private float rawStandingHeightPx = 0f;
         private float rawSittingHeightPx = 0f;
         private float rawSitDepthPx = 0f;
-        private Canvas overlayCanvas;
 
         public void Close()
         {
@@ -65,7 +65,7 @@ namespace Assets.Scripts.UI.Hud
             // clear per-owner transient state; displays are pooled and reused
             isHovering = false;
             isTargeting = false;
-            cachedUIScale = -1f;
+            cachedInvScale = -1f;
         }
 
         // Sets the owning entity; called when the display is attached, before any content or visibility update.
@@ -275,8 +275,7 @@ namespace Assets.Scripts.UI.Hud
             RefreshHpBarDetails();
         }
 
-        // Offsets are divided by MasterUIScale (not the canvas scaleFactor) when applied, so they cancel only
-        // the UI-scale component and stay glued to the sprite across resolutions. Negative gap = overlap.
+        // Below-feet stack offsets, in sprite pixels. Negative gap = overlap.
         private const float HpBarOffsetPx = 25f; // feet to top of the below-feet stack
         private const float HpToMpGap = -2f;
         private const float MpToNameGap = 1f;
@@ -315,21 +314,21 @@ namespace Assets.Scripts.UI.Hud
         // Recompute immediately so a newly attached/removed element doesn't render a frame at its template spot.
         private void InvalidatePositions()
         {
-            cachedUIScale = -1f;
+            cachedInvScale = -1f;
             RefreshPositionsIfChanged();
         }
 
         public void RefreshPositionsIfChanged()
         {
-            if (overlayCanvas == null) overlayCanvas = Manager.GetComponent<Canvas>();
-            // Gate on scaleFactor: it only changes on canvas rebuild (slider release / resolution change).
-            var currentScale = overlayCanvas.scaleFactor;
-            if (Mathf.Approximately(cachedUIScale, currentScale)) return;
-            cachedUIScale = currentScale;
+            var cf = CameraFollower.Instance;
+            // Divide out the root scale so offsets render at glueScale (glued to the feet); only bar SIZE scales.
+            var invScale = cf.OverlayGlueScale / cf.OverlayRootScale;
+            if (Mathf.Approximately(cachedInvScale, invScale))
+                return;
+            cachedInvScale = invScale;
             cachedSitting = IsSitting;
             CaptureSpriteHeights();
 
-            var invScale = 1f / Mathf.Max(GameConfig.Data.MasterUIScale, 0.01f);
             LayoutBelowFeet(invScale);
             LayoutAboveHead(invScale);
         }
@@ -338,7 +337,7 @@ namespace Assets.Scripts.UI.Hud
         private void LayoutBelowFeet(float invScale)
         {
             var offset = HpBarOffsetPx;
-            if (IsSitting) // only lower enough to clear the seated body's dip below the feet (+5 margin)
+            if (IsSitting && GameConfig.Data.AdjustOverlayWhenSitting) // only lower enough to clear the seated body's dip below the feet (+5 margin)
                 offset = Mathf.Max(offset, rawSitDepthPx * 1.5f + 5f);
             var anchorY = -offset * invScale;
             var cursor = 0f;

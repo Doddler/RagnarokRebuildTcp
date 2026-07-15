@@ -9,6 +9,9 @@ namespace Assets.Scripts.Sprites
     {
         public Material Material;
         public Direction ViewDirection;
+
+        //Placement within the fit rect when scaleToFit is used: (0.5,0.5) centered, (1,0.5) right, (0.5,0) bottom.
+        public Vector2 Alignment = new(0.5f, 0.5f);
         
         private class UiSpriteLayerData
         {
@@ -312,7 +315,11 @@ namespace Assets.Scripts.Sprites
                 return;
 
             var renderSize = Mathf.Min(availableSize.x / characterSize.x, availableSize.y / characterSize.y, 100f);
-            var centeredOffset = -(min + max) * 0.5f * renderSize;
+
+            //pin the character's own center to the origin, then bias it within the leftover space per Alignment
+            var baseOffset = -(min + max) * 0.5f * renderSize;
+            var slack = availableSize - characterSize * renderSize;
+            var placementOffset = baseOffset + new Vector2((Alignment.x - 0.5f) * slack.x, (Alignment.y - 0.5f) * slack.y);
 
             for (var i = 0; i < sprites.Count; i++)
             {
@@ -324,7 +331,7 @@ namespace Assets.Scripts.Sprites
                 spriteRect.anchorMax = Vector2.one * 0.5f;
                 spriteRect.pivot = Vector2.one * 0.5f;
                 spriteRect.sizeDelta = Vector2.one * renderSize;
-                spriteRect.anchoredPosition = centeredOffset + attachmentOffsets[i] * renderSize;
+                spriteRect.anchoredPosition = placementOffset + attachmentOffsets[i] * renderSize;
                 spriteRect.localPosition = new Vector3(spriteRect.localPosition.x, spriteRect.localPosition.y, -i * 0.01f);
             }
         }

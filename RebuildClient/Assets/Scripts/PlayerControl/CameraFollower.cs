@@ -94,6 +94,18 @@ namespace Assets.Scripts
         // public Slider ExpSlider;
         public TMP_InputField TextBoxInputField;
         public CanvasScaler CanvasScaler;
+        // Lags the config value while the UI-scale slider is mid-drag.
+        public float AppliedUiScale { get; private set; } = 1f;
+
+        // Overlay root localScale: zoom-size factor × size slider.
+        public float OverlayRootScale => DisplayZoomFactor * FloatingDisplayScale;
+        // Screen scale for offsets glued to the sprite's feet.
+        public float OverlayGlueScale => SpriteZoom / AppliedUiScale;
+
+        private float SpriteZoom => 70f / Mathf.Max(Distance, 0.01f);
+        private float FloatingDisplayScale => Mathf.Max(GameConfig.Data.FloatingDisplaySize, 0.01f) / AppliedUiScale;
+        // Only the root SIZE uses this, so toggling never moves overlays.
+        private float DisplayZoomFactor => GameConfig.Data.ScalePlayerDisplayWithZoom ? SpriteZoom : 1f;
         public TextMeshProUGUI ErrorNoticeUi;
         // public TextMeshProUGUI DebugDisplay;
 
@@ -701,6 +713,7 @@ namespace Assets.Scripts
             CanvasScaler.referenceResolution = new Vector2(1920f / uiScale, 1080f / uiScale);
             CanvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
             CanvasScaler.matchWidthOrHeight = 0.5f;
+            AppliedUiScale = uiScale;
 
             Canvas.ForceUpdateCanvases();
 

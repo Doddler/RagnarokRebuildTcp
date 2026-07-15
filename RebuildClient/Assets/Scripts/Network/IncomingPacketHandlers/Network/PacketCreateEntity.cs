@@ -181,17 +181,13 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     var max = CameraFollower.Instance.ExpForLevel(controllable.Level);
                     Camera.UpdatePlayerExp(State.Exp, max);
                     controllable.IsHidden = State.IsAdminHidden;
-                    State.JobId = classId;
-                    State.IsMale = isMale;
-                    State.HairStyleId = headId;
-                    State.HairColorId = hairDyeId;
+                    State.SetAppearance(classId, headId, hairDyeId, isMale, head1, head2, head3);
                     State.HasCart = (follower & CharacterFollowerState.AnyCart) > 0;
                     UiManager.Instance.RefreshCartVisibility();
                     State.HasBird = (follower & CharacterFollowerState.Falcon) > 0;
                     State.WeaponClass = weapon;
                     
                     UiManager.Instance.SkillManager.UpdateAvailableSkills();
-                    UiManager.Instance.EquipmentWindow.UpdateCharacterDisplay(head1, head2, head3);
                     UiManager.Instance.EquipmentWindow.RefreshEquipmentWindow(); //follower state might have changed
                     UiManager.Instance.StatusWindow.UpdateCharacterStats();
                 }

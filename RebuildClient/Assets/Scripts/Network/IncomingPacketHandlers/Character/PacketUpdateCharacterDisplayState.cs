@@ -43,8 +43,10 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
 
             if (controllable.IsMainCharacter)
             {
-                UiManager.Instance.EquipmentWindow.UpdateCharacterDisplay(headUpper, headMid, headLower);
-                PlayerState.Instance.WeaponClass = controllable.WeaponClass;
+                var state = PlayerState.Instance;
+                state.SetAppearance(state.JobId, state.HairStyleId, state.HairColorId, state.IsMale,
+                    headUpper, headMid, headLower);
+                state.WeaponClass = controllable.WeaponClass;
             }
 
             Debug.Log($"Updating appearance data. New weapon class: {controllable.WeaponClass}");

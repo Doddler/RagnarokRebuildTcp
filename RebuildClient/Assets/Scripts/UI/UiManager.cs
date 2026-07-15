@@ -34,7 +34,7 @@ public class UiManager : MonoBehaviour
     public ToastNotificationArea ToastNotificationArea;
     public RightClickMenuWindow RightClickMenuWindow;
     public VendAndChatManager VendAndChatManager;
-    public GameObject CartIcon;
+    public MenuWindow MenuWindow;
 
     public ItemOverlay ItemOverlay;
     public CharacterChat TooltipOverlay;
@@ -151,7 +151,7 @@ public class UiManager : MonoBehaviour
 
     public void RefreshCartVisibility()
     {
-        CartIcon.SetActive(PlayerState.Instance.HasCart);
+        MenuWindow.RefreshRows();
     }
 
     public void ShowTooltip(GameObject src, string text)

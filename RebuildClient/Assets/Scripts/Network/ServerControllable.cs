@@ -456,10 +456,8 @@ namespace Assets.Scripts.Network
             rect.anchoredPosition = localPoint;
             FloatingDisplay.RefreshPositionsIfChanged();
 
-            var d = 70 / cf.Distance;
-
-            if (!GameConfig.Data.ScalePlayerDisplayWithZoom)
-                d = 1f;
+            // Scales the root's SIZE only; the layout keeps positions glued to the feet.
+            var d = cf.OverlayRootScale;
 
             rect.localScale = new Vector3(d, d, d);
         }

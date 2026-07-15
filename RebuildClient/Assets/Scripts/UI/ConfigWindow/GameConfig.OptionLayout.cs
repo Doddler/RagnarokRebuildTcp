@@ -39,34 +39,36 @@
         public static readonly OptionRow[] Layout =
         {
             // ---- Game ----
-            OptionRow.Header(OptionCategory.Game, "Skills"),
-            OptionRow.Toggle(OptionCategory.Game, "Show all skills, even locked", BoolOption.ShowAllSkillsInSkillWindow),
-            OptionRow.Toggle(OptionCategory.Game, "Auto-lock skill points", BoolOption.AutoLockSkillWindow),
-
             OptionRow.Header(OptionCategory.Game, "Display"),
-            OptionRow.Toggle(OptionCategory.Game, "Disable sprite filtering (pixelated)", BoolOption.UseUnfilteredSprites),
             OptionRow.Slider(OptionCategory.Game, "Damage indicator size", RangeOption.DamageNumberSize, 0.2f, 2f),
             OptionRow.Slider(OptionCategory.Game, "Damage indicator spacing", RangeOption.DamageSpacingSize, 0.4f, 1f),
             OptionRow.Toggle(OptionCategory.Game, "Use old-school damage numbers", BoolOption.UseSpriteBasedDamageNumbers),
+            OptionRow.Toggle(OptionCategory.Game, "Enable sprite filtering (pixelated)", BoolOption.EnableSpriteFiltering),
             OptionRow.Toggle(OptionCategory.Game, "Enable X-ray view", BoolOption.EnableXRay),
-            OptionRow.Toggle(OptionCategory.Game, "Tab shows walkable tiles", BoolOption.AllowTabToShowWalkTable),
-
-            OptionRow.Header(OptionCategory.Game, "Character Overlay"),
             OptionRow.Toggle(OptionCategory.Game, "Show exp gain over character", BoolOption.ShowExpGainOnKill),
-            OptionRow.Toggle(OptionCategory.Game, "Scale player overlay with zoom", BoolOption.ScalePlayerDisplayWithZoom),
-            OptionRow.Toggle(OptionCategory.Game, "Show monster HP bars", BoolOption.ShowMonsterHpBars),
-            OptionRow.Toggle(OptionCategory.Game, "Hide full HP/MP bars", BoolOption.AutoHideFullHPBars),
-            OptionRow.Toggle(OptionCategory.Game, "Show levels next to names", BoolOption.ShowLevelsInOverlay),
+            OptionRow.Toggle(OptionCategory.Game, "Tab shows walkable tiles", BoolOption.AllowTabToShowWalkTable),
 
             OptionRow.Header(OptionCategory.Game, "Chat"),
             OptionRow.Toggle(OptionCategory.Game, "Hide shout chat", BoolOption.HideShoutChat),
             OptionRow.Toggle(OptionCategory.Game, "Show exp gain in chat", BoolOption.ShowExpGainInChat),
 
+            OptionRow.Header(OptionCategory.Game, "Skills"),
+            OptionRow.Toggle(OptionCategory.Game, "Show all skills, even locked", BoolOption.ShowAllSkillsInSkillWindow),
+            OptionRow.Toggle(OptionCategory.Game, "Auto-lock skill points", BoolOption.AutoLockSkillWindow),
+
             // ---- UI ----
             OptionRow.Header(OptionCategory.UI, "UI Size Settings"),
-            OptionRow.Slider(OptionCategory.UI, "Master UI scale", RangeOption.MasterUIScale, 5f, 12f, wholeNumbers: true, applyOnRelease: true),
+            OptionRow.Slider(OptionCategory.UI, "UI scale", RangeOption.MasterUIScale, 6f, 11f, wholeNumbers: true, applyOnRelease: true),
+            OptionRow.Slider(OptionCategory.UI, "Floating Display scale", RangeOption.FloatingDisplaySize, 6f, 11f, wholeNumbers: true),
 
-            OptionRow.Header(OptionCategory.UI, "Character Summary Window"),
+            OptionRow.Header(OptionCategory.UI, "Floating Display"),
+            OptionRow.Toggle(OptionCategory.UI, "Scale floating display with zoom", BoolOption.ScalePlayerDisplayWithZoom),
+            OptionRow.Toggle(OptionCategory.UI, "Show monster HP bars", BoolOption.ShowMonsterHpBars),
+            OptionRow.Toggle(OptionCategory.UI, "Hide full HP/MP bars", BoolOption.AutoHideFullHPBars),
+            OptionRow.Toggle(OptionCategory.UI, "Show levels next to names", BoolOption.ShowLevelsInOverlay),
+            OptionRow.Toggle(OptionCategory.UI, "Lower HP bar if necessary (sitting)", BoolOption.AdjustOverlayWhenSitting),
+
+            OptionRow.Header(OptionCategory.UI, "Player Unit Frame"),
             OptionRow.Toggle(OptionCategory.UI, "Show current/required base exp", BoolOption.ShowBaseExpValue),
             OptionRow.Toggle(OptionCategory.UI, "Show base exp percent progress", BoolOption.ShowBaseExpPercent),
             OptionRow.Toggle(OptionCategory.UI, "Show current/required job exp", BoolOption.ShowJobExpValue),
