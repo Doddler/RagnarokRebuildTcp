@@ -705,7 +705,7 @@ namespace Assets.Scripts.MapEditor
                                 LightmapperUtils.Extract(l, out cookie);
                                 ld.Init(ref spot, ref cookie);
                                 break;
-                            case UnityEngine.LightType.Area:
+                            case UnityEngine.LightType.Rectangle:
                                 LightmapperUtils.Extract(l, ref rect);
                                 LightmapperUtils.Extract(l, out cookie);
                                 ld.Init(ref rect, ref cookie);

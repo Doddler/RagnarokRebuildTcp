@@ -4,7 +4,6 @@ using Assets.Scripts.Sprites;
 using Assets.Scripts.Utility;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.Rendering;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Assets.Scripts.Misc
@@ -63,18 +62,10 @@ namespace Assets.Scripts.Misc
             var sprite = go.AddComponent<SpriteRenderer>();
             sprite.sprite = spriteObj;
 
-            var shader = ShaderCache.Instance.SpriteShaderNoZWrite;
-            var mat = new Material(shader);
-            mat.SetFloat("_Offset", 0.4f);
-            mat.color = new Color(1f, 1f, 1f, 0.5f);
-            mat.renderQueue = 2999;
-            sprite.material = mat;
-
+            SpriteUtil.ApplyShadowMaterial(sprite, 0.4f);
             sprite.sortingOrder = -1;
 
             spriteAnimator.Shadow = go;
-            spriteAnimator.ShadowSortingGroup = go.AddComponent<SortingGroup>();
-            spriteAnimator.ShadowSortingGroup.sortingOrder = -20001;
         }
 
         public void LoadSprite()

@@ -1,51 +1,25 @@
-﻿﻿Shader "Custom/IllusionStatusAlt"
+Shader "Custom/IllusionStatusAlt"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
         _Strength("Strength", Range(0,1)) = 0
     }
     SubShader
     {
-	    //** No culling or depth -- use for post proc
+        Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalPipeline" }
         Cull Off ZWrite Off ZTest Always
-        //** No culling -- use for non-transparent sprites.
-        //Cull Off ZWrite On ZTest Always
-        //** transparent sprite
-        //Tags { "Queue"="Transparent" "RenderType"="Transparent" }
-        //Zwrite On 
-        //Blend SrcAlpha OneMinusSrcAlpha
-        //** 3D things
-        //Tags { "Queue"="Geometry" "RenderType"="Opaque" }
-        //Zwrite On 
-        // No culling or depth -- use for post proc.
 
         Pass
         {
-            CGPROGRAM
-            #pragma vertex vert
-            //#pragma fragment sampling
-            //#pragma fragment swizzle
-			//#pragma fragment inversion
-            #pragma fragment distort
-            //#pragma fragment ChromaTint
+            Name "Hallucination"
 
-            #include "UnityCG.cginc"
+            HLSLPROGRAM
+            #pragma vertex Vert
+            #pragma fragment frag
 
-            struct appdata
-            {
-                float4 vertex : POSITION;
-                float2 uv : TEXCOORD0;
-            };
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/Runtime/Utilities/Blit.hlsl"
 
-            struct v2f
-            {
-                float2 uv : TEXCOORD0;
-                float4 vertex : SV_POSITION;
-            };
-
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
             float _Strength;
 
             //stolen from shadergraph
@@ -99,20 +73,12 @@
 
                 Out = t;
             }
-            
 
-            v2f vert (appdata v)
+            half4 frag (Varyings input) : SV_Target
             {
-                v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-                return o;
-            }
+                UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
+                float2 texCoord = input.texcoord;
 
-            fixed4 distort (v2f iTexCoord ) : SV_Target
-            {
-                float2 texCoord = iTexCoord.uv;
-                
                 float noise;
                 float noise2;
                 float noise3;
@@ -122,12 +88,11 @@
                 Unity_SimpleNoise_float(texCoord + _SinTime.y, 5, noise3);
 
                 texCoord = lerp(texCoord, float2(noise, noise2) + noise3 * 2, _Strength * 0.035 * 0.5);
-                
-                fixed4 col = tex2D(_MainTex, texCoord);
-                return col;
+
+                return SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, texCoord);
             }
-            
-            ENDCG
+
+            ENDHLSL
         }
     }
 }

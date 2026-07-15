@@ -1,9 +1,6 @@
 #ifndef BILLBOARD_INCLUDED
 #define BILLBOARD_INCLUDED
 
-#define COMPUTE_DEPTH_01b -(viewPos.z * _ProjectionParams.w)
-#define COMPUTE_DEPTH_01 -(UnityObjectToViewPos( v.pos ).z * _ProjectionParams.w)
-
 struct Billboard
 {
     float4 positionCS;
@@ -38,8 +35,9 @@ Billboard GetBillboard(float4 positionOS, float offset)
 {
     float2 pos = positionOS.xy;
     
-    float3 worldPos = mul(unity_ObjectToWorld, float4(pos.x, pos.y, 0, 1)).xyz;
-    float3 originPos = mul(unity_ObjectToWorld, float4(pos.x, 0, 0, 1)).xyz; //world position of origin
+    float4x4 objectToWorld = UNITY_MATRIX_M;
+    float3 worldPos = mul(objectToWorld, float4(pos.x, pos.y, 0, 1)).xyz;
+    float3 originPos = mul(objectToWorld, float4(pos.x, 0, 0, 1)).xyz;
     float3 upPos = originPos + float3(0, 1, 0); //up from origin
 
     float outDist = abs(pos.y); //distance from origin should always be equal to y

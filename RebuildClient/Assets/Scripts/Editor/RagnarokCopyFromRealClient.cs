@@ -424,7 +424,6 @@ namespace Assets.Editor
             }
 
 
-
             private class ImportHealth
             {
                 public int Present;
@@ -519,9 +518,6 @@ namespace Assets.Editor
             }
 
 
-
-
-
             private static ImportHealth GetCopyFolderHealth(
                 string sourceDirectory,
                 string destinationDirectory,
@@ -587,7 +583,6 @@ namespace Assets.Editor
                     updateFileName
                 ).IsComplete;
             }
-
 
 
             private static IEnumerable<string> GetMiscellaneousDestinationPaths()
@@ -740,10 +735,7 @@ namespace Assets.Editor
 
                 foreach (var category in categories)
                 {
-                    var taskState = new ImportTaskState
-                    {
-                        Category = category
-                    };
+                    var taskState = new ImportTaskState { Category = category };
 
                     try
                     {
@@ -895,6 +887,8 @@ namespace Assets.Editor
                 if (!TestPath("prontera.gat") || !TestPath("texture/워터/water000.jpg"))
                     return;
 
+                Func<string, string> updateHeadName = (str) => str.Replace("머리", "");
+
                 // Define each copy category
                 categories = new List<CopyCategory>
                 {
@@ -904,8 +898,8 @@ namespace Assets.Editor
                     CreateCopyCategory("Headgear Sprites (Female)", "sprite/악세사리/여", "Assets/Sprites/Headgear/Female/"),
                     CreateCopyCategory("NPC Sprites", "sprite/npc", "Assets/Sprites/Npcs/"),
                     CreateCopyCategory("Effect Sprites", "sprite/이팩트", "Assets/Sprites/Effects/"),
-                    CreateCopyCategory("Head Palettes (Female)", "palette/몸", "Assets/Sprites/Characters/HeadFemale/", filter: "*_여_*.pal"),
-                    CreateCopyCategory("Head Palettes (Male)", "palette/몸", "Assets/Sprites/Characters/HeadMale/", filter: "*_남_*.pal"),
+                    CreateCopyCategory("Head Palettes (Female)", "palette/머리", "Assets/Sprites/Characters/HeadFemale/Palette/", filter: "*_여_*.pal", updateFileName: updateHeadName),
+                    CreateCopyCategory("Head Palettes (Male)", "palette/머리", "Assets/Sprites/Characters/HeadMale/Palette/", filter: "*_남_*.pal", updateFileName: updateHeadName),
                     CreateCopyCategory("Character Heads (Male)", "sprite/인간족/머리통/남", "Assets/Sprites/Characters/HeadMale/"),
                     CreateCopyCategory("Character Heads (Female)", "sprite/인간족/머리통/여", "Assets/Sprites/Characters/HeadFemale/"),
                     CreateCopyCategory("Character Bodies (Male)", "sprite/인간족/몸통/남", "Assets/Sprites/Characters/BodyMale/"),

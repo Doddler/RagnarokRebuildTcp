@@ -7,7 +7,6 @@
         _WaveSpeed("Speed", Float) = 0
         _WavePitch("Pitch", Float) = 0
         _Color("Tint", Color) = (1,1,1,0.5)
-
     }
 
     SubShader
@@ -20,10 +19,10 @@
             "WaterMode" = "On"
             "PreviewType" = "Plane"
             "ForceNoShadowCasting" = "True"
+            "RenderPipeline" = "UniversalPipeline"
         }
 
         Cull Off
-        Lighting Off
         ZWrite Off
         Blend One OneMinusSrcAlpha
 
@@ -32,17 +31,18 @@
             Ref 1
             Comp NotEqual
         }
-        
+
         Pass
         {
-            CGPROGRAM
+            Tags{ "LightMode" = "UniversalForward" }
+
+            HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
             #pragma multi_compile_fog
             #pragma multi_compile _ BLINDEFFECT_ON
 
-            #include "UnityCG.cginc"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
             struct appdata
             {
@@ -53,30 +53,33 @@
             struct v2f
             {
                 float2 uv : TEXCOORD0;
-                float4 color    : COLOR;
-                UNITY_FOG_COORDS(1)
+                half4 color : TEXCOORD1;
+                half fogFactor : TEXCOORD2;
                 float4 vertex : SV_POSITION;
             };
 
-            sampler2D _MainTex;
-            //sampler2D _CameraDepthTexture;
+            TEXTURE2D(_MainTex);
+            SAMPLER(sampler_MainTex);
+
+            CBUFFER_START(UnityPerMaterial)
             float4 _MainTex_ST;
             float _WaveHeight;
             float _WavePitch;
             float _WaveSpeed;
             float4 _Color;
+            CBUFFER_END
 
-            //from our globals
             float4 _RoDiffuseColor;
             float4 _RoAmbientColor;
 
             #ifdef BLINDEFFECT_ON
-				float4 _RoBlindFocus;
-				float _RoBlindDistance;
+            float4 _RoBlindFocus;
+            float _RoBlindDistance;
             #endif
 
             v2f vert(appdata v)
             {
+                v2f o = (v2f)0;
                 float3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
 
                 float offset = (_Time.x * 1000 * _WaveSpeed) % 360 - 180;
@@ -88,40 +91,36 @@
                 worldPos.y += sin((3.1415926 / 180) * (offset + 0.5 * _WavePitch * (worldPos.x + worldPos.z + diff))) *
                     _WaveHeight;
 
-                v2f o;
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-                UNITY_TRANSFER_FOG(o, UnityObjectToClipPos(v.vertex));
+                o.fogFactor = ComputeFogFactor(TransformObjectToHClip(v.vertex.xyz).z);
 
                 float4 view = mul(UNITY_MATRIX_V, float4(worldPos, 1));
                 o.vertex = mul(UNITY_MATRIX_P, view);
 
-				#if BLINDEFFECT_ON
-					float3 pos = mul(unity_ObjectToWorld, v.vertex);
-					float d = distance(pos, _RoBlindFocus);
-					d = 1.2 - d / _RoBlindDistance;
-					o.color.rgb = 1 * clamp(1 * d, -1, 1);
+                #if BLINDEFFECT_ON
+                float3 pos = mul(unity_ObjectToWorld, v.vertex).xyz;
+                float d = distance(pos, _RoBlindFocus);
+                d = 1.2 - d / _RoBlindDistance;
+                o.color.rgb = 1 * clamp(1 * d, -1, 1);
                 #else
-                    o.color.rgb = float3(1,1,1);
-				#endif
-
+                o.color.rgb = float3(1, 1, 1);
+                #endif
 
                 return o;
             }
 
-            fixed4 frag(v2f i) : SV_Target
+            half4 frag(v2f i) : SV_Target
             {
-                fixed4 col = tex2D(_MainTex, i.uv);
+                half4 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
 
-                fixed a = 0.5625;
-                float env = 1 - ((1 - _RoDiffuseColor) * (1 - _RoAmbientColor));
+                half a = 0.5625;
+                float4 env = 1 - ((1 - _RoDiffuseColor) * (1 - _RoAmbientColor));
                 env = env * 0.5 + 0.5;
-                //col = col * 0.88;// * 0.5833333333333333;
 
-                // apply fog
-                UNITY_APPLY_FOG(i.fogCoord, col);
-                return fixed4(col.rgb * i.color.rgb * env * a, a);
+                col.rgb = MixFog(col.rgb, i.fogFactor);
+                return half4(col.rgb * i.color.rgb * env * a, a);
             }
-            ENDCG
+            ENDHLSL
         }
     }
 }

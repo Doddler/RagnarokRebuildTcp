@@ -4,7 +4,6 @@ Shader"Ragnarok/CharacterSpriteShader - Depth Color XRay"
     {
         [PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
         _AtlasArray("Atlas Array", 2DArray) = "" {}
-        //[PerRendererData] _PalTex("Palette Texture", 2D) = "white" {}
         [PerRendererData] _Color("Tint", Color) = (1,1,1,1)
         [PerRendererData] _EnvColor("Environment", Color) = (1,1,1,1)
         [PerRendererData] _Offset("Offset", Float) = 0
@@ -16,91 +15,83 @@ Shader"Ragnarok/CharacterSpriteShader - Depth Color XRay"
 
     SubShader
     {
-
-        Tags{"Queue" = "Transparent" "LightMode" = "Vertex" "IgnoreProjector" = "True" "RenderType" = "Transparent"}
+        Tags{"Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent" "RenderPipeline" = "UniversalPipeline"}
 
         Cull Off
-        Lighting Off
         ZWrite Off
         Blend One OneMinusSrcAlpha
 
         Pass
         {
             Name "DepthOnly"
+            Tags{"LightMode" = "SRPDefaultUnlit"}
             ZWrite On
             ColorMask 0
             AlphaToMask On
-            
+
             Stencil
             {
                 Ref 1
                 Comp Always
                 Pass Replace
             }
-            
-            CGPROGRAM
+
+            HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
 
-            
             #pragma multi_compile_local _ DYNBATCH_ON
-            
 
             #include "SpriteDepthOnlyPass.cginc"
-            ENDCG
+            ENDHLSL
         }
 
         Pass
         {
             Name "Color"
+            Tags{"LightMode" = "UniversalForward"}
             ZWrite Off
 
-            CGPROGRAM
+            HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            #pragma multi_compile_fwdbase
             #pragma multi_compile_fog
-            //#pragma multi_compile _ PIXELSNAP_ON
-            //#pragma multi_compile _ PALETTE_ON
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+            #pragma multi_compile _ _CLUSTER_LIGHT_LOOP
             #pragma multi_compile _ SMOOTHPIXEL
             #pragma multi_compile _ BLINDEFFECT_ON
-            //#pragma shader_feature _ WATER_OFF
             #pragma shader_feature _ COLOR_DRAIN
 
             #pragma multi_compile_local _ DYNBATCH_ON
 
-            //#define SMOOTHPIXEL
-
             #include "SpriteColorOnlyPass.cginc"
-            ENDCG
+            ENDHLSL
         }
 
-        Pass // X-Ray
+        Pass
         {
             Name "XRay"
+            Tags{"LightMode" = "SpriteXRay"}
             ZWrite Off
             ZTest Greater
-            //Offset -10, 1
 
-            CGPROGRAM
+            HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            #pragma multi_compile_fwdbase
             #pragma multi_compile_fog
-            //#pragma multi_compile _ PIXELSNAP_ON
-            //#pragma multi_compile _ PALETTE_ON
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+            #pragma multi_compile _ _CLUSTER_LIGHT_LOOP
             #pragma multi_compile _ SMOOTHPIXEL
             #pragma multi_compile _ BLINDEFFECT_ON
-            //#pragma shader_feature _ WATER_OFF
             #pragma shader_feature _ COLOR_DRAIN
 
             #pragma multi_compile_local _ DYNBATCH_ON
 
             #define XRAY
-            //#define SMOOTHPIXEL
-            
+            #define WATER_OFF
+
             #include "SpriteColorOnlyPass.cginc"
-            ENDCG
+            ENDHLSL
         }
     }
 }

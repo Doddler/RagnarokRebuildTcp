@@ -188,7 +188,7 @@ namespace Assets.Scripts.Editor
 
                             if (clip == null)
                             {
-                                assetPath = $"Assets/Sounds/Effects/{e.SoundFile}.ogg";
+                                assetPath = $"Assets/Sounds/effect/{e.SoundFile}.ogg";
                                 clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
                             }
                             
@@ -200,7 +200,7 @@ namespace Assets.Scripts.Editor
                             
                             if (clip == null)
                             {
-                                assetPath = $"Assets/Sounds/Effects/{e.SoundFile}.wav";
+                                assetPath = $"Assets/Sounds/effect/{e.SoundFile}.wav";
                                 clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
                             }
 

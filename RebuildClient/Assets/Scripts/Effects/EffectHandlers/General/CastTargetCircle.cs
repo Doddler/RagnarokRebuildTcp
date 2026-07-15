@@ -26,7 +26,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
 
             if (baseMaterial == null)
             {
-                baseMaterial = new Material(ShaderCache.Instance.ProjectorAdditiveShader);
+                baseMaterial = new Material(ShaderCache.Instance.CastDecalShader);
                 baseMaterial.color = Color.white;
             }
 
@@ -41,9 +41,8 @@ namespace Assets.Scripts.Effects.EffectHandlers
 
             mat.color = color;
             mat.mainTexture = tex;
-            mat.SetTexture("_ShadowTex", tex);
 
-            effect.transform.localPosition = position + new Vector3(0f, 1.5f, 0f);
+            effect.transform.localPosition = position + new Vector3(0f, 0.5f, 0f);
             effect.SetDurationByTime(duration);
             effect.UpdateOnlyOnFrameChange = false;
             effect.DestroyOnTargetLost = false;
@@ -51,7 +50,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
             
             var prim = effect.LaunchPrimitive(PrimitiveType.ProjectorPrimitive, mat);
             prim.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
-            prim.transform.localScale = new Vector3(size, size, size);
+            prim.transform.localScale = new Vector3(size, size, 1);
             prim.Duration = duration;
             
             return effect;

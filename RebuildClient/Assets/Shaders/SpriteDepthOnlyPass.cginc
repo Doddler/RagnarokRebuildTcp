@@ -23,21 +23,21 @@ struct appdata_t
 struct v2f
 {
     float4 pos : SV_POSITION;
-    fixed4 color : COLOR;
-    float2 texcoord : TEXCOORD0;
+    half4 color : TEXCOORD0;
+    float2 texcoord : TEXCOORD1;
     #ifdef DYNBATCH_ON
-    float slice : TEXCOORD1;
-    float4 uvRect : TEXCOORD2;
+    float slice : TEXCOORD2;
+    float4 uvRect : TEXCOORD3;
     #endif
 };
 
-sampler2D _MainTex;
-fixed4 _Color;
+TEXTURE2D(_MainTex);
+SAMPLER(sampler_MainTex);
+half4 _Color;
 
 v2f vert(appdata_t v)
 {
-    v2f o;
-    UNITY_SETUP_INSTANCE_ID(v);
+    v2f o = (v2f)0;
 
     #ifdef DYNBATCH_ON
     float vPosShift = v.packed.z;
@@ -66,9 +66,9 @@ half4 frag(v2f i) : SV_Target
 {
     #ifdef DYNBATCH_ON
     float2 suv = clamp(i.texcoord, i.uvRect.xy, i.uvRect.zw);
-    fixed4 c = UNITY_SAMPLE_TEX2DARRAY_LOD(_AtlasArray, float3(suv, i.slice), 0);
+    half4 c = SAMPLE_TEXTURE2D_ARRAY_LOD(_AtlasArray, sampler_AtlasArray, suv, i.slice, 0);
     #else
-    fixed4 c = tex2D(_MainTex, i.texcoord);
+    half4 c = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.texcoord);
     #endif
     c *= i.color;
 
@@ -76,6 +76,5 @@ half4 frag(v2f i) : SV_Target
 
     return c;
 }
-
 
 #endif
