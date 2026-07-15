@@ -160,11 +160,11 @@ namespace Assets.Scripts.UI.Stats
 
             AttributeText[0].text = $"{state.GetStat(CharacterStat.Attack)} ~ {state.GetStat(CharacterStat.Attack2)}";
             AttributeText[1].text = $"{state.GetStat(CharacterStat.MagicAtkMin)} ~ {state.GetStat(CharacterStat.MagicAtkMax)}";
-            AttributeText[2].text = $"{totalDex + state.Level + state.GetStat(CharacterStat.AddHit)}";
+            AttributeText[2].text = $"{totalDex + state.BaseLevel + state.GetStat(CharacterStat.AddHit)}";
             AttributeText[3].text = $"{crit}";
             AttributeText[4].text = $"{state.GetStat(CharacterStat.Def)} + {softDef}";
             AttributeText[5].text = $"{state.GetStat(CharacterStat.MDef)} + {totalInt}";
-            AttributeText[6].text = $"{totalAgi + state.Level + state.GetStat(CharacterStat.AddFlee)} + {state.GetStat(CharacterStat.PerfectDodge)}";
+            AttributeText[6].text = $"{totalAgi + state.BaseLevel + state.GetStat(CharacterStat.AddFlee)} + {state.GetStat(CharacterStat.PerfectDodge)}";
             AttributeText[7].text = $"{(1 / state.AttackSpeed):F2}/sec";
             if (statPointsRequired == 0)
                 AttributeText[8].text = $"{state.GetData(PlayerStat.StatPoints)}";

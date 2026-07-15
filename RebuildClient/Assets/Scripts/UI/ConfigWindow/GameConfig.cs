@@ -10,11 +10,13 @@ namespace Assets.Scripts.UI.ConfigWindow
     {
         public static GameConfigData Data;
 
+        public static Action OnGameConfigChanged;
+
         public static int GetVolumeForAudioChannel(ConfigAudioChannel channel) => Data.AudioVolumeLevels[(int)channel];
         public static bool GetMuteStatusForAudioChannel(ConfigAudioChannel channel) => Data.AudioMuteValues[(int)channel];
         public static void SetVolumeForAudioChannel(ConfigAudioChannel channel, int volume) => Data.AudioVolumeLevels[(int)channel] = volume;
         public static void SetMuteStatusForAudioChannel(ConfigAudioChannel channel, bool isMuted) => Data.AudioMuteValues[(int)channel] = isMuted;
-        
+
         private static bool isInitialized;
         private static string configPath => Path.Combine(Application.persistentDataPath, "config.txt");
 
@@ -22,7 +24,7 @@ namespace Assets.Scripts.UI.ConfigWindow
         {
             if (isInitialized)
                 return;
-            
+
             Data = new GameConfigData();
             Data.InitDefaultValues();
 
@@ -46,6 +48,7 @@ namespace Assets.Scripts.UI.ConfigWindow
                 Data.InitDefaultValues();
             }
 
+            OnGameConfigChanged?.Invoke();
 
             isInitialized = true;
         }
@@ -54,19 +57,24 @@ namespace Assets.Scripts.UI.ConfigWindow
         {
             UiManager.Instance.SyncFloatingBoxPositionsWithSaveData();
             var charName = PlayerState.Instance?.PlayerName;
-            if(!string.IsNullOrWhiteSpace(charName))
+            if (!string.IsNullOrWhiteSpace(charName))
                 UiManager.Instance.SkillHotbar.SaveHotBarData(Data.GetHotBarDataForCharacter(charName));
-            
+
             Debug.Log($"Saving game configuration to {configPath}");
             if (!isInitialized)
             {
                 Debug.LogError($"Cannot save game config as it is not yet initialized.");
                 return;
             }
-            
+
             var text = JsonUtility.ToJson(Data);
             File.WriteAllText(configPath, text);
         }
-        
+
+        public static void SetUiStyle(UiStyle style)
+        {
+            Data.UiStyle = style;
+            OnGameConfigChanged?.Invoke();
+        }
     }
 }
