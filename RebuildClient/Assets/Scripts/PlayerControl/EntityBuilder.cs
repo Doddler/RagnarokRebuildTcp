@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.Effects.EffectHandlers;
+using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Effects.EffectHandlers.Environment;
 using Assets.Scripts.Effects.EffectHandlers.General;
 using Assets.Scripts.Effects.EffectHandlers.Skills;
@@ -21,25 +21,25 @@ namespace Assets.Scripts.PlayerControl
     public class EntityBuilder : MonoBehaviour
     {
         public static EntityBuilder Instance;
-        
+
         private ClientDataLoader dataLoader;
 
         public void Initialize()
         {
             if (dataLoader != null)
                 return;
-            
+
             Instance = this;
             dataLoader = GetComponent<ClientDataLoader>();
         }
-        
+
         public ServerControllable LoadPlayer(ref EntitySpawnParameters spawn, ref PlayerSpawnParameters player)
         {
             var go = new GameObject(spawn.Name);
             go.layer = LayerMask.NameToLayer("Characters");
             go.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
             var control = go.AddComponent<ServerControllable>();
-            
+
             var pData = dataLoader.PlayerClassLookup[0]; //novice
             if (dataLoader.PlayerClassLookup.TryGetValue(spawn.ClassId, out pData))
             {
@@ -49,29 +49,28 @@ namespace Assets.Scripts.PlayerControl
             {
                 Debug.LogWarning($"Failed to player class for player {spawn.Name} with classId of {spawn.ClassId}");
             }
-            
+
             if (spawn.OverrideClassId > 0 && dataLoader.MonsterClassLookup.TryGetValue(spawn.OverrideClassId, out var monData))
             {
-                
+
                 if (monData.SpriteName.Contains(".prefab"))
                     InstantiatePrefabEntity(control, ref spawn, monData.SpriteName);
                 else
                     InstantiateMonsterSprite(control, ref spawn, monData);
-                
+
                 if (player.Follower != CharacterFollowerState.None)
                     ChangeFollowerState(control, player.Follower);
-                
+
                 if (spawn.IsMainCharacter)
                 {
                     var state = PlayerState.Instance;
                     control.IsMainCharacter = true;
-                    state.PlayerName = control.Name;
-                    state.UpdatePlayerName();
+                    state.SetPlayerName(control.Name);
+                    state.SetJobId(pData.Id);
+                    state.SetBaseLevel(control.Level);
                     state.WeaponClass = player.WeaponClass;
-                    CameraFollower.Instance.CharacterDetailBox.CharacterJob.text = pData.Name;
-                    CameraFollower.Instance.CharacterDetailBox.BaseLvlDisplay.text = $"Base Lv. {control.Level}";
                 }
-                
+
                 control.ConfigureEntity(spawn.ServerId, spawn.Position.ToVector2Int(), spawn.Facing);
                 control.Name = spawn.Name;
                 control.Hp = spawn.Hp;
@@ -90,7 +89,7 @@ namespace Assets.Scripts.PlayerControl
             go.layer = LayerMask.NameToLayer("Characters");
             go.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
             var control = go.AddComponent<ServerControllable>();
-            
+
             var mData = dataLoader.MonsterClassLookup[4000]; //poring
             if (dataLoader.MonsterClassLookup.TryGetValue(spawn.ClassId, out var lookupData))
                 mData = lookupData;
@@ -102,9 +101,9 @@ namespace Assets.Scripts.PlayerControl
                 InstantiatePrefabEntity(control, ref spawn, mData.SpriteName);
                 return control;
             }
-            
+
             InstantiateMonsterSprite(control, ref spawn, mData);
-            
+
             return control;
         }
 
@@ -127,7 +126,7 @@ namespace Assets.Scripts.PlayerControl
                 InstantiateEffect(control, ref spawn, ref npc, npc.EffectType);
                 return control;
             }
-            
+
             var mData = dataLoader.MonsterClassLookup[4000]; //poring
             if (dataLoader.MonsterClassLookup.TryGetValue(spawn.ClassId, out var lookupData))
                 mData = lookupData;
@@ -146,14 +145,14 @@ namespace Assets.Scripts.PlayerControl
 
             return control;
         }
-        
+
         private void InstantiatePlayerSprite(ServerControllable control, ref EntitySpawnParameters spawn, ref PlayerSpawnParameters player, PlayerClassData data)
         {
             bool isMounted = (player.Follower & CharacterFollowerState.Mounted) > 0 && (spawn.ClassId == 7 || spawn.ClassId == 13);
             var displayData = data;
             if (isMounted)
                 dataLoader.PlayerClassLookup.TryGetValue(spawn.ClassId, out displayData);
-            
+
             var go = control.gameObject;
             var billboard = go.AddComponent<BillboardObject>();
             billboard.Style = BillboardStyle.Character;
@@ -185,8 +184,8 @@ namespace Assets.Scripts.PlayerControl
             control.WeaponClass = player.WeaponClass;
             control.PartyName = player.PartyName;
             control.IsPartyMember = player.PartyId > 0 && player.PartyId == player.PartyId;
-            
-            
+
+
             bodySprite.Controllable = control;
             if (spawn.State == CharacterState.Moving)
                 bodySprite.ChangeMotion(SpriteMotion.Walk);
@@ -213,15 +212,15 @@ namespace Assets.Scripts.PlayerControl
             var offHand = 0;
             if (player.Shield > 0 && dataLoader.TryGetItemById(player.Shield, out var item) && item.ItemClass == ItemClass.Weapon)
             {
-                
+
                 offHand = item.SubType;
                 shield = 0;
             }
 
             var bodySpriteName = dataLoader.GetPlayerBodySpriteName(control.OverrideClassId, player.IsMale);
             var headSpriteName = dataLoader.GetPlayerHeadSpriteName(player.HeadType, player.HairColor, player.IsMale);
-            
-            
+
+
             Debug.Log($"Instantiate player sprite with job {spawn.ClassId} weapon {player.WeaponClass}");
 
             dataLoader.LoadAndAttachEquipmentSprite(control, player.Headgear1, EquipPosition.HeadUpper, 4);
@@ -243,14 +242,13 @@ namespace Assets.Scripts.PlayerControl
             //AddressableUtility.LoadSprite(go, "shadow", control.AttachShadow);
 
             var state = PlayerState.Instance;
-            
+
             if (control.IsMainCharacter)
             {
-                CameraFollower.Instance.CharacterDetailBox.CharacterJob.text = data.Name;
-                state.PlayerName = control.Name;
-                state.UpdatePlayerName();
+                state.SetPlayerName(control.Name);
+                state.SetJobId(data.Id);
+                state.SetBaseLevel(control.Level);
                 state.WeaponClass = player.WeaponClass;
-                CameraFollower.Instance.CharacterDetailBox.BaseLvlDisplay.text = $"Base Lv. {control.Level}";
             }
 
             control.Init();
@@ -262,7 +260,7 @@ namespace Assets.Scripts.PlayerControl
                     UiManager.Instance.PartyPanel.PartyEntryLookup.TryGetValue(partyMemberId, out var panel))
                     panel.ClearAllStatusEffects(); //we will re-assign them right after
             }
-            
+
             ChangeFollowerState(control, player.Follower);
         }
 
@@ -332,11 +330,11 @@ namespace Assets.Scripts.PlayerControl
             control.Name = spawn.Name;
             control.IsAlly = spawn.Type != CharacterType.Monster;
             control.CharacterState = spawn.State;
-            
-            
+
+
             control.ConfigureEntity(spawn.ServerId, spawn.Position.ToVector2Int(), spawn.Facing);
             control.EnsureFloatingDisplayCreated().SetUp(control, spawn.Name, spawn.MaxHp, 0, false, false);
-            
+
             ClientDataLoader.Instance.AttachPrefabToControllable(control, prefabName);
         }
 
@@ -375,7 +373,7 @@ namespace Assets.Scripts.PlayerControl
                     highlighter.MaxTime = 10f;
                     break;
                 case NpcEffectType.Demonstration:
-                    var demonstration = RoSpriteEffect.AttachSprite(control, "Assets/Sprites/Effects/데몬스트레이션.spr", -0.15f, 1f, RoSpriteEffectFlags.None);
+                    var demonstration = RoSpriteEffect.AttachSprite(control, "Assets/Sprites/Effects/???????.spr", -0.15f, 1f, RoSpriteEffectFlags.None);
                     control.gameObject.transform.localScale = new Vector3(1.8f, 1.8f, 1.8f);
                     demonstration.SetDurationByFrames(9999);
                     AudioManager.Instance.OneShotSoundEffect(control.Id, $"ef_firewall.ogg", control.transform.position);
@@ -415,7 +413,7 @@ namespace Assets.Scripts.PlayerControl
                 case NpcEffectType.FirePillar:
                     FirePillarEffect.Create(control);
                     break;
-            case NpcEffectType.Quagmire:
+                case NpcEffectType.Quagmire:
                     //DummyGroundEffect.Create(obj, $"<color=#33FF33>Quagmire!!");
                     QuagmireEffect.Create(control);
                     break;
@@ -453,8 +451,8 @@ namespace Assets.Scripts.PlayerControl
                     break;
             }
         }
-        
-        
+
+
         public void ChangeFollowerState(ServerControllable control, CharacterFollowerState follower)
         {
             if (control.FollowerObject != null)
@@ -473,7 +471,7 @@ namespace Assets.Scripts.PlayerControl
 
                 return;
             }
-            
+
             if ((follower & CharacterFollowerState.AnyCart) > 0)
             {
                 var cartStyle = follower switch
@@ -504,8 +502,8 @@ namespace Assets.Scripts.PlayerControl
                 if (control.IsMainCharacter)
                     PlayerState.Instance.HasBird = true;
             }
-            
-            if(control.IsMainCharacter)
+
+            if (control.IsMainCharacter)
                 UiManager.Instance.EquipmentWindow.RefreshEquipmentWindow();
         }
     }

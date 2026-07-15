@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -13,6 +13,12 @@ namespace Assets.Scripts.UI.ConfigWindow
         Environment
     }
 
+    public enum UiStyle
+    {
+        Modern,
+        Classic
+    }
+
     [Serializable]
     public class HotBarSaveData
     {
@@ -21,7 +27,7 @@ namespace Assets.Scripts.UI.ConfigWindow
         public int ItemCount;
         public byte[] UniqueItem;
     }
-    
+
     [Serializable]
     public class GameConfigData : ISerializationCallbackReceiver
     {
@@ -44,6 +50,7 @@ namespace Assets.Scripts.UI.ConfigWindow
         public bool ShowLevelsInOverlay = true;
         //ui
         public float MasterUIScale = 0.75f;
+        public UiStyle UiStyle = UiStyle.Modern;
 
         public bool ShowBaseExpValue = true;
         public bool ShowBaseExpPercent = true;
@@ -58,7 +65,7 @@ namespace Assets.Scripts.UI.ConfigWindow
         public bool UseSpriteBasedDamageNumbers = false;
         public bool AllowTabToShowWalkTable = false;
         public bool HideShoutChat = false;
-        
+
         public bool EnableXRay = false;
 
         //game
@@ -74,7 +81,7 @@ namespace Assets.Scripts.UI.ConfigWindow
         //this is stupid but unity won't serialize dictionaries so we gotta do it ourselves
         public List<string> CharacterNames = new();
         public List<HotBarSaveData> AllHotBarData = new();
-        
+
         [NonSerialized] public Dictionary<string, HotBarSaveData[]> CharacterHotBarData = new();
 
         //user
@@ -110,11 +117,11 @@ namespace Assets.Scripts.UI.ConfigWindow
         {
             CharacterNames.Clear();
             AllHotBarData.Clear();
-            
+
             foreach (var (name, hotbar) in CharacterHotBarData)
             {
                 CharacterNames.Add(name);
-                foreach(var h in hotbar)
+                foreach (var h in hotbar)
                     AllHotBarData.Add(h);
             }
 
