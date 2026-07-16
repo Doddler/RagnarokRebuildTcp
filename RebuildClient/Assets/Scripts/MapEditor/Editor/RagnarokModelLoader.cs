@@ -126,7 +126,7 @@ namespace Assets.Scripts.MapEditor.Editor
 
 		public void LoadTextures(string savePath)
 		{
-			var path = Path.Combine("Assets/models/atlas", savePath); //Path.Combine(savePath);
+			var path = Path.Combine("Assets/Models/atlas", savePath); //Path.Combine(savePath);
 			if (!Directory.Exists(path))
 				Directory.CreateDirectory(path);
 
@@ -143,7 +143,7 @@ namespace Assets.Scripts.MapEditor.Editor
 				var tName = br.ReadKoreanString(40);
 				model.Textures.Add(tName);
 
-				var texout = TextureImportHelper.GetOrImportTextureToProject(tName, RagnarokDirectory.GetRagnarokDataDirectory, "Assets/models");
+				var texout = TextureImportHelper.GetOrImportTextureToProject(tName, RagnarokDirectory.GetRagnarokDataDirectory, "Assets/Models");
 				textures.Add(texout);
 			}
 
@@ -370,7 +370,7 @@ namespace Assets.Scripts.MapEditor.Editor
 			}
 
 			//save Mesh
-			var meshPath = AssetHelper.GetAssetPath(Path.Combine("Assets/models/mesh", savePath, baseName), Path.GetFileNameWithoutExtension(node.Name) + ".asset");
+			var meshPath = AssetHelper.GetAssetPath(Path.Combine("Assets/Models/mesh", savePath, baseName), Path.GetFileNameWithoutExtension(node.Name) + ".asset");
 
 			AssetDatabase.CreateAsset(mesh, meshPath);
 
@@ -397,7 +397,7 @@ namespace Assets.Scripts.MapEditor.Editor
 			mat.doubleSidedGI = true;
 			mat.enableInstancing = true;
 
-			var matPath = AssetHelper.GetAssetPath(Path.Combine("Assets/models/materials", savePath), Path.GetFileNameWithoutExtension(baseName) + ".mat");
+			var matPath = AssetHelper.GetAssetPath(Path.Combine("Assets/Models/materials", savePath), Path.GetFileNameWithoutExtension(baseName) + ".mat");
 
 			AssetDatabase.CreateAsset(mat, matPath);
 
@@ -568,7 +568,7 @@ namespace Assets.Scripts.MapEditor.Editor
 				//var modelName = @"splen\민가침대02.rsm";
 				var modelName = @"외부소품\트랩05.rsm";
 				
-				var modelPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, $@"model\{modelName}"); //prontera armory
+				var modelPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "model", modelName).Replace("\\", "/"); //prontera armory
 				var savePath = DirectoryHelper.GetRelativeDirectory(RagnarokDirectory.GetRagnarokDataDirectory, Path.GetDirectoryName(modelPath));
 		
 				
@@ -614,7 +614,7 @@ namespace Assets.Scripts.MapEditor.Editor
 					//var modelName = @"외부소품\트랩01.rsm";
 					var modelName = trap.Key;
 
-					var modelPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, $@"model\{modelName}");
+					var modelPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "model", modelName).Replace("\\", "/");
 					var savePath = DirectoryHelper.GetRelativeDirectory(RagnarokDirectory.GetRagnarokDataDirectory, Path.GetDirectoryName(modelPath));
 
 					loader.LoadModel(modelPath, savePath);

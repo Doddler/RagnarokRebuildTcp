@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.Effects;
+using Assets.Scripts.Effects;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,7 +25,7 @@ namespace Assets.Scripts.Sprites
         public int SortingOrder;
         public Vector2Int LastPosition;
         public bool HasWater;
-        
+
         public MeshFilter MeshFilter;
         public MeshRenderer MeshRenderer;
         public MeshCollider MeshCollider;
@@ -64,11 +64,42 @@ namespace Assets.Scripts.Sprites
         public int PaletteId;
         public RoSpriteData SpriteData;
         public bool IsHidden;
-        
-        private RoSpriteDrawCall drawCall;
-        private bool meshIsTransparent;
 
-        private static readonly Vector3[] transparentFallbackVertices = { Vector3.zero };
+        internal RoSpriteAnimator OwnerAnimator;
+
+        private SpriteBatchHandle _batchHandle;
+        private bool _registered;
+        private bool _useFallback;
+        private MeshArrays _meshArrays;
+        private RoSpriteRendererStandard _rootRenderer;
+        private Texture2D _registeredAtlas;
+        private bool _batchRejected;
+        private int _rejectedGeneration;
+        private float _nextBatchRetryTime;
+        private int _instanceId;
+        private const float BatchRetryDelay = 1f;
+
+        private BillboardObject _billboard;
+        private bool _billboardResolved;
+
+        private bool _dirty = true;
+        private Matrix4x4 _lastWriteMatrix;
+        private Color _lastWriteColor;
+        private float _lastWriteDrain;
+        private float _lastWriteOffset;
+        private bool _lastWriteHidden;
+        private int _lastWriteRootOrder;
+        private float _lastWriteVPos;
+        private bool _hasBeenPositioned;
+        
+        private bool _hasRebuiltOnce;
+        private int _lastRebuiltAction = -1;
+        private int _lastRebuiltAngle = -1;
+        private int _lastRebuiltFrame = -1;
+        private int _lastRebuiltPalette = -1;
+        private int _lastRebuiltSortingOrder;
+        private Material _lastRebuiltOverride;
+        private float _lastRebuiltVerticalOffset;
 
         private struct MeshArrays
         {
@@ -79,7 +110,6 @@ namespace Assets.Scripts.Sprites
 
         private static readonly Dictionary<Mesh, MeshArrays> meshArrayCache = new();
 
-        //public Direction Direction;
         public Direction Direction
         {
             get => RoAnimationHelper.GetFacingForAngle(Angle);
@@ -88,7 +118,6 @@ namespace Assets.Scripts.Sprites
         public Direction LastDirection;
 
         private Mesh _mesh;
-        //public Texture2D AppliedPalette;
 
         public void SetAction(int action, bool is8Direction)
         {
@@ -100,7 +129,7 @@ namespace Assets.Scripts.Sprites
         public void SetColorDrain(float drainStrength) => ColorDrain = drainStrength;
         public void SetDirection(Direction direction) => Direction = direction;
         public void SetAngle(float angle) => Angle = angle;
-        
+
         public void SetFrame(int frame) => CurrentFrame = frame;
         public void SetSprite(RoSpriteData sprite) => SpriteData = sprite;
         public void SetOffset(float offset) => SpriteOffset = offset;
@@ -127,6 +156,7 @@ namespace Assets.Scripts.Sprites
 
             MeshFilter = gameObject.AddComponent<MeshFilter>();
             MeshRenderer = gameObject.AddComponent<MeshRenderer>();
+            MeshRenderer.enabled = false;
 
             MeshRenderer.sortingOrder = SortingOrder;
             if (makeCollider)
@@ -134,7 +164,7 @@ namespace Assets.Scripts.Sprites
 
             SortingGroup = gameObject.GetOrAddComponent<SortingGroup>();
             SortingGroup.sortingOrder = SortingOrder;
-            
+
             MeshRenderer.receiveShadows = false;
             MeshRenderer.lightProbeUsage = LightProbeUsage.BlendProbes;
             MeshRenderer.shadowCastingMode = ShadowCastingMode.Off;
@@ -152,127 +182,160 @@ namespace Assets.Scripts.Sprites
             CurrentAngleIndex = (int)Direction;
             if (UpdateAngleWithCamera)
                 CurrentAngleIndex = RoAnimationHelper.GetSpriteIndexForAngle(Direction, 360 - CameraFollower.Instance.Rotation);
-            
+
             isInitialized = true;
 
             Rebuild();
         }
-        
+
         public void SetActive(bool isActive)
         {
-            // Debug.Log($"{gameObject.GetGameObjectPath()} {isActive}");
             gameObject.SetActive(isActive);
         }
 
         public void SetOverrideMaterial(Material mat)
         {
             OverrideMaterial = mat;
-            //MeshRenderer.sharedMaterials = null;
-            MeshRenderer.sharedMaterial = OverrideMaterial;
+            if (MeshRenderer != null)
+                MeshRenderer.sharedMaterial = OverrideMaterial;
         }
 
         public void SetLightProbeAnchor(GameObject anchor)
         {
-            MeshRenderer.probeAnchor = anchor.transform;
+            if (MeshRenderer != null)
+                MeshRenderer.probeAnchor = anchor.transform;
         }
 
         public void Rebuild()
         {
             if (!isInitialized)
                 return;
-            
+
+            if (!UpdateAngleWithCamera)
+                CurrentAngleIndex = (int)Direction;
+
+            if (_hasRebuiltOnce
+                && ActionId == _lastRebuiltAction
+                && CurrentAngleIndex == _lastRebuiltAngle
+                && CurrentFrame == _lastRebuiltFrame
+                && PaletteId == _lastRebuiltPalette
+                && SortingOrder == _lastRebuiltSortingOrder
+                && ReferenceEquals(OverrideMaterial, _lastRebuiltOverride)
+                && VerticalOffset == _lastRebuiltVerticalOffset)
+            {
+                return;
+            }
+
             if (OverrideMaterial != null)
             {
                 MeshRenderer.sharedMaterial = OverrideMaterial;
             }
 
-            if (!UpdateAngleWithCamera)
-                CurrentAngleIndex = (int)Direction;
+            var reverseNorth = SpriteData.ReverseSortingWhenFacingNorth && CurrentAngleIndex >= 2 && CurrentAngleIndex <= 5;
+            SortingGroup.sortingOrder = EffectiveSortingOrder();
+            if (ZOffset != 0)
+                transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, reverseNorth ? -ZOffset : ZOffset);
 
-            if (SpriteData.ReverseSortingWhenFacingNorth && CurrentAngleIndex >= 2 && CurrentAngleIndex <= 5)
-            {
-                SortingGroup.sortingOrder =
-                    SortingOrder < 0 ? -SortingOrder : SortingOrder - 10; //SortingOrder - 10; //this puts the shield behind the other sprite parts
-                if (ZOffset != 0)
-                    transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, -ZOffset);
-            }
-            else
-            {
-                SortingGroup.sortingOrder = SortingOrder; //we update this each frame because the parent might have changed our order based on the animation.
-                if (ZOffset != 0)
-                    transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, ZOffset);
-            }
-
-	        _mesh = GetMeshForFrame();
+            _mesh = GetMeshForFrame();
             var cMesh = GetColliderForFrame();
 
-            MeshFilter.sharedMesh = null;
-            MeshFilter.sharedMesh = _mesh;
-            if (MeshCollider != null)
+            if (MeshFilter.sharedMesh != _mesh)
+            {
+                MeshFilter.sharedMesh = null;
+                MeshFilter.sharedMesh = _mesh;
+            }
+            if (MeshCollider != null && MeshCollider.sharedMesh != cMesh)
             {
                 MeshCollider.sharedMesh = null;
                 MeshCollider.sharedMesh = cMesh;
             }
 
-            MeshRenderer.GetPropertyBlock(propertyBlock, 0);
-            SetPropertyBlock();
-            MeshRenderer.SetPropertyBlock(propertyBlock, 0);
+            if (propertyBlock != null && MeshRenderer != null)
+            {
+                MeshRenderer.GetPropertyBlock(propertyBlock, 0);
+                SetPropertyBlock();
+                MeshRenderer.SetPropertyBlock(propertyBlock, 0);
+            }
 
-            StampDrawCallMesh();
+            StampMeshArrays();
+            _dirty = true;
 
-            //Debug.Log($"Generating Mesh Data for {SpriteData.Atlas.name} at frame {Time.frameCount}");
+            _hasRebuiltOnce = true;
+            _lastRebuiltAction = ActionId;
+            _lastRebuiltAngle = CurrentAngleIndex;
+            _lastRebuiltFrame = CurrentFrame;
+            _lastRebuiltPalette = PaletteId;
+            _lastRebuiltSortingOrder = SortingOrder;
+            _lastRebuiltOverride = OverrideMaterial;
+            _lastRebuiltVerticalOffset = VerticalOffset;
+        }
+        
+        internal int EffectiveSortingOrder()
+        {
+            if (SpriteData && SpriteData.ReverseSortingWhenFacingNorth && CurrentAngleIndex >= 2 && CurrentAngleIndex <= 5)
+                return SortingOrder < 0 ? -SortingOrder : SortingOrder - 10;
+            return SortingOrder;
         }
 
-        private void StampDrawCallMesh()
+        private void StampMeshArrays()
         {
-            if (_mesh == null)
-                return;
-            if (!meshArrayCache.TryGetValue(_mesh, out var arrays))
+            if (_mesh == null) return;
+            if (!meshArrayCache.TryGetValue(_mesh, out _meshArrays))
             {
-                arrays = new MeshArrays
+                _meshArrays = new MeshArrays
                 {
                     Uv = _mesh.uv,
                     Vertices = _mesh.vertices,
                     Colors = _mesh.colors,
                 };
-                meshArrayCache[_mesh] = arrays;
+                meshArrayCache[_mesh] = _meshArrays;
             }
-            meshIsTransparent = arrays.Colors.Length > 0 && arrays.Colors[0].a < 0.5f;
-            if (drawCall == null)
-                return;
-            drawCall.UV = arrays.Uv;
-            drawCall.Vertices = arrays.Vertices;
-            drawCall.VColor = arrays.Colors;
+        }
+
+        internal static bool TryGetMeshArrays(Mesh mesh, out Vector3[] vertices, out Vector2[] uv, out Color[] colors)
+        {
+            vertices = null;
+            uv = null;
+            colors = null;
+            if (mesh == null)
+                return false;
+
+            if (!meshArrayCache.TryGetValue(mesh, out var arrays))
+            {
+                arrays = new MeshArrays
+                {
+                    Uv = mesh.uv,
+                    Vertices = mesh.vertices,
+                    Colors = mesh.colors,
+                };
+                meshArrayCache[mesh] = arrays;
+            }
+
+            vertices = arrays.Vertices;
+            uv = arrays.Uv;
+            colors = arrays.Colors;
+            return vertices != null && vertices.Length > 0;
         }
 
         private void SetPropertyBlock()
         {
             var envColor = RoMapRenderSettings.GetBakedLightContribution(new Vector2(transform.position.x, transform.position.z));
-            
+
             propertyBlock.SetTexture(MainTex, SpriteData.Atlas);
             propertyBlock.SetColor(Color1, Color);
             propertyBlock.SetColor(EnvColor, envColor);
             propertyBlock.SetFloat(Width, SpriteData.AverageWidth / 25f);
-            
-            // We want to sample the light on a single point for all sprites.
-            propertyBlock.SetVector(LightingSamplePosition, transform.parent.position);
-            
-            // Unity send light info differently on sprites and mesh renderers, so we need to let the shader know what path it should take.
+
+            var sampleAnchor = transform.parent != null ? transform.parent.position : transform.position;
+            propertyBlock.SetVector(LightingSamplePosition, sampleAnchor);
+
             propertyBlock.SetFloat(IsMeshRenderer, 1f);
-            
-            // if (SpriteData.Palette != null || AppliedPalette != null)
-            // {
-            //     if(AppliedPalette != null)
-            //         propertyBlock.SetTexture("_PalTex", AppliedPalette);
-            //     else
-            //         propertyBlock.SetTexture("_PalTex", SpriteData.Palette);
-            // }
 
             if (Mathf.Approximately(0, SpriteOffset))
                 propertyBlock.SetFloat(Offset, Mathf.Max(SpriteData.Size / 125f, 1f));
             else
                 propertyBlock.SetFloat(Offset, SpriteOffset);
-            
+
             propertyBlock.SetFloat(Drain, ColorDrain);
             propertyBlock.SetFloat(VPos, ShaderYOffset);
 
@@ -281,7 +344,6 @@ namespace Assets.Scripts.Sprites
 
         public Mesh GetMeshForFrame()
         {
-            //just a simple hash
             var id = ((ActionId + CurrentAngleIndex) << 16) + CurrentFrame;
 
             if (meshCache == null)
@@ -311,121 +373,273 @@ namespace Assets.Scripts.Sprites
             return newMesh;
         }
 
+        public bool UpdateCameraFacing()
+        {
+            if (!isInitialized || !UpdateAngleWithCamera)
+                return false;
+
+            var rotation = 360 - (int)CameraFollower.Instance.Rotation;
+            if (is8Direction)
+                rotation += 22;
+            rotation %= 360;
+
+            var angleIndex = RoAnimationHelper.GetSpriteIndexForAngle(Angle, rotation);
+            if (!is8Direction && angleIndex % 2 == 0)
+                angleIndex++;
+
+            if (angleIndex != CurrentAngleIndex)
+            {
+                CurrentAngleIndex = angleIndex;
+                Rebuild();
+                return true;
+            }
+
+            return false;
+        }
+
         public bool UpdateRenderer()
         {
             if (!isInitialized)
                 return false;
-            
-	        MeshRenderer.enabled = !IsHidden;
-            // MeshCollider.enabled = !IsHidden;
-            
-            bool result = false;
-            
-            if (UpdateAngleWithCamera)
+
+            bool rebuilt = UpdateCameraFacing();
+
+            var batcher = RoSpriteAndGroundItemBatcher.Instance;
+            if (_batchRejected && batcher != null
+                && (_rejectedGeneration != batcher.Generation || Time.unscaledTime >= _nextBatchRetryTime))
+                _batchRejected = false;
+            bool wantFallback = OverrideMaterial != null
+                || batcher == null
+                || !batcher.BatchingAvailable
+                || _batchRejected;
+            if (wantFallback != _useFallback)
             {
-                // var targetDir = transform.position - CameraFollower.Instance.transform.position;
-                // var subAngle = Vector3.SignedAngle(targetDir, CameraFollower.Instance.transform.forward, Vector3.up);
-                //
-
-                var rotation = 360 - (int)CameraFollower.Instance.Rotation;
-                if(is8Direction)
-                    rotation += 22;
-                rotation %= 360;
-                
-                var angleIndex = RoAnimationHelper.GetSpriteIndexForAngle(Angle, rotation);
-                if (!is8Direction && angleIndex % 2 == 0)
-                    angleIndex++;
-                
-                // Debug.Log($"{SpriteData.Name} is8Direction:{is8Direction} Angle:{Angle} Camera:{CameraFollower.Instance.Rotation} -> {rotation} AngleIndex: {angleIndex}");
-                if (angleIndex != CurrentAngleIndex)
+                _useFallback = wantFallback;
+                if (_useFallback && _registered)
                 {
-                    CurrentAngleIndex = angleIndex;
-
-                    Rebuild();
-                    result = true;
+                    if (RoSpriteAndGroundItemBatcher.Instance != null)
+                        RoSpriteAndGroundItemBatcher.Instance.Unregister(ref _batchHandle);
+                    _registered = false;
                 }
             }
 
-            shader = GameConfig.Data.EnableXRay ? ShaderCache.Instance.SpriteShaderWithXRay : ShaderCache.Instance.SpriteShader;
-            if (MeshRenderer.material.shader != shader) MeshRenderer.material.shader = shader;
-            
-            UpdateDrawCall();
-            return result;
+            if (_useFallback)
+            {
+                UpdateFallbackRenderer();
+            }
+            else
+            {
+                if (MeshRenderer != null && MeshRenderer.enabled)
+                    MeshRenderer.enabled = false;
+
+                if (SpriteData != null && _meshArrays.Vertices != null)
+                    WriteToBatcher();
+            }
+
+            return rebuilt;
         }
-        
+
+        private void EnsureFallbackMaterial()
+        {
+            if (MeshRenderer == null) return;
+
+            if (OverrideMaterial != null)
+            {
+                if (MeshRenderer.sharedMaterial != OverrideMaterial)
+                    MeshRenderer.sharedMaterial = OverrideMaterial;
+                return;
+            }
+
+            var cache = ShaderCache.Instance;
+            if (cache == null) return;
+            var wantShader = GameConfig.Data != null && GameConfig.Data.EnableXRay
+                ? cache.SpriteShaderWithXRay
+                : cache.SpriteShader;
+            if (wantShader == null) return;
+
+            if (MeshRenderer.sharedMaterial == null)
+                MeshRenderer.material = new Material(wantShader);
+            else if (MeshRenderer.material.shader != wantShader)
+                MeshRenderer.material.shader = wantShader;
+        }
+
+        private void UpdateFallbackRenderer()
+        {
+            if (MeshRenderer == null) return;
+            MeshRenderer.enabled = !IsHidden;
+            EnsureFallbackMaterial();
+            MeshRenderer.GetPropertyBlock(propertyBlock, 0);
+            SetPropertyBlock();
+            MeshRenderer.SetPropertyBlock(propertyBlock, 0);
+        }
+
+        private void RejectBatching(RoSpriteAndGroundItemBatcher batcher)
+        {
+            _registered = false;
+            _batchHandle = default;
+            _registeredAtlas = null;
+            _batchRejected = true;
+            _rejectedGeneration = batcher.Generation;
+            _nextBatchRetryTime = Time.unscaledTime + BatchRetryDelay;
+            _useFallback = true;
+            UpdateFallbackRenderer();
+        }
+
+        internal int CachedInstanceId => _instanceId != 0 ? _instanceId : _instanceId = GetInstanceID();
+
+        private RoSpriteRendererStandard ResolveRootRenderer()
+        {
+            if (_rootRenderer != null) return _rootRenderer;
+            if (OwnerAnimator == null || OwnerAnimator.Parent == null)
+            {
+                _rootRenderer = this;
+                return _rootRenderer;
+            }
+            if (OwnerAnimator.Parent.SpriteRenderer is RoSpriteRendererStandard parentRenderer)
+            {
+                _rootRenderer = parentRenderer;
+                return _rootRenderer;
+            }
+            return this;
+        }
+
+        private void WriteToBatcher()
+        {
+            var batcher = RoSpriteAndGroundItemBatcher.Instance;
+            if (batcher == null) return;
+            if (_meshArrays.Vertices == null) return;
+            if (!isActiveAndEnabled) return; //a dying renderer must not re-register after OnDisable already unregistered
+
+            if (_registered && !batcher.IsValidHandle(_batchHandle))
+            {
+                _registered = false;
+                _batchHandle = default;
+                _registeredAtlas = null;
+                _dirty = true;
+            }
+
+            if (_registered && _registeredAtlas != SpriteData.Atlas)
+            {
+                batcher.Unregister(ref _batchHandle);
+                _registered = false;
+                _registeredAtlas = null;
+                _dirty = true;
+            }
+
+            if (!_registered)
+            {
+                int layerCount = _meshArrays.Vertices.Length / 4;
+                if (layerCount <= 0) return;
+                if (!batcher.TryRegister(SpriteData.Atlas, layerCount, out _batchHandle))
+                {
+                    RejectBatching(batcher);
+                    return;
+                }
+                _registeredAtlas = SpriteData.Atlas;
+                _registered = true;
+                _dirty = true;
+            }
+
+            var pos = transform.position;
+            if (!_billboardResolved)
+            {
+                _billboard = GetComponentInParent<BillboardObject>(true);
+                _billboardResolved = true;
+            }
+            var cameraFacing = _billboard != null
+                && (_billboard.Style == BillboardStyle.Character || _billboard.Style == BillboardStyle.Normal);
+            var localToWorld = cameraFacing
+                ? RoSpriteAndGroundItemBatcher.BillboardBakeMatrix(transform)
+                : transform.localToWorldMatrix;
+
+            if (!_hasBeenPositioned)
+            {
+                if (pos.sqrMagnitude < 0.0001f)
+                    return;
+                _hasBeenPositioned = true;
+                _dirty = true;
+            }
+
+            var root = ResolveRootRenderer();
+            int rootOrder = root.EffectiveSortingOrder();
+
+            if (!_dirty
+                && localToWorld == _lastWriteMatrix
+                && Color == _lastWriteColor
+                && ColorDrain == _lastWriteDrain
+                && SpriteOffset == _lastWriteOffset
+                && IsHidden == _lastWriteHidden
+                && rootOrder == _lastWriteRootOrder
+                && ShaderYOffset == _lastWriteVPos)
+            {
+                return;
+            }
+
+            var p = new SpriteRenderParams
+            {
+                spriteColor = Color,
+                colorDrain = ColorDrain,
+                offset = Mathf.Approximately(0, SpriteOffset) ? Mathf.Max(SpriteData.Size / 125f, 1f) : SpriteOffset,
+                vPos = ShaderYOffset,
+                width = SpriteData.AverageWidth / 25f,
+                hidden = IsHidden,
+                sortOrder = EffectiveSortingOrder(),
+                rootKey = root.CachedInstanceId,
+                rootOrder = rootOrder,
+                rootPos = root.transform.position,
+            };
+
+            if (!batcher.WriteSprite(ref _batchHandle, localToWorld,
+                transform, root.transform,
+                _meshArrays.Vertices, _meshArrays.Uv, _meshArrays.Colors, p, cameraFacing))
+            {
+                RejectBatching(batcher);
+                return;
+            }
+
+            _lastWriteMatrix = localToWorld;
+            _lastWriteColor = Color;
+            _lastWriteDrain = ColorDrain;
+            _lastWriteOffset = SpriteOffset;
+            _lastWriteHidden = IsHidden;
+            _lastWriteRootOrder = rootOrder;
+            _lastWriteVPos = ShaderYOffset;
+            _batchRejected = false;
+            _dirty = false;
+        }
+
         private void OnEnable()
         {
-	        StartCoroutine(WaitSpriteDataThenCreateDrawCall());
+            StartCoroutine(WaitSpriteDataThenRegister());
         }
 
-        private IEnumerator WaitSpriteDataThenCreateDrawCall()
+        private IEnumerator WaitSpriteDataThenRegister()
         {
-	        while (!SpriteData)
-	        {
-		        yield return null;
-	        }
+            while (!SpriteData || !isInitialized || _mesh == null)
+                yield return null;
 
-	        UpdateDrawCall();
-	        StampDrawCallMesh();
-	        RoSpriteBatcher.Instance.drawCalls.AddItem(SpriteData.Atlas, drawCall);
+            StampMeshArrays();
+
+            if (OverrideMaterial != null)
+            {
+                _useFallback = true;
+                if (MeshRenderer != null) MeshRenderer.enabled = true;
+            }
+            else
+            {
+                _useFallback = false;
+                if (MeshRenderer != null) MeshRenderer.enabled = false;
+            }
         }
-        
+
         private void OnDisable()
         {
-	        if (drawCall == null) return;
-	        RoSpriteBatcher.Instance.drawCalls.RemoveItem(SpriteData.Atlas, drawCall);
+            if (_registered)
+            {
+                if (RoSpriteAndGroundItemBatcher.Instance != null)
+                    RoSpriteAndGroundItemBatcher.Instance.Unregister(ref _batchHandle);
+                _registered = false;
+            }
         }
-        
-        private void UpdateDrawCall()
-        {
-	        drawCall ??= new RoSpriteDrawCall();
-	        
-	        if (!RoSpriteBatcher.Instance.EnableInstancing)
-	        {
-		        MeshRenderer.enabled = !IsHidden;
-		        return;
-	        }
-	        
-	        // We are only instancing quads
-	        if (MeshFilter.sharedMesh.vertexCount != 4)
-	        {
-		        MeshRenderer.enabled = true;
-		        drawCall.Color = Color.clear;
-		        return;
-	        }
-	        
-	        // We can't sort transparency, so we must fall back to standard rendering.
-	        if (meshIsTransparent)
-	        {
-		        MeshRenderer.enabled = true;
-		        drawCall.Vertices = transparentFallbackVertices;
-		        drawCall.Color = Color.clear;
-		        return;
-	        }
-
-	        MeshRenderer.enabled = false;
-	        if (!isInitialized) return;
-
-	        if (drawCall.Vertices == transparentFallbackVertices)
-	            StampDrawCallMesh();
-
-	        drawCall.Transform = transform;
-	        drawCall.IsHidden = IsHidden;
-	        
-	        if (propertyBlock != null)
-	        {
-		        drawCall.Color = propertyBlock.GetColor(Color1);
-		        drawCall.Offset = propertyBlock.GetFloat(Offset);
-		        drawCall.ColorDrain = propertyBlock.GetFloat(Drain);
-		        drawCall.VPos = propertyBlock.GetFloat(VPos);
-		        drawCall.Width = propertyBlock.GetFloat(Width);
-	        }
-        }
-        
-        //public void OnDestroy()
-        //{
-        //    if (belowWaterMat != null) Destroy(belowWaterMat);
-        //    if (aboveWaterMat != null) Destroy(aboveWaterMat);
-        //}
     }
 }

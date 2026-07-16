@@ -94,20 +94,20 @@ namespace Assets.Scripts.MapEditor.Editor
             }
 
 
-            if (!Directory.Exists("Assets/maps/altitude/mapinfo"))
-                Directory.CreateDirectory("Assets/maps/altitude/mapinfo");
+            if (!Directory.Exists("Assets/Maps/altitude/mapinfo"))
+                Directory.CreateDirectory("Assets/Maps/altitude/mapinfo");
 
-            map.SaveCellDataToFile(cells, Path.Combine("Assets/maps/altitude/mapinfo", name + "_walk.bytes").Replace("\\", "/"));
+            map.SaveCellDataToFile(cells, Path.Combine("Assets/Maps/altitude/mapinfo", name + "_walk.bytes").Replace("\\", "/"));
 
-            if (!Directory.Exists("Assets/maps/altitude/walkdata"))
-                Directory.CreateDirectory("Assets/maps/altitude/walkdata");
+            if (!Directory.Exists("Assets/Maps/altitude/walkdata"))
+                Directory.CreateDirectory("Assets/Maps/altitude/walkdata");
 
             var walkData = ScriptableObject.CreateInstance<RagnarokWalkData>();
             walkData.Width = map.Width;
             walkData.Height = map.Height;
             walkData.Cells = walkCells;
 
-            AssetDatabase.CreateAsset(walkData, Path.Combine("Assets/maps/altitude/walkdata", name + "_walkdata.asset").Replace("\\", "/"));
+            AssetDatabase.CreateAsset(walkData, Path.Combine("Assets/Maps/altitude/walkdata", name + "_walkdata.asset").Replace("\\", "/"));
 
             map.WalkCellData = walkData;
 
@@ -238,20 +238,20 @@ namespace Assets.Scripts.MapEditor.Editor
             map.Width = realWidth;
             map.Height = realHeight;
 
-            if (!Directory.Exists("Assets/maps/altitude/mapinfo"))
-                Directory.CreateDirectory("Assets/maps/altitude/mapinfo");
+            if (!Directory.Exists("Assets/Maps/altitude/mapinfo"))
+                Directory.CreateDirectory("Assets/Maps/altitude/mapinfo");
 
-            map.SaveCellDataToFile(cells, Path.Combine("Assets/maps/altitude/mapinfo", basename + "_walk.bytes").Replace("\\", "/"));
+            map.SaveCellDataToFile(cells, Path.Combine("Assets/Maps/altitude/mapinfo", basename + "_walk.bytes").Replace("\\", "/"));
 
-            if (!Directory.Exists("Assets/maps/altitude/walkdata"))
-                Directory.CreateDirectory("Assets/maps/altitude/walkdata");
+            if (!Directory.Exists("Assets/Maps/altitude/walkdata"))
+                Directory.CreateDirectory("Assets/Maps/altitude/walkdata");
 
             var walkData = ScriptableObject.CreateInstance<RagnarokWalkData>();
             walkData.Width = realWidth;
             walkData.Height = realHeight;
             walkData.Cells = walkCells;
 
-            AssetDatabase.CreateAsset(walkData, Path.Combine("Assets/maps/altitude/walkdata", basename + "_walkdata.asset").Replace("\\", "/"));
+            AssetDatabase.CreateAsset(walkData, Path.Combine("Assets/Maps/altitude/walkdata", basename + "_walkdata.asset").Replace("\\", "/"));
 
             map.WalkCellData = walkData;
 

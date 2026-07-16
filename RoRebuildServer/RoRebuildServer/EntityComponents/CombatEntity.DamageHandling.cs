@@ -195,7 +195,7 @@ public partial class CombatEntity
             if (isPhysical)
             {
                 //armor def.
-                var def = GetStat(CharacterStat.Def);
+                var def = GetEffectiveStat(CharacterStat.Def);
                 var refineDef = GetStat(CharacterStat.EquipmentRefineDef);
 
                 //soft def

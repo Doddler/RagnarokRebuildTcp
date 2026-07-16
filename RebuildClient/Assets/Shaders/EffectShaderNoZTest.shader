@@ -1,4 +1,4 @@
-﻿Shader "Ragnarok/EffectShaderNoZTest"
+Shader "Ragnarok/EffectShaderNoZTest"
 {
     Properties
     {
@@ -7,61 +7,63 @@
     }
     SubShader
     {
-        Tags { "Queue"="Transparent+15" "IgnoreProjector"="True" "RenderType"="Transparent" }
+        Tags { "Queue"="Transparent+15" "IgnoreProjector"="True" "RenderType"="Transparent" "RenderPipeline"="UniversalPipeline" }
         Blend One OneMinusSrcAlpha
-        Cull Off Lighting Off ZWrite Off ZTest Off
+        Cull Off ZWrite Off ZTest Off
         LOD 100
 
         Pass
         {
-            CGPROGRAM
+            Tags{ "LightMode" = "UniversalForward" }
+
+            HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
             #pragma multi_compile_fog
 
-            #include "UnityCG.cginc"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
             struct appdata
             {
                 float4 vertex : POSITION;
-                float4 color    : COLOR;
+                half4 color : COLOR;
                 float2 uv : TEXCOORD0;
             };
 
             struct v2f
             {
                 float2 uv : TEXCOORD0;
-                float4 color    : COLOR;
-                UNITY_FOG_COORDS(1)
+                half4 color : TEXCOORD1;
+                half fogFactor : TEXCOORD2;
                 float4 vertex : SV_POSITION;
             };
 
-            sampler2D _MainTex;
+            TEXTURE2D(_MainTex);
+            SAMPLER(sampler_MainTex);
+
+            CBUFFER_START(UnityPerMaterial)
             float4 _MainTex_ST;
-            fixed4 _Color;
+            half4 _Color;
+            CBUFFER_END
 
             v2f vert (appdata v)
             {
-                v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
+                v2f o = (v2f)0;
+                o.vertex = TransformObjectToHClip(v.vertex.xyz);
                 o.color = v.color;
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-                UNITY_TRANSFER_FOG(o,o.vertex);
+                o.fogFactor = ComputeFogFactor(o.vertex.z);
                 return o;
             }
 
-            fixed4 frag (v2f i) : SV_Target
+            half4 frag (v2f i) : SV_Target
             {
-                // sample the texture
-                fixed4 col = tex2D(_MainTex, i.uv) * i.color * _Color;
-                UNITY_APPLY_FOG(i.fogCoord, col);
+                half4 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv) * i.color * _Color;
+                col.rgb = MixFog(col.rgb, i.fogFactor);
                 col.rgb *= col.a;
-                // apply fog
-                
                 return col;
             }
-            ENDCG
+            ENDHLSL
         }
     }
 }

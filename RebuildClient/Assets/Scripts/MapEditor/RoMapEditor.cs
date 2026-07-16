@@ -397,7 +397,7 @@ namespace Assets.Scripts.MapEditor
                     w.Images = new Texture2D[32];
 
                     for (var i = 0; i < 32; i++)
-                        w.Images[i] = AssetDatabase.LoadAssetAtPath<Texture2D>($"Assets/Maps/texture/water/water{w.Type}{i:D2}.jpg");
+                        w.Images[i] = AssetDatabase.LoadAssetAtPath<Texture2D>($"Assets/Maps/Texture/Water/water{w.Type}{i:D2}.jpg");
 
                     EditorUtility.SetDirty(MapData);
                 }
@@ -705,7 +705,7 @@ namespace Assets.Scripts.MapEditor
                                 LightmapperUtils.Extract(l, out cookie);
                                 ld.Init(ref spot, ref cookie);
                                 break;
-                            case UnityEngine.LightType.Area:
+                            case UnityEngine.LightType.Rectangle:
                                 LightmapperUtils.Extract(l, ref rect);
                                 LightmapperUtils.Extract(l, out cookie);
                                 ld.Init(ref rect, ref cookie);

@@ -603,22 +603,7 @@ public class CharacterStatusContainer
         Debug.Assert(Owner != null && statusEffects != null);
         var status = statusEffects[id];
 
-        var visibility = StatusEffectHandler.GetStatusVisibility(status.Type);
-
-        if (visibility == StatusClientVisibility.Everyone || (visibility == StatusClientVisibility.Ally && Character.Type == CharacterType.Player))
-        {
-            Debug.Assert(Character.Map != null);
-            Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
-            CommandBuilder.SendRemoveStatusEffect(Character, ref status);
-            CommandBuilder.ClearRecipients();
-        }
-
-        if (visibility == StatusClientVisibility.Owner && Character.Type == CharacterType.Player)
-        {
-            CommandBuilder.AddRecipient(Character.Entity);
-            CommandBuilder.SendRemoveStatusEffect(Character, ref status);
-            CommandBuilder.ClearRecipients();
-        }
+        NotifyStatusEffectRemoval(ref status);
 
         StatusEffectHandler.OnExpiration(status.Type, Owner, ref status);
         statusEffects!.Remove(id);
@@ -630,22 +615,7 @@ public class CharacterStatusContainer
     {
         Debug.Assert(Owner != null);
 
-        var visibility = StatusEffectHandler.GetStatusVisibility(status.Type);
-
-        if (visibility == StatusClientVisibility.Everyone || (visibility == StatusClientVisibility.Ally && Character.Type == CharacterType.Player))
-        {
-            Debug.Assert(Character.Map != null);
-            Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
-            CommandBuilder.SendRemoveStatusEffect(Character, ref status);
-            CommandBuilder.ClearRecipients();
-        }
-
-        if (visibility == StatusClientVisibility.Owner && Character.Type == CharacterType.Player)
-        {
-            CommandBuilder.AddRecipient(Character.Entity);
-            CommandBuilder.SendRemoveStatusEffect(Character, ref status);
-            CommandBuilder.ClearRecipients();
-        }
+        NotifyStatusEffectRemoval(ref status);
 
         StatusEffectHandler.OnExpiration(status.Type, Owner, ref status);
         statusEffects!.Remove(ref status);
@@ -679,24 +649,7 @@ public class CharacterStatusContainer
         statusEffects.Add(ref state);
         nextExpirationCheck = 0f; //this will force it to determine when the next expiration check happens
 
-        var visibility = StatusEffectHandler.GetStatusVisibility(state.Type);
-
-        if (Character.Map != null && visibility != StatusClientVisibility.None)
-        {
-            if (visibility == StatusClientVisibility.Everyone || (visibility == StatusClientVisibility.Ally && Character.Type == CharacterType.Player))
-            {
-                Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
-                CommandBuilder.SendApplyStatusEffect(Character, ref state);
-                CommandBuilder.ClearRecipients();
-            }
-
-            if (visibility == StatusClientVisibility.Owner && Character.Type == CharacterType.Player)
-            {
-                CommandBuilder.AddRecipient(Character.Entity);
-                CommandBuilder.SendApplyStatusEffect(Character, ref state);
-                CommandBuilder.ClearRecipients();
-            }
-        }
+        NotifyStatusEffectAddition(ref state);
 
         Owner.UpdateStats();
 
@@ -749,13 +702,7 @@ public class CharacterStatusContainer
                 continue;
             }
 
-            if (StatusEffectHandler.GetStatusVisibility(status.Type) != StatusClientVisibility.None)
-            {
-                Debug.Assert(Character.Map != null);
-                Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
-                CommandBuilder.SendRemoveStatusEffect(Character, ref status);
-                CommandBuilder.ClearRecipients();
-            }
+            NotifyStatusEffectRemoval(ref status);
 
             StatusEffectHandler.OnExpiration(status.Type, Owner, ref status);
         }
@@ -775,6 +722,48 @@ public class CharacterStatusContainer
     }
 
     public void ClearAllWithoutRemoveHandler() => statusEffects?.Clear();
+
+    private void NotifyStatusEffectAddition(ref StatusEffectState state)
+    {
+        var visibility = StatusEffectHandler.GetStatusVisibility(state.Type);
+        if (Character.Map != null && visibility != StatusClientVisibility.None)
+        {
+            if (visibility == StatusClientVisibility.Everyone || (visibility == StatusClientVisibility.Ally && Character.Type == CharacterType.Player))
+            {
+                Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
+                CommandBuilder.SendApplyStatusEffect(Character, ref state);
+                CommandBuilder.ClearRecipients();
+            }
+
+            if (visibility == StatusClientVisibility.Owner && Character.Type == CharacterType.Player)
+            {
+                CommandBuilder.AddRecipient(Character.Entity);
+                CommandBuilder.SendApplyStatusEffect(Character, ref state);
+                CommandBuilder.ClearRecipients();
+            }
+        }
+    }
+
+    private void NotifyStatusEffectRemoval(ref StatusEffectState state)
+    {
+        var visibility = StatusEffectHandler.GetStatusVisibility(state.Type);
+        if (Character.Map != null && visibility != StatusClientVisibility.None)
+        {
+            if (visibility == StatusClientVisibility.Everyone || (visibility == StatusClientVisibility.Ally && Character.Type == CharacterType.Player))
+            {
+                Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
+                CommandBuilder.SendRemoveStatusEffect(Character, ref state);
+                CommandBuilder.ClearRecipients();
+            }
+
+            if (visibility == StatusClientVisibility.Owner && Character.Type == CharacterType.Player)
+            {
+                CommandBuilder.AddRecipient(Character.Entity);
+                CommandBuilder.SendRemoveStatusEffect(Character, ref state);
+                CommandBuilder.ClearRecipients();
+            }
+        }
+    }
 
     public void PrepareCreateEntityMessage(OutboundMessage msg)
     {

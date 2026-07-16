@@ -1,9 +1,6 @@
 #ifndef BILLBOARD_INCLUDED
 #define BILLBOARD_INCLUDED
 
-#define COMPUTE_DEPTH_01b -(viewPos.z * _ProjectionParams.w)
-#define COMPUTE_DEPTH_01 -(UnityObjectToViewPos( v.pos ).z * _ProjectionParams.w)
-
 struct Billboard
 {
     float4 positionCS;
@@ -38,8 +35,9 @@ Billboard GetBillboard(float4 positionOS, float offset)
 {
     float2 pos = positionOS.xy;
     
-    float3 worldPos = mul(unity_ObjectToWorld, float4(pos.x, pos.y, 0, 1)).xyz;
-    float3 originPos = mul(unity_ObjectToWorld, float4(pos.x, 0, 0, 1)).xyz; //world position of origin
+    float4x4 objectToWorld = UNITY_MATRIX_M;
+    float3 worldPos = mul(objectToWorld, float4(pos.x, pos.y, 0, 1)).xyz;
+    float3 originPos = mul(objectToWorld, float4(pos.x, 0, 0, 1)).xyz;
     float3 upPos = originPos + float3(0, 1, 0); //up from origin
 
     float outDist = abs(pos.y); //distance from origin should always be equal to y
@@ -76,6 +74,52 @@ Billboard GetBillboard(float4 positionOS, float offset)
     pro.z -= abs(UNITY_NEAR_CLIP_VALUE - pro.z) * decRate;
     #else
     // WebGL - OpenGL
+    view.z += abs(UNITY_NEAR_CLIP_VALUE) * decRate2;
+    pro.z += abs(UNITY_NEAR_CLIP_VALUE) * decRate;
+    #endif
+
+    Billboard b;
+    b.positionCS = pro;
+    b.positionWS = worldPos;
+    b.positionVS = view;
+    return b;
+}
+
+// Dynamic Batching
+Billboard GetBillboardDB(float3 anchor, float3 cornerOffset, float3 originOffset, float posY, float offset)
+{
+    float3 worldPos = anchor + cornerOffset;
+    float3 originPos = anchor + originOffset;
+    float3 upPos = originPos + float3(0, 1, 0);
+
+    float outDist = abs(posY);
+
+    float angleA = Angle(originPos, upPos, worldPos);
+    float angleB = Angle(worldPos, _WorldSpaceCameraPos.xyz, originPos);
+    float camDist = distance(_WorldSpaceCameraPos.xyz, worldPos.xyz);
+
+    if (posY > 0)
+    {
+        angleA = 90 - (angleA - 90);
+        angleB = 90 - (angleB - 90);
+    }
+
+    float angleC = 180 - angleA - angleB;
+
+    float fixDist = 0;
+    if (posY > 0)
+        fixDist = (outDist / sin(radians(angleC))) * sin(radians(angleA));
+
+    float decRate = (fixDist * 0.7 - offset / 4) / camDist;
+    float decRate2 = (fixDist) / camDist;
+
+    float4 view = mul(UNITY_MATRIX_V, float4(worldPos, 1));
+    float4 pro = mul(UNITY_MATRIX_P, view);
+
+    #if UNITY_UV_STARTS_AT_TOP
+    view.z -= abs(UNITY_NEAR_CLIP_VALUE - view.z) * decRate2;
+    pro.z -= abs(UNITY_NEAR_CLIP_VALUE - pro.z) * decRate;
+    #else
     view.z += abs(UNITY_NEAR_CLIP_VALUE) * decRate2;
     pro.z += abs(UNITY_NEAR_CLIP_VALUE) * decRate;
     #endif

@@ -19,13 +19,22 @@ namespace DataToClientUtility;
 
 class Program
 {
-    private const string path = @"..\..\..\..\GameConfig\ServerData\Db\";
-    private const string warpsPath = @"..\..\..\..\GameConfig\ServerData\Script\Warps";
-    private const string npcsPath = @"..\..\..\..\GameConfig\ServerData\Script\Npcs";
-    private const string eventScriptsPath = @"..\..\..\..\GameConfig\ServerData\Script\Event";
-    private const string outPath = @"..\..\..\..\..\RebuildClient\Assets\StreamingAssets\ClientConfigGenerated\";
-    private const string outPathStreaming = @"..\..\..\..\..\RebuildClient\Assets\StreamingAssets\";
-    private const string configPath = @"..\..\..\..\..\RebuildServer\";
+    private static string FromBase(params string[] parts)
+    {
+        var combined = AppContext.BaseDirectory;
+        foreach (var part in parts)
+            combined = Path.Combine(combined, part);
+
+        return Path.GetFullPath(combined);
+    }
+
+    private static readonly string path = FromBase("..", "..", "..", "..", "GameConfig", "ServerData", "Db");
+    private static readonly string warpsPath = FromBase("..", "..", "..", "..", "GameConfig", "ServerData", "Script", "Warps");
+    private static readonly string npcsPath = FromBase("..", "..", "..", "..", "GameConfig", "ServerData", "Script", "Npcs");
+    private static readonly string eventScriptsPath = FromBase("..", "..", "..", "..", "GameConfig", "ServerData", "Script", "Event");
+    private static readonly string outPath = FromBase("..", "..", "..", "..", "..", "RebuildClient", "Assets", "StreamingAssets", "ClientConfigGenerated");
+    private static readonly string outPathStreaming = FromBase("..", "..", "..", "..", "..", "RebuildClient", "Assets", "StreamingAssets");
+    private static readonly string configPath = FromBase("..", "..", "..", "..", "..", "RebuildServer");
 
     private static List<PlayerWeaponClass>? weaponClasses;
     private static Dictionary<string, string> equipGroupDescriptions = new();

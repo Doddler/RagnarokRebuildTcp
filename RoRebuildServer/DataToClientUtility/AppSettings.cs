@@ -29,5 +29,6 @@ internal static class AppSettings
         var dataConfig = ServerConfig.DataConfig;
         dataConfig.DataPath = Path.GetFullPath(Path.Combine(basePath, dataConfig.DataPath));
         dataConfig.WalkPathData = Path.GetFullPath(Path.Combine(basePath, dataConfig.WalkPathData));
+        dataConfig.CacheScripts = false;
     }
 }

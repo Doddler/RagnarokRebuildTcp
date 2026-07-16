@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 namespace Assets.Scripts.Utility
 {
@@ -11,9 +12,9 @@ namespace Assets.Scripts.Utility
 
         public void Awake()
         {
-            var projector = GetComponent<Projector>();
+            var decal = GetComponent<DecalProjector>();
             cloneMaterial = new Material(Material);
-            projector.material = cloneMaterial;
+            decal.material = cloneMaterial;
         }
 
         public void Update()

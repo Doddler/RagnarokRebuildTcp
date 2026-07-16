@@ -254,7 +254,10 @@ namespace Assets.Scripts.PlayerControl
         {
             if (controllable.StatusEffectState == null)
             {
-                Debug.LogError($"Trying to remove status effect {status} from controllable {controllable.name} but it has no status effect state at all.");
+#if  UNITY_EDITOR
+                if(controllable.CharacterState != CharacterState.Dead && controllable.SpriteAnimator?.CurrentMotion != SpriteMotion.Dead)
+                    Debug.LogError($"Trying to remove status effect {status} from controllable {controllable.name} but it has no status effect state at all.");
+#endif
                 return;
             }
             

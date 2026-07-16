@@ -4,7 +4,6 @@ using System.Runtime.InteropServices;
 using Assets.Scripts.UI.ConfigWindow;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
 using UnityEngine.Rendering;
 
 #if UNITY_EDITOR
@@ -35,33 +34,39 @@ public class DamageIndicatorBatcher : MonoBehaviour
 	public GameObject atlasBakerPrefab;
 	public bool EnableInstancing;
 
-	private CommandBuffer _cmd;
-	private Camera _ownCamera;
-
-	private const CameraEvent Event = CameraEvent.AfterForwardAlpha;
-
 	private Material _material;
 	private MaterialPropertyBlock _propertyBlock;
-	private Mesh _fst;
 
 	private BakeDamageIndicatorAtlas _baker;
+
+	private enum InstancingMode { None, StructuredBuffer, ConstantBuffer }
+	private InstancingMode _mode = InstancingMode.None;
+
+	private const string KwStructured = "DI_STRUCTURED_BUFFER";
+	private const string KwCBuffer = "DI_CBUFFER_INSTANCING";
+
+	private const int CBufferBatchSize = 250;
+	private static readonly int DIColor = Shader.PropertyToID("_DIColor");
+	private static readonly int DIParams0 = Shader.PropertyToID("_DIParams0");
+	private static readonly int DIParams1 = Shader.PropertyToID("_DIParams1");
+	private readonly Vector4[] _diColors = new Vector4[CBufferBatchSize];
+	private readonly Vector4[] _diParams0 = new Vector4[CBufferBatchSize];
+	private readonly Vector4[] _diParams1 = new Vector4[CBufferBatchSize];
 
 	private InstanceBufferPool<DamageIndicatorData> _pool;
 	private readonly DamageIndicatorData[] _instStage = new DamageIndicatorData[1023];
 	private readonly Matrix4x4[] _matrices = new Matrix4x4[1023];
 
-	private readonly Dictionary<Camera, RenderTexture> _perCamRT = new();
-	private readonly Dictionary<Camera, CommandBuffer> _perCamBlit = new();
-	private readonly List<Camera> _scratchDeadCameras = new();
+	// StructuredBuffer instance data is filled once per frame in LateUpdate (camera-independent),
+	// then EmitDraws rebuilds per-camera matrices from this snapshot. Avoids GraphicsBuffer.SetData
+	// inside the render-graph pass and a per-camera buffer-cursor reset.
+	private struct InstXform { public Vector3 Pos; public float Size; }
+	private readonly List<(int baseInstance, int count)> _structuredBatches = new();
+	private readonly List<InstXform> _structuredXforms = new();
 
 	private void OnEnable()
 	{
 		Instance = this;
-
-		_cmd = new CommandBuffer { name = "DamageIndicatorBatcher - Render" };
-		_ownCamera = GetComponent<Camera>();
-
-		Camera.onPreRender += OnAnyCameraPreRender;
 
 		var bakerGo = Instantiate(atlasBakerPrefab, transform);
 		bakerGo.transform.position = new Vector3(-5000, -5000, -5000);
@@ -70,41 +75,50 @@ public class DamageIndicatorBatcher : MonoBehaviour
 
 		_material = new Material(shader);
 		_material.SetTexture(MainTex, _baker.damageIndicatorTexture);
-		_material.enableInstancing = true;
 
-		_pool = new InstanceBufferPool<DamageIndicatorData>(1023 * 3);
-		_propertyBlock = new MaterialPropertyBlock();
+		_mode = SelectInstancingMode();
+		_material.enableInstancing = _mode != InstancingMode.None;
+		_material.DisableKeyword(KwStructured);
+		_material.DisableKeyword(KwCBuffer);
 
-		GenerateFullScreenTriangle();
-
-		if (!SystemInfo.supportsInstancing)
+		if (_mode == InstancingMode.StructuredBuffer)
 		{
-			EnableInstancing = false;
-			Debug.Log("System doesn't support Instancing, disabling...");
+			_material.EnableKeyword(KwStructured);
+			_pool = new InstanceBufferPool<DamageIndicatorData>(1023 * 3);
 		}
+		else if (_mode == InstancingMode.ConstantBuffer)
+		{
+			_material.EnableKeyword(KwCBuffer);
+		}
+
+		_propertyBlock = new MaterialPropertyBlock();
+	}
+
+	private InstancingMode SelectInstancingMode()
+	{
+		if (!EnableInstancing || !SystemInfo.supportsInstancing)
+			return InstancingMode.None;
+		if (SystemInfo.supportsComputeShaders)
+			return InstancingMode.StructuredBuffer;
+		return InstancingMode.ConstantBuffer;
 	}
 
 	private void OnDisable()
 	{
-		Camera.onPreRender -= OnAnyCameraPreRender;
+		if (Instance == this)
+			Instance = null;
 
 		if (_baker != null)
 			Destroy(_baker.gameObject);
 
-		foreach (var kv in _perCamBlit)
+		if (_material != null)
 		{
-			if (kv.Key != null)
-				kv.Key.RemoveCommandBuffer(Event, kv.Value);
-			kv.Value?.Release();
+			Destroy(_material);
+			_material = null;
 		}
-		_perCamBlit.Clear();
 
-		foreach (var kv in _perCamRT)
-			if (kv.Value != null) kv.Value.Release();
-		_perCamRT.Clear();
-
-		_cmd?.Release();
-		_cmd = null;
+		_pool?.Dispose();
+		_pool = null;
 	}
 
 	private void LateUpdate()
@@ -124,73 +138,27 @@ public class DamageIndicatorBatcher : MonoBehaviour
 			}
 		}
 
-		PruneDeadCameras();
+		if (_mode == InstancingMode.StructuredBuffer)
+			PrepareInstanceData();
 	}
 
-	private void PruneDeadCameras()
+	// Called by RoDamageIndicatorFeature inside the URP render pass, per rendering camera.
+	public void EmitDraws(RasterCommandBuffer cmd, Camera cam)
 	{
-		_scratchDeadCameras.Clear();
-        foreach (var kv in _perCamRT)
-        {
-            if (kv.Key == null) _scratchDeadCameras.Add(kv.Key);
-        }
-		foreach (var kv in _perCamBlit)
-        {
-            if (kv.Key == null && !_scratchDeadCameras.Contains(kv.Key)) _scratchDeadCameras.Add(kv.Key);
-        }
-
-		foreach (var c in _scratchDeadCameras)
-		{
-			if (_perCamRT.TryGetValue(c, out var rt))
-			{
-				if (rt != null) rt.Release();
-				_perCamRT.Remove(c);
-			}
-			if (_perCamBlit.TryGetValue(c, out var cb))
-			{
-				cb?.Release();
-				_perCamBlit.Remove(c);
-			}
-		}
-	}
-
-	private void OnAnyCameraPreRender(Camera cam)
-	{
-		if (cam == null) return;
-		if (cam.cameraType != CameraType.SceneView && cam != _ownCamera) return;
-		if (cam.pixelWidth <= 0 || cam.pixelHeight <= 0) return;
-
-		var blitCb = GetBlitCmd(cam);
-		blitCb.Clear();
-
-		if (indicators.Count == 0) return;
-
-		var rt = GetRT(cam);
-
-		_cmd.Clear();
-		_cmd.SetRenderTarget(rt);
-		_cmd.ClearRenderTarget(true, true, Color.clear);
-		_cmd.SetViewProjectionMatrices(cam.worldToCameraMatrix, cam.projectionMatrix);
+		if (cam == null || _material == null || mesh == null || indicators.Count == 0)
+			return;
 
 		var rotation = cam.transform.rotation * Quaternion.Euler(0, 180, 0);
 
-        if (EnableInstancing)
-        {
-            BuildInstancedDraws(rotation);
-        }
-        else
-        {
-            BuildIndividualDraws(rotation);
-        }
-
-		Graphics.ExecuteCommandBuffer(_cmd);
-
-		_propertyBlock.Clear();
-		_propertyBlock.SetTexture(MainTex, rt);
-		blitCb.DrawMesh(_fst, Matrix4x4.identity, _material, 0, 1, _propertyBlock);
+		if (_mode == InstancingMode.StructuredBuffer)
+			EmitStructuredDraws(cmd, rotation);
+		else if (_mode == InstancingMode.ConstantBuffer)
+			EmitCBufferDraws(cmd, rotation);
+		else
+			BuildIndividualDraws(cmd, rotation);
 	}
 
-	private void BuildIndividualDraws(Quaternion rotation)
+	private void BuildIndividualDraws(RasterCommandBuffer cmd, Quaternion rotation)
 	{
 		for (int i = indicators.Count - 1; i >= 0; i--)
 		{
@@ -213,26 +181,36 @@ public class DamageIndicatorBatcher : MonoBehaviour
 			_propertyBlock.SetFloat(IsExp, di.type == TextIndicatorType.Experience ? 1 : 0);
 
 			var trs = Matrix4x4.TRS(di.pos, rotation, new Vector3(di.size, di.size, 1f));
-			_cmd.DrawMesh(mesh, trs, _material, 0, 0, _propertyBlock);
+			cmd.DrawMesh(mesh, trs, _material, 0, 0, _propertyBlock);
 		}
 	}
 
-	private void BuildInstancedDraws(Quaternion rotation)
+	private static uint ComputeFlags(DamageIndicator di)
 	{
+		uint flags = 0;
+		if (di.type == TextIndicatorType.Critical) flags |= 1 << 0;
+		if (di.type == TextIndicatorType.Miss) flags |= 1 << 1;
+		if (di.type is TextIndicatorType.Effect or TextIndicatorType.Debuff) flags |= 1 << 2;
+		if (di.type == TextIndicatorType.Debuff) flags |= 1 << 3;
+		if (di.type == TextIndicatorType.Experience) flags |= 1 << 4;
+		return flags;
+	}
+
+	// Camera-independent: fill the structured buffer + a position/size snapshot once per frame
+	// (LateUpdate), so EmitStructuredDraws never calls GraphicsBuffer.SetData inside the render pass.
+	private void PrepareInstanceData()
+	{
+		if (_pool == null) return;
+
 		_pool.BeginFrame();
+		_structuredBatches.Clear();
+		_structuredXforms.Clear();
 
 		int batchCount = 0;
 		for (int i = 0; i < indicators.Count; i++)
 		{
 			var di = indicators[i];
 			if (di.UseTmpFallback) continue;
-
-			uint flags = 0;
-			if (di.type == TextIndicatorType.Critical) flags |= 1 << 0;
-			if (di.type == TextIndicatorType.Miss) flags |= 1 << 1;
-			if (di.type is TextIndicatorType.Effect or TextIndicatorType.Debuff) flags |= 1 << 2;
-			if (di.type == TextIndicatorType.Debuff) flags |= 1 << 3;
-			if (di.type == TextIndicatorType.Experience) flags |= 1 << 4;
 
 			_instStage[batchCount] = new DamageIndicatorData
 			{
@@ -241,72 +219,82 @@ public class DamageIndicatorBatcher : MonoBehaviour
 				color = di.color,
 				lifeTime = di.lifeTime,
 				critJitter = di.critJitter,
-				flags = flags,
+				flags = ComputeFlags(di),
 			};
-
-			_matrices[batchCount] = Matrix4x4.TRS(di.pos, rotation, new Vector3(di.size, di.size, 1f));
+			_structuredXforms.Add(new InstXform { Pos = di.pos, Size = di.size });
 			batchCount++;
 
 			if (batchCount == 1023)
 			{
-				FlushInstancedBatch(batchCount);
+				var baseInstance = _pool.AppendInstances(_instStage, 0, batchCount);
+				_structuredBatches.Add((baseInstance, batchCount));
 				batchCount = 0;
 			}
 		}
 
 		if (batchCount > 0)
-			FlushInstancedBatch(batchCount);
+		{
+			var baseInstance = _pool.AppendInstances(_instStage, 0, batchCount);
+			_structuredBatches.Add((baseInstance, batchCount));
+		}
 	}
 
-	private void FlushInstancedBatch(int count)
+	private void EmitStructuredDraws(RasterCommandBuffer cmd, Quaternion rotation)
 	{
-		var baseInstance = _pool.AppendInstances(_instStage, 0, count);
+		if (_pool == null) return;
+
+		int xformIdx = 0;
+		for (int b = 0; b < _structuredBatches.Count; b++)
+		{
+			var (baseInstance, count) = _structuredBatches[b];
+			for (int k = 0; k < count && xformIdx < _structuredXforms.Count; k++)
+			{
+				var x = _structuredXforms[xformIdx++];
+				_matrices[k] = Matrix4x4.TRS(x.Pos, rotation, new Vector3(x.Size, x.Size, 1f));
+			}
+
+			_propertyBlock.Clear();
+			_propertyBlock.SetBuffer(Instances, _pool.Instances);
+			_propertyBlock.SetInt(BaseInstance, baseInstance);
+			cmd.DrawMeshInstanced(mesh, 0, _material, 0, _matrices, count, _propertyBlock);
+		}
+	}
+
+	private void EmitCBufferDraws(RasterCommandBuffer cmd, Quaternion rotation)
+	{
+		int batchCount = 0;
+		for (int i = 0; i < indicators.Count; i++)
+		{
+			var di = indicators[i];
+			if (di.UseTmpFallback) continue;
+
+			uint flags = ComputeFlags(di);
+			_diColors[batchCount] = di.color;
+			_diParams0[batchCount] = new Vector4(di.alpha, di.value, di.lifeTime, di.critJitter);
+			_diParams1[batchCount] = new Vector4(flags, 0f, 0f, 0f);
+			_matrices[batchCount] = Matrix4x4.TRS(di.pos, rotation, new Vector3(di.size, di.size, 1f));
+			batchCount++;
+
+			if (batchCount == CBufferBatchSize)
+			{
+				FlushCBufferBatch(cmd, batchCount);
+				batchCount = 0;
+			}
+		}
+
+		if (batchCount > 0)
+			FlushCBufferBatch(cmd, batchCount);
+	}
+
+	private void FlushCBufferBatch(RasterCommandBuffer cmd, int count)
+	{
 		_propertyBlock.Clear();
-		_propertyBlock.SetBuffer(Instances, _pool.Instances);
-		_propertyBlock.SetInt(BaseInstance, baseInstance);
-
-		_cmd.DrawMeshInstanced(mesh, 0, _material, 0, _matrices, count, _propertyBlock);
+		_propertyBlock.SetVectorArray(DIColor, _diColors);
+		_propertyBlock.SetVectorArray(DIParams0, _diParams0);
+		_propertyBlock.SetVectorArray(DIParams1, _diParams1);
+		cmd.DrawMeshInstanced(mesh, 0, _material, 0, _matrices, count, _propertyBlock);
 	}
 
-	private RenderTexture GetRT(Camera cam)
-	{
-		if (_perCamRT.TryGetValue(cam, out var rt) && rt != null && rt.width == cam.pixelWidth && rt.height == cam.pixelHeight) return rt;
-
-		if (rt != null) rt.Release();
-		rt = new RenderTexture(cam.pixelWidth, cam.pixelHeight, 24, DefaultFormat.LDR);
-		rt.antiAliasing = 1;
-		rt.name = $"DI Target ({cam.name})";
-		_perCamRT[cam] = rt;
-		return rt;
-	}
-
-	private CommandBuffer GetBlitCmd(Camera cam)
-	{
-		if (_perCamBlit.TryGetValue(cam, out var cmd) && cmd != null) return cmd;
-
-		cmd = new CommandBuffer { name = $"DI Blit ({cam.name})" };
-		cam.AddCommandBuffer(Event, cmd);
-		_perCamBlit[cam] = cmd;
-		return cmd;
-	}
-    
-	private void GenerateFullScreenTriangle()
-	{
-		_fst = new Mesh();
-		_fst.vertices = new[]
-		{
-			new Vector3(-1f, -1f, 0f),
-			new Vector3(-1f,  3f, 0f),
-			new Vector3( 3f, -1f, 0f)
-		};
-		_fst.uv = new[]
-		{
-			new Vector2(0f, 0f),
-			new Vector2(0f, 2f),
-			new Vector2(2f, 0f)
-		};
-		_fst.triangles = new[] { 0, 2, 1 };
-	}
 }
 
 [StructLayout(LayoutKind.Sequential)]

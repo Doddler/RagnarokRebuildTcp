@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -482,7 +482,7 @@ namespace Assets.Scripts.MapEditor.Editor
                 entriesAdded.Add(entry);
             }
 
-            guids = AssetDatabase.FindAssets("t:Texture2D", new[] { "Assets/Maps/Minimap" });
+            guids = AssetDatabase.FindAssets("t:Texture2D", new[] { "Assets/Maps/minimap" });
 
             for (int i = 0; i < guids.Length; i++)
             {
@@ -564,7 +564,7 @@ namespace Assets.Scripts.MapEditor.Editor
             // walkData = altitude.SplitWalkData(walkData, 4, Path.GetFileNameWithoutExtension(importPath));
             walkData.name = Path.GetFileNameWithoutExtension(importPath) + "_walk";
 
-            var saveDir = "Assets/maps/altitude";
+            var saveDir = "Assets/Maps/altitude";
 
             if (!Directory.Exists(saveDir))
                 Directory.CreateDirectory(saveDir);
@@ -811,7 +811,7 @@ namespace Assets.Scripts.MapEditor.Editor
 
         static void ImportMap(string f)
         {
-            var saveDir = Path.Combine(Application.dataPath, "maps").Replace("\\", "/");
+            var saveDir = Path.Combine(Application.dataPath, "Maps").Replace("\\", "/");
 
             var lastDirectory = Path.GetDirectoryName(f);
             var baseName = Path.GetFileNameWithoutExtension(f);
@@ -857,14 +857,15 @@ namespace Assets.Scripts.MapEditor.Editor
 
                 foreach (var model in world.Models)
                 {
-                    var baseFolder = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "model");
+                    var baseFolder = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "model").Replace("\\", "/");
 
-                    var modelPath = Path.Combine(baseFolder, model.FileName);
+                    var normalizedModelFileName = model.FileName.Replace("\\", "/").TrimStart('/');
+                    var modelPath = Path.Combine(baseFolder, normalizedModelFileName).Replace("\\", "/");
                     var relative = DirectoryHelper.GetRelativeDirectory(baseFolder, Path.GetDirectoryName(modelPath));
-                    var mBaseName = Path.GetFileNameWithoutExtension(model.FileName);
+                    var modelBaseName = Path.GetFileNameWithoutExtension(normalizedModelFileName);
 
-                    var prefabFolder = Path.Combine("Assets/models/prefabs/", relative).Replace("\\", "/");
-                    var prefabPath = Path.Combine(prefabFolder, mBaseName + ".prefab").Replace("\\", "/");
+                    var prefabFolder = Path.Combine("Assets/Models/Prefabs/", relative).Replace("\\", "/");
+                    var prefabPath = Path.Combine(prefabFolder, modelBaseName + ".prefab").Replace("\\", "/");
 
                     if (!Directory.Exists(prefabFolder))
                         Directory.CreateDirectory(prefabFolder);
@@ -930,7 +931,7 @@ namespace Assets.Scripts.MapEditor.Editor
                 return;
 
             //var saveDir = EditorUtility.SaveFolderPanel("Save Folder", Application.dataPath, "");
-            var saveDir = Path.Combine(Application.dataPath, "maps").Replace("\\", "/");
+            var saveDir = Path.Combine(Application.dataPath, "Maps").Replace("\\", "/");
             //Debug.Log(saveDir);
 
             foreach (var f in files)

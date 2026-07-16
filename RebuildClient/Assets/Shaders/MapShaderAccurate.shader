@@ -1,15 +1,3 @@
-﻿// Upgrade NOTE: commented out 'sampler2D unity_LightmapInd', a built-in variable
-
-// Upgrade NOTE: replaced tex2D unity_LightmapInd with UNITY_SAMPLE_TEX2D_SAMPLER
-
-// Upgrade NOTE: replaced tex2D unity_Lightmap with UNITY_SAMPLE_TEX2D
-
-// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
-// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
-//UNITY_SHADER_N O_UPGRADE 
-
 Shader "Custom/MapShaderAccurate"
 {
 	Properties
@@ -18,37 +6,34 @@ Shader "Custom/MapShaderAccurate"
 		_MainTex("Albedo (RGB)", 2D) = "white" {}
 		_Glossiness("Smoothness", Range(0,1)) = 0.5
 		_Specular("Specular", Range(0,1)) = 0.0
-			//        _Metallic ("Metallic", Range(0,1)) = 0.0
-					_Cutoff("Cutoff", Range(0,1)) = 0.5
-					_LightmapFactor("Lightmap Factor", Range(0,1)) = 1
-					_ShadowStrength("Shadow Strength", Range(0,1)) = 1
+		_Cutoff("Cutoff", Range(0,1)) = 0.5
+		_LightmapFactor("Lightmap Factor", Range(0,1)) = 1
+		_ShadowStrength("Shadow Strength", Range(0,1)) = 1
 	}
 		SubShader
 		{
-			Tags { "RenderType" = "AlphaTest" "LightMode" = "ForwardBase" }
+			Tags { "RenderType" = "AlphaTest" "RenderPipeline" = "UniversalPipeline" }
 			LOD 200
-			
+
 			Pass
 			{
-				Lighting On
-				CGPROGRAM
+				Tags { "LightMode" = "UniversalForward" }
+
+				HLSLPROGRAM
 				#pragma vertex vert
 				#pragma fragment frag
-				// make fog work
 				#pragma multi_compile_fog
-				#pragma multi_compile_fwdbase
 				#pragma multi_compile _ LIGHTMAP_ON
-				#pragma multi_compile _ SHADOWS_SCREEN
-				#pragma multi_compile _ VERTEXLIGHT_ON
+				#pragma multi_compile _ DIRLIGHTMAP_COMBINED
+				#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE
+				#pragma multi_compile _ _SHADOWS_SOFT
+				#pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+				#pragma multi_compile _ _CLUSTER_LIGHT_LOOP
 				#pragma multi_compile _ BLINDEFFECT_ON
 
-				
-				#include "UnityCG.cginc"
-
-
-
-				#include "UnityCG.cginc"
-			#include "AutoLight.cginc"
+				#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+				#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+				#include "RoAdditionalLights.hlsl"
 
 				struct appdata
 				{
@@ -57,44 +42,36 @@ Shader "Custom/MapShaderAccurate"
 					float2 uv : TEXCOORD0;
 					float2 uv2 : TEXCOORD1;
 					float3 normal : NORMAL;
-
-
 				};
 
 				struct v2f
 				{
 					float2 uv : TEXCOORD0;
-					float2 uv2 : TEXCOORD1;
+					DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 1);
 #if BLINDEFFECT_ON
-					fixed4 color : COLOR0;
-					fixed4 color2 : COLOR1;
+					half4 color : COLOR0;
+					half4 color2 : COLOR1;
 #else
-					fixed4 color : COLOR;
+					half4 color : COLOR;
 #endif
 					float4 pos : SV_POSITION;
-					float3 normal : TEXCOORD2;
-					float3 lightDir : TEXCOORD3;
-
-					UNITY_FOG_COORDS(4)
-					LIGHTING_COORDS(5, 6)
-
+					float3 normalWS : TEXCOORD2;
+					float3 positionWS : TEXCOORD3;
+					half fogFactor : TEXCOORD4;
 				};
 
-				sampler2D _MainTex;
+				TEXTURE2D(_MainTex);
+				SAMPLER(sampler_MainTex);
+
+				CBUFFER_START(UnityPerMaterial)
 				float4 _MainTex_ST;
-				fixed4 _Color;
-				fixed _Cutoff;
-				fixed _LightmapFactor;
-				fixed _ShadowStrength;
-				
-				// sampler2D unity_LightmapInd;
-
-#ifdef DIRLIGHTMAP_COMBINED
-				SamplerState samplerunity_LightmapInd;
-#endif
-
-				//unity defined variables
-				//uniform float4 _LightColor0;
+				half4 _Color;
+				half _Cutoff;
+				half _LightmapFactor;
+				half _ShadowStrength;
+				half _Glossiness;
+				half _Specular;
+				CBUFFER_END
 
 				//from our globals
 				float4 _RoAmbientColor;
@@ -106,54 +83,60 @@ Shader "Custom/MapShaderAccurate"
 				float4 _RoBlindFocus;
 				float _RoBlindDistance;
 #endif
+#if defined(LIGHTMAP_ON) && defined(DIRLIGHTMAP_COMBINED)
+				SAMPLER(samplerunity_LightmapInd);
+#endif
+
+				half4 SampleAmbientOcclusionLightmap(float2 staticLightmapUV)
+				{
+#if defined(LIGHTMAP_ON) && defined(DIRLIGHTMAP_COMBINED)
+					half4 ao = SAMPLE_TEXTURE2D(unity_LightmapInd, samplerunity_LightmapInd, staticLightmapUV);
+					return ao * _RoLightmapAOStrength + (1 - _RoLightmapAOStrength);
+#else
+					return half4(1, 1, 1, 1);
+#endif
+				}
 
 				v2f vert(appdata v)
 				{
-					v2f o;
-					o.pos = UnityObjectToClipPos(v.vertex);
+					v2f o = (v2f)0;
+					float3 positionWS = TransformObjectToWorld(v.vertex.xyz);
+					o.positionWS = positionWS;
+					o.pos = TransformWorldToHClip(positionWS);
 					o.color = v.color;
-					o.normal = normalize(v.normal).xyz;
+					o.normalWS = TransformObjectToWorldNormal(v.normal);
 					o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-					o.lightDir = normalize(ObjSpaceLightDir(v.vertex));
-					o.uv2 = v.uv2.xy * unity_LightmapST.xy + unity_LightmapST.zw;
-					//o.worldpos = mul(unity_ObjectToWorld, v.vertex);
+					OUTPUT_LIGHTMAP_UV(v.uv2, unity_LightmapST, o.lightmapUV);
 
-					//o.color = _LightColor0;
-					
 					#if BLINDEFFECT_ON
-						float3 pos = mul(unity_ObjectToWorld, v.vertex);
-						float d = distance(pos, _RoBlindFocus);
+						float d = distance(positionWS, _RoBlindFocus);
 						d = saturate(1.5 - (d / _RoBlindDistance) * 1.5) + clamp((_RoBlindDistance-50)/120, -0.2, 0);
 						o.color2.rgb = clamp(1 * d, -1, 1);
 					#endif
-					
-					UNITY_TRANSFER_FOG(o,o.pos);
-					TRANSFER_VERTEX_TO_FRAGMENT(o);
+
+					o.fogFactor = ComputeFogFactor(o.pos.z);
 					return o;
 				}
 
-				fixed4 frag(v2f i) : SV_Target
+				half4 frag(v2f i) : SV_Target
 				{
-					float4 tex = tex2D(_MainTex, i.uv);
+					float4 tex = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
 					clip(tex.a - _Cutoff);
 
-					float3 L = normalize(i.lightDir);
-					float3 N = normalize(i.normal);
+					float3 N = normalize(i.normalWS);
+					Light mainLight = GetMainLight(TransformWorldToShadowCoord(i.positionWS));
+					float3 L = normalize(mainLight.direction);
 					float NdotL = saturate(dot(N, L));
-					float attenuation = LIGHT_ATTENUATION(i);
+					float attenuation = mainLight.shadowAttenuation * mainLight.distanceAttenuation;
 
 					float4 lm = float4(0, 0, 0, 0);
 					float4 ambienttex = float4(1, 1, 1, 1);
 
 #if LIGHTMAP_ON
-					lm = float4(DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, i.uv2)), 1);
+					lm = float4(SampleLightmap(i.lightmapUV, N), 1);
 					lm = lerp(float4(0, 0, 0, 0), lm, _LightmapFactor);
+					ambienttex = SampleAmbientOcclusionLightmap(i.lightmapUV);
 #endif
-#ifdef DIRLIGHTMAP_COMBINED //our baked ambient occlusion is stored in the dirlightmap
-					fixed4 bakedDirTex = float4(DecodeLightmap(UNITY_SAMPLE_TEX2D_SAMPLER(unity_LightmapInd, unity_LightmapInd, i.uv2)),1);
-					ambienttex = bakedDirTex * _RoLightmapAOStrength + (1 - _RoLightmapAOStrength);
-#endif
-					
 					float shadowStr = 1 - (saturate(1 - attenuation * NdotL * 2) * _Opacity); //NdotL here is to force things facing away from sun to be unlit
 					float4 env = 1 - ((1 - _RoDiffuseColor) * (1 - _RoAmbientColor));
 
@@ -166,55 +149,62 @@ Shader "Custom/MapShaderAccurate"
 					finalColor *= env; //double dipping environment color?
 					finalColor *= shadowStr;
 					finalColor += lm * saturate(i.color.a);
-					
-					UNITY_APPLY_FOG(i.fogCoord, finalColor);
+
+#if defined(_ADDITIONAL_LIGHTS)
+					uint addLightCount = GetAdditionalLightsCount();
+					half3 addDiffuse = 0;
+					InputData inputData = (InputData)0;
+					inputData.positionWS = i.positionWS;
+					inputData.normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(i.pos);
+					LIGHT_LOOP_BEGIN(addLightCount)
+						Light al = GetAdditionalLight(lightIndex, i.positionWS);
+						half ndl = saturate(dot(N, al.direction));
+						half addAtten = RoSoftAdditionalAttenuation(lightIndex, i.positionWS);
+						addDiffuse += al.color * (addAtten * al.shadowAttenuation * ndl);
+					LIGHT_LOOP_END
+					finalColor.rgb += tex.rgb * addDiffuse;
+#endif
+
+					finalColor.rgb = MixFog(finalColor.rgb, i.fogFactor);
             	#ifdef BLINDEFFECT_ON
-					finalColor.rgb *= i.color2.rgb;// * (0.5 + i.color.rgb/2);
+					finalColor.rgb *= i.color2.rgb;
 					finalColor = saturate(finalColor);
 				#endif
 					finalColor.a = 1; //reject transparancy, we're opaque and using cuttoff elsewhere. Fixes minimap generation having holes.
 					return finalColor;
 				}
 
-			ENDCG
+			ENDHLSL
 			}
 
 			Pass
-	        {
-	            Tags { "LightMode" = "ForwardAdd" }
-	            Blend SrcAlpha One
-	            Fog { Color (0,0,0,0) } // in additive pass fog should be black
-	            ZWrite Off
-	            ZTest LEqual
+			{
+				Name "ShadowCaster"
+				Tags { "LightMode" = "ShadowCaster" }
+				ZWrite On ZTest LEqual ColorMask 0
+				Cull Off
 
-	            CGPROGRAM
-	            #pragma target 3.0
+				HLSLPROGRAM
+				#pragma vertex RoShadowVert
+				#pragma fragment RoShadowFrag
+				#pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
 
-	            // -------------------------------------
+				#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
+				TEXTURE2D(_MainTex);
+				SAMPLER(sampler_MainTex);
+				CBUFFER_START(UnityPerMaterial)
+				float4 _MainTex_ST;
+				half4 _Color;
+				half _Cutoff;
+				half _LightmapFactor;
+				half _ShadowStrength;
+				half _Glossiness;
+				half _Specular;
+				CBUFFER_END
 
-	            #pragma shader_feature_local _NORMALMAP
-	            #pragma shader_feature_local _ _ALPHATEST_ON _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON
-	            #pragma shader_feature_local _METALLICGLOSSMAP
-	            #pragma shader_feature_local _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-	            #pragma shader_feature_local _SPECULARHIGHLIGHTS_OFF
-	            #pragma shader_feature_local _DETAIL_MULX2
-	            #pragma shader_feature_local _PARALLAXMAP
-
-	            #pragma multi_compile_fwdadd_fullshadows
-	            #pragma multi_compile_fog
-	            // Uncomment the following line to enable dithering LOD crossfade. Note: there are more in the file to uncomment for other passes.
-	            //#pragma multi_compile _ LOD_FADE_CROSSFADE
-	            //#define _ALPHABLEND_ON
-
-	            #pragma vertex vertAdd
-	            #pragma fragment fragAdd
-	            
-	            #include "UnityStandardCoreForward.cginc"
-
-	            ENDCG
-	        }
-
+				#include "RoShadowCaster.hlsl"
+				ENDHLSL
+			}
 		}
-		FallBack "Transparent/Cutout/VertexLit"
 }
