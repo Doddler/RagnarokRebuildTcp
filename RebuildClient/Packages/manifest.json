@@ -1,7 +1,6 @@
 {
   "dependencies": {
     "com.codewriter.textmeshpro-spriteatlas-support": "https://github.com/codewriter-packages/textmeshpro-spriteatlas-support.git",
-    "com.coplaydev.unity-mcp": "https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main",
     "com.github-glitchenzo.nugetforunity": "https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.addressables": "2.9.1",
