@@ -59,7 +59,8 @@
             // ---- UI ----
             OptionRow.Header(OptionCategory.UI, "UI Size Settings"),
             OptionRow.Slider(OptionCategory.UI, "UI scale", RangeOption.MasterUIScale, 6f, 11f, wholeNumbers: true, applyOnRelease: true),
-            OptionRow.Slider(OptionCategory.UI, "Floating Display scale", RangeOption.FloatingDisplaySize, 6f, 11f, wholeNumbers: true),
+            OptionRow.Toggle(OptionCategory.UI, "Scale UI with window size", BoolOption.ScaleUiWithResolution),
+            OptionRow.Toggle(OptionCategory.UI, "Keep windows fully on screen", BoolOption.KeepWindowsOnScreen),
 
             OptionRow.Header(OptionCategory.UI, "Floating Display"),
             OptionRow.Toggle(OptionCategory.UI, "Scale floating display with zoom", BoolOption.ScalePlayerDisplayWithZoom),

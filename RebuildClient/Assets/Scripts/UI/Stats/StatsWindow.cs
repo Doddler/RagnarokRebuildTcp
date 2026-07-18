@@ -11,7 +11,9 @@ namespace Assets.Scripts.UI.Stats
 {
     public class StatsWindow : WindowBase
     {
-        public List<TextMeshProUGUI> AttributeValue;
+        [FormerlySerializedAs("AttributeValue")]
+        public List<TextMeshProUGUI> BaseStatText;
+        public List<TextMeshProUGUI> AddStatText;
         public List<TextMeshProUGUI> StatPointCostText;
         public List<TextMeshProUGUI> AttributeText;
 
@@ -106,20 +108,19 @@ namespace Assets.Scripts.UI.Stats
         private void UpdateStat(int index, int stat, int bonus, int diff = 0)
         {
             var displayStat = stat + diff;
-            var statText = displayStat.ToString();
 
             if (diff == 0)
-                statText = stat.ToString();
+                BaseStatText[index].text = stat.ToString();
             if (diff < 0)
-                statText = $"<color=red>{displayStat}</color>";
+                BaseStatText[index].text = $"<color=red>{displayStat}</color>";
             if (diff > 0)
-                statText = $"<color=blue>{displayStat}</color>";
+                BaseStatText[index].text = $"<color=blue>{displayStat}</color>";
 
-            AttributeValue[index].text = bonus switch
+            AddStatText[index].text = bonus switch
             {
-                > 0 => $"{statText}+{bonus}",
-                < 0 => $"{statText}−{bonus}",
-                _ => statText
+                > 0 => $"+{bonus}",
+                < 0 => $"{bonus}",
+                _ => ""
             };
 
             var cost = 2 + (displayStat - 1) / 10;

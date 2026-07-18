@@ -13,13 +13,14 @@ namespace Assets.Scripts.UI.ConfigWindow
         ShowAllSkillsInSkillWindow, AutoLockSkillWindow,
         ShowExpGainOnKill, ScalePlayerDisplayWithZoom, ShowMonsterHpBars, ShowLevelsInOverlay, AutoHideFullHPBars, AdjustOverlayWhenSitting,
         EnableSpriteFiltering, UseSpriteBasedDamageNumbers, AllowTabToShowWalkTable, HideShoutChat, EnableXRay, EnableWASDControls,
+        ScaleUiWithResolution, KeepWindowsOnScreen,
         ShowBaseExpValue, ShowBaseExpPercent, ShowJobExpValue, ShowJobExpPercent, ShowExpGainInChat,
         EnableMaster, EnableBgm, EnableEffects, EnableEnvironment
     }
 
     public enum RangeOption
     {
-        DamageNumberSize, DamageSpacingSize, MasterUIScale, FloatingDisplaySize,
+        DamageNumberSize, DamageSpacingSize, MasterUIScale,
         VolumeMaster, VolumeBgm, VolumeEffects, VolumeEnvironment
     }
 
@@ -57,7 +58,6 @@ namespace Assets.Scripts.UI.ConfigWindow
             var map = ReflectMap<RangeOption, float>();
             // Slider works in tenths; config stores the scale factor (slider / 10).
             map[RangeOption.MasterUIScale] = new(() => D.MasterUIScale * 10f, v => D.MasterUIScale = v / 10f);
-            map[RangeOption.FloatingDisplaySize] = new(() => D.FloatingDisplaySize * 10f, v => D.FloatingDisplaySize = v / 10f);
             map[RangeOption.VolumeMaster]      = VolumeBinding(ConfigAudioChannel.Master);
             map[RangeOption.VolumeBgm]         = VolumeBinding(ConfigAudioChannel.Music);
             map[RangeOption.VolumeEffects]     = VolumeBinding(ConfigAudioChannel.Effects);
@@ -144,6 +144,16 @@ namespace Assets.Scripts.UI.ConfigWindow
                     break;
                 case BoolOption.UseSpriteBasedDamageNumbers:
                     CameraFollower.Instance.UseTTFDamage = !D.UseSpriteBasedDamageNumbers;
+                    break;
+
+                case BoolOption.ScaleUiWithResolution:
+                    CameraFollower.Instance.UpdateCameraSize();
+                    UiManager.Instance.FitFloatingWindowsIntoPlayArea();
+                    break;
+
+                case BoolOption.KeepWindowsOnScreen:
+                    if (D.KeepWindowsOnScreen)
+                        UiManager.Instance.FitFloatingWindowsIntoPlayArea();
                     break;
 
                 case BoolOption.ShowBaseExpValue:

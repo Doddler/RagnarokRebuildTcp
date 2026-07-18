@@ -43,9 +43,10 @@ namespace Assets.Scripts.UI.ConfigWindow
         public bool ScalePlayerDisplayWithZoom = true;
         public bool ShowLevelsInOverlay = true;
         public bool AdjustOverlayWhenSitting = true;
-        public float FloatingDisplaySize = 0.8f;
         //ui
         public float MasterUIScale = 0.8f;
+        public bool ScaleUiWithResolution = true;
+        public bool KeepWindowsOnScreen = true;
 
         public bool ShowBaseExpValue = true;
         public bool ShowBaseExpPercent = true;

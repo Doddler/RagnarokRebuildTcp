@@ -366,20 +366,23 @@ MonoBehaviour:
   m_VerticalAlignment: 4096
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 0
+  m_TextWrappingMode: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -834,11 +837,11 @@ RectTransform:
   - {fileID: 8580035166592955928}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 361, y: -895}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -559, y: -445}
   m_SizeDelta: {x: 560, y: 450}
-  m_Pivot: {x: 0, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2684874850574789454
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1261,7 +1264,7 @@ MonoBehaviour:
   Color: {r: 1, g: 1, b: 1, a: 0}
   Direction: 0
   SpriteOffset: 0
-  SpriteData: {fileID: 11400000, guid: 4f91e5e51a8b69343b01f41d16b75ad8, type: 2}
+  SpriteData: {fileID: 0}
   OffsetPosition: {x: 8, y: -7}
 --- !u!222 &3697442325909093530
 CanvasRenderer:
@@ -1333,6 +1336,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_text
       value: Emotes
+      objectReference: {fileID: 0}
+    - target: {fileID: 2725464043840417285, guid: ea728462a1a30974a950f8e4887ff40c,
+        type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 2910071911865124614, guid: ea728462a1a30974a950f8e4887ff40c,
         type: 3}
