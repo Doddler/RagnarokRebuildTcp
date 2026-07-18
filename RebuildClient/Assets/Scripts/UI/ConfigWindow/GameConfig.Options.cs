@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
+using Assets.Scripts.UI.Hud;
 using RebuildSharedData.Enum.EntityStats;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -13,14 +14,14 @@ namespace Assets.Scripts.UI.ConfigWindow
         ShowAllSkillsInSkillWindow, AutoLockSkillWindow,
         ShowExpGainOnKill, ScalePlayerDisplayWithZoom, ShowMonsterHpBars, ShowLevelsInOverlay, AutoHideFullHPBars, AdjustOverlayWhenSitting,
         EnableSpriteFiltering, UseSpriteBasedDamageNumbers, AllowTabToShowWalkTable, HideShoutChat, EnableXRay, EnableWASDControls,
-        ScaleUiWithResolution, KeepWindowsOnScreen,
+        ScaleUiWithResolution, KeepWindowsOnScreen, ShowMinimapCoordinates,
         ShowBaseExpValue, ShowBaseExpPercent, ShowJobExpValue, ShowJobExpPercent, ShowExpGainInChat,
         EnableMaster, EnableBgm, EnableEffects, EnableEnvironment
     }
 
     public enum RangeOption
     {
-        DamageNumberSize, DamageSpacingSize, MasterUIScale,
+        DamageNumberSize, DamageSpacingSize, MasterUIScale, MinimapOpacity,
         VolumeMaster, VolumeBgm, VolumeEffects, VolumeEnvironment
     }
 
@@ -58,6 +59,8 @@ namespace Assets.Scripts.UI.ConfigWindow
             var map = ReflectMap<RangeOption, float>();
             // Slider works in tenths; config stores the scale factor (slider / 10).
             map[RangeOption.MasterUIScale] = new(() => D.MasterUIScale * 10f, v => D.MasterUIScale = v / 10f);
+            // Slider works in 5% steps; config stores the alpha.
+            map[RangeOption.MinimapOpacity] = new(() => D.MinimapOpacity * 20f, v => D.MinimapOpacity = v / 20f);
             map[RangeOption.VolumeMaster]      = VolumeBinding(ConfigAudioChannel.Master);
             map[RangeOption.VolumeBgm]         = VolumeBinding(ConfigAudioChannel.Music);
             map[RangeOption.VolumeEffects]     = VolumeBinding(ConfigAudioChannel.Effects);
@@ -146,6 +149,10 @@ namespace Assets.Scripts.UI.ConfigWindow
                     CameraFollower.Instance.UseTTFDamage = !D.UseSpriteBasedDamageNumbers;
                     break;
 
+                case BoolOption.ShowMinimapCoordinates:
+                    MinimapController.Instance.ApplyCoordinateVisibility();
+                    break;
+
                 case BoolOption.ScaleUiWithResolution:
                     CameraFollower.Instance.UpdateCameraSize();
                     UiManager.Instance.FitFloatingWindowsIntoPlayArea();
@@ -178,6 +185,10 @@ namespace Assets.Scripts.UI.ConfigWindow
                 case RangeOption.MasterUIScale:
                     CameraFollower.Instance.UpdateCameraSize();
                     UiManager.Instance.FitFloatingWindowsIntoPlayArea();
+                    break;
+
+                case RangeOption.MinimapOpacity:
+                    MinimapController.Instance.ApplyOpacity();
                     break;
             }
         }

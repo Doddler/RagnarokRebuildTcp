@@ -23,6 +23,7 @@ namespace Assets.Scripts.UI.Hud
         private Stack<GameObject> textBubblePool = new();
 
         private Stack<GameObject> characterPanelPool = new();
+        private readonly List<CharacterFloatingDisplay> activeDisplays = new();
 
         public TextMeshProUGUI AttachNamePlate(GameObject parent) => AttachObjectFromQueue<TextMeshProUGUI>(namePlatePool, NamePlateTemplate, parent);
         public SliderBar AttachCastBar(GameObject parent) => AttachObjectFromQueue<SliderBar>(castBarPool, CastBarTemplate, parent);
@@ -56,11 +57,32 @@ namespace Assets.Scripts.UI.Hud
             return obj.GetComponent<T>();
         }
 
-        public CharacterFloatingDisplay GetNewFloatingDisplay() =>
-            AttachObjectFromQueue<CharacterFloatingDisplay>(characterPanelPool, DisplayRootTemplate, gameObject, false);
+        public CharacterFloatingDisplay GetNewFloatingDisplay()
+        {
+            var display = AttachObjectFromQueue<CharacterFloatingDisplay>(characterPanelPool, DisplayRootTemplate, gameObject, false);
+            activeDisplays.Add(display);
+            return display;
+        }
+
+        //every display is snapped from here so the camera, canvas and overlay scale are resolved once
+        //per frame instead of once per entity
+        private void LateUpdate()
+        {
+            if (activeDisplays.Count == 0)
+                return;
+
+            var cf = CameraFollower.Instance;
+            var canvasRect = (RectTransform)cf.UiCanvas.transform;
+            var rootScale = cf.OverlayRootScale;
+
+            //backwards, since a display can return itself to the pool while being updated
+            for (var i = activeDisplays.Count - 1; i >= 0; i--)
+                activeDisplays[i].Snap(cf.Camera, canvasRect, rootScale);
+        }
 
         public void ReturnFloatingDisplay(CharacterFloatingDisplay display)
         {
+            activeDisplays.Remove(display);
             display.ReturnToPool();
             ReturnObjectToQueue(characterPanelPool, display.gameObject);
         }

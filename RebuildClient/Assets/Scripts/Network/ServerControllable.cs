@@ -428,38 +428,6 @@ namespace Assets.Scripts.Network
         {
             EnsureFloatingDisplayCreated();
             FloatingDisplay.ShowChatBubbleMessage(text, 8f);
-
-            SnapDialog();
-        }
-
-        public void SnapDialog()
-        {
-            if (FloatingDisplay == null)
-                return;
-
-            if (IsMainCharacter)
-                FloatingDisplay.transform.SetAsLastSibling();
-
-            var cf = CameraFollower.Instance;
-            var rect = FloatingDisplay.transform as RectTransform;
-            var canvasRect = cf.UiCanvas.transform as RectTransform;
-
-            var screenPos = cf.Camera.WorldToScreenPoint(transform.position);
-
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                canvasRect,
-                screenPos,
-                null,
-                out var localPoint
-            );
-
-            rect.anchoredPosition = localPoint;
-            FloatingDisplay.RefreshPositionsIfChanged();
-
-            // Scales the root's SIZE only; the layout keeps positions glued to the feet.
-            var d = cf.OverlayRootScale;
-
-            rect.localScale = new Vector3(d, d, d);
         }
 
         public void ConfigureEntity(int id, Vector2Int worldPos, Direction direction)
@@ -1635,9 +1603,6 @@ namespace Assets.Scripts.Network
 
         private void Update()
         {
-            if (FloatingDisplay != null)
-                SnapDialog();
-
             if (IsMainCharacter)
             {
                 var mc = MinimapController.Instance;

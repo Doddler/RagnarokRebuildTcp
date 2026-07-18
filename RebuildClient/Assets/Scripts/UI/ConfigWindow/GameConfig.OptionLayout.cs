@@ -62,6 +62,10 @@
             OptionRow.Toggle(OptionCategory.UI, "Scale UI with window size", BoolOption.ScaleUiWithResolution),
             OptionRow.Toggle(OptionCategory.UI, "Keep windows fully on screen", BoolOption.KeepWindowsOnScreen),
 
+            OptionRow.Header(OptionCategory.UI, "Minimap"),
+            OptionRow.Slider(OptionCategory.UI, "Minimap opacity", RangeOption.MinimapOpacity, 0f, 20f, wholeNumbers: true, applyOnRelease: true),
+            OptionRow.Toggle(OptionCategory.UI, "Show coordinates on minimap", BoolOption.ShowMinimapCoordinates),
+
             OptionRow.Header(OptionCategory.UI, "Floating Display"),
             OptionRow.Toggle(OptionCategory.UI, "Scale floating display with zoom", BoolOption.ScalePlayerDisplayWithZoom),
             OptionRow.Toggle(OptionCategory.UI, "Show monster HP bars", BoolOption.ShowMonsterHpBars),

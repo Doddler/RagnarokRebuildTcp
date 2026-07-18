@@ -203,7 +203,7 @@ PrefabInstance:
     - target: {fileID: 2312100867537752815, guid: a179ccab43fc3d94caeb6b93c269c128,
         type: 3}
       propertyPath: m_fontSize
-      value: 18
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 2312100867537752815, guid: a179ccab43fc3d94caeb6b93c269c128,
         type: 3}
@@ -220,6 +220,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 2.5
       objectReference: {fileID: 0}
+    - target: {fileID: 6608000416670951993, guid: a179ccab43fc3d94caeb6b93c269c128,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7595771606076897624, guid: a179ccab43fc3d94caeb6b93c269c128,
         type: 3}
       propertyPath: m_Name
@@ -230,7 +235,8 @@ PrefabInstance:
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6608000416670951993, guid: a179ccab43fc3d94caeb6b93c269c128, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -317,7 +323,7 @@ PrefabInstance:
     - target: {fileID: 2312100867537752815, guid: a179ccab43fc3d94caeb6b93c269c128,
         type: 3}
       propertyPath: m_fontSize
-      value: 18
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 2312100867537752815, guid: a179ccab43fc3d94caeb6b93c269c128,
         type: 3}
@@ -349,7 +355,8 @@ PrefabInstance:
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6608000416670951993, guid: a179ccab43fc3d94caeb6b93c269c128, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

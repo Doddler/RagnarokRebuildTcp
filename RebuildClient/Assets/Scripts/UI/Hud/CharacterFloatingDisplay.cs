@@ -73,6 +73,35 @@ namespace Assets.Scripts.UI.Hud
         {
             controllable = owner;
             isPlayer = owner.CharacterType == CharacterType.Player;
+            Rect = (RectTransform)transform;
+            appliedRootScale = -1f;
+        }
+
+        public RectTransform Rect { get; private set; }
+
+        // Last root scale written to Rect, so the per-frame snap only touches the transform when zoom changed.
+        private float appliedRootScale = -1f;
+
+        // Follows the owner's position on screen. Driven by CharacterOverlayManager so the camera, canvas
+        // and scale are resolved once per frame rather than once per entity.
+        public void Snap(Camera camera, RectTransform canvasRect, float rootScale)
+        {
+            //the player's overlay draws over everyone else's, re-asserted only when something was added after it
+            if (controllable.IsMainCharacter && Rect.GetSiblingIndex() != Rect.parent.childCount - 1)
+                Rect.SetAsLastSibling();
+
+            var screenPos = camera.WorldToScreenPoint(controllable.transform.position);
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, null, out var localPoint);
+
+            Rect.anchoredPosition = localPoint;
+            RefreshPositionsIfChanged();
+
+            // Scales the root's SIZE only; the layout keeps positions glued to the feet.
+            if (Mathf.Approximately(rootScale, appliedRootScale))
+                return;
+
+            appliedRootScale = rootScale;
+            Rect.localScale = new Vector3(rootScale, rootScale, rootScale);
         }
 
         public void UpdateName(string newName) => characterName = newName;

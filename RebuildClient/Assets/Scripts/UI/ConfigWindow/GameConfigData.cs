@@ -47,6 +47,8 @@ namespace Assets.Scripts.UI.ConfigWindow
         public float MasterUIScale = 0.8f;
         public bool ScaleUiWithResolution = true;
         public bool KeepWindowsOnScreen = true;
+        public float MinimapOpacity = 0.85f;
+        public bool ShowMinimapCoordinates = false;
 
         public bool ShowBaseExpValue = true;
         public bool ShowBaseExpPercent = true;
