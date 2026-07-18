@@ -165,6 +165,7 @@ namespace Assets.Scripts.UI.TitleScreen
             {
                 isLoginTimerActive = false;
                 LogInError($"Unable to connect to server, the connection timed out.");
+                NetworkManager.Instance.Disconnect();
             }
         }
     }

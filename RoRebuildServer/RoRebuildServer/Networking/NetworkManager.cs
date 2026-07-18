@@ -43,16 +43,6 @@ public class NetworkManager
     private static ObjectPool<OutboundMessage> outboundPool;
     private static ObjectPool<InboundMessage> inboundPool;
 
-#if DEBUG
-    private static PriorityQueue<InboundMessage, float> inboundLagSimQueue = new();
-    private static PriorityQueue<OutboundMessage, float> outboundLagSimQueue = new();
-    private static Object inboundLagLock = new();
-    private static Object outboundLagLock = new();
-    private static bool useSimulatedLag;
-    private static float inboundLagTime;
-    private static float outboundLagTime;
-#endif
-
     private static ReaderWriterLockSlim clientLock = new();
     //private static Thread outboundMessageThread;
 
@@ -76,23 +66,9 @@ public class NetworkManager
 
         DebugMode = debugConfig.UseDebugMode;
 
-#if DEBUG
-        DebugMode = true;
-
-        //simulated lag stuff. Only used in debug mode
-        useSimulatedLag = debugConfig.AddSimulatedLag;
-        inboundLagTime = debugConfig.InboundSimulatedLag / 1000f;
-        outboundLagTime = debugConfig.OutboundSimulatedLag / 1000f;
-        if (useSimulatedLag && inboundLagTime > 0f)
-            ServerLogger.Log($"Simulated inbound lag enabled with a lag time of {debugConfig.InboundSimulatedLag}ms.");
-        if (useSimulatedLag && outboundLagTime > 0f)
-        {
-            ServerLogger.Log($"Simulated outbound lag enabled with a lag time of {debugConfig.OutboundSimulatedLag}ms.");
-            Task.Run(OutboundLagBackgroundThread).ConfigureAwait(false);
-        }
-#else
-            if(DebugMode)
-                ServerLogger.LogWarning("Server is started using debug mode config flag! Be sure this is what you want.");
+#if !DEBUG
+        if(DebugMode)
+            ServerLogger.LogWarning("Server is started using debug mode config flag! Be sure this is what you want.");
 #endif
 
 
@@ -342,39 +318,46 @@ public class NetworkManager
         inboundPool.Return(message);
     }
 
-    public static async Task ProcessIncomingMessages()
+    private static async Task DispatchIncomingMessage(InboundMessage item)
     {
-#if DEBUG
-        if (useSimulatedLag && inboundLagTime > 0f)
+        try
         {
-            lock (inboundLagLock)
+            if (item.Client.Confirmed)
             {
-                while (inboundLagSimQueue.TryPeek(out var msg, out var priority) && priority < Time.ElapsedTimeFloat)
-                {
-                    inboundLagSimQueue.Dequeue();
-                    inboundChannel.Enqueue(msg);
-                }
+                var type = (PacketType)item.PeekFirstByte();
+
+                if (type < PacketType.InstancePacketHandlerStart || item.Client.Character == null || item.Client.Character.Map == null)
+                    inboundChannel.Enqueue(item);
+                else
+                    item.Client.Character.Map.Instance.PlayerMessages.Enqueue(item);
+            }
+            else
+            {
+                ServerLogger.Log("Ignoring message from non-confirmed client...");
             }
         }
-#endif
+        catch (Exception e)
+        {
+            ServerLogger.LogWarning("Received invalid packet which generated an exception. Error: " + e);
+
+            if (item.Client != null!)
+                await disconnectList.Writer.WriteAsync(item.Client, CancellationToken.None);
+        }
+    }
+
+    public static async Task ProcessMainThreadMessages()
+    {
         while (inboundChannel.TryDequeue(out var item))
         {
             try
             {
-                if (item.Client.Confirmed)
-                {
-                    HandleMessage(item);
-                }
-                else
-                {
-                    ServerLogger.Log("Ignoring message from non-confirmed client...");
-                }
+                HandleMessage(item);
             }
             catch (Exception e)
             {
                 ServerLogger.LogWarning("Received invalid packet which generated an exception. Error: " + e);
 
-                if (item.Client != null)
+                if (item.Client != null!)
                     await disconnectList.Writer.WriteAsync(item.Client, CancellationToken.None);
             }
             finally
@@ -383,51 +366,7 @@ public class NetworkManager
             }
         }
     }
-#if DEBUG
-    private static async Task OutboundLagBackgroundThread()
-    {
-        ServerLogger.Debug($"Using simulated lag, adding {(int)(inboundLagTime * 1000)}ms to each inbound packet.");
 
-        while (!IsRunning)
-            await Task.Delay(500);
-
-        while (IsRunning)
-        {
-            if (outboundLagSimQueue.TryPeek(out var msg, out var priority))
-            {
-                if (priority < Time.ElapsedTimeFloat)
-                {
-                    //in theory we could end up deque a different message from the one we peeked due to thread safety,
-                    //but 
-                    lock (outboundLagLock)
-                        msg = outboundLagSimQueue.Dequeue();
-
-                    if (msg == null)
-                    {
-                        ServerLogger.LogError($"OutboundLagBackgroundThread attempting to queue a message that is null");
-                        continue;
-                    }
-
-                    outboundChannel.Enqueue(msg);
-                }
-                else
-                    await Task.Delay(1);
-            }
-            else
-            {
-                if (PlayerCount <= 0)
-                    await Task.Delay(1000);
-                else
-                    await Task.Delay(1);
-            }
-        }
-    }
-#endif
-
-    //private static void ProcessOutgoingMessagesThread()
-    //{
-    //    Task.Run(ProcessOutgoingMessagesLoop).ConfigureAwait(false);
-    //}
     private static async Task ProcessOutgoingMessagesLoop()
     {
         while (!IsRunning)
@@ -566,20 +505,7 @@ public class NetworkManager
 
         message.IsQueued = true;
 
-#if DEBUG
-        if (useSimulatedLag && outboundLagTime > 0f)
-        {
-            lock (outboundLagLock)
-            {
-                outboundLagSimQueue.Enqueue(message, Time.ElapsedTimeFloat + outboundLagTime);
-            }
-        }
-        else
-            outboundChannel.Enqueue(message);
-
-#else
         outboundChannel.Enqueue(message);
-#endif
     }
 
     public static void SendMessageMulti(OutboundMessage message, List<NetworkConnection>? connections)
@@ -603,22 +529,7 @@ public class NetworkManager
             return;
         }
 
-        message.IsQueued = true;
-
-#if DEBUG
-        if (useSimulatedLag && outboundLagTime > 0f)
-        {
-            lock (outboundLagLock)
-            {
-                outboundLagSimQueue.Enqueue(message, Time.ElapsedTimeFloat + outboundLagTime);
-            }
-        }
-        else
-            outboundChannel.Enqueue(message);
-
-#else
         outboundChannel.Enqueue(message);
-#endif
     }
 
     public static OutboundMessage StartPacket(PacketType type, int capacity = 0)
@@ -907,28 +818,21 @@ public class NetworkManager
                 exit = true;
             }
 
-            if (exit)
+            if (exit || result.MessageType == WebSocketMessageType.Close)
                 break;
+
+
+            if (result.Count == 0)
+            {
+                ServerLogger.Log($"Received empty message packet (type {result.MessageType}) from client of player '{userName}'.");
+                continue;
+            }
 
             var inMsg = CreateInboundMessage(playerConnection);
             inMsg.Populate(buffer, 0, result.Count);
 
-            //Buffer.BlockCopy(buffer, 0, inMsg, 0, result.Count);
-#if DEBUG
-            if (useSimulatedLag && inboundLagTime > 0f)
-            {
-                lock (inboundLagLock)
-                    inboundLagSimQueue.Enqueue(inMsg, Time.ElapsedTimeFloat + inboundLagTime);
-            }
-            else
-                inboundChannel.Enqueue(inMsg);
-#else
-            inboundChannel.Enqueue(inMsg);
-#endif
+            await DispatchIncomingMessage(inMsg);
         }
-
-        //if(playerConnection.Player != null && playerConnection.Player.HasEnteredServer)
-        //    playerConnection.Player.WriteCharacterToDatabase();
 
         playerConnection.Status = ConnectionStatus.Disconnected;
         ConnectedAccounts.Remove(userId, out var _);

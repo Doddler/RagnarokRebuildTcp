@@ -1,9 +1,11 @@
-﻿using RebuildSharedData.Enum;
+﻿using Lidgren.Network;
+using RebuildSharedData.Enum;
 using RoRebuildServer.Data;
 using RoRebuildServer.Data.MapData;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
+using RoRebuildServer.Networking;
 using RoRebuildServer.Simulation.Parties;
 using RoRebuildServer.Simulation.Pathfinding;
 using RoRebuildServer.Simulation.Util;
@@ -23,6 +25,7 @@ public class Instance
     private List<Entity> removeList = new(30);
     private float nextUpdate;
 
+    public NetQueue<InboundMessage> PlayerMessages;
     public PathFinder Pathfinder { get; set; }
 
     public Instance(World world, InstanceEntry instanceDetails)
@@ -36,6 +39,8 @@ public class Instance
 #if DEBUG
         Entities.IsActive = true; //bypass EntityListPool borrow tracking
 #endif
+
+        PlayerMessages = new NetQueue<InboundMessage>(10);
 
         foreach (var mapId in instanceDetails.Maps)
         {
@@ -71,7 +76,7 @@ public class Instance
         removeList.Add(e);
     }
 
-    public void DoRemovals()
+    private void DoRemovals()
     {
         for (var i = 0; i < removeList.Count; i++)
         {
@@ -86,6 +91,29 @@ public class Instance
 
     private static int ExceptionCount = 0;
 
+    private void ProcessPlayerMessages()
+    {
+        while (PlayerMessages.TryDequeue(out var msg))
+        {
+            try
+            {
+                NetworkManager.HandleMessage(msg);
+            }
+            catch (Exception e)
+            {
+                ServerLogger.LogWarning("Received invalid packet which generated an exception. Error: " + e);
+
+                if (msg.Client != null!)
+                    NetworkManager.DisconnectPlayer(msg.Client);
+            }
+            finally
+            {
+                NetworkManager.RetireInboundMessage(msg);
+            }
+
+        }
+    }
+
     public void Update()
     {
         DoRemovals(); //this happens a frame late, but it's done to catch removals added after update is called
@@ -95,6 +123,8 @@ public class Instance
         try
 #endif
         {
+            ProcessPlayerMessages();
+
             foreach (var map in Maps)
             {
                 map.Update();

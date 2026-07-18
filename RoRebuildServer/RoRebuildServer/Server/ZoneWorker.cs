@@ -95,10 +95,10 @@ internal class ZoneWorker : BackgroundService
 
                 var startTime = Time.GetExactTime();
 
-                await NetworkManager.ProcessIncomingMessages();
-
                 if (NetworkManager.IsSingleThreadMode)
                     await NetworkManager.ProcessOutgoingMessages();
+
+                await NetworkManager.ProcessMainThreadMessages();
 
                 world.Update();
 
