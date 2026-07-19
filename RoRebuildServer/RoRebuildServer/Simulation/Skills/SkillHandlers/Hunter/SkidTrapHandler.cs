@@ -51,7 +51,7 @@ public class SkidTrapEvent : TrapBaseEvent
                         continue;
 
                     var ch = ce.Character;
-                    
+
                     var oldPos = ch.Position;
                     var pos = ch.Map.WalkData.CalcKnockbackFromPosition(ch.Position, ch.Position.AddDirectionToPosition(npc.Character.FacingDirection.Flip()), 7);
                     if (ch.Position != pos)

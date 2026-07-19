@@ -15,6 +15,7 @@ using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
 using RoRebuildServer.Logging;
 using RoRebuildServer.Networking;
+using RoRebuildServer.ScriptSystem;
 using RoRebuildServer.Simulation;
 using RoRebuildServer.Simulation.Items;
 using RoRebuildServer.Simulation.Skills;
@@ -1562,6 +1563,8 @@ Error:
     {
         Character.Map?.WalkData.MakeTileWater(new Position(x, y));
     }
+
+    public bool IsFeatureEnabled(string feature) => ServerConfig.OperationConfig.FeatureFlags.Contains(feature);
 
     public void DebugMessage(string message)
     {

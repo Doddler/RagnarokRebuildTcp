@@ -24,6 +24,7 @@ public class Instance
     public EntityList Entities { get; set; }
     private List<Entity> removeList = new(30);
     private float nextUpdate;
+    public double LastUpdateTime = 0;
 
     public NetQueue<InboundMessage> PlayerMessages;
     public PathFinder Pathfinder { get; set; }
@@ -116,6 +117,8 @@ public class Instance
 
     public void Update()
     {
+        var startTime = Time.GetExactTime();
+
         DoRemovals(); //this happens a frame late, but it's done to catch removals added after update is called
 
         var players = 0;
@@ -160,6 +163,12 @@ public class Instance
                 throw e;
             }
         }
+#endif
+
+        LastUpdateTime = Time.GetExactTime() - startTime;
+#if DEBUG
+        if (LastUpdateTime > 1)
+            ServerLogger.Log($"Instance {Name} had a long update time ({LastUpdateTime}s)");
 #endif
     }
 }

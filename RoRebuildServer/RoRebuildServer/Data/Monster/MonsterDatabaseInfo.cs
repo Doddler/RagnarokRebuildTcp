@@ -12,6 +12,7 @@ public enum MonsterSpecialFlags
 public class MonsterDatabaseInfo
 {
     public int Id { get; set; }
+    public bool IsEnabled { get; set; }
     public int Level { get; set; }
     public required string Name { get; set; }
     public required string Code { get; set; }

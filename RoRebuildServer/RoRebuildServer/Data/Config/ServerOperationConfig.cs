@@ -14,7 +14,10 @@ public class ServerOperationConfig
     public bool RemapDropRates { get; set; }
     public bool GuaranteeMvpDrops { get; set; } = true;
     public bool FliersIgnoreTraps { get; set; } = true;
+    public bool SleepMonsterOnEmptyMap { get; set; } = true;
+    public int MapMonsterSleepTimer { get; set; } = 600;
     public CastInterruptionMode DefaultCastInterruptMode { get; set; } = CastInterruptionMode.InterruptOnSkill;
     public float EtcItemValueMultiplier { get; set; }
     public List<string> ActiveEvents { get; set; } = new();
+    public List<string> FeatureFlags { get; set; } = new();
 }

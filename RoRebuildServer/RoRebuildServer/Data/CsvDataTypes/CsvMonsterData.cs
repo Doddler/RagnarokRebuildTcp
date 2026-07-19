@@ -43,4 +43,5 @@ public class CsvMonsterData
     public float ClientSize { get; set; }
     public string Color { get; set; }
     public string Tags { get; set; }
+    public string Feature { get; set; }
 }

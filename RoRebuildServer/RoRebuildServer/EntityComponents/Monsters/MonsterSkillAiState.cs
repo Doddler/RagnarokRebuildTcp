@@ -70,6 +70,8 @@ public class MonsterSkillAiState(Monster monsterIn)
 
     public bool WasMagicLocked => monster.WasMagicLocked && monster.Character.LastAttacked.TryGet<WorldObject>(out targetForSkill);
 
+    public bool IsFeatureEnabled(string feature) => ServerConfig.OperationConfig.FeatureFlags.Contains(feature);
+
     public MonsterAiState PreviousAiState => monster.PreviousAiState;
 
     public int TimeSinceStartChase

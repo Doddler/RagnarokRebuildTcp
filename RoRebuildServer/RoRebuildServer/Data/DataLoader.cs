@@ -965,7 +965,8 @@ internal class DataLoader
                 Special = monster.Special,
                 Name = monster.Name,
                 Tags = tags,
-                SpecialFlags = flags
+                SpecialFlags = flags,
+                IsEnabled = string.IsNullOrWhiteSpace(monster.Feature) || ServerConfig.OperationConfig.FeatureFlags.Contains(monster.Feature)
             });
         }
 
@@ -1110,6 +1111,18 @@ internal class DataLoader
 
             if (!DataManager.MonsterCodeLookup.TryGetValue(entry.Minion, out var minion))
                 throw new Exception($"Error loading SpawnMinionTable.csv, could not find minion named {entry.Minion}.");
+
+            if (!string.IsNullOrWhiteSpace(entry.Feature))
+            {
+                var feature = entry.Feature!;
+                var requireFeature = !feature.StartsWith("!");
+                if (!requireFeature)
+                    feature = feature.Substring(1);
+
+                var hasFeature = ServerConfig.OperationConfig.FeatureFlags.Contains(feature);
+                if ((hasFeature && !requireFeature) || (!hasFeature && requireFeature))
+                    continue;
+            }
 
             targetMonster.Minions ??= new List<MonsterSpawnMinions>();
             targetMonster.Minions.Add(new MonsterSpawnMinions() { Count = entry.Count, Monster = minion, InitialGivesExp = entry.InitialGivesExp });

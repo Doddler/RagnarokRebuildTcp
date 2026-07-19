@@ -16,10 +16,16 @@ MapConfig("mjolnir_02")
 {
 	CreateSpawn("HORNET", 20);
 	CreateSpawn("CREAMY", 20);
-	CreateSpawn("FUNGUS", 55);
 	CreateSpawn("POPORING", 10);
 	CreateSpawn("FLORA", 40);
-	CreateSpawn("DEATHSPORE", 1, 30m, 15m, Boss);
+	if(IsFeatureEnabled("DoddlerCustomMonsters")) {
+		CreateSpawn("FUNGUS", 55);
+		CreateSpawn("DEATHSPORE", 1, 30m, 15m, Boss);
+	} else {
+		CreateSpawn("MANTIS", 30);
+		CreateSpawn("ARGOS", 15);
+	}
+	
 	CreateSpawn("GREEN_PLANT", 1, %(86, 270, 0, 0), 180000, 90000);
 	CreateSpawn("GREEN_PLANT", 1, %(80, 211, 0, 0), 180000, 90000);
 	CreateSpawn("GREEN_PLANT", 1, %(86, 270, 0, 0), 180000, 90000);

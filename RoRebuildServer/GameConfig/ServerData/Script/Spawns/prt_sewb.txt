@@ -35,6 +35,10 @@ MapConfig("prt_sewb4")
 	CreateSpawn("THIEF_BUG_", 20);
 	CreateSpawn("THIEF_BUG__", 70);
 	CreateSpawn("DRAINLIAR", 20);
-	CreateSpawn("STITCH", 5);
+	if(IsFeatureEnabled("DoddlerCustomMonsters")) {
+		CreateSpawn("STITCH", 5);
+	} else {
+		CreateSpawn("CRAMP", 2, 10m, 5m);
+	}
 	CreateSpawn("GOLDEN_BUG", 1, 1h, 10m, MVP);
 }
