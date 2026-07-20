@@ -77,7 +77,7 @@ namespace Assets.Scripts.Sprites
         private int _rejectedGeneration;
         private float _nextBatchRetryTime;
         private int _instanceId;
-        private const float BatchRetryDelay = 1f;
+        private const float BatchRetryDelay = 0f;
 
         private BillboardObject _billboard;
         private bool _billboardResolved;
@@ -91,7 +91,7 @@ namespace Assets.Scripts.Sprites
         private int _lastWriteRootOrder;
         private float _lastWriteVPos;
         private bool _hasBeenPositioned;
-        
+
         private bool _hasRebuiltOnce;
         private int _lastRebuiltAction = -1;
         private int _lastRebuiltAngle = -1;
@@ -269,7 +269,7 @@ namespace Assets.Scripts.Sprites
             _lastRebuiltOverride = OverrideMaterial;
             _lastRebuiltVerticalOffset = VerticalOffset;
         }
-        
+
         internal int EffectiveSortingOrder()
         {
             if (SpriteData && SpriteData.ReverseSortingWhenFacingNorth && CurrentAngleIndex >= 2 && CurrentAngleIndex <= 5)

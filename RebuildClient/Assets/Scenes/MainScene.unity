@@ -47296,6 +47296,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 3045765455822344100, guid: 7cb1e2a9a8a5c8d418e25368571c9a56,
+        type: 3}
+      propertyPath: near clip plane
+      value: 0.37
+      objectReference: {fileID: 0}
     - target: {fileID: 3806810817248551957, guid: 7cb1e2a9a8a5c8d418e25368571c9a56,
         type: 3}
       propertyPath: UiCanvas
