@@ -3976,10 +3976,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f94d978b91a242b3b5a4272830937318, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   Material: {fileID: 2100000, guid: 8497e6a895aab5a4ea9b4242458bcfa7, type: 2}
   ViewDirection: 0
+  Alignment: 3
+  FixedScale: 100
+  MaxScale: 100
 --- !u!1 &8018318779995213396
 GameObject:
   m_ObjectHideFlags: 0

@@ -248,8 +248,7 @@ namespace Assets.Scripts.UI
                     0,
                     0,
                     0,
-                    state.IsMale,
-                    scaleToFit: true);
+                    state.IsMale);
 
                 tree = tree.ExtendsClass >= 0
                     ? ClientDataLoader.Instance.GetSkillTree(tree.ExtendsClass)

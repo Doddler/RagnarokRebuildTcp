@@ -153,6 +153,24 @@ namespace Assets.Scripts.Sprites
         public string GetFullNameForMap(string mapName) => MapDataLookup.TryGetValue(mapName, out var map) ? map.Name : "Unknown Map";
         public string GetJobNameForId(int id) => PlayerClassLookup.TryGetValue(id, out var job) ? job.Name : "-";
         public string GetSkillName(CharacterSkill skill) => SkillData.TryGetValue(skill, out var skOut) ? skOut.Name : "";
+
+        //cast-name bubble text, built once per skill
+        private readonly Dictionary<CharacterSkill, string> playerCastNameCache = new();
+        private readonly Dictionary<CharacterSkill, string> monsterCastNameCache = new();
+
+        public string GetPlayerSkillCastName(CharacterSkill skill)
+        {
+            if (!playerCastNameCache.TryGetValue(skill, out var text))
+                playerCastNameCache[skill] = text = GetSkillName(skill) + "!!";
+            return text;
+        }
+
+        public string GetMonsterSkillCastName(CharacterSkill skill)
+        {
+            if (!monsterCastNameCache.TryGetValue(skill, out var text))
+                monsterCastNameCache[skill] = text = "<size=-2><color=#FF8888>" + GetSkillName(skill) + "</size>";
+            return text;
+        }
         public SkillData GetSkillData(CharacterSkill skill) => SkillData[skill];
         public SkillTarget GetSkillTarget(CharacterSkill skill) => SkillData.TryGetValue(skill, out var target) ? target.Target : SkillTarget.Any;
         public Dictionary<CharacterSkill, SkillData> GetAllSkills() => SkillData;
@@ -691,7 +709,7 @@ namespace Assets.Scripts.Sprites
             control.Level = param.Level;
             control.WeaponClass = param.WeaponClass;
             control.PartyName = param.PartyName;
-            control.IsPartyMember = param.PartyId > 0 && param.PartyId == state.PartyId;
+            control.IsPartyMember = state.IsInParty && param.PartyId == state.PartyId;
 
             bodySprite.Controllable = control;
             if (param.State == CharacterState.Moving)
@@ -1191,7 +1209,6 @@ namespace Assets.Scripts.Sprites
             control.CharacterState = param.State;
 
             control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
-            control.EnsureFloatingDisplayCreated();
 
             var loader = Addressables.LoadAssetAsync<GameObject>(prefabName);
             loader.Completed += ah =>

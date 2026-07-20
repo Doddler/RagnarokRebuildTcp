@@ -155,7 +155,7 @@ namespace Assets.Scripts.UI.ClientDatabase
 
             var path = NpcSpriteBasePath + cls.SpriteName;
             npcSprite.gameObject.SetActive(true);
-            npcSprite.DisplaySprite(path, scaleToFit: true);
+            npcSprite.DisplaySprite(path);
         }
 
         private void JumpToNpc(NpcEntry npc)

@@ -20,11 +20,13 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Party
                 var partyId = msg.ReadInt32();
                 var partyName = msg.ReadString();
                 var isOwner = msg.ReadBoolean();
-                
+
                 controllable.PartyName = partyName;
             }
             else
                 controllable.PartyName = null;
+
+            controllable.RefreshPartyMembership();
         }
     }
 }

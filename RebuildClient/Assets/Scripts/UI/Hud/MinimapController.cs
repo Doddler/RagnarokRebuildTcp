@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.UI.ConfigWindow;
@@ -24,7 +24,7 @@ namespace Assets.Scripts.UI.Hud
         private bool mapTransformDirty;
 
         //distance the coordinate label is inset from the corner it's pinned to
-        private static readonly Vector3 CoordinateInset = new(-6f, 4f, 0f);
+        private static readonly Vector3 CoordinateInset = new(-2f, 0f, 0f);
 
         private RectTransform playerIconRect;
         private Vector2Int lastIconPosition = new(-1, -1);

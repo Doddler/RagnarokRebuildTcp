@@ -1,4 +1,4 @@
-using Assets.Scripts.Network;
+﻿using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.UI.ConfigWindow;
@@ -19,24 +19,26 @@ namespace Assets.Scripts.UI.Hud
 
         public CharacterOverlayManager Manager;
 
-        private string characterName;
         private bool isPlayer;
 
         private float castStart;
         private float castEnd;
         private float chatEnd;
+        private bool chatShowsCastName;
 
         private bool isHovering;
         private bool isTargeting;
-        private float cachedInvScale = -1f;
-        private bool cachedSitting;
-        private float rawStandingHeightPx = 0f;
-        private float rawSittingHeightPx = 0f;
-        private float rawSitDepthPx = 0f;
+        private bool hasContent;
+        private Transform ownerTransform;
+        private float cachedGlueScale = -1f;
+        private float cachedZoomScale = -1f;
+        private float rawStandingHeightPx;
+        private float rawSittingHeightPx;
+        private float rawSitDepthPx;
 
         public void Close()
         {
-            if (Manager == null)
+            if (Manager == null || controllable == null) //already pooled, or orphaned during teardown
                 return;
             Manager.ReturnFloatingDisplay(this);
         }
@@ -60,61 +62,69 @@ namespace Assets.Scripts.UI.Hud
             hpBar = null;
             mpBar = null;
             chatBubble = null;
-            controllable = null;
 
-            // clear per-owner transient state; displays are pooled and reused
+            //stale handles must not reach a pooled display
+            if (controllable != null && controllable.FloatingDisplay == this)
+                controllable.FloatingDisplay = null;
+            controllable = null;
+            ownerTransform = null;
+
             isHovering = false;
             isTargeting = false;
-            cachedInvScale = -1f;
+            hasContent = false;
+            chatShowsCastName = false;
+            cachedGlueScale = -1f;
+            cachedZoomScale = -1f;
         }
 
-        // Sets the owning entity; called when the display is attached, before any content or visibility update.
         public void AttachTo(ServerControllable owner)
         {
             controllable = owner;
+            ownerTransform = owner.transform;
             isPlayer = owner.CharacterType == CharacterType.Player;
             Rect = (RectTransform)transform;
-            appliedRootScale = -1f;
+            cachedGlueScale = -1f;
+            cachedZoomScale = -1f;
+
+            if (owner.IsMainCharacter)
+                Manager.RegisterMainCharacterDisplay(this); //drawn over everyone else's
         }
 
         public RectTransform Rect { get; private set; }
 
-        // Last root scale written to Rect, so the per-frame snap only touches the transform when zoom changed.
-        private float appliedRootScale = -1f;
-
-        // Follows the owner's position on screen. Driven by CharacterOverlayManager so the camera, canvas
-        // and scale are resolved once per frame rather than once per entity.
-        public void Snap(Camera camera, RectTransform canvasRect, float rootScale)
+        // Driven by CharacterOverlayManager so camera, canvas and scale are resolved once per frame.
+        public void Tick(Camera camera, RectTransform canvasRect, float glueScale, float zoomScale)
         {
-            //the player's overlay draws over everyone else's, re-asserted only when something was added after it
-            if (controllable.IsMainCharacter && Rect.GetSiblingIndex() != Rect.parent.childCount - 1)
-                Rect.SetAsLastSibling();
+            AdvanceTimers();
+            if (controllable == null)
+                return; //expiring its last element released this display
 
-            var screenPos = camera.WorldToScreenPoint(controllable.transform.position);
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, null, out var localPoint);
-
-            Rect.anchoredPosition = localPoint;
-            RefreshPositionsIfChanged();
-
-            // Scales the root's SIZE only; the layout keeps positions glued to the feet.
-            if (Mathf.Approximately(rootScale, appliedRootScale))
+            if (!hasContent)
+            {
+                Close(); //created but never given any content
                 return;
+            }
 
-            appliedRootScale = rootScale;
-            Rect.localScale = new Vector3(rootScale, rootScale, rootScale);
+            UpdateScreenPosition(camera, canvasRect);
+            RefreshPositionsIfChanged(glueScale, zoomScale);
         }
 
-        public void UpdateName(string newName) => characterName = newName;
-
-        public void HoverNamePlate()
+        private void UpdateScreenPosition(Camera camera, RectTransform canvasRect)
         {
-            ShowNamePlate();
+            var screenPos = camera.WorldToScreenPoint(ownerTransform.position);
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, null, out var localPoint);
+            Rect.anchoredPosition = localPoint;
+        }
+
+        public void HoverNamePlate(string name)
+        {
+            ShowNamePlate(name);
             isHovering = true;
         }
 
-        public void TargetingNamePlate()
+        public void TargetingNamePlate(string name)
         {
-            ShowNamePlate();
+            ShowNamePlate(name);
             isTargeting = true;
         }
 
@@ -134,13 +144,12 @@ namespace Assets.Scripts.UI.Hud
             HideNamePlate();
         }
 
-        private void ShowNamePlate()
+        private void ShowNamePlate(string name)
         {
             if (namePlate != null)
-                return;
+                return; //already visible, keeps its existing text
             namePlate = Manager.AttachNamePlate(gameObject);
-            namePlate.text = characterName;
-            gameObject.SetActive(true);
+            namePlate.text = name;
             InvalidatePositions();
         }
 
@@ -162,7 +171,6 @@ namespace Assets.Scripts.UI.Hud
             castStart = Time.timeSinceLevelLoad;
             castEnd = castStart + castTime;
             castBar.gameObject.SetActive(true);
-            gameObject.SetActive(true);
             InvalidatePositions();
         }
 
@@ -174,14 +182,12 @@ namespace Assets.Scripts.UI.Hud
                 castBar = null;
             }
 
-            //this is the biggest hack I've ever seen. End the chat bubble if it's showing monster cast name
-            if (chatBubble != null && chatBubble.TextObject.text.Contains("<color=#FF8888>"))
+            //a cast-name bubble goes away with the cast; regular chat stays
+            if (chatBubble != null && chatShowsCastName)
             {
                 Manager.ReturnChatBubble(chatBubble.gameObject);
                 chatBubble = null;
             }
-
-            //controllable.StopCastingAnimation();
 
             InvalidatePositions();
         }
@@ -201,8 +207,6 @@ namespace Assets.Scripts.UI.Hud
 
             castStart -= subStart;
             castEnd += addTime;
-
-            //castBar.SetProgress(pos / end);
         }
 
         public void HideChatBubbleMessage()
@@ -215,24 +219,17 @@ namespace Assets.Scripts.UI.Hud
             InvalidatePositions();
         }
 
-        public void ShowChatBubbleMessage(string message, float visibleTime = 5f)
+        public void ShowChatBubbleMessage(string message, float visibleTime = 5f, bool isCastName = false)
         {
             if (chatBubble == null)
+            {
                 chatBubble = Manager.AttachChatBubble(gameObject);
+                InvalidatePositions(); //activate before SetText so TMP can measure the text
+            }
 
+            chatShowsCastName = isCastName;
             chatBubble.SetText(message);
             chatEnd = Time.timeSinceLevelLoad + visibleTime;
-            gameObject.SetActive(true);
-            InvalidatePositions();
-        }
-
-        public void HideMpBar()
-        {
-            if (mpBar == null)
-                return;
-
-            Manager.ReturnMpBar(mpBar.gameObject);
-            mpBar = null;
             InvalidatePositions();
         }
 
@@ -242,7 +239,7 @@ namespace Assets.Scripts.UI.Hud
                 return;
 
             mpBar = Manager.AttachMpBar(gameObject);
-            gameObject.SetActive(true);
+            SetBarSize(mpBar);
             InvalidatePositions();
         }
 
@@ -252,12 +249,11 @@ namespace Assets.Scripts.UI.Hud
                 ForceMpBarOn();
 
             mpBar.SetProgress(Ratio(mp, controllable.MaxSp));
-            SetBarSize(mpBar);
         }
 
-        // Progress as a 0..1 fraction, guarding against a zero max.
         private static float Ratio(int value, int max) => max > 0 ? (float)value / max : 0f;
 
+        // Set once at attach; writing sizeDelta on every hp update would dirty the canvas layout.
         private void SetBarSize(SliderBar bar) =>
             ((RectTransform)bar.transform).sizeDelta = new Vector2(isPlayer ? 100f : 90f, 10f);
         
@@ -276,8 +272,8 @@ namespace Assets.Scripts.UI.Hud
                 return;
 
             hpBar = Manager.AttachHpBar(gameObject);
-            gameObject.SetActive(true);
-            UpdateHp(controllable.Hp, controllable.Hp, false); // also calls RefreshHpBarDetails
+            SetBarSize(hpBar);
+            UpdateHp(controllable.Hp, controllable.Hp, false);
             InvalidatePositions();
         }
 
@@ -289,18 +285,14 @@ namespace Assets.Scripts.UI.Hud
                 if ((hp == maxHp && oldHp == hp) || (!isPlayer && !GameConfig.Data.ShowMonsterHpBars))
                     return;
                 hpBar = Manager.AttachHpBar(gameObject);
+                SetBarSize(hpBar);
                 hpBar.SetProgress(Ratio(oldHp, maxHp));
                 InvalidatePositions();
             }
 
             var progress = Ratio(hp, maxHp);
-            if (oldHp >= 0)
-                hpBar.SetProgress(progress, !animate);
-            else
-                hpBar.SetProgress(progress);
+            hpBar.SetProgress(progress, !animate);
 
-            // Debug.Log($"Update HP on {characterName}: {hp}/{maxHp}");
-            gameObject.SetActive(true);
             RefreshHpBarDetails();
         }
 
@@ -340,64 +332,82 @@ namespace Assets.Scripts.UI.Hud
             return px;
         }
 
-        // Recompute immediately so a newly attached/removed element doesn't render a frame at its template spot.
-        private void InvalidatePositions()
+        // Lifecycle gate; every attach and detach comes through here. A display only exists while it has
+        // content: going empty returns it to the pool, gaining content activates and relayouts it.
+        public void InvalidatePositions()
         {
-            cachedInvScale = -1f;
-            RefreshPositionsIfChanged();
+            if (controllable == null)
+                return; //already released
+
+            hasContent = namePlate != null || castBar != null || hpBar != null || mpBar != null || chatBubble != null;
+            if (!hasContent)
+            {
+                Close();
+                return;
+            }
+
+            cachedGlueScale = -1f;
+            var cf = CameraFollower.Instance;
+            if (!gameObject.activeSelf)
+            {
+                //position immediately so it can't draw a frame wherever the pool left it
+                gameObject.SetActive(true);
+                UpdateScreenPosition(cf.Camera, (RectTransform)cf.UiCanvas.transform);
+            }
+            RefreshPositionsIfChanged(cf.OverlayGlueScale, cf.OverlayRootScale);
         }
 
-        public void RefreshPositionsIfChanged()
+        // Anchors use the glue scale to stay pinned to the sprite's feet/head; elements themselves scale
+        // by the zoom factor (1 unless ScalePlayerDisplayWithZoom is on).
+        public void RefreshPositionsIfChanged(float glueScale, float zoomScale)
         {
-            var cf = CameraFollower.Instance;
-            // Divide out the root scale so offsets render at glueScale (glued to the feet); only bar SIZE scales.
-            var invScale = cf.OverlayGlueScale / cf.OverlayRootScale;
-            if (Mathf.Approximately(cachedInvScale, invScale))
+            if (Mathf.Approximately(cachedGlueScale, glueScale) && Mathf.Approximately(cachedZoomScale, zoomScale))
                 return;
-            cachedInvScale = invScale;
-            cachedSitting = IsSitting;
+            cachedGlueScale = glueScale;
+            cachedZoomScale = zoomScale;
             CaptureSpriteHeights();
 
-            LayoutBelowFeet(invScale);
-            LayoutAboveHead(invScale);
+            LayoutBelowFeet(glueScale, zoomScale);
+            LayoutAboveHead(glueScale, zoomScale);
         }
 
         // HP bar, MP bar, name plate stacked downward below the feet; the topmost present one sits at the anchor.
-        private void LayoutBelowFeet(float invScale)
+        private void LayoutBelowFeet(float glueScale, float zoomScale)
         {
             var offset = HpBarOffsetPx;
-            if (IsSitting && GameConfig.Data.AdjustOverlayWhenSitting) // only lower enough to clear the seated body's dip below the feet (+5 margin)
+            if (IsSitting && GameConfig.Data.AdjustOverlayWhenSitting) //clear the seated body's dip below the feet
                 offset = Mathf.Max(offset, rawSitDepthPx * 1.5f + 5f);
-            var anchorY = -offset * invScale;
+            var anchorY = -offset * glueScale;
             var cursor = 0f;
             var first = true;
 
-            PlaceStacked(hpBar?.transform, 0f, anchorY, -1f, ref cursor, ref first);
-            PlaceStacked(mpBar?.transform, HpToMpGap, anchorY, -1f, ref cursor, ref first);
-            PlaceStacked(namePlate?.transform, MpToNameGap, anchorY, -1f, ref cursor, ref first);
+            PlaceStacked(hpBar?.transform, 0f, anchorY, -1f, zoomScale, ref cursor, ref first);
+            PlaceStacked(mpBar?.transform, HpToMpGap, anchorY, -1f, zoomScale, ref cursor, ref first);
+            PlaceStacked(namePlate?.transform, MpToNameGap, anchorY, -1f, zoomScale, ref cursor, ref first);
         }
 
         // Cast bar then chat bubble stacked upward above the head (mirror of LayoutBelowFeet).
-        private void LayoutAboveHead(float invScale)
+        private void LayoutAboveHead(float glueScale, float zoomScale)
         {
             if (castBar == null && chatBubble == null) return;
 
-            var anchorY = ComputeAboveHeadPx() * invScale;
+            var anchorY = ComputeAboveHeadPx() * glueScale;
             var cursor = 0f;
             var first = true;
 
-            PlaceStacked(castBar?.transform, 0f, anchorY, 1f, ref cursor, ref first);
-            PlaceStacked(chatBubble?.transform, 0f, anchorY, 1f, ref cursor, ref first);
+            PlaceStacked(castBar?.transform, 0f, anchorY, 1f, zoomScale, ref cursor, ref first);
+            PlaceStacked(chatBubble?.transform, 0f, anchorY, 1f, zoomScale, ref cursor, ref first);
         }
 
-        // Stacks one element in the given direction (+1 = up, -1 = down): the first sits at the anchor, each later
-        // one is offset by its gap from the previous element's far edge. Pivot-aware via the bottom edge.
-        private static void PlaceStacked(Transform t, float gap, float anchorY, float direction, ref float cursor, ref bool first)
+        // Stacks one element in the given direction (+1 up, -1 down): the first sits at the anchor, each
+        // later one is offset by its gap from the previous element's far edge.
+        private static void PlaceStacked(Transform t, float gap, float anchorY, float direction, float zoomScale, ref float cursor, ref bool first)
         {
             if (t == null) return;
             var rt = (RectTransform)t;
-            var height = rt.sizeDelta.y;
-            var nearEdge = first ? anchorY : cursor + direction * gap;
+            rt.localScale = new Vector3(zoomScale, zoomScale, zoomScale);
+            var height = rt.sizeDelta.y * zoomScale;
+            var nearEdge = first ? anchorY : cursor + direction * gap * zoomScale;
             var farEdge = nearEdge + direction * height;
             rt.localPosition = new Vector3(0, Mathf.Min(nearEdge, farEdge) + rt.pivot.y * height, 0);
             cursor = farEdge;
@@ -414,37 +424,30 @@ namespace Assets.Scripts.UI.Hud
                 return;
 
             if (isPlayer)
-            {
                 hpBar.SetColor(controllable.IsPartyMember || controllable.IsMainCharacter
                     ? AllyHpColor : OtherPlayerHpColor);
-                SetBarSize(hpBar);
-            }
             else if (GameConfig.Data.ShowMonsterHpBars)
-            {
                 hpBar.SetColor(MonsterHpColor);
-                SetBarSize(hpBar);
-            }
             else
             {
                 Manager.ReturnHpBar(hpBar.gameObject);
                 hpBar = null;
+                InvalidatePositions();
             }
         }
 
-        public void Update()
+        private void AdvanceTimers()
         {
-            if (IsSitting != cachedSitting)
-                InvalidatePositions();
-
             if (chatBubble != null)
             {
                 if (Time.timeSinceLevelLoad > chatEnd)
                 {
                     Manager.ReturnChatBubble(chatBubble.gameObject);
                     chatBubble = null;
+                    InvalidatePositions();
                 }
-                else
-                    chatBubble.RefreshBorder();
+                else if (chatBubble.RefreshBorderIfNeeded())
+                    InvalidatePositions();
             }
 
             if (castBar != null)

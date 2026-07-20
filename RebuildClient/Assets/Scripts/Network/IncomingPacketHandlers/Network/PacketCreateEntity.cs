@@ -247,7 +247,6 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 controllable = ClientDataLoader.Instance.InstantiateMonster(ref monData, type);
             }
 
-            controllable.EnsureFloatingDisplayCreated();
             if (controllable.IsMainCharacter)
             {
                 Camera.UpdatePlayerHP(hp, maxHp);

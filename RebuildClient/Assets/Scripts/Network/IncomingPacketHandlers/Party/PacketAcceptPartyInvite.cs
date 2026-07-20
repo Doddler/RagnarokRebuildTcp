@@ -41,6 +41,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Party
             Camera.AppendChatText(sb.ToString());
             State.UpdatePlayerName(); //add party leader indicator (or remove it)
             UiManager.Instance.PartyPanel.FullRefreshPartyMemberPanel();
+            Network.RefreshPartyMemberDisplays();
         }
         
         public static void LoadPartyMemberDetails(ClientInboundMessage msg, StringBuilder sb = null)

@@ -13,7 +13,11 @@ namespace Assets.Scripts.Sprites
         bool isActive,
         float TransitionTime = 0,
         SpriteMotion CurrentMotion = SpriteMotion.Idle,
-        SpriteMotion TargetMotion = SpriteMotion.Idle);
+        SpriteMotion TargetMotion = SpriteMotion.Idle)
+    {
+        //the record is immutable, so every animator not waiting on a transition can share one instance
+        public static readonly QueuedMotionTransition Inactive = new(false);
+    }
 
     public class RoSpriteAnimator : MonoBehaviour
     {
@@ -146,7 +150,7 @@ namespace Assets.Scripts.Sprites
         private bool isDirty;
         private bool isActive;
 
-        private QueuedMotionTransition queuedMotionTransition;
+        private QueuedMotionTransition queuedMotionTransition = QueuedMotionTransition.Inactive;
 
         public void OverrideCurrentFrame(int frame)
         {
@@ -507,7 +511,7 @@ namespace Assets.Scripts.Sprites
             if (CurrentMotion == nextMotion && !forceUpdate)
                 return;
 
-            queuedMotionTransition = new QueuedMotionTransition(false);
+            queuedMotionTransition = QueuedMotionTransition.Inactive;
 
             CurrentMotion = nextMotion;
             currentFrame = 0;
@@ -829,7 +833,7 @@ namespace Assets.Scripts.Sprites
             if (queuedMotionTransition.isActive && queuedMotionTransition.TransitionTime <= Time.timeSinceLevelLoad)
             {
                 if (queuedMotionTransition.CurrentMotion != CurrentMotion)
-                    queuedMotionTransition = new QueuedMotionTransition(false);
+                    queuedMotionTransition = QueuedMotionTransition.Inactive;
                 else
                 {
                     var target = queuedMotionTransition.TargetMotion;

@@ -580,6 +580,12 @@ namespace Assets.Scripts.Network
             //ctrl.SetHitDelay(lockTime);
         }
 
+        public void RefreshPartyMemberDisplays()
+        {
+            foreach (var controllable in EntityList.Values)
+                controllable.RefreshPartyMembership();
+        }
+
         private void OnMessageChangeSitStand(ClientInboundMessage msg)
         {
             var id = msg.ReadInt32();
@@ -591,18 +597,7 @@ namespace Assets.Scripts.Network
                 return;
             }
 
-            if (isSitting)
-            {
-                controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Sit);
-                controllable.SpriteAnimator.State = SpriteState.Sit;
-                return;
-            }
-
-            if (controllable.SpriteAnimator.State == SpriteState.Sit)
-            {
-                controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Idle);
-                controllable.SpriteAnimator.State = SpriteState.Idle;
-            }
+            controllable.SetSitting(isSitting);
         }
 
         private void OnMessageChangeFacing(ClientInboundMessage msg)

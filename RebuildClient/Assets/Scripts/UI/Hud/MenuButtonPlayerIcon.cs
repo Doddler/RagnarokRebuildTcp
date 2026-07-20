@@ -29,7 +29,7 @@ namespace Assets.Scripts.UI.Hud
                 return;
 
             PlayerSprite.PrepareDisplayPlayerCharacter(state.JobId, state.HairStyleId, state.HairColorId,
-                state.Headgear1, state.Headgear2, state.Headgear3, state.IsMale, scaleToFit: true);
+                state.Headgear1, state.Headgear2, state.Headgear3, state.IsMale);
             PlayerSprite.SetMotion(SpriteMotion.Sit);
         }
     }

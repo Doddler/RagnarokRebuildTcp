@@ -142,7 +142,6 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 return null;
             }
 
-            controllable.EnsureFloatingDisplayCreated();
             if (controllable.IsMainCharacter)
             {
                 Camera.UpdatePlayerHP(entity.Hp, entity.MaxHp);

@@ -7,7 +7,6 @@ namespace Assets.Scripts.UI
     public class WindowBase : MonoBehaviour, IClosableWindow, IPointerDownHandler
     {
         public bool CanCloseWithEscape = true;
-        public bool AutomaticallyFitIntoPlayArea = true;
 
         public virtual void OnDestroy()
         {
@@ -44,9 +43,6 @@ namespace Assets.Scripts.UI
 
         public void FitWindowIntoPlayArea()
         {
-            if (!AutomaticallyFitIntoPlayArea)
-                return;
-
             transform.position = transform.RectTransform().ClampFullyOnScreen(transform.position);
         }
 

@@ -5,13 +5,28 @@ using UnityEngine;
 
 namespace Assets.Scripts.Sprites
 {
+    public enum UiSpriteAlignment
+    {
+        Center,
+        Left,
+        Right,
+        //ignores the rect entirely; the sprite's own root anchor sits at the rect's local origin
+        Origin,
+    }
+
     public class UiPlayerSprite : MonoBehaviour
     {
         public Material Material;
         public Direction ViewDirection;
 
-        //Placement within the fit rect when scaleToFit is used: (0.5,0.5) centered, (1,0.5) right, (0.5,0) bottom.
-        public Vector2 Alignment = new(0.5f, 0.5f);
+        //Horizontal placement: the character binds to the chosen rect edge, or centers. Always
+        //grounded at the rect bottom. Origin ignores the rect and just anchors to its local origin.
+        public UiSpriteAlignment Alignment = UiSpriteAlignment.Center;
+
+        //0 scales the sprite to fit the rect, up to MaxScale; above 0 renders at exactly that scale.
+        //50 = one ui pixel per sprite pixel.
+        public float FixedScale;
+        public float MaxScale = 100f;
         
         private class UiSpriteLayerData
         {
@@ -26,12 +41,9 @@ namespace Assets.Scripts.Sprites
         private int loadCount;
         private int loadedCount;
         private int loadVersion;
-        private int actionOverride = -1;
         private int currentFrame;
         private int frameCount;
         private SpriteMotion currentMotion = SpriteMotion.Idle;
-        private Color color = Color.white;
-        private bool scaleToRectTransform;
 
         public int FrameCount => frameCount;
 
@@ -46,25 +58,14 @@ namespace Assets.Scripts.Sprites
             }
         }
 
-        public void SetColor(Color newColor)
+        public void DisplaySprite(string spritePath, SpriteMotion motion = SpriteMotion.Idle, int frame = 0)
         {
-            color = newColor;
-
-            for (var i = 0; i < sprites.Count; i++)
-            {
-                sprites[i].SpriteRenderer.SetColor(color);
-                sprites[i].SpriteRenderer.SetVerticesDirty();
-            }
+            DisplayLayers(new[] { spritePath }, motion, frame);
         }
 
-        public void DisplaySprite(string spritePath, bool scaleToFit = false, SpriteMotion motion = SpriteMotion.Idle, int frame = 0)
+        public void DisplayLayers(IReadOnlyList<string> spritePaths, SpriteMotion motion = SpriteMotion.Idle, int frame = 0)
         {
-            DisplayLayers(new[] { spritePath }, scaleToFit, motion, frame);
-        }
-
-        public void DisplayLayers(IReadOnlyList<string> spritePaths, bool scaleToFit = false, SpriteMotion motion = SpriteMotion.Idle, int frame = 0)
-        {
-            BeginDisplay(spritePaths.Count, scaleToFit, motion, frame);
+            BeginDisplay(spritePaths.Count, motion, frame);
 
             for (var i = 0; i < spritePaths.Count; i++)
                 LoadSpriteIntoSlot(spritePaths[i], i);
@@ -73,10 +74,8 @@ namespace Assets.Scripts.Sprites
                 Clear();
         }
 
-        public void PrepareDisplayPlayerCharacter(int jobId, int headId, int hairColor, int headgear1, int headgear2, int headgear3, bool isMale, bool scaleToFit = false)
+        public void PrepareDisplayPlayerCharacter(int jobId, int headId, int hairColor, int headgear1, int headgear2, int headgear3, bool isMale)
         {
-            Debug.Log($"PrepareDisplayPlayerCharacter job:{jobId} head:{headId} hairColor:{hairColor} headgear1:{headgear1} headgear2:{headgear2} headgear3:{headgear3} isMale:{isMale}");
-
             var d = ClientDataLoader.Instance;
             var spritePaths = new List<string>(5)
             {
@@ -88,34 +87,13 @@ namespace Assets.Scripts.Sprites
             if (headgear2 > 0) spritePaths.Add(d.GetHeadgearSpriteName(headgear2, isMale));
             if (headgear1 > 0) spritePaths.Add(d.GetHeadgearSpriteName(headgear1, isMale));
 
-            DisplayLayers(spritePaths, scaleToFit);
+            DisplayLayers(spritePaths);
         }
 
-        public void DisplayEntity(int classId, bool scaleToFit = false)
+        private void BeginDisplay(int layerCount, SpriteMotion motion, int frame)
         {
-            var entityData = ClientDataLoader.Instance.GetMonsterData(classId);
-            if (entityData == null)
-            {
-                Debug.LogWarning($"Unable to display entity: No monster or NPC data exists for class ID {classId}.");
-                return;
-            }
-
-            if (entityData.SpriteName.EndsWith(".prefab"))
-            {
-                Debug.LogWarning($"Unable to display entity {entityData.Name}: UiPlayerSprite cannot render prefab sprites.");
-                return;
-            }
-
-            var basePath = classId < 4000 ? "Assets/Sprites/Npcs/" : "Assets/Sprites/Monsters/";
-            DisplaySprite(basePath + entityData.SpriteName, scaleToFit);
-        }
-
-        private void BeginDisplay(int layerCount, bool scaleToFit, SpriteMotion motion, int frame)
-        {
-            scaleToRectTransform = scaleToFit;
             currentMotion = motion;
             currentFrame = frame;
-            actionOverride = -1;
             frameCount = 0;
             loadVersion++;
 
@@ -130,7 +108,6 @@ namespace Assets.Scripts.Sprites
                 var spriteRenderer = go.AddComponent<RoSpriteRendererUI>();
                 go.AddComponent<CanvasRenderer>();
                 spriteRenderer.material = Material;
-                spriteRenderer.Color = color;
                 spriteRenderer.raycastTarget = false;
                 sprites.Add(new UiSpriteLayerData { SpriteRenderer = spriteRenderer });
             }
@@ -224,10 +201,7 @@ namespace Assets.Scripts.Sprites
             if (frameCount == int.MaxValue)
                 frameCount = 0;
 
-            if (scaleToRectTransform)
-                LayoutScaledSprite(attachmentOffsets);
-            else
-                LayoutDefaultSprite(attachmentOffsets);
+            LayoutSprites(attachmentOffsets);
 
             for (var i = 0; i < sprites.Count; i++)
             {
@@ -242,9 +216,7 @@ namespace Assets.Scripts.Sprites
 
         private void ConfigureRenderer(RoSpriteRendererUI spriteRenderer)
         {
-            var action = actionOverride >= 0
-                ? actionOverride
-                : RoAnimationHelper.GetMotionIdForSprite(spriteRenderer.SpriteData.Type, currentMotion);
+            var action = RoAnimationHelper.GetMotionIdForSprite(spriteRenderer.SpriteData.Type, currentMotion);
 
             if (action < 0)
                 action = 0;
@@ -263,7 +235,6 @@ namespace Assets.Scripts.Sprites
             spriteRenderer.ActionId = action;
             spriteRenderer.CurrentFrame = Mathf.Clamp(currentFrame, 0, maxFrame);
             spriteRenderer.Direction = direction;
-            spriteRenderer.SetColor(color);
         }
 
         private static int GetFrameCount(RoSpriteRendererUI spriteRenderer)
@@ -274,24 +245,13 @@ namespace Assets.Scripts.Sprites
                 : 0;
         }
 
-        private void LayoutDefaultSprite(Vector2[] attachmentOffsets)
+        private void LayoutSprites(Vector2[] attachmentOffsets)
         {
-            const float defaultSize = 100f;
+            var availableSize = ((RectTransform)transform).rect.size;
+            if (availableSize.x <= 0 || availableSize.y <= 0)
+                return;
 
-            for (var i = 0; i < sprites.Count; i++)
-            {
-                if (!sprites[i].IsActive)
-                    continue;
-
-                var offset = attachmentOffsets[i] * defaultSize;
-                var spriteRect = sprites[i].SpriteRenderer.rectTransform;
-                spriteRect.sizeDelta = Vector2.one * defaultSize;
-                spriteRect.localPosition = new Vector3(offset.x, offset.y, -i * 0.01f);
-            }
-        }
-
-        private void LayoutScaledSprite(Vector2[] attachmentOffsets)
-        {
+            //character bounds in sprite units, relative to the sprite origin
             var min = new Vector2(float.MaxValue, float.MaxValue);
             var max = new Vector2(float.MinValue, float.MinValue);
 
@@ -309,17 +269,32 @@ namespace Assets.Scripts.Sprites
                 }
             }
 
-            var availableSize = ((RectTransform)transform).rect.size;
             var characterSize = max - min;
-            if (availableSize.x <= 0 || availableSize.y <= 0 || characterSize.x <= 0 || characterSize.y <= 0)
+            if (characterSize.x <= 0 || characterSize.y <= 0)
                 return;
 
-            var renderSize = Mathf.Min(availableSize.x / characterSize.x, availableSize.y / characterSize.y, 100f);
+            var renderSize = FixedScale > 0
+                ? FixedScale
+                : Mathf.Min(availableSize.x / characterSize.x, availableSize.y / characterSize.y, MaxScale);
 
-            //pin the character's own center to the origin, then bias it within the leftover space per Alignment
-            var baseOffset = -(min + max) * 0.5f * renderSize;
-            var slack = availableSize - characterSize * renderSize;
-            var placementOffset = baseOffset + new Vector2((Alignment.x - 0.5f) * slack.x, (Alignment.y - 0.5f) * slack.y);
+            Vector2 placementOffset;
+            if (Alignment == UiSpriteAlignment.Origin)
+            {
+                //ignores the rect; the sprite's own root anchor sits at the rect's local origin
+                placementOffset = Vector2.zero;
+            }
+            else
+            {
+                //grounded at the rect bottom; horizontally bound to the chosen edge, or centered
+                var half = availableSize * 0.5f;
+                var placementX = Alignment switch
+                {
+                    UiSpriteAlignment.Left => -half.x - min.x * renderSize,
+                    UiSpriteAlignment.Right => half.x - max.x * renderSize,
+                    _ => -(min.x + max.x) * 0.5f * renderSize,
+                };
+                placementOffset = new Vector2(placementX, -half.y - min.y * renderSize);
+            }
 
             for (var i = 0; i < sprites.Count; i++)
             {
@@ -338,7 +313,7 @@ namespace Assets.Scripts.Sprites
 
         private void OnRectTransformDimensionsChange()
         {
-            if (scaleToRectTransform && loadCount > 0 && loadedCount >= loadCount)
+            if (loadCount > 0 && loadedCount >= loadCount)
                 AssembleCompleteSprite();
         }
 
@@ -351,14 +326,6 @@ namespace Assets.Scripts.Sprites
         public void SetMotion(SpriteMotion motion)
         {
             currentMotion = motion;
-            currentFrame = 0;
-            actionOverride = -1;
-            RefreshDisplay();
-        }
-
-        public void SetAction(int action)
-        {
-            actionOverride = action;
             currentFrame = 0;
             RefreshDisplay();
         }

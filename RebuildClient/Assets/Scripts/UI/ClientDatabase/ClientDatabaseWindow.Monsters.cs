@@ -199,7 +199,7 @@ namespace Assets.Scripts.UI.ClientDatabase
 
             var path = MonsterSpriteBasePath + cls.SpriteName;
             monsterSprite.gameObject.SetActive(true);
-            monsterSprite.DisplaySprite(path, scaleToFit: true);
+            monsterSprite.DisplaySprite(path);
         }
 
         public void ReturnToMonsterList()
