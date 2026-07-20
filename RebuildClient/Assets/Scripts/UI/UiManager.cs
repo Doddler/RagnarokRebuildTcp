@@ -6,6 +6,7 @@ using Assets.Scripts.Objects;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
+using Classic = Assets.Scripts.UI.Classic;
 using Assets.Scripts.UI.ClientDatabase;
 using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.UI.Hud;
@@ -17,6 +18,7 @@ using UnityEngine;
 
 public class UiManager : MonoBehaviour
 {
+    public Classic.MainMenuWindow MainMenu;
     public GameObject PrimaryUserUIContainer;
     public RectTransform PrimaryUserWindowContainer;
     public GameObject CharacterOverlayGroup;
@@ -104,10 +106,10 @@ public class UiManager : MonoBehaviour
         warp.ShowWindow();
         warp.HideWindow();
 
-        var emote = EmoteManager.GetComponent<EmoteWindow>();
-        emote.ShowWindow();
-        emote.EnsureInitialized();
-        emote.HideWindow();
+        var emotes = EmoteManager.GetComponent<EmoteWindow>();
+        emotes.ShowWindow();
+        emotes.EnsureInitialized();
+        emotes.HideWindow();
 
         //SkillManager.ShowWindow();
         SkillManager.HideWindow();
@@ -335,37 +337,37 @@ public class UiManager : MonoBehaviour
         switch (dragItem.Type)
         {
             case DragItemType.Skill:
-            {
-                canChangeSkillLevel = ClientDataLoader.Instance.GetSkillData((CharacterSkill)dragItem.ItemId).AdjustableLevel;
-                if (!canChangeSkillLevel)
-                    DragItemObject.UpdateCount(0);
-                break;
-            }
+                {
+                    canChangeSkillLevel = ClientDataLoader.Instance.GetSkillData((CharacterSkill)dragItem.ItemId).AdjustableLevel;
+                    if (!canChangeSkillLevel)
+                        DragItemObject.UpdateCount(0);
+                    break;
+                }
             case DragItemType.Item:
-            {
-                var itemData = ClientDataLoader.Instance.GetItemById(dragItem.ItemId);
-                if (itemData.IsUnique || itemData.ItemClass == ItemClass.Ammo)
-                    EquipmentDropArea.SetActive(true);
-                if (StorageUI.Instance != null)
-                    StorageUI.Instance.UpdateDropArea(true);
-                if (PlayerState.Instance.HasCart)
-                    CartWindow.UpdateDropArea(true);
-                break;
-            }
+                {
+                    var itemData = ClientDataLoader.Instance.GetItemById(dragItem.ItemId);
+                    if (itemData.IsUnique || itemData.ItemClass == ItemClass.Ammo)
+                        EquipmentDropArea.SetActive(true);
+                    if (StorageUI.Instance != null)
+                        StorageUI.Instance.UpdateDropArea(true);
+                    if (PlayerState.Instance.HasCart)
+                        CartWindow.UpdateDropArea(true);
+                    break;
+                }
             case DragItemType.StorageItem:
-            {
-                InventoryDropArea.SetActive(true);
-                if (PlayerState.Instance.HasCart)
-                    CartWindow.UpdateDropArea(true);
-                break;
-            }
+                {
+                    InventoryDropArea.SetActive(true);
+                    if (PlayerState.Instance.HasCart)
+                        CartWindow.UpdateDropArea(true);
+                    break;
+                }
             case DragItemType.CartItem:
-            {
-                InventoryDropArea.SetActive(true);
-                if (StorageUI.Instance != null)
-                    StorageUI.Instance.UpdateDropArea(true);
-                break;
-            }
+                {
+                    InventoryDropArea.SetActive(true);
+                    if (StorageUI.Instance != null)
+                        StorageUI.Instance.UpdateDropArea(true);
+                    break;
+                }
             case DragItemType.VendSetupSource:
             case DragItemType.VendSetupTarget:
                 VendingSetupManager.Instance.StartDrag(dragItem.Type);
@@ -391,7 +393,7 @@ public class UiManager : MonoBehaviour
         if (StorageUI.Instance != null)
             StorageUI.Instance.UpdateDropArea(false);
         VendingSetupManager.Instance?.HideDropArea();
-        VendingShopViewUI.ActiveTradeWindow?.OnStopDrag();;
+        VendingShopViewUI.ActiveTradeWindow?.OnStopDrag(); ;
 
         if (hoveredDropTarget != null)
         {

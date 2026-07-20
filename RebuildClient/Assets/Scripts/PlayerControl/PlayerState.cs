@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using Assets.Scripts.Data;
 using Assets.Scripts.Network;
+using Assets.Scripts.Sprites;
 using Assets.Scripts.UI.Hud;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Data;
@@ -12,12 +14,24 @@ namespace Assets.Scripts.PlayerControl
     public class PlayerState
     {
         public static PlayerState Instance = new();
-        
+
+        // Update Events
+        public Action OnTextChanged;
+        public Action OnHpSPChanged;
+        public Action OnProgressChanged;
+        public Action OnWeightOrCurrencyChanged;
+        public Action OnStatsChanged;
+        public Action OnSkillsChanged;
+
         public bool IsValid { get; set; } = false;
         public int EntityId { get; set; }
-        public string PlayerName;
-        public int Level;
-        public int Exp;
+        public string PlayerName = "Player Name";
+        public int BaseLevel;
+        public int JobLevel;
+        public int BaseExp;
+        public int BaseMaxExp;
+        public int JobExp;
+        public int JobMaxExp;
         public int Hp;
         public int MaxHp;
         public int Sp;
@@ -29,6 +43,15 @@ namespace Assets.Scripts.PlayerControl
         public ClientSkillTree SkillTree;
         public int SkillPoints;
         public int JobId;
+        public string JobName
+        {
+            get
+            {
+                if (ClientDataLoader.Instance != null && ClientDataLoader.Instance.PlayerClassLookup.Count != 0)
+                    return ClientDataLoader.Instance.PlayerClassLookup[JobId].Name;
+                return "Job Name";
+            }
+        }
         public bool IsMale;
         public int WeaponClass;
         public int HairStyleId;
@@ -64,20 +87,17 @@ namespace Assets.Scripts.PlayerControl
 
         public void SortPartyMembers()
         {
-            
+
         }
-        
+
         public void UpdatePlayerName()
         {
-            if(IsInParty && PartyLeader == PartyMemberId)
-                CameraFollower.Instance.CharacterDetailBox.CharacterName.text = $"★{PlayerName}";
-            else
-                CameraFollower.Instance.CharacterDetailBox.CharacterName.text = PlayerName;
+            OnTextChanged?.Invoke();
         }
 
         public void AssignPartyMemberControllable(int entityId, ServerControllable controllable)
         {
-            if(PartyMemberIdLookup.TryGetValue(entityId, out var partyMemberId) && PartyMembers.TryGetValue(partyMemberId, out var member))
+            if (PartyMemberIdLookup.TryGetValue(entityId, out var partyMemberId) && PartyMembers.TryGetValue(partyMemberId, out var member))
                 member.Controllable = controllable;
         }
 
@@ -86,9 +106,9 @@ namespace Assets.Scripts.PlayerControl
             var memberId = info.PartyMemberId;
             var entityId = info.EntityId;
             PartyMembers[memberId] = info;
-            if(info.PlayerName == PlayerName || entityId == EntityId)
+            if (info.PlayerName == PlayerName || entityId == EntityId)
                 PartyMemberId = memberId;
-            
+
             if (entityId > 0)
             {
                 PartyMemberEntityLookup.TryAdd(memberId, entityId);
@@ -102,7 +122,7 @@ namespace Assets.Scripts.PlayerControl
 
             if (info.IsLeader)
                 PartyLeader = memberId;
-            
+
             MinimapController.Instance.RefreshPartyMembers();
         }
 
@@ -111,16 +131,91 @@ namespace Assets.Scripts.PlayerControl
             PartyMembers.Remove(memberId, out var info);
             if (PartyLeader == memberId)
                 PartyLeader = -1;
-            
+
             if (PartyMemberEntityLookup.TryGetValue(memberId, out var entityId))
             {
                 PartyMemberIdLookup.Remove(entityId);
                 PartyMemberEntityLookup.Remove(memberId);
             }
-            
+
             MinimapController.Instance.RefreshPartyMembers();
 
             return info;
         }
+
+        #region Setters
+        public void SetPlayerName(string value)
+        {
+            PlayerName = value;
+
+            OnTextChanged?.Invoke();
+        }
+
+        public void SetJobId(int value)
+        {
+            // TODO define max JobID?
+            JobId = Math.Clamp(value, 0, int.MaxValue);
+
+            OnTextChanged?.Invoke();
+        }
+
+        public void SetHp(int current, int max)
+        {
+            //TODO have a constant to avoid int.MaxValue?
+            Hp = Math.Clamp(current, 0, int.MaxValue);
+            MaxHp = Math.Clamp(max, 1, int.MaxValue);
+
+            OnHpSPChanged?.Invoke();
+        }
+
+        public void SetSp(int current, int max)
+        {
+            //TODO have a constant to avoid int.MaxValue?
+            Sp = Math.Clamp(current, 0, int.MaxValue);
+            MaxSp = Math.Clamp(max, 1, int.MaxValue);
+
+            OnHpSPChanged?.Invoke();
+        }
+
+        public void SetBaseLevel(int value)
+        {
+            BaseLevel = value;
+
+            OnProgressChanged?.Invoke();
+        }
+
+        public void SetJobLevel(int value)
+        {
+            JobLevel = value;
+
+            OnProgressChanged?.Invoke();
+        }
+
+        public void SetBaseExp(int current, int max)
+        {
+            BaseExp = Math.Clamp(current, 0, int.MaxValue);
+            BaseMaxExp = Math.Clamp(max, 0, int.MaxValue);
+
+            OnProgressChanged?.Invoke();
+        }
+
+        public void SetJobExp(int current, int max)
+        {
+            JobExp = Math.Clamp(current, 0, int.MaxValue);
+            JobMaxExp = Math.Clamp(max, 0, int.MaxValue);
+
+            OnProgressChanged?.Invoke();
+        }
+
+        public void SetWeight(int current, int max)
+        {
+            OnWeightOrCurrencyChanged?.Invoke();
+        }
+
+        public void SetZeny(int value)
+        {
+            OnWeightOrCurrencyChanged?.Invoke();
+        }
+        #endregion
     }
 }

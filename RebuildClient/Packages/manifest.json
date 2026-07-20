@@ -2,6 +2,7 @@
   "dependencies": {
     "com.codewriter.textmeshpro-spriteatlas-support": "https://github.com/codewriter-packages/textmeshpro-spriteatlas-support.git",
     "com.github-glitchenzo.nugetforunity": "https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity",
+    "com.ricric.roflexui": "https://github.com/rhrlima/ROFlexUI.git?path=RoFlexUi#v0.1.1-integration-tests",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.addressables": "2.9.1",
     "com.unity.ai.navigation": "2.0.13",

@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using Assets.Scripts.Network.HandlerBase;
 using Assets.Scripts.Sprites;
 using RebuildSharedData.Enum;
@@ -17,16 +17,17 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             foreach (var data in PlayerClientStatusDef.PlayerUpdateData)
             {
                 var newVal = msg.ReadInt32();
-                if(data >= PlayerStat.Str && data <= PlayerStat.Luk)
+                if (data >= PlayerStat.Str && data <= PlayerStat.Luk)
                     if (State.CharacterData[(int)data] != newVal)
                         hasStatChange = true;
                 State.CharacterData[(int)data] = newVal;
             }
-            
+
             foreach (var stats in PlayerClientStatusDef.PlayerUpdateStats)
                 State.CharacterStats[(int)stats] = msg.ReadInt32();
 
-            State.Level = State.GetData(PlayerStat.Level);
+            State.SetBaseLevel(State.GetData(PlayerStat.Level));
+            State.SetJobLevel(State.GetData(PlayerStat.JobLevel));
             State.AttackSpeed = msg.ReadFloat();
             State.CurrentWeight = msg.ReadInt32();
             State.CartWeight = msg.ReadInt32();
@@ -35,7 +36,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             var maxHp = State.GetStat(CharacterStat.MaxHp);
             var sp = State.GetStat(CharacterStat.Sp);
             var maxSp = State.GetStat(CharacterStat.MaxSp);
-            
+
             State.MaxWeight = State.GetStat(CharacterStat.WeightCapacity);
             State.SkillPoints = State.GetData(PlayerStat.SkillPoints);
             State.Zeny = State.GetData(PlayerStat.Zeny);
@@ -63,7 +64,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             if (hasInventory)
             {
                 State.Inventory.Deserialize(msg);
-                if(msg.ReadByte() == 1) //has cart
+                if (msg.ReadByte() == 1) //has cart
                     State.Cart.Deserialize(msg);
                 State.EquippedBagIdHashes.Clear();
                 for (var i = 0; i < 10; i++)
@@ -74,20 +75,19 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                 }
 
                 State.AmmoId = msg.ReadInt32();
-                
+
                 UiManager.EquipmentWindow.RefreshEquipmentWindow();
 
-                if(Application.isEditor)
+                if (Application.isEditor)
                     Debug.Log($"Equipped items: " + string.Join(", ", State.EquippedItems));
             }
 
             var jobMax = ClientDataLoader.Instance.GetJobExpRequired(State.JobId, State.GetData(PlayerStat.JobLevel));
-            
+
             CameraFollower.Instance.UpdatePlayerHP(hp, maxHp);
             CameraFollower.Instance.UpdatePlayerSP(sp, maxSp);
-            CameraFollower.Instance.CharacterDetailBox.JobLvlDisplay.text = $"Job Lv. {State.GetData(PlayerStat.JobLevel)}";
             CameraFollower.Instance.UpdatePlayerJobExp(State.GetData(PlayerStat.JobExp), jobMax);
-            CameraFollower.Instance.CharacterDetailBox.UpdateWeightAndZeny();
+            CameraFollower.Instance.UpdateWeightAndZeny();
 
             if (CameraFollower.Instance.TargetControllable != null)
             {
@@ -97,23 +97,23 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
 
             UiManager.Instance.SkillHotbar.UpdateItemCounts();
             UiManager.Instance.InventoryWindow.UpdateActiveVisibleBag();
-            if(hasStatChange)
+            if (hasStatChange)
                 UiManager.Instance.StatusWindow.ResetStatChanges();
             else
                 UiManager.Instance.StatusWindow.UpdateCharacterStats();
             UiManager.Instance.SkillManager.RefreshSkillAvailability();
-            
+
 #if UNITY_EDITOR
             if (!hasInventory)
                 return;
-            
-            var sb = new StringBuilder(); 
+
+            var sb = new StringBuilder();
             if (State.Inventory != null)
             {
                 foreach (var i in State.Inventory.GetInventoryData())
                 {
                     // var data = ClientDataLoader.Instance.GetItemById(i.Value.Id);
-                    if(i.Value.Type == ItemType.RegularItem)
+                    if (i.Value.Type == ItemType.RegularItem)
                         sb.AppendLine($"{i.Key} - {i.Value}");
                     else
                     {
@@ -130,7 +130,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                 }
             }
 
-            
+
             Debug.Log($"Loaded inventory with following data:\n{sb}");
 #endif
         }

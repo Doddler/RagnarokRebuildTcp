@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -500,13 +500,7 @@ namespace Assets.Scripts
             if (hp < 0)
                 hp = 0;
 
-            var percent = hp / (float)maxHp;
-            CharacterDetailBox.HpDisplay.gameObject.SetActive(true);
-            CharacterDetailBox.HpDisplay.text = $"HP: {hp} / {maxHp} ({percent * 100f:F1}%)";
-            CharacterDetailBox.HpSlider.value = (float)hp / (float)maxHp;
-
-            PlayerState.Hp = hp;
-            PlayerState.MaxHp = maxHp;
+            PlayerState.SetHp(hp, maxHp);
         }
 
         public void UpdatePlayerSP(int sp, int maxSp)
@@ -514,86 +508,23 @@ namespace Assets.Scripts
             if (sp < 0)
                 sp = 0;
 
-            var percent = sp / (float)maxSp;
-            CharacterDetailBox.SpDisplay.gameObject.SetActive(true);
-            CharacterDetailBox.SpDisplay.text = $"SP: {sp} / {maxSp} ({percent * 100f:F1}%)";
-            CharacterDetailBox.SpSlider.value = (float)sp / (float)maxSp;
-
-            PlayerState.Sp = sp;
-            PlayerState.MaxSp = maxSp;
+            PlayerState.SetSp(sp, maxSp);
         }
-
 
         public void UpdatePlayerExp(int exp, int maxExp)
         {
-            if (maxExp <= 0)
-            {
-                CharacterDetailBox.ExpDisplay.text = "";
-                CharacterDetailBox.ExpSlider.gameObject.SetActive(false);
-                return;
-            }
-
-            var percent = exp / (float)maxExp;
-
-            CharacterDetailBox.ExpSlider.gameObject.SetActive(true);
-
-            var showValue = GameConfig.Data.ShowBaseExpValue;
-            var showPercent = GameConfig.Data.ShowBaseExpPercent;
-
-            var percentVal = Mathf.Floor(percent * 1000f) / 10f;
-
-            if (showValue)
-            {
-                if (showPercent)
-                    CharacterDetailBox.ExpDisplay.text = $"XP: {exp} / {maxExp} ({percentVal:F1}%)";
-                else
-                    CharacterDetailBox.ExpDisplay.text = $"XP: {exp} / {maxExp}";
-            }
-            else if (showPercent)
-                CharacterDetailBox.ExpDisplay.text = $"{percentVal:F1}%";
-            else
-                CharacterDetailBox.ExpDisplay.text = $"";
-
-            CharacterDetailBox.ExpSlider.value = percent;
-            //
-            // CharacterDetailBox.ExpDisplay.text = $"XP: {exp} / {maxExp} ({percent * 100f:F1}%)";
-            // CharacterDetailBox.ExpSlider.value = percent;
+            PlayerState.Instance.SetBaseExp(exp, maxExp);
         }
 
         public void UpdatePlayerJobExp(int exp, int maxExp)
         {
-            if (maxExp <= 0)
-            {
-                CharacterDetailBox.JobExpDisplay.text = "";
-                CharacterDetailBox.JobExpSlider.gameObject.SetActive(false);
-                return;
-            }
-
-            var percent = exp / (float)maxExp;
-
-            CharacterDetailBox.JobExpSlider.gameObject.SetActive(true);
-
-            var showValue = GameConfig.Data.ShowJobExpValue;
-            var showPercent = GameConfig.Data.ShowJobExpPercent;
-
-
-            var percentVal = Mathf.Floor(percent * 1000f) / 10f;
-
-            if (showValue)
-            {
-                if (showPercent)
-                    CharacterDetailBox.JobExpDisplay.text = $"XP: {exp} / {maxExp} ({percentVal:F1}%)";
-                else
-                    CharacterDetailBox.JobExpDisplay.text = $"XP: {exp} / {maxExp}";
-            }
-            else if (showPercent)
-                CharacterDetailBox.JobExpDisplay.text = $"{percentVal:F1}%";
-            else
-                CharacterDetailBox.JobExpDisplay.text = $"";
-
-            CharacterDetailBox.JobExpSlider.value = percent;
+            PlayerState.Instance.SetJobExp(exp, maxExp);
         }
 
+        public void UpdateWeightAndZeny()
+        {
+            PlayerState.Instance.OnWeightOrCurrencyChanged();
+        }
 
         private GameObject CreateSelectedCursorObject()
         {
@@ -924,7 +855,7 @@ namespace Assets.Scripts
 
             if (hitLastTarget && LastTargetedEnemy.SpriteAnimator != null)
                 return LastTargetedEnemy.SpriteAnimator;
-            
+
             return closestAnim;
         }
 
@@ -1152,7 +1083,7 @@ namespace Assets.Scripts
                     case PromptType.RightClickMenu:
                         UiManager.Instance.RightClickMenuWindow.HideWindow();
                         break;
-                    //should probably add other prompts here
+                        //should probably add other prompts here
                 }
 
                 ActivePromptType = PromptType.None;
@@ -1276,7 +1207,7 @@ namespace Assets.Scripts
             {
 #if DEBUG
                 if (lastTile != groundPosition)
-                    CharacterDetailBox.DebugInfo.text = $"({groundPosition.x}, {groundPosition.y})";
+                    CharacterDetailBox.DebugInfo.SetText($"({groundPosition.x}, {groundPosition.y})");
 #endif
                 WalkProvider.UpdateCursorPosition(Target.transform.position, intersectLocation, hasValidPath);
             }
@@ -1867,9 +1798,13 @@ namespace Assets.Scripts
                     InTextBox = false;
                     TextBoxInputField.text = "";
                 }
-                else
+                else if (UiManager.Instance.WindowStack.Count > 0)
                 {
                     UiManager.Instance.CloseLastWindow();
+                }
+                else
+                {
+                    UiManager.Instance.MainMenu.ShowWindow();
                 }
 
                 EventSystem.current.SetSelectedGameObject(null);
@@ -1974,17 +1909,17 @@ namespace Assets.Scripts
                 if (!inInputUI && Input.GetKeyDown(KeyCode.W))
                 {
 #if UNITY_EDITOR
-                if (Input.GetKey(KeyCode.LeftShift))
-                {
-                    if (!WarpPanel.activeInHierarchy)
-                        WarpPanel.GetComponent<WarpWindow>().ShowWindow();
+                    if (Input.GetKey(KeyCode.LeftShift))
+                    {
+                        if (!WarpPanel.activeInHierarchy)
+                            WarpPanel.GetComponent<WarpWindow>().ShowWindow();
+                        else
+                            WarpPanel.GetComponent<WarpWindow>().HideWindow();
+                    }
                     else
-                        WarpPanel.GetComponent<WarpWindow>().HideWindow();
-                }
-                else
 #endif
-                    if (PlayerState.Instance.HasCart)
-                        UiManager.Instance.CartWindow.ToggleVisibility();
+                        if (PlayerState.Instance.HasCart)
+                            UiManager.Instance.CartWindow.ToggleVisibility();
                 }
 
                 //if (Input.GetKeyDown(KeyCode.S))
@@ -2074,7 +2009,7 @@ namespace Assets.Scripts
             }
 
 
-//#if !DEBUG
+            //#if !DEBUG
             if (Height > 75)
                 Height = 75;
             if (Height < 30)

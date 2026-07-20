@@ -1,5 +1,6 @@
 Thumbs.db
 .vs
+.vscode
 RoRebuildOld/
 RoRebuild/RebuildZoneServer/log/profiler.csv
 RoRebuildServer/RoRebuildServer/.config/
@@ -75,7 +76,6 @@ Other/RoWikiGenerator/wwwroot/images/rebuilditems/
 Other/RoWikiGenerator/wwwroot/images/monsters/
 Other/RoWikiGenerator/wwwroot/images/maps/
 Other/RoDatabasePokingTool/
-RebuildClient/Packages/
 *.db
 deploycommands.txt
 Monsters.csv
@@ -124,3 +124,4 @@ Other/RebuildTests/
 Other/RoWikiGenerator/Microsoft.CodeAnalysis.Razor.Compiler/
 RebuildClient/Assets/StreamingAssets/ClientConfigGenerated/
 RebuildClient/Assets/Textures/Import/
+Recordings/

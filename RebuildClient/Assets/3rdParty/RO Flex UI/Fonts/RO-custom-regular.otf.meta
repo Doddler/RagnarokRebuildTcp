@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 3ecbc352c7bb0b0439f6d5ceaddd32d5
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - RO-custom-regular
+  fallbackFontReferences: []
+  customCharacters: "abcdefghijklmnopqrstuvwxyz\xE7ABCDEFGHIJKLMNOPQRSTUVWXYZ\xC7
+    0123456789<>[]{}()\\/.,:;~`'\"!?@#$%^&*-_=+|\xE1\xE9\xED\xF3\xFA\xE0\xE8\xEC\xF2\xF9\xE2\xEA\xEE\xF4\xFB\xE4\xEB\xEF\xF6\xFC\xFF\xE3\xF5\xF1\xC1\xC9\xCD\xD3\xDA\xC0\xC8\xCC\xD2\xD9\xC2\xCA\xCE\xD4\xDB\xC4\xCB\xCF\xD6\xDC\u0178\xC3\xD5\xD1\xBF\xA1\u2026\u25A1\u220E"
+  fontRenderingMode: 2
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -31,7 +31,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 var arc = control.SpriteAnimator.gameObject.AddComponent<ArcPathObject>();
                 var startPos = (startCell.ToWorldPosition() - control.transform.position);
                 var dist = Vector3.Distance(startPos, Vector3.zero);
-                arc.Init(control.transform, startPos, Vector3.zero, dist/2f, dist/10f);
+                arc.Init(control.transform, startPos, Vector3.zero, dist / 2f, dist / 10f);
             }
 
             if (eventType == CreateEntityEventType.Descend)
@@ -46,11 +46,11 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
             {
                 if (control.IsMainCharacter || control.IsHidden)
                     return;
-                
+
                 EntryEffect.LaunchEntryAtLocation(control.transform.position, control.CharacterType == CharacterType.Monster ? 0.3f : 0.7f);
             }
         }
-        
+
         private ServerControllable SpawnEntity(ClientInboundMessage msg)
         {
             var id = msg.ReadInt32();
@@ -68,7 +68,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
             var hp = 0;
             var sp = 0;
             var maxSp = 0;
-            Dictionary<CharacterStatusEffect, float> statuses = null; 
+            Dictionary<CharacterStatusEffect, float> statuses = null;
 
             if (type == CharacterType.Player || type == CharacterType.Monster || type == CharacterType.PlayerLikeNpc || type == CharacterType.BattleNpc)
             {
@@ -76,13 +76,13 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 maxHp = (int)msg.ReadInt32();
                 hp = (int)msg.ReadInt32();
 
-                while(msg.ReadBoolean()) //has status effects
+                while (msg.ReadBoolean()) //has status effects
                 {
                     statuses ??= new();
                     var status = (CharacterStatusEffect)msg.ReadByte();
                     var duration = msg.ReadFloat();
                     statuses.Add(status, duration);
-                    
+
                     //Debug.Log($"{classId} has a status effect! {status}");
 
                     if (id == Network.PlayerId)
@@ -115,8 +115,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 maxSp = msg.ReadInt32();
                 var partyId = 0;
                 var partyName = "";
-                
-                if(type == CharacterType.Player && msg.ReadByte() == 1)
+
+                if (type == CharacterType.Player && msg.ReadByte() == 1)
                 {
                     partyId = msg.ReadInt32();
                     partyName = msg.ReadString();
@@ -128,7 +128,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 if (isMain)
                 {
                     State.EntityId = id;
-                    State.PlayerName = name;
+                    // State.PlayerName = name;
+                    State.SetPlayerName(name);
                     State.IsValid = true;
                     UiManager.Instance.SkillHotbar.LoadHotBarData(name);
 
@@ -138,8 +139,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     //PacketAcceptPartyInvite.LoadPartyMemberDetails(msg);
                     // Debug.Log($"You are in party: {partyName}");
                 }
-                
-                Debug.Log("Name: " + name );
+
+                Debug.Log("Name: " + name);
                 Debug.Log($"New player entity: {name} Headgear: {head1} {head2} {head3} WeaponClass:{weapon} WeaponId: {weaponId} Shield:{shieldId}");
 
                 var playerData = new PlayerSpawnParameters()
@@ -176,19 +177,19 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
 
                 if (id == Network.PlayerId)
                 {
-                    State.Level = lvl;
+                    State.SetBaseLevel(lvl);
 
                     var max = CameraFollower.Instance.ExpForLevel(controllable.Level);
-                    Camera.UpdatePlayerExp(State.Exp, max);
+                    Camera.UpdatePlayerExp(State.BaseExp, max);
                     controllable.IsHidden = State.IsAdminHidden;
-                    State.JobId = classId;
+                    State.SetJobId(classId);
                     State.IsMale = isMale;
                     State.HairStyleId = headId;
                     State.HairColorId = hairDyeId;
                     State.HasCart = (follower & CharacterFollowerState.AnyCart) > 0;
                     State.HasBird = (follower & CharacterFollowerState.Falcon) > 0;
                     State.WeaponClass = weapon;
-                    
+
                     UiManager.Instance.SkillManager.UpdateAvailableSkills();
                     UiManager.Instance.EquipmentWindow.UpdateCharacterDisplay(head1, head2, head3);
                     UiManager.Instance.EquipmentWindow.RefreshEquipmentWindow(); //follower state might have changed
@@ -202,7 +203,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 var displayType = NpcDisplayType.Sprite;
                 var effectType = NpcEffectType.None;
                 var owner = -1;
-                
+
                 if (type == CharacterType.NPC || type == CharacterType.BattleNpc)
                 {
                     name = msg.ReadString();
@@ -238,16 +239,16 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     UiManager.VendAndChatManager.CreateVendDialog(id, owner, controllable.gameObject, name);
                     return controllable;
                 }
-                
+
                 if (displayType == NpcDisplayType.Effect)
                 {
-                    
+
                     controllable = ClientDataLoader.Instance.InstantiateEffect(ref monData, effectType);
                     Network.EntityList.Add(id, controllable);
                     return controllable;
                 }
 
-                controllable = ClientDataLoader.Instance.InstantiateMonster(ref monData, type);    
+                controllable = ClientDataLoader.Instance.InstantiateMonster(ref monData, type);
             }
 
             controllable.EnsureFloatingDisplayCreated().SetUp(controllable, controllable.Name, maxHp, hp, type == CharacterType.Player, controllable.IsMainCharacter);
@@ -256,14 +257,14 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 Camera.UpdatePlayerHP(hp, maxHp);
                 controllable.SetHp(hp, maxHp);
                 //CameraFollower.UpdatePlayerSP(100, 100);
-                
-                if(State.Sp > 0 && State.MaxSp > 0)
+
+                if (State.Sp > 0 && State.MaxSp > 0)
                     controllable.SetSp(State.Sp, State.MaxSp);
             }
 
             if (maxSp > 0)
             {
-                if(controllable.IsMainCharacter)
+                if (controllable.IsMainCharacter)
                     Camera.UpdatePlayerSP(sp, maxSp);
                 controllable.SetSp(sp, maxSp);
             }
@@ -277,7 +278,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
 
             if (controllable.SpriteMode == ClientSpriteType.Prefab)
                 return controllable;
-            
+
             // if(statuses != null && statuses.Contains(CharacterStatusEffect.PushCart))
             //     StatusEffectState.AddStatusToTarget(controllable, CharacterStatusEffect.PushCart);
 
