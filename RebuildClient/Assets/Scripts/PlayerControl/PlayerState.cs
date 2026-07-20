@@ -25,7 +25,7 @@ namespace Assets.Scripts.PlayerControl
 
         public bool IsValid { get; set; } = false;
         public int EntityId { get; set; }
-        public string PlayerName;
+        public string PlayerName = "Player Name";
         public int BaseLevel;
         public int JobLevel;
         public int BaseExp;
@@ -49,7 +49,7 @@ namespace Assets.Scripts.PlayerControl
             {
                 if (ClientDataLoader.Instance != null && ClientDataLoader.Instance.PlayerClassLookup.Count != 0)
                     return ClientDataLoader.Instance.PlayerClassLookup[JobId].Name;
-                return "UNDEFINED";
+                return "Job Name";
             }
         }
         public bool IsMale;
