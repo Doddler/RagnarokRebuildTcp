@@ -28,7 +28,6 @@ namespace Assets.Scripts.UI.Classic
 
         private void Start()
         {
-            Debug.Log("[UI MANAGER] Initialize.");
             GameConfig.OnGameConfigChanged += RefreshWindows;
             RefreshWindows();
         }

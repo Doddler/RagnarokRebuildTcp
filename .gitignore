@@ -124,12 +124,4 @@ Other/RebuildTests/
 Other/RoWikiGenerator/Microsoft.CodeAnalysis.Razor.Compiler/
 RebuildClient/Assets/StreamingAssets/ClientConfigGenerated/
 RebuildClient/Assets/Textures/Import/
-
-# temp
-AssetGroups/Default Local Group.asset
-Models.asset
-RebuildClient/Assets/AddressableAssetsData/AssetGroups/Music.asset
-RebuildClient/Assets/Data/GameConfig.dll
-RebuildClient/Assets/Data/RebuildSharedData.dll
-RebuildClient/Assets/Test/TestMaterial.mat.meta
-RebuildClient/Assets/Textures/ItemAtlas.spriteatlasv2
+Recordings/

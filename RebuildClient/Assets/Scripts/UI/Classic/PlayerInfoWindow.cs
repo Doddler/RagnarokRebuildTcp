@@ -3,9 +3,10 @@ using RO_Flex_UI.Components;
 using RO_Flex_UI.Panels;
 using System;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 
-//FIXME GameConfig does not track this window position
+//FIXME GameConfig does not track this window's position
 
 namespace Assets.Scripts.UI.Classic
 {
@@ -41,7 +42,7 @@ namespace Assets.Scripts.UI.Classic
         [SerializeField] private TMP_Text spValueMin;
 
         [Header("Other references")]
-        [SerializeField] private SwapPanel header;
+        [SerializeField] private Header header;
         [SerializeField] private SwapPanel swapPanel;
         #endregion
 
@@ -52,6 +53,12 @@ namespace Assets.Scripts.UI.Classic
         protected override void Awake()
         {
             base.Awake();
+            if (header == null)
+                Debug.LogWarning($"[{name}] Missing reference for Header.");
+
+            if (swapPanel == null)
+                Debug.LogWarning($"[{name}] Missing reference for Swap Panel.");
+
             playerState = PlayerState.Instance;
             UiManagerV2.Instance.RegisterWindow(WindowID.PLAYER_INFO, this);
         }
@@ -64,6 +71,9 @@ namespace Assets.Scripts.UI.Classic
 
         private void OnDestroy()
         {
+            if (header != null)
+                header.OnMinButtonClick.RemoveListener(ToggleMinimize);
+
             var state = PlayerState.Instance;
             if (state == null || !subscribed)
                 return;
@@ -75,26 +85,13 @@ namespace Assets.Scripts.UI.Classic
             subscribed = false;
         }
 
-        public void RefreshFromState()
-        {
-            //FIXME figure out cleaner way to get initial state and swap correctly
-            if (minimized) swapPanel.GetNextGroup();
-
-            OnTextChanged();
-            OnHpSpChanged();
-            OnProgressChanged();
-            OnWeightAndZenyChanged();
-        }
-
-        public void ToggleWindowSize()
+        public void ToggleMinimize()
         {
 
             minimized = !minimized;
             swapPanel.GetNextGroup();
 
             OnTextChanged(); // update player name in header
-
-            Debug.Log($"TOGGLE WIN SIZE {minimized}");
         }
 
         #region Getter & Setter
@@ -226,6 +223,9 @@ namespace Assets.Scripts.UI.Classic
 
         private void Subscribe()
         {
+            if (header != null)
+                header.OnMinButtonClick.AddListener(ToggleMinimize);
+
             var state = PlayerState.Instance;
             if (state == null || subscribed)
                 return;
@@ -235,6 +235,17 @@ namespace Assets.Scripts.UI.Classic
             state.OnProgressChanged += OnProgressChanged;
             state.OnWeightOrCurrencyChanged += OnWeightAndZenyChanged;
             subscribed = true;
+        }
+
+        public void RefreshFromState()
+        {
+            //FIXME figure out cleaner way to get initial state and swap correctly
+            if (minimized) swapPanel.GetNextGroup();
+
+            OnTextChanged();
+            OnHpSpChanged();
+            OnProgressChanged();
+            OnWeightAndZenyChanged();
         }
         #endregion
     }

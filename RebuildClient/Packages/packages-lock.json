@@ -32,14 +32,15 @@
       "hash": "c2af83c9d4f8cdaada9d4a0e94de2f195d8e1d01"
     },
     "com.ricric.roflexui": {
-      "version": "file:D:/workspace/ROFlexUI/RO Flex UI",
+      "version": "https://github.com/rhrlima/ROFlexUI.git?path=RoFlexUi#v0.1.1-integration-tests",
       "depth": 0,
-      "source": "local",
+      "source": "git",
       "dependencies": {
         "com.unity.ugui": "1.0.0",
         "com.unity.textmeshpro": "3.0.9",
         "com.unity.2d.pixel-perfect": "5.1.1"
-      }
+      },
+      "hash": "c2a104032824a3a3aa840a7fa160c424e194dfba"
     },
     "com.unity.2d.pixel-perfect": {
       "version": "5.1.1",
@@ -318,6 +319,14 @@
         "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "com.unity.textmeshpro": {
+      "version": "5.0.0",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.ugui": "2.0.0"
+      }
     },
     "com.unity.timeline": {
       "version": "1.8.12",
