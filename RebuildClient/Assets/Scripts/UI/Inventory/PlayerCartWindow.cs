@@ -20,6 +20,7 @@ namespace Assets.Scripts.UI.Inventory
         public CartDropZone DropZone;
         private List<InventoryEntry> entryList = new();
         public TextMeshProUGUI WeightText;
+        public TextMeshProUGUI ItemCountText;
         private int activeEntryCount;
         private bool isInit;
         
@@ -67,7 +68,7 @@ namespace Assets.Scripts.UI.Inventory
                 CameraFollower.Instance.AppendNotice("You can't transfer items with your cart while setting up a vend.");
                 return;
             }
-            
+
             Debug.Log($"Moving item to storage: {bagSlotId}");
 
             if (PlayerState.Instance.Cart.GetInventoryData().TryGetValue(bagSlotId, out var item))
@@ -116,9 +117,11 @@ namespace Assets.Scripts.UI.Inventory
             var weightPercent = curWeight * 100 / totalWeight;
             var countText = $"{bagItems.Count}/100";
             var percentText = $"{weightPercent}%";
-            
-            WeightText.text = $"Items: {countText}  Weight: {curWeight}/{totalWeight} ({percentText})";
-            
+
+            ItemCountText.text = countText;
+            WeightText.text = $"{curWeight}/{totalWeight}";
+            LayoutRebuilder.ForceRebuildLayoutImmediate(WeightText.rectTransform.parent as RectTransform);
+
             foreach (var bagEntry in bagItems)
             {
                 var item = bagEntry.Value;

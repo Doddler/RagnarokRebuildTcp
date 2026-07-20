@@ -25,8 +25,8 @@ namespace Assets.Scripts.UI
         [NonSerialized] public bool IsActive = true;
         
         //#D5E8FF00
-        public Color HoverColor = new Color(0.83f, 0.91f, 1f, 1f); 
-        public Color SelectedColor = new Color(0.72f, 0.856f, 1f, 1f); 
+        public Color HoverColor = new Color(0.83f, 0.91f, 1f, 1f);
+        public Color SelectedColor = new Color(0.72f, 0.856f, 1f, 1f);
         public Color NormalColor = new Color(0.83f, 0.91f, 1f, 0f);
 
         public Action<int> EventOnClick;

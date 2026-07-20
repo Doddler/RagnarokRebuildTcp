@@ -94,16 +94,14 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                     Camera.UpdatePlayerExp(State.Exp, max);
                     controllable.IsHidden = State.IsAdminHidden;
                     controllable.IsMainCharacter = true;
-                    State.JobId = entity.ClassId;
-                    State.IsMale = player.IsMale;
-                    State.HairStyleId = player.HeadType;
-                    State.HairColorId = player.HairColor;
+                    State.SetAppearance(entity.ClassId, player.HeadType, player.HairColor, player.IsMale,
+                        player.Headgear1, player.Headgear2, player.Headgear3);
                     State.HasCart = (player.Follower & CharacterFollowerState.AnyCart) > 0;
+                    UiManager.Instance.RefreshCartVisibility();
                     State.HasBird = (player.Follower & CharacterFollowerState.Falcon) > 0;
                     State.WeaponClass = player.WeaponClass;
                     
                     UiManager.Instance.SkillManager.UpdateAvailableSkills();
-                    UiManager.Instance.EquipmentWindow.UpdateCharacterDisplay(player.Headgear1, player.Headgear2, player.Headgear3);
                     UiManager.Instance.EquipmentWindow.RefreshEquipmentWindow(); //follower state might have changed
                     UiManager.Instance.StatusWindow.UpdateCharacterStats();
 
@@ -143,8 +141,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 Debug.LogError($"SpawnEntity failed to create a valid server controllable (Type:{entity.Type} ClassId:{entity.ClassId} Name:{entity.Name})");
                 return null;
             }
-            
-            controllable.EnsureFloatingDisplayCreated().SetUp(controllable, controllable.Name, entity.MaxHp, entity.MaxSp, entity.Type == CharacterType.Player, controllable.IsMainCharacter);
+
             if (controllable.IsMainCharacter)
             {
                 Camera.UpdatePlayerHP(entity.Hp, entity.MaxHp);

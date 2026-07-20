@@ -16,54 +16,86 @@ namespace Assets.Scripts.UI.Hud
         
         public Transform PoolRoot;
 
-        private Stack<GameObject> namePlatePool = new();
-        private Stack<GameObject> castBarPool = new();
-        private Stack<GameObject> hpBarPool = new();
-        private Stack<GameObject> mpBarPool = new();
-        private Stack<GameObject> textBubblePool = new();
+        //one pool per template
+        private readonly Dictionary<GameObject, Stack<GameObject>> pools = new();
+        private readonly List<CharacterFloatingDisplay> activeDisplays = new();
+        private CharacterFloatingDisplay mainCharacterDisplay;
 
-        private Stack<GameObject> characterPanelPool = new();
+        //kept on top of all other displays; only a newly created display can end up above it
+        public void RegisterMainCharacterDisplay(CharacterFloatingDisplay display) => mainCharacterDisplay = display;
 
-        public TextMeshProUGUI AttachNamePlate(GameObject parent) => AttachObjectFromQueue<TextMeshProUGUI>(namePlatePool, NamePlateTemplate, parent);
-        public SliderBar AttachCastBar(GameObject parent) => AttachObjectFromQueue<SliderBar>(castBarPool, CastBarTemplate, parent);
-        public SliderBar AttachHpBar(GameObject parent) => AttachObjectFromQueue<SliderBar>(hpBarPool, HpBarTemplate, parent);
-        public SliderBar AttachMpBar(GameObject parent) => AttachObjectFromQueue<SliderBar>(mpBarPool, MpBarTemplate, parent);
-        public CharacterChat AttachChatBubble(GameObject parent) => AttachObjectFromQueue<CharacterChat>(textBubblePool, TextBubbleTemplate, parent);
+        public TextMeshProUGUI AttachNamePlate(GameObject parent) => Attach<TextMeshProUGUI>(NamePlateTemplate, parent);
+        public SliderBar AttachCastBar(GameObject parent) => Attach<SliderBar>(CastBarTemplate, parent);
+        public SliderBar AttachHpBar(GameObject parent) => Attach<SliderBar>(HpBarTemplate, parent);
+        public SliderBar AttachMpBar(GameObject parent) => Attach<SliderBar>(MpBarTemplate, parent);
+        public CharacterChat AttachChatBubble(GameObject parent) => Attach<CharacterChat>(TextBubbleTemplate, parent);
 
-        public void ReturnNamePlate(GameObject obj) => ReturnObjectToQueue(namePlatePool, obj);
-        public void ReturnCastBar(GameObject obj) => ReturnObjectToQueue(castBarPool, obj);
-        public void ReturnHpBar(GameObject obj) => ReturnObjectToQueue(hpBarPool, obj);
-        public void ReturnMpBar(GameObject obj) => ReturnObjectToQueue(mpBarPool, obj);
-        public void ReturnChatBubble(GameObject obj) => ReturnObjectToQueue(textBubblePool, obj);
-        
-        private void ReturnObjectToQueue(Stack<GameObject> stack, GameObject obj)
+        public void ReturnNamePlate(GameObject obj) => Return(NamePlateTemplate, obj);
+        public void ReturnCastBar(GameObject obj) => Return(CastBarTemplate, obj);
+        public void ReturnHpBar(GameObject obj) => Return(HpBarTemplate, obj);
+        public void ReturnMpBar(GameObject obj) => Return(MpBarTemplate, obj);
+        public void ReturnChatBubble(GameObject obj) => Return(TextBubbleTemplate, obj);
+
+        private Stack<GameObject> PoolFor(GameObject template)
+        {
+            if (!pools.TryGetValue(template, out var pool))
+                pools[template] = pool = new Stack<GameObject>();
+            return pool;
+        }
+
+        private void Return(GameObject template, GameObject obj)
         {
             obj.transform.SetParent(PoolRoot);
             obj.SetActive(false);
-            stack.Push(obj);
+            PoolFor(template).Push(obj);
         }
 
-        private T AttachObjectFromQueue<T>(Stack<GameObject> np, GameObject template, GameObject parent, bool enable = true)
+        private T Attach<T>(GameObject template, GameObject parent, bool enable = true)
         {
-            var lp = template.transform.localPosition;
-            if (!np.TryPop(out var obj))
+            if (!PoolFor(template).TryPop(out var obj))
                 obj = Instantiate(template);
-            obj.transform.SetParent(parent.transform);
-            //obj.transform.GetComponent<RectTransform>().anchoredPosition = lp;
-            obj.transform.localPosition = lp;
-            obj.transform.localScale = Vector3.one;
-            if(enable)
+
+            var t = obj.transform;
+            t.SetParent(parent.transform);
+            t.localPosition = template.transform.localPosition;
+            t.localScale = Vector3.one; //the layout pass applies the zoom scale
+            if (enable)
                 obj.SetActive(true);
             return obj.GetComponent<T>();
         }
 
-        public CharacterFloatingDisplay GetNewFloatingDisplay() =>
-            AttachObjectFromQueue<CharacterFloatingDisplay>(characterPanelPool, DisplayRootTemplate, gameObject, false);
+        public CharacterFloatingDisplay GetNewFloatingDisplay()
+        {
+            var display = Attach<CharacterFloatingDisplay>(DisplayRootTemplate, gameObject, false);
+            activeDisplays.Add(display);
+            if (mainCharacterDisplay != null)
+                mainCharacterDisplay.Rect.SetAsLastSibling();
+            return display;
+        }
+
+        //ticks every display with the camera, canvas and scales resolved once per frame
+        private void LateUpdate()
+        {
+            if (activeDisplays.Count == 0)
+                return;
+
+            var cf = CameraFollower.Instance;
+            var canvasRect = (RectTransform)cf.UiCanvas.transform;
+            var glueScale = cf.OverlayGlueScale;
+            var zoomScale = cf.OverlayRootScale;
+
+            //backwards, since a display can return itself to the pool while being updated
+            for (var i = activeDisplays.Count - 1; i >= 0; i--)
+                activeDisplays[i].Tick(cf.Camera, canvasRect, glueScale, zoomScale);
+        }
 
         public void ReturnFloatingDisplay(CharacterFloatingDisplay display)
         {
+            if (mainCharacterDisplay == display)
+                mainCharacterDisplay = null;
+            activeDisplays.Remove(display);
             display.ReturnToPool();
-            ReturnObjectToQueue(characterPanelPool, display.gameObject);
+            Return(DisplayRootTemplate, display.gameObject);
         }
 
         public void Awake()

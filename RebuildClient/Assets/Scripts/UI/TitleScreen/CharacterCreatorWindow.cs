@@ -18,7 +18,8 @@ namespace Assets.Scripts.UI.TitleScreen
         public Button[] StatDownButtons;
         public Button[] GenderButtons;
         public TextMeshProUGUI[] StatTexts;
-        public Button SaveButton;
+        public Button OkButton;
+        public Button CancelButton;
         
         public int hairColor;
         public int hairStyle;
@@ -91,12 +92,16 @@ namespace Assets.Scripts.UI.TitleScreen
         
         public void Open()
         {
+            OkButton.gameObject.SetActive(true);
+            CancelButton.gameObject.SetActive(true);
             Pane.SetActive(true);
             Parent.TitleState = TitleScreen.TitleScreenState.CharacterCreation;
         }
         
         public void HidePane()
         {
+            OkButton.gameObject.SetActive(false);
+            CancelButton.gameObject.SetActive(false);
             Pane.SetActive(false);
         }
 
@@ -164,7 +169,7 @@ namespace Assets.Scripts.UI.TitleScreen
 
         public void Update()
         {
-            SaveButton.interactable = PlayerNameText.text.Length > 0 && statsRemaining <= 0;
+            OkButton.interactable = PlayerNameText.text.Length > 0 && statsRemaining <= 0;
         }
     }
 }

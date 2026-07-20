@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Assets.Scripts.Data;
 using Assets.Scripts.Network;
 using Assets.Scripts.UI.Hud;
@@ -12,7 +13,9 @@ namespace Assets.Scripts.PlayerControl
     public class PlayerState
     {
         public static PlayerState Instance = new();
-        
+
+        public event Action AppearanceChanged;
+
         public bool IsValid { get; set; } = false;
         public int EntityId { get; set; }
         public string PlayerName;
@@ -33,6 +36,28 @@ namespace Assets.Scripts.PlayerControl
         public int WeaponClass;
         public int HairStyleId;
         public int HairColorId;
+        public int Headgear1;
+        public int Headgear2;
+        public int Headgear3;
+
+        //Only fires when something actually changed - avoids redundant async sprite reloads.
+        public void SetAppearance(int jobId, int hairStyleId, int hairColorId, bool isMale,
+            int headgear1, int headgear2, int headgear3)
+        {
+            if (jobId == JobId && hairStyleId == HairStyleId && hairColorId == HairColorId && isMale == IsMale
+                && headgear1 == Headgear1 && headgear2 == Headgear2 && headgear3 == Headgear3)
+                return;
+
+            JobId = jobId;
+            HairStyleId = hairStyleId;
+            HairColorId = hairColorId;
+            IsMale = isMale;
+            Headgear1 = headgear1;
+            Headgear2 = headgear2;
+            Headgear3 = headgear3;
+
+            AppearanceChanged?.Invoke();
+        }
         public int CartWeight = 0;
         public int CurrentWeight = 0;
         public int MaxWeight = 3000;

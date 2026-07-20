@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Assets.Scripts.Network;
 using Assets.Scripts.Sprites;

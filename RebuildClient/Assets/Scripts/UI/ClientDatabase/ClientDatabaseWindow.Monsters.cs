@@ -1,11 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Assets.Scripts.Network;
 using Assets.Scripts.Sprites;
-using Assets.Scripts.Utility;
-using RebuildSharedData.Enum;
+using Assets.Scripts.UI.Utility;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,15 +14,13 @@ namespace Assets.Scripts.UI.ClientDatabase
     public partial class ClientDatabaseWindow
     {
         private float frameTimer;
-        private int idleFrameCount;
+        private int monsterFrame;
         private int currentMonsterDetailId = -1;
 
-        private readonly List<(GameObject go, MonsterEntry entry, string searchText)> monsterRowEntries = new();
+        private IReadOnlyList<MonsterEntry> monsterEntries = Array.Empty<MonsterEntry>();
+        private readonly List<MonsterEntry> filteredMonsters = new();
 
         private const string MonsterSpriteBasePath = "Assets/Sprites/Monsters/";
-
-        private const float MonsterSpriteFitSize = 160f;
-        private const float MonsterSpriteNaturalScale = 100f;
 
         [Serializable]
         internal class DropEntry
@@ -82,59 +79,30 @@ namespace Assets.Scripts.UI.ClientDatabase
             public int Chance;
         }
 
-        [SerializeField, HideInInspector] internal GameObject monstersContainer;
-        [SerializeField, HideInInspector] internal Image monstersTabImage;
-        [SerializeField, HideInInspector] internal Button monsterBackButton;
-        [SerializeField, HideInInspector] internal TMP_InputField monsterSearchField;
         [SerializeField, HideInInspector] internal TextMeshProUGUI monsterSearchGhost;
-        [SerializeField, HideInInspector] internal GameObject monsterListView;
-        [SerializeField, HideInInspector] internal GameObject monsterDetailView;
-        [SerializeField, HideInInspector] internal TextMeshProUGUI monsterListTitleText;
-        [SerializeField, HideInInspector] internal GameObject monsterListContent;
-        [SerializeField, HideInInspector] internal TextMeshProUGUI monsterDetailNameText;
         [SerializeField, HideInInspector] internal TextMeshProUGUI monsterDetailStatsText;
-        [SerializeField, HideInInspector] internal GameObject dropsContent;
-        [SerializeField, HideInInspector] internal GameObject spawnsContent;
-        [SerializeField, HideInInspector] internal GameObject monsterSpriteHost;
-        [SerializeField, HideInInspector] internal RoSpriteRendererUI monsterSpriteRenderer;
+        [SerializeField, HideInInspector] internal UiPlayerSprite monsterSprite;
 
         private void PopulateMonsterList(MonsterDbFile data)
         {
-            if (monsterListContent == null) return;
-            ClearChildren(monsterListContent.transform);
-            monsterRowEntries.Clear();
-
-            if (data?.Items == null)
-            {
-                if (monsterListTitleText != null) monsterListTitleText.text = "Monsters";
-                return;
-            }
-
-            if (monsterListTitleText != null)
-                monsterListTitleText.text = $"Monsters ({data.Items.Count})";
-
-            foreach (var m in data.Items)
-            {
-                AddMonsterListRow(m);
-            }
+            monsterEntries = data?.Items ?? (IReadOnlyList<MonsterEntry>)Array.Empty<MonsterEntry>();
+            monsterPage.Refresh();
         }
 
-        internal void AddMonsterListRow(MonsterEntry m)
+        private void BindMonsterListRow(DatabaseListRow row, MonsterEntry m, int index)
         {
-            var row = CloneRow(rowTemplate, monsterListContent.transform, 24);
-            row.GetComponentInChildren<TextMeshProUGUI>(true).text = $"{m.Name}  (Lv {m.Level})";
-            var captured = m;
-            row.GetComponent<Button>().onClick.AddListener(() => ShowMonsterDetail(captured));
-            AttachRightClick(row, () => NetworkManager.Instance.SendAdminSummonMonster(captured.Code, 1));
-            monsterRowEntries.Add((row, m, $"{m.Id} {m.Name} {m.Code}"));
+            row.SetLabel($"{m.Name}  (Lv {m.Level})");
+            row.SetIcon(null);
+            row.SetActions(
+                () => ShowMonsterDetail(m),
+                () => NetworkManager.Instance.SendAdminSummonMonster(m.Code, 1));
         }
 
         private void ShowMonsterDetail(MonsterEntry m)
         {
-            monsterListView.SetActive(false);
-            monsterDetailView.SetActive(true);
+            monsterPage.ShowDetail();
             currentMonsterDetailId = m.Id;
-            monsterDetailNameText.text = FormatNameWithBracket(m.Name, m.Id.ToString());
+            monsterPage.DetailTitleText.text = FormatNameWithBracket(m.Name, m.Id.ToString());
             
             var sb = new StringBuilder();
             sb.AppendLine($"<b>Level:</b> {m.Level}<pos=30%><b>Exp:</b> {m.Exp}<pos=80%><b>STR:</b> {m.Str}");
@@ -157,10 +125,10 @@ namespace Assets.Scripts.UI.ClientDatabase
             }
             monsterDetailStatsText.text = sb.ToString();
 
-            ClearChildren(dropsContent.transform);
+            ReleaseDetailRows(monsterPage.SecondaryContent);
             if (m.Drops == null || m.Drops.Count == 0)
             {
-                CreateInfoRow(dropsContent.transform, "(no drops)");
+                CreateInfoRow(monsterPage.SecondaryContent, "(no drops)");
             }
             else
             {
@@ -168,10 +136,10 @@ namespace Assets.Scripts.UI.ClientDatabase
                     CreateDropRow(d);
             }
 
-            ClearChildren(spawnsContent.transform);
+            ReleaseDetailRows(monsterPage.TertiaryContent);
             if (m.Spawns == null || m.Spawns.Count == 0)
             {
-                CreateInfoRow(spawnsContent.transform, "(no live spawns)");
+                CreateInfoRow(monsterPage.TertiaryContent, "(no live spawns)");
             }
             else
             {
@@ -190,7 +158,7 @@ namespace Assets.Scripts.UI.ClientDatabase
             var name = hasItem ? FormatItemName(item) : $"Item#{d.ItemId}";
             var pct = d.Chance / 100f;
 
-            var row = CloneRow(iconRowTemplate, dropsContent.transform, 26, clickable: hasItem);
+            var row = GetDetailRow(rowTemplate, monsterPage.SecondaryContent, 26, clickable: hasItem);
             row.GetComponentInChildren<TextMeshProUGUI>(true).text = $"{name}  —  {pct:0.##}%";
             SetRowIcon(row, hasItem ? GetItemIcon(item.Sprite) : null);
 
@@ -206,7 +174,7 @@ namespace Assets.Scripts.UI.ClientDatabase
         {
             var hasMap = MapLookup.TryGetValue(s.Map, out var map);
 
-            var row = CloneRow(rowTemplate, spawnsContent.transform, 22, clickable: hasMap);
+            var row = GetDetailRow(rowTemplate, monsterPage.TertiaryContent, 22, clickable: hasMap);
             row.GetComponentInChildren<TextMeshProUGUI>(true).text = $"{FormatMapLabel(s.Map)}  —  {s.Count}";
             if (hasMap)
             {
@@ -218,8 +186,9 @@ namespace Assets.Scripts.UI.ClientDatabase
 
         private void LoadMonsterSprite(int monsterId)
         {
-            monsterSpriteHost.SetActive(false);
-            idleFrameCount = 0;
+            monsterSprite.Clear();
+            monsterSprite.gameObject.SetActive(false);
+            monsterFrame = 0;
             frameTimer = 0f;
 
             if (!ClassLookup.TryGetValue(monsterId, out var cls) || string.IsNullOrEmpty(cls.SpriteName))
@@ -229,39 +198,31 @@ namespace Assets.Scripts.UI.ClientDatabase
             }
 
             var path = MonsterSpriteBasePath + cls.SpriteName;
-            AddressableUtility.LoadRoSpriteData(monsterSpriteHost, path, OnMonsterSpriteLoaded);
+            monsterSprite.gameObject.SetActive(true);
+            monsterSprite.DisplaySprite(path);
         }
 
-        private void OnMonsterSpriteLoaded(RoSpriteData data)
+        public void ReturnToMonsterList()
         {
-            if (data == null || monsterSpriteRenderer == null) return;
-            monsterSpriteRenderer.SpriteData = data;
-            monsterSpriteRenderer.ActionId = 0;
-            monsterSpriteRenderer.Direction = Direction.South;
-            monsterSpriteRenderer.CurrentFrame = 0;
-
-            var actionIdx = 0 + (int)Direction.South;
-            if (actionIdx < data.Actions.Length)
-                idleFrameCount = data.Actions[actionIdx].Frames.Length;
-
-            FitDetailSpriteToFrame(monsterSpriteHost, monsterSpriteRenderer, data, 0, Direction.SouthEast, MonsterSpriteFitSize, MonsterSpriteNaturalScale);
-
-            monsterSpriteHost.SetActive(true);
-            monsterSpriteRenderer.SetActive(true);
-            monsterSpriteRenderer.SetVerticesDirty();
-            monsterSpriteRenderer.SetMaterialDirty();
-        }
-
-        private void ReturnToMonsterList()
-        {
-            if (monsterListView != null) monsterListView.SetActive(true);
-            if (monsterDetailView != null) monsterDetailView.SetActive(false);
-            if (monsterSpriteHost != null) monsterSpriteHost.SetActive(false);
-            idleFrameCount = 0;
+            monsterPage.ShowList();
+            monsterSprite.Clear();
+            monsterSprite.gameObject.SetActive(false);
+            monsterFrame = 0;
         }
         
         internal static readonly PredicateRegistry<MonsterEntry> MonsterPredicates = BuildPredicateRegistry<MonsterEntry>();
 
-        private void FilterMonsters(string query) => ApplyFilter(monsterRowEntries, query, (m, p) => MonsterPredicates.TryMatch(m, p, out var r) && r);
+        private void FilterMonsters(string query) =>
+            ApplyDatabaseFilter<MonsterEntry, DatabaseListRow>(
+                monsterEntries,
+                filteredMonsters,
+                query,
+                monsterPage.VirtualList,
+                nameof(monsterPage),
+                "Monsters",
+                monsterPage.TitleText,
+                BindMonsterListRow,
+                static monster => $"{monster.Id} {monster.Name} {monster.Code}",
+                MonsterPredicates);
     }
 }

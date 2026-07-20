@@ -5,6 +5,7 @@ using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI.ConfigWindow;
+using Assets.Scripts.UI.Utility;
 using RebuildSharedData.ClientTypes;
 using RebuildSharedData.Enum;
 using TMPro;
@@ -26,7 +27,10 @@ namespace Assets.Scripts.UI
         public TextMeshProUGUI TooltipText;
         public TextMeshProUGUI PointsText;
         public AutoHeightFitter TooltipResizeArea;
-        public List<Button> Tabs;
+        public TabGroupVisual TabGroup;
+        public UiPlayerSprite[] JobTabPlayerSprites;
+        public TextMeshProUGUI[] JobTabLabels;
+        public int[] TabRanks = { 0, 1, 2, -1 };
 
         [NonSerialized] public SkillWindowEntry HighlightedEntry;
 
@@ -35,6 +39,7 @@ namespace Assets.Scripts.UI
         private List<SkillWindowEntry> Entries;
         private bool lockSkillLevelUp;
         private bool isInitialized;
+        private bool tabIconsInitialized;
         private int skillPoints;
         private bool lastHasCursorSkill;
         private float tooltipWidth;
@@ -99,26 +104,43 @@ namespace Assets.Scripts.UI
             //                                       .Replace("{Prereqs}", "<color=#4444FF>None</color>")
             //                                       .Replace("{Description}","A skill.");
 
-            var rect = (RectTransform)transform;
-            
-            var x = rect.sizeDelta.x;
-            if (rect.position.x + (rect.sizeDelta.x + tooltipWidth) * rect.lossyScale.x > Screen.width)
-                x = -TooltipBox.sizeDelta.x;
-            // Debug.Log($"{entry.transform.localPosition.y} - 60 + {SkillContainer.localPosition.y}");
-            var y = entry.transform.localPosition.y - 60 + SkillContainer.localPosition.y;
-
-            TooltipBox.localPosition = new Vector3(x, y, TooltipBox.localPosition.z);
-            
             TooltipBox.gameObject.SetActive(true);
-            TooltipText.ForceMeshUpdate();
-            
-            Vector2 preferredDimensions = TooltipText.GetPreferredValues(tooltipWidth - 20, 0); //300 minus 20 for margins
-            TooltipBox.sizeDelta = new Vector2(tooltipWidth, preferredDimensions.y);
+
+            TooltipText.ForceMeshUpdate(true, true);
+
+            Vector2 preferredDimensions = TooltipText.GetPreferredValues(tooltipWidth - 20, Mathf.Infinity); //300 minus 20 for margins
+            TooltipBox.sizeDelta = new Vector2(tooltipWidth, Mathf.Ceil(preferredDimensions.y + 8f));
+            LayoutRebuilder.ForceRebuildLayoutImmediate(TooltipBox);
+            PositionTooltipNextToEntry(entry);
             //
-            // LayoutRebuilder.ForceRebuildLayoutImmediate(TooltipBox);
-            //
-            
             // TooltipResizeArea.UpdateRectSize();
+        }
+
+        private void PositionTooltipNextToEntry(SkillWindowEntry entry)
+        {
+            const float screenPadding = 4f;
+
+            var windowRect = (RectTransform)transform;
+            var entryRect = (RectTransform)entry.transform;
+            var windowCorners = new Vector3[4];
+            var entryCorners = new Vector3[4];
+
+            windowRect.GetWorldCorners(windowCorners);
+            entryRect.GetWorldCorners(entryCorners);
+
+            var tooltipWidthWorld = TooltipBox.rect.width * TooltipBox.lossyScale.x;
+            var tooltipHeightWorld = TooltipBox.rect.height * TooltipBox.lossyScale.y;
+            var rightX = windowCorners[2].x;
+            var leftX = GetLeftEdgeWithTabs(windowCorners[0].x) - tooltipWidthWorld;
+            var x = rightX + tooltipWidthWorld <= Screen.width - screenPadding ? rightX : Mathf.Max(screenPadding, leftX);
+            var y = Mathf.Clamp(entryCorners[1].y, tooltipHeightWorld + screenPadding, Screen.height - screenPadding);
+
+            TooltipBox.position = new Vector3(x, y, TooltipBox.position.z);
+        }
+
+        private float GetLeftEdgeWithTabs(float windowLeftEdge)
+        {
+            return TabGroup.GetLeftEdge(windowLeftEdge);
         }
 
         public void HideTooltip()
@@ -177,6 +199,8 @@ namespace Assets.Scripts.UI
 
         public void Initialize()
         {
+            InitializeTabIcons();
+
             if (GameConfig.Data.AutoLockSkillWindow)
             {
                 lockSkillLevelUp = true;
@@ -184,16 +208,53 @@ namespace Assets.Scripts.UI
             }
 
             if (isInitialized)
+            {
                 UpdateSkillPointsAndLock();
-
-            if (isInitialized)
+                UpdateJobTabPlayerSprites();
                 return;
+            }
 
             Entries = new List<SkillWindowEntry>();
             SkillContainer = TemplateObject.transform.parent;
 
             isInitialized = true;
             UpdateSkillPointsAndLock();
+
+            UpdateJobTabPlayerSprites();
+        }
+
+        private void InitializeTabIcons()
+        {
+            if (tabIconsInitialized)
+                return;
+
+            tabIconsInitialized = true;
+            TabGroup.SetTabIconFromRoSprite(3, "Assets/Sprites/Monsters/horong.spr");
+        }
+
+        private void UpdateJobTabPlayerSprites()
+        {
+            var state = PlayerState.Instance;
+            var tree = ClientDataLoader.Instance.GetSkillTree(state.JobId);
+
+            while (tree != null)
+            {
+                var tabIndex = GetTabIndexForRank(tree.JobRank);
+                JobTabLabels[tabIndex].text = ClientDataLoader.Instance.GetJobNameForId(tree.ClassId);
+                JobTabPlayerSprites[tabIndex].PrepareDisplayPlayerCharacter(
+                    tree.ClassId,
+                    state.HairStyleId,
+                    state.HairColorId,
+                    0,
+                    0,
+                    0,
+                    state.IsMale);
+
+                tree = tree.ExtendsClass >= 0
+                    ? ClientDataLoader.Instance.GetSkillTree(tree.ExtendsClass)
+                    : null;
+            }
+
         }
 
         public override void ShowWindow()
@@ -205,19 +266,45 @@ namespace Assets.Scripts.UI
         public void ChangeTab(int tabRank)
         {
             HideTooltip();
-            
-            //unselect the old tab (by making it interactable)
-            var index = selectedRank < 0 ? Tabs.Count - 1 : selectedRank;
-            Tabs[index].interactable = true;
-            
             selectedRank = tabRank;
-            
-            //select the new tab 
-            index = selectedRank < 0 ? Tabs.Count - 1 : selectedRank;
-            Tabs[index].interactable = false;
             
             for (var i = 0; i < Entries.Count; i++)
                 Entries[i].gameObject.SetActive(Entries[i].SkillRank == selectedRank);
+        }
+
+        public void ChangeTabByIndex(int tabIndex)
+        {
+            ChangeTab(TabRanks[tabIndex]);
+        }
+
+        private int GetTabIndexForRank(int rank)
+        {
+            for (var i = 0; i < TabRanks.Length; i++)
+            {
+                if (TabRanks[i] == rank)
+                    return i;
+            }
+
+            return 0;
+        }
+
+        private bool IsTabRankAvailable(int rank, bool hasUnranked)
+        {
+            if (rank < 0)
+                return hasUnranked;
+
+            return rank <= maxRank;
+        }
+
+        private int GetFirstAvailableTabIndex(bool hasUnranked)
+        {
+            for (var i = 0; i < TabRanks.Length; i++)
+            {
+                if (IsTabRankAvailable(TabRanks[i], hasUnranked))
+                    return i;
+            }
+
+            return 0;
         }
 
         private int existingEntries;
@@ -267,7 +354,7 @@ namespace Assets.Scripts.UI
             }
         }
 
-        private void PopulateUnrankedSkills(PlayerState state)
+        private bool PopulateUnrankedSkills(PlayerState state)
         {
             var hasUnranked = false;
             foreach (var skill in state.KnownSkills)
@@ -289,9 +376,8 @@ namespace Assets.Scripts.UI
                 entry.LevelUpButton.gameObject.SetActive(false);
                 hasUnranked = true;
             }
-            
-            if(hasUnranked)
-                Tabs[^1].gameObject.SetActive(true);
+
+            return hasUnranked;
         }
         
         public void UpdateAvailableSkills()
@@ -300,7 +386,6 @@ namespace Assets.Scripts.UI
             HighlightedEntry = null; //safety first
             activeSkills.Clear();
             maxRank = 0;
-            var curTab = selectedRank;
             
             var state = PlayerState.Instance;
             var id = state.JobId;
@@ -308,11 +393,8 @@ namespace Assets.Scripts.UI
             
             // Debug.Log($"Loading skill tree data for job {id}");
             
-            for (var i = 0; i < Tabs.Count; i++)
-            {
-                Tabs[i].interactable = true;
-                Tabs[i].gameObject.SetActive(false);
-            }
+            for (var i = 0; i < TabGroup.TabCount; i++)
+                TabGroup.SetTabActive(i, false);
 
             if (tree == null)
             {
@@ -339,10 +421,10 @@ namespace Assets.Scripts.UI
                 PopulateSkillTreeCategory(tree.Skills, tree.JobRank, state);
             }
             
-            for(var i = 0; i <= maxRank; i++)
-                Tabs[i].gameObject.SetActive(true);
+            var hasUnranked = PopulateUnrankedSkills(state);
 
-            PopulateUnrankedSkills(state);
+            for (var i = 0; i < TabGroup.TabCount; i++)
+                TabGroup.SetTabActive(i, IsTabRankAvailable(TabRanks[i], hasUnranked));
 
             //we weren't able to reuse as many entries as we have, so we'll turf the rest
             if (existingEntries > 0)
@@ -354,14 +436,17 @@ namespace Assets.Scripts.UI
             }
 
             UpdateSkillPointsAndLock();
-            ChangeTab(selectedRank);
+            if (!IsTabRankAvailable(selectedRank, hasUnranked))
+                selectedRank = TabRanks[GetFirstAvailableTabIndex(hasUnranked)];
+
+            TabGroup.SelectTab(GetTabIndexForRank(selectedRank), true);
         }
 
         private void UpdateSkillPointsAndLock()
         {
             var points = PlayerState.Instance.SkillPoints; 
             
-            PointsText.text = $"Skill Points {points}";
+            PointsText.text = $"Skill Points: {points}";
             for (var i = 0; i < Entries.Count; i++)
             {
                 Entries[i].UpdateLevelUpButton(points > 0, !lockSkillLevelUp);
@@ -379,6 +464,8 @@ namespace Assets.Scripts.UI
         public void Awake()
         {
             TemplateObject.gameObject.SetActive(false);
+            Entries = new List<SkillWindowEntry>();
+            SkillContainer = TemplateObject.transform.parent;
             tooltipWidth = TooltipBox.sizeDelta.x;
             tooltipTextTemplate = TooltipText.text;
             TooltipBox.gameObject.SetActive(false);

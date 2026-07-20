@@ -480,7 +480,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2713000485884011685}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -490,11 +490,11 @@ RectTransform:
   - {fileID: 5165662949896344355}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 621, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -269, y: 641}
   m_SizeDelta: {x: 620, y: 68}
-  m_Pivot: {x: 0, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8781058162847397746
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -755,7 +755,6 @@ MonoBehaviour:
   Target: {fileID: 3354107724630010212}
   CanvasGroup: {fileID: 1972239912404449809}
   ShouldReturn: 0
-  LockFullyInBounds: 1
   SnapToStep: 0
   StepSize: 0
   OnDragEvent:

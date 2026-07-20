@@ -47,6 +47,7 @@ namespace Assets.Scripts.Sprites
     public class ClientDataLoader : MonoBehaviour
     {
         public static ClientDataLoader Instance;
+        public static event Action InitializationCompleted;
 
         public SpriteAtlas ItemIconAtlas;
         public Sprite ShadowSprite;
@@ -144,9 +145,7 @@ namespace Assets.Scripts.Sprites
         // private static int EffectClassId = 3999;
 
         private bool isInitialized;
-
         public bool IsInitialized => isInitialized;
-
         public bool IsValidMonsterName(string name) => validMonsterClasses.Contains(name);
         public bool IsValidMonsterCode(string name) => validMonsterCodes.Contains(name);
 
@@ -154,6 +153,24 @@ namespace Assets.Scripts.Sprites
         public string GetFullNameForMap(string mapName) => MapDataLookup.TryGetValue(mapName, out var map) ? map.Name : "Unknown Map";
         public string GetJobNameForId(int id) => PlayerClassLookup.TryGetValue(id, out var job) ? job.Name : "-";
         public string GetSkillName(CharacterSkill skill) => SkillData.TryGetValue(skill, out var skOut) ? skOut.Name : "";
+
+        //cast-name bubble text, built once per skill
+        private readonly Dictionary<CharacterSkill, string> playerCastNameCache = new();
+        private readonly Dictionary<CharacterSkill, string> monsterCastNameCache = new();
+
+        public string GetPlayerSkillCastName(CharacterSkill skill)
+        {
+            if (!playerCastNameCache.TryGetValue(skill, out var text))
+                playerCastNameCache[skill] = text = GetSkillName(skill) + "!!";
+            return text;
+        }
+
+        public string GetMonsterSkillCastName(CharacterSkill skill)
+        {
+            if (!monsterCastNameCache.TryGetValue(skill, out var text))
+                monsterCastNameCache[skill] = text = "<size=-2><color=#FF8888>" + GetSkillName(skill) + "</size>";
+            return text;
+        }
         public SkillData GetSkillData(CharacterSkill skill) => SkillData[skill];
         public SkillTarget GetSkillTarget(CharacterSkill skill) => SkillData.TryGetValue(skill, out var target) ? target.Target : SkillTarget.Any;
         public Dictionary<CharacterSkill, SkillData> GetAllSkills() => SkillData;
@@ -497,6 +514,7 @@ namespace Assets.Scripts.Sprites
             builder.Initialize();
             
             isInitialized = true;
+            InitializationCompleted?.Invoke();
         }
 
         private List<RoSpriteAnimator> tempList;
@@ -691,7 +709,7 @@ namespace Assets.Scripts.Sprites
             control.Level = param.Level;
             control.WeaponClass = param.WeaponClass;
             control.PartyName = param.PartyName;
-            control.IsPartyMember = param.PartyId > 0 && param.PartyId == state.PartyId;
+            control.IsPartyMember = state.IsInParty && param.PartyId == state.PartyId;
 
             bodySprite.Controllable = control;
             if (param.State == CharacterState.Moving)
@@ -820,15 +838,17 @@ namespace Assets.Scripts.Sprites
             }
 
             var attachPosition = isEffect ? EquipPosition.Accessory : EquipPosition.Weapon; //it's not an accessory but too lazy to make a new option
+            GameObject oldObj = null;
             if (ctrl.AttachedComponents.TryGetValue(attachPosition, out var existing))
             {
                 ctrl.SpriteAnimator.ChildrenSprites.Remove(existing.GetComponent<RoSpriteAnimator>());
                 ctrl.AttachedComponents.Remove(attachPosition);
-                Destroy(existing);
+                oldObj = existing;
             }
 
             if (ctrl.WeaponClass == 0)
             {
+                Destroy(oldObj);
                 if (!isEffect)
                 {
                     if (PlayerWeaponLookup.TryGetValue(ctrl.OverrideClassId, out var weaponsByJob2))
@@ -836,7 +856,6 @@ namespace Assets.Scripts.Sprites
                             ctrl.SpriteAnimator.PreferredAttackMotion = ctrl.IsMale ? unarmed.AttackMale : unarmed.AttackFemale;
                     LoadAndAttachWeapon(ctrl, int.MaxValue);
                 }
-
                 return;
             }
 
@@ -852,7 +871,10 @@ namespace Assets.Scripts.Sprites
             }
 
             if (!PlayerWeaponLookup.TryGetValue(ctrl.OverrideClassId, out var weaponsByJob))
+            {
+                Destroy(oldObj);
                 return;
+            }
 
             if (!weaponsByJob.TryGetValue(weaponClass, out var weapon))
             {
@@ -860,6 +882,7 @@ namespace Assets.Scripts.Sprites
                     Debug.Log($"Could not load default weapon sprite for weapon class {ctrl.WeaponClass} for job {ctrl.OverrideClassId}");
                 else
                     Debug.Log($"Could not load default weapon sprite for weapon class {ctrl.WeaponClass}/{offHand} for job {ctrl.OverrideClassId}");
+                Destroy(oldObj);
                 return;
             }
 
@@ -871,9 +894,10 @@ namespace Assets.Scripts.Sprites
             }
 
             if (string.IsNullOrWhiteSpace(weaponSpriteFile) && isEffect)
+            {
+                Destroy(oldObj);
                 return;
-
-            var bodyTransform = ctrl.SpriteAnimator.transform;
+            }
 
             var weaponObj = new GameObject("Weapon");
             weaponObj.layer = LayerMask.NameToLayer("Characters");
@@ -893,22 +917,30 @@ namespace Assets.Scripts.Sprites
 
             ctrl.AttachedComponents[attachPosition] = weaponObj;
 
-            AddressableUtility.LoadRoSpriteData(ctrl.gameObject, weaponSpriteFile, weaponSprite.OnSpriteDataLoad);
+            AddressableUtility.LoadRoSpriteData(ctrl.gameObject, weaponSpriteFile, spriteData =>
+            {
+                Destroy(oldObj);
+                weaponSprite.OnSpriteDataLoad(spriteData);
+            });
             if (!isEffect) LoadAndAttachWeapon(ctrl, int.MaxValue); //attach effect sprite too
         }
 
 
         public void LoadAndAttachEquipmentSprite(ServerControllable ctrl, int itemId, EquipPosition position, int priority)
         {
+            GameObject oldObj = null;
             if (ctrl.AttachedComponents.TryGetValue(position, out var existing))
             {
                 ctrl.SpriteAnimator.ChildrenSprites.Remove(existing.GetComponent<RoSpriteAnimator>());
                 ctrl.AttachedComponents.Remove(position);
-                Destroy(existing);
+                oldObj = existing;
             }
 
             if (!ItemIdLookup.TryGetValue(itemId, out var hat) || !DisplaySpriteList.TryGetValue(hat.Code, out var hatSprite))
+            {
+                Destroy(oldObj);
                 return;
+            }
 
             var headgearObj = new GameObject(position.ToString());
             headgearObj.layer = LayerMask.NameToLayer("Characters");
@@ -938,9 +970,16 @@ namespace Assets.Scripts.Sprites
             ctrl.AttachedComponents[position] = headgearObj;
 
             if (!DoesAddressableExist<RoSpriteData>(spriteName))
+            {
                 Debug.LogWarning($"Could not load equipment sprite at path: {spriteName}");
+                Destroy(oldObj);
+            }
             else
-                AddressableUtility.LoadRoSpriteData(ctrl.gameObject, spriteName, headgearSprite.OnSpriteDataLoad);
+                AddressableUtility.LoadRoSpriteData(ctrl.gameObject, spriteName, spriteData =>
+                {
+                    Destroy(oldObj);
+                    headgearSprite.OnSpriteDataLoad(spriteData);
+                });
         }
 
         public void AttachEmote(ServerControllable target, int emoteId)
@@ -963,8 +1002,15 @@ namespace Assets.Scripts.Sprites
             emote.Target = target.gameObject;
 
             var height = 50f;
-            if (target.SpriteAnimator?.SpriteData != null)
-                height = target.SpriteAnimator.SpriteData.StandingHeight;
+            var spriteData = target.SpriteAnimator?.SpriteData;
+            if (spriteData != null)
+            {
+                //seated players use their (lower) sitting height, falling back to standing if it wasn't baked
+                var seated = target.CharacterType == CharacterType.Player
+                    && target.SpriteAnimator.State == SpriteState.Sit
+                    && spriteData.SittingHeight > 0;
+                height = seated ? spriteData.SittingHeight : spriteData.StandingHeight;
+            }
             if (target.CharacterType == CharacterType.Player)
                 height += 12;
             if (height > 100)
@@ -1163,7 +1209,6 @@ namespace Assets.Scripts.Sprites
             control.CharacterState = param.State;
 
             control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
-            control.EnsureFloatingDisplayCreated().SetUp(control, param.Name, param.MaxHp, 0, false, false);
 
             var loader = Addressables.LoadAssetAsync<GameObject>(prefabName);
             loader.Completed += ah =>

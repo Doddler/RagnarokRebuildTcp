@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Network;
 using Assets.Scripts.Objects;
@@ -13,20 +13,17 @@ namespace Assets.Scripts.UI.TitleScreen
     public class LoginBox : MonoBehaviour
     {
         public TitleScreen Parent;
-        public TMP_InputField UsernameBox;
-        public TMP_InputField PasswordBox;
+        public TMP_InputField LoginUsernameBox;
+        public TMP_InputField LoginPasswordBox;
+        public TMP_InputField CreateUsernameBox;
+        public TMP_InputField CreatePasswordBox;
         public TMP_InputField PasswordRepeatBox;
         public TMP_InputField ServerInputBox;
         public RectTransform WindowRect;
-        public TextMeshProUGUI UsernameLabelText;
         public TextMeshProUGUI SubmitButtonText;
         public GameObject PasswordRepeatRow;
-        public GameObject LoginSection;
-        public GameObject ServerSection;
         public Toggle RememberLoginToggle;
         public Button SubmitButton;
-
-        public List<Button> Tabs;
 
         private int currentTab = 0;
 
@@ -53,85 +50,67 @@ namespace Assets.Scripts.UI.TitleScreen
 #if !UNITY_EDITOR
             ServerInputBox.text = PlayerPrefs.GetString($"ConnectServer", "ws://127.0.0.1:5000/ws");
 #endif
-            UsernameBox.text = PlayerPrefs.GetString("LoginUsername", "");
-            if (!string.IsNullOrWhiteSpace(GameConfig.Data?.SavedLoginToken) && !string.IsNullOrWhiteSpace(UsernameBox.text) && UsernameBox.text != "ID")
+            LoginUsernameBox.text = PlayerPrefs.GetString("LoginUsername", "");
+            if (!string.IsNullOrWhiteSpace(GameConfig.Data?.SavedLoginToken) && !string.IsNullOrWhiteSpace(LoginUsernameBox.text) && LoginUsernameBox.text != "ID")
             {
-                PasswordBox.text = TokenLoginPass;
+                LoginPasswordBox.text = TokenLoginPass;
                 RememberLoginToggle.isOn = true;
             }
 
             yield return new WaitForSeconds(0.1f);
-            EventSystem.current.SetSelectedGameObject(UsernameBox.gameObject);
+            EventSystem.current.SetSelectedGameObject(LoginUsernameBox.gameObject);
         }
 
         public void ReturnFocus()
         {
             if (currentTab == 0 || currentTab == 1)
-                EventSystem.current.SetSelectedGameObject(UsernameBox.gameObject);
+                EventSystem.current.SetSelectedGameObject(LoginUsernameBox.gameObject);
             if (currentTab == 2)
                 EventSystem.current.SetSelectedGameObject(ServerInputBox.gameObject);
         }
 
         public void ChangeTabs(int id)
         {
-            if (id == currentTab)
-                return;
-
-            Tabs[0].interactable = id != 0;
-            Tabs[1].interactable = id != 1;
-            Tabs[2].interactable = id != 2;
-
             if (currentTab == 0)
             {
-                loginUserName = UsernameBox.text;
-                loginPassword = PasswordBox.text;
+                loginUserName = LoginUsernameBox.text;
+                loginPassword = LoginPasswordBox.text;
+            }
+            else if (currentTab == 1)
+            {
+                createUserName = CreateUsernameBox.text;
+                createUserPassword = CreatePasswordBox.text;
             }
 
-            if (currentTab == 1)
+            switch (id)
             {
-                createUserName = UsernameBox.text;
-                createUserPassword = PasswordBox.text;
-            }
-
-            if (id == 0)
-            {
-                PasswordRepeatRow.SetActive(false);
-                RememberLoginToggle.gameObject.SetActive(true);
-                LoginSection.SetActive(true);
-                ServerSection.SetActive(false);
-                UsernameLabelText.text = "ID";
-                SubmitButtonText.text = "Login";
-                UsernameBox.text = loginUserName;
-                PasswordBox.text = loginPassword;
-                SubmitButton.gameObject.SetActive(true);
-                WindowRect.sizeDelta = new Vector2(400, 230);
-                EventSystem.current.SetSelectedGameObject(UsernameBox.gameObject);
-            }
-
-            if (id == 1)
-            {
-                PasswordRepeatRow.SetActive(true);
-                RememberLoginToggle.gameObject.SetActive(false);
-                LoginSection.SetActive(true);
-                ServerSection.SetActive(false);
-                UsernameLabelText.text = "New ID";
-                SubmitButtonText.text = "Create";
-                UsernameBox.text = createUserName;
-                PasswordBox.text = createUserPassword;
-                SubmitButton.gameObject.SetActive(true);
-                WindowRect.sizeDelta = new Vector2(400, 270);
-                EventSystem.current.SetSelectedGameObject(UsernameBox.gameObject);
-            }
-
-            if (id == 2)
-            {
-                PasswordRepeatRow.SetActive(false);
-                RememberLoginToggle.gameObject.SetActive(false);
-                LoginSection.SetActive(false);
-                ServerSection.SetActive(true);
-                SubmitButton.gameObject.SetActive(false);
-                WindowRect.sizeDelta = new Vector2(400, 230);
-                EventSystem.current.SetSelectedGameObject(ServerInputBox.gameObject);
+                case 0:
+                    SubmitButtonText.text = "Login";
+                    LoginUsernameBox.text = loginUserName;
+                    LoginPasswordBox.text = loginPassword;
+                    PasswordRepeatRow.SetActive(false);
+                    RememberLoginToggle.gameObject.SetActive(true);
+                    SubmitButton.gameObject.SetActive(true);
+                    WindowRect.sizeDelta = new Vector2(400, 230);
+                    EventSystem.current.SetSelectedGameObject(LoginUsernameBox.gameObject);
+                    break;
+                case 1:
+                    SubmitButtonText.text = "Create";
+                    CreateUsernameBox.text = createUserName;
+                    CreatePasswordBox.text = createUserPassword;
+                    PasswordRepeatRow.SetActive(true);
+                    RememberLoginToggle.gameObject.SetActive(false);
+                    SubmitButton.gameObject.SetActive(true);
+                    WindowRect.sizeDelta = new Vector2(400, 270);
+                    EventSystem.current.SetSelectedGameObject(CreateUsernameBox.gameObject);
+                    break;
+                case 2:
+                    PasswordRepeatRow.SetActive(false);
+                    RememberLoginToggle.gameObject.SetActive(false);
+                    SubmitButton.gameObject.SetActive(false);
+                    WindowRect.sizeDelta = new Vector2(400, 230);
+                    EventSystem.current.SetSelectedGameObject(ServerInputBox.gameObject);
+                    break;
             }
 
             currentTab = id;
@@ -140,14 +119,14 @@ namespace Assets.Scripts.UI.TitleScreen
         public void AttemptLogin()
         {
             var url = ServerInputBox.text;
-            var username = UsernameBox.text;
-            var password = PasswordBox.text;
 
             PlayerPrefs.SetString($"ConnectServer", ServerInputBox.text);
             AudioManager.Instance.PlaySystemSound(Parent.ButtonSound); //button sound
 
             if (currentTab == 0)
             {
+                var username = LoginUsernameBox.text;
+                var password = LoginPasswordBox.text;
                 var requestToken = RememberLoginToggle.isOn;
                 if (password == TokenLoginPass && IsSetToStorePasswordToken)
                 {
@@ -169,6 +148,8 @@ namespace Assets.Scripts.UI.TitleScreen
 
             if (currentTab == 1)
             {
+                var username = CreateUsernameBox.text;
+                var password = CreatePasswordBox.text;
                 if (password == TokenLoginPass)
                 {
                     NetworkManager.Instance.TitleScreen.LogInError($"Please use a different password.");
@@ -194,37 +175,23 @@ namespace Assets.Scripts.UI.TitleScreen
 
         private void HandleTabKey()
         {
-            if (currentTab == 2)
+            var fields = currentTab switch
             {
-                EventSystem.current.SetSelectedGameObject(ServerInputBox.gameObject);
-                return;
-            }
+                1 => new[] { CreateUsernameBox, CreatePasswordBox, PasswordRepeatBox },
+                2 => new[] { ServerInputBox },
+                _ => new[] { LoginUsernameBox, LoginPasswordBox },
+            };
 
             var current = EventSystem.current.currentSelectedGameObject;
-            var id = 0;
-            if (current == UsernameBox.gameObject) id = 1;
-            if (current == PasswordBox.gameObject) id = 2;
-            if (current == PasswordRepeatBox.gameObject) id = 3;
+            var index = System.Array.FindIndex(fields, f => f.gameObject == current);
+            var forward = !(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
 
-            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
-                id--;
+            if (index < 0)
+                index = forward ? 0 : fields.Length - 1;
             else
-                id++;
+                index = (index + (forward ? 1 : -1) + fields.Length) % fields.Length;
 
-            if (currentTab == 1)
-            {
-                if (id < 1) id = 3;
-                if (id > 3) id = 1;
-            }
-            else
-            {
-                if (id < 1) id = 2;
-                if (id > 2) id = 1;
-            }
-
-            if (id == 1) EventSystem.current.SetSelectedGameObject(UsernameBox.gameObject);
-            if (id == 2) EventSystem.current.SetSelectedGameObject(PasswordBox.gameObject);
-            if (id == 3) EventSystem.current.SetSelectedGameObject(PasswordRepeatBox.gameObject);
+            EventSystem.current.SetSelectedGameObject(fields[index].gameObject);
         }
 
         // Update is called once per frame
@@ -251,8 +218,8 @@ namespace Assets.Scripts.UI.TitleScreen
 
             if (currentTab == 0)
             {
-                var username = UsernameBox.text;
-                var password = PasswordBox.text;
+                var username = LoginUsernameBox.text;
+                var password = LoginPasswordBox.text;
 
                 var isOk = !string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password);
                 if (SubmitButton.interactable != isOk)
@@ -263,8 +230,8 @@ namespace Assets.Scripts.UI.TitleScreen
 
             if (currentTab == 1)
             {
-                var username = UsernameBox.text;
-                var password = PasswordBox.text;
+                var username = CreateUsernameBox.text;
+                var password = CreatePasswordBox.text;
                 var repeat = PasswordRepeatBox.text;
 
                 var isOk = !string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password) && !string.IsNullOrWhiteSpace(repeat);

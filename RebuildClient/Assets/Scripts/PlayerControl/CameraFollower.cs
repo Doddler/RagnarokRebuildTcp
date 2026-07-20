@@ -95,6 +95,15 @@ namespace Assets.Scripts
         // public Slider ExpSlider;
         public TMP_InputField TextBoxInputField;
         public CanvasScaler CanvasScaler;
+        public float AppliedUiScale { get; private set; } = 1f;
+
+        public float OverlayRootScale => DisplayZoomFactor;
+        public float OverlayGlueScale => SpriteZoom / AppliedUiScale;
+
+        // Sprite pixels to screen pixels, calibrated at 1080p height.
+        private float SpriteZoom => 70f / Mathf.Max(Distance, 0.01f);
+        // Only the root SIZE uses this, so toggling never moves overlays.
+        private float DisplayZoomFactor => GameConfig.Data.ScalePlayerDisplayWithZoom ? SpriteZoom : 1f;
         public TextMeshProUGUI ErrorNoticeUi;
         // public TextMeshProUGUI DebugDisplay;
 
@@ -691,12 +700,34 @@ namespace Assets.Scripts
 
         public void UpdateCameraSize()
         {
-            if (Screen.width == 0)
-                return; //wut?
-            var scale = 1f / (1080f / Screen.height);
-            CanvasScaler.scaleFactor = GameConfig.Data.MasterUIScale;
+            if (Screen.width == 0 || Screen.height == 0)
+                return;
+
+            var uiScale = Mathf.Max(GameConfig.Data.MasterUIScale, 0.01f);
+
+            if (GameConfig.Data.ScaleUiWithResolution)
+            {
+                CanvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+                CanvasScaler.referenceResolution = new Vector2(1920f / uiScale, 1080f / uiScale);
+                CanvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+                CanvasScaler.matchWidthOrHeight = 1f;
+
+                AppliedUiScale = uiScale;
+            }
+            else
+            {
+                CanvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ConstantPixelSize;
+                CanvasScaler.scaleFactor = uiScale;
+
+                // The canvas no longer grows with height but the sprite does, so the divisor compensates.
+                AppliedUiScale = uiScale * 1080f / Screen.height;
+            }
+
+            Canvas.ForceUpdateCanvases();
+
             lastWidth = Screen.width;
             lastHeight = Screen.height;
+
             UiManager.Instance.FitFloatingWindowsIntoPlayArea();
         }
 
@@ -1756,7 +1787,7 @@ namespace Assets.Scripts
             if (WalkProvider == null)
                 WalkProvider = GameObject.FindObjectOfType<RoWalkDataProvider>();
 
-            if (Screen.height != lastHeight)
+            if (Screen.height != lastHeight || Screen.width != lastWidth)
                 UpdateCameraSize();
 
             var pointerOverUi = EventSystem.current.IsPointerOverGameObject();

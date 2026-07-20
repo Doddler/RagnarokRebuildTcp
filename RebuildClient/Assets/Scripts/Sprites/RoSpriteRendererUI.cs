@@ -65,7 +65,7 @@ namespace Assets.Scripts.Sprites
             throw new NotImplementedException();
         }
 
-        public override Texture mainTexture => SpriteData.Atlas;
+        public override Texture mainTexture => SpriteData?.Atlas ?? Texture2D.whiteTexture;
         
         protected override void OnRectTransformDimensionsChange()
         {
@@ -129,17 +129,18 @@ namespace Assets.Scripts.Sprites
         {
             //just a simple hash
             var id = ((ActionId + (int)Direction) << 16) + CurrentFrame;
-            
-            //if (meshCache == null || SpriteData.Name != lastSprite)
+
+            if (meshCache == null || SpriteData.Name != lastSprite)
+            {
                 meshCache = SpriteMeshCache.GetMeshCacheForSprite(SpriteData.Name);
+                lastSprite = SpriteData.Name;
+            }
 
             if (meshCache.TryGetValue(id, out var mesh))
                 return mesh;
 
             var newMesh = SpriteMeshBuilder.BuildSpriteMesh(SpriteData, ActionId, (int)Direction, CurrentFrame);
-
             meshCache.Add(id, newMesh);
-            lastSprite = SpriteData.Name;
 
             return newMesh;
         }

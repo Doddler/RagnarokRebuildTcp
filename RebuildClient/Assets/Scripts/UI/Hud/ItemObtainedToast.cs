@@ -23,16 +23,20 @@ namespace Assets.Scripts.UI.Hud
         public void SetText(InventoryItem inventoryItem, int itemCount, bool chatOnly = false)
         {
             //var itemName = item.Slots == 0 ? item.Name : $"{item.Name} [{item.Slots}]";
-            var obtainedText = $"{inventoryItem.ProperName()} - {itemCount} obtained.";
-            
-            if(itemCount == 1)
+            var obtainedText = "";
+            if (itemCount == 1)
+                obtainedText = $"{inventoryItem.ProperName()} obtained.";
+            else
+                obtainedText = $"{inventoryItem.ProperName()} - {itemCount} obtained.";
+
+            if (itemCount == 1)
                 CameraFollower.Instance.AppendChatText($"<color=#00fbfb>You got {inventoryItem.ProperName()}.</color>");
             else
                 CameraFollower.Instance.AppendChatText($"<color=#00fbfb>You got {itemCount}x {inventoryItem.ProperName()}.</color>");
 
             if (chatOnly)
                 return;
-            
+
             Icon.sprite = ClientDataLoader.Instance.GetIconAtlasSprite(inventoryItem.ItemData.Sprite);
             Icon.rectTransform.sizeDelta = Icon.sprite.rect.size * 2;
             Text.text = obtainedText;

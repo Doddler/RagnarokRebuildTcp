@@ -42,8 +42,13 @@ namespace Assets.Scripts.UI.ConfigWindow
         public bool AutoHideFullHPBars = false;
         public bool ScalePlayerDisplayWithZoom = true;
         public bool ShowLevelsInOverlay = true;
+        public bool AdjustOverlayWhenSitting = true;
         //ui
-        public float MasterUIScale = 0.75f;
+        public float MasterUIScale = 0.8f;
+        public bool ScaleUiWithResolution = true;
+        public bool KeepWindowsOnScreen = true;
+        public float MinimapOpacity = 0.85f;
+        public bool ShowMinimapCoordinates = false;
 
         public bool ShowBaseExpValue = true;
         public bool ShowBaseExpPercent = true;
@@ -54,7 +59,7 @@ namespace Assets.Scripts.UI.ConfigWindow
         //visuals
         public bool UseSmoothPixel = true;
 
-        public bool UseUnfilteredSprites = false;
+        public bool EnableSpriteFiltering = false;
         public bool UseSpriteBasedDamageNumbers = false;
         public bool AllowTabToShowWalkTable = false;
         public bool HideShoutChat = false;
