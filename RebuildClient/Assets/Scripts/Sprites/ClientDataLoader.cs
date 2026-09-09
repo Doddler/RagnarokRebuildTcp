@@ -98,7 +98,7 @@ namespace Assets.Scripts.Sprites
         private const string EmoteDataPath = "ClientConfigGenerated/emotes.json";
         private const string StatusEffectDataPath = "ClientConfigGenerated/statusinfo.json";
 
-// #if UNITY_WEBGL
+        // #if UNITY_WEBGL
         private string[] streamingAssets = new[]
         {
             "ClientConfigGenerated/effects.json",
@@ -137,7 +137,7 @@ namespace Assets.Scripts.Sprites
         };
 
         private Dictionary<string, string> streamingAssetsData;
-// #endif
+        // #endif
 
         public Sprite GetIconAtlasSprite(string name) => EffectSharedMaterialManager.GetAtlasSprite(ItemIconAtlas, name);
 
@@ -223,13 +223,20 @@ namespace Assets.Scripts.Sprites
                 var assetList = new List<string>();
                 assetList.AddRange(streamingAssets);
                 assetList.AddRange(initializeOnlyStreamingAssets);
-                
+
                 var bom = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
 
                 foreach (var assetName in assetList)
                 {
                     var path = Path.Combine(Application.streamingAssetsPath, assetName);
-                    using UnityWebRequest www = UnityWebRequest.Get(path);
+                    // UnityWebRequest requires a file:// URI for local files. This is
+                    // especially important in the editor on macOS and Linux, where
+                    // Application.streamingAssetsPath is an absolute filesystem path.
+                    var requestPath = path;
+                    if (Application.isEditor && !path.Contains("://", StringComparison.Ordinal))
+                        requestPath = new Uri(path).AbsoluteUri;
+
+                    using UnityWebRequest www = UnityWebRequest.Get(requestPath);
 
                     yield return www.SendWebRequest();
                     if (www.result == UnityWebRequest.Result.Success)
@@ -314,15 +321,15 @@ namespace Assets.Scripts.Sprites
                     var mPath = h.SpriteMale.Replace("<id>", h.MaleIds[i]);
                     var fPath = h.SpriteFemale.Replace("<id>", h.FemaleIds[i]);
 
-// #if UNITY_WEBGL
-//                     Debug.Log(mPath);
-//                     Debug.Log(fPath);
-// #else
-//                     var handle = Addressables.LoadResourceLocationsAsync(mPath);
-//                     handle.WaitForCompletion();
-//                     var handle2 = Addressables.LoadResourceLocationsAsync(fPath);
-//                     handle2.WaitForCompletion();
-// #endif
+                    // #if UNITY_WEBGL
+                    //                     Debug.Log(mPath);
+                    //                     Debug.Log(fPath);
+                    // #else
+                    //                     var handle = Addressables.LoadResourceLocationsAsync(mPath);
+                    //                     handle.WaitForCompletion();
+                    //                     var handle2 = Addressables.LoadResourceLocationsAsync(fPath);
+                    //                     handle2.WaitForCompletion();
+                    // #endif
                     if (AssetExists(mPath) && AssetExists(fPath))
                     {
                         PlayerHeadLookup.Add(colorHead, new PlayerHeadData()
@@ -495,7 +502,7 @@ namespace Assets.Scripts.Sprites
 
             var builder = gameObject.GetComponent<EntityBuilder>();
             builder.Initialize();
-            
+
             isInitialized = true;
         }
 
@@ -719,7 +726,7 @@ namespace Assets.Scripts.Sprites
             var offHand = 0;
             if (param.Shield > 0 && TryGetItemById(param.Shield, out var item) && item.ItemClass == ItemClass.Weapon)
             {
-                
+
                 offHand = item.SubType;
                 shield = 0;
             }
@@ -856,7 +863,7 @@ namespace Assets.Scripts.Sprites
 
             if (!weaponsByJob.TryGetValue(weaponClass, out var weapon))
             {
-                if(offHand == 0)
+                if (offHand == 0)
                     Debug.Log($"Could not load default weapon sprite for weapon class {ctrl.WeaponClass} for job {ctrl.OverrideClassId}");
                 else
                     Debug.Log($"Could not load default weapon sprite for weapon class {ctrl.WeaponClass}/{offHand} for job {ctrl.OverrideClassId}");
@@ -887,7 +894,7 @@ namespace Assets.Scripts.Sprites
             if (isEffect)
                 weaponSprite.SpriteOrder = 5;
 
-            if(!isEffect)
+            if (!isEffect)
                 ctrl.SpriteAnimator.PreferredAttackMotion = ctrl.IsMale ? weapon.AttackMale : weapon.AttackFemale;
             ctrl.SpriteAnimator.ChildrenSprites.Add(weaponSprite);
 
@@ -1076,7 +1083,7 @@ namespace Assets.Scripts.Sprites
                 case NpcEffectType.FirePillar:
                     FirePillarEffect.Create(control);
                     break;
-            case NpcEffectType.Quagmire:
+                case NpcEffectType.Quagmire:
                     //DummyGroundEffect.Create(obj, $"<color=#33FF33>Quagmire!!");
                     QuagmireEffect.Create(control);
                     break;
@@ -1178,7 +1185,7 @@ namespace Assets.Scripts.Sprites
                         sprite.Controllable = control;
 
                     if (obj2.TryGetComponent<ServerControllable>(out var ctrl) && ctrl.EntityObject && ctrl.EntityObject.TryGetComponent<IEntityActionHandler>(out var handler))
-                        handler.ChangeCharacterState(ctrl.CharacterState);                   
+                        handler.ChangeCharacterState(ctrl.CharacterState);
                 }
             };
 

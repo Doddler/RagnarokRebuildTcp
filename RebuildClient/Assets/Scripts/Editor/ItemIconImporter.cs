@@ -44,7 +44,12 @@ namespace Assets.Scripts.Editor
             var selectedSkillIds = skillIds == null ? null : new HashSet<int>(skillIds);
             var iconNames = new List<string>();
             var convertName = new Dictionary<string, string>();
-            var skills = JsonUtility.FromJson<Wrapper<SkillData>>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/skillinfo.json"));
+            var skills = JsonUtility.FromJson<Wrapper<SkillData>>(
+                File.ReadAllText(Path.Combine(
+                    Application.dataPath,
+                    "StreamingAssets",
+                    "ClientConfigGenerated",
+                    "skillinfo.json")));
 
             foreach (var skill in skills.Items.Where(skill => selectedSkillIds == null || selectedSkillIds.Contains((int)skill.SkillId)))
             {
@@ -55,7 +60,12 @@ namespace Assets.Scripts.Editor
                 }
             }
 
-            var items = JsonUtility.FromJson<Wrapper<ItemData>>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/items.json"));
+            var items = JsonUtility.FromJson<Wrapper<ItemData>>(
+                File.ReadAllText(Path.Combine(
+                    Application.dataPath,
+                    "StreamingAssets",
+                    "ClientConfigGenerated",
+                    "items.json")));
             var sharedItemSprites = new StringBuilder();
             var equipIcons = new List<string>();
             var itemIdToCode = new Dictionary<int, string>();
@@ -297,7 +307,12 @@ namespace Assets.Scripts.Editor
             }
 
             var statusData = replaceAtlas
-                ? JsonUtility.FromJson<Wrapper<StatusEffectData>>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/statusinfo.json"))
+                ? JsonUtility.FromJson<Wrapper<StatusEffectData>>(
+                    File.ReadAllText(Path.Combine(
+                        Application.dataPath,
+                        "StreamingAssets",
+                        "ClientConfigGenerated",
+                        "statusinfo.json")))
                 : new Wrapper<StatusEffectData> { Items = new StatusEffectData[0] };
 
             foreach (var status in statusData.Items)

@@ -33,7 +33,12 @@ namespace Assets.Scripts.MapEditor.Editor
 
         public static void ImportAllMissingMaps(IEnumerable<string> mapCodes)
         {
-            var wrapper = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/maps.json"));
+            var wrapper = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(
+                File.ReadAllText(Path.Combine(
+                    Application.dataPath,
+                    "StreamingAssets",
+                    "ClientConfigGenerated",
+                    "maps.json")));
 
             var selectedMapCodes = mapCodes == null
                 ? null
@@ -242,6 +247,8 @@ namespace Assets.Scripts.MapEditor.Editor
 
         public static void UpdateAddressables(bool processModels = true)
         {
+            AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+
             var settings = AddressableAssetSettingsDefaultObject.Settings;
             var defGroup = settings.DefaultGroup;
             var mapGroup = settings.FindGroup("Scenes");
@@ -251,19 +258,41 @@ namespace Assets.Scripts.MapEditor.Editor
             var entriesAdded = new List<AddressableAssetEntry>();
             var entriesRemoved = new List<AddressableAssetEntry>();
 
-            var monsters = JsonUtility.FromJson<Wrapper<MonsterClassData>>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/monsterclass.json"));
+            foreach (var entry in settings.groups
+                         .SelectMany(group => group.entries)
+                         .Where(entry => IsJobSpriteAddress(entry.address))
+                         .ToList())
+            {
+                settings.RemoveAssetEntry(entry.guid, true);
+                entriesRemoved.Add(entry);
+            }
+
+            var generatedConfigDirectory = Path.Combine(Application.dataPath, "StreamingAssets", "ClientConfigGenerated");
+            var monsters = JsonUtility.FromJson<Wrapper<MonsterClassData>>(
+                File.ReadAllText(Path.Combine(generatedConfigDirectory, "monsterclass.json")));
 
             //---------------------------------------------------------
             // Sprites
             //---------------------------------------------------------
 
-            var guids = AssetDatabase.FindAssets("t:RoSpriteData", new[] { "Assets/Sprites" });
+            // Search imported assets directly instead of relying on Unity's type
+            // index, which can lag behind after generated .act/.asset imports.
+            var guids = AssetDatabase.FindAssets("", new[] { "Assets/Sprites/Imported" });
             Debug.Log($"[Addressables] Sprites found: {guids.Length}");
 
             for (int i = 0; i < guids.Length; i++)
             {
                 var path = AssetDatabase.GUIDToAssetPath(guids[i]);
-                var altPath = path.Replace("Imported/", "").Replace(".asset", ".spr");
+                var spriteData = AssetDatabase.LoadAssetAtPath<RoSpriteData>(path);
+                if (spriteData == null)
+                    continue;
+
+                var normalizedPath = path.Replace('\\', '/').Normalize(System.Text.NormalizationForm.FormC);
+                const string importedSpritesRoot = "Assets/Sprites/Imported/";
+                var altPath = normalizedPath.StartsWith(importedSpritesRoot, StringComparison.OrdinalIgnoreCase)
+                    ? "Assets/Sprites/" + normalizedPath.Substring(importedSpritesRoot.Length)
+                    : normalizedPath;
+                altPath = Path.ChangeExtension(altPath, ".spr").Replace('\\', '/');
                 var fName = Path.GetFileNameWithoutExtension(altPath);
                 Debug.Log($"[Sprite] Processing ({i + 1}/{guids.Length}) name='{fName}', sourcePath='{path}'");
                 if (fName.Equals("초보자_남", StringComparison.InvariantCulture))
@@ -305,7 +334,7 @@ namespace Assets.Scripts.MapEditor.Editor
                 //Debug.Log(AssetDatabase.GUIDToAssetPath(guids[i]));
                 Debug.Log($"[Addressables] Creating/moving entry for '{fName}'");
                 entry.address = altPath;
-                Debug.Log($"[Addressables] Set address '{entry.address}' for '{fName}'");
+                Debug.Log($"[Addressables] Set sprite address '{entry.address}' for '{path}'");
                 entry.labels.Add("Sprite");
                 Debug.Log($"[Addressables] Labelled '{fName}' with [Sprite]");
 
@@ -316,7 +345,8 @@ namespace Assets.Scripts.MapEditor.Editor
             // Effects
             //---------------------------------------------------------
 
-            var effects = JsonUtility.FromJson<EffectTypeList>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/effects.json"));
+            var effects = JsonUtility.FromJson<EffectTypeList>(
+                File.ReadAllText(Path.Combine(generatedConfigDirectory, "effects.json")));
 
             Debug.Log(effects.Effects.Count);
 
@@ -349,7 +379,8 @@ namespace Assets.Scripts.MapEditor.Editor
             // Maps
             //---------------------------------------------------------
 
-            var maps = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/maps.json"));
+            var maps = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(
+                File.ReadAllText(Path.Combine(generatedConfigDirectory, "maps.json")));
             var musicNames = new List<string>();
             musicNames.Add("01.mp3");
 
@@ -423,38 +454,31 @@ namespace Assets.Scripts.MapEditor.Editor
             }
 
 
-            //update effect sounds
-            guids = AssetDatabase.FindAssets("t:AudioClip", new[] { "Assets/Sounds/effect" });
-
-            for (int i = 0; i < guids.Length; i++)
-            {
-                var path = AssetDatabase.GUIDToAssetPath(guids[i]);
-                var fName = Path.GetFileName(path);
-
-                var entry = settings.CreateOrMoveEntry(guids[i], soundsGroup, readOnly: false, postEvent: false);
-                //Debug.Log(AssetDatabase.GUIDToAssetPath(guids[i]));
-                entry.address = AssetDatabase.GUIDToAssetPath(guids[i])
-                    .Replace("Assets/Sounds/effect", "Assets/Sounds/Effects").Replace(".wav", ".ogg");
-                entry.labels.Add("Sounds");
-
-                entriesAdded.Add(entry);
-            }
-
-            //special sound cases for sounds we want to include outside of the effects folder
+            // Update effect sounds and special root-level sounds in one pass so the
+            // source folder casing does not matter on case-sensitive filesystems.
             guids = AssetDatabase.FindAssets("t:AudioClip", new[] { "Assets/Sounds" });
 
             for (int i = 0; i < guids.Length; i++)
             {
                 var path = AssetDatabase.GUIDToAssetPath(guids[i]);
+                var normalizedPath = path.Replace('\\', '/').Normalize(System.Text.NormalizationForm.FormC);
+                const string soundsRoot = "Assets/Sounds/";
+                if (!normalizedPath.StartsWith(soundsRoot, StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                var relativePath = normalizedPath.Substring(soundsRoot.Length);
+                var isEffectSound = relativePath.StartsWith("effect/", StringComparison.OrdinalIgnoreCase) ||
+                                    relativePath.StartsWith("effects/", StringComparison.OrdinalIgnoreCase);
+                var isRootSound = !relativePath.Contains("/");
                 var fName = Path.GetFileName(path);
-                if (!Path.GetFileName(fName).StartsWith("_") &&
-                    !fName.Contains("버튼소리")) //exception for title screen button lol
+                if (!isEffectSound && (!isRootSound ||
+                    (!Path.GetFileNameWithoutExtension(fName).StartsWith("_") &&
+                     !fName.Contains("버튼소리")))) //exception for title screen button lol
                     continue;
 
                 var entry = settings.CreateOrMoveEntry(guids[i], soundsGroup, readOnly: false, postEvent: false);
                 //Debug.Log(AssetDatabase.GUIDToAssetPath(guids[i]));
-                entry.address = AssetDatabase.GUIDToAssetPath(guids[i])
-                    .Replace("Assets/Sounds", "Assets/Sounds/Effects").Replace(".wav", ".ogg");
+                entry.address = GetEffectSoundAddress(AssetDatabase.GUIDToAssetPath(guids[i]));
                 entry.labels.Add("Sounds");
 
                 entriesAdded.Add(entry);
@@ -555,6 +579,33 @@ namespace Assets.Scripts.MapEditor.Editor
 
             settings.SetDirty(AddressableAssetSettings.ModificationEvent.EntryMoved, entriesAdded, true);
             settings.SetDirty(AddressableAssetSettings.ModificationEvent.EntryRemoved, entriesRemoved, true);
+            AssetDatabase.SaveAssets();
+        }
+
+        private static bool IsJobSpriteAddress(string address)
+        {
+            if (string.IsNullOrWhiteSpace(address))
+                return false;
+
+            var normalized = address.Replace('\\', '/');
+            return normalized.StartsWith("Assets/Sprites/Weapons/", StringComparison.OrdinalIgnoreCase) ||
+                   normalized.StartsWith("Assets/Sprites/Shields/", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static string GetEffectSoundAddress(string assetPath)
+        {
+            var normalizedPath = assetPath.Replace('\\', '/').Normalize(System.Text.NormalizationForm.FormC);
+            const string soundsRoot = "Assets/Sounds/";
+            if (!normalizedPath.StartsWith(soundsRoot, StringComparison.OrdinalIgnoreCase))
+                return normalizedPath;
+
+            var relativePath = normalizedPath.Substring(soundsRoot.Length);
+            if (relativePath.StartsWith("effect/", StringComparison.OrdinalIgnoreCase))
+                relativePath = relativePath.Substring("effect/".Length);
+            else if (relativePath.StartsWith("effects/", StringComparison.OrdinalIgnoreCase))
+                relativePath = relativePath.Substring("effects/".Length);
+
+            return "Assets/Sounds/Effects/" + Path.ChangeExtension(relativePath, ".ogg").Replace('\\', '/');
         }
 
         //[MenuItem("Ragnarok/Test Import Model")]
@@ -610,7 +661,12 @@ namespace Assets.Scripts.MapEditor.Editor
         private void OnEnable()
         {
             // 1) Load maps.json
-            var wrapper = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/maps.json"));
+            var wrapper = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(
+                File.ReadAllText(Path.Combine(
+                    Application.dataPath,
+                    "StreamingAssets",
+                    "ClientConfigGenerated",
+                    "maps.json")));
             maps = wrapper.Items.ToList();
 
             // 2) Initialize checkboxes (true = not imported yet)
@@ -747,7 +803,7 @@ namespace Assets.Scripts.MapEditor.Editor
             Debug.Log($"[Map Cleanup] Removed assets for {cleaned} selected map(s).");
         }
 
-// ─── DeleteExistingMapAssets ──────────────────────────────────────────────
+        // ─── DeleteExistingMapAssets ──────────────────────────────────────────────
         private static void DeleteExistingMapAssets(string code)
         {
             // 1) Delete any scene assets in Assets/Scenes/Maps
@@ -796,7 +852,10 @@ namespace Assets.Scripts.MapEditor.Editor
             var waterDir = Path.Combine(Application.dataPath, "Maps/Texture/Water/").Replace("\\", "/");
             //Debug.Log(waterDir);
 
-            var baseFolder = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "texture\\워터").Replace("\\", "/");
+            var baseFolder = Path.Combine(
+                RagnarokDirectory.GetRagnarokDataDirectory,
+                "texture",
+                "워터");
             //Debug.Log(baseFolder);
 
             if (!Directory.Exists(waterDir))

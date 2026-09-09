@@ -8,6 +8,7 @@ using Assets.Scripts.Network.HandlerBase;
 using RebuildSharedData.Networking;
 using UnityEditor;
 using UnityEditor.Compilation;
+using UnityEngine;
 
 namespace Assets.Scripts.Network
 {
@@ -34,7 +35,7 @@ namespace Assets.Scripts.Network
             var handlers = new List<string>();
             for (var i = 0; i < count; i++)
                 handlers.Add($"\t\t\thandlers[{i}] = new InvalidPacket(); //{(PacketType)i}");
-            
+
             //var handlers = new SkillHandlerBase[count];
 
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
@@ -53,9 +54,15 @@ namespace Assets.Scripts.Network
                 code.Append(l).Append("\n");
 
             code.Append("\t\t}\n\t}\n}\n");
-            
-            File.WriteAllText(@"Assets\Scripts\Network\PacketBase\ClientPacketHandlerGenerated.cs", code.ToString());
-            
+
+            var outputPath = Path.Combine(
+                Application.dataPath,
+                "Scripts",
+                "Network",
+                "PacketBase",
+                "ClientPacketHandlerGenerated.cs");
+            File.WriteAllText(outputPath, code.ToString());
+
             CompilationPipeline.RequestScriptCompilation();
         }
     }

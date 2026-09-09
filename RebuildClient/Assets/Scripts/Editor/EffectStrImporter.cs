@@ -139,7 +139,12 @@ namespace Assets.Scripts.Editor
         {
             //ImportEffectTextures();
 
-            var effectList = JsonUtility.FromJson<EffectTypeList>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/effects.json")).Effects;
+            var effectListPath = Path.Combine(
+                Application.dataPath,
+                "StreamingAssets",
+                "ClientConfigGenerated",
+                "effects.json");
+            var effectList = JsonUtility.FromJson<EffectTypeList>(File.ReadAllText(effectListPath)).Effects;
             if (effectNames != null)
             {
                 var selectedEffects = new HashSet<string>(effectNames, StringComparer.OrdinalIgnoreCase);
@@ -175,7 +180,11 @@ namespace Assets.Scripts.Editor
                         Debug.Log($"Importing str animation {e.StrFile}");
 
                         var loader = new RagnarokEffectLoader();
-                        var importPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, @$"texture\effect\{e.StrFile}.str");
+                        var importPath = Path.Combine(
+                            RagnarokDirectory.GetRagnarokDataDirectory,
+                            "texture",
+                            "effect",
+                            $"{e.StrFile}.str");
                         var anim = loader.Load(importPath, e.Name);
                         if (anim == null)
                         {

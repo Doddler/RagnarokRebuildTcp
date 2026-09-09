@@ -79,7 +79,7 @@ namespace Assets.Scripts.MapEditor.Editor
 
 				node.UVs.Add(uv);
 			}
-			
+
 			var faceCount = br.ReadInt32();
 
 			for (var i = 0; i < faceCount; i++)
@@ -302,8 +302,8 @@ namespace Assets.Scripts.MapEditor.Editor
 				tri.CalcNormals();
 				tris.Add(tri);
 			}
-			
-			foreach(var v in node.Vertices)
+
+			foreach (var v in node.Vertices)
 				vTrans2.Add(go.transform.TransformPoint(v.FlipY() + offset.FlipY()));
 
 			if (model.ShadingType == RsmShadingType.Smooth)
@@ -431,104 +431,106 @@ namespace Assets.Scripts.MapEditor.Editor
 			fs = new FileStream(filename, FileMode.Open);
 			br = new BinaryReader(fs);
 
-            try
-            {
+			try
+			{
 
-                var header = new string(br.ReadChars(4));
-                if (header != "GRSM")
-                    throw new Exception("Not model file");
+				var header = new string(br.ReadChars(4));
+				if (header != "GRSM")
+					throw new Exception("Not model file");
 
-                model = new RsmModel();
+				model = new RsmModel();
 
-                model.Name = baseName;
+				model.Name = baseName;
 
-                var majorVersion = br.ReadByte();
-                var minorVersion = br.ReadByte();
-                model.Version = majorVersion * 10 + minorVersion;
+				var majorVersion = br.ReadByte();
+				var minorVersion = br.ReadByte();
+				model.Version = majorVersion * 10 + minorVersion;
 
-                var animLen = br.ReadInt32();
-                model.ShadingType = (RsmShadingType)br.ReadInt32();
+				var animLen = br.ReadInt32();
+				model.ShadingType = (RsmShadingType)br.ReadInt32();
 
-                model.Alpha = 1f;
-                if (model.Version >= 14)
-                    model.Alpha = br.ReadByte() / 255f;
+				model.Alpha = 1f;
+				if (model.Version >= 14)
+					model.Alpha = br.ReadByte() / 255f;
 
-                fs.Seek(16, SeekOrigin.Current);
+				fs.Seek(16, SeekOrigin.Current);
 
-                LoadTextures(savePath);
+				LoadTextures(savePath);
 
-                model.Name = br.ReadKoreanString(40);
+				model.Name = br.ReadKoreanString(40);
 
-                var nodeCount = br.ReadInt32();
+				var nodeCount = br.ReadInt32();
 
-                model.RsmNodes = new List<RsmNode>();
+				model.RsmNodes = new List<RsmNode>();
 
-                for (var i = 0; i < nodeCount; i++)
-                {
-                    var node = LoadNode();
-                    model.RsmNodes.Add(node);
-                    if (node.Name == model.Name)
-                        model.RootNode = node;
-                }
+				for (var i = 0; i < nodeCount; i++)
+				{
+					var node = LoadNode();
+					model.RsmNodes.Add(node);
+					if (node.Name == model.Name)
+						model.RootNode = node;
+				}
 
-                if (model.RootNode == null)
-                    model.RootNode = model.RsmNodes[0];
+				if (model.RootNode == null)
+					model.RootNode = model.RsmNodes[0];
 
-                if (model.Version <= 15)
-                {
-                    var posKeyFrames = br.ReadInt32();
+				if (model.Version <= 15)
+				{
+					var posKeyFrames = br.ReadInt32();
 
-                    for (var i = 0; i < posKeyFrames; i++)
-                    {
-                        model.PosKeyFrames.Add(new RsmPosKeyframe()
-                            { Frame = br.ReadInt32(), Position = br.ReadRoPosition() });
-                    }
-                }
+					for (var i = 0; i < posKeyFrames; i++)
+					{
+						model.PosKeyFrames.Add(new RsmPosKeyframe()
+						{ Frame = br.ReadInt32(), Position = br.ReadRoPosition() });
+					}
+				}
 
-                var volumeBoxes = br.ReadInt32();
-                for (var i = 0; i < volumeBoxes; i++)
-                {
-                    model.VolumeBoxes.Add(new RsmVolumeBox
-                    {
-                        Scale = br.ReadVector3(), Position = br.ReadRoPosition(), Rotation = br.ReadVector3(),
-                        Flag = (model.Version >= 13 ? br.ReadInt32() : 0)
-                    });
-                }
+				var volumeBoxes = br.ReadInt32();
+				for (var i = 0; i < volumeBoxes; i++)
+				{
+					model.VolumeBoxes.Add(new RsmVolumeBox
+					{
+						Scale = br.ReadVector3(),
+						Position = br.ReadRoPosition(),
+						Rotation = br.ReadVector3(),
+						Flag = (model.Version >= 13 ? br.ReadInt32() : 0)
+					});
+				}
 
-                for (var i = 0; i < model.RsmNodes.Count; i++)
-                {
-                    var node = model.RsmNodes[i];
-                    if (string.IsNullOrWhiteSpace(node.ParentName) || node.ParentName == node.Name)
-                        continue;
+				for (var i = 0; i < model.RsmNodes.Count; i++)
+				{
+					var node = model.RsmNodes[i];
+					if (string.IsNullOrWhiteSpace(node.ParentName) || node.ParentName == node.Name)
+						continue;
 
-                    var parent = model.RsmNodes.FirstOrDefault(n => n.Name == node.ParentName);
-                    if (parent != null)
-                    {
-                        parent.Children.Add(node);
-                        node.Parent = parent;
-                    }
-                }
+					var parent = model.RsmNodes.FirstOrDefault(n => n.Name == node.ParentName);
+					if (parent != null)
+					{
+						parent.Children.Add(node);
+						node.Parent = parent;
+					}
+				}
 
-                if (model.PosKeyFrames.Count > 0)
-                {
-                    EditorApplication.Beep();
-                    Debug.LogWarning("POSITIONAL KEYFRAMES");
-                }
+				if (model.PosKeyFrames.Count > 0)
+				{
+					EditorApplication.Beep();
+					Debug.LogWarning("POSITIONAL KEYFRAMES");
+				}
 
 
-                //var jsonData = SerializationUtility.SerializeValue(model, DataFormat.JSON);
-                //File.WriteAllBytes(@"G:\Projects2\test.txt", jsonData);
+				//var jsonData = SerializationUtility.SerializeValue(model, DataFormat.JSON);
+				//File.WriteAllBytes(@"G:\Projects2\test.txt", jsonData);
 
-                //Debug.Log("Done!");
-            }
-            catch (Exception e)
-            {
+				//Debug.Log("Done!");
+			}
+			catch (Exception e)
+			{
 				Debug.LogError($"Could not load model {Path.GetFileName(filename)} due to exception: {e}");
-                throw;
-            }
-            finally
-            {
-                fs.Close();
+				throw;
+			}
+			finally
+			{
+				fs.Close();
 			}
 		}
 
@@ -563,23 +565,24 @@ namespace Assets.Scripts.MapEditor.Editor
 				// var modelName = @"알베르타\도구점.rsm"; //alberta pickaxe shop
 				//var modelName = @"글래스트\글래스트_부서진의자1.rsm"; //Glast\Glast_BrokenChair1
 				//var modelName = @"내부소품\탁상1.rsm"; //props\desk1
-				
+
 				//var modelName = @"프론테라\민가04.rsm"; //prontera armory
 				//var modelName = @"splen\민가침대02.rsm";
 				var modelName = @"외부소품\트랩05.rsm";
-				
-				var modelPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "model", modelName).Replace("\\", "/"); //prontera armory
+
+				var modelRelativePath = modelName.Replace('\\', Path.DirectorySeparatorChar);
+				var modelPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "model", modelRelativePath); //prontera armory
 				var savePath = DirectoryHelper.GetRelativeDirectory(RagnarokDirectory.GetRagnarokDataDirectory, Path.GetDirectoryName(modelPath));
-		
-				
+
+
 				loader.LoadModel(modelPath, savePath); //Glast\Glast_KnightStatue13
-		
-		
+
+
 				var model = loader.Compile();
-		
+
 				model.transform.SetParent(go.transform, false);
 				model.transform.localScale = new Vector3(1f, 1f, 1f);
-				
+
 				PrefabUtility.SaveAsPrefabAssetAndConnect(model, "Assets/Models/prefabs/외부소품/트랩05.prefab", InteractionMode.AutomatedAction);
 			}
 			finally
@@ -587,7 +590,7 @@ namespace Assets.Scripts.MapEditor.Editor
 				loader.Dispose(); ;
 			}
 		}
-		
+
 		[MenuItem("Ragnarok/Load Model Effects")]
 		public static void LoadModelEffects()
 		{
@@ -604,8 +607,8 @@ namespace Assets.Scripts.MapEditor.Editor
 				{ "외부소품\\트랩04.rsm", "ModelClaymoreTrap" },
 				{ "외부소품\\트랩05.rsm", "ModelTalkieBox" },
 			};
-			
-			
+
+
 			var loader = new RagnarokModelLoader();
 			foreach (var trap in TrapModels)
 			{
@@ -614,7 +617,8 @@ namespace Assets.Scripts.MapEditor.Editor
 					//var modelName = @"외부소품\트랩01.rsm";
 					var modelName = trap.Key;
 
-					var modelPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "model", modelName).Replace("\\", "/");
+					var modelRelativePath = modelName.Replace('\\', Path.DirectorySeparatorChar);
+					var modelPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "model", modelRelativePath);
 					var savePath = DirectoryHelper.GetRelativeDirectory(RagnarokDirectory.GetRagnarokDataDirectory, Path.GetDirectoryName(modelPath));
 
 					loader.LoadModel(modelPath, savePath);
@@ -654,7 +658,7 @@ namespace Assets.Scripts.MapEditor.Editor
 					var collider = model.AddComponent<BoxCollider>();
 					collider.size = new Vector3(1.5f, 0.3f, 1.5f);
 					collider.center = new Vector3(0f, 0.2f, 0f);
-					
+
 					model.layer = LayerMask.NameToLayer("Characters");
 
 					PrefabUtility.SaveAsPrefabAssetAndConnect(model, $"Assets/Effects/Prefabs/{trap.Value}.prefab", InteractionMode.AutomatedAction);

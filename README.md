@@ -13,10 +13,10 @@ Server and client for a Ragnarok Online-like game. Some assembly required.
 ## Setting things up
 
 * Load up the server csproj project, and make sure the server is able to build successfully. You don't need to run it yet.
-* In the root project directory, run "updateclient.bat". This copies server definitions and data over to the client.
+* In the root project directory, run `updateclient.bat` on Windows or `./updateclient.sh` on Linux/macOS. This copies server definitions and data over to the client.
 * Open the client directory in Unity.
 * From the Ragnarok menu, select "Set Ragnarok Data Directory". This should be the path where you have the files extracted from data.grf from an original client. For this import process to work correctly, the files will need to have been extracted with the right locale and have working korean file names.
-* From the Ragnarok menu, select "Client Data Health Check". Be sure to set aside a lot of time for the import process to complete as it may take several hours. You can import less at a once if the time is a concern, but it's recommended you import items from the top going down. If you want to process fewer maps, you can import them one at a time via the 'Ragnarok -> Import Maps' option, or you can trim the files RoRebuildServer/ServerData/Db/Maps.csv and Instances.csv to only have a small subset of maps, and then rerun the updateclient.bat.
+* From the Ragnarok menu, select "Client Data Health Check". Be sure to set aside a lot of time for the import process to complete as it may take several hours. You can import less at a once if the time is a concern, but it's recommended you import items from the top going down. If you want to process fewer maps, you can import them one at a time via the 'Ragnarok -> Import Maps' option, or you can trim the files RoRebuildServer/ServerData/Db/Maps.csv and Instances.csv to only have a small subset of maps, and then rerun the platform-specific updater.
 * Copy any of your BGM over from your ragnarok client into the Music folder.
 * From the Rangarok menu, select "Update Addressables" to ensure everything you've imported can be loaded at runtime. Any time you add sprites or maps, you will need to do this again.
 * From the Ragnarok menu, select "Lighting Manager". Drag all the scenes in the Scenes\\Maps folder into the Scenes section of the Lighting Manager window. Then, click 'bake all scenes' (not bake all). This can take several hours depending on your GPU. You can skip this step but maps will not display with any lighting until you do.
@@ -32,7 +32,7 @@ Note: There's a known issue where rarely the lighting bake process can create wa
 
 ## Special Considerations
 
-* A number of custom monsters exist within the project for which existing sprites do not exist, but like the other RO sprites these are excluded to avoid the project holding copywritten material. If you don't do something with these monsters they will appear in game with the default poring sprite so you may want to matching sprites for these monsters, adjust the sprite they use to other monsters, or simply remove them. These monsters are defined in ServerData/Db/Monsters.csv and have an ID starting with 6000 onwards, you can change the sprite field here or remove the monster entry entirely (the server will start with ignorable warnings). Remember when making changes to the server data to run updateclient.bat afterwards so the client remains up to date.
+* A number of custom monsters exist within the project for which existing sprites do not exist, but like the other RO sprites these are excluded to avoid the project holding copywritten material. If you don't do something with these monsters they will appear in game with the default poring sprite so you may want to matching sprites for these monsters, adjust the sprite they use to other monsters, or simply remove them. These monsters are defined in ServerData/Db/Monsters.csv and have an ID starting with 6000 onwards, you can change the sprite field here or remove the monster entry entirely (the server will start with ignorable warnings). Remember when making changes to the server data to run the platform-specific updater afterwards so the client remains up to date.
 
 ## Contribution Guidelines
 
@@ -45,4 +45,3 @@ When working on the project, please be sure to take note of the following guidel
 * If you're fully replacing or upgrading existing features (upgrading unity, replacing core systems like UI or shaders) please consult in the discord first to ensure it's something we want to do.
 * AI Code: I have no bias for code submitted as long as it is clean, readable, and free of obvious issues. However please write your pull requests by hand.
 * AI Art: I'd prefer AI art assets not be committed to the project repository, only assets you've created yourself or properly sourced royalty free assets. With issues surrounding generative AI and the fact that all downstream projects would be affected I'd simply rather not deal with it.
-

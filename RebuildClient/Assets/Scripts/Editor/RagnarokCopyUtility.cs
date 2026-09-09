@@ -15,16 +15,16 @@ namespace Assets.Editor
     {
         private static readonly string[] RagnarokConfigFiles =
         {
-            "Assets/StreamingAssets/ClientConfigGenerated/maps.json",
-            "Assets/StreamingAssets/ClientConfigGenerated/monsterclass.json",
-            "Assets/StreamingAssets/ClientConfigGenerated/monsterdatabase.json",
-            "Assets/StreamingAssets/ClientConfigGenerated/npcdatabase.json",
-            "Assets/StreamingAssets/ClientConfigGenerated/items.json",
-            "Assets/StreamingAssets/ClientConfigGenerated/playerclass.json",
-            "Assets/StreamingAssets/ClientConfigGenerated/skillinfo.json",
-            "Assets/StreamingAssets/ClientConfigGenerated/skilltree.json",
-            "Assets/StreamingAssets/ClientConfigGenerated/effects.json",
-            "Assets/StreamingAssets/ClientConfig/headdata.json"
+            Path.Combine(Application.dataPath, "StreamingAssets", "ClientConfigGenerated", "maps.json"),
+            Path.Combine(Application.dataPath, "StreamingAssets", "ClientConfigGenerated", "monsterclass.json"),
+            Path.Combine(Application.dataPath, "StreamingAssets", "ClientConfigGenerated", "monsterdatabase.json"),
+            Path.Combine(Application.dataPath, "StreamingAssets", "ClientConfigGenerated", "npcdatabase.json"),
+            Path.Combine(Application.dataPath, "StreamingAssets", "ClientConfigGenerated", "items.json"),
+            Path.Combine(Application.dataPath, "StreamingAssets", "ClientConfigGenerated", "playerclass.json"),
+            Path.Combine(Application.dataPath, "StreamingAssets", "ClientConfigGenerated", "skillinfo.json"),
+            Path.Combine(Application.dataPath, "StreamingAssets", "ClientConfigGenerated", "skilltree.json"),
+            Path.Combine(Application.dataPath, "StreamingAssets", "ClientConfigGenerated", "effects.json"),
+            Path.Combine(Application.dataPath, "StreamingAssets", "ClientConfig", "headdata.json")
         };
 
         private sealed class ImportSelection
@@ -95,6 +95,8 @@ namespace Assets.Editor
                 var selection = BuildImportSelection(profile, dataDir, selectionErrors);
                 var copied = CopyRawFiles(dataDir, selection);
                 copied += ImportCommonResources(dataDir);
+
+                RepairJobSpriteLayout();
 
                 EffectStrImporter.Import(selection.EffectNames);
                 RagnarokMapImporterWindow.ImportAllMissingMaps(selection.Maps);
@@ -379,12 +381,12 @@ namespace Assets.Editor
             {
                 copied += CopySpritePair(
                     Path.Combine(dataDir, "sprite/인간족/몸통/남"),
-                    Path.GetDirectoryName(job.SpriteMale),
+                    Path.Combine(Application.dataPath, "Sprites", "Characters", "BodyMale"),
                     Path.GetFileNameWithoutExtension(job.SpriteMale)
                 );
                 copied += CopySpritePair(
                     Path.Combine(dataDir, "sprite/인간족/몸통/여"),
-                    Path.GetDirectoryName(job.SpriteFemale),
+                    Path.Combine(Application.dataPath, "Sprites", "Characters", "BodyFemale"),
                     Path.GetFileNameWithoutExtension(job.SpriteFemale)
                 );
 
@@ -498,6 +500,8 @@ namespace Assets.Editor
 
             foreach (var mapping in RagnarokClientDataImportDefinitions.JobSpriteMappings)
                 CopyJobProfileSprites(dataDir, mapping);
+
+            RepairJobSpriteLayout();
 
             foreach (var file in RagnarokClientDataImportDefinitions.MiscellaneousFiles)
                 CopySingleFile(Path.Combine(dataDir, file.SourceRelativePath), file.DestinationPath);

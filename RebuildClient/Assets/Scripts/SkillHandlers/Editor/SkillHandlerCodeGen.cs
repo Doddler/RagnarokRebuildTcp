@@ -7,6 +7,7 @@ using System.Text;
 using RebuildSharedData.Enum;
 using UnityEditor;
 using UnityEditor.Compilation;
+using UnityEngine;
 
 namespace Assets.Scripts.SkillHandlers.Editor
 {
@@ -20,14 +21,14 @@ namespace Assets.Scripts.SkillHandlers.Editor
             var code = new StringBuilder();
 
             code.Append("using Assets.Scripts.SkillHandlers.Handlers;\n\n");
-            
+
             code.Append("namespace Assets.Scripts.SkillHandlers\n{\n\tpublic static partial class ClientSkillHandler\n\t{\n\t\tstatic ClientSkillHandler()\n\t\t{\n");
             code.Append($"\t\t\thandlers = new SkillHandlerBase[{count}];\n");
 
             var handlers = new List<string>();
             for (var i = 0; i < count; i++)
                 handlers.Add($"\t\t\thandlers[{i}] = new DefaultSkillHandler();");
-            
+
             //var handlers = new SkillHandlerBase[count];
 
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
@@ -48,9 +49,14 @@ namespace Assets.Scripts.SkillHandlers.Editor
                 code.Append(l).Append("\n");
 
             code.Append("\t\t}\n\t}\n}\n");
-            
-            File.WriteAllText(@"Assets\Scripts\SkillHandlers\ClientSkillHandlerGenerated.cs", code.ToString());
-            
+
+            var outputPath = Path.Combine(
+                Application.dataPath,
+                "Scripts",
+                "SkillHandlers",
+                "ClientSkillHandlerGenerated.cs");
+            File.WriteAllText(outputPath, code.ToString());
+
             CompilationPipeline.RequestScriptCompilation();
         }
     }
