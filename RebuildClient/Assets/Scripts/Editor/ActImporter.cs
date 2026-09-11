@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using Assets.Editor;
 using Assets.Scripts;
 using Assets.Scripts.MapEditor.Editor;
@@ -29,7 +30,10 @@ public class ActImporter : ScriptedImporter
 
         foreach (var file in Directory.GetFiles(dir))
         {
-            if (string.Equals(Path.GetFileName(file), fileName, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(
+                    Path.GetFileName(file).Normalize(NormalizationForm.FormC),
+                    fileName.Normalize(NormalizationForm.FormC),
+                    StringComparison.OrdinalIgnoreCase))
                 return file.Replace("\\", "/");
         }
 

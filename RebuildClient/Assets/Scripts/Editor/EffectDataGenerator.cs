@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Assets.Scripts.Effects;
 using UnityEditor;
+using UnityEngine;
 
 namespace Assets.Editor
 {
@@ -80,16 +81,21 @@ namespace Assets.Editor
             text.Add(Indent(1) + "{");
             text.Add(Indent(2) + "static RagnarokEffectData()");
             text.Add(Indent(2) + "{");
-            
-            foreach(var handler in handlers)
+
+            foreach (var handler in handlers)
                 text.Add(Indent(3) + handler);
-            
+
             text.Add(Indent(2) + "}");
             text.Add(Indent(1) + "}");
             text.Add("}");
-            
-            File.WriteAllLines($"Assets\\Scripts\\Effects\\RagnarokEffectData.Generated.cs", text);
-    }
+
+            var outputPath = Path.Combine(
+                Application.dataPath,
+                "Scripts",
+                "Effects",
+                "RagnarokEffectData.Generated.cs");
+            File.WriteAllLines(outputPath, text);
+        }
 
         private static string Indent(int indentCount)
         {

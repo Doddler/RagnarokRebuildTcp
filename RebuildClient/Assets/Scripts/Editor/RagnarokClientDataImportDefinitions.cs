@@ -2,8 +2,18 @@ namespace Assets.Editor
 {
     internal static class RagnarokClientDataImportDefinitions
     {
-        internal const string MapConfigurationPath = "Assets/StreamingAssets/ClientConfigGenerated/maps.json";
-        internal const string MapSceneDirectory = "Assets/Scenes/Maps";
+        internal static string MapConfigurationPath =>
+            System.IO.Path.Combine(
+                UnityEngine.Application.dataPath,
+                "StreamingAssets",
+                "ClientConfigGenerated",
+                "maps.json");
+
+        internal static string MapSceneDirectory =>
+            System.IO.Path.Combine(
+                UnityEngine.Application.dataPath,
+                "Scenes",
+                "Maps");
         internal const string WaterSourceRelativePath = "texture/워터";
         internal const string WaterDestinationDirectory = "Assets/Maps/Texture/Water";
 

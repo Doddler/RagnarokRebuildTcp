@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Assets.Scripts;
 using Assets.Scripts.Editor;
 using Assets.Scripts.MapEditor.Editor;
@@ -45,6 +46,10 @@ namespace Assets.Editor
 
         private static string UpdateSpriteName(string name)
         {
+            // macOS commonly exposes extracted Korean filenames in decomposed
+            // Unicode form. Normalize before matching the Korean prefixes so
+            // weapon paths are renamed to the English runtime paths.
+            name = name.Normalize(NormalizationForm.FormC);
             name = name.Replace("성직자_", "Acolyte_");
             name = name.Replace("궁수_", "Archer_");
             name = name.Replace("마법사_", "Mage_");
@@ -132,7 +137,7 @@ namespace Assets.Editor
                 return true;
             }
 
-            if (!TestPath("prontera.gat") || !TestPath(@"texture\워터\water000.jpg"))
+            if (!TestPath("prontera.gat") || !TestPath(Path.Combine("texture", "워터", "water000.jpg")))
                 return;
 
             var prompt2 = @"This import process will copy files from your data folder into this project. "
@@ -290,28 +295,35 @@ namespace Assets.Editor
 
         private static int CopySpritePair(string sourceDirectory, string destinationDirectory, string spriteName)
         {
+            destinationDirectory = ResolveProjectPath(destinationDirectory);
+            Directory.CreateDirectory(destinationDirectory);
+
             if (!Directory.Exists(sourceDirectory))
             {
-                Debug.LogWarning($"[Development Copy] Sprite source directory not found: {sourceDirectory}");
+                Debug.LogWarning($"[Development Copy] Sprite source directory not found: {sourceDirectory}; destination: {destinationDirectory}");
                 return 0;
             }
 
             var copied = 0;
+            var normalizedSpriteName = spriteName.Normalize(NormalizationForm.FormC);
             foreach (var extension in new[] { ".spr", ".act" })
             {
-                var source = Directory.GetFiles(sourceDirectory, "*" + extension, SearchOption.TopDirectoryOnly)
+                var source = Directory.GetFiles(sourceDirectory, "*", SearchOption.TopDirectoryOnly)
                     .FirstOrDefault(path => string.Equals(
-                        Path.GetFileNameWithoutExtension(path),
-                        spriteName,
+                        Path.GetExtension(path),
+                        extension,
+                        StringComparison.OrdinalIgnoreCase) && string.Equals(
+                        Path.GetFileNameWithoutExtension(path).Normalize(NormalizationForm.FormC),
+                        normalizedSpriteName,
                         StringComparison.OrdinalIgnoreCase
                     ));
                 if (source == null)
                 {
-                    Debug.LogWarning($"[Development Copy] Optional sprite file not found: {spriteName}{extension}");
+                    Debug.LogWarning($"[Development Copy] Sprite file not found: {Path.Combine(sourceDirectory, normalizedSpriteName + extension)}; destination: {destinationDirectory}");
                     continue;
                 }
 
-                if (CopyFileIfMissing(source, Path.Combine(destinationDirectory, Path.GetFileName(source))))
+                if (CopyFileIfMissing(source, Path.Combine(destinationDirectory, normalizedSpriteName + extension)))
                     copied++;
             }
 
@@ -320,6 +332,8 @@ namespace Assets.Editor
 
         private static bool CopyFileIfMissing(string sourcePath, string destinationPath)
         {
+            destinationPath = ResolveProjectPath(destinationPath);
+
             if (!File.Exists(sourcePath) || File.Exists(destinationPath))
                 return false;
 
@@ -332,13 +346,16 @@ namespace Assets.Editor
 
         private static void RunPostCopyProcessing(bool openLightingManager)
         {
-            AssetDatabase.Refresh();
+            AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+
+            RepairJobSpriteLayout();
 
             EffectStrImporter.Import(); //effects
             EffectStrImporter.ImportEffectTextures();
             RagnarokMapImporterWindow.ImportWater();
             RagnarokMapImporterWindow.ImportAllMissingMaps();
             ItemIconImporter.ImportItems();
+            RagnarokMapImporterWindow.UpdateAddressables(processModels: false);
 
             if (openLightingManager)
                 RoLightingManagerWindow.CreateOrOpen();
@@ -390,15 +407,23 @@ namespace Assets.Editor
             bool maleFemaleSplit,
             Func<string, string> updateFileName)
         {
-            var relativePath = Path.GetRelativePath(sourceDirectory, sourcePath);
+            var relativePath = Path.GetRelativePath(sourceDirectory, sourcePath)
+                .Replace('\\', '/')
+                .Normalize(NormalizationForm.FormC);
             var destinationPath = Path.Combine(destinationDirectory, relativePath);
 
             if (maleFemaleSplit)
             {
-                if (relativePath.Contains("_남_"))
+                var fileName = Path.GetFileName(relativePath);
+                var isMale = fileName.Contains("_남_", StringComparison.Ordinal) ||
+                             fileName.Contains("_M_", StringComparison.Ordinal);
+                var isFemale = fileName.Contains("_여_", StringComparison.Ordinal) ||
+                               fileName.Contains("_F_", StringComparison.Ordinal);
+
+                if (isMale)
                     destinationPath = Path.Combine(destinationDirectory, "Male", relativePath);
 
-                if (relativePath.Contains("_여_"))
+                if (isFemale)
                     destinationPath = Path.Combine(destinationDirectory, "Female", relativePath);
             }
 
@@ -408,7 +433,7 @@ namespace Assets.Editor
             if (Path.GetExtension(sourcePath).Equals(".bmp", StringComparison.OrdinalIgnoreCase))
                 destinationPath = Path.ChangeExtension(destinationPath, ".png");
 
-            return destinationPath;
+            return destinationPath.Normalize(NormalizationForm.FormC);
         }
 
         [MenuItem("Ragnarok/Client Data Health Check", priority = 2)]
@@ -510,6 +535,7 @@ namespace Assets.Editor
 
             private static string UpdateJobSpriteName(string path)
             {
+                path = path.Normalize(NormalizationForm.FormC);
                 foreach (var mapping in RagnarokClientDataImportDefinitions.JobSpriteMappings)
                     path = path.Replace(mapping.SourceName, mapping.DestinationName);
 
@@ -1246,6 +1272,7 @@ namespace Assets.Editor
 
         private static void CopySingleFile(string sourcePath, string destinationPath)
         {
+            destinationPath = ResolveProjectPath(destinationPath);
             Debug.Log($"[CopySingleFile] Attempting to copy:\n    sourcePath = {sourcePath}\n    destinationPath = {destinationPath}");
 
             var resolvedDestinationPath = destinationPath;
@@ -1287,6 +1314,112 @@ namespace Assets.Editor
             catch (Exception exception)
             {
                 Debug.LogError($"[CopySingleFile] Failed to copy {sourcePath} → {resolvedDestinationPath}\nException: {exception}");
+            }
+        }
+
+        private static string ResolveProjectPath(string path)
+        {
+            if (Path.IsPathRooted(path))
+                return path;
+
+            var normalizedPath = path.Replace('/', Path.DirectorySeparatorChar);
+            var assetsPrefix = "Assets" + Path.DirectorySeparatorChar;
+            if (normalizedPath.Equals("Assets", StringComparison.OrdinalIgnoreCase))
+                return Application.dataPath;
+
+            if (normalizedPath.StartsWith(assetsPrefix, StringComparison.OrdinalIgnoreCase))
+                return Path.Combine(Application.dataPath, normalizedPath.Substring(assetsPrefix.Length));
+
+            return path;
+        }
+
+        private static void RepairJobSpriteLayout()
+        {
+            RepairJobSpriteRoot("Weapons");
+            RepairJobSpriteRoot("Shields");
+
+            AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+            DeleteGeneratedJobSpriteImports("Weapons");
+            DeleteGeneratedJobSpriteImports("Shields");
+            AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+
+            ImportCanonicalJobSprites("Weapons");
+            ImportCanonicalJobSprites("Shields");
+            AssetDatabase.SaveAssets();
+        }
+
+        private static void RepairJobSpriteRoot(string spriteRoot)
+        {
+            var root = Path.Combine(Application.dataPath, "Sprites", spriteRoot);
+            if (!Directory.Exists(root))
+                return;
+
+            foreach (var jobDirectory in Directory.GetDirectories(root))
+                foreach (var sourcePath in Directory.GetFiles(jobDirectory, "*", SearchOption.TopDirectoryOnly))
+                {
+                    var extension = Path.GetExtension(sourcePath);
+                    if (!extension.Equals(".spr", StringComparison.OrdinalIgnoreCase) &&
+                        !extension.Equals(".act", StringComparison.OrdinalIgnoreCase))
+                        continue;
+
+                    var fileName = UpdateSpriteName(Path.GetFileName(sourcePath));
+                    var genderFolder = GetGenderFolder(fileName);
+                    if (genderFolder == null)
+                        continue;
+
+                    var destinationDirectory = Path.Combine(jobDirectory, genderFolder);
+                    Directory.CreateDirectory(destinationDirectory);
+                    MoveFileWithMeta(sourcePath, Path.Combine(destinationDirectory, fileName));
+                }
+        }
+
+        private static string GetGenderFolder(string fileName)
+        {
+            if (fileName.Contains("_남_", StringComparison.Ordinal) ||
+                fileName.Contains("_M_", StringComparison.Ordinal))
+                return "Male";
+            if (fileName.Contains("_여_", StringComparison.Ordinal) ||
+                fileName.Contains("_F_", StringComparison.Ordinal))
+                return "Female";
+            return null;
+        }
+
+        private static void MoveFileWithMeta(string sourcePath, string destinationPath)
+        {
+            if (File.Exists(destinationPath))
+            {
+                Debug.LogWarning($"[Sprite Repair] Destination already exists; keeping source: {destinationPath}");
+                return;
+            }
+
+            File.Move(sourcePath, destinationPath);
+            var sourceMeta = sourcePath + ".meta";
+            var destinationMeta = destinationPath + ".meta";
+            if (File.Exists(sourceMeta) && !File.Exists(destinationMeta))
+                File.Move(sourceMeta, destinationMeta);
+        }
+
+        private static void DeleteGeneratedJobSpriteImports(string spriteRoot)
+        {
+            var importedRoot = Path.Combine("Assets", "Sprites", "Imported", spriteRoot).Replace('\\', '/');
+            if (AssetDatabase.IsValidFolder(importedRoot))
+                AssetDatabase.DeleteAsset(importedRoot);
+        }
+
+        private static void ImportCanonicalJobSprites(string spriteRoot)
+        {
+            var root = Path.Combine(Application.dataPath, "Sprites", spriteRoot);
+            if (!Directory.Exists(root))
+                return;
+
+            foreach (var actPath in Directory.GetFiles(root, "*.act", SearchOption.AllDirectories))
+            {
+                var normalizedPath = actPath.Normalize(NormalizationForm.FormC);
+                if (GetGenderFolder(Path.GetFileName(normalizedPath)) == null)
+                    continue;
+
+                var projectPath = FileUtil.GetProjectRelativePath(normalizedPath).Replace('\\', '/');
+                ActImporter.ImportActFile(projectPath);
             }
         }
 

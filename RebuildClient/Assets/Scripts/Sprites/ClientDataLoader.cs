@@ -229,7 +229,14 @@ namespace Assets.Scripts.Sprites
                 foreach (var assetName in assetList)
                 {
                     var path = Path.Combine(Application.streamingAssetsPath, assetName);
-                    using UnityWebRequest www = UnityWebRequest.Get(path);
+                    // UnityWebRequest requires a file:// URI for local files. This is
+                    // especially important in the editor on macOS and Linux, where
+                    // Application.streamingAssetsPath is an absolute filesystem path.
+                    var requestPath = path;
+                    if (Application.isEditor && !path.Contains("://", StringComparison.Ordinal))
+                        requestPath = new Uri(path).AbsoluteUri;
+
+                    using UnityWebRequest www = UnityWebRequest.Get(requestPath);
 
                     yield return www.SendWebRequest();
                     if (www.result == UnityWebRequest.Result.Success)

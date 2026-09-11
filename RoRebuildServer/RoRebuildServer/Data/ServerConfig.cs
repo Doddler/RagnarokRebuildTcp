@@ -1,4 +1,5 @@
-﻿using RoRebuildServer.Data.Config;
+﻿using System.IO;
+using RoRebuildServer.Data.Config;
 
 namespace RoRebuildServer.Data;
 
@@ -23,7 +24,14 @@ public static class ServerConfig
     public static T GetConfigSection<T>()
     {
         configuration ??= GetConfig();
-        return configuration.GetSection(typeof(T).Name).Get<T>()!;
+        var result = configuration.GetSection(typeof(T).Name).Get<T>()!;
+        if (result is ServerDataConfig dataConfig)
+        {
+            dataConfig.DataPath = ResolveConfiguredPath(dataConfig.DataPath);
+            dataConfig.WalkPathData = ResolveConfiguredPath(dataConfig.WalkPathData);
+        }
+
+        return result;
     }
 
 
@@ -31,6 +39,40 @@ public static class ServerConfig
     {
         configuration ??= GetConfig();
         return configuration.GetSection(sectionName).Get<T>()!;
+    }
+
+    private static string ResolveConfiguredPath(string path)
+    {
+        if (Path.IsPathRooted(path))
+            return path;
+
+        // Configuration files are copied beside the compiled server, while
+        // development data lives beside the server project. Try the launch
+        // directory and each parent of the compiled output so relative paths
+        // work from dotnet run, an IDE, and a published deployment alike.
+        var candidates = new[]
+        {
+            Directory.GetCurrentDirectory(),
+            AppDomain.CurrentDomain.BaseDirectory,
+            Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)?.FullName,
+            Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)?.Parent?.FullName,
+            Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)?.Parent?.Parent?.FullName,
+            Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)?.Parent?.Parent?.Parent?.FullName,
+        };
+
+        foreach (var basePath in candidates)
+        {
+            if (string.IsNullOrWhiteSpace(basePath))
+                continue;
+
+            var candidate = Path.GetFullPath(Path.Combine(basePath, path));
+            if (Directory.Exists(candidate))
+                return candidate;
+        }
+
+        // Preserve the configured value semantics, but make the eventual
+        // error report show the exact path the server attempted.
+        return Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), path));
     }
 
     public static T GetConfigValue<T>(string name)
