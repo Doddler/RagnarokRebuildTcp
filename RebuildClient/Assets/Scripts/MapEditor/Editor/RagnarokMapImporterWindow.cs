@@ -28,9 +28,19 @@ namespace Assets.Scripts.MapEditor.Editor
 
         public static void ImportAllMissingMaps()
         {
+            ImportAllMissingMaps(null);
+        }
+
+        public static void ImportAllMissingMaps(IEnumerable<string> mapCodes)
+        {
             var wrapper = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/maps.json"));
 
-            var maps = wrapper.Items;
+            var selectedMapCodes = mapCodes == null
+                ? null
+                : new HashSet<string>(mapCodes, StringComparer.OrdinalIgnoreCase);
+            IEnumerable<ClientMapEntry> maps = wrapper.Items;
+            if (selectedMapCodes != null)
+                maps = maps.Where(map => selectedMapCodes.Contains(map.Code));
 
             if (!Directory.Exists("Assets/Scenes/Maps/"))
                 Directory.CreateDirectory("Assets/Scenes/Maps/");

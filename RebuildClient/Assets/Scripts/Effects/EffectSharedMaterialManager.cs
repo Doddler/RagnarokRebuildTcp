@@ -43,6 +43,7 @@ namespace Assets.Scripts.Effects
         StoneMaterial,
         StoneMaterialNoZCheck,
         FireRing,
+        WhiteRing,
         SightEffect,
         WaterBallEffect,
         ShadowMaterial,
@@ -75,6 +76,7 @@ namespace Assets.Scripts.Effects
         RingRed,
         RingBlue,
         RingYellow,
+        RingWhite,
         Lens2,
         EffectTextureMax
     }
@@ -204,6 +206,7 @@ namespace Assets.Scripts.Effects
                 EffectTextureType.MagicRed => "magic_red",
                 EffectTextureType.MagicGreen => "magic_green",
                 EffectTextureType.RingYellow => "ring_yellow",
+                EffectTextureType.RingWhite => "ring_white",
                 EffectTextureType.AlphaDown => "alpha_down",
                 EffectTextureType.AlphaCenter => "alpha_center",
                 EffectTextureType.MagicViolet => "magic_violet",
@@ -360,6 +363,9 @@ namespace Assets.Scripts.Effects
                         break;
                     case EffectMaterialType.FireRing:
                         SetUpTextureMaterial(mat, ShaderCache.Instance.PerspectiveAlphaShader, GetOrLoadEffectTexture(EffectTextureType.RingYellow));
+                        break;
+                    case EffectMaterialType.WhiteRing:
+                        SetUpTextureMaterial(mat, ShaderCache.Instance.AdditiveShader, GetOrLoadEffectTexture(EffectTextureType.RingWhite));
                         break;
                     case EffectMaterialType.TeleportPillar:
                         SetUpTextureMaterial(mat, ShaderCache.Instance.AdditiveShader, GetOrLoadEffectTexture(EffectTextureType.MagicViolet),

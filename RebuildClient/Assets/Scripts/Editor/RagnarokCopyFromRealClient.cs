@@ -5,12 +5,14 @@ using System.Linq;
 using Assets.Scripts;
 using Assets.Scripts.Editor;
 using Assets.Scripts.MapEditor.Editor;
+using Assets.Scripts.Sprites;
+using RebuildSharedData.ClientTypes;
 using UnityEditor;
 using UnityEngine;
 
 namespace Assets.Editor
 {
-    public class RagnarokCopyFromRealClient : EditorWindow
+    public partial class RagnarokCopyFromRealClient : EditorWindow
     {
         public static void TestCopy()
         {
@@ -276,6 +278,49 @@ namespace Assets.Editor
             CreateTemporarySpriteIfRequired("poison_spore", "deathspore");
 
             RunPostCopyProcessing(openLightingManager: true);
+        }
+
+
+        private static int CopySpritePair(string sourceDirectory, string destinationDirectory, string spriteName)
+        {
+            if (!Directory.Exists(sourceDirectory))
+            {
+                Debug.LogWarning($"[Development Copy] Sprite source directory not found: {sourceDirectory}");
+                return 0;
+            }
+
+            var copied = 0;
+            foreach (var extension in new[] { ".spr", ".act" })
+            {
+                var source = Directory.GetFiles(sourceDirectory, "*" + extension, SearchOption.TopDirectoryOnly)
+                    .FirstOrDefault(path => string.Equals(
+                        Path.GetFileNameWithoutExtension(path),
+                        spriteName,
+                        StringComparison.OrdinalIgnoreCase
+                    ));
+                if (source == null)
+                {
+                    Debug.LogWarning($"[Development Copy] Optional sprite file not found: {spriteName}{extension}");
+                    continue;
+                }
+
+                if (CopyFileIfMissing(source, Path.Combine(destinationDirectory, Path.GetFileName(source))))
+                    copied++;
+            }
+
+            return copied;
+        }
+
+        private static bool CopyFileIfMissing(string sourcePath, string destinationPath)
+        {
+            if (!File.Exists(sourcePath) || File.Exists(destinationPath))
+                return false;
+
+            var destinationDirectory = Path.GetDirectoryName(destinationPath);
+            if (!string.IsNullOrWhiteSpace(destinationDirectory))
+                Directory.CreateDirectory(destinationDirectory);
+            File.Copy(sourcePath, destinationPath);
+            return true;
         }
 
         private static void RunPostCopyProcessing(bool openLightingManager)

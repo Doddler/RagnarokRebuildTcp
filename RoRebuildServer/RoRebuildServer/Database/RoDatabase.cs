@@ -217,7 +217,7 @@ public static class RoDatabase
     public static void EnqueueDbRequest(IDbRequest request)
     {
         if (!dbRequestChannel.Writer.TryWrite(request))
-            ServerLogger.LogError("Failed to enque a database request!");
+            ServerLogger.LogError("Failed to enqueue a database request!");
     }
 
     private static async Task PerformDatabaseRequests()

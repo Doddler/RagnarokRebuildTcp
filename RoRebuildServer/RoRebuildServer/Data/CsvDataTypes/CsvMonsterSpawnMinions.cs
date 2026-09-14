@@ -8,4 +8,5 @@ public class CsvMonsterSpawnMinions
     public string Minion { get; set; }
     public int Count { get; set; }
     public bool InitialGivesExp { get; set; }
+    public string Feature { get; set; }
 }

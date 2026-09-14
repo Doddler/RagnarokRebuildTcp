@@ -54,7 +54,7 @@ public class ActImporter : ScriptedImporter
         //var palettePath = Path.Combine("G:\\Games\\RagnarokJP\\data\\palette\\몸\\costume_1", $"{basename}_0_1.pal");
         var palettePath = Path.Combine(dir, "Palette/");
         var palettes = new List<string>();
-        
+
         for (var i = 0; i < 10; i++)
         {
             var pName = Path.Combine(palettePath, $"{baseName}_{i}_1.pal").Replace("\\", "/");
@@ -129,7 +129,7 @@ public class ActImporter : ScriptedImporter
             : Path.Combine(dataDir, "imf/", baseName + ".imf");
         if (imfPath != null && !File.Exists(imfPath))
             imfPath = null;
-        
+
         var actLoader = new RagnarokActLoader();
         var actions = actLoader.Load(spriteLoader, actName, imfPath);
 
@@ -254,7 +254,7 @@ public class ActImporter : ScriptedImporter
 
         asset.Size = Mathf.CeilToInt(maxExtent);
         asset.AverageWidth = totalWidth / widthCount;
-        
+
         //ok so this is a giant shitshow. We want to know where to display emotes, cast bars, and npcs above this character
         //to do so, we save the highest y value of the first frame of the first action.
         //a lot of monsters use a high overhead attack which we don't want to count, so using the idle pose is probably safer
@@ -285,8 +285,6 @@ public class ActImporter : ScriptedImporter
                 Debug.Log($"Couldn't process sitting height for sprite {asset.Name}");
             }
         }
-        
-        
     }
 }
 
@@ -295,11 +293,16 @@ public class ActPostProcessor : AssetPostprocessor
     static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths,
         bool didDomainReload)
     {
+        // preserves normal processing when .act files are copied or changed
+        // but skips a mass regeneration caused by exiting Safe Mode.
+        if (didDomainReload)
+            return;
+
         foreach (var importedAsset in importedAssets)
         {
             if (!importedAsset.EndsWith(".act", StringComparison.OrdinalIgnoreCase))
                 continue;
-            
+
             var spritePath = ActImporter.ResolveSiblingFileCaseInsensitive(Path.Combine(Path.GetDirectoryName(importedAsset), Path.GetFileNameWithoutExtension(importedAsset) + ".spr"));
             if (!File.Exists(spritePath))
             {

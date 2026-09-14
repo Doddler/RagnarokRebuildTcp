@@ -40,7 +40,7 @@ public class PacketRandomTeleport : IClientPacketHandler
             p = area.RandomInArea();
             //p = new Position(GameRandom.NextInclusive(5, map.Width - 5), GameRandom.NextInclusive(5, map.Height - 5));
             count++;
-        } while (!map.WalkData.IsCellWalkable(p) && count < 50);
+        } while ((!map.WalkData.IsCellWalkable(p) || map.HasNpcTouchEventAtPosition(p)) && count < 50);
 
         if (count >= 50)
         {

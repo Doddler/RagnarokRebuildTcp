@@ -81,6 +81,12 @@ public class InboundMessage : IBinaryMessageReader
         return ret;
     }
 
+    public byte PeekFirstByte()
+    {
+        VerifyBufferSize(8);
+        return Message[0];
+    }
+
     public byte[] ReadBytes(int len)
     {
         throw new NotImplementedException();

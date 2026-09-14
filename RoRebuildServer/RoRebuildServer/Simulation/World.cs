@@ -38,7 +38,7 @@ public class World
     private Dictionary<string, Entity> playerNameLookup = new();
     private Dictionary<string, Entity> globalSignalNpcs = new();
 
-    private Dictionary<string, int> worldMapInstanceLookup = new();
+    private Dictionary<string, Instance> worldMapInstanceLookup = new();
     private ConcurrentBag<Entity> removeList = new();
 
     private ConcurrentDictionary<Guid, Entity> playerList = new();
@@ -91,8 +91,8 @@ public class World
             foreach (var map in instanceEntry.Maps)
             {
                 if (worldMapInstanceLookup.ContainsKey(map))
-                    ServerLogger.LogWarning($"Could not add map '{map}' to instance {instanceEntry.Name} because that map is already assigned to the instance {Instances[worldMapInstanceLookup[map]].Name}");
-                worldMapInstanceLookup.Add(map, id);
+                    ServerLogger.LogWarning($"Could not add map '{map}' to instance {instanceEntry.Name} because that map is already assigned to the instance {worldMapInstanceLookup[map].Name}");
+                worldMapInstanceLookup.Add(map, instance);
                 mapCount++;
             }
         }
@@ -160,7 +160,10 @@ public class World
                 Instances[i].Update();
         }
         else
+        {
+            Instances.Sort((a, b) => a.LastUpdateTime.CompareTo(b.LastUpdateTime));
             Parallel.ForEach(Instances, instance => instance.Update());
+        }
 
 #if DEBUG
         ZoneWorker.IsMainThread = true;
@@ -821,9 +824,9 @@ public class World
 
     public bool TryGetWorldMapByName(string mapName, [NotNullWhen(true)] out Map? map)
     {
-        if (worldMapInstanceLookup.TryGetValue(mapName, out var instanceId))
+        if (worldMapInstanceLookup.TryGetValue(mapName, out var instance))
         {
-            if (Instances[instanceId].MapNameLookup.TryGetValue(mapName, out map))
+            if (instance.MapNameLookup.TryGetValue(mapName, out map))
                 return true;
         }
 

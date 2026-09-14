@@ -6,6 +6,7 @@ using System.Text;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Effects.EffectHandlers.General;
+using Assets.Scripts.Effects.EffectHandlers.Skills.Crusader;
 using Assets.Scripts.Effects.EffectHandlers.StatusEffects;
 using Assets.Scripts.MapEditor;
 using Assets.Scripts.Network;
@@ -955,7 +956,7 @@ namespace Assets.Scripts
 
             if (hitLastTarget && LastTargetedEnemy.SpriteAnimator != null)
                 return LastTargetedEnemy.SpriteAnimator;
-            
+
             return closestAnim;
         }
 
@@ -1183,7 +1184,7 @@ namespace Assets.Scripts
                     case PromptType.RightClickMenu:
                         UiManager.Instance.RightClickMenuWindow.HideWindow();
                         break;
-                    //should probably add other prompts here
+                        //should probably add other prompts here
                 }
 
                 ActivePromptType = PromptType.None;
@@ -1514,6 +1515,9 @@ namespace Assets.Scripts
                     return;
                 case "Hiding":
                     HideEffect.AttachHideEffect(target);
+                    return;
+                case "GrandCross":
+                    GrandCrossEffect.Create(target);
                     return;
             }
 
@@ -2005,17 +2009,17 @@ namespace Assets.Scripts
                 if (!inInputUI && Input.GetKeyDown(KeyCode.W))
                 {
 #if UNITY_EDITOR
-                if (Input.GetKey(KeyCode.LeftShift))
-                {
-                    if (!WarpPanel.activeInHierarchy)
-                        WarpPanel.GetComponent<WarpWindow>().ShowWindow();
+                    if (Input.GetKey(KeyCode.LeftShift))
+                    {
+                        if (!WarpPanel.activeInHierarchy)
+                            WarpPanel.GetComponent<WarpWindow>().ShowWindow();
+                        else
+                            WarpPanel.GetComponent<WarpWindow>().HideWindow();
+                    }
                     else
-                        WarpPanel.GetComponent<WarpWindow>().HideWindow();
-                }
-                else
 #endif
-                    if (PlayerState.Instance.HasCart)
-                        UiManager.Instance.CartWindow.ToggleVisibility();
+                        if (PlayerState.Instance.HasCart)
+                            UiManager.Instance.CartWindow.ToggleVisibility();
                 }
 
                 //if (Input.GetKeyDown(KeyCode.S))
@@ -2105,7 +2109,7 @@ namespace Assets.Scripts
             }
 
 
-//#if !DEBUG
+            //#if !DEBUG
             if (Height > 75)
                 Height = 75;
             if (Height < 30)

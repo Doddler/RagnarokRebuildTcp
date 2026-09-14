@@ -1,0 +1,14 @@
+{
+  "name": "Full",
+  "description": "Exhaustive copy of all supported Ragnarok client data.",
+  "all": true,
+  "resources": {
+    "maps": [],
+    "items": [],
+    "jobs": [],
+    "monsters": [],
+    "npcs": [],
+    "effects": [],
+    "skills": []
+  }
+}

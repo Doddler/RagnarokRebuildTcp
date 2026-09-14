@@ -19,7 +19,7 @@ public class PacketClientTextCommand : IClientPacketHandler
 
         var type = (ClientTextCommand)msg.ReadByte();
 
-        if (type == ClientTextCommand.Adminify)
+        if (type == ClientTextCommand.Adminify && ServerConfig.OperationConfig.AllowAdminifyCommand)
         {
             var text = msg.ReadString();
             var serverPass = ServerConfig.OperationConfig.AdminifyPasscode;

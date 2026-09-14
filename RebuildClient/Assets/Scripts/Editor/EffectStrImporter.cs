@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Assets.Scripts.MapEditor.Editor;
 using Assets.Scripts.Objects;
 using RebuildSharedData.ClientTypes;
@@ -18,7 +19,7 @@ namespace Assets.Scripts.Editor
         [MenuItem("Ragnarok/Import and Update Skill Effect Atlas", false, 125)]
         public static void ImportEffectTextures()
         {
-            
+
             var atlasPath = "Assets/Textures/Resources/SkillAtlas.spriteatlasv2";
 
             if (!File.Exists(atlasPath))
@@ -26,9 +27,9 @@ namespace Assets.Scripts.Editor
 
             var atlas = SpriteAtlasAsset.Load(atlasPath);
             var atlasObj = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(atlasPath);
-            
+
             atlas.Remove(atlasObj.GetPackables());
-            
+
             var sprites = new List<Sprite>();
             sprites.Add(ImportEffectTexture("texture/effect/불화살1.tga", "FireBolt1"));
             sprites.Add(ImportEffectTexture("texture/effect/불화살2.tga", "FireBolt2"));
@@ -68,7 +69,7 @@ namespace Assets.Scripts.Editor
             sprites.Add(ImportEffectTexture("texture/effect/black_sword.bmp", "black_sword"));
             sprites.Add(ImportEffectTexture("texture/effect/thunder_plazma_blast_a.bmp", "thunder_plazma_blast_a"));
             sprites.Add(ImportEffectTexture("texture/effect/thunder_plazma_blast_b.bmp", "thunder_plazma_blast_b"));
-            
+
             ImportEffectTexture("texture/effect/대폭발.tga", "BigBang", false, "Resources");
             ImportEffectTexture("texture/effect/stone.bmp", "stone", false, "Resources");
 
@@ -78,12 +79,12 @@ namespace Assets.Scripts.Editor
             atlas.Add(sprites.ToArray());
 
             EditorUtility.SetDirty(atlasObj);
-            
+
             SpriteAtlasAsset.Save(atlas, atlasPath);
-            
+
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            
+
             var importer = AssetImporter.GetAtPath(atlasPath) as SpriteAtlasImporter;
             var settings = importer.packingSettings;
             settings.enableTightPacking = false;
@@ -93,8 +94,8 @@ namespace Assets.Scripts.Editor
             EditorUtility.SetDirty(atlas);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            
-            SpriteAtlasUtility.PackAtlases(new[] {atlasObj}, BuildTarget.StandaloneWindows64);
+
+            SpriteAtlasUtility.PackAtlases(new[] { atlasObj }, BuildTarget.StandaloneWindows64);
         }
 
         private static Sprite ImportEffectTexture(string texName, string outName = "", bool keepExisting = false, string dir = "Import")
@@ -104,17 +105,17 @@ namespace Assets.Scripts.Editor
             var srcPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, texName);
             var fName = Path.GetFileNameWithoutExtension(outName);
             var destPath = Path.Combine($"Assets/Textures/{dir}/{fName}.png");
-            
-            if(!File.Exists(srcPath))
+
+            if (!File.Exists(srcPath))
                 Debug.LogWarning($"Source texture {srcPath} not found!");
 
             if (keepExisting && File.Exists(destPath))
                 return AssetDatabase.LoadAssetAtPath<Sprite>(destPath);
-            
+
             var tex = TextureImportHelper.LoadTexture(srcPath);
             var bytes = tex.EncodeToPNG();
             File.WriteAllBytes(destPath, bytes);
-            
+
             AssetDatabase.ImportAsset(destPath, ImportAssetOptions.ForceUpdate);
             AssetDatabase.Refresh();
             //
@@ -131,9 +132,19 @@ namespace Assets.Scripts.Editor
         [MenuItem("Ragnarok/Load Effects")]
         public static void Import()
         {
+            Import(null);
+        }
+
+        public static void Import(IEnumerable<string> effectNames)
+        {
             //ImportEffectTextures();
-            
+
             var effectList = JsonUtility.FromJson<EffectTypeList>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/effects.json")).Effects;
+            if (effectNames != null)
+            {
+                var selectedEffects = new HashSet<string>(effectNames, StringComparer.OrdinalIgnoreCase);
+                effectList = effectList.Where(effect => selectedEffects.Contains(effect.Name)).ToList();
+            }
 
             if (!Directory.Exists("Assets/Effects/Prefabs/"))
                 Directory.CreateDirectory("Assets/Effects/Prefabs/");
@@ -162,7 +173,7 @@ namespace Assets.Scripts.Editor
                     try
                     {
                         Debug.Log($"Importing str animation {e.StrFile}");
-                        
+
                         var loader = new RagnarokEffectLoader();
                         var importPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, @$"texture\effect\{e.StrFile}.str");
                         var anim = loader.Load(importPath, e.Name);
@@ -177,7 +188,7 @@ namespace Assets.Scripts.Editor
                         var obj = new GameObject(e.Name);
                         var renderer = obj.AddComponent<RoEffectRenderer>();
                         var sorter = obj.AddComponent<SortingGroup>();
-                        
+
                         obj.transform.localScale = new Vector3(e.Scale, e.Scale, e.Scale);
                         //var billboard = obj.AddComponent<Billboard>();
 
@@ -191,13 +202,13 @@ namespace Assets.Scripts.Editor
                                 assetPath = $"Assets/Sounds/effect/{e.SoundFile}.ogg";
                                 clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
                             }
-                            
+
                             if (clip == null)
                             {
                                 assetPath = $"Assets/Sounds/{e.SoundFile}.wav";
                                 clip = AssetDatabase.LoadAssetAtPath<AudioClip>(assetPath);
                             }
-                            
+
                             if (clip == null)
                             {
                                 assetPath = $"Assets/Sounds/effect/{e.SoundFile}.wav";
@@ -220,7 +231,7 @@ namespace Assets.Scripts.Editor
                         renderer.Anim = anim;
                         renderer.IsLoop = e.IsLooping;
                         renderer.RandomStart = e.IsLooping;
-                        
+
                         PrefabUtility.SaveAsPrefabAssetAndConnect(obj, prefabPath, InteractionMode.AutomatedAction);
                         Object.DestroyImmediate(obj);
                     }

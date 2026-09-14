@@ -1103,7 +1103,7 @@ public partial class Monster : IEntityAutoReset
 
     public void Update()
     {
-        if (Character.Map?.PlayerCount == 0)
+        if (Character.Map?.IsAsleep ?? false)
             return;
 
         if (!IsAiActive)

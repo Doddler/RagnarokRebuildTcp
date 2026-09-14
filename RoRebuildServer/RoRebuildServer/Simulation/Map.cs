@@ -2,7 +2,9 @@
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RoRebuildServer.Data;
+using RoRebuildServer.Data.MapData;
 using RoRebuildServer.Data.Monster;
+using RoRebuildServer.Database.Domain;
 using RoRebuildServer.EntityComponents;
 using RoRebuildServer.EntityComponents.Util;
 using RoRebuildServer.EntitySystem;
@@ -15,7 +17,6 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using RoRebuildServer.Data.MapData;
 
 namespace RoRebuildServer.Simulation;
 
@@ -48,6 +49,10 @@ public class Map
     public EntityList Players { get; set; } = new EntityList(8);
     public EntityList MapImportantEntities { get; set; } = new EntityList(8);
     public Dictionary<int, int> ItemChunkLookup = new();
+
+    public bool IsAsleep;
+    private bool isOccupied;
+    private float emptyTime;
 
     private int[] ActiveAoEChunks;
 
@@ -135,6 +140,9 @@ public class Map
             //monsters and npcs
             SendAddEntityAroundCharacter(ref entity, ch, showType); //if we are a monster, tell all nearby players about us
         }
+
+        if (ch.HasCombatEntity)
+            TriggerAreaOfEffectForCharacter(ch, oldPosition, newPosition);
     }
 
     public void RefreshEntity(WorldObject ch, CharacterRemovalReason reason = CharacterRemovalReason.Refresh)
@@ -351,7 +359,6 @@ public class Map
         var c = GetChunkForPosition(ch.Position);
         c.AddEntity(ref entity, ch.Type);
 
-
         if (addToInstance)
             Instance.Entities.Add(ref entity);
 
@@ -362,6 +369,9 @@ public class Map
             Players.Add(ref entity);
             ServerLogger.Debug($"Map {Name} changed player count to {PlayerCount}.");
         }
+
+        if (ch.HasCombatEntity)
+            TriggerAreaOfEffectForCharacter(ch, new Position(-999, -999), ch.Position);
 
         entityCount++;
     }
@@ -392,6 +402,9 @@ public class Map
             Players.Add(ref entity);
             ServerLogger.Debug($"Map {Name} changed player count to {PlayerCount}.");
         }
+
+        if (ch.HasCombatEntity)
+            TriggerAreaOfEffectForCharacter(ch, new Position(-999, -999), ch.Position);
 
         entityCount++;
     }
@@ -1519,6 +1532,18 @@ public class Map
         return false;
     }
 
+    public bool HasNpcTouchEventAtPosition(Position p)
+    {
+        var c = GetChunkForPosition(p);
+        foreach (var aoe in c.AreaOfEffects)
+        {
+            if (aoe.Area.Contains(p) && aoe.Type == AoeType.NpcTouch)
+                return true;
+        }
+
+        return false;
+    }
+    
     public bool HasAreaOfEffectTypeInArea(Area area, params CharacterSkill[] skills)
     {
         area = area.ClipArea(MapBounds);
@@ -1760,12 +1785,8 @@ public class Map
 
     public void Update()
     {
-        //RunEntityUpdates();
+        //we only clear inactive entities from one chunk per frame. Pointless optimization? Maybe.
         ClearInactive(chunkCheckId);
-
-        //#if DEBUG
-        //        if (PlayerCount < 0)
-        //            throw new Exception("Player count has become an impossible value!");
 
         chunkCheckId++;
         if (chunkCheckId >= chunkWidth * chunkHeight)
@@ -1775,6 +1796,44 @@ public class Map
             MapImportantEntities.ClearInactive(); //but why risk it?
         }
 
+        //disable monster logic.
+        //Basically if a map is empty for 5 minutes, all monsters are put to sleep again.
+        //A monster with a disabled AI won't become active until a player comes on screen of it.
+        //notably monsters marked as important (visible on minimap) don't get slept
+        if (PlayerCount > 0)
+        {
+            IsAsleep = false;
+            isOccupied = true;
+        }
+
+        if (PlayerCount == 0 && isOccupied)
+        {
+            isOccupied = false;
+            emptyTime = Time.ElapsedTimeFloat;
+        }
+
+        var sleepTimer = ServerConfig.OperationConfig.MapMonsterSleepTimer;
+        if (!isOccupied && !IsAsleep && emptyTime + sleepTimer < Time.ElapsedTimeFloat)
+        {
+            IsAsleep = true;
+#if DEBUG
+            ServerLogger.Log($"Putting map {Name} to sleep as it's been unoccupied for {sleepTimer}s.");
+#endif
+
+            if (ServerConfig.OperationConfig.SleepMonsterOnEmptyMap)
+            {
+                foreach (var c in Chunks)
+                {
+                    foreach (var e in c.Monsters)
+                    {
+                        if (e.TryGet<Monster>(out var monster) && !monster.Character.IsImportant)
+                            monster.IsAiActive = false;
+                    }
+                }
+            }
+        }
+
+        //aoe touch logic
         for (var x = 0; x < chunkWidth; x++)
         {
             for (var y = 0; y < chunkHeight; y++)
@@ -1897,15 +1956,14 @@ public class Map
         return false;
     }
 
-    public Position FindRandomPositionOnMap(Position fallback)
+    public Position FindRandomPositionOnMap(Position fallback, bool checkOverlappingAoe)
     {
         var area = MapBounds.Shrink(5, 5);
-        var pos = new Position(20, 20);
 
         for (var i = 0; i < 100; i++)
         {
-            pos = area.RandomInArea();
-            if (WalkData.IsCellWalkable(pos))
+            var pos = area.RandomInArea();
+            if (WalkData.IsCellWalkable(pos) && (!checkOverlappingAoe || !HasNpcTouchEventAtPosition(pos)))
                 return pos;
         }
 
@@ -2037,6 +2095,9 @@ public class Map
         }
 
         PlayerCount = 0;
+        isOccupied = false;
+        IsAsleep = true;
+        emptyTime = Time.ElapsedTimeFloat;
 
         var id = 0;
         var fullUnwalkable = 0;
@@ -2054,7 +2115,7 @@ public class Map
                     }
                 }
 
-                if(Chunks[x + y * chunkWidth] == null!)
+                if (Chunks[x + y * chunkWidth] == null!)
                     Chunks[x + y * chunkWidth] = new Chunk();
                 Chunks[x + y * chunkWidth].Id = x + y * chunkWidth;
                 Chunks[x + y * chunkWidth].Size = ChunkSize;
@@ -2068,7 +2129,7 @@ public class Map
             }
         }
 
-        if(fullUnwalkable == mapChunkCount)
+        if (fullUnwalkable == mapChunkCount)
             ServerLogger.LogWarning($"Map {name} instantiated without any walkable tiles!");
 
         //LoadNpcs();

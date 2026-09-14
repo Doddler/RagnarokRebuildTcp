@@ -6,12 +6,37 @@ public class ServerOnlyPacketAttribute : Attribute
 
 public enum PacketType : byte
 {
-    [ServerOnlyPacket] ConnectionApproved,
-    [ServerOnlyPacket] ConnectionDenied,
+    //this set of packets all run on the main thread
     PlayerReady,
     EnterServer,
     Ping,
-    [ServerOnlyPacket] Pong,
+    DeleteCharacter,
+
+    CreateParty,
+    InvitePartyMember,
+    AcceptPartyInvite,
+    UpdateParty,
+    NotifyPlayerPartyChange,
+
+    AdminCharacterAction,
+    AdminRequestMove,
+    AdminServerAction,
+    AdminLevelUp,
+    AdminEnterServerSpecificMap,
+    AdminChangeAppearance,
+    AdminSummonMonster,
+    AdminHideCharacter,
+    AdminChangeSpeed,
+    AdminFindTarget,
+    AdminResetSkills,
+    AdminResetStats,
+    AdminCreateItem,
+
+    //packets after this point are handled by the instance the player is on
+    InstancePacketHandlerStart,
+
+    [ServerOnlyPacket] ConnectionApproved,
+    [ServerOnlyPacket] ConnectionDenied,
     [ServerOnlyPacket] CreateEntity,
     [ServerOnlyPacket] CreateEntity2,
     StartWalk,
@@ -72,19 +97,6 @@ public enum PacketType : byte
     RemoveStatusEffect,
     SocketEquipment,
 
-    AdminRequestMove,
-    AdminServerAction,
-    AdminLevelUp,
-    AdminEnterServerSpecificMap,
-    AdminChangeAppearance,
-    AdminSummonMonster,
-    AdminHideCharacter,
-    AdminChangeSpeed,
-    AdminFindTarget,
-    AdminResetSkills,
-    AdminResetStats,
-    AdminCreateItem,
-
     NpcClick,
     [ServerOnlyPacket] NpcInteraction,
     NpcAdvance,
@@ -106,17 +118,10 @@ public enum PacketType : byte
     DebugEntry,
 
     MemoMapLocation,
-    DeleteCharacter,
 
-    AdminCharacterAction,
     ChangePlayerSpecialActionState,
     [ServerOnlyPacket] RefreshGrantedSkills,
 
-    CreateParty,
-    InvitePartyMember,
-    AcceptPartyInvite,
-    UpdateParty,
-    NotifyPlayerPartyChange,
 
     SkillWithMaskedArea,
 
@@ -130,6 +135,7 @@ public enum PacketType : byte
     ResetMotion,
 
     ToggleActivatedState,
+    [ServerOnlyPacket] Pong,
 }
 
 public enum MessageType : byte

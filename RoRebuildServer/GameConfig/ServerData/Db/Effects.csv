@@ -144,3 +144,4 @@
 143,FirePillarExplosion,TRUE,TRUE,FALSE,firepillarBomb,,wizard_fire_pillar_b,0,,1,
 144,Quagmire,TRUE,TRUE,FALSE,quagmire,,,0,,1.5,
 145,WeaponPerfection,TRUE,TRUE,FALSE,weaponperfection,,black_weapon_perfection,0,,1,
+146,GrandCross,FALSE,FALSE,TRUE,,,,0,,1,

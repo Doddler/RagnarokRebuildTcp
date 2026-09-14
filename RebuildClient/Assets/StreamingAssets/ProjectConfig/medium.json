@@ -1,0 +1,14 @@
+{
+  "name": "Medium",
+  "description": "The minimum one-map setup with Novice and every first job.",
+  "all": false,
+  "resources": {
+    "maps": ["prt_fild08"],
+    "items": [501, 569, 601, 602, 611, 713, 909, 1201, 1202, 2301, 2302],
+    "jobs": ["Novice", "Swordsman", "Archer", "Mage", "Acolyte", "Merchant", "Thief"],
+    "monsters": [],
+    "npcs": [],
+    "effects": ["RedPotion", "LevelUp", "Hit"],
+    "skills": []
+  }
+}

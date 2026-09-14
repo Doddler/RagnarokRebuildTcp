@@ -29,7 +29,7 @@ Your skin is rapidly being encased in stone, lowering your agi, dex, move speed 
 Encased in stone, you are unable to perform actions and are vulnerable to fire. Lowers DEF and increases MDEF. The next hit you take will deal extra damage but end this effect.
 
 ::Provoke
-You are enraged, making you stronger but greatly lowering your defense.
+You are enraged, increasing your physical strength but greatly lowering your defense.
 
 ::ProvokeNoAtk
 You are enraged, greatly lowering your defense.

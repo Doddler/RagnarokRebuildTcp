@@ -28,6 +28,7 @@ namespace Assets.Scripts.Effects
         public Shader AdditiveShader;
         public Shader AdditiveShaderNoZTest;
         public Shader PerspectiveAlphaShader;
+        public Shader PerspectiveAdditiveShader;
         public Shader CastDecalShader;
         public Shader AdditivePulseShader;
         public Shader EffectShader;

@@ -117,7 +117,8 @@ public class LordOfVermilionObjectEvent : NpcBehaviorBase
 
         var res = src.CalculateCombatResult(target, ratio, 1, AttackFlags.Magical, CharacterSkill.LordOfVermilion, AttackElement.Wind);
         res.AttackMotionTime = 0;
-        res.Damage /= 10;
+        if (res.Damage > 0)
+            res.Damage = Math.Max(1, res.Damage / 10);
         res.HitCount = 10;
         res.Time = Time.ElapsedTimeFloat;
         res.IsIndirect = true;

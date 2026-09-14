@@ -1,0 +1,14 @@
+{
+  "name": "Minimum",
+  "description": "One-map development setup for prt_fild08 as a Novice.",
+  "all": false,
+  "resources": {
+    "maps": ["prt_fild08"],
+    "items": [501, 569, 601, 602, 611, 713, 909, 1201, 1202, 2301, 2302],
+    "jobs": ["Novice"],
+    "monsters": [],
+    "npcs": [],
+    "effects": ["RedPotion", "LevelUp", "Hit"],
+    "skills": []
+  }
+}

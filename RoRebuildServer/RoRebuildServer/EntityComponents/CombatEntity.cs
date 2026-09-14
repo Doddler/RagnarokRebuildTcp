@@ -353,7 +353,7 @@ public partial class CombatEntity : IEntityAutoReset
         if (Character.Map == null)
             return;
 
-        var pos = Character.Map.FindRandomPositionOnMap(Character.Position);
+        var pos = Character.Map.FindRandomPositionOnMap(Character.Position, Character.Type == CharacterType.Player);
 
         if (Character.Type == CharacterType.Player)
             Player.AddInputActionDelay(InputActionCooldownType.Teleport);
@@ -385,7 +385,12 @@ public partial class CombatEntity : IEntityAutoReset
                     continue;
 
                 minionCharacter.StopMovingImmediately();
-                Character.Map.TeleportEntity(ref minion, minionCharacter, Character.Map.GetRandomWalkablePositionInArea(area));
+                var targetPos = Character.Map.GetRandomWalkablePositionInArea(area);
+
+                if (targetPos == Position.Invalid)
+                    targetPos = Character.Position;
+
+                Character.Map.TeleportEntity(ref minion, minionCharacter, targetPos);
             }
         }
     }

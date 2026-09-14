@@ -176,10 +176,16 @@ Warp("gef_dun03", "geffendunwarp007", 203, 204, 4, 4, "gef_dun02", 215, 64);
 
 macro MiasmaGeffenTower00()
 {
-	SummonMobsWithRespawn(40, "FUNGUS");
+	if(IsFeatureEnabled("DoddlerCustomMonsters")) {
+		SummonMobsWithRespawn(40, "FUNGUS");
+		SummonMobsWithRespawn(3, "DEATHSPORE", 5m, 1m);
+	} else {
+		SummonMobsWithRespawn(40, "POISON_SPORE");
+	}
+	
 	SummonMobsWithRespawn(10, "ARGOS");
 	SummonMobsWithRespawn(3, "BATHORY");
-	SummonMobsWithRespawn(3, "DEATHSPORE", 5m, 1m);
+
 }
 
 macro MiasmaGeffenTower01()

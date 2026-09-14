@@ -61,10 +61,14 @@ MapConfig("pay_fild04")
 MapConfig("pay_fild05")
 {
 	CreateSpawn("DRAGON_TAIL", 2, 10m);
-	CreateSpawn("RAPTICE", 25);
-	CreateSpawn("WERE_WOLF", 1, 30m, 1m, Boss);
+	if(IsFeatureEnabled("DoddlerCustomMonsters")) {
+		CreateSpawn("RAPTICE", 25);
+		CreateSpawn("WERE_WOLF", 1, 30m, 1m, Boss);
+		CreateSpawn("POISON_SPORE", 70);
+	} else {
+		CreateSpawn("POISON_SPORE", 90);
+	}
 	CreateSpawn("POPORING", 30);
-	CreateSpawn("POISON_SPORE", 70);
 	CreateSpawn("GREEN_PLANT", 4, %(95, 147, 5, 5), 900000, 450000);
 	CreateSpawn("GREEN_PLANT", 4, %(86, 90, 5, 5), 900000, 450000);
 }

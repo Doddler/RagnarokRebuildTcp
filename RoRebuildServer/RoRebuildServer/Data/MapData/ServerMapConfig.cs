@@ -26,6 +26,7 @@ public interface IServerMapConfig
         int respawnTime);
 
     void ApplySpawnsToMap();
+    public bool IsFeatureEnabled(string feature) => ServerConfig.OperationConfig.FeatureFlags.Contains(feature);
     MapSpawnRule CreateSpawn(string mobName, int count, Area area, int respawn, int variance, SpawnCreateFlags flags = SpawnCreateFlags.None);
     MapSpawnRule? CreateSpawn(string mobName, int count, int respawn, int variance, SpawnCreateFlags flags = SpawnCreateFlags.None);
     MapSpawnRule? CreateSpawn(string mobName, int count, Area area, int respawn, SpawnCreateFlags flags = SpawnCreateFlags.None);
@@ -44,6 +45,8 @@ public class ServerMapConfig : IServerMapConfig
         Map = map;
         SpawnRules = new List<MapSpawnRule>(10);
     }
+
+    public bool IsFeatureEnabled(string feature) => ServerConfig.OperationConfig.FeatureFlags.Contains(feature);
 
     public void AttachKillEvent(string spawnId, string name, int incAmnt) { }
 

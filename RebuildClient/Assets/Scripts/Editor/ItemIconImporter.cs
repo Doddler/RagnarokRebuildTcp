@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Assets.Scripts.MapEditor.Editor;
 using Assets.Scripts.Sprites;
@@ -31,11 +32,22 @@ namespace Assets.Scripts.Editor
         [MenuItem("Ragnarok/Import Skill and Item Icons", false, 124)]
         public static void ImportItems()
         {
+            ImportItems(null, null, true);
+        }
+
+        public static void ImportItems(
+            IEnumerable<int> itemIds,
+            IEnumerable<int> skillIds,
+            bool replaceAtlas)
+        {
+            var selectedItemIds = itemIds == null ? null : new HashSet<int>(itemIds);
+            var selectedSkillIds = skillIds == null ? null : new HashSet<int>(skillIds);
             var iconNames = new List<string>();
             var convertName = new Dictionary<string, string>();
             var skills = JsonUtility.FromJson<Wrapper<SkillData>>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/skillinfo.json"));
 
-            foreach (var skill in skills.Items) { 
+            foreach (var skill in skills.Items.Where(skill => selectedSkillIds == null || selectedSkillIds.Contains((int)skill.SkillId)))
+            {
                 if (!string.IsNullOrWhiteSpace(skill.Icon) && !iconNames.Contains(skill.Icon))
                 {
                     iconNames.Add(skill.Icon);
@@ -48,7 +60,7 @@ namespace Assets.Scripts.Editor
             var equipIcons = new List<string>();
             var itemIdToCode = new Dictionary<int, string>();
 
-            foreach (var item in items.Items)
+            foreach (var item in items.Items.Where(item => selectedItemIds == null || selectedItemIds.Contains(item.Id)))
             {
                 itemIdToCode.Add(item.Id, item.Code);
                 if (!string.IsNullOrWhiteSpace(item.Sprite) && !iconNames.Contains(item.Code))
@@ -68,7 +80,19 @@ namespace Assets.Scripts.Editor
 
             //do the things
 
-            File.WriteAllText("Assets/Data/SharedItemIcons.txt", sharedItemSprites.ToString());
+            var sharedItemIconPath = "Assets/Data/SharedItemIcons.txt";
+            if (!replaceAtlas && File.Exists(sharedItemIconPath))
+            {
+                var existingMappings = new HashSet<string>(
+                    File.ReadAllLines(sharedItemIconPath).Where(line => !string.IsNullOrWhiteSpace(line))
+                );
+                foreach (var mapping in sharedItemSprites.ToString().Split('\n'))
+                    if (!string.IsNullOrWhiteSpace(mapping))
+                        existingMappings.Add(mapping.TrimEnd('\r'));
+                File.WriteAllLines(sharedItemIconPath, existingMappings.OrderBy(line => line));
+            }
+            else
+                File.WriteAllText(sharedItemIconPath, sharedItemSprites.ToString());
 
             var atlasPath = "Assets/Textures/ItemAtlas.spriteatlasv2";
             if (!File.Exists(atlasPath))
@@ -78,7 +102,8 @@ namespace Assets.Scripts.Editor
             var atlasObj = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(atlasPath);
 
 
-            atlas.Remove(atlasObj.GetPackables());
+            if (replaceAtlas)
+                atlas.Remove(atlasObj.GetPackables());
             var sprites = new List<Sprite>();
 
             var srcPath = Path.Combine(RagnarokDirectory.GetRagnarokDataDirectory, "sprite/아이템");
@@ -271,7 +296,9 @@ namespace Assets.Scripts.Editor
                     sprites.Add(sprite);
             }
 
-            var statusData = JsonUtility.FromJson<Wrapper<StatusEffectData>>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/statusinfo.json"));
+            var statusData = replaceAtlas
+                ? JsonUtility.FromJson<Wrapper<StatusEffectData>>(File.ReadAllText("Assets/StreamingAssets/ClientConfigGenerated/statusinfo.json"))
+                : new Wrapper<StatusEffectData> { Items = new StatusEffectData[0] };
 
             foreach (var status in statusData.Items)
                 if (!string.IsNullOrWhiteSpace(status.Icon) && !iconNames.Contains(status.Icon))

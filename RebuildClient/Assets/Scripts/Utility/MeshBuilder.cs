@@ -212,8 +212,10 @@ namespace Assets.Scripts.Utility
             var mesh = new Mesh();
             mesh.name = name;
 
+#if UNITY_EDITOR
             if (vertices.Count != color32s.Count && colors.Count == 0)
-                Console.WriteLine("AAAAA");
+                Debug.Log($"Mesh Builder for mesh '{name}' was not given an equal number of colors ({color32s.Count}) as verticies ({vertices.Count}).");
+#endif
 
             mesh.SetVertices(vertices);
             mesh.SetNormals(normals);

@@ -64,6 +64,8 @@ MonoBehaviour:
     type: 3}
   PerspectiveAlphaShader: {fileID: 4800000, guid: e39b7cfc0fbfd1347b2fb6508f066a7b,
     type: 3}
+  PerspectiveAdditiveShader: {fileID: 4800000, guid: 5892a0bd88c945ecbd72aa28825628ba,
+    type: 3}
   CastDecalShader: {fileID: 4800000, guid: 87df61f0fc2c10e4d885147b87c25ba0, type: 3}
   AdditivePulseShader: {fileID: 4800000, guid: fdcb07255a8a4a4e836828c58d01f1da, type: 3}
   EffectShader: {fileID: 4800000, guid: 592f9814102375d4cabf4ba2b796f002, type: 3}

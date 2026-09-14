@@ -70,6 +70,7 @@ namespace Assets.Scripts.Effects
 		Detect,
 		EarthShaker,
 		SpecialTargetMarker,
+		GrandCross,
 		AdrenalineRush,
 		MaximizePower,
 		OverThrust,
@@ -97,6 +98,7 @@ namespace Assets.Scripts.Effects
 	public enum PrimitiveType
 	{
 		AnimatedTexture2D,
+		Aura3,
 		Aura,
 		Casting3D,
 		Circle2D,
@@ -106,6 +108,7 @@ namespace Assets.Scripts.Effects
 		ExplosiveAura,
 		Flash2D,
 		ForestLight,
+		GrandCross,
 		Heal,
 		Particle3DSpline,
 		ParticleAnimatedSprite,
@@ -188,6 +191,7 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.Detect, new Assets.Scripts.Effects.EffectHandlers.Skills.Hunter.DetectEffect());
 			effectHandlers.Add(EffectType.EarthShaker, new Assets.Scripts.Effects.EffectHandlers.Skills.Custom.EarthShakerEffect());
 			effectHandlers.Add(EffectType.SpecialTargetMarker, new Assets.Scripts.Effects.EffectHandlers.Skills.Custom.SpecialTargetMarkerEffect());
+			effectHandlers.Add(EffectType.GrandCross, new Assets.Scripts.Effects.EffectHandlers.Skills.Crusader.GrandCrossEffect());
 			effectHandlers.Add(EffectType.AdrenalineRush, new Assets.Scripts.Effects.EffectHandlers.Skills.Blacksmith.AdrenalineRushEffect());
 			effectHandlers.Add(EffectType.MaximizePower, new Assets.Scripts.Effects.EffectHandlers.Skills.Blacksmith.MaximizePowerEffect());
 			effectHandlers.Add(EffectType.OverThrust, new Assets.Scripts.Effects.EffectHandlers.Skills.Blacksmith.OverThrustEffect());
@@ -212,6 +216,7 @@ namespace Assets.Scripts.Effects
 			effectHandlers.Add(EffectType.MapPillar, new Assets.Scripts.Effects.EffectHandlers.Environment.MapPillarEffect());
 			primitiveHandlers.Add(PrimitiveType.AnimatedTexture2D, new Assets.Scripts.Effects.PrimitiveHandlers.AnimatedTexture2DPrimitive());
 			primitiveDataFactory.Add(PrimitiveType.AnimatedTexture2D, () => new Assets.Scripts.Effects.PrimitiveData.EffectSpriteData());
+			primitiveHandlers.Add(PrimitiveType.Aura3, new Assets.Scripts.Effects.PrimitiveHandlers.Aura3Primitive());
 			primitiveHandlers.Add(PrimitiveType.Aura, new Assets.Scripts.Effects.PrimitiveHandlers.AuraPrimitive());
 			primitiveHandlers.Add(PrimitiveType.Casting3D, new Assets.Scripts.Effects.PrimitiveHandlers.CastingCylinderPrimitive());
 			primitiveHandlers.Add(PrimitiveType.Circle2D, new Assets.Scripts.Effects.PrimitiveHandlers.Circle2DPrimitive());
@@ -227,6 +232,7 @@ namespace Assets.Scripts.Effects
 			primitiveHandlers.Add(PrimitiveType.Flash2D, new Assets.Scripts.Effects.PrimitiveHandlers.Flash2DPrimitive());
 			primitiveDataFactory.Add(PrimitiveType.Flash2D, () => new Assets.Scripts.Effects.PrimitiveData.FlashData());
 			primitiveHandlers.Add(PrimitiveType.ForestLight, new Assets.Scripts.Effects.PrimitiveHandlers.ForestLightPrimitive());
+			primitiveHandlers.Add(PrimitiveType.GrandCross, new Assets.Scripts.Effects.PrimitiveHandlers.GrandCrossPrimitive());
 			primitiveHandlers.Add(PrimitiveType.Heal, new Assets.Scripts.Effects.PrimitiveHandlers.HealPrimitive());
 			primitiveHandlers.Add(PrimitiveType.Particle3DSpline, new Assets.Scripts.Effects.PrimitiveHandlers.Particle3DSplinePrimitive());
 			primitiveDataFactory.Add(PrimitiveType.Particle3DSpline, () => new Assets.Scripts.Effects.PrimitiveData.Particle3DSplineData());
