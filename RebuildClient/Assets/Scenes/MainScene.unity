@@ -27075,6 +27075,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2000122719}
   m_Direction: 2
   m_Value: 1.0000007
+  m_Value: 1.0000007
   m_Size: 0.55382216
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -48071,8 +48072,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8208469742423641378, guid: 0cdd8cc0f3d38c243b54175c354e0594,
         type: 3}
-      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
-      value: 1801810542
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8348470786502581532, guid: 0cdd8cc0f3d38c243b54175c354e0594,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -327.49
+      objectReference: {fileID: 0}
+    - target: {fileID: 8366623444965042052, guid: 0cdd8cc0f3d38c243b54175c354e0594,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8366623444965042052, guid: 0cdd8cc0f3d38c243b54175c354e0594,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8381541477070402018, guid: 0cdd8cc0f3d38c243b54175c354e0594,
         type: 3}
