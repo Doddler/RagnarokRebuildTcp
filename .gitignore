@@ -75,7 +75,6 @@ Other/RoWikiGenerator/wwwroot/images/rebuilditems/
 Other/RoWikiGenerator/wwwroot/images/monsters/
 Other/RoWikiGenerator/wwwroot/images/maps/
 Other/RoDatabasePokingTool/
-RebuildClient/Packages/
 *.db
 deploycommands.txt
 Monsters.csv
