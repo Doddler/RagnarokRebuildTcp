@@ -12,7 +12,6 @@ Npc("alberta", "Drunken Old Man", "1_M_JOBGUIDER", 131, 139, W) { }
 Npc("alberta", "Elin", "4W_KID", 117, 135, N) { }
 Npc("alberta", "Fabian", "4_M_02", 97, 51, N) { }
 Npc("alberta", "Fastidious Old Man", "4_M_SAGE_C", 165, 83, S) { }
-Npc("alberta", "Fastidious Old Man", "4_M_SAGE_C", 165, 83, S) { }
 //Npc("alberta", "Fisk", "4W_SAILOR", 189, 151, SE) { }
 Npc("alberta", "Gershaun", "1_M_LIBRARYMASTER", 232, 106, E) { }
 Npc("alberta", "Girl", "4_F_CHNDRESS1", 245, 45, SW) { }
@@ -27,7 +26,6 @@ Npc("alberta", "Kunlun Envoy", "4_M_TWMIDMAN", 245, 69, SW) { }
 Npc("alberta", "Necko", "4W_M_02", 83, 96, SE) { }
 Npc("alberta", "Paul", "4_M_04", 195, 151, W) { }
 Npc("alberta", "Phelix", "4_M_03", 190, 173, S) { }
-Npc("alberta", "Poor-looking Merchant", "4_M_ORIENT02", 43, 49, SE) { }
 Npc("alberta", "Poor-looking Merchant", "4_M_ORIENT02", 43, 49, SE) { }
 Npc("alberta", "Shakir", "4W_M_03", 58, 80, W) { }
 Npc("alberta", "Smile Assistance", "4_F_03", 113, 53, S) { }
@@ -202,7 +200,6 @@ Npc("aldeg_cas04", "Kafra Service", "4_F_KAFRA1", 45, 88, N) { }
 Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 112, 206, W) { }
 Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 113, 212, W) { }
 Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 129, 193, W) { }
-Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 129, 193, W) { }
 Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 130, 180, W) { }
 Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 133, 220, W) { }
 Npc("aldeg_cas04", "Luina Castle 4", "GUILD_FLAG", 164, 90, W) { }
@@ -318,7 +315,6 @@ Npc("cmd_in02", "Scoursege", "1_M_BARD", 48, 55, S) { }
 Npc("cmd_in02", "Shalone", "4W_F_01", 178, 92, S) { }
 Npc("cmd_in02", "Stonae", "4W_M_02", 178, 86, S) { }
 Npc("cmd_in02", "Strange Guy", "1_M_SIGNART", 88, 51, S) { }
-Npc("cmd_in02", "Strange Guy", "1_M_SIGNART", 88, 51, S) { }
 Npc("comodo", "BBQ Boy", "4_M_04", 221, 310, S) { }
 Npc("comodo", "BBQ Boy", "4_M_KID1", 213, 310, S) { }
 Npc("comodo", "BBQ Mama", "1_F_MERCHANT_02", 215, 307, S) { }
@@ -380,7 +376,6 @@ Npc("gef_fild13", "Britoniah Castle 5", "GUILD_FLAG", 26, 147, W) { }
 Npc("gef_fild13", "Britoniah Castle 5", "GUILD_FLAG", 302, 87, NE) { }
 Npc("gef_fild13", "Britoniah Castle 5", "GUILD_FLAG", 313, 83, N) { }
 Npc("gef_fild13", "Bulletin Board", "2_BOARD1", 202, 31, N) { }
-Npc("gef_fild13", "Bulletin Board", "2_BOARD1", 202, 31, N) { }
 Npc("gef_fild13", "Bulletin Board", "2_BOARD2", 29, 206, N) { }
 Npc("gef_tower", "Annoyed Man", "1_M_WIZARD", 118, 36, S) { }
 Npc("gef_tower", "Bulletin Board", "2_BULLETIN_BOARD", 55, 142, N) { }
@@ -426,7 +421,6 @@ Npc("geffen_in", "Christopher", "1_M_SMITH", 110, 172, N) { }
 Npc("geffen_in", "Crumpler", "1_M_HOF", 22, 125, NW) { }
 Npc("geffen_in", "Crusader", "4_M_CRU", 109, 161, SW) { }
 Npc("geffen_in", "Cute Girl", "4_F_KID2", 171, 42, SW) { }
-Npc("geffen_in", "Cute Girl", "4_F_KID2", 171, 42, W) { }
 Npc("geffen_in", "Gate Keeper", "4_M_01", 63, 63, S) { }
 Npc("geffen_in", "Girl", "4_M_KID2", 106, 106, NE) { }
 Npc("geffen_in", "Great Magician", "1_M_WIZARD", 151, 119, S) { }
@@ -435,7 +429,6 @@ Npc("geffen_in", "Hadenheim", "4_M_SEAMAN", 114, 73, NW) { }
 Npc("geffen_in", "Inn Employee", "1_M_INNKEEPER", 70, 64, SE) { }
 Npc("geffen_in", "Jesqurienne", "1_F_SIGNZISK", 59, 74, S) { }
 Npc("geffen_in", "Lonely-looking Woman", "4_F_05", 159, 48, S) { }
-Npc("geffen_in", "Lonely-looking Woman", "4_F_05", 159, 48, SE) { }
 Npc("geffen_in", "Mage Guildsman", "2_F_MAGICMASTER", 164, 124, S) { }
 //Npc("geffen_in", "Magical Item Seller", "1_M_WIZARD", 77, 173, N) { }
 Npc("geffen_in", "Merchant Daven", "2_M_PHARMACIST", 79, 76, W) { }
@@ -890,14 +883,9 @@ Npc("prontera", "Dairenne", "4_F_01", 78, 150, SW) { }
 //Npc("prontera", "Fruit Gardener", "8_F", 104, 49, N) { }
 //Npc("prontera", "Gift Merchant", "4_F_02", 105, 87, N) { }
 Npc("prontera", "Guard", "8W_SOLDIER", 160, 330, N) { }
-Npc("prontera", "Guard", "8W_SOLDIER", 160, 330, N) { }
-Npc("prontera", "Guard", "8W_SOLDIER", 223, 99, NW) { }
 Npc("prontera", "Guard", "8W_SOLDIER", 223, 99, NW) { }
 Npc("prontera", "Guard", "8W_SOLDIER", 229, 104, SE) { }
-Npc("prontera", "Guard", "8W_SOLDIER", 229, 104, SE) { }
 Npc("prontera", "Guard", "8W_SOLDIER", 47, 339, SE) { }
-Npc("prontera", "Guard", "8W_SOLDIER", 47, 339, SE) { }
-Npc("prontera", "Guard", "8W_SOLDIER", 52, 344, SE) { }
 Npc("prontera", "Guard", "8W_SOLDIER", 52, 344, SE) { }
 Npc("prontera", "Guide", "8W_SOLDIER", 154, 187, S) { }
 Npc("prontera", "Guide", "8W_SOLDIER", 160, 29, N) { }
@@ -919,7 +907,6 @@ Npc("prontera", "North Gate Guide", "8W_SOLDIER", 151, 330, S) { }
 Npc("prontera", "Peco Peco Breeder", "8W_SOLDIER", 55, 350, SE) { }
 Npc("prontera", "Peco Peco Trainer", "8W_SOLDIER", 232, 318, SW) { }
 //Npc("prontera", "Pet Groomer", "4_M_TELEPORTER", 218, 211, S) { }
-Npc("prontera", "Sagle", "4_KID01", 66, 111, N) { }
 Npc("prontera", "Sagle", "4_KID01", 66, 111, SW) { }
 Npc("prontera", "Shuger", "4W_M_02", 101, 288, SW) { }
 Npc("prontera", "Sir Meroze", "4_M_JOB_KNIGHT1", 72, 352, NE) { }
@@ -961,7 +948,6 @@ Npc("prt_church", "Marry Happy", "1_F_LIBRARYGIRL", 94, 100, S) { }
 //Npc("prt_church", "Nun", "1_F_PRIEST", 108, 124, S) { }
 Npc("prt_church", "Praying Man", "4_M_NFMAN", 113, 103, NW) { }
 Npc("prt_church", "Priest Praupin", "4_M_MINISTER", 179, 15, NW) { }
-Npc("prt_church", "Priest Praupin", "4_M_MINISTER", 179, 15, S) { }
 //Npc("prt_church", "Remarry Staff", "1_F_LIBRARYGIRL", 22, 179, S) { }
 Npc("prt_church", "Sister Rhinus", "1_F_PRIEST", 111, 112, NW) { }
 //Npc("prt_church", "The king of Midgard", "1_M_PRON_KING", 28, 178, S) { }
@@ -993,7 +979,6 @@ Npc("prt_gld", "Valkyrie Castle 5", "GUILD_FLAG", 197, 243, W) { }
 Npc("prt_gld", "Valkyrie Castle 5", "GUILD_FLAG", 199, 236, W) { }
 Npc("prt_gld", "Valkyrie Castle 5", "GUILD_FLAG", 199, 243, W) { }
 Npc("prt_in", "Aesop", "4_M_JOB_KNIGHT2", 85, 99, SW) { }
-Npc("prt_in", "Aigie", "4_F_03", 169, 11, SE) { }
 Npc("prt_in", "Aigie", "4_F_03", 169, 11, SW) { }
 Npc("prt_in", "Aleuce", "4_F_03", 161, 20, SW) { }
 Npc("prt_in", "Archeologist", "1_M_SIGN1", 227, 45, N) { }
@@ -1014,11 +999,9 @@ Npc("prt_in", "Jovovich", "4_F_02", 243, 168, S) { }
 Npc("prt_in", "Juan", "4_M_03", 94, 57, SW) { }
 Npc("prt_in", "Lady Amy Beatrist", "4_F_JOB_KNIGHT", 69, 107, E) { }
 Npc("prt_in", "Leo", "4_M_03", 75, 88, SE) { }
-Npc("prt_in", "Librarian", "4_M_ZONDAOYAJI", 172, 106, N) { }
 Npc("prt_in", "Librarian", "4_M_ZONDAOYAJI", 172, 106, W) { }
 Npc("prt_in", "Library Girl", "1_F_LIBRARYGIRL", 175, 50, N) { }
 Npc("prt_in", "Lord Arther", "1_M_KNIGHTMASTER", 47, 141, N) { }
-Npc("prt_in", "Maos", "4_M_SEAMAN", 251, 129, S) { }
 Npc("prt_in", "Maos", "4_M_SEAMAN", 251, 129, SW) { }
 Npc("prt_in", "Marianne", "1_M_INNKEEPER", 49, 172, SW) { }
 Npc("prt_in", "Marvin", "1_F_PUBGIRL", 177, 18, W) { }
