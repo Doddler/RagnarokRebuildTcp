@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -43,19 +43,19 @@ namespace Assets.Scripts.UI.ClientDatabase
 
         private IPredicateRegistry RegistryForField(TMP_InputField field)
         {
-            if (field == monsterSearchField) return MonsterPredicates;
-            if (field == itemSearchField) return ItemPredicates;
-            if (field == mapSearchField) return MapPredicates;
-            if (field == npcSearchField) return NpcPredicates;
+            if (field == monsterPage.SearchField) return MonsterPredicates;
+            if (field == itemPage.SearchField) return ItemPredicates;
+            if (field == mapPage.SearchField) return MapPredicates;
+            if (field == npcPage.SearchField) return NpcPredicates;
             return null;
         }
 
         private TextMeshProUGUI GhostForField(TMP_InputField field)
         {
-            if (field == monsterSearchField) return monsterSearchGhost;
-            if (field == itemSearchField) return itemSearchGhost;
-            if (field == mapSearchField) return mapSearchGhost;
-            if (field == npcSearchField) return npcSearchGhost;
+            if (field == monsterPage.SearchField) return monsterSearchGhost;
+            if (field == itemPage.SearchField) return itemSearchGhost;
+            if (field == mapPage.SearchField) return mapSearchGhost;
+            if (field == npcPage.SearchField) return npcSearchGhost;
             return null;
         }
         
@@ -162,10 +162,10 @@ namespace Assets.Scripts.UI.ClientDatabase
 
         private void WireAutocompleteGhosts()
         {
-            HookGhost(monsterSearchField);
-            HookGhost(itemSearchField);
-            HookGhost(mapSearchField);
-            HookGhost(npcSearchField);
+            HookGhost(monsterPage.SearchField);
+            HookGhost(itemPage.SearchField);
+            HookGhost(mapPage.SearchField);
+            HookGhost(npcPage.SearchField);
         }
 
         private void HookGhost(TMP_InputField field)
@@ -182,10 +182,10 @@ namespace Assets.Scripts.UI.ClientDatabase
         private void HandleAutocompleteInput()
         {
             TMP_InputField field;
-            if (monsterSearchField != null && monsterSearchField.isFocused) field = monsterSearchField;
-            else if (itemSearchField != null && itemSearchField.isFocused) field = itemSearchField;
-            else if (mapSearchField != null && mapSearchField.isFocused) field = mapSearchField;
-            else if (npcSearchField != null && npcSearchField.isFocused) field = npcSearchField;
+            if (monsterPage.SearchField.isFocused) field = monsterPage.SearchField;
+            else if (itemPage.SearchField.isFocused) field = itemPage.SearchField;
+            else if (mapPage.SearchField.isFocused) field = mapPage.SearchField;
+            else if (npcPage.SearchField.isFocused) field = npcPage.SearchField;
             else { acPrevField = null; acPrevCaret = -1; return; }
 
             if (acField != field) RefreshAutocompleteFor(field);

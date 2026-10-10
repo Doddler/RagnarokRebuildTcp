@@ -237,17 +237,21 @@ namespace Assets.Scripts.Sprites
                 transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, reverseNorth ? -ZOffset : ZOffset);
 
             _mesh = GetMeshForFrame();
-            var cMesh = GetColliderForFrame();
 
             if (MeshFilter.sharedMesh != _mesh)
             {
                 MeshFilter.sharedMesh = null;
                 MeshFilter.sharedMesh = _mesh;
             }
-            if (MeshCollider != null && MeshCollider.sharedMesh != cMesh)
+            // skip the per-frame collision recook (a PhysX bake) for disabled colliders
+            if (MeshCollider != null && MeshCollider.enabled)
             {
-                MeshCollider.sharedMesh = null;
-                MeshCollider.sharedMesh = cMesh;
+                var cMesh = GetColliderForFrame();
+                if (MeshCollider.sharedMesh != cMesh)
+                {
+                    MeshCollider.sharedMesh = null;
+                    MeshCollider.sharedMesh = cMesh;
+                }
             }
 
             if (propertyBlock != null && MeshRenderer != null)

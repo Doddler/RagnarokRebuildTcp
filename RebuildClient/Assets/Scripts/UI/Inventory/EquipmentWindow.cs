@@ -85,11 +85,26 @@ namespace Assets.Scripts.UI.Inventory
         {
         }
 
-        public void UpdateCharacterDisplay(int headgear1, int headgear2, int headgear3)
+        public void OnEnable()
+        {
+            PlayerState.Instance.AppearanceChanged += UpdateCharacterDisplay;
+            UpdateCharacterDisplay();
+        }
+
+        public void OnDisable()
+        {
+            PlayerState.Instance.AppearanceChanged -= UpdateCharacterDisplay;
+        }
+
+        public void UpdateCharacterDisplay()
         {
             var state = PlayerState.Instance;
+            //OnEnable can run at scene load before the player or game data exists
+            if (!state.IsValid || ClientDataLoader.Instance?.IsInitialized != true)
+                return;
 
-            PlayerSprite.PrepareDisplayPlayerCharacter(state.JobId, state.HairStyleId, state.HairColorId, headgear1, headgear2, headgear3, state.IsMale);
+            PlayerSprite.PrepareDisplayPlayerCharacter(state.JobId, state.HairStyleId, state.HairColorId,
+                state.Headgear1, state.Headgear2, state.Headgear3, state.IsMale);
         }
     }
 }

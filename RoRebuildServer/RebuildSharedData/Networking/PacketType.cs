@@ -135,6 +135,7 @@ public enum PacketType : byte
     ResetMotion,
 
     ToggleActivatedState,
+    [ServerOnlyPacket] Pong,
 }
 
 public enum MessageType : byte

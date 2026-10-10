@@ -203,11 +203,7 @@ public class NpcInteractionState
         }
 
         var itemRef = new ItemReference(item, count);
-        var bagId = Player.AddItemToInventory(itemRef);
-
-        itemRef.Count = Player.Inventory?.GetItemCount(item) ?? 0;
-
-        CommandBuilder.AddItemToInventory(Player, itemRef, bagId, count);
+        Player.CreateItemInInventory(itemRef);
     }
 
     public bool TakeItem(string itemName, int count = 1)

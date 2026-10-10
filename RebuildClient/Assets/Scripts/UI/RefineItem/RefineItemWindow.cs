@@ -39,7 +39,7 @@ namespace Assets.Scripts.UI.RefineItem
         public static RefineItemWindow Instance;
         
         
-        public new void OnDestroy()
+        public override void OnDestroy()
         {
             Instance = null;
             base.OnDestroy();

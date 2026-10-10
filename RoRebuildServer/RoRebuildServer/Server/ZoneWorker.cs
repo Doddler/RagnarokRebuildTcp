@@ -13,6 +13,16 @@ namespace RoRebuildServer.Server;
 
 internal class ZoneWorker : BackgroundService
 {
+    private const double TargetTickMs = 10;
+    private const double GcSpareMs = 5; //headroom a tick has to finish with before we offer the slack to the GC
+    private const double GcIntervalSeconds = 10; //floor between requests, so an idle server doesn't ask every tick
+
+#if DEBUG
+    private const double StatsIntervalSeconds = 15;
+#else
+    private const double StatsIntervalSeconds = 60;
+#endif
+
     private readonly ILogger<ZoneWorker> logger;
     private readonly IServiceProvider services;
     private readonly IHostApplicationLifetime appLifetime;
@@ -72,20 +82,8 @@ internal class ZoneWorker : BackgroundService
         var stopwatch = new Stopwatch();
         stopwatch.Start();
 
-        var total = 0d;
-        var max = 0d;
-        var spos = 0;
-
-#if DEBUG
-        var noticeTime = 15f;
-        var noticeMax = 60f;
-#else
-        var noticeTime = 30f;
-		var noticeMax = 600f;
-#endif
-        var lastLog = Time.ElapsedTime - noticeTime + 5f; //make the first check-in 5s after start no matter what
-
-        var loopCount = 0;
+        var stats = new Stats(StatsIntervalSeconds, TargetTickMs);
+        var nextCollect = Time.ElapsedTime + GcIntervalSeconds;
 
         try
         {
@@ -104,56 +102,25 @@ internal class ZoneWorker : BackgroundService
 
                 await NetworkManager.ScanAndDisconnect();
 
-                //if we spent less than 10ms on this frame, sleep for the remaining time
-                var elapsed = Time.GetExactTime() - startTime;
-                loopCount++;
-                var ms = (int)(elapsed * 1000) + 1;
-                if (ms < 10)
+                var elapsedMs = (Time.GetExactTime() - startTime) * 1000d;
+                var spareMs = TargetTickMs - elapsedMs;
+
+                //it's been a while and we had a fast frame, so may as well? No idea if this is a bad idea or not.
+                if (spareMs > GcSpareMs && Time.ElapsedTime > nextCollect)
                 {
-                    if (loopCount > 1000 && elapsed < 5)
-                    {
-                        //it's been a while and we had a fast frame, so may as well? No idea if this is a bad idea or not.
-                        GC.Collect(2, GCCollectionMode.Optimized, false);
-                        loopCount = 0;
-                    }
-                    else
-                        await Task.Delay(10 - ms, stoppingToken);
+                    GC.Collect(2, GCCollectionMode.Optimized, false);
+                    nextCollect = Time.ElapsedTime + GcIntervalSeconds;
                 }
+
+                //Sleep out whatever is left of the tick, rounded so a sub-millisecond frame doesn't give up a whole one.
+                var remainingMs = (int)Math.Round(spareMs);
+                if (remainingMs > 0)
+                    await Task.Delay(remainingMs, stoppingToken);
                 else
                     await Task.Yield();
 
-                total += elapsed;
-
-                if (max < elapsed)
-                    max = elapsed;
-
-                spos++;
-
-                if (lastLog + noticeTime < Time.ElapsedTime)
-                {
-                    var avg = (total / spos);
-                    //var fps = 1 / avg;
-                    var players = NetworkManager.PlayerCount;
-
-                    avg *= 1000d;
-
-#if DEBUG
-                    if (max > 0.1f)
-                        ServerLogger.Log($"[ZoneWorker] {players} players. Stats over last {noticeTime}s : Avg {avg:F2}ms / Peak {max * 1000:F2}ms (GC Time: {GC.GetTotalPauseDuration()})");
-                    else
-                        ServerLogger.Debug($"[ZoneWorker] {players} players. Stats over last {noticeTime}s : Avg {avg:F2}ms / Peak {max * 1000:F2}ms (GC Time: {GC.GetTotalPauseDuration()})");
-#else
-                    ServerLogger.Log($"[ZoneWorker] {players} players. Stats over last {noticeTime}s : Avg {avg:F2}ms / Peak {max * 1000:F2}ms");
-#endif
-
-                    total = 0;
-                    spos = 0;
-                    max = 0;
-                    lastLog = Time.ElapsedTime;
-                    noticeTime += 30;
-                    if (noticeTime > noticeMax)
-                        noticeTime = noticeMax;
-                }
+                stats.Record(elapsedMs);
+                stats.ReportIfDue(NetworkManager.PlayerCount);
             }
         }
         catch (Exception e)
@@ -204,5 +171,89 @@ internal class ZoneWorker : BackgroundService
 
         if (!isSafeExit)
             throw failureReason; //this will cause the application to terminate in failure, which should trigger the service to be restarted.
+    }
+    private class Stats
+    {
+        private const double FirstReportSeconds = 5; //check in shortly after startup regardless of the interval
+
+        private readonly double reportInterval;
+        private readonly double budgetMs;
+
+        private double windowStart;
+        private double nextReport;
+        private TimeSpan lastGcPause;
+        private int lastGen0;
+        private int lastGen1;
+        private int lastGen2;
+
+        private double totalMs;
+        private double peakMs;
+        private int frames;
+        private int overBudget;
+
+        public Stats(double reportIntervalSeconds, double budgetMs)
+        {
+            reportInterval = reportIntervalSeconds;
+            this.budgetMs = budgetMs;
+
+            windowStart = Time.ElapsedTime;
+            nextReport = Time.ElapsedTime + FirstReportSeconds;
+
+            SampleCollections();
+        }
+
+        private void SampleCollections()
+        {
+            lastGcPause = GC.GetTotalPauseDuration();
+            lastGen0 = GC.CollectionCount(0);
+            lastGen1 = GC.CollectionCount(1);
+            lastGen2 = GC.CollectionCount(2);
+        }
+
+        public void Record(double elapsedMs)
+        {
+            totalMs += elapsedMs;
+            frames++;
+
+            if (elapsedMs > peakMs)
+                peakMs = elapsedMs;
+
+            if (elapsedMs > budgetMs)
+                overBudget++;
+        }
+
+        public void ReportIfDue(int players)
+        {
+            if (Time.ElapsedTime < nextReport || frames == 0)
+                return;
+
+            var window = Time.ElapsedTime - windowStart;
+
+            var gen0 = GC.CollectionCount(0) - lastGen0;
+            var gen1 = GC.CollectionCount(1) - lastGen1;
+            var gen2 = GC.CollectionCount(2) - lastGen2;
+            var heapMb = GC.GetTotalMemory(false) / (1024d * 1024d);
+
+            //Most windows collect nothing, so the generation breakdown only earns its space when one of them ran.
+            var gc = gen0 + gen1 + gen2 == 0
+                ? ""
+                : $" | GC {(GC.GetTotalPauseDuration() - lastGcPause).TotalMilliseconds:F1}ms (g0 {gen0} g1 {gen1} g2 {gen2})";
+
+            //Avg and Peak cover the work only, Tick is the whole loop period including the sleep. So Tick is the
+            //rate the simulation steps at, and Tick minus Avg is time spent waiting.
+            ServerLogger.Log($"[ZoneWorker] {players} players | {window:F0}s | Avg {totalMs / frames:F2}ms" +
+                             $" | Peak {peakMs:F2}ms | Tick {window / frames * 1000d:F2}ms | Over {overBudget}" +
+                             $" | Heap {heapMb:F0}MB{gc}");
+
+            windowStart = Time.ElapsedTime;
+            nextReport = Time.ElapsedTime + reportInterval;
+
+            SampleCollections();
+
+            totalMs = 0;
+            peakMs = 0;
+            frames = 0;
+            overBudget = 0;
+        }
     }
 }

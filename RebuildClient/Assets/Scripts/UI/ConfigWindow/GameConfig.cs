@@ -6,7 +6,7 @@ using File = System.IO.File;
 
 namespace Assets.Scripts.UI.ConfigWindow
 {
-    public static class GameConfig
+    public static partial class GameConfig
     {
         public static GameConfigData Data;
 
@@ -45,7 +45,6 @@ namespace Assets.Scripts.UI.ConfigWindow
                 Data = new GameConfigData();
                 Data.InitDefaultValues();
             }
-
 
             isInitialized = true;
         }

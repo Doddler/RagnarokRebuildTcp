@@ -18,6 +18,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Party
                     State.RegisterOrUpdatePartyMember(newMember);
                     Camera.AppendChatText($"<color=#77FF77>{newMember.PlayerName} has joined the party.</color>");
                     UiManager.Instance.PartyPanel.AddPartyMember(newMember);
+                    Network.RefreshPartyMemberDisplays();
                     break;
                 case PartyUpdateType.LogIn:
                 case PartyUpdateType.LogOut:
@@ -41,6 +42,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Party
                     }
                     UiManager.Instance.PartyPanel.RemovePartyMember(removePartyId);
                     Camera.AppendChatText($"<color=#77FF77>{existing.PlayerName} has left the party.</color>");
+                    Network.RefreshPartyMemberDisplays();
                     break;
                 case PartyUpdateType.ChangeLeader:
                     var newLeaderId = msg.ReadInt32();
@@ -94,6 +96,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Party
                     MinimapController.Instance.RefreshPartyMembers();
                     if (Camera.TargetControllable != null)
                         Camera.TargetControllable.PartyName = null;
+                    Network.RefreshPartyMemberDisplays();
                     break;
             }
         }

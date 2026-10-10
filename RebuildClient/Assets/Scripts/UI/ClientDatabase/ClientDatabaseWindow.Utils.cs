@@ -1,9 +1,7 @@
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Text;
 using System.Text.RegularExpressions;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI.Utility;
@@ -18,8 +16,6 @@ namespace Assets.Scripts.UI.ClientDatabase
 {
     public partial class ClientDatabaseWindow
     {
-        private static readonly Color s_activeTabColor = Color.white;
-        private static readonly Color s_inactiveTabColor = new(0.78f, 0.78f, 0.80f, 1f);
         private static readonly Color s_defaultTextColor = new(0.08f, 0.08f, 0.10f, 1f);
 
         private static string FormatItemName(ItemData item) => item.Slots > 0 ? $"{item.Name}[{item.Slots}]" : item.Name;
@@ -28,123 +24,39 @@ namespace Assets.Scripts.UI.ClientDatabase
         private static string SanitizeRichText(string raw) => LineHeightTagRegex.Replace(raw, string.Empty);
         private static Sprite GetItemIcon(string spriteName) => string.IsNullOrEmpty(spriteName) || ClientDataLoader.Instance == null ? null : ClientDataLoader.Instance.GetIconAtlasSprite(spriteName);
         
-        internal struct SearchPredicate
+        private void ApplyDatabaseFilter<TData, TRow>(
+            IEnumerable<TData> source,
+            List<TData> filtered,
+            string query,
+            VirtualList virtualList,
+            string fieldName,
+            string title,
+            TextMeshProUGUI titleText,
+            Action<TRow, TData, int> bindItem,
+            Func<TData, string> getSearchText,
+            PredicateRegistry<TData> predicates,
+            Predicate<TData> include = null,
+            Comparison<TData> sort = null)
+            where TRow : Component
         {
-            public string Key;
-            public string Op;
-            public string Value;
-        }
-        
-        private static readonly string[] PredicateOps = { ">=", "<=", "!=", "=", ">", "<" };
-        
-        private static string lastParseQueryInput;
-        private static string lastParseQueryFree;
-        private static List<SearchPredicate> lastParseQueryPreds;
+            if (virtualList == null)
+                throw new InvalidOperationException(
+                    $"{nameof(ClientDatabaseWindow)} on {name} is missing required inspector reference {fieldName}.");
 
-        private static (string freeText, List<SearchPredicate> predicates) ParseQuery(string query)
-        {
-            if (query == lastParseQueryInput && lastParseQueryPreds != null) return (lastParseQueryFree, lastParseQueryPreds);
+            var totalCount = DatabaseSearch.Filter(
+                source,
+                filtered,
+                query,
+                getSearchText,
+                (entry, predicate) =>
+                    predicates.TryMatch(entry, predicate, out var result) && result,
+                include,
+                sort);
 
-            var predicates = new List<SearchPredicate>();
-            if (string.IsNullOrWhiteSpace(query))
-            {
-                lastParseQueryInput = query;
-                lastParseQueryFree = "";
-                lastParseQueryPreds = predicates;
-                return ("", predicates);
-            }
-
-            string free = null;
-            List<string> freeParts = null;
-            foreach (var token in TokenizeQuery(query))
-            {
-                if (token.Length >= 2 && token[0] == '#' && TryParsePredicate(token.Substring(1), out var p))
-                {
-                    predicates.Add(p);
-                }
-                else
-                {
-                    if (free == null) free = token;
-                    else
-                    {
-                        if (freeParts == null) freeParts = new List<string> { free };
-                        freeParts.Add(token);
-                    }
-                }
-            }
-            var freeText = freeParts != null ? string.Join(" ", freeParts) : (free ?? "");
-
-            lastParseQueryInput = query;
-            lastParseQueryFree = freeText;
-            lastParseQueryPreds = predicates;
-            return (freeText, predicates);
-        }
-        
-        private static List<string> TokenizeQuery(string query)
-        {
-            var tokens = new List<string>();
-            var sb = new StringBuilder();
-            var inQuote = false;
-            for (var i = 0; i < query.Length; i++)
-            {
-                var c = query[i];
-                if (c == '"')
-                {
-                    inQuote = !inQuote;
-                }
-                else if (c == ' ' && !inQuote)
-                {
-                    if (sb.Length > 0) { tokens.Add(sb.ToString()); sb.Length = 0; }
-                }
-                else
-                {
-                    sb.Append(c);
-                }
-            }
-            if (sb.Length > 0) tokens.Add(sb.ToString());
-            return tokens;
-        }
-
-        private static bool TryParsePredicate(string body, out SearchPredicate pred)
-        {
-            foreach (var op in PredicateOps)
-            {
-                var idx = body.IndexOf(op, StringComparison.Ordinal);
-                if (idx <= 0) continue;
-                pred = new SearchPredicate
-                {
-                    Key = body.Substring(0, idx).ToLowerInvariant(),
-                    Op = op,
-                    Value = body.Substring(idx + op.Length).ToLowerInvariant(),
-                };
-                return true;
-            }
-            pred = default;
-            return false;
-        }
-
-        private static void ApplyFilter<T>(List<(GameObject go, T entry, string searchText)> rows, string query, Func<T, SearchPredicate, bool> matchPredicate)
-        {
-            var (free, preds) = ParseQuery(query);
-            var hasFree = free.Length > 0;
-            var predCount = preds.Count;
-            for (var i = 0; i < rows.Count; i++)
-            {
-                var (go, entry, text) = rows[i];
-                var match = (!hasFree || text.IndexOf(free, StringComparison.OrdinalIgnoreCase) >= 0) && AllPredicatesMatch(entry, preds, predCount, matchPredicate);
-                
-                if (go.activeSelf != match)
-                    go.SetActive(match);
-            }
-        }
-
-        private static bool AllPredicatesMatch<T>(T entry, List<SearchPredicate> preds, int predCount, Func<T, SearchPredicate, bool> matchPredicate)
-        {
-            for (var i = 0; i < predCount; i++)
-            {
-                if (!matchPredicate(entry, preds[i])) return false;
-            }
-            return true;
+            virtualList.SetItems(filtered, bindItem);
+            titleText.text = filtered.Count == totalCount
+                ? $"{title} ({totalCount})"
+                : $"{title} ({filtered.Count}/{totalCount})";
         }
 
         private static bool CompareNum(int actual, SearchPredicate p)
@@ -263,17 +175,6 @@ namespace Assets.Scripts.UI.ClientDatabase
             }
         }
 
-        private static IEnumerator LoadListIncrementallyAsync<T>(IList<T> ordered, Action<T> addRow, Action onComplete = null)
-        {
-            var sw = System.Diagnostics.Stopwatch.StartNew();
-            for (var i = 0; i < ordered.Count; i++)
-            {
-                addRow(ordered[i]);
-                if (sw.Elapsed.TotalMilliseconds >= 12f) { yield return null; sw.Restart(); }
-            }
-            onComplete?.Invoke();
-        }
-        
         private static string FormatMapLabel(string mapCode, bool withBracket = true)
         {
             if (!MapLookup.TryGetValue(mapCode, out var data) || string.IsNullOrEmpty(data.Name))
@@ -283,9 +184,7 @@ namespace Assets.Scripts.UI.ClientDatabase
 
         private static void SetRowIcon(GameObject row, Sprite sprite)
         {
-            var img = row.transform.Find("Icon").GetComponent<Image>();
-            img.sprite = sprite;
-            img.color = sprite != null ? Color.white : new Color(1, 1, 1, 0.08f);
+            row.GetComponent<DatabaseListRow>().SetIcon(sprite);
         }
 
         internal static GameObject NewUIObject(string name, Transform parent)
@@ -308,29 +207,91 @@ namespace Assets.Scripts.UI.ClientDatabase
             return go;
         }
 
-        private static void ClearChildren(Transform t)
+        private static void ReleaseDetailRows(Transform parent)
         {
-            for (var i = t.childCount - 1; i >= 0; i--)
-                Destroy(t.GetChild(i).gameObject);
+            for (var i = parent.childCount - 1; i >= 0; i--)
+            {
+                var child = parent.GetChild(i).gameObject;
+                if (child.TryGetComponent<ClientDatabasePooledObject>(out _))
+                {
+                    ResetPooledObject(child);
+                    child.SetActive(false);
+                }
+                else
+                    Destroy(child);
+            }
         }
 
         private void CreateInfoRow(Transform parent, string text)
         {
-            var row = CreateLabel("None", parent, text, 12);
-            row.GetComponent<TextMeshProUGUI>().alignment = TextAlignmentOptions.MidlineLeft;
-            row.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 20);
+            var row = GetPooledObject(null, parent, () => CreateLabel("None", parent, "", 12));
+            var label = row.GetComponent<TextMeshProUGUI>();
+            label.text = text;
+            label.alignment = TextAlignmentOptions.MidlineLeft;
+            SetDetailRowHeight(row, 20f);
         }
-        
-        private GameObject CloneRow(GameObject template, Transform parent, float height, bool clickable = true)
+
+        private GameObject GetDetailRow(GameObject template, Transform parent, float height, bool clickable = true)
         {
-            var row = Instantiate(template, parent);
-            row.SetActive(true);
-            ((RectTransform)row.transform).sizeDelta = new Vector2(0, height);
-            if (!clickable)
-                row.GetComponent<Button>().interactable = false;
+            var row = GetPooledObject(template, parent, () => Instantiate(template, parent));
+            ResetPooledObject(row);
+            SetDetailRowHeight(row, height);
+            row.GetComponent<Button>().interactable = clickable;
             return row;
         }
-        
+
+        private static void SetDetailRowHeight(GameObject row, float height)
+        {
+            ((RectTransform)row.transform).sizeDelta = new Vector2(0f, height);
+
+            var layout = row.GetComponent<LayoutElement>();
+            if (layout == null)
+                layout = row.AddComponent<LayoutElement>();
+            layout.minHeight = height;
+            layout.preferredHeight = height;
+            layout.flexibleHeight = 0f;
+        }
+
+        private static GameObject GetPooledObject(
+            GameObject template, Transform parent, Func<GameObject> create)
+        {
+            for (var i = 0; i < parent.childCount; i++)
+            {
+                var candidate = parent.GetChild(i).gameObject;
+                if (candidate.activeSelf ||
+                    !candidate.TryGetComponent<ClientDatabasePooledObject>(out var pooled) ||
+                    pooled.Template != template)
+                {
+                    continue;
+                }
+
+                candidate.transform.SetAsLastSibling();
+                ResetPooledObject(candidate);
+                candidate.SetActive(true);
+                return candidate;
+            }
+
+            var created = create();
+            created.AddComponent<ClientDatabasePooledObject>().Initialize(template);
+            created.SetActive(true);
+            return created;
+        }
+
+        private static void ResetPooledObject(GameObject pooledObject)
+        {
+            if (pooledObject.TryGetComponent<DatabaseListRow>(out var row))
+                row.SetIcon(null);
+
+            if (pooledObject.TryGetComponent<Button>(out var button))
+            {
+                button.onClick.RemoveAllListeners();
+                button.interactable = true;
+            }
+
+            var rightClick = pooledObject.GetComponent<ButtonRightClickEventHandler>();
+            rightClick?.OnRightClick?.RemoveAllListeners();
+        }
+
         private static void AttachRightClick(GameObject go, UnityAction action)
         {
             var rch = go.GetComponent<ButtonRightClickEventHandler>();
@@ -339,62 +300,5 @@ namespace Assets.Scripts.UI.ClientDatabase
             rch.OnRightClick.AddListener(action);
         }
 
-        private void FitDetailSpriteToFrame(
-            GameObject host, RoSpriteRendererUI renderer,
-            RoSpriteData data, int action, Direction direction,
-            float fitSize, float naturalScale)
-        {
-            var dirIdx = (int)direction;
-            var actionIdx = action + dirIdx;
-            var hostRT = (RectTransform)host.transform;
-
-            if (actionIdx >= data.Actions.Length || data.Actions[actionIdx].Frames.Length == 0)
-            {
-                hostRT.sizeDelta = new Vector2(fitSize, fitSize);
-                renderer.OffsetPosition = Vector2.zero;
-                return;
-            }
-
-            var frameCount = data.Actions[actionIdx].Frames.Length;
-            var meshCache = SpriteMeshCache.GetMeshCacheForSprite(data.Name);
-
-            var min = new Vector2(float.PositiveInfinity, float.PositiveInfinity);
-            var max = new Vector2(float.NegativeInfinity, float.NegativeInfinity);
-
-            for (var f = 0; f < frameCount; f++)
-            {
-                var id = ((action + dirIdx) << 16) + f;
-                if (!meshCache.TryGetValue(id, out var mesh))
-                {
-                    mesh = SpriteMeshBuilder.BuildSpriteMesh(data, action, dirIdx, f);
-                    if (mesh != null) meshCache.Add(id, mesh);
-                }
-                if (mesh == null) continue;
-
-                foreach (var v3 in mesh.vertices)
-                {
-                    var v = (Vector2)v3;
-                    if (v.x < min.x) min.x = v.x;
-                    if (v.y < min.y) min.y = v.y;
-                    if (v.x > max.x) max.x = v.x;
-                    if (v.y > max.y) max.y = v.y;
-                }
-            }
-
-            var size = max - min;
-            if (size.x <= 0f || size.y <= 0f || float.IsInfinity(min.x) || float.IsInfinity(max.x))
-            {
-                hostRT.sizeDelta = new Vector2(fitSize, fitSize);
-                renderer.OffsetPosition = Vector2.zero;
-                return;
-            }
-
-            var center = (min + max) * 0.5f;
-            var maxDim = Mathf.Max(size.x, size.y);
-            var scale = Mathf.Min(naturalScale, fitSize / maxDim);
-
-            hostRT.sizeDelta = new Vector2(scale, scale);
-            renderer.OffsetPosition = -center * 50f;
-        }
     }
 }

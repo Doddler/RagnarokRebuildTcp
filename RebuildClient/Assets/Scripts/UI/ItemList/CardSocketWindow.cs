@@ -131,15 +131,10 @@ namespace Assets.Scripts.UI
             var go = Instantiate(prefab, container);
             instance = go.AddComponent<CardSocketWindow>();
 
-            //center window
-            var rect = go.GetComponent<RectTransform>();
-            rect.sizeDelta = new Vector2(rect.sizeDelta.x, 400);
-            var parentContainer = (RectTransform)go.transform.parent;
-            var middle = parentContainer.rect.size / 2f;
-            middle = new Vector2(middle.x, -middle.y);
-            rect.anchoredPosition = middle - new Vector2(rect.sizeDelta.x / 2, -rect.sizeDelta.y / 2);
+            var list = go.GetComponent<GenericItemListV2>();
+            list.CenterWindow(400);
 
-            instance.Init(go.GetComponent<GenericItemListV2>(), itemToSocket, validItems);
+            instance.Init(list, itemToSocket, validItems);
         }
     }
 }

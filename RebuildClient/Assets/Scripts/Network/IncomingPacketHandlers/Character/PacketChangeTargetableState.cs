@@ -14,7 +14,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             if (Network.EntityList.TryGetValue(id, out var character))
             {
                 character.IsInteractable = canTarget;
-                character.FloatingDisplay.HideHpBar();
+                character.HideHpBar();
             }
         }
     }

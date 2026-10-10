@@ -7,11 +7,11 @@ namespace Assets.Scripts.UI
     public class WindowBase : MonoBehaviour, IClosableWindow, IPointerDownHandler
     {
         public bool CanCloseWithEscape = true;
-        public bool AutomaticallyFitIntoPlayArea = true;
 
-        public void OnDestroy()
+        public virtual void OnDestroy()
         {
-            UiManager.Instance.WindowStack.Remove(this);
+            if (UiManager.Instance)
+                UiManager.Instance.WindowStack.Remove(this);
         }
 
         public virtual void CloseWindow()
@@ -43,18 +43,7 @@ namespace Assets.Scripts.UI
 
         public void FitWindowIntoPlayArea()
         {
-            if (!AutomaticallyFitIntoPlayArea)
-                return;
-
-            var rect = GetComponent<RectTransform>();
-
-            var pos = transform.position;
-            var halfx = rect.sizeDelta.x * rect.transform.lossyScale.x / 2f;
-
-            pos = new Vector3(Mathf.Clamp(pos.x, -halfx, Screen.width - halfx),
-                Mathf.Clamp(pos.y, rect.sizeDelta.y * rect.transform.lossyScale.y / 2f, Screen.height), pos.z);
-
-            transform.position = pos;
+            transform.position = transform.RectTransform().ClampFullyOnScreen(transform.position);
         }
 
         public void ToggleVisibility()
@@ -104,38 +93,38 @@ namespace Assets.Scripts.UI
 
         public void CenterWindow(int setHeight = 0)
         {
-            //center window
-            ((RectTransform)transform).ForceUpdateRectTransforms();
-            var rect = gameObject.GetComponent<RectTransform>();
+            var rect = (RectTransform)transform;
             if (setHeight > 0)
                 rect.sizeDelta = new Vector2(rect.sizeDelta.x, setHeight);
-            var parentContainer = (RectTransform)gameObject.transform.parent;
-            var middle = parentContainer.rect.size / 2f;
-            middle = new Vector2(middle.x, -middle.y);
-            rect.anchoredPosition = middle - new Vector2(rect.sizeDelta.x / 2, -rect.sizeDelta.y / 2);
+            PlaceAt(new Vector2(0.5f, 0.5f), rect.rect.size / 2f);
         }
 
         public void CenterWindow(Vector2 center)
         {
-            //center window
-            ((RectTransform)transform).ForceUpdateRectTransforms();
-            var rect = gameObject.GetComponent<RectTransform>();
-            var parentContainer = (RectTransform)gameObject.transform.parent;
-            var middle = parentContainer.rect.size * center;
-            middle = new Vector2(middle.x, -middle.y);
-            rect.anchoredPosition = middle - new Vector2(rect.sizeDelta.x / 2, -rect.sizeDelta.y / 2);
+            PlaceAt(center, ((RectTransform)transform).rect.size / 2f);
         }
-        
-        
+
+
         public void CenterWindowWithOffset(Vector2 offset)
         {
-            //center window
-            ((RectTransform)transform).ForceUpdateRectTransforms();
-            var rect = gameObject.GetComponent<RectTransform>();
-            var parentContainer = (RectTransform)gameObject.transform.parent;
-            var middle = parentContainer.rect.size / 2f;
-            middle = new Vector2(middle.x, -middle.y);
-            rect.anchoredPosition = middle - new Vector2(offset.x, -offset.y);
+            PlaceAt(new Vector2(0.5f, 0.5f), offset);
+        }
+
+        //Centres the rect on a normalised point of its parent, measured from the top-left.
+        private void PlaceAt(Vector2 normalized, Vector2 halfSize)
+        {
+            var rect = (RectTransform)transform;
+            rect.ForceUpdateRectTransforms();
+
+            var parent = (RectTransform)transform.parent;
+            var pr = parent.rect;
+
+            var target = pr.min + Vector2.Scale(new Vector2(normalized.x, 1f - normalized.y), pr.size);
+            var anchorRef = pr.min + Vector2.Scale(rect.anchorMin, pr.size);
+            //anchoredPosition places the pivot, which isn't always the rect's middle
+            var pivotBias = Vector2.Scale(rect.pivot - new Vector2(0.5f, 0.5f), halfSize * 2f);
+
+            rect.anchoredPosition = target + pivotBias - anchorRef;
         }
 
 

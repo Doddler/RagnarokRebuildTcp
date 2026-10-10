@@ -4,6 +4,7 @@ using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.UI.Hud;
+using Assets.Scripts.UI.Utility;
 using Assets.Scripts.Utility;
 using RebuildSharedData.Enum;
 using UnityEngine;
@@ -25,7 +26,7 @@ namespace Assets.Scripts.UI
     public class StorageUI : MonoBehaviour
     {
         public GenericItemListV2 ItemWindow;
-        public StorageControls StorageControls;
+        public TabGroupVisual StorageTabGroup;
         public static StorageUI Instance;
         
         public StorageSectionType CurrentSection;
@@ -38,6 +39,11 @@ namespace Assets.Scripts.UI
                 return;
             CurrentSection = newType;
             RefreshItemList();
+        }
+
+        public void ClickStorageTab(int type)
+        {
+            ChangeStorageTab((StorageSectionType)type);
         }
 
         public void UpdateDropArea(bool isActive)
@@ -89,17 +95,17 @@ namespace Assets.Scripts.UI
                 return;
             
             if(CurrentSection != StorageSectionType.Useable && item.ItemData.ItemClass == ItemClass.Useable) 
-                StorageControls.ClickStorageButton((int)StorageSectionType.Useable);
+                SelectStorageTab(StorageSectionType.Useable);
             if(CurrentSection != StorageSectionType.Weapon && item.ItemData.ItemClass == ItemClass.Weapon) 
-                StorageControls.ClickStorageButton((int)StorageSectionType.Weapon);
+                SelectStorageTab(StorageSectionType.Weapon);
             if(CurrentSection != StorageSectionType.Armor && item.ItemData.ItemClass == ItemClass.Equipment) 
-                StorageControls.ClickStorageButton((int)StorageSectionType.Armor);
+                SelectStorageTab(StorageSectionType.Armor);
             if(CurrentSection != StorageSectionType.Ammo && item.ItemData.ItemClass == ItemClass.Ammo) 
-                StorageControls.ClickStorageButton((int)StorageSectionType.Ammo);
+                SelectStorageTab(StorageSectionType.Ammo);
             if(CurrentSection != StorageSectionType.Card && item.ItemData.ItemClass == ItemClass.Card) 
-                StorageControls.ClickStorageButton((int)StorageSectionType.Card);
+                SelectStorageTab(StorageSectionType.Card);
             if(CurrentSection != StorageSectionType.Etc && item.ItemData.ItemClass == ItemClass.Etc) 
-                StorageControls.ClickStorageButton((int)StorageSectionType.Etc);
+                SelectStorageTab(StorageSectionType.Etc);
         }
         
         public void SetupStorageItems(ClientInventory bag)
@@ -137,7 +143,12 @@ namespace Assets.Scripts.UI
             var targetSection = CurrentSection;
             Debug.Log($"Setup storage with initial tab: {CurrentSection}");
             CurrentSection = StorageSectionType.Uninitialized; //it won't change if it thinks we're already on the tab... so lets change it
-            StorageControls.ClickStorageButton((int)targetSection);
+            SelectStorageTab(targetSection);
+        }
+
+        private void SelectStorageTab(StorageSectionType section)
+        {
+            StorageTabGroup.SelectTab((int)section, true);
         }
 
         public void OnDropInventoryItem(ItemDragObject srcItem)
@@ -280,7 +291,9 @@ namespace Assets.Scripts.UI
             Instance = shop;
 
             shop.ItemWindow = window.GetComponent<GenericItemListV2>();
-            shop.StorageControls = window.GetComponent<StorageControls>();
+            shop.StorageTabGroup = window.GetComponentInChildren<TabGroupVisual>(true);
+            shop.StorageTabGroup.OnTabSelected.RemoveListener(shop.ClickStorageTab);
+            shop.StorageTabGroup.OnTabSelected.AddListener(shop.ClickStorageTab);
             shop.CurrentSection = (StorageSectionType)GameConfig.Data.LastStorageTab;
             
             return shop;

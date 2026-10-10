@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class ResizeHandle : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-    public Transform Target;
+    public RectTransform Target;
     public Vector2 MinSize;
     public Vector2 MaxSize = new Vector2(100000, 100000);
     public bool SnapToStep;
@@ -40,10 +40,8 @@ public class ResizeHandle : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     {
         isMouseDown = true;
 
-        var rect = Target.GetComponent<RectTransform>();
-
         startPosition = Target.position;
-        startSize = rect.sizeDelta;
+        startSize = Target.sizeDelta;
         startMousePosition = Input.mousePosition;
 
         Target.SetAsLastSibling(); //move to top
@@ -72,28 +70,25 @@ public class ResizeHandle : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
             if (FlipYAxis)
                 diff.y = -diff.y;
 
-            var rect = Target.GetComponent<RectTransform>();
-
-
-            var newSize = startSize + new Vector2(diff.x / rect.transform.lossyScale.x, -diff.y / rect.transform.lossyScale.y);
+            var newSize = startSize + new Vector2(diff.x / Target.lossyScale.x, -diff.y / Target.lossyScale.y);
 
             if (SnapToStep)
             {
-                var stepCount = new Vector2((newSize.x - BaseSize.x) / StepSize, (newSize.y - BaseSize.y) / StepSize);
+                var stepCount = new Vector2((newSize.x - BaseSize.x) / StepSize, (newSize.y - BaseSize.y) / StepSizeY);
                 CurrentStepSize = new Vector2Int(Mathf.RoundToInt(stepCount.x), Mathf.RoundToInt(stepCount.y));
-                newSize = BaseSize + CurrentStepSize * StepSize;
+                newSize = BaseSize + new Vector2(CurrentStepSize.x * StepSize, CurrentStepSize.y * StepSizeY);
             }
 
             newSize = new Vector2(Mathf.Max(newSize.x, MinSize.x), Mathf.Max(newSize.y, MinSize.y));
             newSize = new Vector2(Mathf.Min(newSize.x, MaxSize.x), Mathf.Min(newSize.y, MaxSize.y));
 
-            rect.sizeDelta = newSize;
+            Target.sizeDelta = newSize;
 
             //update snapsize to match the max size
             if (SnapToStep)
                 CurrentStepSize = new Vector2Int(
                     Mathf.RoundToInt((newSize.x - BaseSize.x) / StepSize), 
-                    Mathf.RoundToInt((newSize.y - BaseSize.y) / StepSize));
+                    Mathf.RoundToInt((newSize.y - BaseSize.y) / StepSizeY));
 
             OnDragEvent.Invoke();
             lastMousePosition = curPos;

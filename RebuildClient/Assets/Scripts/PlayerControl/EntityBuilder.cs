@@ -184,7 +184,7 @@ namespace Assets.Scripts.PlayerControl
             control.Level = spawn.Level;
             control.WeaponClass = player.WeaponClass;
             control.PartyName = player.PartyName;
-            control.IsPartyMember = player.PartyId > 0 && player.PartyId == player.PartyId;
+            control.IsPartyMember = PlayerState.Instance.IsInParty && player.PartyId == PlayerState.Instance.PartyId;
             
             
             bodySprite.Controllable = control;
@@ -335,8 +335,7 @@ namespace Assets.Scripts.PlayerControl
             
             
             control.ConfigureEntity(spawn.ServerId, spawn.Position.ToVector2Int(), spawn.Facing);
-            control.EnsureFloatingDisplayCreated().SetUp(control, spawn.Name, spawn.MaxHp, 0, false, false);
-            
+
             ClientDataLoader.Instance.AttachPrefabToControllable(control, prefabName);
         }
 
@@ -468,6 +467,7 @@ namespace Assets.Scripts.PlayerControl
                 if (control.IsMainCharacter)
                 {
                     PlayerState.Instance.HasCart = false;
+                    UiManager.Instance.RefreshCartVisibility();
                     UiManager.Instance.EquipmentWindow.RefreshEquipmentWindow();
                 }
 

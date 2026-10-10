@@ -22,10 +22,13 @@ namespace Assets.Scripts.Network
 
         public int RemainingLength => Length - position/8;
         
+        public int ReceivedAt { get; private set; }
+
         public ClientInboundMessage()
         {
             Message = new byte[1024];
             position = 0;
+            ReceivedAt = NetworkClock.Ms;
         }
 
         public ClientInboundMessage(byte[] message, int length)
@@ -33,6 +36,7 @@ namespace Assets.Scripts.Network
             Message = message;
             Length = length;
             position = 0;
+            ReceivedAt = NetworkClock.Ms;
         }
 
         public void Clear()

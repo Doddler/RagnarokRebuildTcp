@@ -19,6 +19,13 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
 
             var follower = (CharacterFollowerState)msg.ReadByte();
 
+            if (controllable.IsMainCharacter)
+            {
+                PlayerState.Instance.HasCart = (follower & CharacterFollowerState.AnyCart) > 0;
+                PlayerState.Instance.HasBird = (follower & CharacterFollowerState.Falcon) > 0;
+                UiManager.Instance.RefreshCartVisibility();
+            }
+
             if (controllable.FollowerObject != null)
             {
                 Object.Destroy(controllable.FollowerObject);
@@ -27,7 +34,6 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             if (follower == CharacterFollowerState.None)
             {
                 controllable.FollowerObject = null;
-                PlayerState.Instance.HasCart = false;
                 UiManager.Instance.EquipmentWindow.RefreshEquipmentWindow();
                 return;
             }
@@ -51,8 +57,6 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                     GameObject.Destroy(controllable.FollowerObject);
                 controllable.FollowerObject = cartObj;
 
-                if (controllable.IsMainCharacter)
-                    PlayerState.Instance.HasCart = true;
             }
 
             if ((follower & CharacterFollowerState.Falcon) > 0)
@@ -65,8 +69,6 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                     GameObject.Destroy(controllable.FollowerObject);
                 controllable.FollowerObject = birdObj;
 
-                if (controllable.IsMainCharacter)
-                    PlayerState.Instance.HasBird = true;
             }
 
             UiManager.Instance.EquipmentWindow.RefreshEquipmentWindow();

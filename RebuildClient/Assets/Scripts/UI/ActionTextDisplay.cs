@@ -26,16 +26,11 @@ namespace Assets.Scripts.UI
             BottomTextArea.text = "Select a target.";
 
             selectedSkillLevel = level;
-            
-            
+
             LayoutRebuilder.ForceRebuildLayoutImmediate(TopLayoutGroup);
             LayoutRebuilder.ForceRebuildLayoutImmediate(BottomLayoutGroup);
-            
-            TopTextArea.ForceMeshUpdate();
-            BottomTextArea.ForceMeshUpdate();
-            
         }
-        
+
         public void SetSkillTargeting(CharacterSkill skill, int level)
         {
             Container.SetActive(true);
@@ -53,14 +48,9 @@ namespace Assets.Scripts.UI
 
             activeSkill = skill;
             selectedSkillLevel = level;
-            
-            
+
             LayoutRebuilder.ForceRebuildLayoutImmediate(TopLayoutGroup);
             LayoutRebuilder.ForceRebuildLayoutImmediate(BottomLayoutGroup);
-            
-            TopTextArea.ForceMeshUpdate();
-            BottomTextArea.ForceMeshUpdate();
-            
         }
 
         public void EndActionTextDisplay()

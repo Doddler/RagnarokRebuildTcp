@@ -9,6 +9,9 @@ public class PacketPing : IClientPacketHandler
 {
     public void Process(NetworkConnection connection, InboundMessage msg)
     {
+        //Echoed back untouched below, so the client can work out its own round trip and we track nothing per connection.
+        var clientTimestamp = msg.ReadInt32();
+
         //If they haven't selected a character we accept keep alive packets for 20 minutes
         //If they have, we'll ignore keep alive packets if they aren't active in game yet.
         //Effectively that means they have about a minute to load the map before we time them out.
@@ -32,5 +35,13 @@ public class PacketPing : IClientPacketHandler
         }
 
         connection.LastKeepAlive = Time.ElapsedTime;
+
+        //On character select the ping stays a pure keep-alive, with no session for a latency reading to describe.
+        if (connection.Character == null)
+            return;
+
+        var packet = NetworkManager.StartPacket(PacketType.Pong, 8);
+        packet.Write(clientTimestamp);
+        NetworkManager.SendMessage(packet, connection);
     }
 }

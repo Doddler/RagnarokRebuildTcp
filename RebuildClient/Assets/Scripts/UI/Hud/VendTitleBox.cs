@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Assets.Scripts.Network;
 using Assets.Scripts.UI.ConfigWindow;
 using TMPro;
@@ -22,18 +22,25 @@ namespace Assets.Scripts.UI.Hud
         {
             var cf = CameraFollower.Instance;
             var rect = Self;
+            var canvasRect = cf.UiCanvas.transform as RectTransform;
+
             var screenPos = cf.Camera.WorldToScreenPoint(FollowObject.transform.position);
 
-            var d = 70 / cf.Distance;
-            var reverseScale = 1f / cf.CanvasScaler.scaleFactor;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                canvasRect,
+                screenPos,
+                null,
+                out var localPoint
+            );
 
+            rect.anchoredPosition = localPoint;
+
+            var d = 70 / cf.Distance;
+            
             if (!GameConfig.Data.ScalePlayerDisplayWithZoom)
                 d = 1f;
-            var screenScale = Screen.height / 1920f * 2f;
-            d *= screenScale;
             
             rect.localScale = new Vector3(d, d, d);
-            rect.anchoredPosition = new Vector2(screenPos.x * reverseScale, (screenPos.y - cf.UiCanvas.pixelRect.height) * reverseScale);
         }
 
         public void Update()

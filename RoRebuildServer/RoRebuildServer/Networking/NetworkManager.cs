@@ -148,11 +148,8 @@ public class NetworkManager
 
     public static void Shutdown()
     {
-        var players = Players;
-        for (var i = 0; i < players.Count; i++)
-        {
-            DisconnectPlayer(players[i]);
-        }
+        while (Players.Count > 0)
+            DisconnectPlayer(Players[0]);
 
         while (disconnectList.Reader.TryRead(out var dc))
         {

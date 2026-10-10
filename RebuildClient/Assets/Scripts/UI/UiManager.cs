@@ -34,6 +34,7 @@ public class UiManager : MonoBehaviour
     public ToastNotificationArea ToastNotificationArea;
     public RightClickMenuWindow RightClickMenuWindow;
     public VendAndChatManager VendAndChatManager;
+    public MenuWindow MenuWindow;
 
     public ItemOverlay ItemOverlay;
     public CharacterChat TooltipOverlay;
@@ -145,6 +146,12 @@ public class UiManager : MonoBehaviour
 
         canvas.enabled = false;
         cameraFollower = CameraFollower.Instance;
+        RefreshCartVisibility();
+    }
+
+    public void RefreshCartVisibility()
+    {
+        MenuWindow.RefreshRows();
     }
 
     public void ShowTooltip(GameObject src, string text)
@@ -210,27 +217,25 @@ public class UiManager : MonoBehaviour
         if (!TooltipOverlay.gameObject.activeInHierarchy)
             return;
 
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform,
-            Input.mousePosition, canvas.worldCamera, out var screenPos);
+        var rt = TooltipOverlay.RectTransform;
 
-        var initialScreenPos = canvas.transform.TransformPoint(screenPos);
-        screenPos = initialScreenPos;
+        var scale = canvas.scaleFactor;
+        var width = rt.rect.width * scale;
+        var height = rt.rect.height * scale;
 
-        var scale = GameConfig.Data.MasterUIScale;
-        var height = TooltipOverlay.RectTransform.rect.yMax * scale;
-        var width = TooltipOverlay.RectTransform.rect.xMax * scale;
+        //sits above the cursor, flips left at the right edge, then clamps fully on screen
+        var corner = (Vector2)Input.mousePosition;
+        corner.y += 10;
 
-        screenPos.y += 10;
+        if (corner.x + width > Screen.width)
+            corner.x -= width;
+        if (corner.y + height > Screen.height)
+            corner.y = Screen.height - height;
+        corner.x = Mathf.Max(0, corner.x);
+        corner.y = Mathf.Max(0, corner.y);
 
-        if (screenPos.y + height > Screen.height)
-            screenPos.y = Screen.height - height;
-
-        if (screenPos.x + width > Screen.width)
-            screenPos.x -= width;
-
-        TooltipOverlay.transform.position = screenPos;
-
-        // Debug.Log($"{screenPos} {initialScreenPos} {width} {height} {GameConfig.Data.MasterUIScale}");
+        //position places the pivot, so offset from the corner by the pivot's share of the size
+        TooltipOverlay.transform.position = corner + rt.pivot * new Vector2(width, height);
     }
 
     public void OnLogIn()
@@ -344,6 +349,8 @@ public class UiManager : MonoBehaviour
             case DragItemType.Item:
             {
                 var itemData = ClientDataLoader.Instance.GetItemById(dragItem.ItemId);
+                if (itemData.IsUnique)
+                    DragItemObject.HideCount();
                 if (itemData.IsUnique || itemData.ItemClass == ItemClass.Ammo)
                     EquipmentDropArea.SetActive(true);
                 if (StorageUI.Instance != null)
@@ -469,7 +476,7 @@ public class UiManager : MonoBehaviour
             SkillHotbar.UpdateHotkeyPresses();
         }
 
-        if (IsDraggingItem || cameraFollower.InTextBox)
+        if (IsDraggingItem)
             TooltipOverlay.gameObject.SetActive(false);
 
         UpdateOverlayPosition();

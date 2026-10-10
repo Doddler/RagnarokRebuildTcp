@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Utility;
+﻿using Assets.Scripts.UI.ConfigWindow;
+using Assets.Scripts.Utility;
 using UnityEngine;
 using UnityEngine.Audio;
 using Utility;
@@ -46,6 +47,10 @@ namespace Assets.Scripts.Objects
             musicGroup = Mixer.FindMatchingGroups("Music")[0];
             soundGroup = Mixer.FindMatchingGroups("Sounds")[0];
             Mixer.GetFloat("Music", out bgmLevel);
+
+            GameConfig.InitializeIfNecessary();
+            GameConfig.AudioMixer = Mixer;
+            GameConfig.ApplyAudio();
 
             for (var i = 0; i < 2; i++)
             {
