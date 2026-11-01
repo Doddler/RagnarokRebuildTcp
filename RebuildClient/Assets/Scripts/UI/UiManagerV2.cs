@@ -12,6 +12,7 @@ namespace Assets.Scripts.UI.Classic
         PLAYER_INFO_MODERN, //TODO just for swap test
         INVENTORY,
         EQUIPMENT,
+        SKILLS,
     }
 
     public class WindowEntry

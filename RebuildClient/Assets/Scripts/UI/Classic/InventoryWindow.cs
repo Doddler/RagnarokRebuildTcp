@@ -1,5 +1,6 @@
-
+using System.Collections.Generic;
 using Assets.Scripts.PlayerControl;
+using Assets.Scripts.Sprites;
 using RO_Flex_UI.Components;
 using RO_Flex_UI.Panels;
 using UnityEngine;
@@ -12,61 +13,114 @@ namespace Assets.Scripts.UI.Classic
         [SerializeField] private FillPanel gearPanel;
         [SerializeField] private FillPanel etcPanel;
 
-        private bool initialLoad = false;
+        private ClientInventory inventory;
+        private readonly HashSet<FillPanel> pendingPanels = new();
+        private readonly Dictionary<FillPanel, int> renderedCellCounts = new();
+        private readonly List<InventoryItem> items = new();
 
         protected override void Awake()
         {
             base.Awake();
             UiManagerV2.Instance.RegisterWindow(WindowID.INVENTORY, this, KeyCode.E);
+            if (GetComponent<ClassicInventoryDropZone>() == null)
+                gameObject.AddComponent<ClassicInventoryDropZone>();
         }
 
-        private void Start()
+        private void Start() => HideWindow();
+
+        protected override void OnEnable()
         {
-            LoadInventoryData();
-            HideWindow();
+            base.OnEnable();
+            BindInventory();
+            PlayerState.Instance.OnEquipmentChanged += RefreshInventory;
+            RefreshInventory();
         }
 
-        public void OnEnable()
+        private void OnDisable()
         {
-            LoadInventoryData();
+            PlayerState.Instance.OnEquipmentChanged -= RefreshInventory;
+            if (inventory != null)
+                inventory.OnChanged -= RefreshInventory;
+            inventory = null;
         }
 
-        private bool LoadInventoryData()
+        private void BindInventory()
         {
-            if (PlayerState.Instance == null) return false;
+            var next = PlayerState.Instance?.Inventory;
+            if (next == inventory)
+                return;
+            if (inventory != null)
+                inventory.OnChanged -= RefreshInventory;
+            inventory = next;
+            if (inventory != null)
+                inventory.OnChanged += RefreshInventory;
+            RefreshInventory();
+        }
 
-            var inventory = PlayerState.Instance?.Inventory?.GetInventoryData();
-            if (inventory == null) return false;
+        public void RefreshInventory()
+        {
+            pendingPanels.Add(itemPanel);
+            pendingPanels.Add(gearPanel);
+            pendingPanels.Add(etcPanel);
+        }
 
-            var itemDataLoader = Sprites.ClientDataLoader.Instance;
-            if (itemDataLoader == null) return false;
+        protected new void LateUpdate()
+        {
+            base.LateUpdate();
+            BindInventory();
+            var loader = ClientDataLoader.Instance;
+            if (loader == null || !loader.IsInitialized)
+                return;
 
-            Debug.Log($"Inventory {inventory.Count}");
+            RenderPanel(itemPanel, InventoryCategory.Consumables, loader);
+            RenderPanel(gearPanel, InventoryCategory.Gear, loader);
+            RenderPanel(etcPanel, InventoryCategory.Etc, loader);
+        }
 
-            var index = 0;
-            foreach (var itemData in inventory.Values)
+        private void RenderPanel(FillPanel panel, InventoryCategory category, ClientDataLoader loader)
+        {
+            // Inactive tabs cannot create their cells until they are shown.
+            if (panel == null || !panel.isActiveAndEnabled)
+                return;
+            if (!pendingPanels.Contains(panel)
+                && renderedCellCounts.TryGetValue(panel, out var count) && count == panel.Cells.Count)
+                return;
+
+            items.Clear();
+            if (inventory != null)
+                foreach (var item in inventory.GetInventoryData().Values)
+                    if (item.ItemData != null && item.Category == category)
+                        items.Add(item);
+
+            panel.SetFilledCells(items.Count);
+            panel.Refresh();
+            if (panel.Cells.Count == 0)
+                return;
+
+            for (var i = 0; i < panel.Cells.Count; i++)
             {
-                var itemName = itemData.ItemData.Name;
-                var itemSprite = itemDataLoader.GetIconAtlasSprite(itemData.ItemData.Sprite);
-                var itemAmount = itemData.Count;
+                if (!panel.TryGetCell<IconAmount>(i, out var icon))
+                    continue;
 
-                var cell = itemPanel.GetCell<IconAmount>(index);
-                var tooltip = itemPanel.GetCell<RO_Flex_UI.Components.TooltipTrigger>(index);
-                cell.Assign(itemSprite, itemAmount.ToString());
-                cell.SetActive(true);
-                tooltip.OnTrigger += () =>
+                var filled = i < items.Count;
+                if (filled)
+                    icon.Assign(loader.GetIconAtlasSprite(items[i].ItemData.Sprite), items[i].Count.ToString());
+                else
+                    icon.Clear();
+                icon.SetActive(filled);
+
+                if (panel.TryGetCell<RO_Flex_UI.Components.TooltipTrigger>(i, out var tooltip))
                 {
-                    tooltip.Enabled = cell.IsVisible;
-                    tooltip.SetText($"{itemName}: {itemAmount} un.");
-                };
-                index++;
+                    tooltip.Enabled = filled;
+                    var equipped = filled && (PlayerState.Instance.EquippedBagIdHashes.Contains(items[i].BagSlotId)
+                        || PlayerState.Instance.AmmoId == items[i].BagSlotId);
+                    tooltip.SetText(filled ? $"{items[i].ProperName()}: {items[i].Count}{(equipped ? " (Equipped)" : "")}" : string.Empty);
+                }
             }
-            itemPanel.SetFilledCells(index);
-            itemPanel.Refresh();
-
-            initialLoad = true;
-            return true;
+            if (items.Count > panel.Cells.Count)
+                Debug.LogWarning($"Inventory tab {category} has more items than its grid capacity.", this);
+            pendingPanels.Remove(panel);
+            renderedCellCounts[panel] = panel.Cells.Count;
         }
-
     }
 }
