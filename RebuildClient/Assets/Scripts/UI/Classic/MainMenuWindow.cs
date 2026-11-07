@@ -17,7 +17,7 @@ namespace Assets.Scripts.UI.Classic
 
             if (!Tools.IsValid(this, headerPanel)) return;
 
-            // UiManagerV2.Instance.RegisterWindow(WindowID.MAIN_MENU, this, KeyCode.Escape);
+            UiManagerV2.Instance.RegisterWindow(WindowID.MAIN_MENU, this, KeyCode.P);
 
             HideWindow();
         }
@@ -43,14 +43,16 @@ namespace Assets.Scripts.UI.Classic
             buttons[9].onClick.AddListener(Application.Quit);
         }
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
             headerPanel.OnCloseButtonClick.AddListener(HideWindow);
             ShowWindow();
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
+            base.OnDisable();
             headerPanel.OnCloseButtonClick.RemoveListener(HideWindow);
             HideWindow();
         }

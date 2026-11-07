@@ -10,6 +10,8 @@ using UnityEngine;
 
 namespace Assets.Scripts.PlayerControl
 {
+    public enum InventoryCategory { Consumables, Gear, Etc }
+
     public struct InventoryItem : IEquatable<InventoryItem>
     {
         public int BagSlotId;
@@ -17,8 +19,14 @@ namespace Assets.Scripts.PlayerControl
         public ItemType Type;
         public RegularItem Item;
         public UniqueItem UniqueItem;
-        
+
         public int Id => Type == ItemType.RegularItem ? Item.Id : UniqueItem.Id;
+        public InventoryCategory Category => ItemData?.ItemClass switch
+        {
+            ItemClass.Useable => InventoryCategory.Consumables,
+            ItemClass.Weapon or ItemClass.Equipment or ItemClass.Ammo => InventoryCategory.Gear,
+            _ => InventoryCategory.Etc,
+        };
 
         public InventoryItem(RegularItem item)
         {
@@ -28,11 +36,11 @@ namespace Assets.Scripts.PlayerControl
             ItemData = ClientDataLoader.Instance.GetItemById(item.Id);
             UniqueItem = default;
         }
-        
+
         public InventoryItem(int bagId, UniqueItem item)
         {
             BagSlotId = bagId;
-            Type = ItemType.RegularItem;
+            Type = ItemType.UniqueItem;
             Item = default;
             ItemData = ClientDataLoader.Instance.GetItemById(item.Id);
             UniqueItem = item;
@@ -43,10 +51,10 @@ namespace Assets.Scripts.PlayerControl
             get => Type == ItemType.RegularItem ? Item.Count : UniqueItem.Count;
             set
             {
-                if (Type == ItemType.RegularItem) 
-                    Item.Count = (short)value; 
+                if (Type == ItemType.RegularItem)
+                    Item.Count = (short)value;
                 else
-                    UniqueItem.Count = (short)value; 
+                    UniqueItem.Count = (short)value;
             }
         }
 
@@ -65,10 +73,10 @@ namespace Assets.Scripts.PlayerControl
 
             if ((ItemData.Position & position) == 0)
                 return false;
-            
+
             var socketCount = ItemData.Slots;
-            
-            for(var i = 0; i < socketCount; i++)
+
+            for (var i = 0; i < socketCount; i++)
                 if (UniqueItem.SlotData(i) == 0)
                     return true;
 
@@ -83,7 +91,7 @@ namespace Assets.Scripts.PlayerControl
             else
                 return DeserializeUnique(msg, bagId);
         }
-        
+
         public static InventoryItem Deserialize(ClientInboundMessage msg, ItemType type, int bagId)
         {
             if (type == ItemType.RegularItem)
@@ -95,7 +103,7 @@ namespace Assets.Scripts.PlayerControl
         public static InventoryItem DeserializeRegular(ClientInboundMessage message)
         {
             var item = RegularItem.Deserialize(message);
-            
+
             return new InventoryItem(item);
         }
 
@@ -110,7 +118,7 @@ namespace Assets.Scripts.PlayerControl
             item.ItemData = ClientDataLoader.Instance.GetItemById(item.UniqueItem.Id);
             return item;
         }
-        
+
         private static StringBuilder sb = new();
         private static CardPrefixData[] prefixData = new CardPrefixData[4];
 
@@ -159,7 +167,7 @@ namespace Assets.Scripts.PlayerControl
                 {
                     if (sb.Length > 0)
                         sb.Append(" ");
-                    switch(counts[i])
+                    switch (counts[i])
                     {
                         default: sb.Append(prefixData[i].Prefix); break;
                         case 2: sb.Append("Double ").Append(prefixData[i].Prefix); break;
@@ -172,7 +180,7 @@ namespace Assets.Scripts.PlayerControl
             if (sb.Length > 0)
                 sb.Append(" ");
             sb.Append(data.Name);
-            
+
             //postfixes
             for (var i = 0; i < uniqueSlot; i++)
             {
@@ -191,7 +199,7 @@ namespace Assets.Scripts.PlayerControl
 
             return sb.ToString();
         }
-        
+
         public bool Equals(InventoryItem other)
         {
             return BagSlotId == other.BagSlotId;
@@ -217,16 +225,16 @@ namespace Assets.Scripts.PlayerControl
 
         public static string MakeProperName(RegularItem item, ItemData data)
         {
-            if(data.Slots > 0)
+            if (data.Slots > 0)
                 return $"{data.Name}[{data.Slots}]";
             return data.Name;
         }
-        
+
         public static string MakeProperName(UniqueItem item, ItemData data)
         {
             if (data == null)
                 return $"Unknown Item";
-            
+
             if (data.IsUnique)
             {
                 var refine = "";
@@ -249,7 +257,7 @@ namespace Assets.Scripts.PlayerControl
         {
             if (ItemData == null)
                 return $"Unknown Item";
-            
+
             if (ItemData.IsUnique)
             {
                 var refine = "";
@@ -263,9 +271,22 @@ namespace Assets.Scripts.PlayerControl
             return $"{ItemData.Name}: {Count} ea.";
         }
     }
-    
+
     public class ClientInventory
     {
+        public event Action OnChanged;
+
+        public int TotalWeight
+        {
+            get
+            {
+                long weight = 0;
+                foreach (var item in inventoryLookup.Values)
+                    weight += (long)Math.Max(0, item.ItemData?.Weight ?? 0) * Math.Max(0, item.Count);
+                return (int)Math.Min(int.MaxValue, weight);
+            }
+        }
+
         private SortedDictionary<int, InventoryItem> inventoryLookup = new();
 
         public SortedDictionary<int, InventoryItem> GetInventoryData() => inventoryLookup;
@@ -275,10 +296,10 @@ namespace Assets.Scripts.PlayerControl
         public Dictionary<Guid, int> UniqueItemIdToBagId = new();
 
         public int TotalItems => inventoryLookup.Count;
-        
+
         public int GetItemCount(int itemId)
         {
-            if(inventoryLookup.TryGetValue(itemId, out var item))
+            if (inventoryLookup.TryGetValue(itemId, out var item))
                 return item.Type == ItemType.RegularItem ? item.Item.Count : item.UniqueItem.Count;
             return 0;
         }
@@ -311,6 +332,7 @@ namespace Assets.Scripts.PlayerControl
                 inventoryLookup[itemId] = item;
             }
 
+            OnChanged?.Invoke();
             return true;
         }
 
@@ -325,8 +347,9 @@ namespace Assets.Scripts.PlayerControl
                     UniqueItemCounts[item.Id] = 1;
                 UniqueItemIdToBagId[item.UniqueItem.UniqueId] = item.BagSlotId;
             }
-            
+
             inventoryLookup[item.BagSlotId] = item;
+            OnChanged?.Invoke();
         }
 
         public bool TryFindCatalystCapableItem(int baseId, int ignoreBagId, out InventoryItem catalyst)
@@ -340,17 +363,17 @@ namespace Assets.Scripts.PlayerControl
                     continue;
 
                 var isSocketed = false;
-                for(var i = 0; i < 4; i++)
+                for (var i = 0; i < 4; i++)
                     if (item.UniqueItem.SlotData(i) > 0)
                         isSocketed = true;
-                
+
                 if (isSocketed)
                     continue;
 
                 catalyst = item;
                 return true;
             }
-            
+
             catalyst = default;
             return false;
         }
@@ -365,11 +388,12 @@ namespace Assets.Scripts.PlayerControl
 
             UniqueItemIdToBagId.Remove(curItem.UniqueItem.UniqueId);
             UniqueItemIdToBagId[item.UniqueId] = bagId;
-            
+
             curItem.UniqueItem = item;
             inventoryLookup[bagId] = curItem;
+            OnChanged?.Invoke();
         }
-        
+
         public void Deserialize(ClientInboundMessage msg)
         {
             inventoryLookup.Clear();
@@ -377,7 +401,10 @@ namespace Assets.Scripts.PlayerControl
             UniqueItemIdToBagId.Clear();
             var hasBagData = msg.ReadByte();
             if (hasBagData == 0)
+            {
+                OnChanged?.Invoke();
                 return;
+            }
             var regularCount = msg.ReadInt32();
             for (var i = 0; i < regularCount; i++)
             {
@@ -398,6 +425,7 @@ namespace Assets.Scripts.PlayerControl
                 UniqueItemIdToBagId.Add(item.UniqueItem.UniqueId, item.BagSlotId);
                 // items.Add(item);
             }
+            OnChanged?.Invoke();
         }
     }
 }

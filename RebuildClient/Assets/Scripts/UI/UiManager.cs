@@ -18,7 +18,7 @@ using UnityEngine;
 
 public class UiManager : MonoBehaviour
 {
-    public Classic.MainMenuWindow MainMenu;
+    // public Classic.MainMenuWindow MainMenu;
     public GameObject PrimaryUserUIContainer;
     public RectTransform PrimaryUserWindowContainer;
     public GameObject CharacterOverlayGroup;

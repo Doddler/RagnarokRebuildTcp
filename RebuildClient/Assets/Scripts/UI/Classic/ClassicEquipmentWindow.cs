@@ -69,8 +69,8 @@ namespace Assets.Scripts.UI.Classic
                 slot.Assign(
                     ClientDataLoader.Instance.GetIconAtlasSprite(item.ItemData.Sprite),
                     item.ItemData.Name,
-                    item.Count.ToString(),
-                    item.ItemData.Id
+                    item.Count,
+                    item.BagSlotId
                 );
 
                 slot.TryGetComponent<RO_Flex_UI.Components.TooltipTrigger>(out var tooltip);

@@ -12,6 +12,7 @@ namespace Assets.Scripts.UI.Classic
         [SerializeField] private FillPanel itemPanel;
         [SerializeField] private FillPanel gearPanel;
         [SerializeField] private FillPanel etcPanel;
+        [SerializeField] private RoText totalText;
 
         private ClientInventory inventory;
         private readonly HashSet<FillPanel> pendingPanels = new();
@@ -62,6 +63,9 @@ namespace Assets.Scripts.UI.Classic
             pendingPanels.Add(itemPanel);
             pendingPanels.Add(gearPanel);
             pendingPanels.Add(etcPanel);
+
+            if (totalText != null && inventory != null)
+                totalText.SetText($"{inventory.GetInventoryData().Count,3}/100");
         }
 
         protected new void LateUpdate()
@@ -114,7 +118,7 @@ namespace Assets.Scripts.UI.Classic
                     tooltip.Enabled = filled;
                     var equipped = filled && (PlayerState.Instance.EquippedBagIdHashes.Contains(items[i].BagSlotId)
                         || PlayerState.Instance.AmmoId == items[i].BagSlotId);
-                    tooltip.SetText(filled ? $"{items[i].ProperName()}: {items[i].Count}{(equipped ? " (Equipped)" : "")}" : string.Empty);
+                    tooltip.SetText(filled ? $"{items[i].ProperName()}: {items[i].Count} un. {(equipped ? " (Equipped)" : "")}" : string.Empty);
                 }
             }
             if (items.Count > panel.Cells.Count)

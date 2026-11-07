@@ -1806,10 +1806,10 @@ namespace Assets.Scripts
                 {
                     UiManager.Instance.CloseLastWindow();
                 }
-                else
-                {
-                    UiManager.Instance.MainMenu.ShowWindow();
-                }
+                // else
+                // {
+                //     UiManager.Instance.MainMenu.ShowWindow();
+                // }
 
                 EventSystem.current.SetSelectedGameObject(null);
             }

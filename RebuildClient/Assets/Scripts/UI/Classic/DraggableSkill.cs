@@ -18,7 +18,7 @@ namespace Assets.Scripts.UI.Classic
         public DragPayload CreatePayload()
         {
             var text = $"";
-            return new DragPayload(this, Sprite, text, null);
+            return new DragPayload(this, Sprite, text);
         }
 
         public bool CanDrag()

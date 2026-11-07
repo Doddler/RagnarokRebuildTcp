@@ -22,6 +22,7 @@ namespace Assets.Scripts.PlayerControl
         public Action OnWeightOrCurrencyChanged;
         public Action OnStatsChanged;
         public Action OnSkillsChanged;
+        public Action OnEquipmentChanged;
 
         public bool IsValid { get; set; } = false;
         public int EntityId { get; set; }
@@ -209,11 +210,16 @@ namespace Assets.Scripts.PlayerControl
 
         public void SetWeight(int current, int max)
         {
+            CurrentWeight = Math.Max(0, current);
+            MaxWeight = Math.Max(0, max);
+
             OnWeightOrCurrencyChanged?.Invoke();
         }
 
         public void SetZeny(int value)
         {
+            Zeny = Math.Max(0, value);
+
             OnWeightOrCurrencyChanged?.Invoke();
         }
         #endregion
