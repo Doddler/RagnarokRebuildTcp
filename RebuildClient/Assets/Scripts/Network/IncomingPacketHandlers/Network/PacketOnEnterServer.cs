@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Assets.Scripts.Network.HandlerBase;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI.ConfigWindow;
@@ -24,15 +24,15 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
 
             Network.CurrentMap = mapName;
             Network.PlayerId = id;
-            
+
             UiManager.OnLogIn();
 
-            if(ClientDataLoader.Instance.LatestPatchNotes != GameConfig.Data.LastViewedPatchNotes)
+            if (ClientDataLoader.Instance.LatestPatchNotes != GameConfig.Data.LastViewedPatchNotes)
                 UiManager.Instance.HelpWindow.ShowWindow();
             else
                 UiManager.Instance.HelpWindow.HideWindow();
             GameConfig.Data.LastViewedPatchNotes = ClientDataLoader.Instance.LatestPatchNotes;
-            
+
             SceneTransitioner.Instance.LoadScene(Network.CurrentMap, Network.OnMapLoad);
 
         }

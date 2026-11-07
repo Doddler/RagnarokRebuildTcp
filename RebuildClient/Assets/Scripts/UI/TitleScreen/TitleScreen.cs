@@ -88,6 +88,9 @@ namespace Assets.Scripts.UI.TitleScreen
 
         public void LogInError(string message)
         {
+#if UNITY_EDITOR
+            Assets.Scripts.PlayerControl.QuickPlayLauncher.OnLoginFailed();
+#endif
             Debug.Log($"LogInError: " + message);
             NoticeBox.gameObject.SetActive(true);
             LoginBox.gameObject.SetActive(false);

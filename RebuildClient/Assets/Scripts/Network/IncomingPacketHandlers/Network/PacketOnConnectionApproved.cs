@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Assets.Scripts.Network.HandlerBase;
 using Assets.Scripts.UI.ConfigWindow;
@@ -23,10 +23,10 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
             Debug.Log($"Characters: {characterCount}");
 
             var characters = new List<ClientCharacterSummary>();
-            
-            for(var i = 0; i < 3; i++)
+
+            for (var i = 0; i < 3; i++)
                 characters.Add(null);
-            
+
             for (var i = 0; i < characterCount; i++)
             {
                 var ch = new ClientCharacterSummary();
@@ -37,13 +37,16 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 if (summaryLen > 0)
                 {
                     ch.SummaryData = new int[(int)PlayerSummaryData.SummaryDataMax];
-                    var readLen =  summaryLen / 4;
+                    var readLen = summaryLen / 4;
                     for (var j = 0; j < readLen; j++)
                         ch.SummaryData[j] = msg.ReadInt32();
                 }
                 characters[ch.CharacterSlot] = ch;
             }
-            
+
+#if UNITY_EDITOR
+            if (Assets.Scripts.PlayerControl.QuickPlayLauncher.OnCharacters(Network, characters)) return;
+#endif
             Network.TitleScreen.OpenCharacterSelect(characters);
         }
     }

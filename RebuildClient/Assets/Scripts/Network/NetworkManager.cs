@@ -180,6 +180,9 @@ namespace Assets.Scripts.Network
             TitleScreen.gameObject.SetActive(true);
             LoginBox.gameObject.SetActive(true);
             LoginBox.Init();
+#if UNITY_EDITOR
+            Assets.Scripts.PlayerControl.QuickPlayLauncher.OnClientReady(this);
+#endif
             CameraFollower.UpdateCameraSize();
             SceneTransitioner.Instance.FadeIn(); //show login window
             AudioManager.Instance.PlayBgm("01.mp3");
