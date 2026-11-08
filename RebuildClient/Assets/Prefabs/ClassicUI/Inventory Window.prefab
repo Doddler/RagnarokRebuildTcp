@@ -153,6 +153,7 @@ MonoBehaviour:
   itemPanel: {fileID: 5894468645987744258}
   gearPanel: {fileID: 638662243109448502}
   etcPanel: {fileID: 2052857720989260894}
+  totalText: {fileID: 0}
 --- !u!1 &6509552004137232725
 GameObject:
   m_ObjectHideFlags: 0

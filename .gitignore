@@ -124,3 +124,8 @@ Other/RoWikiGenerator/Microsoft.CodeAnalysis.Razor.Compiler/
 RebuildClient/Assets/StreamingAssets/ClientConfigGenerated/
 RebuildClient/Assets/Textures/Import/
 Recordings/
+Builds/
+/RebuildClient/quickplay.local.json
+
+# MacOS
+.DS_Store
