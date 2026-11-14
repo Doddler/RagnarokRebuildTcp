@@ -24,7 +24,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                 else
                 {
                     Camera.AppendChatText($"<color=#c80000>Unequipped {item.ProperName()}.</color>");
-                    State.AmmoId = -1;
+                    State.AmmoId = 0;
                 }
                 UiManager.Instance.InventoryWindow.UpdateActiveVisibleBag();
             }
@@ -56,6 +56,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                     State.EquippedItems[(int)slot] = 0;
             }
             
+            State.OnEquipmentChanged?.Invoke();
             UiManager.EquipmentWindow.RefreshEquipmentWindow();
         }
     }

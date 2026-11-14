@@ -4,14 +4,19 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 
-namespace Assets.Scripts.UI.Classic
+namespace Assets.Scripts.UI.Classic.DragAndDrop
 {
-    public class DraggableItem : IconAmount, IDragSource, IDragTarget
+    public class DraggableItem : IconAmount, IItemDragSource, IDragTarget
     {
         public RoButton Button;
+        public int ItemId { get; set; }
 
         private void OnEnable()
         {
+            if (Button == null)
+                Button = GetComponentInChildren<RoButton>(true);
+            if (Button == null && iconSprite != null)
+                Button = iconSprite.gameObject.AddComponent<RoButton>();
             if (Button != null)
             {
                 Button.onPointerClick.AddListener(OnPointerClick);
@@ -36,23 +41,22 @@ namespace Assets.Scripts.UI.Classic
 
         private void OnRightClick()
         {
-            Debug.Log("Right click");
+            ClassicItemDescriptionWindow.ToggleItemDescription(ItemId);
         }
 
         private void OnDoubleClick()
         {
-            Debug.Log("Double click");
+            ClassicEquipmentWindow.Instance?.EquipAutomatically(ItemId);
         }
 
         public DragPayload CreatePayload()
         {
-            var text = $"";
-            return new DragPayload(this, Sprite, text);
+            return new DragPayload(this, Sprite, Amount);
         }
 
         public bool CanDrag()
         {
-            return true;
+            return ItemId > 0;
         }
 
         public void OnDragComplete()
@@ -61,12 +65,12 @@ namespace Assets.Scripts.UI.Classic
 
         public bool CanDrop(DragPayload payload)
         {
-            return true;
+            return payload.source is DraggableGearSlot gear && gear.ItemId > 0;
         }
 
         public void OnDropComplete(DragPayload payload)
         {
-            Debug.Log("ITEM DROPPED");
+            if (payload.source is DraggableGearSlot gear) Assets.Scripts.Network.NetworkManager.Instance?.SendUnEquipItem(gear.ItemId);
         }
     }
 }

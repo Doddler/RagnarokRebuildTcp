@@ -4,13 +4,15 @@ using Assets.Scripts.Sprites;
 using RO_Flex_UI.Components;
 using RO_Flex_UI.Components.DragAndDrop;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-using FlexDragAndDrop = Assets.Scripts.UI.Classic.DragAndDrop;
+// using FlexDragAndDrop = Assets.Scripts.UI.Classic.DragAndDrop;
 
-namespace Assets.Scripts.UI.Classic
+namespace Assets.Scripts.UI.Classic.DragAndDrop
 {
-    public class DraggableGearSlot : IconText, FlexDragAndDrop.IItemDragSource, IDragTarget
+    public class DraggableGearSlot : IconText, IItemDragSource, IDragTarget
     {
+        public RebuildSharedData.Enum.EquipSlot Target;
         int itemId;
         int amount;
         public int ItemId => itemId;
@@ -18,6 +20,26 @@ namespace Assets.Scripts.UI.Classic
 
         [SerializeField] protected bool canReplaceOnDrop = false;
         private RO_Flex_UI.Components.TooltipTrigger tooltipTrigger;
+        [SerializeField] private RoButton button;
+
+        private void OnEnable()
+        {
+            if (button == null) button = GetComponentInChildren<RoButton>(true);
+            if (button != null) button.onPointerClick.AddListener(OnPointerClick);
+        }
+
+        private void OnDisable()
+        {
+            if (button != null) button.onPointerClick.RemoveListener(OnPointerClick);
+        }
+
+        private void OnPointerClick(PointerEventData click)
+        {
+            if (click.button == PointerEventData.InputButton.Right && itemId > 0)
+                ClassicItemDescriptionWindow.ToggleItemDescription(itemId);
+            if (click.button == PointerEventData.InputButton.Left && click.clickCount == 2 && itemId > 0)
+                NetworkManager.Instance?.SendUnEquipItem(itemId);
+        }
 
         protected override void Start()
         {
@@ -37,39 +59,18 @@ namespace Assets.Scripts.UI.Classic
             return !Empty;
         }
 
-        public bool CanDrop(DragPayload payload)
-        {
-            return Empty;
-        }
-
+        public bool CanDrop(DragPayload payload) => payload.source is DraggableItem item && ClassicEquipmentWindow.Instance.CanEquip(item.ItemId, Target);
         public void OnDropComplete(DragPayload payload)
         {
-            if (!Empty) return;
-
-            if (payload.source is not FlexDragAndDrop.IItemDragSource p)
-            {
-                Debug.LogWarning("Payload source is not an item drag source.");
-                return;
-            }
-
-            if (!PlayerState.Instance.Inventory.TryGetInventoryItem(p.ItemId, out var data))
-                throw new System.Exception("Item not found in inventory.");
-
-            NetworkManager.Instance.SendEquipItem(p.ItemId);
-
-            Assign(payload.sprite, data.ItemData.Name, data.Count, p.ItemId);
-            SetActive(true);
+            if (CanDrop(payload)) ClassicEquipmentWindow.Instance.Equip(((DraggableItem)payload.source).ItemId, Target);
         }
-
-        public void OnDragComplete()
-        {
-            Clear();
-            Debug.Log("DRAG COMPLETE");
-        }
+        public void OnDragComplete() { }
 
         public override void Clear()
         {
             base.Clear();
+            itemId = 0;
+            amount = 0;
 
             if (tooltipTrigger == null)
                 tooltipTrigger = GetComponent<RO_Flex_UI.Components.TooltipTrigger>();
@@ -80,6 +81,8 @@ namespace Assets.Scripts.UI.Classic
         public override void Assign(Sprite sprite, string text, string amount = "")
         {
             base.Assign(sprite, text, amount);
+            // Clear hides the contents; assigning confirmed gear must show them again.
+            SetActive(true);
 
             if (tooltipTrigger == null)
                 tooltipTrigger = GetComponent<RO_Flex_UI.Components.TooltipTrigger>();
@@ -96,11 +99,5 @@ namespace Assets.Scripts.UI.Classic
             this.itemId = itemId;
             this.amount = amount;
         }
-
-        public void OnDrop()
-        {
-            throw new System.NotImplementedException();
-        }
-
     }
 }

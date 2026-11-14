@@ -1491,13 +1491,14 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
-        public void SendEquipItem(int id)
+        public void SendEquipItem(int id, EquipSlot slot = EquipSlot.None)
         {
             var msg = StartMessage();
 
             msg.Write((byte)PacketType.EquipUnequipGear);
             msg.Write(id);
             msg.Write(true);
+            msg.Write((byte)slot);
 
             SendMessage(msg);
         }

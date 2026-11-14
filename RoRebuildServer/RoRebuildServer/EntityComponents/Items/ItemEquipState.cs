@@ -348,7 +348,7 @@ public class ItemEquipState
         if (!DataManager.IsJobInEquipGroup(weaponInfo.EquipGroup, Player.Character.ClassId))
             return EquipChangeResult.NotApplicableJob;
 
-        if (equipSlot == EquipSlot.Shield && Player.Character.ClassId != 11 && !weaponInfo.IsTwoHanded)
+        if (equipSlot == EquipSlot.Shield && (Player.Character.ClassId != 11 || weaponInfo.IsTwoHanded || isTwoHandedWeapon))
             return EquipChangeResult.InvalidItem;
 
         //make sure they don't equip the same weapon in both hands
@@ -387,6 +387,9 @@ public class ItemEquipState
         if (!DataManager.IsJobInEquipGroup(equipInfo.EquipGroup, Player.Character.ClassId))
             return EquipChangeResult.NotApplicableJob;
 
+
+        if (equipSlot != EquipSlot.None && !IsValidSlotForEquipment(equipInfo, equipSlot))
+            return EquipChangeResult.InvalidPosition;
 
         if (equipSlot == EquipSlot.None || equipInfo.EquipPosition == EquipPosition.Headgear)
             equipSlot = EquipSlotForEquipment(equipInfo, itemData.Id);
@@ -438,13 +441,16 @@ public class ItemEquipState
 
     public EquipChangeResult EquipItem(int bagId, EquipSlot equipSlot = EquipSlot.None)
     {
+        if (equipSlot != EquipSlot.None && (equipSlot < EquipSlot.HeadTop || (equipSlot > EquipSlot.Accessory2 && equipSlot != EquipSlot.Ammunition)))
+            return EquipChangeResult.InvalidPosition;
+
         if (Player.Inventory == null || !Player.Inventory.GetItem(bagId, out var item))
             return EquipChangeResult.InvalidItem;
 
         var itemData = DataManager.ItemList[item.Id];
 
         if (itemData.ItemClass == ItemClass.Ammo)
-            return EquipAmmo(item.Id) ? EquipChangeResult.Success : EquipChangeResult.InvalidItem;
+            return (equipSlot == EquipSlot.None || equipSlot == EquipSlot.Ammunition) && EquipAmmo(item.Id) ? EquipChangeResult.Success : EquipChangeResult.InvalidItem;
 
         if (IsItemEquipped(bagId))
             return EquipChangeResult.AlreadyEquipped;

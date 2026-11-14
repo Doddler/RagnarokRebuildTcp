@@ -4,7 +4,7 @@ public class ClassicUI : MonoBehaviour
 {
     public GameObject Canvas;
 
-    public void Start()
+    public void Awake()
     {
         // Enable the canvas if it is assigned
         if (Canvas != null)

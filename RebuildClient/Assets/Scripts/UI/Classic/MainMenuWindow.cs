@@ -17,14 +17,13 @@ namespace Assets.Scripts.UI.Classic
 
             if (!Tools.IsValid(this, headerPanel)) return;
 
-            UiManagerV2.Instance.RegisterWindow(WindowID.MAIN_MENU, this, KeyCode.P);
-
-            HideWindow();
+            UiManagerV2.Instance.RegisterWindow(WindowID.MAIN_MENU, this, KeyCode.Escape);
         }
 
         private void Start()
         {
             SetupButtons();
+            HideWindow();
         }
 
         private void SetupButtons()
@@ -59,12 +58,13 @@ namespace Assets.Scripts.UI.Classic
 
         public override void ShowWindow()
         {
-            var mgr = UiManager.Instance;
+            // var mgr = UiManager.Instance;
 
-            if (!mgr.WindowStack.Contains(this))
-                mgr.WindowStack.Add(this);
+            // if (!mgr.WindowStack.Contains(this))
+            //     mgr.WindowStack.Add(this);
 
             base.ShowWindow();
+            UiManagerV2.Instance?.TrackOpen(this);
         }
 
         public override void HideWindow()
@@ -74,6 +74,7 @@ namespace Assets.Scripts.UI.Classic
             if (mgr.WindowStack.Contains(this))
                 mgr.WindowStack.Remove(this);
 
+            UiManagerV2.Instance?.TrackClosed(this);
             base.HideWindow();
         }
 

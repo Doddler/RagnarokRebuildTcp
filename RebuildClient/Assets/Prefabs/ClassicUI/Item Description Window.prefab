@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3478331612877955280
 RectTransform:
   m_ObjectHideFlags: 0
@@ -91,13 +91,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4524813217994008527}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9794045a513cb8d438d520c4d6ec5783, type: 3}
+  m_Script: {fileID: 11500000, guid: a64b46c2e944543c2a4e6ada584bb79b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   resetToCenter: 0
   isDraggable: 1
   isResizable: 1
-  keepWindowInScreen: 0
+  keepWindowInScreen: 1
   returnToOrigin: 0
 --- !u!114 &6120518352479226605
 MonoBehaviour:
@@ -464,6 +464,11 @@ PrefabInstance:
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: 2100000, guid: 3dd94cb0c1ea46e468cd4c2b592ae0ac, type: 2}
+    - target: {fileID: 1762051293721212226, guid: fb9c8e231812dda4a8722fb6a1767671,
+        type: 3}
+      propertyPath: m_TextWrappingMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1762051293721212226, guid: fb9c8e231812dda4a8722fb6a1767671,
         type: 3}
       propertyPath: m_enableWordWrapping

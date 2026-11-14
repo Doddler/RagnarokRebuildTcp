@@ -19,6 +19,18 @@ namespace Assets.Scripts.UI.Classic
         private readonly Dictionary<FillPanel, int> renderedCellCounts = new();
         private readonly List<InventoryItem> items = new();
 
+        public override void ShowWindow()
+        {
+            base.ShowWindow();
+            UiManagerV2.Instance?.TrackOpen(this);
+        }
+
+        public override void HideWindow()
+        {
+            UiManagerV2.Instance?.TrackClosed(this);
+            base.HideWindow();
+        }
+
         protected override void Awake()
         {
             base.Awake();
@@ -107,6 +119,7 @@ namespace Assets.Scripts.UI.Classic
                     continue;
 
                 var filled = i < items.Count;
+                if (icon is DragAndDrop.DraggableItem draggable) draggable.ItemId = filled ? items[i].BagSlotId : 0;
                 if (filled)
                     icon.Assign(loader.GetIconAtlasSprite(items[i].ItemData.Sprite), items[i].Count.ToString());
                 else

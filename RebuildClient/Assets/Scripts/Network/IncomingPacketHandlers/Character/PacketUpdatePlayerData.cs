@@ -56,6 +56,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                 for (var i = 0; i < grantedSkills; i++)
                     State.GrantedSkills.Add((CharacterSkill)msg.ReadInt16(), msg.ReadByte());
 
+                State.OnSkillsChanged?.Invoke();
                 UiManager.SkillManager.UpdateAvailableSkills();
             }
 
@@ -71,11 +72,12 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                 {
                     var bagId = msg.ReadInt32();
                     State.EquippedItems[i] = bagId;
-                    State.EquippedBagIdHashes.Add(bagId);
+                    if (bagId > 0) State.EquippedBagIdHashes.Add(bagId);
                 }
 
                 State.AmmoId = msg.ReadInt32();
 
+                State.OnEquipmentChanged?.Invoke();
                 UiManager.EquipmentWindow.RefreshEquipmentWindow();
 
                 if (Application.isEditor)

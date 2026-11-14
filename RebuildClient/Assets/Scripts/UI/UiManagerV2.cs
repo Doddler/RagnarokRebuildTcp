@@ -1,7 +1,6 @@
 using Assets.Scripts.UI.ConfigWindow;
 using System.Collections.Generic;
 using UnityEngine;
-using Utility;
 
 namespace Assets.Scripts.UI.Classic
 {
@@ -22,10 +21,57 @@ namespace Assets.Scripts.UI.Classic
         public KeyCode trigger;
     }
 
-    public class UiManagerV2 : MonoBehaviorSingleton<UiManagerV2>
+    public class UiManagerV2 : MonoBehaviour
     {
+        private static UiManagerV2 instance;
+        public static UiManagerV2 Instance
+        {
+            get
+            {
+                if (instance == null)
+                    instance = FindFirstObjectByType<UiManagerV2>(FindObjectsInactive.Include);
+                return instance;
+            }
+        }
+
+        [Tooltip("Prefab cloned when an item description is opened.")]
+        [SerializeField] private ClassicItemDescriptionWindow itemDescriptionPrefab;
         private readonly Dictionary<WindowID, WindowEntry> windows = new();
-        private readonly List<WindowID> openWindows = new();
+        public ClassicItemDescriptionWindow ItemDescriptionPrefab => itemDescriptionPrefab;
+        private readonly List<IStyledWindow> openWindows = new();
+        private static int escapeFrame = -1;
+
+        public void TrackOpen(IStyledWindow window)
+        {
+            openWindows.Remove(window);
+            openWindows.Add(window);
+        }
+
+        public void TrackClosed(IStyledWindow window) => openWindows.Remove(window);
+
+        public bool HandleEscape()
+        {
+            if (escapeFrame == Time.frameCount) return true;
+            if (!Input.GetKeyDown(KeyCode.Escape)) return false;
+            while (openWindows.Count > 0)
+            {
+                var last = openWindows.Count - 1;
+                var window = openWindows[last];
+                openWindows.RemoveAt(last);
+                if (window is Component component && (component == null || !component.gameObject.activeInHierarchy)) continue;
+                escapeFrame = Time.frameCount;
+                window.HideWindow();
+                return true;
+            }
+            return false;
+        }
+
+        private void OnDestroy()
+        {
+            if (instance == this) instance = null;
+            GameConfig.OnGameConfigChanged -= RefreshWindows;
+            openWindows.Clear();
+        }
 
         private void Start()
         {
@@ -56,54 +102,18 @@ namespace Assets.Scripts.UI.Classic
             if (entry == null || entry.window == null)
                 Debug.LogWarning($"Invalid window entry with id: {windowId}");
 
-            return entry.window;
-        }
-
-        private void Push(WindowID windowId)
-        {
-            openWindows.Add(windowId);
-        }
-
-        private IStyledWindow Pop()
-        {
-            var last = openWindows.Count - 1;
-            var windowId = openWindows[last];
-            openWindows.RemoveAt(openWindows.Count - 1);
-
-            return Get(windowId);
-        }
-
-        private IStyledWindow Remove(WindowID windowId)
-        {
-            openWindows.Remove(windowId);
-
-            return Get(windowId);
+            return entry?.window;
         }
 
         private void Update()
         {
-            // Priority is to close a window first
-            if (Input.GetKeyDown(KeyCode.Escape) && openWindows.Count > 0)
+            if (HandleEscape()) return;
+
+            foreach (var entry in windows.Values)
             {
-                Pop().HideWindow();
-                Debug.Log($"STACK {openWindows.Count}");
+                if (entry.trigger == KeyCode.None || !Input.GetKeyDown(entry.trigger)) continue;
+                entry.window.ToggleVisibility();
                 return;
-            }
-
-            //TODO handle modals that can have multiple copies
-            foreach (var window in windows.Values)
-            {
-                if (Input.GetKeyDown(window.trigger))
-                {
-                    Get(window.id).ToggleVisibility();
-
-                    if (openWindows.Contains(window.id))
-                        Remove(window.id);
-                    else
-                        Push(window.id);
-
-                    Debug.Log($"STACK {openWindows.Count}");
-                }
             }
         }
 
@@ -116,13 +126,15 @@ namespace Assets.Scripts.UI.Classic
             var classic = Get(WindowID.PLAYER_INFO);
             var modern = Get(WindowID.PLAYER_INFO_MODERN);
 
-            classic.HideWindow();
-            modern.HideWindow();
+            classic?.HideWindow();
+            modern?.HideWindow();
 
             if (style == UiStyle.Modern)
-                modern.ShowWindow();
+                modern?.ShowWindow();
             else
-                classic.ShowWindow();
+                classic?.ShowWindow();
+
+
         }
     }
 }

@@ -1,6 +1,9 @@
 ﻿using Assets.Scripts.Utility;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Audio;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using Utility;
 
 namespace Assets.Scripts.Objects
@@ -64,7 +67,7 @@ namespace Assets.Scripts.Objects
                 uiChannels[i].outputAudioMixerGroup = soundGroup;
                 uiChannels[i].priority = 1;
             }
-            
+
 
             var channelCount = LastEntityChannel + 1;
 
@@ -98,7 +101,7 @@ namespace Assets.Scripts.Objects
             bgmChannels[curBgmChannel].loop = true;
             bgmChannels[curBgmChannel].Play();
         }
-        
+
         public void PlaySystemSound(AudioClip clip)
         {
             var curChannel = -1;
@@ -143,17 +146,17 @@ namespace Assets.Scripts.Objects
             {
                 if (i > LastFreeUseChannel && isEntityPlayingClip)
                 {
-// #if UNITY_EDITOR
-//                     Debug.Log($"Skipping playback of audio clip {filename}, channels are limited and {ownerId} is already playing this clip.");
-// #endif
+                    // #if UNITY_EDITOR
+                    //                     Debug.Log($"Skipping playback of audio clip {filename}, channels are limited and {ownerId} is already playing this clip.");
+                    // #endif
                     return -1;
                 }
 
                 if (i > LastLimitedChannel && isAnyonePlayingClip)
                 {
-// #if UNITY_EDITOR
-//                     Debug.Log($"Skipping playback of audio clip {filename}, channels are very limited and someone is already playing this clip.");
-// #endif
+                    // #if UNITY_EDITOR
+                    //                     Debug.Log($"Skipping playback of audio clip {filename}, channels are very limited and someone is already playing this clip.");
+                    // #endif
                     return -1;
                 }
 
@@ -175,8 +178,8 @@ namespace Assets.Scripts.Objects
 
             return -1;
         }
-        
-        
+
+
         public void AttachSoundToEntity(int ownerId, AudioClip clip, GameObject attachTarget, float volume = 1)
         {
             var channel = FindFreeAudioChannel(ownerId, clip.name);
@@ -199,7 +202,7 @@ namespace Assets.Scripts.Objects
             {
                 channelUsageInfo[channel].Filename = clip.name;
                 channelUsageInfo[channel].OwnerId = ownerId;
-                
+
                 entityChannelInUse[channel] = entityChannels[channel].PlayAudioClip(clip, position, volume);
             }
         }
@@ -227,7 +230,7 @@ namespace Assets.Scripts.Objects
             {
                 channelUsageInfo[channel].Filename = filename;
                 channelUsageInfo[channel].OwnerId = ownerId;
-                
+
                 entityChannelInUse[channel] = entityChannels[channel].PlayAudioClip(filename, position, volume, delayTime);
             }
         }
@@ -271,12 +274,43 @@ namespace Assets.Scripts.Objects
         {
             AddressableUtility.Load<AudioClip>(gameObject, "Assets/Sounds/Effects/" + name, PlaySystemSound);
         }
-        
+
         public void PlayBgm(string name)
         {
-            AddressableUtility.Load<AudioClip>(gameObject, "Assets/Music/" + name, OnLoad);
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                Debug.LogWarning("Skipping optional music: no track name was provided.");
+                return;
+            }
+
+            StartCoroutine(LoadBgmIfAvailable("Assets/Music/" + name));
         }
-        
+
+        private IEnumerator LoadBgmIfAvailable(string path)
+        {
+            // A location lookup succeeds with an empty result for absent entries.
+            // Loading the asset directly would instead log an Addressables error.
+            var locations = Addressables.LoadResourceLocationsAsync(path, typeof(AudioClip));
+            try
+            {
+                yield return locations;
+                if (locations.Status != AsyncOperationStatus.Succeeded)
+                    yield break; // Addressables reports catalog/initialization failures itself.
+
+                if (locations.Result == null || locations.Result.Count == 0)
+                {
+                    Debug.LogWarning($"Skipping optional music: no audio entry found for '{path}'.");
+                    yield break;
+                }
+
+                AddressableUtility.Load<AudioClip>(gameObject, path, OnLoad);
+            }
+            finally
+            {
+                Addressables.Release(locations);
+            }
+        }
+
         public void Update()
         {
         }

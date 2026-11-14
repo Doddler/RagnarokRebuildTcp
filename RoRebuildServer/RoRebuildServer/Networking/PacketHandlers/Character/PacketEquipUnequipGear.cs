@@ -32,7 +32,8 @@ public class PacketEquipUnequipGear : IClientPacketHandler
             return;
         }
 
-        switch (connection.Player.Equipment.EquipItem(bagId))
+        var targetSlot = (EquipSlot)(sbyte)msg.ReadByte();
+        switch (connection.Player.Equipment.EquipItem(bagId, targetSlot))
         {
             case EquipChangeResult.InvalidItem:
                 CommandBuilder.ErrorMessage(connection.Player, "Item could not be equipped.");

@@ -15,6 +15,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
 
             State.SkillPoints = newSkillPoints;
             State.KnownSkills[skill] = level;
+            State.OnSkillsChanged?.Invoke();
             UiManager.SkillManager.ApplySkillUpdateFromServer(skill, level);
             UiManager.SkillManager.RefreshSkillAvailability();
         }

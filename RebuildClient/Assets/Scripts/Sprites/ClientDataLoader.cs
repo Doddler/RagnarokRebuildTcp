@@ -139,7 +139,47 @@ namespace Assets.Scripts.Sprites
         private Dictionary<string, string> streamingAssetsData;
         // #endif
 
-        public Sprite GetIconAtlasSprite(string name) => EffectSharedMaterialManager.GetAtlasSprite(ItemIconAtlas, name);
+        private Sprite missingItemIcon;
+        private Texture2D missingItemIconTexture;
+
+        public Sprite GetIconAtlasSprite(string name)
+        {
+            if (ItemIconAtlas != null && !string.IsNullOrEmpty(name))
+            {
+                var sprite = EffectSharedMaterialManager.GetAtlasSprite(ItemIconAtlas, name);
+                if (sprite != null) return sprite;
+            }
+
+            // Minimal imports may omit item art. Keep those items visible and draggable.
+            if (missingItemIcon == null)
+            {
+                const int size = 24;
+                missingItemIconTexture = new Texture2D(size, size, TextureFormat.RGBA32, false)
+                {
+                    name = "Missing Item Icon",
+                    filterMode = FilterMode.Point,
+                    wrapMode = TextureWrapMode.Clamp,
+                    hideFlags = HideFlags.DontSave
+                };
+                var pixels = new Color32[size * size];
+                for (var i = 0; i < pixels.Length; i++)
+                    pixels[i] = new Color32(255, 0, 255, 255);
+                missingItemIconTexture.SetPixels32(pixels);
+                missingItemIconTexture.Apply(false, true);
+                missingItemIcon = Sprite.Create(missingItemIconTexture, new Rect(0, 0, size, size),
+                    new Vector2(0.5f, 0.5f), 100f);
+                missingItemIcon.name = "Missing Item Icon";
+                missingItemIcon.hideFlags = HideFlags.DontSave;
+            }
+
+            return missingItemIcon;
+        }
+
+        private void OnDestroy()
+        {
+            if (missingItemIcon != null) Destroy(missingItemIcon);
+            if (missingItemIconTexture != null) Destroy(missingItemIconTexture);
+        }
 
         // private static int EffectClassId = 3999;
 

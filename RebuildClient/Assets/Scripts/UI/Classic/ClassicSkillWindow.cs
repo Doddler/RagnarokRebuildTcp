@@ -17,6 +17,18 @@ namespace Assets.Scripts.UI.Classic
         [SerializeField] private ListPanel firstJob;
         public SpriteAtlas SkillAtlas;
 
+        public override void ShowWindow()
+        {
+            base.ShowWindow();
+            UiManagerV2.Instance?.TrackOpen(this);
+        }
+
+        public override void HideWindow()
+        {
+            UiManagerV2.Instance?.TrackClosed(this);
+            base.HideWindow();
+        }
+
         protected override void Awake()
         {
             base.Awake();
@@ -29,6 +41,7 @@ namespace Assets.Scripts.UI.Classic
         private void Start()
         {
             PlayerState.Instance.OnSkillsChanged += RefreshSkills;
+            RefreshSkills();
             HideWindow();
         }
 
@@ -44,6 +57,7 @@ namespace Assets.Scripts.UI.Classic
 
         public void RefreshSkills()
         {
+            firstJob.Clear();
             Debug.Log("Starting to list granted skills.");
             var skills = PlayerState.Instance.KnownSkills;
             foreach (var skill in skills)
