@@ -85,6 +85,14 @@ public sealed partial class BotBehavior
     private async Task TickJobChangeAsync(Snapshot snap, bool stuck, CancellationToken ct)
     {
         if (DateTime.UtcNow > _jobDeadline) { await AbortJobChangeAsync("timed out", ct); return; }
+        // Right after login the job id can arrive after the job level, so a Swordsman briefly looks like a
+        // job-10 Novice and starts this trip. Drop it as soon as the real job shows up.
+        if (_jobPhase != JobPhase.Converse && snap.SelfJobId != 0)
+        {
+            OnLog?.Invoke($"Job change cancelled: already a {JobName(snap.SelfJobId)}.");
+            EndJobChange();
+            return;
+        }
         Mode = BotMode.JobChange;
 
         switch (_jobPhase)
