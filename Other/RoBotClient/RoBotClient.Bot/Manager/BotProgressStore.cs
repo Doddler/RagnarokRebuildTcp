@@ -6,9 +6,9 @@ namespace RoBotClient.Bot.Manager;
 /// OwnExp and PartyExp are running totals, since tracking began, of exp from the bot's own kills and from party
 /// shares. Their sum can differ from TotalExp's growth (exp before tracking, milestone events). On the bot's own
 /// kills, Monster names the kill and TimeToKill is seconds from its first hit to the death and Attacks the swings plus damaging skill uses spent
-/// on it (all null otherwise).</summary>
+/// on it and HpLost the damage it dealt the bot (all null otherwise).</summary>
 public sealed record ProgressSample(DateTime Time, double PlaytimeSeconds, long TotalExp, int Level,
-    long OwnExp = 0, long PartyExp = 0, string? Monster = null, double? TimeToKill = null, int? Attacks = null);
+    long OwnExp = 0, long PartyExp = 0, string? Monster = null, double? TimeToKill = null, int? Attacks = null, int? HpLost = null);
 
 /// <summary>
 /// Persistent per-character progression history (playtime vs lifetime base exp) for the dashboard chart.
@@ -40,6 +40,21 @@ public sealed class BotProgressStore
     {
         lock (_lock)
             return GetOrLoad(characterName).ToList();
+    }
+
+    /// <summary>Current base exp rate: total-exp growth over the last <paramref name="windowMinutes"/> of playtime
+    /// (offline time excluded, since samples carry playtime), per hour. Null until there's a minute of data.</summary>
+    public double? ExpPerHour(string characterName, int windowMinutes = 15)
+    {
+        lock (_lock)
+        {
+            var samples = GetOrLoad(characterName);
+            if (samples.Count < 2) return null;
+            var last = samples[^1];
+            var from = samples.LastOrDefault(p => p.PlaytimeSeconds <= last.PlaytimeSeconds - windowMinutes * 60) ?? samples[0];
+            var hours = (last.PlaytimeSeconds - from.PlaytimeSeconds) / 3600;
+            return hours < 1.0 / 60 ? null : (last.TotalExp - from.TotalExp) / hours;
+        }
     }
 
     public void Append(string characterName, ProgressSample sample)

@@ -131,7 +131,8 @@ public sealed class BotManager
                         r.OwnExp, r.PartyExp,
                         update is { OwnKill: true, Monster.Length: > 0 } k ? k.Monster : null,
                         update?.OwnKill == true ? update.Value.TimeToKill : null,
-                        update?.OwnKill == true ? update.Value.Attacks : null));
+                        update?.OwnKill == true ? update.Value.Attacks : null,
+                        update?.OwnKill == true ? update.Value.HpLost : null));
             }
         }
         catch { }

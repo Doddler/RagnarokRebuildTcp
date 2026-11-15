@@ -67,6 +67,7 @@ else
                             <div class="col"><div class="small text-muted">Target</div><div class="fw-semibold text-truncate">@(string.IsNullOrEmpty(s.TargetName) ? "—" : s.TargetName)</div></div>
                             <div class="col"><div class="small text-muted">Kills</div><div class="fw-semibold">@(tele?.Count(TelemetryEventType.Kill) ?? s.Kills) <span class="small text-muted fw-normal">(@s.Kills this session)</span></div></div>
                             <div class="col"><div class="small text-muted">Base Exp</div><div class="fw-semibold">@s.BaseExp</div></div>
+                            <div class="col" title="Base exp gained over the last @ExpRateWindowMin min of playtime, as an hourly rate"><div class="small text-muted">Exp/h</div><div class="fw-semibold">@(ExpPerHour(s.CharacterName) is { } eph ? eph.ToString("N0") : "—")</div></div>
                             <div class="col"><div class="small text-muted">Zeny</div><div class="fw-semibold">@s.Zeny</div></div>
                             <div class="col"><div class="small text-muted">Weight</div><div class="fw-semibold">@s.Weight / @s.MaxWeight</div></div>
                             <div class="col"><div class="small text-muted">In View</div><div class="fw-semibold">@s.MonstersInView mob / @s.EntitiesInView</div></div>
@@ -323,14 +324,15 @@ else
                 </div>
 
                 <div class="card mb-3">
-                    <div class="card-header py-2 fw-semibold">Efficiency <span class="text-muted">(base exp per attack)</span></div>
+                    <div class="card-header py-2 fw-semibold">Efficiency <span class="text-muted">(per monster: base exp per attack, HP lost per fight)</span></div>
                     <div class="card-body p-2">
                         @if (Efficiency(s.CharacterName) is { Count: > 0 } eff)
                         {
                             <div class="d-flex flex-wrap gap-1">
                                 @foreach (var e in eff)
                                 {
-                                    <span class="badge bg-secondary" title="@($"{e.Exp:N0} exp over {e.Attacks:N0} attacks in {e.Kills} kills")">@MonsterPortrait(e.Monster)@e.Monster&nbsp;<span class="badge bg-light text-dark">@e.PerAttack.ToString("0.#") exp/attack</span></span>
+                                    <span class="badge bg-secondary" title="@($"{e.Exp:N0} exp over {e.Attacks:N0} attacks in {e.Kills} kills" + (e.HpFights > 0 ? $"; {e.HpLost:N0} HP lost over {e.HpFights} fights" : ""))">@MonsterPortrait(e.Monster)@e.Monster&nbsp;<span class="badge bg-light text-dark">@e.PerAttack.ToString("0.#") exp/attack</span>
+                                        <span class="badge bg-danger-subtle text-danger-emphasis">@(e.HpFights > 0 ? (e.HpLost / (double)e.HpFights).ToString("0.#") : "—") HP/fight</span></span>
                                 }
                             </div>
                         }
@@ -581,20 +583,25 @@ else
     // Client icon art served by Program.cs (/icons/...); rows hide the <img> when an icon is missing.
     private string ItemIcon(int itemId) => $"icons/{Uri.EscapeDataString(Db.Item(itemId)?.Code ?? "")}.png";
 
+    private const int ExpRateWindowMin = 15;
+    private double? ExpPerHour(string characterName) => Bots.Progress?.ExpPerHour(characterName, ExpRateWindowMin);
+
     // Exp per attack by monster, from the progress history: a kill's exp is the OwnExp step on its sample (already
     // capped at what total exp really grew), its attacks the count recorded with it. Highest yield first.
-    private List<(string Monster, int Kills, long Exp, long Attacks, double PerAttack)> Efficiency(string characterName)
+    private List<(string Monster, int Kills, long Exp, long Attacks, double PerAttack, long HpLost, int HpFights)> Efficiency(string characterName)
     {
         var samples = Bots.Progress?.Get(characterName) ?? Array.Empty<RoBotClient.Bot.Manager.ProgressSample>();
-        var rows = new Dictionary<string, (int Kills, long Exp, long Attacks)>();
+        var rows = new Dictionary<string, (int Kills, long Exp, long Attacks, long HpLost, int HpFights)>();
         for (var i = 1; i < samples.Count; i++)
         {
             var k = samples[i];
             if (k.Monster is not { Length: > 0 } m || k.Attacks is not > 0) continue;
             var r = rows.GetValueOrDefault(m);
-            rows[m] = (r.Kills + 1, r.Exp + Math.Max(k.OwnExp - samples[i - 1].OwnExp, 0), r.Attacks + k.Attacks.Value);
+            // HP lost is recorded only since that tracking began, so it averages over its own fight count.
+            rows[m] = (r.Kills + 1, r.Exp + Math.Max(k.OwnExp - samples[i - 1].OwnExp, 0), r.Attacks + k.Attacks.Value,
+                r.HpLost + (k.HpLost ?? 0), r.HpFights + (k.HpLost.HasValue ? 1 : 0));
         }
-        return rows.Select(kv => (kv.Key, kv.Value.Kills, kv.Value.Exp, kv.Value.Attacks, kv.Value.Exp / (double)kv.Value.Attacks))
+        return rows.Select(kv => (kv.Key, kv.Value.Kills, kv.Value.Exp, kv.Value.Attacks, kv.Value.Exp / (double)kv.Value.Attacks, kv.Value.HpLost, kv.Value.HpFights))
             .OrderByDescending(r => r.Item5).ToList();
     }
 

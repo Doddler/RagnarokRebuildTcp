@@ -49,6 +49,7 @@ else
                     <th>Target</th>
                     <th class="text-end">Kills</th>
                     <th class="text-end">Base Exp</th>
+                    <th class="text-end" title="Base exp over the last 15 min of playtime, per hour">Exp/h</th>
                     <th class="text-end text-nowrap">Zeny</th>
                     <th class="text-end text-nowrap">Mobs</th>
                     <th></th>
@@ -106,6 +107,7 @@ else
                         </td>
                         <td class="text-end text-nowrap">@(Bots.GetSession(id)?.Telemetry.Count(TelemetryEventType.Kill) ?? bot.Kills) <span class="small text-muted">(@bot.Kills)</span></td>
                         <td class="text-end">@bot.BaseExp.ToString("N0")</td>
+                        <td class="text-end">@(Bots.Progress?.ExpPerHour(bot.CharacterName) is { } eph ? eph.ToString("N0") : "—")</td>
                         <td class="text-end text-nowrap">@bot.Zeny.ToString("N0")z</td>
                         <td class="text-end">@bot.MonstersInView</td>
                         <td class="text-end">

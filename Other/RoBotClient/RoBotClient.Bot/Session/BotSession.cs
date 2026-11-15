@@ -22,8 +22,8 @@ public sealed class PendingPartyInvite
 /// <summary>One GainExp packet. <c>Gained</c> is 0 for the server's plain exp refreshes. <c>OwnKill</c> is true
 /// for our own kill (not a party share); then <c>Monster</c> names it when we saw it die, and <c>TimeToKill</c>
 /// is the seconds from our first hit on it to its death when we hit it, and <c>Attacks</c> how many attacks (auto-attack
-/// swings plus damaging skill uses, misses included) we spent on it.</summary>
-public readonly record struct ExpUpdate(int Level, int ExpIntoLevel, int Gained, bool OwnKill, string Monster, double? TimeToKill, int? Attacks);
+/// swings plus damaging skill uses, misses included) we spent on it, and <c>HpLost</c> the damage it dealt us.</summary>
+public readonly record struct ExpUpdate(int Level, int ExpIntoLevel, int Gained, bool OwnKill, string Monster, double? TimeToKill, int? Attacks, int? HpLost);
 
 /// <summary>
 /// One bot: owns a connection, drives login/character/enter, then keeps a live picture of the world
@@ -60,6 +60,21 @@ public sealed class BotSession : IAsyncDisposable
     // When we first hit each monster (auto-attack or skill) and how many attacks we've spent on it, for
     // time-to-kill and attacks-per-kill. Consumed on our kill.
     private readonly System.Collections.Concurrent.ConcurrentDictionary<int, (DateTime First, int Attacks)> _ownHits = new();
+
+    // Damage each monster has dealt us (by attacker id, from the latest Attack/Skill aimed at us), for HP lost per
+    // kill. Consumed on our kill of that monster.
+    private readonly System.Collections.Concurrent.ConcurrentDictionary<int, int> _damageTakenFrom = new();
+
+    private void NoteDamageTaken(int dmg)
+    {
+        (int Attacker, DateTime At)? last = null;
+        if (_recentAttacks.TryGetValue(World.Self.EntityId, out var hit)) last = hit;
+        if (_recentSkillHits.TryGetValue(World.Self.EntityId, out var skill) && (last == null || skill.At > last.Value.At))
+            last = skill;
+        if (last is not { Attacker: > 0 } l) return;
+        _damageTakenFrom.AddOrUpdate(l.Attacker, dmg, (_, d) => d + dmg);
+        if (_damageTakenFrom.Count > 256) _damageTakenFrom.Clear(); // ponytail: crude cap, monsters we never killed
+    }
 
     private void NoteOwnHit(int target)
     {
@@ -1181,6 +1196,7 @@ public sealed class BotSession : IAsyncDisposable
         if (id == World.Self.EntityId)
         {
             // We took a hit. Attacker name is whatever ReadAttack last recorded as targeting us.
+            NoteDamageTaken(dmg);
             Telemetry.Record(TelemetryEventType.DamageReceived, World.Self.Level,
                 string.IsNullOrEmpty(_lastAttackerName) ? "(unknown)" : _lastAttackerName, dmg);
         }
@@ -1244,6 +1260,7 @@ public sealed class BotSession : IAsyncDisposable
         var killed = "";
         double? timeToKill = null;
         int? attacks = null;
+        int? hpLost = null;
         if (baseGained > 0)
         {
             killed = (DateTime.UtcNow - _lastDeadMonsterAt).TotalSeconds < 3 ? _lastDeadMonsterName : "";
@@ -1253,6 +1270,7 @@ public sealed class BotSession : IAsyncDisposable
             {
                 timeToKill = (DateTime.UtcNow - hits.First).TotalSeconds;
                 attacks = hits.Attacks;
+                hpLost = _damageTakenFrom.TryRemove(_lastDeadMonsterId, out var taken) ? taken : 0;
             }
             // In a party, a death backs at most one counted kill: a share from a kill we didn't see would
             // otherwise be matched against our own previous kill.
@@ -1266,7 +1284,7 @@ public sealed class BotSession : IAsyncDisposable
         // Every exp packet, not just gains: the server also sends the current exp with gained=0 on entering the
         // world and after respawning, and party shares arrive here too.
         OnBaseExpUpdated?.Invoke(new ExpUpdate(World.Self.Level, baseTotal, Math.Max(baseGained, 0), ownKill,
-            ownKill ? killed : "", timeToKill, attacks));
+            ownKill ? killed : "", timeToKill, attacks, hpLost));
     }
 
     private void UpdatePosition(int id, Position pos, CharacterState state)
