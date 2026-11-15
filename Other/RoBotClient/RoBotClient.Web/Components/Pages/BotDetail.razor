@@ -326,6 +326,25 @@ else
                     </div>
                 </div>
 
+                <div class="card mb-3">
+                    <div class="card-header py-2 fw-semibold">Efficiency <span class="text-muted">(base exp per attack)</span></div>
+                    <div class="card-body p-2">
+                        @if (Efficiency(s.CharacterName) is { Count: > 0 } eff)
+                        {
+                            <div class="d-flex flex-wrap gap-1">
+                                @foreach (var e in eff)
+                                {
+                                    <span class="badge bg-secondary" title="@($"{e.Exp:N0} exp over {e.Attacks:N0} attacks in {e.Kills} kills")">@MonsterPortrait(e.Monster)@e.Monster&nbsp;<span class="badge bg-light text-dark">@e.PerAttack.ToString("0.#") exp/attack</span></span>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="small text-muted">No kills with attack counts yet.</div>
+                        }
+                    </div>
+                </div>
+
                 <div class="card">
                     <div class="card-header py-2 fw-semibold">Combat Log</div>
                     <div class="card-body p-0">
@@ -565,6 +584,23 @@ else
 
     // Client icon art served by Program.cs (/icons/...); rows hide the <img> when an icon is missing.
     private string ItemIcon(int itemId) => $"icons/{Uri.EscapeDataString(Db.Item(itemId)?.Code ?? "")}.png";
+
+    // Exp per attack by monster, from the progress history: a kill's exp is the OwnExp step on its sample (already
+    // capped at what total exp really grew), its attacks the count recorded with it. Highest yield first.
+    private List<(string Monster, int Kills, long Exp, long Attacks, double PerAttack)> Efficiency(string characterName)
+    {
+        var samples = Bots.Progress?.Get(characterName) ?? Array.Empty<RoBotClient.Bot.Manager.ProgressSample>();
+        var rows = new Dictionary<string, (int Kills, long Exp, long Attacks)>();
+        for (var i = 1; i < samples.Count; i++)
+        {
+            var k = samples[i];
+            if (k.Monster is not { Length: > 0 } m || k.Attacks is not > 0) continue;
+            var r = rows.GetValueOrDefault(m);
+            rows[m] = (r.Kills + 1, r.Exp + Math.Max(k.OwnExp - samples[i - 1].OwnExp, 0), r.Attacks + k.Attacks.Value);
+        }
+        return rows.Select(kv => (kv.Key, kv.Value.Kills, kv.Value.Exp, kv.Value.Attacks, kv.Value.Exp / (double)kv.Value.Attacks))
+            .OrderByDescending(r => r.Item5).ToList();
+    }
 
     // Loot telemetry is keyed by item name (as GameDatabase.ItemName gives it), so map names back to item ids.
     private static Dictionary<string, int>? _itemIdByName;
