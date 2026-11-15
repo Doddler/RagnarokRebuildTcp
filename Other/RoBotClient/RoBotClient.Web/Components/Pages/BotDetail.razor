@@ -230,36 +230,32 @@ else
                         }
                         else
                         {
-                            <table class="table table-sm mb-0">
-                                <thead>
-                                    <tr><th>Item</th><th class="text-end">Count</th><th></th></tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var it in deep.Inventory)
-                                    {
-                                        <tr>
-                                            <td>
-                                                <img src="@ItemIcon(it.ItemId)" alt="" width="24" height="24" class="me-2" style="object-fit:contain" onerror="this.style.visibility='hidden'" />@it.Name
+                            <div class="p-1" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.25rem">
+                                @foreach (var it in deep.Inventory)
+                                {
+                                    <div>
+                                        <div class="d-flex align-items-center gap-1 border rounded px-1 py-1 h-100 small" title="@it.Name">
+                                            <img src="@ItemIcon(it.ItemId)" alt="" width="24" height="24" style="object-fit:contain;flex:none" onerror="this.style.visibility='hidden'" />
+                                            <span class="text-truncate flex-grow-1">
                                                 @if (it.IsUnique && it.Refine > 0)
                                                 {
-                                                    <span class="text-warning fw-semibold">+@it.Refine</span>
+                                                    <span class="text-warning fw-semibold">+@it.Refine </span>
                                                 }
-                                            </td>
-                                            <td class="text-end">@it.Count</td>
-                                            <td class="text-end">
-                                                @if (it.Equipped)
-                                                {
-                                                    <button class="btn btn-sm btn-outline-secondary py-0 px-2" @onclick="() => UnequipItem(it.BagId)">Unequip</button>
-                                                }
-                                                else if (it.Equippable)
-                                                {
-                                                    <button class="btn btn-sm btn-outline-primary py-0 px-2" @onclick="() => EquipItem(it.BagId)">Equip</button>
-                                                }
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
+                                                @it.Name
+                                            </span>
+                                            <span class="text-body fw-semibold">@it.Count</span>
+                                            @if (it.Equipped)
+                                            {
+                                                <button class="btn btn-sm btn-outline-secondary py-0 px-1" title="Unequip" @onclick="() => UnequipItem(it.BagId)">Unequip</button>
+                                            }
+                                            else if (it.Equippable)
+                                            {
+                                                <button class="btn btn-sm btn-outline-primary py-0 px-1" title="Equip" @onclick="() => EquipItem(it.BagId)">Equip</button>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
                         }
                     </div>
                 </div>
