@@ -15,6 +15,21 @@ const COLORS = {
     textDim: "#7c8493",
 };
 
+// In-game minimap art by URL: undefined while loading, null if missing (then we draw the walk grid).
+const minimaps = new Map();
+
+function minimap(url) {
+    if (!url) return null;
+    if (!minimaps.has(url)) {
+        minimaps.set(url, undefined);
+        const img = new Image();
+        img.onload = () => minimaps.set(url, img);
+        img.onerror = () => minimaps.set(url, null);
+        img.src = url;
+    }
+    return minimaps.get(url) || null;
+}
+
 function fitCanvas(canvas) {
     // Keep the backing store square and crisp on HiDPI without depending on CSS layout size.
     const cssSize = canvas.clientWidth || canvas.width || 420;
@@ -65,19 +80,25 @@ export function draw(canvas, payload) {
     ctx.fillStyle = COLORS.bg;
     ctx.fillRect(0, 0, px, px);
 
-    // Walkability window. cells is row-major from origin (local y 0 = bottom row in world space).
-    const cells = payload.cells;
-    for (let ly = 0; ly < size; ly++) {
-        const cy = (size - 1 - ly) * cell; // flip Y
-        const rowBase = ly * size;
-        for (let lx = 0; lx < size; lx++) {
-            ctx.fillStyle = cells[rowBase + lx] ? COLORS.walkable : COLORS.blocked;
-            ctx.fillRect(lx * cell, cy, cell + 0.6, cell + 0.6);
+    const art = minimap(payload.minimap);
+    if (art) {
+        // Image row 0 is the map's top (highest world y), so the window's top edge is row h - originY - size.
+        ctx.drawImage(art, originX, art.height - originY - size, size, size, 0, 0, px, px);
+    } else {
+        // Walkability window. cells is row-major from origin (local y 0 = bottom row in world space).
+        const cells = payload.cells;
+        for (let ly = 0; ly < size; ly++) {
+            const cy = (size - 1 - ly) * cell; // flip Y
+            const rowBase = ly * size;
+            for (let lx = 0; lx < size; lx++) {
+                ctx.fillStyle = cells[rowBase + lx] ? COLORS.walkable : COLORS.blocked;
+                ctx.fillRect(lx * cell, cy, cell + 0.6, cell + 0.6);
+            }
         }
     }
 
     // Faint grid only when cells are large enough to be useful.
-    if (cell >= 6) {
+    if (!art && cell >= 6) {
         ctx.strokeStyle = COLORS.grid;
         ctx.lineWidth = 1;
         ctx.beginPath();
@@ -151,6 +172,92 @@ export function draw(canvas, payload) {
     ctx.fillText(label, 9, 8);
 
     drawLegend(ctx, px, fs);
+    ctx.textBaseline = "alphabetic";
+}
+
+// Whole-map overview: every bot on one map. The terrain arrives once per map as a "0101..." string
+// (row-major, world y=0 = bottom row) and is cached as a 1px-per-cell image; later ticks only send bots.
+const worldTerrain = new WeakMap(); // canvas -> { map, img, w, h }
+
+function rgb(hex) {
+    return [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
+}
+
+export function drawWorld(canvas, payload) {
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    const { px } = fitCanvas(canvas);
+
+    if (!payload || !payload.ok) {
+        message(ctx, px, payload && payload.message ? payload.message : "no data");
+        return;
+    }
+
+    if (payload.cells) {
+        const w = payload.width, h = payload.height, cells = payload.cells;
+        const img = document.createElement("canvas");
+        img.width = w;
+        img.height = h;
+        const ictx = img.getContext("2d");
+        const data = ictx.createImageData(w, h);
+        const walk = rgb(COLORS.walkable), block = rgb(COLORS.blocked);
+        for (let y = 0; y < h; y++) {
+            const row = (h - 1 - y) * w; // flip Y
+            for (let x = 0; x < w; x++) {
+                const c = cells.charCodeAt(x + y * w) === 49 ? walk : block; // '1'
+                const i = (row + x) * 4;
+                data.data[i] = c[0]; data.data[i + 1] = c[1]; data.data[i + 2] = c[2]; data.data[i + 3] = 255;
+            }
+        }
+        ictx.putImageData(data, 0, 0);
+        worldTerrain.set(canvas, { map: payload.map, img, w, h });
+    }
+
+    const t = worldTerrain.get(canvas);
+    if (!t || t.map !== payload.map) {
+        message(ctx, px, "loading map…");
+        return;
+    }
+
+    // Fit the (possibly non-square) map inside the square canvas.
+    const scale = px / Math.max(t.w, t.h);
+    const ox = (px - t.w * scale) / 2, oy = (px - t.h * scale) / 2;
+    ctx.fillStyle = COLORS.bg;
+    ctx.fillRect(0, 0, px, px);
+    const art = minimap(payload.minimap);
+    ctx.imageSmoothingEnabled = !!art;
+    ctx.drawImage(art || t.img, ox, oy, t.w * scale, t.h * scale);
+
+    const fs = Math.max(11, Math.round(px * 0.022));
+    const r = Math.max(4, scale * 1.6);
+    ctx.font = `${fs}px system-ui, sans-serif`;
+    ctx.textBaseline = "middle";
+    for (const b of payload.bots || []) {
+        const cx = ox + (b.x + 0.5) * scale;
+        const cy = oy + (t.h - 1 - b.y + 0.5) * scale;
+        ctx.fillStyle = COLORS.self;
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = "#ffffffaa";
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        const label = b.name || "?";
+        const lw = ctx.measureText(label).width;
+        ctx.fillStyle = "#000000aa";
+        ctx.fillRect(cx + r + 3, cy - fs / 2 - 3, lw + 8, fs + 6);
+        ctx.fillStyle = COLORS.text;
+        ctx.fillText(label, cx + r + 7, cy);
+    }
+
+    const title = `${payload.map}  ${t.w}×${t.h}  ·  ${(payload.bots || []).length} bot(s)`;
+    ctx.textBaseline = "top";
+    ctx.fillStyle = "#000000aa";
+    ctx.fillRect(4, 4, ctx.measureText(title).width + 10, fs + 8);
+    ctx.fillStyle = COLORS.text;
+    ctx.fillText(title, 9, 8);
     ctx.textBaseline = "alphabetic";
 }
 

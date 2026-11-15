@@ -37,7 +37,7 @@ else
 {
     <div class="table-responsive">
         <table class="table table-sm table-hover align-middle">
-            <thead class="table-light">
+            <thead>
                 <tr>
                     <th>Character</th>
                     <th>Map</th>
@@ -76,7 +76,7 @@ else
                                  aria-valuenow="@bot.Hp" aria-valuemin="0" aria-valuemax="@bot.MaxHp">
                                 <div class="progress-bar @HpBarClass(bot.HpPercent)"
                                      style="width: @PercentWidth(bot.HpPercent)"></div>
-                                <span class="position-absolute w-100 text-center small text-dark fw-semibold">
+                                <span class="position-absolute w-100 text-center small text-body fw-semibold">
                                     @bot.Hp/@bot.MaxHp
                                 </span>
                             </div>
@@ -86,7 +86,7 @@ else
                                  aria-valuenow="@bot.Sp" aria-valuemin="0" aria-valuemax="@bot.MaxSp">
                                 <div class="progress-bar bg-info"
                                      style="width: @PercentWidth(bot.SpPercent)"></div>
-                                <span class="position-absolute w-100 text-center small text-dark fw-semibold">
+                                <span class="position-absolute w-100 text-center small text-body fw-semibold">
                                     @bot.Sp/@bot.MaxSp
                                 </span>
                             </div>
@@ -116,9 +116,47 @@ else
             </tbody>
         </table>
     </div>
+
+    <div class="btn-group btn-group-sm mt-4 mb-2" role="group">
+        <button class="btn @(_worldView ? "btn-outline-secondary" : "btn-secondary")" @onclick="() => _worldView = false">Minimaps</button>
+        <button class="btn @(_worldView ? "btn-secondary" : "btn-outline-secondary")" @onclick="() => _worldView = true">World</button>
+    </div>
+    @if (_worldView)
+    {
+        <div class="d-flex flex-wrap gap-3">
+            @foreach (var map in snapshots.Where(s => s.InGame && !string.IsNullOrEmpty(s.Map)).Select(s => s.Map).Distinct())
+            {
+                <div class="card" @key="map">
+                    <div class="card-body p-2">
+                        <WorldMap MapCode="@map" />
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+    <div class="d-flex flex-wrap gap-3">
+        @foreach (var bot in snapshots)
+        {
+            <div class="card" @key="bot.Id">
+                <div class="card-header py-2">
+                    <a href="@($"/bot/{bot.Id}")" class="fw-semibold text-decoration-none">
+                        @(string.IsNullOrEmpty(bot.CharacterName) ? bot.Id : bot.CharacterName)
+                    </a>
+                </div>
+                <div class="card-body p-2">
+                    <BotMap BotId="@bot.Id" />
+                </div>
+            </div>
+        }
+    </div>
+    }
 }
 
 @code {
+    private bool _worldView;
+
     private void StopAll() => Bots.StopAll();
 
     private void StopBot(string id) => Bots.StopBot(id);

@@ -78,6 +78,17 @@ app.MapRazorComponents<App>()
 // MCP endpoint (Streamable HTTP) for an agent to connect at http://localhost:5080/mcp.
 app.MapMcp("/mcp");
 
+// In-game minimap art (one pixel per map cell), exported by the Unity map importer. The dashboard maps
+// draw it behind the bots and fall back to the walk grid when a map has none.
+var minimapDir = ResolveRepoSubdir(Path.Combine("RebuildClient", "Assets", "Maps", "minimap"));
+app.MapGet("/minimap/{map}.png", (string map) =>
+{
+    if (minimapDir.Length == 0 || !System.Text.RegularExpressions.Regex.IsMatch(map, "^[A-Za-z0-9_@-]+$"))
+        return Results.NotFound();
+    var path = Path.Combine(minimapDir, map + ".png");
+    return File.Exists(path) ? Results.File(path, "image/png") : Results.NotFound();
+});
+
 // Optional demo seed: spawn N hunting bots on startup (set the ROBOT_SEED env var).
 if (int.TryParse(Environment.GetEnvironmentVariable("ROBOT_SEED"), out var seedCount) && seedCount > 0)
 {
