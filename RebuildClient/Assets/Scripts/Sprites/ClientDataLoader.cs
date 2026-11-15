@@ -229,7 +229,7 @@ namespace Assets.Scripts.Sprites
                 foreach (var assetName in assetList)
                 {
                     var path = Path.Combine(Application.streamingAssetsPath, assetName);
-                    if (!path.Contains("://")) //windows gives C:/..., which works as is. linux gives /home/..., which needs file:// in front
+                    if (path.StartsWith("/")) //windows gives C:/..., which works as is. linux gives /home/..., which needs file:// in front
                         path = "file://" + path;
                     using UnityWebRequest www = UnityWebRequest.Get(path);
 
