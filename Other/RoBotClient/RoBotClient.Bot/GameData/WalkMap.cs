@@ -68,9 +68,12 @@ public sealed class WalkMap
     /// an explicit maxExpansions are unaffected.
     /// </summary>
     public List<(int x, int y)>? FindPath(int sx, int sy, int gx, int gy,
-        int maxExpansions = 40000, Func<int, int, float>? extraCost = null)
+        int maxExpansions = 0, Func<int, int, float>? extraCost = null)
     {
         if (!InBounds(sx, sy) || !IsWalkable(gx, gy)) return null;
+        // 0 = search the whole map. The old 40000 default gave up on cross-field travel (a ~250-cell walk across
+        // a 400x400 field like prt_fild08 needs more), stranding bots that were trying to leave the map.
+        if (maxExpansions <= 0) maxExpansions = Width * Height * 2;
         if (sx == gx && sy == gy) return new List<(int, int)> { (sx, sy) };
 
         var size = Width * Height;

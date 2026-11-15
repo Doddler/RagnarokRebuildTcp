@@ -69,6 +69,14 @@ public sealed class WorldGraph
     public bool IsBuilt => _nodes.Count > 0;
     public IReadOnlyDictionary<string, List<Edge>> EdgesBySrcMap => _edgesBySrcMap;
 
+    /// <summary>A landing cell of a portal into <paramref name="map"/>, in the region most portals land in, so a
+    /// route to it is a route to the map's connected part. Null when no portal leads there.</summary>
+    public (int X, int Y)? EntryCell(string map) =>
+        _edgesBySrcMap.Values.SelectMany(l => l)
+            .Where(e => string.Equals(e.DstMap, map, StringComparison.OrdinalIgnoreCase) && e.Kafra == null)
+            .GroupBy(e => e.DstRegion).OrderByDescending(g => g.Count())
+            .Select(g => ((int, int)?)(g.First().Dx, g.First().Dy)).FirstOrDefault();
+
     // ---- parser ----
 
     // Warp("src", "id", [optional "displayName",] sx, sy, sw, sh, "dst", dx, dy [, dw, dh])

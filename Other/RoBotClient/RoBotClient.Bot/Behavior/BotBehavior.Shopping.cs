@@ -718,9 +718,11 @@ public sealed partial class BotBehavior
         var path = map.FindPath(snap.SelfPos.X, snap.SelfPos.Y, gx, gy, extraCost: MakePathCost(snap.Map));
         if (path == null || path.Count <= 1)
         {
+            LogTravelOnce($"Travel: no path on {snap.Map} from ({snap.SelfPos.X},{snap.SelfPos.Y}) to ({gx},{gy}) — asking the server to walk there directly.");
             await _bot.WalkToAsync(Math.Max(1, gx), Math.Max(1, gy), ct); // no path; let the server try directly
             return;
         }
+        LogTravelOnce($"Travel: walking to ({gx},{gy}) on {snap.Map}, {path.Count} cells.");
         // The server walks straight-line from current pos to whatever waypoint we send. If that line
         // crosses a portal cell, the bot warps mid-walk. Pick the furthest path index whose straight
         // line from us is portal-free — destination portal itself excluded since that's our actual goal.
@@ -774,6 +776,15 @@ public sealed partial class BotBehavior
     }
 
     private string _lastReachabilityLog = "";
+    private string _lastTravelLog = "";
+
+    private void LogTravelOnce(string msg)
+    {
+        var key = msg.Contains(" cells.") ? msg[..msg.LastIndexOf(',')] : msg; // don't relog as the cell count drops
+        if (key == _lastTravelLog) return;
+        _lastTravelLog = key;
+        OnLog?.Invoke(msg);
+    }
     // Trailing-maps memory: never re-enter a map we just left within the last few cross-map hops.
     // Anti-loop guard for the case where the bot lands on a map's sub-region with only a back-portal to
     // the previous map (the BFS thinks both A↔B are valid via that portal; without this we'd ping-pong).
@@ -1080,7 +1091,11 @@ public sealed partial class BotBehavior
         // lands the bot in destMap region X works as "arrived" if X equals the goal region. To accept
         // ANY region of destMap, target the cell where the LARGEST region of destMap typically lives —
         // good enough for now is to find the first walkable cell.
-        var destSeed = FindAnyWalkableCell(destMap);
+        // Aim at a portal landing cell when one exists: the map's center can sit in a pocket no portal
+        // reaches (pay_fild04), which made Plan() return null and stranded the bot on its way there.
+        var destSeed = _data.World.EntryCell(destMap) is { } entry
+            ? new RebuildSharedData.Data.Position(entry.X, entry.Y)
+            : FindAnyWalkableCell(destMap);
         if (destSeed == null) return false;
         // Edge filter: drop kafra edges whose NPC we've blacklisted (a previous interaction timed out).
         // Lets Dijkstra pick portal-walking or a different kafra without rebuilding the graph.
