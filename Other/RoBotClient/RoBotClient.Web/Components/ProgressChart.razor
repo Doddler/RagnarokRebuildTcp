@@ -67,6 +67,11 @@ else
                 <circle cx="@F(X(last.PlaytimeSeconds))" cy="@F(Y(s.Value(last)))" r="4" fill="@s.Color" stroke="var(--bs-body-bg)" stroke-width="2" />
             </g>
         }
+        @* One dot per exp event on the Total line, so the spacing shows how long the bot went between gains. *@
+        @foreach (var p in points)
+        {
+            <circle cx="@F(X(p.PlaytimeSeconds))" cy="@F(Y(Series[0].Value(p)))" r="2.5" fill="var(--bs-body-color)" pointer-events="none" />
+        }
         @foreach (var (s, y) in endLabels)
         {
             <g>
@@ -92,12 +97,13 @@ else
                     {
                         <circle cx="@F(cx)" cy="@F(Y(s.Value(p)))" r="4" fill="@s.Color" stroke="var(--bs-body-bg)" stroke-width="2" />
                     }
-                    <rect x="@F(tipX)" y="@(Top + 4)" width="@tipW" height="@(28 + 16 * shown.Length)" rx="4" fill="var(--bs-tertiary-bg)" stroke="var(--bs-border-color)" />
+                    <rect x="@F(tipX)" y="@(Top + 4)" width="@tipW" height="@(44 + 16 * shown.Length)" rx="4" fill="var(--bs-tertiary-bg)" stroke="var(--bs-border-color)" />
                     <text x="@F(tipX + 8)" y="@(Top + 20)" fill="var(--bs-secondary-color)">@Duration(p.PlaytimeSeconds) played · Lv @p.Level</text>
+                    <text x="@F(tipX + 8)" y="@(Top + 36)" fill="var(--bs-secondary-color)">@(i == 0 ? "first point" : $"+{Gap(p.PlaytimeSeconds - points[i - 1].PlaytimeSeconds)} since previous")</text>
                     @for (var k = 0; k < shown.Length; k++)
                     {
                         var s = shown[k];
-                        var rowY = Top + 38 + k * 16;
+                        var rowY = Top + 54 + k * 16;
                         <g>
                             <line x1="@F(tipX + 8)" x2="@F(tipX + 20)" y1="@(rowY - 4)" y2="@(rowY - 4)" stroke="@s.Color" stroke-width="2" />
                             <text x="@F(tipX + 26)" y="@rowY" fill="var(--bs-body-color)">@s.Name: @s.Value(p).ToString("N0")</text>
@@ -139,6 +145,9 @@ else
 
 @code {
     [Parameter] public string CharacterName { get; set; } = "";
+
+    // Gap between exp events: "12s", "3min 05s" (Duration rounds to whole minutes, too coarse here).
+    private static string Gap(double s) => s < 60 ? $"{s:0}s" : $"{(int)(s / 60)}min {(int)(s % 60):00}s";
 
     private sealed record ChartSeries(string Name, string Color, Func<ProgressSample, long> Value);
 
