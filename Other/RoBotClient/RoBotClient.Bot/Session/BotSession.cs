@@ -19,6 +19,11 @@ public sealed class PendingPartyInvite
     public DateTime AtUtc;
 }
 
+/// <summary>One GainExp packet. <c>Gained</c> is 0 for the server's plain exp refreshes. <c>OwnKill</c> is true
+/// for our own kill (not a party share); then <c>Monster</c> names it when we saw it die, and <c>TimeToKill</c>
+/// is the seconds from our first hit on it to its death when we hit it.</summary>
+public readonly record struct ExpUpdate(int Level, int ExpIntoLevel, int Gained, bool OwnKill, string Monster, double? TimeToKill);
+
 /// <summary>
 /// One bot: owns a connection, drives login/character/enter, then keeps a live picture of the world
 /// (self stats + nearby entities) by decoding the server's broadcasts. Actions (walk/attack) send
@@ -51,6 +56,17 @@ public sealed class BotSession : IAsyncDisposable
     // Last skill hit per target (damage owner). Kill attribution only; kept apart from _recentAttacks, which
     // also drives OnAllyHit, so reading skill packets doesn't change how bots react to attacks.
     private readonly System.Collections.Concurrent.ConcurrentDictionary<int, (int Attacker, DateTime At)> _recentSkillHits = new();
+    // When we first hit each monster (auto-attack or skill), for time-to-kill. Consumed on our kill.
+    private readonly System.Collections.Concurrent.ConcurrentDictionary<int, DateTime> _firstOwnHitAt = new();
+
+    private void NoteOwnHit(int target)
+    {
+        var now = DateTime.UtcNow;
+        _firstOwnHitAt.TryAdd(target, now);
+        if (_firstOwnHitAt.Count > 256)
+            foreach (var kv in _firstOwnHitAt)
+                if ((now - kv.Value).TotalMinutes > 10) _firstOwnHitAt.TryRemove(kv.Key, out _);
+    }
     private readonly NpcDialogState _npc = new();
     private readonly List<(DateTime at, string msg)> _errors = new();
     private readonly object _errLock = new();
@@ -72,9 +88,8 @@ public sealed class BotSession : IAsyncDisposable
     /// The BotManager hooks this to persist the new state to disk so a reconnect can restore it.</summary>
     public event Action? OnPartyStateChanged;
 
-    /// <summary>Raised on every GainExp packet from the receive loop. <c>gained</c> is 0 for the server's plain
-    /// exp refreshes; <c>ownKill</c> says whether a gain was our own kill rather than a party share.</summary>
-    public event Action<int /* level */, int /* expIntoLevel */, int /* gained */, bool /* ownKill */>? OnBaseExpUpdated;
+    /// <summary>Raised on every GainExp packet from the receive loop. See <see cref="ExpUpdate"/>.</summary>
+    public event Action<ExpUpdate>? OnBaseExpUpdated;
 
     /// <summary>Set the party state from a persisted snapshot, without sending anything to the server. Used
     /// when reconnecting to a character that's still in a party server-side, so MCP get_party doesn't lie.</summary>
@@ -1109,6 +1124,7 @@ public sealed class BotSession : IAsyncDisposable
         if (target > 0 && src > 0)
         {
             _recentAttacks[target] = (src, DateTime.UtcNow);
+            if (src == World.Self.EntityId) NoteOwnHit(target);
             if (_recentAttacks.Count > 256)
             {
                 var cutoff = DateTime.UtcNow.AddSeconds(-10);
@@ -1128,6 +1144,7 @@ public sealed class BotSession : IAsyncDisposable
         var target = r.ReadInt32();
         if (target <= 0) return;
         _recentSkillHits[target] = (owner > 0 ? owner : caster, DateTime.UtcNow);
+        if ((owner > 0 ? owner : caster) == World.Self.EntityId) NoteOwnHit(target);
         if (_recentSkillHits.Count > 256)
         {
             var cutoff = DateTime.UtcNow.AddSeconds(-10);
@@ -1222,10 +1239,15 @@ public sealed class BotSession : IAsyncDisposable
         r.ReadInt32(); // job gained
         World.Self.BaseExp = baseTotal;
         var ownKill = false;
+        var killed = "";
+        double? timeToKill = null;
         if (baseGained > 0)
         {
-            var killed = (DateTime.UtcNow - _lastDeadMonsterAt).TotalSeconds < 3 ? _lastDeadMonsterName : "";
+            killed = (DateTime.UtcNow - _lastDeadMonsterAt).TotalSeconds < 3 ? _lastDeadMonsterName : "";
             ownKill = IsOwnKill();
+            // Time to kill = our first hit on the monster -> its death. Only when we saw the death and hit it.
+            if (ownKill && killed.Length > 0 && _firstOwnHitAt.TryRemove(_lastDeadMonsterId, out var firstHit))
+                timeToKill = (DateTime.UtcNow - firstHit).TotalSeconds;
             // In a party, a death backs at most one counted kill: a share from a kill we didn't see would
             // otherwise be matched against our own previous kill.
             if (_inParty) _lastDeadMonsterAt = default;
@@ -1237,7 +1259,8 @@ public sealed class BotSession : IAsyncDisposable
         }
         // Every exp packet, not just gains: the server also sends the current exp with gained=0 on entering the
         // world and after respawning, and party shares arrive here too.
-        OnBaseExpUpdated?.Invoke(World.Self.Level, baseTotal, Math.Max(baseGained, 0), ownKill);
+        OnBaseExpUpdated?.Invoke(new ExpUpdate(World.Self.Level, baseTotal, Math.Max(baseGained, 0), ownKill,
+            ownKill ? killed : "", timeToKill));
     }
 
     private void UpdatePosition(int id, Position pos, CharacterState state)

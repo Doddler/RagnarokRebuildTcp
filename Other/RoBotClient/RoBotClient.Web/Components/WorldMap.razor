@@ -51,14 +51,25 @@
             .Select(s => new { x = s.X, y = s.Y, name = string.IsNullOrEmpty(s.CharacterName) ? s.Id : s.CharacterName })
             .ToList();
 
+        // Monsters are only known within some bot's view, so merge what every bot on this map sees (entity ids are
+        // server-wide, so the same monster seen by two bots collapses to one dot).
+        var mobs = new Dictionary<int, object>();
+        foreach (var s in Bots.GetSnapshots().Where(s => s.InGame && string.Equals(s.Map, MapCode, StringComparison.OrdinalIgnoreCase)))
+            Bots.GetSession(s.Id)?.WithState(w =>
+            {
+                foreach (var e in w.Entities.Values)
+                    if (e.IsMonster) mobs[e.Id] = new { x = e.Position.X, y = e.Position.Y };
+                return 0;
+            });
+
         object payload;
         var wm = Bots.Data.GetWalkMap(MapCode);
         if (wm == null)
             payload = new { ok = false, message = $"no walk data for {MapCode}" };
         else if (_terrainSent)
-            payload = new { ok = true, map = MapCode, minimap = $"minimap/{MapCode}.png", bots };
+            payload = new { ok = true, map = MapCode, minimap = $"minimap/{MapCode}.png", bots, mobs = mobs.Values };
         else
-            payload = new { ok = true, map = MapCode, minimap = $"minimap/{MapCode}.png", width = wm.Width, height = wm.Height, cells = TerrainString(wm), bots };
+            payload = new { ok = true, map = MapCode, minimap = $"minimap/{MapCode}.png", width = wm.Width, height = wm.Height, cells = TerrainString(wm), bots, mobs = mobs.Values };
 
         try
         {

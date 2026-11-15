@@ -4,9 +4,10 @@ namespace RoBotClient.Bot.Manager;
 
 /// <summary>One point on a character's progression curve. TotalExp is lifetime base exp (from the level chart);
 /// OwnExp and PartyExp are running totals, since tracking began, of exp from the bot's own kills and from party
-/// shares. Their sum can differ from TotalExp's growth (exp before tracking, death penalties, milestone events).</summary>
+/// shares. Their sum can differ from TotalExp's growth (exp before tracking, milestone events). On the bot's own
+/// kills, Monster names the kill and TimeToKill is seconds from its first hit to the death (both null otherwise).</summary>
 public sealed record ProgressSample(DateTime Time, double PlaytimeSeconds, long TotalExp, int Level,
-    long OwnExp = 0, long PartyExp = 0);
+    long OwnExp = 0, long PartyExp = 0, string? Monster = null, double? TimeToKill = null);
 
 /// <summary>
 /// Persistent per-character progression history (playtime vs lifetime base exp) for the dashboard chart.
@@ -20,6 +21,11 @@ public sealed class BotProgressStore
     private readonly string _dir;
     private readonly object _lock = new();
     private readonly Dictionary<string, List<ProgressSample>> _cache = new(StringComparer.OrdinalIgnoreCase);
+    // Most samples aren't kills; skip their null Monster/TimeToKill fields to keep lines short.
+    private static readonly JsonSerializerOptions JsonOpts = new()
+    {
+        DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
+    };
 
     public BotProgressStore(string? dir = null)
     {
@@ -40,7 +46,7 @@ public sealed class BotProgressStore
         lock (_lock)
         {
             GetOrLoad(characterName).Add(sample);
-            try { File.AppendAllText(PathFor(characterName), JsonSerializer.Serialize(sample) + "\n"); }
+            try { File.AppendAllText(PathFor(characterName), JsonSerializer.Serialize(sample, JsonOpts) + "\n"); }
             catch { }
         }
     }

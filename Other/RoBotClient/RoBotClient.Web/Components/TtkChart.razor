@@ -1,0 +1,117 @@
+@using System.Globalization
+@using static RoBotClient.Web.Components.ChartAxes
+@using RoBotClient.Bot.Manager
+@inherits LiveComponent
+@inject BotManager Bots
+
+@* Time to kill (first hit -> death) for one monster at a time, by playtime: one dot per kill plus a rolling
+   median, so the trend reads through fight-to-fight noise. Different monsters have very different HP, so they
+   are never mixed on one axis. *@
+
+@{
+    var kills = (Bots.Progress?.Get(CharacterName) ?? Array.Empty<ProgressSample>())
+        .Where(p => p.TimeToKill is > 0 && !string.IsNullOrEmpty(p.Monster))
+        .ToList();
+    var monsters = kills.GroupBy(k => k.Monster!).OrderByDescending(g => g.Count()).Select(g => (Name: g.Key, Count: g.Count())).ToList();
+    if (monsters.Count > 0 && !monsters.Any(m => m.Name == _monster))
+        _monster = monsters[0].Name;
+    var series = kills.Where(k => k.Monster == _monster).ToList();
+}
+@if (series.Count == 0)
+{
+    <div class="text-muted small">No timed kills yet. Timing started with this version, so kills from before it have none; the next kill this bot lands itself shows up here.</div>
+}
+else
+{
+    var ttk = series.Select(k => k.TimeToKill!.Value).ToList();
+    var median = RollingMedian(ttk, MedianWindow);
+    var shown = Downsample(Enumerable.Range(0, series.Count).ToList(), MaxPoints);
+    // Scale to the 95th percentile so one stuck fight doesn't flatten the rest; anything above is pinned to the top.
+    var p95 = ttk.OrderBy(v => v).ElementAt((int)Math.Floor((ttk.Count - 1) * 0.95));
+    var yTicks = NiceTicks((long)Math.Ceiling(Math.Max(p95 * 1.15, median.Max())));
+    var yMax = (double)yTicks[^1];
+    var pinned = ttk.Count(v => v > yMax);
+    // X is the kill number (1 = first timed kill of this monster), so the trend reads per fight, not per minute.
+    var xTicks = NiceTicks(series.Count).Where(t => t >= 1).Prepend(1L).Distinct().ToList();
+    var x1 = (double)Math.Max(xTicks[^1], 2);
+    double X(double kill) => Left + (kill - 1) / (x1 - 1) * PlotW;
+    double Y(double v) => Top + PlotH - Math.Min(v, yMax) / yMax * PlotH;
+    var first = Median(ttk.Take(Math.Min(10, ttk.Count)).ToList());
+    var latest = Median(ttk.TakeLast(Math.Min(10, ttk.Count)).ToList());
+
+    <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+        <select class="form-select form-select-sm w-auto" @bind="_monster">
+            @foreach (var m in monsters)
+            {
+                <option value="@m.Name">@m.Name (@m.Count kills)</option>
+            }
+        </select>
+        <span class="small text-secondary">
+            Median of first 10 kills <span class="text-body fw-semibold">@Sec(first)</span>,
+            latest 10 <span class="text-body fw-semibold">@Sec(latest)</span>
+        </span>
+    </div>
+    <svg viewBox="0 0 @W @H" width="100%" role="img"
+         aria-label="@($"Time to kill {_monster}: median {Sec(first)} over the first 10 kills, {Sec(latest)} over the latest 10")"
+         style="display:block;font-family:system-ui,sans-serif;font-size:11px">
+        @foreach (var t in yTicks)
+        {
+            <g>
+                <line x1="@Left" x2="@(Left + PlotW)" y1="@F(Y(t))" y2="@F(Y(t))" stroke="var(--bs-border-color)" stroke-width="1" />
+                <text x="@(Left - 6)" y="@F(Y(t))" text-anchor="end" dominant-baseline="middle" fill="var(--bs-secondary-color)">@(t)s</text>
+            </g>
+        }
+        @foreach (var t in xTicks)
+        {
+            <g>
+                <text x="@F(X(t))" y="@(Top + PlotH + 16)" text-anchor="middle" fill="var(--bs-secondary-color)">@t</text>
+            </g>
+        }
+        <text x="@(Left + PlotW)" y="@(Top + PlotH + 28)" text-anchor="end" fill="var(--bs-secondary-color)">kill #</text>
+
+        @foreach (var i in shown)
+        {
+            var k = series[i];
+            <g>
+                <circle cx="@F(X(i + 1))" cy="@F(Y(ttk[i]))" r="3" fill="@DotColor" fill-opacity="0.55" />
+                <circle cx="@F(X(i + 1))" cy="@F(Y(ttk[i]))" r="8" fill="transparent">
+                    <title>@($"{_monster} kill #{i + 1}: {Sec(ttk[i])}, at {Duration(k.PlaytimeSeconds)} played, Lv {k.Level}")</title>
+                </circle>
+            </g>
+        }
+        <path d="@string.Join(" ", shown.Select((i, n) => $"{(n == 0 ? "M" : "L")}{F(X(i + 1))},{F(Y(median[i]))}"))"
+              fill="none" stroke="@LineColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" pointer-events="none" />
+        <text x="@(Left + PlotW + 8)" y="@F(Y(median[^1]))" dominant-baseline="middle" fill="var(--bs-body-color)">median @Sec(median[^1])</text>
+    </svg>
+    <div class="small text-secondary mt-1">
+        Dots are single kills; the line is the median of the last @MedianWindow.
+        @if (pinned > 0)
+        {
+            <span>@pinned slower @(pinned == 1 ? "kill is" : "kills are") pinned to the top edge.</span>
+        }
+    </div>
+}
+
+@code {
+    [Parameter] public string CharacterName { get; set; } = "";
+
+    private string _monster = "";
+
+    // Dataviz palette categorical slot 1 (dark step): dots at reduced opacity, the median line solid.
+    private const string DotColor = "#3987e5";
+    private const string LineColor = "#3987e5";
+    private const int MedianWindow = 9;
+    private const int MaxPoints = 400;
+    private const int W = 640, H = 220, Left = 44, Top = 10, PlotW = W - Left - 110, PlotH = H - Top - 30;
+
+    private static List<double> RollingMedian(List<double> values, int window) =>
+        values.Select((_, i) => Median(values.Skip(Math.Max(0, i - window + 1)).Take(Math.Min(window, i + 1)).ToList())).ToList();
+
+    private static double Median(List<double> v)
+    {
+        var s = v.OrderBy(x => x).ToList();
+        return s.Count % 2 == 1 ? s[s.Count / 2] : (s[s.Count / 2 - 1] + s[s.Count / 2]) / 2;
+    }
+
+    private static string Sec(double s) => s.ToString("0.0", CultureInfo.InvariantCulture) + "s";
+}

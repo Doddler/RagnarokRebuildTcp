@@ -233,6 +233,17 @@ export function drawWorld(canvas, payload) {
     const r = Math.max(4, scale * 1.6);
     ctx.font = `${fs}px system-ui, sans-serif`;
     ctx.textBaseline = "middle";
+    // Monsters (only those inside some bot's view) under the bots, smaller and with a dark ring.
+    const mr = Math.max(3.5, r * 0.8);
+    ctx.fillStyle = COLORS.monster;
+    ctx.strokeStyle = "#000000aa";
+    ctx.lineWidth = 1;
+    for (const m of payload.mobs || []) {
+        ctx.beginPath();
+        ctx.arc(ox + (m.x + 0.5) * scale, oy + (t.h - 1 - m.y + 0.5) * scale, mr, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+    }
     for (const b of payload.bots || []) {
         const cx = ox + (b.x + 0.5) * scale;
         const cy = oy + (t.h - 1 - b.y + 0.5) * scale;
@@ -252,7 +263,7 @@ export function drawWorld(canvas, payload) {
         ctx.fillText(label, cx + r + 7, cy);
     }
 
-    const title = `${payload.map}  ${t.w}×${t.h}  ·  ${(payload.bots || []).length} bot(s)`;
+    const title = `${payload.map}  ${t.w}×${t.h}  ·  ${(payload.bots || []).length} bot(s)  ·  ${(payload.mobs || []).length} mob(s) in view`;
     ctx.textBaseline = "top";
     ctx.fillStyle = "#000000aa";
     ctx.fillRect(4, 4, ctx.measureText(title).width + 10, fs + 8);

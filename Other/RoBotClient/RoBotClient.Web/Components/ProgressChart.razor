@@ -1,4 +1,5 @@
 @using System.Globalization
+@using static RoBotClient.Web.Components.ChartAxes
 @using RoBotClient.Bot.Manager
 @inherits LiveComponent
 @inject BotManager Bots
@@ -162,49 +163,4 @@ else
         return sorted.Select(l => (l.S, l.Y)).ToList();
     }
 
-    // Evenly thinned to at most `max` points, always keeping the newest.
-    private static List<ProgressSample> Downsample(IReadOnlyList<ProgressSample> all, int max)
-    {
-        if (all.Count <= max) return all.ToList();
-        var step = (all.Count - 1) / (double)(max - 1);
-        return Enumerable.Range(0, max).Select(i => all[(int)Math.Round(i * step)]).ToList();
-    }
-
-    // 0-based "nice" ticks (1/2/5 × 10^k) covering max, at most ~5 of them.
-    private static List<long> NiceTicks(long max)
-    {
-        max = Math.Max(max, 1);
-        var raw = max / 4.0;
-        var mag = Math.Pow(10, Math.Floor(Math.Log10(raw)));
-        var step = (long)Math.Max(1, new[] { 1, 2, 5, 10 }.Select(m => m * mag).First(s => s >= raw));
-        var ticks = new List<long>();
-        for (long v = 0; ; v += step)
-        {
-            ticks.Add(v);
-            if (v >= max) break;
-        }
-        return ticks;
-    }
-
-    private static List<double> TimeTicks(double from, double to)
-    {
-        var steps = new[] { 60, 300, 600, 900, 1800, 3600, 7200, 10800, 21600, 43200, 86400 };
-        var step = steps.FirstOrDefault(s => (to - from) / s <= 6, 172800);
-        var ticks = new List<double>();
-        for (var t = Math.Ceiling(from / step) * step; t <= to; t += step) ticks.Add(t);
-        return ticks;
-    }
-
-    private static string Duration(double seconds)
-    {
-        var t = TimeSpan.FromSeconds(seconds);
-        return t.TotalHours >= 1 ? $"{(int)t.TotalHours}h{t.Minutes:00}min" : $"{t.Minutes}min";
-    }
-
-    private static string Compact(long v) =>
-        v >= 1_000_000 ? (v / 1_000_000.0).ToString("0.#", CultureInfo.InvariantCulture) + "M"
-        : v >= 10_000 ? (v / 1_000.0).ToString("0.#", CultureInfo.InvariantCulture) + "K"
-        : v.ToString("N0", CultureInfo.InvariantCulture);
-
-    private static string F(double v) => v.ToString("0.#", CultureInfo.InvariantCulture);
 }

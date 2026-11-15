@@ -99,7 +99,7 @@ public sealed class BotManager
     /// and the server's exp refreshes on login and respawn), and once more when the session ends so the time
     /// after the last update counts. Playtime = the character's saved playtime at login + time in world this
     /// session. Exp granted without a packet (server milestone events) shows up at the next update.</summary>
-    private void SampleProgress(BotRunner r, int? level = null, int? expIntoLevel = null, int gained = 0, bool ownKill = false)
+    private void SampleProgress(BotRunner r, ExpUpdate? update = null)
     {
         if (_progress == null) return;
         try
@@ -107,19 +107,19 @@ public sealed class BotManager
             lock (r)
             {
                 if (r.SessionStartedAt == default) return;
-                if (level != null)
+                if (update is { } u)
                 {
                     // Attribute the real change in lifetime exp, not the packet's "gained": the server reports the
                     // monster's exp before capping it at one level per kill. Capping at "gained" keeps exp granted
                     // without a packet (milestone events) out of the own/party split.
                     var hadExp = r.LastLevel != 0;
                     var before = _data.TotalBaseExp(r.LastLevel, r.LastExpIntoLevel);
-                    r.LastLevel = level.Value;
-                    r.LastExpIntoLevel = expIntoLevel ?? 0;
-                    var delta = Math.Min(Math.Max(_data.TotalBaseExp(r.LastLevel, r.LastExpIntoLevel) - before, 0), gained);
+                    r.LastLevel = u.Level;
+                    r.LastExpIntoLevel = u.ExpIntoLevel;
+                    var delta = Math.Min(Math.Max(_data.TotalBaseExp(r.LastLevel, r.LastExpIntoLevel) - before, 0), u.Gained);
                     if (hadExp && delta > 0)
                     {
-                        if (ownKill) r.OwnExp += delta; else r.PartyExp += delta;
+                        if (u.OwnKill) r.OwnExp += delta; else r.PartyExp += delta;
                     }
                 }
                 // Base exp isn't in the login data; it arrives with the first exp packet (sent on entering the world).
@@ -128,7 +128,9 @@ public sealed class BotManager
                 var playtime = r.PlaytimeAtSessionStart + (now - r.SessionStartedAt).TotalSeconds;
                 _progress.Append(r.Config.CharacterName,
                     new ProgressSample(now, playtime, _data.TotalBaseExp(r.LastLevel, r.LastExpIntoLevel), r.LastLevel,
-                        r.OwnExp, r.PartyExp));
+                        r.OwnExp, r.PartyExp,
+                        update is { OwnKill: true, Monster.Length: > 0 } k ? k.Monster : null,
+                        update?.OwnKill == true ? update.Value.TimeToKill : null));
             }
         }
         catch { }
@@ -283,7 +285,7 @@ public sealed class BotManager
                             runner.PartyExp = lastSample?.PartyExp ?? 0;
                             runner.SessionStartedAt = DateTime.UtcNow;
                         }
-                        session.OnBaseExpUpdated += (level, exp, gained, ownKill) => SampleProgress(runner, level, exp, gained, ownKill);
+                        session.OnBaseExpUpdated += u => SampleProgress(runner, u);
                     }
                     // The session's receive loop owns the bot's lifetime: when it ends (server close, socket
                     // abort, or stop_bot), cancel the behavior loop too. Otherwise a dropped bot keeps ticking on
