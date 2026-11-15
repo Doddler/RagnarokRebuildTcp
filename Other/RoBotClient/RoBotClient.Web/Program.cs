@@ -1,6 +1,7 @@
 using RoBotClient.Bot.Behavior;
 using RoBotClient.Bot.GameData;
 using RoBotClient.Bot.Manager;
+using RoBotClient.Web;
 using RoBotClient.Web.Components;
 using RoBotClient.Web.Mcp;
 
@@ -18,6 +19,9 @@ var gameData = GameDatabase.Load(
     ResolveRepoSubdir(Path.Combine("RebuildClient", "Assets", "Maps", "exportdata")),
     ResolveRepoSubdir(Path.Combine("RoRebuildServer", "GameConfig", "ServerData", "Script", "Warps")));
 builder.Services.AddSingleton(gameData);
+builder.Services.AddSingleton(new MonsterSprites(
+    ResolveRepoSubdir(Path.Combine("RebuildClient", "Assets", "StreamingAssets", "ClientConfigGenerated")),
+    ResolveRepoSubdir(Path.Combine("RebuildClient", "Assets", "Sprites", "Imported", "Monsters"))));
 
 // Persistent registry of (account, password, character) tuples — populated when a bot enters the world, so
 // the UI and MCP can later "reconnect" to a previously-used character without remembering credentials.
@@ -78,16 +82,18 @@ app.MapRazorComponents<App>()
 // MCP endpoint (Streamable HTTP) for an agent to connect at http://localhost:5080/mcp.
 app.MapMcp("/mcp");
 
-// In-game minimap art (one pixel per map cell), exported by the Unity map importer. The dashboard maps
-// draw it behind the bots and fall back to the walk grid when a map has none.
-var minimapDir = ResolveRepoSubdir(Path.Combine("RebuildClient", "Assets", "Maps", "minimap"));
-app.MapGet("/minimap/{map}.png", (string map) =>
-{
-    if (minimapDir.Length == 0 || !System.Text.RegularExpressions.Regex.IsMatch(map, "^[A-Za-z0-9_@-]+$"))
-        return Results.NotFound();
-    var path = Path.Combine(minimapDir, map + ".png");
-    return File.Exists(path) ? Results.File(path, "image/png") : Results.NotFound();
-});
+// Game art exported by the Unity importers: minimaps (one pixel per map cell; the dashboard maps fall back to
+// the walk grid without one) and item/skill icons (<item Code>.png, skill_<SkillData.Icon>.png).
+// Items that share a sprite have no file of their own; the client's icon importer records which icon they
+// reuse in SharedItemIcons.txt ("<item code>\t<icon name>" per line).
+var sharedIconsFile = Path.Combine(ResolveRepoSubdir(Path.Combine("RebuildClient", "Assets", "Data")), "SharedItemIcons.txt");
+var sharedIcons = File.Exists(sharedIconsFile)
+    ? File.ReadLines(sharedIconsFile).Select(l => l.Split('\t')).Where(p => p.Length == 2)
+        .GroupBy(p => p[0]).ToDictionary(g => g.Key, g => g.First()[1])
+    : new Dictionary<string, string>();
+MapRepoPngs("/minimap/{name}.png", Path.Combine("RebuildClient", "Assets", "Maps", "minimap"), new Dictionary<string, string>());
+MapRepoPngs("/icons/{name}.png", Path.Combine("RebuildClient", "Assets", "Sprites", "Imported", "Icons", "Sprites"), sharedIcons);
+MapRepoPngs("/monster-atlas/{name}.png", Path.Combine("RebuildClient", "Assets", "Sprites", "Imported", "Monsters", "Atlas"), new Dictionary<string, string>());
 
 // Optional demo seed: spawn N hunting bots on startup (set the ROBOT_SEED env var).
 if (int.TryParse(Environment.GetEnvironmentVariable("ROBOT_SEED"), out var seedCount) && seedCount > 0)
@@ -102,6 +108,24 @@ if (int.TryParse(Environment.GetEnvironmentVariable("ROBOT_SEED"), out var seedC
 }
 
 app.Run();
+
+// Serves <relativeDir>/<name>.png, falling back to aliases[name]. Names never contain a slash, and the resolved
+// file must stay in the folder.
+void MapRepoPngs(string pattern, string relativeDir, Dictionary<string, string> aliases)
+{
+    var dir = ResolveRepoSubdir(relativeDir);
+    app.MapGet(pattern, (string name) =>
+    {
+        if (dir.Length == 0 || !System.Text.RegularExpressions.Regex.IsMatch(name, @"^[A-Za-z0-9_@'().-]+$"))
+            return Results.NotFound();
+        if (!File.Exists(Path.Combine(dir, name + ".png")) && aliases.TryGetValue(name, out var alias))
+            name = alias;
+        var path = Path.GetFullPath(Path.Combine(dir, name + ".png"));
+        return Path.GetDirectoryName(path) == Path.GetFullPath(dir) && File.Exists(path)
+            ? Results.File(path, "image/png")
+            : Results.NotFound();
+    });
+}
 
 // Walk up from the app's base directory to the repo, then into a client subfolder.
 static string ResolveRepoSubdir(string relative)

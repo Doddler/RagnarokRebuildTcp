@@ -2,6 +2,7 @@
 @inherits LiveComponent
 @inject BotManager Bots
 @inject GameDatabase Db
+@inject RoBotClient.Web.MonsterSprites Sprites
 @using System.Linq
 @using RebuildSharedData.Enum
 @using RebuildSharedData.ClientTypes
@@ -188,7 +189,7 @@ else
                                     @foreach (var sk in deep.Learnable)
                                     {
                                         <tr class="@(sk.Level > 0 ? "" : "text-muted")">
-                                            <td>@sk.Name</td>
+                                            <td><img src="@SkillIcon(sk.Skill)" alt="" width="24" height="24" class="me-2" style="object-fit:contain" onerror="this.style.visibility='hidden'" />@sk.Name</td>
                                             <td class="text-end">Lv @sk.Level / @sk.MaxLevel</td>
                                             <td class="text-end" style="width:3.5rem;">
                                                 @if (deep.SkillPoints > 0 && sk.Level < sk.MaxLevel)
@@ -224,7 +225,7 @@ else
                                     {
                                         <tr>
                                             <td>
-                                                @it.Name
+                                                <img src="@ItemIcon(it.ItemId)" alt="" width="24" height="24" class="me-2" style="object-fit:contain" onerror="this.style.visibility='hidden'" />@it.Name
                                                 @if (it.IsUnique && it.Refine > 0)
                                                 {
                                                     <span class="text-warning fw-semibold">+@it.Refine</span>
@@ -272,7 +273,7 @@ else
                                 <div class="d-flex flex-wrap gap-1">
                                     @foreach (var kv in kills.OrderByDescending(k => k.Value))
                                     {
-                                        <span class="badge bg-secondary">@kv.Key&nbsp;<span class="badge bg-light text-dark">@kv.Value</span></span>
+                                        <span class="badge bg-secondary">@MonsterPortrait(kv.Key)@kv.Key&nbsp;<span class="badge bg-light text-dark">@kv.Value</span></span>
                                     }
                                 </div>
                             }
@@ -292,7 +293,7 @@ else
                                 <div class="d-flex flex-wrap gap-1">
                                     @foreach (var kv in deaths.OrderByDescending(k => k.Value))
                                     {
-                                        <span class="badge bg-danger">@kv.Key&nbsp;<span class="badge bg-light text-dark">@kv.Value</span></span>
+                                        <span class="badge bg-danger">@MonsterPortrait(kv.Key)@kv.Key&nbsp;<span class="badge bg-light text-dark">@kv.Value</span></span>
                                     }
                                 </div>
                             }
@@ -532,6 +533,25 @@ else
         public List<SkillAllocRow> Learnable = new();
         public List<InvRow> Inventory = new();
     }
+
+    // A monster's first sprite frame, cropped from its atlas with CSS and shrunk to fit a badge.
+    private RenderFragment MonsterPortrait(string monsterName) => builder =>
+    {
+        if (Sprites.Get(monsterName) is not { } f)
+            return;
+        var zoom = Math.Min(1.0, 28.0 / Math.Max(f.Width, f.Height)).ToString(System.Globalization.CultureInfo.InvariantCulture);
+        builder.OpenElement(0, "span");
+        builder.AddAttribute(1, "class", "d-inline-block align-middle me-1");
+        builder.AddAttribute(2, "style",
+            $"width:{f.Width}px;height:{f.Height}px;zoom:{zoom};" +
+            $"background:url('monster-atlas/{Uri.EscapeDataString(f.AtlasName)}.png') -{f.X}px -{f.Top}px no-repeat");
+        builder.CloseElement();
+    };
+
+    // Client icon art served by Program.cs (/icons/...); rows hide the <img> when an icon is missing.
+    private string ItemIcon(int itemId) => $"icons/{Uri.EscapeDataString(Db.Item(itemId)?.Code ?? "")}.png";
+    private string SkillIcon(CharacterSkill skill) =>
+        $"icons/skill_{Uri.EscapeDataString(Db.SkillInfoById.GetValueOrDefault(skill)?.Icon ?? "")}.png";
 
     private readonly record struct SkillRow(string Name, int Level);
     private readonly record struct SkillAllocRow(CharacterSkill Skill, string Name, int Level, int MaxLevel);
