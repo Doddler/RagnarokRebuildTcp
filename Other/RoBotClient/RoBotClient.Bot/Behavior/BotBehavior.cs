@@ -235,6 +235,9 @@ public sealed partial class BotBehavior
         // A manual "go here and wait" order overrides everything except fleeing danger.
         if (_parkActive) { await TickParkAsync(snap, stuck, ct); return; }
 
+        // Spend stat/skill points per the build (StatTargets / SkillOrder). One point per tick, never blocks.
+        await TickBuildAsync(ct);
+
         // A pending job change (a milestone) takes priority over shopping and hunting.
         if (JobChangeActive) { await TickJobChangeAsync(snap, stuck, ct); return; }
         if (WantsJobChange(snap))

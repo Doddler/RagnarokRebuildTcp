@@ -70,6 +70,8 @@ else
                     <th>Map</th>
                     <th class="text-nowrap">Pos</th>
                     <th class="text-nowrap">Lv</th>
+                    <th class="text-nowrap">Build</th>
+                    <th class="text-nowrap">Desired job</th>
                     <th style="min-width: 140px;">HP</th>
                     <th style="min-width: 120px;">SP</th>
                     <th>Mode</th>
@@ -99,6 +101,8 @@ else
                         <td class="text-nowrap">@(string.IsNullOrEmpty(bot.MapDisplayName) ? bot.Map : bot.MapDisplayName)</td>
                         <td class="text-nowrap font-monospace">(@bot.X, @bot.Y)</td>
                         <td class="text-nowrap">Lv @bot.Level/@bot.JobLevel</td>
+                        <td class="text-nowrap">@(Bots.GetBehaviorConfig(bot.Id)?.BuildName is { Length: > 0 } bn ? bn : "—")</td>
+                        <td class="text-nowrap">@DesiredJob(bot.Id)</td>
                         <td>
                             <div class="progress position-relative" role="progressbar" style="height: 18px;"
                                  aria-valuenow="@bot.Hp" aria-valuemin="0" aria-valuemax="@bot.MaxHp">
@@ -187,6 +191,15 @@ else
     private bool _worldView;
 
     private void StopAll() => Bots.StopAll();
+
+    // Desired job plus a short status, same rules as the bot page's Build card.
+    private RenderFragment DesiredJob(string id)
+    {
+        var desired = Bots.GetBehaviorConfig(id)?.DesiredJobId ?? 0;
+        var job = Bots.GetSession(id)?.WithState(w => w.Self.JobId) ?? 0;
+        var status = desired == 0 ? "" : desired == job ? "reached" : job != 0 ? "ignored" : "";
+        return @<span>@(desired == 0 ? "—" : BotBehavior.JobName(desired))@if (status != "") {<span class="small text-muted ms-1">@status</span>}</span>;
+    }
 
     private string? _respawnError;
 

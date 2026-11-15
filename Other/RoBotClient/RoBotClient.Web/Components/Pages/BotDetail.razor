@@ -145,9 +145,10 @@ else
                 @if (deep is not null)
                 {
                     var desired = Bots.GetBehaviorConfig(Id)?.DesiredJobId ?? 0;
+                    LoadBuild();
                     var plan = Builds.Read(s.CharacterName);
                     <div class="card mb-3">
-                        <div class="card-header py-2 fw-semibold">Build <span class="text-muted">(what the bot does with its progression today)</span></div>
+                        <div class="card-header py-2 fw-semibold">Build <span class="text-muted">· @(string.IsNullOrEmpty(Bots.GetBehaviorConfig(Id)?.BuildName) ? "none" : Bots.GetBehaviorConfig(Id)!.BuildName)</span></div>
                         <div class="card-body py-2">
                             @* Three aligned columns: label | value | note, so every row reads the same way. *@
                             <table class="table table-sm align-middle mb-0" style="table-layout:fixed">
@@ -166,15 +167,15 @@ else
                                     <tr>
                                         <td class="text-muted text-nowrap">Stat points</td>
                                         <td class="fw-semibold text-nowrap">@deep.StatPoints unspent</td>
-                                        <td class="small text-muted">Never auto-spent. Use + under Stats or allocate_stats.</td>
+                                        <td class="small text-muted">@(Targets.Any(t => t > 0) ? "Spent automatically toward the stat goals below." : "No stat goals set, so they're saved for you.")</td>
                                     </tr>
                                     <tr>
                                         <td class="text-muted text-nowrap">Skill points</td>
                                         <td class="fw-semibold text-nowrap">@deep.SkillPoints unspent</td>
-                                        <td class="small text-muted">Auto-spent only by a Novice before its job change.</td>
+                                        <td class="small text-muted">@(string.IsNullOrWhiteSpace(_skillOrder) ? "No skill order set. A Novice still spends them before its job change." : "Spent automatically in the skill order below.")</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-muted text-nowrap">Build plan</td>
+                                        <td class="text-muted text-nowrap">Agent notes</td>
                                         <td class="fw-semibold text-nowrap">@(string.IsNullOrWhiteSpace(plan) ? "None" : "Saved")</td>
                                         <td class="small text-muted">
                                             @if (string.IsNullOrWhiteSpace(plan))
@@ -189,6 +190,53 @@ else
                                     </tr>
                                 </tbody>
                             </table>
+                            @* Build goals: stats (current / goal) and the skill learning order. Saved per character. *@
+                            <div class="mt-2">
+                                <div class="row g-2 mb-2">
+                                    <div class="col">
+                                        <div class="small text-muted mb-1">Preset</div>
+                                        <select class="form-select form-select-sm" value="@_preset" @onchange="PickPreset">
+                                            <option value="">Custom</option>
+                                            @foreach (var b in BuildPresets.All)
+                                            {
+                                                <option value="@b.Name">@b.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <div class="small text-muted mb-1">Desired job</div>
+                                        <select class="form-select form-select-sm" @bind="_desiredJob">
+                                            @for (var j = 0; j <= 6; j++)
+                                            {
+                                                var jj = j;
+                                                <option value="@jj">@(jj == 0 ? "None" : Job(jj))</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="small text-muted mb-1">Stat goals (current / goal, 0 = no goal)</div>
+                                <div class="row g-2 text-center">
+                                    @for (var i = 0; i < 6; i++)
+                                    {
+                                        var idx = i;
+                                        var cur = new[] { deep.Str, deep.Agi, deep.Vit, deep.Int, deep.Dex, deep.Luk }[idx];
+                                        <div class="col">
+                                            <div class="small text-muted">@StatLabels[idx] <span class="text-body">@cur</span></div>
+                                            <input type="number" min="0" max="99" class="form-control form-control-sm text-center" @bind="_targets[idx]" />
+                                        </div>
+                                    }
+                                </div>
+                                <div class="small text-muted mt-2 mb-1">Skill order (skill level, comma-separated)</div>
+                                <input class="form-control form-control-sm" placeholder="BasicMastery 8, FirstAid 1, Bash 10, MagnumBreak 3" @bind="_skillOrder" />
+                                @if (UnknownSkills() is { Count: > 0 } unknown)
+                                {
+                                    <div class="small text-warning mt-1">Not a skill name: @string.Join(", ", unknown)</div>
+                                }
+                                <div class="d-flex align-items-center gap-2 mt-2">
+                                    <button class="btn btn-sm btn-primary" @onclick="SaveBuild">Save build</button>
+                                    @if (_buildSaved) { <span class="small text-success">Saved</span> }
+                                </div>
+                            </div>
                         </div>
                     </div>
                 }
@@ -515,6 +563,55 @@ else
         : jobId != 0 ? "Ignored. The Adventuring Bard only changes a Novice."
         : jobLevel >= 10 ? "Eligible now. Heads to the Adventuring Bard (prt_fild08)."
         : $"Changes at job Lv 10 at the Adventuring Bard (prt_fild08). {10 - jobLevel} to go.";
+
+    private static readonly string[] StatLabels = { "STR", "AGI", "VIT", "INT", "DEX", "LUK" };
+    private int[] _targets = new int[6];
+    private string _skillOrder = "";
+    private int _desiredJob;
+    private string _preset = "";
+    private bool _presetPicked; // a preset chosen here also replaces the skill script on save
+
+    // Picking a preset fills the fields; nothing changes on the bot until Save build.
+    private void PickPreset(ChangeEventArgs e)
+    {
+        _preset = e.Value?.ToString() ?? "";
+        if (BuildPresets.Find(_preset) is not { } p) return;
+        _desiredJob = p.JobId;
+        _targets = (int[])p.Stats.Clone();
+        _skillOrder = p.SkillOrder;
+        _presetPicked = true;
+        _buildSaved = false;
+    }
+    private bool _buildLoaded, _buildSaved;
+    private int[] Targets => Bots.GetBehaviorConfig(Id)?.StatTargets ?? new int[6];
+
+    // The inputs edit local copies, loaded once, so the 500 ms refresh doesn't overwrite what you're typing.
+    private void LoadBuild()
+    {
+        if (_buildLoaded || Bots.GetBehaviorConfig(Id) is not { } cfg) return;
+        _targets = (int[])(cfg.StatTargets ?? new int[6]).Clone();
+        _skillOrder = cfg.SkillOrder ?? "";
+        _desiredJob = cfg.DesiredJobId;
+        _preset = BuildPresets.Find(cfg.BuildName)?.Name ?? "";
+        _buildLoaded = true;
+    }
+
+    private void SaveBuild()
+    {
+        if (Bots.GetBehaviorConfig(Id) is not { } cfg) return;
+        cfg.StatTargets = _targets.Select(t => Math.Clamp(t, 0, 99)).ToArray();
+        cfg.SkillOrder = _skillOrder.Trim();
+        cfg.DesiredJobId = _desiredJob;
+        if (_presetPicked && BuildPresets.Find(_preset) is { } preset) cfg.SkillScript = preset.SkillScript;
+        _presetPicked = false;
+        _preset = BuildPresets.Find(cfg.BuildName)?.Name ?? "";
+        Bots.SaveConfig(Id);
+        _buildSaved = true;
+    }
+
+    private List<string> UnknownSkills() =>
+        _skillOrder.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Where(p => BotBehavior.ParseSkillOrder(p).Count == 0).ToList();
 
     private bool NoAutoAttack =>Bots.GetBehaviorConfig(Id)?.NoAutoAttack ?? false;
     private bool EnableKite => Bots.GetBehaviorConfig(Id)?.EnableKite ?? false;

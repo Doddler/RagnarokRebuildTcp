@@ -115,6 +115,20 @@ public sealed class BotBehaviorConfig
     /// eligible (Novice at job level 10 with skill points spent) and changes to it.</summary>
     public int DesiredJobId;
 
+    // ---- build ----
+
+    /// <summary>Stat goals, in order STR, AGI, VIT, INT, DEX, LUK (0 = no goal). Whenever the bot has stat
+    /// points it raises the stat furthest below its goal, saving points until it can afford that one.</summary>
+    public int[] StatTargets = new int[6];
+
+    /// <summary>Skill learning order, e.g. "Bash 10, MagnumBreak 3, Endure 1". Each skill point goes to the
+    /// first entry the bot's job can learn now (prerequisites met) that's below its level.</summary>
+    public string SkillOrder = "";
+
+    /// <summary>The preset these build settings match, "Custom", or "" when no build is set.</summary>
+    [System.Text.Json.Serialization.JsonIgnore]
+    public string BuildName => BuildPresets.NameFor(DesiredJobId, StatTargets ?? new int[6], SkillOrder ?? "");
+
     // ---- rest / sit to recover ----
 
     /// <summary>When low on HP or SP and out of usable healing items, sit to regen instead of fighting.
@@ -296,6 +310,8 @@ public sealed class BotBehaviorConfig
         RestockBelow = other.RestockBelow;
         ShopMap = other.ShopMap;
         DesiredJobId = other.DesiredJobId;
+        StatTargets = (int[])(other.StatTargets ?? new int[6]).Clone();
+        SkillOrder = other.SkillOrder;
         RestWhenNoPotions = other.RestWhenNoPotions;
         RestBelowPercent = other.RestBelowPercent;
         SkillScript = other.SkillScript;

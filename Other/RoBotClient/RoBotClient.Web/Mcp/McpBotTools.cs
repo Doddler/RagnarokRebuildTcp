@@ -510,7 +510,7 @@ public static class McpBotTools
         bots.StopBot(botId) ? $"Stopped {botId}." : $"No bot '{botId}'.";
 
     [McpServerTool(Name = "configure_bot"),
-     Description("Update a running bot's behavior config. Omitted fields are unchanged. Monster lists are comma-separated CODES; healingItemIds/lootBlacklist are comma-separated item ids. Fractional units: healHpPercent and restBelowPercent are 0..1 (e.g. 0.5 = 50%); winMargin is 0..2 (smaller = pickier targets). partyRole = Auto|Tank|Dps|Healer|Buffer|Utility (Auto derives from JobId at runtime).")]
+     Description("Update a running bot's behavior config. Omitted fields are unchanged. Monster lists are comma-separated CODES; healingItemIds/lootBlacklist are comma-separated item ids. Fractional units: healHpPercent and restBelowPercent are 0..1 (e.g. 0.5 = 50%); winMargin is 0..2 (smaller = pickier targets). partyRole = Auto|Tank|Dps|Healer|Buffer|Utility (Auto derives from JobId at runtime). Build: statTargets = six comma-separated goals STR,AGI,VIT,INT,DEX,LUK (0 = no goal), e.g. \"40,50,30,0,20,0\"; skillOrder = learning order like \"Bash 10, MagnumBreak 3, Endure 1\". The bot spends points toward both automatically. buildPreset = a named build that sets desiredJob, statTargets, skillOrder and the skill script at once: Agi Swordsman, Vit Swordsman, Dex Archer, Int Mage, Heal Acolyte, Agi Thief, Str Merchant.")]
     public static string ConfigureBot(BotManager bots, GameDatabase db, string botId,
         bool? enabled = null, string? homeMap = null,
         string? huntCodes = null, string? fleeCodes = null, string? ignoreCodes = null,
@@ -520,7 +520,8 @@ public static class McpBotTools
         double? winMargin = null, int? maxRoundsToKill = null, int? maxTargetHp = null,
         bool? restWhenNoPotions = null, double? restBelowPercent = null,
         bool? autoEscapeWhenStuck = null, string? partyRole = null, string? itemScript = null,
-        bool? announceTarget = null, bool? listenToPartyChat = null)
+        bool? announceTarget = null, bool? listenToPartyChat = null,
+        string? statTargets = null, string? skillOrder = null, string? buildPreset = null)
     {
         var cfg = bots.GetBehaviorConfig(botId);
         if (cfg == null) return $"No bot '{botId}'.";
@@ -535,6 +536,22 @@ public static class McpBotTools
         if (healHpPercent.HasValue) cfg.HealHpPercent = (float)Math.Clamp(healHpPercent.Value, 0d, 1d);
         if (healingItemIds != null) cfg.HealingItemIds = ParseInts(healingItemIds).ToList();
         if (desiredJob.HasValue) cfg.DesiredJobId = desiredJob.Value;
+        if (statTargets != null)
+        {
+            var t = statTargets.Split(',').Select(x => int.TryParse(x.Trim(), out var v) ? Math.Clamp(v, 0, 99) : 0).Take(6).ToList();
+            while (t.Count < 6) t.Add(0);
+            cfg.StatTargets = t.ToArray();
+        }
+        if (skillOrder != null) cfg.SkillOrder = skillOrder;
+        if (buildPreset != null)
+        {
+            if (BuildPresets.Find(buildPreset) is not { } preset)
+                return $"Unknown build preset '{buildPreset}'. Known: {string.Join(", ", BuildPresets.All.Select(b => b.Name))}.";
+            cfg.DesiredJobId = preset.JobId;
+            cfg.StatTargets = (int[])preset.Stats.Clone();
+            cfg.SkillOrder = preset.SkillOrder;
+            cfg.SkillScript = preset.SkillScript;
+        }
         if (verbose.HasValue) cfg.Verbose = verbose.Value;
         if (winMargin.HasValue) cfg.WinMargin = Math.Clamp(winMargin.Value, 0d, 2d);
         if (maxRoundsToKill.HasValue) cfg.MaxRoundsToKill = Math.Max(1, maxRoundsToKill.Value);
