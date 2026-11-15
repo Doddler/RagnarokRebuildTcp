@@ -297,7 +297,8 @@ else
                                 <div class="d-flex flex-wrap gap-1">
                                     @foreach (var kv in loot.OrderByDescending(k => k.Value))
                                     {
-                                        <span class="badge bg-success">@kv.Key&nbsp;<span class="badge bg-light text-dark">@kv.Value</span></span>
+                                        <span class="badge bg-success">@if (LootIcon(kv.Key) is { } icon)
+                                        {<img src="@icon" alt="" width="20" height="20" class="me-1" style="object-fit:contain;vertical-align:middle" onerror="this.style.display='none'" />}@kv.Key&nbsp;<span class="badge bg-light text-dark">@kv.Value</span></span>
                                     }
                                 </div>
                             }
@@ -564,6 +565,14 @@ else
 
     // Client icon art served by Program.cs (/icons/...); rows hide the <img> when an icon is missing.
     private string ItemIcon(int itemId) => $"icons/{Uri.EscapeDataString(Db.Item(itemId)?.Code ?? "")}.png";
+
+    // Loot telemetry is keyed by item name (as GameDatabase.ItemName gives it), so map names back to item ids.
+    private static Dictionary<string, int>? _itemIdByName;
+    private string? LootIcon(string name)
+    {
+        _itemIdByName ??= Db.ItemsById.Values.GroupBy(i => i.Name).ToDictionary(g => g.Key, g => g.First().Id);
+        return _itemIdByName.TryGetValue(name, out var id) ? ItemIcon(id) : null;
+    }
     private string SkillIcon(CharacterSkill skill) =>
         $"icons/skill_{Uri.EscapeDataString(Db.SkillInfoById.GetValueOrDefault(skill)?.Icon ?? "")}.png";
 
