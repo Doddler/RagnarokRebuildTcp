@@ -1,0 +1,539 @@
+@page "/bot/{Id}"
+@inherits LiveComponent
+@inject BotManager Bots
+@inject GameDatabase Db
+@using System.Linq
+@using RebuildSharedData.Enum
+@using RebuildSharedData.ClientTypes
+@using RoBotClient.Bot.GameData
+
+<PageTitle>@(snapshot?.CharacterName ?? "Bot") — RoBot</PageTitle>
+
+@if (snapshot is null)
+{
+    <div class="container py-4">
+        <div class="alert alert-warning">
+            Bot <code>@Id</code> not found. It may have been stopped.
+        </div>
+        <a href="/" class="btn btn-secondary">&larr; Back to dashboard</a>
+    </div>
+}
+else
+{
+    var s = snapshot;
+    <div class="container-fluid py-3">
+        <div class="d-flex flex-wrap justify-content-between align-items-start mb-3">
+            <div>
+                <h2 class="mb-1">
+                    @s.CharacterName
+                    <span class="text-muted fs-6">@s.Account</span>
+                </h2>
+                <div class="text-muted">
+                    @s.MapDisplayName <span class="badge bg-light text-dark">@s.X, @s.Y</span>
+                    &nbsp;Lv @s.Level/@s.JobLevel
+                </div>
+            </div>
+            <div class="text-end">
+                <span class="badge @ModeClass(s.Mode) fs-6 me-2">@s.Mode</span>
+                @if (!s.InGame)
+                {
+                    <span class="badge bg-secondary fs-6 me-2">offline</span>
+                }
+                <a href="/" class="btn btn-outline-secondary btn-sm">&larr; Dashboard</a>
+                <button class="btn btn-danger btn-sm" @onclick="Stop">Stop</button>
+            </div>
+        </div>
+
+        <div class="card mb-3">
+            <div class="card-body py-2">
+                <div class="row g-3 align-items-center">
+                    <div class="col-md-4">
+                        <div class="small text-muted d-flex justify-content-between">
+                            <span>HP</span><span>@s.Hp / @s.MaxHp</span>
+                        </div>
+                        <div class="progress" role="progressbar" style="height: 1.1rem;">
+                            <div class="progress-bar bg-success" style="width:@Pct(s.HpPercent)%">@Pct(s.HpPercent)%</div>
+                        </div>
+                        <div class="small text-muted d-flex justify-content-between mt-1">
+                            <span>SP</span><span>@s.Sp / @s.MaxSp</span>
+                        </div>
+                        <div class="progress" role="progressbar" style="height: 1.1rem;">
+                            <div class="progress-bar bg-info" style="width:@Pct(s.SpPercent)%">@Pct(s.SpPercent)%</div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="row text-center g-2">
+                            <div class="col"><div class="small text-muted">Target</div><div class="fw-semibold text-truncate">@(string.IsNullOrEmpty(s.TargetName) ? "—" : s.TargetName)</div></div>
+                            <div class="col"><div class="small text-muted">Kills</div><div class="fw-semibold">@s.Kills</div></div>
+                            <div class="col"><div class="small text-muted">Base Exp</div><div class="fw-semibold">@s.BaseExp</div></div>
+                            <div class="col"><div class="small text-muted">Zeny</div><div class="fw-semibold">@s.Zeny</div></div>
+                            <div class="col"><div class="small text-muted">Weight</div><div class="fw-semibold">@s.Weight / @s.MaxWeight</div></div>
+                            <div class="col"><div class="small text-muted">In View</div><div class="fw-semibold">@s.MonstersInView mob / @s.EntitiesInView</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-3">
+            <div class="card-header py-2 fw-semibold">Commands</div>
+            <div class="card-body">
+                <div class="d-flex flex-wrap align-items-end gap-2">
+                    <button class="btn btn-outline-warning" @onclick="ForceSell">Force sell now</button>
+                    <button class="btn btn-outline-info" @onclick="ForceRestock" title="Trigger a shop trip to top up the bot's restock list">Force restock</button>
+                    <div>
+                        <label class="form-label small mb-1">Go to &amp; wait</label>
+                        <div class="input-group input-group-sm">
+                            <select class="form-select" style="max-width: 240px;" @bind="_goMap">
+                                <option value="">(current map)</option>
+                                @foreach (var m in OrderedMaps)
+                                {
+                                    <option value="@m.Code">@m.Name (@m.Code)</option>
+                                }
+                            </select>
+                            <input type="number" class="form-control" style="max-width: 80px;" placeholder="x" @bind="_goX" />
+                            <input type="number" class="form-control" style="max-width: 80px;" placeholder="y" @bind="_goY" />
+                            <button class="btn btn-outline-primary" @onclick="GoTo">Go</button>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline-secondary" @onclick="Resume">Resume / release</button>
+                </div>
+                <hr class="my-3" />
+                <div class="d-flex flex-wrap align-items-end gap-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="noAutoAttackToggle"
+                               checked="@NoAutoAttack" @onchange="OnToggleNoAutoAttack" />
+                        <label class="form-check-label small" for="noAutoAttackToggle">Skill-only combat (no auto-attack)</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="enableKiteToggle"
+                               checked="@EnableKite" @onchange="OnToggleEnableKite" />
+                        <label class="form-check-label small" for="enableKiteToggle">Kite (ranged maintain max range)</label>
+                    </div>
+                    <div>
+                        <label class="form-label small mb-1">Force-hunt monster (bypass forecast veto)</label>
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control" style="max-width: 180px;"
+                                   placeholder="code or name" @bind="_forceHuntCode" />
+                            <button class="btn btn-outline-warning" @onclick="AddForceHunt">Add</button>
+                            <button class="btn btn-outline-secondary" @onclick="ClearForceHunt"
+                                    disabled="@(ForceHuntCount == 0)">Clear (@ForceHuntCount)</button>
+                        </div>
+                        @if (ForceHuntList.Count > 0)
+                        {
+                            <div class="small text-muted mt-1">
+                                Forcing: @string.Join(", ", ForceHuntList)
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-lg-6">
+                <div class="card mb-3">
+                    <div class="card-header py-2 fw-semibold">Map</div>
+                    <div class="card-body">
+                        <BotMap BotId="@Id" />
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header py-2 fw-semibold">Stats</div>
+                    <div class="card-body">
+                        @if (deep is null)
+                        {
+                            <div class="text-muted">No state available.</div>
+                        }
+                        else
+                        {
+                            <div class="small text-muted mb-1">Stat points: <span class="fw-semibold">@deep.StatPoints</span></div>
+                            <div class="row text-center g-2 mb-3">
+                                <div class="col"><div class="small text-muted">STR</div><div class="fw-semibold">@deep.Str</div>@if (deep.StatPoints > 0) { <button class="btn btn-sm btn-outline-success py-0 px-2 mt-1" @onclick="() => RaiseStat(0)">+</button> }</div>
+                                <div class="col"><div class="small text-muted">AGI</div><div class="fw-semibold">@deep.Agi</div>@if (deep.StatPoints > 0) { <button class="btn btn-sm btn-outline-success py-0 px-2 mt-1" @onclick="() => RaiseStat(1)">+</button> }</div>
+                                <div class="col"><div class="small text-muted">VIT</div><div class="fw-semibold">@deep.Vit</div>@if (deep.StatPoints > 0) { <button class="btn btn-sm btn-outline-success py-0 px-2 mt-1" @onclick="() => RaiseStat(2)">+</button> }</div>
+                                <div class="col"><div class="small text-muted">INT</div><div class="fw-semibold">@deep.Int</div>@if (deep.StatPoints > 0) { <button class="btn btn-sm btn-outline-success py-0 px-2 mt-1" @onclick="() => RaiseStat(3)">+</button> }</div>
+                                <div class="col"><div class="small text-muted">DEX</div><div class="fw-semibold">@deep.Dex</div>@if (deep.StatPoints > 0) { <button class="btn btn-sm btn-outline-success py-0 px-2 mt-1" @onclick="() => RaiseStat(4)">+</button> }</div>
+                                <div class="col"><div class="small text-muted">LUK</div><div class="fw-semibold">@deep.Luk</div>@if (deep.StatPoints > 0) { <button class="btn btn-sm btn-outline-success py-0 px-2 mt-1" @onclick="() => RaiseStat(5)">+</button> }</div>
+                            </div>
+                            <table class="table table-sm mb-0">
+                                <tbody>
+                                    <tr><td class="text-muted">Attack</td><td class="text-end">@deep.Attack - @deep.AttackMax</td></tr>
+                                    <tr><td class="text-muted">Def</td><td class="text-end">@deep.Def</td></tr>
+                                    <tr><td class="text-muted">Hit</td><td class="text-end">@deep.Hit</td></tr>
+                                    <tr><td class="text-muted">Flee</td><td class="text-end">@deep.Flee</td></tr>
+                                    <tr><td class="text-muted">Attack Speed</td><td class="text-end">@deep.AttackSpeed.ToString("0.##")</td></tr>
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card mb-3">
+                    <div class="card-header py-2 fw-semibold">
+                        Skills <span class="text-muted">(skill points: @(deep?.SkillPoints ?? 0))</span>
+                    </div>
+                    <div class="card-body p-0">
+                        @if (deep is null || deep.Learnable.Count == 0)
+                        {
+                            <div class="text-muted p-3">none</div>
+                        }
+                        else
+                        {
+                            <table class="table table-sm mb-0">
+                                <tbody>
+                                    @foreach (var sk in deep.Learnable)
+                                    {
+                                        <tr class="@(sk.Level > 0 ? "" : "text-muted")">
+                                            <td>@sk.Name</td>
+                                            <td class="text-end">Lv @sk.Level / @sk.MaxLevel</td>
+                                            <td class="text-end" style="width:3.5rem;">
+                                                @if (deep.SkillPoints > 0 && sk.Level < sk.MaxLevel)
+                                                {
+                                                    <button class="btn btn-sm btn-outline-success py-0 px-2" @onclick="() => RaiseSkill(sk.Skill)">+1</button>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-header py-2 fw-semibold">
+                        Inventory <span class="text-muted">(@(deep?.Inventory.Count ?? 0))</span>
+                    </div>
+                    <div class="card-body p-0">
+                        @if (deep is null || deep.Inventory.Count == 0)
+                        {
+                            <div class="text-muted p-3">empty</div>
+                        }
+                        else
+                        {
+                            <table class="table table-sm mb-0">
+                                <thead>
+                                    <tr><th>Item</th><th class="text-end">Count</th><th></th></tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var it in deep.Inventory)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @it.Name
+                                                @if (it.IsUnique && it.Refine > 0)
+                                                {
+                                                    <span class="text-warning fw-semibold">+@it.Refine</span>
+                                                }
+                                            </td>
+                                            <td class="text-end">@it.Count</td>
+                                            <td class="text-end">
+                                                @if (it.Equipped)
+                                                {
+                                                    <button class="btn btn-sm btn-outline-secondary py-0 px-2" @onclick="() => UnequipItem(it.BagId)">Unequip</button>
+                                                }
+                                                else if (it.Equippable)
+                                                {
+                                                    <button class="btn btn-sm btn-outline-primary py-0 px-2" @onclick="() => EquipItem(it.BagId)">Equip</button>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-header py-2 fw-semibold">
+                        Telemetry <span class="text-muted">(level-stamped — all levels)</span>
+                    </div>
+                    <div class="card-body p-2">
+                        @if (tele is null)
+                        {
+                            <div class="text-muted">none</div>
+                        }
+                        else
+                        {
+                            <div class="row g-2 text-center mb-1">
+                                <div class="col"><div class="small text-muted">Kills</div><div class="fw-semibold">@tele.Count(TelemetryEventType.Kill)</div></div>
+                                <div class="col"><div class="small text-muted">Deaths</div><div class="fw-semibold">@tele.Count(TelemetryEventType.Death)</div></div>
+                                <div class="col"><div class="small text-muted">Looted</div><div class="fw-semibold">@tele.Count(TelemetryEventType.Loot)</div></div>
+                                <div class="col"><div class="small text-muted">Lvl-ups</div><div class="fw-semibold">@tele.Count(TelemetryEventType.LevelUp)</div></div>
+                            </div>
+                            @if (tele.CountByDetail(TelemetryEventType.Kill) is { Count: > 0 } kills)
+                            {
+                                <div class="small text-muted mt-1">Kills by monster</div>
+                                <div class="d-flex flex-wrap gap-1">
+                                    @foreach (var kv in kills.OrderByDescending(k => k.Value))
+                                    {
+                                        <span class="badge bg-secondary">@kv.Key&nbsp;<span class="badge bg-light text-dark">@kv.Value</span></span>
+                                    }
+                                </div>
+                            }
+                            @if (tele.CountByDetail(TelemetryEventType.Loot) is { Count: > 0 } loot)
+                            {
+                                <div class="small text-muted mt-2">Looted</div>
+                                <div class="d-flex flex-wrap gap-1">
+                                    @foreach (var kv in loot.OrderByDescending(k => k.Value))
+                                    {
+                                        <span class="badge bg-success">@kv.Key&nbsp;<span class="badge bg-light text-dark">@kv.Value</span></span>
+                                    }
+                                </div>
+                            }
+                            @if (tele.CountByDetail(TelemetryEventType.Death) is { Count: > 0 } deaths)
+                            {
+                                <div class="small text-muted mt-2">Deaths by monster</div>
+                                <div class="d-flex flex-wrap gap-1">
+                                    @foreach (var kv in deaths.OrderByDescending(k => k.Value))
+                                    {
+                                        <span class="badge bg-danger">@kv.Key&nbsp;<span class="badge bg-light text-dark">@kv.Value</span></span>
+                                    }
+                                </div>
+                            }
+                            @if (tele.TimeByMap() is { Count: > 0 } maps)
+                            {
+                                <div class="small text-muted mt-2">Time on map</div>
+                                <div class="d-flex flex-wrap gap-1">
+                                    @foreach (var kv in maps.OrderByDescending(m => m.Value))
+                                    {
+                                        <span class="badge bg-info text-dark">@kv.Key&nbsp;<span class="badge bg-light text-dark">@FmtSpan(kv.Value)</span></span>
+                                    }
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header py-2 fw-semibold">Combat Log</div>
+                    <div class="card-body p-0">
+                        <pre class="mb-0 p-2 bg-dark text-light small" style="height: 16rem; overflow-y: auto;">@LogText()</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public string Id { get; set; } = "";
+
+    private BotSnapshot? snapshot;
+    private DeepState? deep;
+    private BotTelemetry? tele;
+    private string _goMap = "";
+    private int _goX, _goY;
+
+    private IEnumerable<ClientMapEntry> OrderedMaps => Db.MapsByCode.Values
+        .Where(m => !string.IsNullOrEmpty(m.Code))
+        .OrderBy(m => m.Name, StringComparer.OrdinalIgnoreCase);
+
+    protected override void OnParametersSet() => Refresh();
+
+    protected override bool ShouldRender()
+    {
+        Refresh();
+        return true;
+    }
+
+    private void Refresh()
+    {
+        snapshot = Bots.GetSnapshot(Id);
+        deep = snapshot is null ? null : Bots.GetSession(Id)?.WithState(BuildDeepState);
+        tele = snapshot is null ? null : Bots.GetSession(Id)?.Telemetry;
+    }
+
+    private DeepState BuildDeepState(WorldState w)
+    {
+        var self = w.Self;
+
+        var equipped = new HashSet<int>();
+        foreach (var bagId in self.EquippedBagIds)
+            if (bagId != 0)
+                equipped.Add(bagId);
+
+        var skills = new List<SkillRow>(self.KnownSkills.Count);
+        foreach (var sk in self.KnownSkills)
+            skills.Add(new SkillRow(sk.Skill.ToString(), sk.Level));
+
+        var learnedLevels = new Dictionary<CharacterSkill, int>();
+        foreach (var sk in self.KnownSkills) learnedLevels[sk.Skill] = sk.Level;
+        var learnable = new List<SkillAllocRow>();
+        var seen = new HashSet<CharacterSkill>();
+        foreach (var entry in Db.LearnableSkills(self.JobId))
+        {
+            if (!seen.Add(entry.Skill)) continue;
+            var info = Db.SkillInfo(entry.Skill);
+            learnable.Add(new SkillAllocRow(entry.Skill, info?.Name ?? entry.Skill.ToString(),
+                learnedLevels.GetValueOrDefault(entry.Skill, 0), info?.MaxLevel ?? 0));
+        }
+
+        var inventory = new List<InvRow>(self.Inventory.Count);
+        foreach (var it in self.Inventory)
+        {
+            var cls = Db.Item(it.ItemId)?.ItemClass ?? ItemClass.None;
+            var equippable = cls is ItemClass.Weapon or ItemClass.Equipment or ItemClass.Ammo;
+            inventory.Add(new InvRow(it.BagId, it.ItemId, Db.ItemName(it.ItemId), it.Count, it.IsUnique, it.Refine, equipped.Contains(it.BagId), equippable));
+        }
+
+        return new DeepState
+        {
+            Str = self.Str, Agi = self.Agi, Vit = self.Vit,
+            Int = self.Int, Dex = self.Dex, Luk = self.Luk,
+            Attack = self.Attack, AttackMax = self.AttackMax,
+            Def = self.Def, Flee = self.Flee, Hit = self.Hit,
+            AttackSpeed = self.AttackSpeed,
+            StatPoints = self.StatPoints, SkillPoints = self.SkillPoints, JobId = self.JobId,
+            Skills = skills, Learnable = learnable, Inventory = inventory,
+        };
+    }
+
+    private void Stop()
+    {
+        Bots.StopBot(Id);
+        Refresh();
+    }
+
+    private void ForceSell() => Bots.GetBehavior(Id)?.RequestSell();
+
+    private void ForceRestock() => Bots.GetBehavior(Id)?.ForceRestockTrip();
+
+    private string _forceHuntCode = "";
+
+    private bool NoAutoAttack => Bots.GetBehaviorConfig(Id)?.NoAutoAttack ?? false;
+    private bool EnableKite => Bots.GetBehaviorConfig(Id)?.EnableKite ?? false;
+    private int ForceHuntCount => Bots.GetBehaviorConfig(Id)?.ForceHuntClassIds.Count ?? 0;
+    private List<string> ForceHuntList
+    {
+        get
+        {
+            var cfg = Bots.GetBehaviorConfig(Id);
+            if (cfg == null || cfg.ForceHuntClassIds.Count == 0) return new();
+            return cfg.ForceHuntClassIds.Select(id => Db.MonsterName(id)).OrderBy(s => s).ToList();
+        }
+    }
+
+    private void OnToggleNoAutoAttack(ChangeEventArgs e)
+    {
+        var cfg = Bots.GetBehaviorConfig(Id);
+        if (cfg == null) return;
+        cfg.NoAutoAttack = (bool)(e.Value ?? false);
+    }
+
+    private void OnToggleEnableKite(ChangeEventArgs e)
+    {
+        var cfg = Bots.GetBehaviorConfig(Id);
+        if (cfg == null) return;
+        cfg.EnableKite = (bool)(e.Value ?? false);
+    }
+
+    private void AddForceHunt()
+    {
+        var cfg = Bots.GetBehaviorConfig(Id);
+        if (cfg == null || string.IsNullOrWhiteSpace(_forceHuntCode)) return;
+        var code = _forceHuntCode.Trim();
+        // Accept id, code, or exact-name match against the database.
+        if (int.TryParse(code, out var id) && Db.MonstersById.ContainsKey(id))
+            cfg.ForceHuntClassIds.Add(id);
+        else if (Db.MonstersByCode.TryGetValue(code, out var byCode))
+            cfg.ForceHuntClassIds.Add(byCode.Id);
+        else
+        {
+            var byName = Db.MonstersById.Values.FirstOrDefault(m =>
+                string.Equals(m.Name, code, StringComparison.OrdinalIgnoreCase));
+            if (byName != null) cfg.ForceHuntClassIds.Add(byName.Id);
+        }
+        _forceHuntCode = "";
+    }
+
+    private void ClearForceHunt()
+    {
+        var cfg = Bots.GetBehaviorConfig(Id);
+        cfg?.ForceHuntClassIds.Clear();
+    }
+
+    private void GoTo()
+    {
+        var b = Bots.GetBehavior(Id);
+        if (b == null) return;
+        var map = string.IsNullOrWhiteSpace(_goMap) ? (snapshot?.Map ?? "") : _goMap;
+        if (!string.IsNullOrEmpty(map)) b.GoToAndWait(map, _goX, _goY);
+    }
+
+    private void Resume() => Bots.GetBehavior(Id)?.ClearPark();
+
+    private async Task RaiseStat(int idx)
+    {
+        var s = Bots.GetSession(Id);
+        if (s == null) return;
+        var deltas = new int[6];
+        deltas[idx] = 1; // 0=STR 1=AGI 2=VIT 3=INT 4=DEX 5=LUK; server validates affordability/cap
+        await s.ApplyStatPointsAsync(deltas);
+        Refresh();
+    }
+
+    private async Task RaiseSkill(CharacterSkill skill)
+    {
+        var s = Bots.GetSession(Id);
+        if (s == null) return;
+        await s.ApplySkillPointAsync(skill);
+        Refresh();
+    }
+
+    private async Task EquipItem(int bagId)
+    {
+        var s = Bots.GetSession(Id);
+        if (s == null) return;
+        await s.EquipItemAsync(bagId);
+        Refresh();
+    }
+
+    private async Task UnequipItem(int bagId)
+    {
+        var s = Bots.GetSession(Id);
+        if (s == null) return;
+        await s.UnequipItemAsync(bagId);
+        Refresh();
+    }
+
+    private string LogText()
+    {
+        var lines = Bots.GetLog(Id);
+        return lines.Length == 0 ? "(no log)" : string.Join("\n", lines);
+    }
+
+    private static int Pct(double fraction) => (int)Math.Round(Math.Clamp(fraction, 0, 1) * 100);
+
+    private static string FmtSpan(TimeSpan t) =>
+        t.TotalHours >= 1 ? $"{(int)t.TotalHours}h{t.Minutes}m"
+        : t.TotalMinutes >= 1 ? $"{(int)t.TotalMinutes}m{t.Seconds}s"
+        : $"{(int)t.TotalSeconds}s";
+
+    private static string ModeClass(string mode) => mode switch
+    {
+        "Fighting" or "Attacking" => "bg-danger",
+        "Idle" => "bg-secondary",
+        _ => "bg-primary",
+    };
+
+    private sealed class DeepState
+    {
+        public int Str, Agi, Vit, Int, Dex, Luk;
+        public int Attack, AttackMax, Def, Flee, Hit;
+        public float AttackSpeed;
+        public int StatPoints, SkillPoints, JobId;
+        public List<SkillRow> Skills = new();
+        public List<SkillAllocRow> Learnable = new();
+        public List<InvRow> Inventory = new();
+    }
+
+    private readonly record struct SkillRow(string Name, int Level);
+    private readonly record struct SkillAllocRow(CharacterSkill Skill, string Name, int Level, int MaxLevel);
+    private readonly record struct InvRow(int BagId, int ItemId, string Name, int Count, bool IsUnique, byte Refine, bool Equipped, bool Equippable);
+}

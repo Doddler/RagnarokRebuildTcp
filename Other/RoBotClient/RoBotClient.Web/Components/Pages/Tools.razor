@@ -1,0 +1,464 @@
+@page "/tools"
+@page "/tools/{Selected}"
+@using System.ComponentModel
+@using System.Reflection
+@using System.Text.Json
+@using System.Threading.Tasks
+@using ModelContextProtocol.Server
+@using RoBotClient.Bot.Manager
+@inherits LiveComponent
+@inject IServiceProvider Services
+@inject BotManager Bots
+@inject NavigationManager Nav
+
+<PageTitle>Tools — RoBot</PageTitle>
+
+<style>
+    .tools-layout { display: grid; grid-template-columns: 280px 1fr; gap: 1rem; }
+    .tool-sidebar { position: sticky; top: 0.75rem; max-height: calc(100vh - 1.5rem); overflow-y: auto; }
+    .tool-card { background: white; border: 1px solid rgba(0,0,0,.08); border-radius: .5rem; }
+    .tool-list-item { display: flex; flex-direction: column; gap: .15rem; padding: .5rem .75rem; cursor: pointer; border-left: 3px solid transparent; }
+    .tool-list-item:hover { background: rgba(0,0,0,.03); }
+    .tool-list-item.active { background: rgba(13,110,253,.08); border-left-color: #0d6efd; }
+    .tool-list-item .tool-name { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .85rem; }
+    .tool-list-item .tool-cat { font-size: .7rem; color: #6c757d; text-transform: uppercase; letter-spacing: .03em; }
+    .tool-search { width: 100%; padding: .4rem .6rem; font-size: .9rem; }
+    .tool-doc { color: #495057; font-size: .9rem; line-height: 1.4; margin: 0 0 1rem 0; }
+    .result-box { background: #1e1e1e; color: #d4d4d4; padding: 1rem; border-radius: .5rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .8rem; white-space: pre-wrap; max-height: 50vh; overflow-y: auto; }
+    .result-err { background: #4a1c1c; color: #ffb4b4; }
+    @@media (max-width: 900px) {
+        .tools-layout { grid-template-columns: 1fr; }
+        .tool-sidebar { position: static; max-height: none; }
+    }
+</style>
+
+<div class="container-fluid py-3">
+    <div class="d-flex justify-content-between align-items-end mb-3">
+        <div>
+            <h2 class="mb-1">MCP Tools</h2>
+            <div class="text-muted small">Every MCP tool exposed as a form. Same control surface an agent has, mouse-friendly.</div>
+        </div>
+        <div class="text-muted small">@_tools.Count tools across @CategoryCount categories</div>
+    </div>
+
+    <div class="tools-layout">
+        <aside class="tool-sidebar tool-card">
+            <div class="p-2 border-bottom">
+                <input class="form-control form-control-sm tool-search" placeholder="Search… (name, description)" @bind="_search" @bind:event="oninput" />
+            </div>
+            @foreach (var grp in FilteredGroups)
+            {
+                <div class="px-2 pt-2 pb-1 small text-muted fw-semibold">@grp.Key</div>
+                @foreach (var t in grp)
+                {
+                    var isActive = string.Equals(t.Name, _activeName, StringComparison.Ordinal);
+                    <div class="tool-list-item @(isActive ? "active" : "")" @onclick="() => Select(t.Name)">
+                        <span class="tool-name">@t.Name</span>
+                        @if (!string.IsNullOrEmpty(t.Description))
+                        {
+                            <span class="text-muted small" style="line-clamp: 2; -webkit-line-clamp: 2; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden;">@TruncateForList(t.Description)</span>
+                        }
+                    </div>
+                }
+            }
+        </aside>
+
+        <main>
+            @if (_active is null)
+            {
+                <div class="tool-card p-4 text-muted">Select a tool from the left to run it.</div>
+            }
+            else
+            {
+                <div class="tool-card p-4">
+                    <h4 class="mb-1"><code>@_active.Name</code></h4>
+                    <div class="small text-muted mb-3">@_active.Category</div>
+                    @if (!string.IsNullOrEmpty(_active.Description))
+                    {
+                        <p class="tool-doc">@_active.Description</p>
+                    }
+
+                    @if (_active.Params.Count == 0)
+                    {
+                        <div class="alert alert-light border small mb-3">No parameters — click Run to invoke.</div>
+                    }
+                    else
+                    {
+                        <div class="row g-3 mb-3">
+                            @foreach (var p in _active.Params)
+                            {
+                                <div class="col-md-6">
+                                    <label class="form-label small mb-1">
+                                        <span class="fw-semibold">@p.Name</span>
+                                        <span class="text-muted">: @TypeDisplay(p.ParameterType)</span>
+                                        @if (!p.IsOptional) { <span class="text-danger">*</span> }
+                                        @if (p.IsBotIdLike)
+                                        {
+                                            <span class="badge bg-primary-subtle text-primary-emphasis ms-1">bot</span>
+                                        }
+                                    </label>
+                                    @RenderInput(p)
+                                </div>
+                            }
+                        </div>
+                    }
+
+                    <div class="d-flex gap-2 align-items-center">
+                        <button class="btn btn-primary" @onclick="RunAsync" disabled="@_running">
+                            @(_running ? "Running…" : "Run")
+                        </button>
+                        @if (_running)
+                        {
+                            <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+                        }
+                        @if (!string.IsNullOrEmpty(_resultJson))
+                        {
+                            <button class="btn btn-outline-secondary btn-sm ms-auto" @onclick="ClearResult">Clear result</button>
+                        }
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(_resultJson) || !string.IsNullOrEmpty(_resultError))
+                    {
+                        <div class="mt-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="small text-muted">@(string.IsNullOrEmpty(_resultError) ? $"Result · {_lastDurationMs:F0} ms" : "Error")</span>
+                                @if (string.IsNullOrEmpty(_resultError))
+                                {
+                                    <button class="btn btn-link btn-sm p-0" @onclick="async () => await CopyResultAsync()">Copy</button>
+                                }
+                            </div>
+                            <pre class="result-box @(string.IsNullOrEmpty(_resultError) ? "" : "result-err")">@(_resultError ?? _resultJson)</pre>
+                        </div>
+                    }
+                </div>
+            }
+        </main>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string? Selected { get; set; }
+
+    private sealed record ToolParam(string Name, Type ParameterType, bool IsOptional, object? DefaultValue, bool IsBotIdLike);
+
+    private sealed class ToolDescriptor
+    {
+        public string Name = "";
+        public string Category = "";
+        public string Description = "";
+        public List<ToolParam> Params = new();
+        public MethodInfo Method = null!;
+        public Dictionary<string, object?> Inputs = new(); // current form values keyed by param name
+    }
+
+    private List<ToolDescriptor> _tools = new();
+    private string _search = "";
+    private string _activeName = "";
+    private ToolDescriptor? _active;
+    private bool _running;
+    private string? _resultJson;
+    private string? _resultError;
+    private double _lastDurationMs;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _tools = DiscoverTools();
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (!string.IsNullOrEmpty(Selected) && !string.Equals(Selected, _activeName, StringComparison.Ordinal))
+        {
+            Select(Selected);
+        }
+    }
+
+    private void Select(string name)
+    {
+        _activeName = name;
+        _active = _tools.FirstOrDefault(t => string.Equals(t.Name, name, StringComparison.Ordinal));
+        _resultJson = null;
+        _resultError = null;
+        if (_active != null && _active.Inputs.Count == 0)
+            SeedInputs(_active);
+        // Push the URL so deep-links work.
+        var encoded = Uri.EscapeDataString(name);
+        Nav.NavigateTo($"/tools/{encoded}", replace: true);
+    }
+
+    private void SeedInputs(ToolDescriptor t)
+    {
+        foreach (var p in t.Params)
+            t.Inputs[p.Name] = p.DefaultValue;
+    }
+
+    private void ClearResult()
+    {
+        _resultJson = null;
+        _resultError = null;
+    }
+
+    private async Task CopyResultAsync()
+    {
+        if (string.IsNullOrEmpty(_resultJson)) return;
+        try { await JS.InvokeVoidAsync("navigator.clipboard.writeText", _resultJson); }
+        catch { /* clipboard may not be available */ }
+    }
+
+    [Inject] private IJSRuntime JS { get; set; } = default!;
+
+    private IEnumerable<IGrouping<string, ToolDescriptor>> FilteredGroups
+    {
+        get
+        {
+            var q = _tools.AsEnumerable();
+            if (!string.IsNullOrWhiteSpace(_search))
+            {
+                var s = _search.Trim();
+                q = q.Where(t => t.Name.Contains(s, StringComparison.OrdinalIgnoreCase)
+                              || t.Description.Contains(s, StringComparison.OrdinalIgnoreCase));
+            }
+            return q.GroupBy(t => t.Category).OrderBy(g => g.Key);
+        }
+    }
+
+    private int CategoryCount => _tools.Select(t => t.Category).Distinct().Count();
+
+    private static string TruncateForList(string s)
+    {
+        if (s.Length <= 96) return s;
+        return s.Substring(0, 96) + "…";
+    }
+
+    private static string TypeDisplay(Type t)
+    {
+        var nullable = Nullable.GetUnderlyingType(t);
+        var core = nullable ?? t;
+        if (core == typeof(string)) return "string";
+        if (core == typeof(int)) return nullable != null ? "int?" : "int";
+        if (core == typeof(long)) return nullable != null ? "long?" : "long";
+        if (core == typeof(double)) return nullable != null ? "double?" : "double";
+        if (core == typeof(bool)) return nullable != null ? "bool?" : "bool";
+        return core.Name;
+    }
+
+    // -- Form rendering --
+
+    private RenderFragment RenderInput(ToolParam p) => builder =>
+    {
+        var t = Nullable.GetUnderlyingType(p.ParameterType) ?? p.ParameterType;
+        // Special: bot-id parameters get a dropdown.
+        if (p.IsBotIdLike && t == typeof(string))
+        {
+            builder.OpenComponent<BotIdInput>(0);
+            builder.AddAttribute(1, "Value", _active!.Inputs.GetValueOrDefault(p.Name) as string ?? "");
+            builder.AddAttribute(2, "ValueChanged", EventCallback.Factory.Create<string>(this, v => _active!.Inputs[p.Name] = v));
+            builder.AddAttribute(3, "Bots", Bots);
+            builder.CloseComponent();
+            return;
+        }
+        if (t == typeof(bool))
+        {
+            builder.OpenElement(0, "select");
+            builder.AddAttribute(1, "class", "form-select form-select-sm");
+            builder.AddAttribute(2, "value", FormatVal(_active!.Inputs.GetValueOrDefault(p.Name)));
+            builder.AddAttribute(3, "onchange", EventCallback.Factory.Create<ChangeEventArgs>(this, e => _active!.Inputs[p.Name] = ParseBool(e.Value)));
+            builder.OpenElement(4, "option"); builder.AddAttribute(5, "value", ""); builder.AddContent(6, "(unset)"); builder.CloseElement();
+            builder.OpenElement(7, "option"); builder.AddAttribute(8, "value", "true"); builder.AddContent(9, "true"); builder.CloseElement();
+            builder.OpenElement(10, "option"); builder.AddAttribute(11, "value", "false"); builder.AddContent(12, "false"); builder.CloseElement();
+            builder.CloseElement();
+            return;
+        }
+        if (t == typeof(int) || t == typeof(long) || t == typeof(double))
+        {
+            builder.OpenElement(0, "input");
+            builder.AddAttribute(1, "type", "number");
+            builder.AddAttribute(2, "class", "form-control form-control-sm");
+            builder.AddAttribute(3, "value", FormatVal(_active!.Inputs.GetValueOrDefault(p.Name)));
+            if (t == typeof(double)) builder.AddAttribute(4, "step", "0.01");
+            builder.AddAttribute(5, "placeholder", p.IsOptional ? "(default)" : "");
+            builder.AddAttribute(6, "onchange", EventCallback.Factory.Create<ChangeEventArgs>(this, e => _active!.Inputs[p.Name] = ParseNumber(e.Value, t)));
+            builder.CloseElement();
+            return;
+        }
+        // Default: string textarea-style input. Multi-line tools (skill scripts, etc.) get a textarea.
+        var isLong = p.Name.Contains("script", StringComparison.OrdinalIgnoreCase)
+                  || p.Name.Contains("text", StringComparison.OrdinalIgnoreCase)
+                  || p.Name.Contains("description", StringComparison.OrdinalIgnoreCase);
+        if (isLong)
+        {
+            builder.OpenElement(0, "textarea");
+            builder.AddAttribute(1, "class", "form-control form-control-sm");
+            builder.AddAttribute(2, "rows", "4");
+            builder.AddAttribute(3, "value", _active!.Inputs.GetValueOrDefault(p.Name) as string ?? "");
+            builder.AddAttribute(4, "onchange", EventCallback.Factory.Create<ChangeEventArgs>(this, e => _active!.Inputs[p.Name] = e.Value as string ?? ""));
+            builder.CloseElement();
+        }
+        else
+        {
+            builder.OpenElement(0, "input");
+            builder.AddAttribute(1, "type", "text");
+            builder.AddAttribute(2, "class", "form-control form-control-sm");
+            builder.AddAttribute(3, "value", _active!.Inputs.GetValueOrDefault(p.Name) as string ?? "");
+            builder.AddAttribute(4, "placeholder", p.IsOptional ? "(default)" : "");
+            builder.AddAttribute(5, "onchange", EventCallback.Factory.Create<ChangeEventArgs>(this, e => _active!.Inputs[p.Name] = e.Value as string ?? ""));
+            builder.CloseElement();
+        }
+    };
+
+    private static string FormatVal(object? v) => v switch
+    {
+        null => "",
+        bool b => b ? "true" : "false",
+        _ => v.ToString() ?? ""
+    };
+
+    private static object? ParseBool(object? v)
+    {
+        if (v is null) return null;
+        var s = v.ToString();
+        if (string.IsNullOrEmpty(s)) return null;
+        if (bool.TryParse(s, out var b)) return b;
+        return null;
+    }
+
+    private static object? ParseNumber(object? v, Type targetType)
+    {
+        var s = v?.ToString();
+        if (string.IsNullOrEmpty(s)) return null;
+        if (targetType == typeof(int) && int.TryParse(s, out var i)) return i;
+        if (targetType == typeof(long) && long.TryParse(s, out var l)) return l;
+        if (targetType == typeof(double) && double.TryParse(s, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var d)) return d;
+        return null;
+    }
+
+    // -- Invocation --
+
+    private async Task RunAsync()
+    {
+        if (_active is null) return;
+        _running = true;
+        _resultJson = null;
+        _resultError = null;
+        var start = DateTime.UtcNow;
+        try
+        {
+            // Build the argument array in declaration order, resolving DI services and the form inputs.
+            var args = new object?[_active.Method.GetParameters().Length];
+            var i = 0;
+            foreach (var p in _active.Method.GetParameters())
+            {
+                var serv = Services.GetService(p.ParameterType);
+                if (serv != null) { args[i] = serv; i++; continue; }
+                // Form-supplied.
+                _active.Inputs.TryGetValue(p.Name!, out var raw);
+                if (raw is null && p.HasDefaultValue) raw = p.DefaultValue;
+                if (raw is null && !p.IsOptional && !IsNullableRef(p.ParameterType))
+                {
+                    throw new InvalidOperationException($"Required parameter '{p.Name}' is empty.");
+                }
+                args[i] = ConvertValue(raw, p.ParameterType);
+                i++;
+            }
+
+            var ret = _active.Method.Invoke(null, args);
+            object? final;
+            if (ret is Task task)
+            {
+                await task.ConfigureAwait(true);
+                var resultProp = task.GetType().GetProperty("Result");
+                final = resultProp?.GetValue(task);
+            }
+            else final = ret;
+
+            _resultJson = JsonSerializer.Serialize(final, new JsonSerializerOptions { WriteIndented = true });
+        }
+        catch (Exception ex)
+        {
+            // TargetInvocationException unwraps the actual exception thrown by the tool.
+            var inner = (ex as TargetInvocationException)?.InnerException ?? ex;
+            _resultError = $"{inner.GetType().Name}: {inner.Message}\n{inner.StackTrace}";
+        }
+        finally
+        {
+            _running = false;
+            _lastDurationMs = (DateTime.UtcNow - start).TotalMilliseconds;
+        }
+    }
+
+    private static bool IsNullableRef(Type t) => !t.IsValueType || Nullable.GetUnderlyingType(t) != null;
+
+    private static object? ConvertValue(object? raw, Type targetType)
+    {
+        if (raw is null) return null;
+        var core = Nullable.GetUnderlyingType(targetType) ?? targetType;
+        if (core == typeof(string)) return raw as string ?? raw.ToString();
+        if (raw.GetType() == core || core.IsInstanceOfType(raw)) return raw;
+        // Strings from the form: parse against the param type.
+        var s = raw.ToString();
+        if (string.IsNullOrEmpty(s)) return null;
+        if (core == typeof(int) && int.TryParse(s, out var i)) return i;
+        if (core == typeof(long) && long.TryParse(s, out var l)) return l;
+        if (core == typeof(double) && double.TryParse(s, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var d)) return d;
+        if (core == typeof(bool) && bool.TryParse(s, out var b)) return b;
+        return raw;
+    }
+
+    // -- Discovery --
+
+    private static List<ToolDescriptor> DiscoverTools()
+    {
+        var found = new List<ToolDescriptor>();
+        // Scan every loaded assembly for [McpServerToolType] classes. The Razor host loads the same
+        // assemblies the MCP server does, so this picks up everything WithToolsFromAssembly() registers.
+        var asms = AppDomain.CurrentDomain.GetAssemblies();
+        foreach (var asm in asms)
+        {
+            Type[] types;
+            try { types = asm.GetTypes(); }
+            catch (ReflectionTypeLoadException ex) { types = ex.Types.Where(t => t != null).ToArray()!; }
+            catch { continue; }
+            foreach (var type in types)
+            {
+                if (type == null) continue;
+                if (type.GetCustomAttribute<McpServerToolTypeAttribute>() == null) continue;
+                var category = type.Name.Replace("Mcp", "").Replace("Tools", "");
+                foreach (var m in type.GetMethods(BindingFlags.Public | BindingFlags.Static))
+                {
+                    var toolAttr = m.GetCustomAttribute<McpServerToolAttribute>();
+                    if (toolAttr == null) continue;
+                    var desc = m.GetCustomAttribute<DescriptionAttribute>()?.Description ?? "";
+                    var name = toolAttr.Name ?? m.Name;
+                    var ps = new List<ToolParam>();
+                    foreach (var p in m.GetParameters())
+                    {
+                        if (IsInjected(p.ParameterType)) continue; // skip DI-resolved (BotManager, GameDatabase, ...)
+                        var botIdLike = string.Equals(p.Name, "botId", StringComparison.Ordinal);
+                        ps.Add(new ToolParam(p.Name!, p.ParameterType, p.IsOptional || p.HasDefaultValue,
+                            p.HasDefaultValue ? p.DefaultValue : null, botIdLike));
+                    }
+                    found.Add(new ToolDescriptor
+                    {
+                        Name = name,
+                        Category = category,
+                        Description = desc,
+                        Params = ps,
+                        Method = m,
+                    });
+                }
+            }
+        }
+        return found.OrderBy(t => t.Category).ThenBy(t => t.Name).ToList();
+    }
+
+    // Heuristic: any parameter whose type is one of the DI-registered services should be auto-resolved.
+    // The Razor page's IServiceProvider handles the actual fetch; this just tells the form to skip rendering.
+    private static bool IsInjected(Type t)
+    {
+        var n = t.FullName ?? "";
+        return n.StartsWith("RoBotClient.Bot.Manager.", StringComparison.Ordinal)
+            || n.StartsWith("RoBotClient.Bot.GameData.", StringComparison.Ordinal)
+            || n.StartsWith("RoBotClient.Bot.Behavior.SquadAutoFormer", StringComparison.Ordinal);
+    }
+}

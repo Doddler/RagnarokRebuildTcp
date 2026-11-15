@@ -1,0 +1,149 @@
+@page "/"
+@inherits LiveComponent
+@inject BotManager Bots
+
+<PageTitle>Dashboard - RagBot Control</PageTitle>
+
+@{
+    var snapshots = Bots.GetSnapshots();
+}
+
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+    <div class="d-flex align-items-center gap-2">
+        <h1 class="h3 mb-0">Bots</h1>
+        <span class="badge bg-secondary rounded-pill fs-6">@snapshots.Count</span>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+        <a class="btn btn-success" href="/controls">
+            <span class="me-1">+</span> Spawn a bot
+        </a>
+        <button class="btn btn-outline-danger" disabled="@(snapshots.Count == 0)" @onclick="StopAll">
+            Stop All
+        </button>
+    </div>
+</div>
+
+@if (snapshots.Count == 0)
+{
+    <div class="card text-center py-5">
+        <div class="card-body">
+            <h2 class="h5 text-muted">No bots running</h2>
+            <p class="text-muted mb-3">Spawn a bot to start hunting.</p>
+            <a class="btn btn-primary" href="/controls">Go to Controls</a>
+        </div>
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-sm table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Character</th>
+                    <th>Map</th>
+                    <th class="text-nowrap">Pos</th>
+                    <th class="text-nowrap">Lv</th>
+                    <th style="min-width: 140px;">HP</th>
+                    <th style="min-width: 120px;">SP</th>
+                    <th>Mode</th>
+                    <th>Target</th>
+                    <th class="text-end">Kills</th>
+                    <th class="text-end">Base Exp</th>
+                    <th class="text-end text-nowrap">Zeny</th>
+                    <th class="text-end text-nowrap">Mobs</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bot in snapshots)
+                {
+                    var id = bot.Id;
+                    <tr>
+                        <td>
+                            <a href="@($"/bot/{id}")" class="fw-semibold text-decoration-none">
+                                @(string.IsNullOrEmpty(bot.CharacterName) ? id : bot.CharacterName)
+                            </a>
+                            @if (!bot.InGame)
+                            {
+                                <span class="badge bg-warning text-dark ms-1">connecting</span>
+                            }
+                        </td>
+                        <td class="text-nowrap">@(string.IsNullOrEmpty(bot.MapDisplayName) ? bot.Map : bot.MapDisplayName)</td>
+                        <td class="text-nowrap font-monospace">(@bot.X, @bot.Y)</td>
+                        <td class="text-nowrap">Lv @bot.Level/@bot.JobLevel</td>
+                        <td>
+                            <div class="progress position-relative" role="progressbar" style="height: 18px;"
+                                 aria-valuenow="@bot.Hp" aria-valuemin="0" aria-valuemax="@bot.MaxHp">
+                                <div class="progress-bar @HpBarClass(bot.HpPercent)"
+                                     style="width: @PercentWidth(bot.HpPercent)"></div>
+                                <span class="position-absolute w-100 text-center small text-dark fw-semibold">
+                                    @bot.Hp/@bot.MaxHp
+                                </span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="progress position-relative" role="progressbar" style="height: 18px;"
+                                 aria-valuenow="@bot.Sp" aria-valuemin="0" aria-valuemax="@bot.MaxSp">
+                                <div class="progress-bar bg-info"
+                                     style="width: @PercentWidth(bot.SpPercent)"></div>
+                                <span class="position-absolute w-100 text-center small text-dark fw-semibold">
+                                    @bot.Sp/@bot.MaxSp
+                                </span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge @ModeBadgeClass(bot.Mode)">@bot.Mode</span>
+                        </td>
+                        <td class="text-nowrap">
+                            @if (string.IsNullOrEmpty(bot.TargetName))
+                            {
+                                <span class="text-muted">-</span>
+                            }
+                            else
+                            {
+                                @bot.TargetName
+                            }
+                        </td>
+                        <td class="text-end">@bot.Kills</td>
+                        <td class="text-end">@bot.BaseExp.ToString("N0")</td>
+                        <td class="text-end text-nowrap">@bot.Zeny.ToString("N0")z</td>
+                        <td class="text-end">@bot.MonstersInView</td>
+                        <td class="text-end">
+                            <button class="btn btn-sm btn-outline-danger" @onclick="() => StopBot(id)">Stop</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@code {
+    private void StopAll() => Bots.StopAll();
+
+    private void StopBot(string id) => Bots.StopBot(id);
+
+    private static string PercentWidth(double percent)
+    {
+        var clamped = Math.Clamp(percent, 0d, 1d) * 100d;
+        return $"{clamped.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture)}%";
+    }
+
+    private static string HpBarClass(double percent) => percent switch
+    {
+        <= 0.25 => "bg-danger",
+        <= 0.5 => "bg-warning",
+        _ => "bg-success"
+    };
+
+    private static string ModeBadgeClass(string mode) => mode switch
+    {
+        "Hunting" => "bg-success",
+        "Fleeing" or "Dead" => "bg-danger",
+        "Traveling" => "bg-primary",
+        "Following" => "bg-primary",
+        "Resting" => "bg-info",
+        "Idle" => "bg-secondary",
+        _ => "bg-secondary"
+    };
+}

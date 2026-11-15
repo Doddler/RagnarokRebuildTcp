@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <!-- RebuildSharedData / GameConfig DLL references come from ..\Directory.Build.props -->
+  <ItemGroup>
+    <PackageReference Include="MemoryPack" Version="1.21.4" />
+  </ItemGroup>
+
+  <!-- Lidgren bit-packing shared with the server, compiled from its source so the bot never
+       references the server executable. NetException is not linked: the server's Assert is
+       [Conditional("DEBUG")], while the bot's local stub (Protocol\NetException.cs) always throws. -->
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\RoRebuildServer\RoRebuildServer\3rdParty\NetBitWriter.cs" Link="Protocol\NetBitWriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\RoRebuildServer\RoRebuildServer\3rdParty\SingleUIntUnion.cs" Link="Protocol\SingleUIntUnion.cs" />
+  </ItemGroup>
+
+</Project>

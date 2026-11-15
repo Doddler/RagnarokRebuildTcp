@@ -1,0 +1,10 @@
+# Build output
+bin/
+obj/
+
+# Runtime artifacts
+bot-logs/
+bot-telemetry/
+BotBuilds/
+bot-party-state.json
+*.log

@@ -1,0 +1,146 @@
+@using RebuildSharedData.Data
+@using RebuildSharedData.Enum
+@inject BotManager Bots
+@inject IJSRuntime JS
+@implements IAsyncDisposable
+
+<div class="bot-map">
+    <canvas @ref="_canvasRef" id="@_canvasId" width="420" height="420"
+            style="width:420px;height:420px;background:#10131a;border-radius:6px;display:block;"></canvas>
+</div>
+
+@code {
+    [Parameter] public string BotId { get; set; } = "";
+
+    // ±viewRadius tiles around the bot -> a (2*view+1) square window. 40 => 81x81 cells.
+    private const int ViewRadius = 40;
+    private const int RefreshMs = 250;
+
+    private ElementReference _canvasRef;
+    private readonly string _canvasId = $"botmap-{Guid.NewGuid():N}";
+    private IJSObjectReference? _module;
+    private PeriodicTimer? _timer;
+    private bool _disposed;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender || _disposed)
+            return;
+
+        _module = await JS.InvokeAsync<IJSObjectReference>("import", "./js/map.js");
+        await DrawAsync();
+
+        _timer = new PeriodicTimer(TimeSpan.FromMilliseconds(RefreshMs));
+        _ = LoopAsync();
+    }
+
+    private async Task LoopAsync()
+    {
+        try
+        {
+            while (await _timer!.WaitForNextTickAsync())
+                await InvokeAsync(DrawAsync);
+        }
+        catch (OperationCanceledException) { }
+        catch (ObjectDisposedException) { }
+    }
+
+    private async Task DrawAsync()
+    {
+        if (_disposed || _module == null)
+            return;
+
+        var payload = BuildPayload();
+        try
+        {
+            await _module.InvokeVoidAsync("draw", _canvasRef, payload);
+        }
+        catch (JSDisconnectedException) { }
+        catch (ObjectDisposedException) { }
+        catch (TaskCanceledException) { }
+    }
+
+    private object BuildPayload()
+    {
+        var session = Bots.GetSession(BotId);
+        if (session == null)
+            return new { ok = false, message = "offline" };
+
+        var targetId = Bots.GetSnapshot(BotId)?.TargetId ?? 0;
+
+        return session.WithState(w =>
+        {
+            var map = w.Self.Map;
+            var pos = w.SelfPosition;
+
+            // SelfPosition is default (0,0) until the self entity is known — treat as not yet in-world.
+            if (string.IsNullOrEmpty(map) || (pos.X == 0 && pos.Y == 0))
+                return (object)new { ok = false, message = "waiting for position…" };
+
+            var wm = Bots.Data.GetWalkMap(map);
+            if (wm == null)
+                return new { ok = false, message = $"no walk data for {map}" };
+
+            var size = ViewRadius * 2 + 1;
+            var originX = pos.X - ViewRadius;
+            var originY = pos.Y - ViewRadius;
+
+            // Row-major from origin (bottom-left). 1 = walkable, 0 = blocked. IsWalkable bounds-checks itself.
+            // int[] (not byte[]): JS interop serializes byte[] as a base64 string, which the JS reads wrong.
+            var cells = new int[size * size];
+            for (var ly = 0; ly < size; ly++)
+            {
+                var rowBase = ly * size;
+                var wy = originY + ly;
+                for (var lx = 0; lx < size; lx++)
+                    cells[rowBase + lx] = wm.IsWalkable(originX + lx, wy) ? 1 : 0;
+            }
+
+            var selfId = w.Self.EntityId;
+            var entities = new List<object>();
+            foreach (var e in w.Entities.Values)
+            {
+                var ex = e.Position.X;
+                var ey = e.Position.Y;
+
+                // Only what falls inside the window — keeps the payload compact.
+                if (ex < originX || ex > originX + size - 1 || ey < originY || ey > originY + size - 1)
+                    continue;
+
+                string kind;
+                if (e.Id == selfId) kind = "self";
+                else if (e.Id == targetId) kind = "target";
+                else if (e.IsPlayer) kind = "player";
+                else if (e.IsMonster) kind = "monster";
+                else kind = "npc"; // NPC / BattleNpc
+
+                entities.Add(new { x = ex, y = ey, kind });
+            }
+
+            return new
+            {
+                ok = true,
+                map,
+                view = ViewRadius,
+                size,
+                origin = new { x = originX, y = originY },
+                self = new { x = pos.X, y = pos.Y },
+                cells,
+                entities,
+            };
+        });
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        _disposed = true;
+        _timer?.Dispose();
+
+        if (_module != null)
+        {
+            try { await _module.DisposeAsync(); }
+            catch (JSDisconnectedException) { }
+            catch (ObjectDisposedException) { }
+        }
+    }
+}

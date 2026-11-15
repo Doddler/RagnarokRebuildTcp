@@ -1,0 +1,53 @@
+@implements IDisposable
+@inject NavigationManager Nav
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="/">
+            <span class="brand-dot"></span> RagBot Control
+        </a>
+        <button class="navbar-toggler" type="button" @onclick="ToggleNav" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse @(_collapsed ? "" : "show")">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                <li class="nav-item">
+                    <a class="nav-link @ActiveClass("", true)" href="/" @onclick="Collapse">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @ActiveClass("controls")" href="/controls" @onclick="Collapse">Spawn / Controls</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @ActiveClass("tools")" href="/tools" @onclick="Collapse">Tools</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+@code {
+    private bool _collapsed = true;
+
+    protected override void OnInitialized() => Nav.LocationChanged += OnLocationChanged;
+
+    private void ToggleNav() => _collapsed = !_collapsed;
+
+    private void Collapse() => _collapsed = true;
+
+    private void OnLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
+    {
+        _collapsed = true;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private string ActiveClass(string relativePath, bool exact = false)
+    {
+        var current = Nav.ToBaseRelativePath(Nav.Uri).TrimEnd('/');
+        var match = exact
+            ? string.Equals(current, relativePath, StringComparison.OrdinalIgnoreCase)
+            : current.StartsWith(relativePath, StringComparison.OrdinalIgnoreCase);
+        return match ? "active" : "";
+    }
+
+    public void Dispose() => Nav.LocationChanged -= OnLocationChanged;
+}

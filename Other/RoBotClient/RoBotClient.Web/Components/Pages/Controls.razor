@@ -1,0 +1,490 @@
+@page "/controls"
+@using RebuildSharedData.ClientTypes
+@using RoBotClient.Bot.Behavior
+@using RoBotClient.Bot.Manager
+@inherits LiveComponent
+@inject BotManager Bots
+@inject NavigationManager Nav
+
+<PageTitle>Controls</PageTitle>
+
+<h1 class="mb-3">Controls</h1>
+
+<div class="card mb-4">
+    <div class="card-header fw-semibold">Spawn a bot</div>
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-12">
+                <label class="form-label">Reconnect to existing <span class="text-muted">(stored creds; overrides character name + appearance below)</span></label>
+                <div class="input-group">
+                    <select class="form-select" @bind="_spawn.ExistingCharacter">
+                        <option value="">— spawn a new bot instead —</option>
+                        @foreach (var rec in KnownAccounts)
+                        {
+                            <optgroup label="@rec.Account">
+                                @foreach (var c in rec.Characters)
+                                {
+                                    <option value="@c">@c</option>
+                                }
+                            </optgroup>
+                        }
+                    </select>
+                    <button class="btn btn-outline-secondary" type="button" @onclick="DiscoverAccountsAsync" disabled="@_discovering"
+                            title="Probe bot_01..bot_20 on the server to find characters that already exist there.">
+                        @(_discovering ? "Scanning..." : "Discover")
+                    </button>
+                </div>
+                @if (!string.IsNullOrEmpty(_discoveryStatus))
+                {
+                    <small class="text-muted">@_discoveryStatus</small>
+                }
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Character name <span class="text-muted">(blank = auto)</span></label>
+                <input class="form-control" @bind="_spawn.CharacterName" placeholder="auto" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Hunt map</label>
+                <select class="form-select" @bind="_spawn.HomeMap">
+                    @foreach (var map in OrderedMaps)
+                    {
+                        <option value="@map.Code">@map.Name (@map.Code)</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Max target HP <span class="text-muted">(0 = no cap)</span></label>
+                <input type="number" class="form-control" @bind="_spawn.MaxTargetHp" />
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">Win margin</label>
+                <input type="number" step="0.05" class="form-control" @bind="_spawn.WinMargin" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Max rounds to kill</label>
+                <input type="number" class="form-control" @bind="_spawn.MaxRoundsToKill" />
+            </div>
+
+            <div class="col-md-12">
+                <label class="form-label">Hunt only these monsters <span class="text-muted">(comma-separated codes; blank = any winnable)</span></label>
+                <input class="form-control" list="monsterCodes" @bind="_spawn.HuntCodes" placeholder="PORING,LUNATIC" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Flee from these <span class="text-muted">(codes)</span></label>
+                <input class="form-control" list="monsterCodes" @bind="_spawn.FleeCodes" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Ignore these <span class="text-muted">(codes)</span></label>
+                <input class="form-control" list="monsterCodes" @bind="_spawn.IgnoreCodes" />
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Gender <span class="text-muted">(new character only)</span></label>
+                <select class="form-select" @bind="_spawn.IsMale">
+                    <option value="true">Male</option>
+                    <option value="false">Female</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Hair style <span class="text-muted">(0-19)</span></label>
+                <input type="number" min="0" max="19" class="form-control" @bind="_spawn.HairStyle" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Hair color <span class="text-muted">(0-8)</span></label>
+                <input type="number" min="0" max="8" class="form-control" @bind="_spawn.HairColor" />
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-3 mt-3">
+            <button class="btn btn-primary" @onclick="SpawnBot">Spawn bot</button>
+            @if (!string.IsNullOrEmpty(_spawnResult))
+            {
+                <span class="text-success">@_spawnResult</span>
+            }
+            @if (UnknownCodes.Count > 0)
+            {
+                <span class="text-warning">Unknown codes ignored: @string.Join(", ", UnknownCodes)</span>
+            }
+        </div>
+    </div>
+</div>
+
+<h2 class="mb-3">Running bots</h2>
+
+@{
+    var snapshots = Bots.GetSnapshots();
+}
+
+@if (snapshots.Count == 0)
+{
+    <p class="text-muted">No bots are running. Spawn one above.</p>
+}
+else
+{
+    @foreach (var snap in snapshots)
+    {
+        var bot = snap;
+        var editor = GetEditor(bot.Id);
+        <div class="card mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span>
+                    <span class="fw-semibold">@DisplayName(bot)</span>
+                    <span class="badge bg-secondary ms-2">@bot.Mode</span>
+                    <span class="text-muted ms-2">@bot.MapDisplayName (@bot.Map) @bot.X,@bot.Y</span>
+                </span>
+                <span class="text-muted small">
+                    Lv @bot.Level / Job @bot.JobLevel · HP @bot.Hp/@bot.MaxHp · Kills @bot.Kills
+                </span>
+            </div>
+            <div class="card-body">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-3">
+                        <div class="form-check form-switch mt-2">
+                            <input class="form-check-input" type="checkbox" id="@($"enabled-{bot.Id}")" @bind="editor.Enabled" />
+                            <label class="form-check-label" for="@($"enabled-{bot.Id}")">
+                                @(editor.Enabled ? "Enabled" : "Paused")
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <label class="form-label">Home / hunt map (retargets travel)</label>
+                        <select class="form-select" @bind="editor.HomeMap">
+                            @foreach (var map in OrderedMaps)
+                            {
+                                <option value="@map.Code">@map.Name (@map.Code)</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Win margin</label>
+                        <input type="number" step="0.05" class="form-control" @bind="editor.WinMargin" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Max rounds</label>
+                        <input type="number" class="form-control" @bind="editor.MaxRoundsToKill" />
+                    </div>
+
+                    <div class="col-md-12">
+                        <label class="form-label">Hunt only these <span class="text-muted">(codes; blank = any winnable)</span></label>
+                        <input class="form-control" list="monsterCodes" @bind="editor.HuntCodes" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Flee from these</label>
+                        <input class="form-control" list="monsterCodes" @bind="editor.FleeCodes" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Ignore these</label>
+                        <input class="form-control" list="monsterCodes" @bind="editor.IgnoreCodes" />
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-check form-switch mt-2">
+                            <input class="form-check-input" type="checkbox" id="@($"verbose-{bot.Id}")" @bind="editor.Verbose" />
+                            <label class="form-check-label" for="@($"verbose-{bot.Id}")">Verbose chat</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check form-switch mt-2">
+                            <input class="form-check-input" type="checkbox" id="@($"autoloot-{bot.Id}")" @bind="editor.AutoLoot" />
+                            <label class="form-check-label" for="@($"autoloot-{bot.Id}")">Auto-loot</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check form-switch mt-2">
+                            <input class="form-check-input" type="checkbox" id="@($"rest-{bot.Id}")" @bind="editor.RestWhenNoPotions" />
+                            <label class="form-check-label" for="@($"rest-{bot.Id}")">Rest when no potions</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Heal below HP% <span class="text-muted">(0 = off)</span></label>
+                        <input type="number" step="0.05" min="0" max="1" class="form-control" @bind="editor.HealHpPercent" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Healing item ids</label>
+                        <input class="form-control" @bind="editor.HealingItemIds" placeholder="501,502,503,504" />
+                    </div>
+                    <div class="col-md-8">
+                        <label class="form-label">Loot blacklist <span class="text-muted">(item ids, comma-separated; blank = grab everything)</span></label>
+                        <input class="form-control" @bind="editor.LootBlacklist" placeholder="e.g. 909,1002" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Desired job <span class="text-muted">(auto-change at Bard)</span></label>
+                        <select class="form-select" @bind="editor.DesiredJobId">
+                            <option value="0">— none —</option>
+                            <option value="1">Swordsman</option>
+                            <option value="2">Archer</option>
+                            <option value="3">Mage</option>
+                            <option value="4">Acolyte</option>
+                            <option value="5">Thief</option>
+                            <option value="6">Merchant</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label class="form-label">Skill script <span class="text-muted">(one rule per line — see SKILL_SCRIPT.md)</span></label>
+                        <textarea class="form-control font-monospace" rows="4" @bind="editor.SkillScript"
+                                  placeholder="# fires the FIRST matching rule each combat tick&#10;use Bash 1 if target.hppct > 30&#10;use FirstAid 0 self if self.hppct < 50"></textarea>
+                        @if (!string.IsNullOrEmpty(editor.SkillScriptStatus))
+                        {
+                            <small class="text-muted">@editor.SkillScriptStatus</small>
+                        }
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center gap-2 mt-3">
+                    <button class="btn btn-success" @onclick="() => ApplyEditor(bot.Id)">Apply</button>
+                    <button class="btn btn-outline-danger" @onclick="() => StopBot(bot.Id)">Stop</button>
+                    @if (!string.IsNullOrEmpty(editor.Status))
+                    {
+                        <span class="text-success small">@editor.Status</span>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+}
+
+<datalist id="monsterCodes">
+    @foreach (var mc in MonsterCodes)
+    {
+        <option value="@mc"></option>
+    }
+</datalist>
+
+@code {
+    // The running-bot list re-renders on a timer; keep edits in dictionary state so live
+    // re-renders never clobber what the user is typing into a bot's editor.
+    private readonly Dictionary<string, BotEditModel> _editors = new(StringComparer.Ordinal);
+    private readonly SpawnModel _spawn = new();
+    private string? _spawnResult;
+    private bool _discovering;
+    private string _discoveryStatus = "";
+
+    // Codes the user typed that didn't resolve to a monster on the last spawn/apply.
+    private readonly List<string> UnknownCodes = new();
+
+    private IEnumerable<ClientMapEntry> OrderedMaps =>
+        Bots.Data.MapsByCode.Values
+            .Where(m => !string.IsNullOrEmpty(m.Code))
+            .OrderBy(m => m.Name, StringComparer.OrdinalIgnoreCase);
+
+    private IReadOnlyList<AccountRecord> KnownAccounts =>
+        Bots.Accounts?.List() ?? Array.Empty<AccountRecord>();
+
+    private IEnumerable<string> MonsterCodes =>
+        Bots.Data.MonstersByCode.Keys.OrderBy(c => c, StringComparer.OrdinalIgnoreCase);
+
+    private static string DisplayName(BotSnapshot snap) =>
+        string.IsNullOrEmpty(snap.CharacterName) ? snap.Id : $"{snap.CharacterName} ({snap.Id})";
+
+    private void SpawnBot()
+    {
+        UnknownCodes.Clear();
+        var config = new BotBehaviorConfig
+        {
+            HomeMap = _spawn.HomeMap,
+            WinMargin = _spawn.WinMargin,
+            MaxRoundsToKill = _spawn.MaxRoundsToKill,
+            MaxTargetHp = _spawn.MaxTargetHp,
+            Enabled = true,
+        };
+        ResolveInto(config.HuntClassIds, _spawn.HuntCodes);
+        ResolveInto(config.FleeClassIds, _spawn.FleeCodes);
+        ResolveInto(config.IgnoreClassIds, _spawn.IgnoreCodes);
+
+        if (!string.IsNullOrWhiteSpace(_spawn.ExistingCharacter))
+        {
+            var reId = Bots.SpawnExistingBot(config, _spawn.ExistingCharacter, _spawn.IsMale, _spawn.HairStyle, _spawn.HairColor);
+            _spawnResult = reId != null
+                ? $"Reconnected to {_spawn.ExistingCharacter} as {reId}."
+                : $"No stored credentials for '{_spawn.ExistingCharacter}'.";
+            return;
+        }
+
+        var name = string.IsNullOrWhiteSpace(_spawn.CharacterName) ? null : _spawn.CharacterName.Trim();
+        var id = Bots.SpawnBot(config, name, isMale: _spawn.IsMale, hairStyle: _spawn.HairStyle, hairColor: _spawn.HairColor);
+        _spawnResult = $"Spawned {id}.";
+    }
+
+    private void StopBot(string id)
+    {
+        Bots.StopBot(id);
+        _editors.Remove(id);
+    }
+
+    private async Task DiscoverAccountsAsync()
+    {
+        _discovering = true;
+        _discoveryStatus = "Scanning bot_01..bot_20 on the server...";
+        StateHasChanged();
+        try
+        {
+            var found = await Bots.DiscoverAccountsAsync();
+            var total = KnownAccounts.Sum(a => a.Characters.Count);
+            _discoveryStatus = $"Discovery complete: {found} account(s) responded, {total} character(s) now in the store.";
+        }
+        catch (Exception ex)
+        {
+            _discoveryStatus = $"Discovery error: {ex.Message}";
+        }
+        finally
+        {
+            _discovering = false;
+        }
+    }
+
+    private BotEditModel GetEditor(string id)
+    {
+        if (_editors.TryGetValue(id, out var existing))
+            return existing;
+
+        // Seed once from the bot's live config so the inputs reflect current state.
+        var model = new BotEditModel();
+        var cfg = Bots.GetBehaviorConfig(id);
+        if (cfg != null)
+        {
+            model.Enabled = cfg.Enabled;
+            model.HomeMap = cfg.HomeMap;
+            model.WinMargin = cfg.WinMargin;
+            model.MaxRoundsToKill = cfg.MaxRoundsToKill;
+            model.HuntCodes = CodesOf(cfg.HuntClassIds);
+            model.FleeCodes = CodesOf(cfg.FleeClassIds);
+            model.IgnoreCodes = CodesOf(cfg.IgnoreClassIds);
+            model.Verbose = cfg.Verbose;
+            model.AutoLoot = cfg.AutoLoot;
+            model.RestWhenNoPotions = cfg.RestWhenNoPotions;
+            model.HealHpPercent = cfg.HealHpPercent;
+            model.HealingItemIds = string.Join(",", cfg.HealingItemIds);
+            model.LootBlacklist = string.Join(",", cfg.LootBlacklist);
+            model.DesiredJobId = cfg.DesiredJobId;
+            model.SkillScript = cfg.SkillScript ?? "";
+        }
+        _editors[id] = model;
+        return model;
+    }
+
+    private void ApplyEditor(string id)
+    {
+        var cfg = Bots.GetBehaviorConfig(id);
+        var editor = GetEditor(id);
+        if (cfg == null)
+        {
+            editor.Status = "Bot is no longer running.";
+            return;
+        }
+
+        UnknownCodes.Clear();
+
+        // Mutating the live config takes effect on the running bot immediately. The bot holds a
+        // reference to this same instance, so clear-and-refill the sets in place rather than reassign.
+        cfg.Enabled = editor.Enabled;
+        cfg.HomeMap = editor.HomeMap;
+        cfg.WinMargin = editor.WinMargin;
+        cfg.MaxRoundsToKill = editor.MaxRoundsToKill;
+
+        cfg.HuntClassIds.Clear();
+        ResolveInto(cfg.HuntClassIds, editor.HuntCodes);
+        cfg.FleeClassIds.Clear();
+        ResolveInto(cfg.FleeClassIds, editor.FleeCodes);
+        cfg.IgnoreClassIds.Clear();
+        ResolveInto(cfg.IgnoreClassIds, editor.IgnoreCodes);
+
+        cfg.Verbose = editor.Verbose;
+        cfg.AutoLoot = editor.AutoLoot;
+        cfg.RestWhenNoPotions = editor.RestWhenNoPotions;
+        cfg.HealHpPercent = editor.HealHpPercent;
+        cfg.HealingItemIds.Clear();
+        cfg.HealingItemIds.AddRange(ParseIntList(editor.HealingItemIds));
+        cfg.LootBlacklist.Clear();
+        foreach (var itemId in ParseIntList(editor.LootBlacklist))
+            cfg.LootBlacklist.Add(itemId);
+        cfg.DesiredJobId = editor.DesiredJobId;
+
+        var skillCheck = BotBehavior.ValidateSkillScript(editor.SkillScript ?? "");
+        cfg.SkillScript = editor.SkillScript ?? "";
+        editor.SkillScriptStatus = skillCheck.Errors.Count == 0
+            ? $"Skill script: {skillCheck.RuleCount} rule(s) parsed."
+            : $"Skill script: {skillCheck.RuleCount} rule(s); errors: {string.Join("; ", skillCheck.Errors)}";
+
+        Bots.SaveConfig(id); // persist so the change survives a stop+respawn / dashboard restart
+        editor.Status = $"Applied at {DateTime.Now:HH:mm:ss}.";
+    }
+
+    // Parse a comma-separated code list and add each resolvable ClassId to the set; collect misses.
+    private void ResolveInto(HashSet<int> set, string? codes)
+    {
+        if (string.IsNullOrWhiteSpace(codes))
+            return;
+        foreach (var raw in codes.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+        {
+            var id = Bots.Data.ClassIdOf(raw);
+            if (id.HasValue)
+                set.Add(id.Value);
+            else
+                UnknownCodes.Add(raw);
+        }
+    }
+
+    private static List<int> ParseIntList(string? csv)
+    {
+        var result = new List<int>();
+        if (string.IsNullOrWhiteSpace(csv)) return result;
+        foreach (var raw in csv.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+            if (int.TryParse(raw, out var n)) result.Add(n);
+        return result;
+    }
+
+    // Reverse a set of ClassIds back into a comma-separated code string for seeding the editor.
+    private string CodesOf(HashSet<int> ids)
+    {
+        if (ids.Count == 0)
+            return "";
+        var codes = new List<string>(ids.Count);
+        foreach (var id in ids)
+        {
+            var m = Bots.Data.Monster(id);
+            codes.Add(!string.IsNullOrEmpty(m?.Code) ? m!.Code : $"#{id}");
+        }
+        codes.Sort(StringComparer.OrdinalIgnoreCase);
+        return string.Join(",", codes);
+    }
+
+    private sealed class SpawnModel
+    {
+        public string CharacterName = "";
+        public string HomeMap = "prt_fild08";
+        public double WinMargin = 0.6;
+        public int MaxRoundsToKill = 30;
+        public int MaxTargetHp = 5000;
+        public string HuntCodes = "";
+        public string FleeCodes = "";
+        public string IgnoreCodes = "TARGET_DUMMY";
+        public bool IsMale = true;
+        public int HairStyle = 0;
+        public int HairColor = 0;
+        public string ExistingCharacter = "";
+    }
+
+    private sealed class BotEditModel
+    {
+        public bool Enabled = true;
+        public string HomeMap = "";
+        public double WinMargin = 0.6;
+        public int MaxRoundsToKill = 30;
+        public string HuntCodes = "";
+        public string FleeCodes = "";
+        public string IgnoreCodes = "";
+        public bool Verbose;
+        public bool AutoLoot = true;
+        public bool RestWhenNoPotions;
+        public float HealHpPercent = 0.5f;
+        public string HealingItemIds = "501,502,503,504";
+        public string LootBlacklist = "";
+        public int DesiredJobId;
+        public string SkillScript = "";
+        public string SkillScriptStatus = "";
+        public string Status = "";
+    }
+}
