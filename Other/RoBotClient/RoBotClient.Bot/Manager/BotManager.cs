@@ -228,7 +228,14 @@ public sealed class BotManager
                     // recent deaths, items used, skill casts, map times) without having to re-observe them.
                     var savedEvents = _telemetry?.Load(config.CharacterName);
                     if (savedEvents != null) session.Telemetry.Load(savedEvents);
-                    await Task.WhenAll(session.RunAsync(cts.Token), brain.RunAsync(cts.Token));
+                    // The session's receive loop owns the bot's lifetime: when it ends (server close, socket
+                    // abort, or stop_bot), cancel the behavior loop too. Otherwise a dropped bot keeps ticking on
+                    // its last snapshot and stays listed as active.
+                    var sessionTask = session.RunAsync(cts.Token);
+                    var brainTask = brain.RunAsync(cts.Token);
+                    try { await sessionTask; }
+                    finally { cts.Cancel(); }
+                    await brainTask;
                 }
                 else
                 {
