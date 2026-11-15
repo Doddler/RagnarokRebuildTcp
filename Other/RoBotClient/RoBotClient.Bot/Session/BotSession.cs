@@ -23,7 +23,11 @@ public sealed class PendingPartyInvite
 /// for our own kill (not a party share); then <c>Monster</c> names it when we saw it die, and <c>TimeToKill</c>
 /// is the seconds from our first hit on it to its death when we hit it, and <c>Attacks</c> how many attacks (auto-attack
 /// swings plus damaging skill uses, misses included) we spent on it, and <c>HpLost</c> the damage it dealt us.</summary>
-public readonly record struct ExpUpdate(int Level, int ExpIntoLevel, int Gained, bool OwnKill, string Monster, double? TimeToKill, int? Attacks, int? HpLost);
+public readonly record struct ExpUpdate(int Level, int ExpIntoLevel, int Gained, bool OwnKill, string Monster, double? TimeToKill, int? Attacks, int? HpLost,
+    KillForecast? Forecast = null, bool Helped = false);
+
+/// <summary>What the solo duel forecast predicted when the bot engaged a monster, to compare with the real fight.</summary>
+public readonly record struct KillForecast(double Seconds, int Attacks, double HpLost);
 
 /// <summary>
 /// One bot: owns a connection, drives login/character/enter, then keeps a live picture of the world
@@ -64,6 +68,26 @@ public sealed class BotSession : IAsyncDisposable
     // Damage each monster has dealt us (by attacker id, from the latest Attack/Skill aimed at us), for HP lost per
     // kill. Consumed on our kill of that monster.
     private readonly System.Collections.Concurrent.ConcurrentDictionary<int, int> _damageTakenFrom = new();
+
+    // The forecast made when we engaged each monster (by id), stored with the actual fight on our kill.
+    private readonly System.Collections.Concurrent.ConcurrentDictionary<int, KillForecast> _forecasts = new();
+
+    /// <summary>Remember the duel forecast for a target we're engaging, so the kill can be compared with it.</summary>
+    public void NoteForecast(int targetId, double seconds, int attacks, double hpLost)
+    {
+        _forecasts[targetId] = new KillForecast(seconds, attacks, hpLost);
+        if (_forecasts.Count > 256) _forecasts.Clear(); // ponytail: crude cap, targets we never killed
+    }
+
+    // Monsters another player has attacked (auto-attack or damaging skill), so a kill can say it wasn't a pure duel.
+    private readonly System.Collections.Concurrent.ConcurrentDictionary<int, byte> _helpedOn = new();
+
+    private void NoteOtherHit(int attacker, int target)
+    {
+        if (attacker == World.Self.EntityId || !World.Entities.TryGetValue(attacker, out var a) || !a.IsPlayer) return;
+        _helpedOn[target] = 0;
+        if (_helpedOn.Count > 256) _helpedOn.Clear(); // ponytail: crude cap
+    }
 
     private void NoteDamageTaken(int dmg)
     {
@@ -158,6 +182,10 @@ public sealed class BotSession : IAsyncDisposable
     /// <summary>Best-effort flag for "this bot is currently in a party" (tracked optimistically from our own
     /// create/accept/leave actions; cleared on a LeaveParty / DisbandParty broadcast).</summary>
     public bool InParty => _inParty;
+
+    /// <summary>Our current walk speed in seconds per cell, from the server's latest walk packet for us. Starts at
+    /// the unbuffed 0.15 (server Player.UpdateStats) until the first walk arrives.</summary>
+    public double SelfSecondsPerCell { get; private set; } = 0.15;
 
     /// <summary>True if this bot organized the party (called CreateParty); false if it joined via accept.</summary>
     public bool IsPartyLeader => _isLeader;
@@ -1104,6 +1132,9 @@ public sealed class BotSession : IAsyncDisposable
         }
         catch { path = null; cellTime = 0f; } // parse hiccup → fall back to just the start cell (no interp)
 
+        // The server stamps each walk with the walker's current seconds-per-cell (buffs, curse, cart, peco included).
+        if (id == World.Self.EntityId && cellTime > 0.001f) SelfSecondsPerCell = cellTime;
+
         if (World.Entities.TryGetValue(id, out var e))
         {
             e.Position = startCell;
@@ -1141,7 +1172,7 @@ public sealed class BotSession : IAsyncDisposable
         if (target > 0 && src > 0)
         {
             _recentAttacks[target] = (src, DateTime.UtcNow);
-            if (src == World.Self.EntityId) NoteOwnHit(target);
+            if (src == World.Self.EntityId) NoteOwnHit(target); else NoteOtherHit(src, target);
             if (_recentAttacks.Count > 256)
             {
                 var cutoff = DateTime.UtcNow.AddSeconds(-10);
@@ -1161,7 +1192,7 @@ public sealed class BotSession : IAsyncDisposable
         var target = r.ReadInt32();
         if (target <= 0) return;
         _recentSkillHits[target] = (owner > 0 ? owner : caster, DateTime.UtcNow);
-        if ((owner > 0 ? owner : caster) == World.Self.EntityId) NoteOwnHit(target);
+        if ((owner > 0 ? owner : caster) == World.Self.EntityId) NoteOwnHit(target); else NoteOtherHit(owner > 0 ? owner : caster, target);
         if (_recentSkillHits.Count > 256)
         {
             var cutoff = DateTime.UtcNow.AddSeconds(-10);
@@ -1261,6 +1292,8 @@ public sealed class BotSession : IAsyncDisposable
         double? timeToKill = null;
         int? attacks = null;
         int? hpLost = null;
+        KillForecast? forecast = null;
+        var helped = false;
         if (baseGained > 0)
         {
             killed = (DateTime.UtcNow - _lastDeadMonsterAt).TotalSeconds < 3 ? _lastDeadMonsterName : "";
@@ -1271,6 +1304,8 @@ public sealed class BotSession : IAsyncDisposable
                 timeToKill = (DateTime.UtcNow - hits.First).TotalSeconds;
                 attacks = hits.Attacks;
                 hpLost = _damageTakenFrom.TryRemove(_lastDeadMonsterId, out var taken) ? taken : 0;
+                if (_forecasts.TryRemove(_lastDeadMonsterId, out var f)) forecast = f;
+                helped = _helpedOn.TryRemove(_lastDeadMonsterId, out _);
             }
             // In a party, a death backs at most one counted kill: a share from a kill we didn't see would
             // otherwise be matched against our own previous kill.
@@ -1284,7 +1319,7 @@ public sealed class BotSession : IAsyncDisposable
         // Every exp packet, not just gains: the server also sends the current exp with gained=0 on entering the
         // world and after respawning, and party shares arrive here too.
         OnBaseExpUpdated?.Invoke(new ExpUpdate(World.Self.Level, baseTotal, Math.Max(baseGained, 0), ownKill,
-            ownKill ? killed : "", timeToKill, attacks, hpLost));
+            ownKill ? killed : "", timeToKill, attacks, hpLost, forecast, helped));
     }
 
     private void UpdatePosition(int id, Position pos, CharacterState state)

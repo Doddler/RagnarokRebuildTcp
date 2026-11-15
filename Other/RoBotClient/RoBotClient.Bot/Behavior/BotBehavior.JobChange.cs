@@ -214,7 +214,7 @@ public sealed partial class BotBehavior
         _jobCooldownUntil = DateTime.UtcNow.AddSeconds(30);
     }
 
-    private static string JobName(int jobId) => jobId switch
+    public static string JobName(int jobId) => jobId switch
     {
         1 => "Swordsman", 2 => "Archer", 3 => "Mage", 4 => "Acolyte", 5 => "Thief", 6 => "Merchant", _ => "",
     };

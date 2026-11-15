@@ -28,8 +28,35 @@
     <div class="card text-center py-5">
         <div class="card-body">
             <h2 class="h5 text-muted">No bots running</h2>
-            <p class="text-muted mb-3">Spawn a bot to start hunting.</p>
-            <a class="btn btn-primary" href="/controls">Go to Controls</a>
+            @{
+                // Most recently played first; "last session" = everyone who gained exp within 10 min of the latest one.
+                var stored = (Bots.Accounts?.List() ?? []).SelectMany(a => a.Characters).Distinct(StringComparer.OrdinalIgnoreCase)
+                    .Select(c => (Name: c, Last: Bots.Progress?.LastPlayedUtc(c))).OrderByDescending(c => c.Last).ThenBy(c => c.Name).ToList();
+                var newest = stored.Count > 0 ? stored[0].Last : null;
+                var lastSession = newest == null ? [] : stored.Where(c => c.Last >= newest.Value.AddMinutes(-10)).Select(c => c.Name).ToList();
+            }
+            @if (stored.Count > 0)
+            {
+                <p class="text-muted mb-3">Respawn a stored character (it keeps its saved settings), or spawn a new one.</p>
+                <div class="d-flex flex-wrap justify-content-center gap-2 mb-3">
+                    @foreach (var c in stored)
+                    {
+                        <button class="btn btn-sm @(lastSession.Contains(c.Name) ? "btn-outline-primary" : "btn-outline-secondary")"
+                                title="@(c.Last is { } t ? $"Last gained exp {t.ToLocalTime():g}" : "No exp recorded")" @onclick="() => Respawn(c.Name)">@c.Name</button>
+                    }
+                </div>
+                @if (lastSession.Count > 0)
+                {
+                    <button class="btn btn-primary" @onclick="() => { foreach (var c in lastSession) Respawn(c); }">Respawn last session (@lastSession.Count)</button>
+                }
+                <a class="btn btn-outline-secondary ms-2" href="/controls">Spawn a new bot</a>
+                @if (_respawnError != null) { <div class="text-danger small mt-2">@_respawnError</div> }
+            }
+            else
+            {
+                <p class="text-muted mb-3">Spawn a bot to start hunting.</p>
+                <a class="btn btn-primary" href="/controls">Go to Controls</a>
+            }
         </div>
     </div>
 }
@@ -160,6 +187,15 @@ else
     private bool _worldView;
 
     private void StopAll() => Bots.StopAll();
+
+    private string? _respawnError;
+
+    // Saved behavior (hunt map, filters…) is rehydrated over this by SpawnBot; prt_fild08 is the same default spawn_bot uses.
+    private void Respawn(string character)
+    {
+        try { _respawnError = Bots.SpawnExistingBot(new BotBehaviorConfig { HomeMap = "prt_fild08" }, character) == null ? $"No stored account for {character}." : null; }
+        catch (Exception e) { _respawnError = $"{character}: {e.Message}"; }
+    }
 
     private void StopBot(string id) => Bots.StopBot(id);
 

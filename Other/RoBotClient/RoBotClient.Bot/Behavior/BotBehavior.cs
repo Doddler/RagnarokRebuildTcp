@@ -360,10 +360,12 @@ public sealed partial class BotBehavior
         TargetName = target.Name;
         Mode = BotMode.Hunting;
         ResetStuck(snap.SelfPos, target.Hp); // start the progress clock for this target
+        _bot.NoteForecast(target.Id, forecast.SecondsToKillMonster, forecast.AttacksToKill, forecast.ExpectedDamageTaken);
         _nextAttack = DateTime.UtcNow.AddSeconds(3);
         OnLog?.Invoke($"Engaging {target.Name} (hp {target.MaxHp}): my hit ~{forecast.MyDamagePerHit}@{forecast.MyHitChance:P0}, " +
                       $"its hit ~{forecast.MonsterDamagePerHit}@{forecast.MonsterHitChance:P0}, " +
-                      $"kill ~{forecast.SecondsToKillMonster:F1}s vs my death ~{forecast.SecondsToKillMe:F1}s.");
+                      $"kill ~{forecast.SecondsToKillMonster:F1}s vs my death ~{forecast.SecondsToKillMe:F1}s" +
+                      (_bot.InParty ? "." : $", ~{ExpPerSecond(snap, target, forecast, Dist(snap.SelfPos, target.Pos)):F2} exp/s incl. walk + {RestSeconds(snap, forecast):F0}s rest (solo, best in view)."));
         await MaybeAnnounceTargetAsync(target, ct);
         // Skill-only bots still need the server to know who their target is (skills auto-target the
         // bot's current target id when no explicit target is passed in the rule). Just don't issue the
@@ -374,10 +376,33 @@ public sealed partial class BotBehavior
 
     private string _lastIdleReason = "";
 
+    /// <summary>Expected base exp per second of walking to, killing and then sitting off the HP lost to
+    /// <paramref name="m"/>, solo. The server pays a solo killer the monster's full base exp (no level-gap
+    /// penalty), so this is the database exp over walk + forecast kill time + rest time, which makes an
+    /// HP-draining fight cost what it really costs: the sitting it forces later.</summary>
+    private double ExpPerSecond(Snapshot snap, MonsterInfo m, BattleForecast f, int distance)
+    {
+        var exp = _data?.Monster(m.ClassId)?.Exp ?? 0;
+        return exp / Math.Max(0.1, f.SecondsToKillMonster + distance * _bot.SelfSecondsPerCell + RestSeconds(snap, f));
+    }
+
+    /// <summary>Seconds of sitting to regenerate the HP the forecast says this fight costs. Mirrors the server's
+    /// Player.HpRegenTick: (MaxHp/50 + Vit/5)*(200+Vit)/200 per tick, a tick every 3 s sitting and doubled.
+    /// ponytail: ignores potions, AddHpRecoveryPercent and Increased HP Recovery, so it overstates the cost
+    /// for bots with those; fold them in if such bots start avoiding fights they'd win cheaply.</summary>
+    private static double RestSeconds(Snapshot snap, BattleForecast f)
+    {
+        var perTick = Math.Max(1, (snap.SelfMaxHp / 50 + snap.SelfVit / 5) * (200 + snap.SelfVit) / 200);
+        return f.ExpectedDamageTaken / (perTick * 2 / 3.0);
+    }
+
     private MonsterInfo? PickTarget(Snapshot snap, out BattleForecast chosen)
     {
         chosen = default;
-        var candidates = new List<(int score, MonsterInfo m, BattleForecast f)>();
+        var candidates = new List<(double score, MonsterInfo m, BattleForecast f)>();
+        // Solo, rank by expected exp per second (walk + fight) so the bot prefers efficient monsters over merely
+        // close ones. In a party, healing and shared exp change the math, so keep the nearest-first rule there.
+        var solo = !_bot.InParty;
         int notHuntable = 0, avoided = 0, blacklisted = 0, hazardous = 0, unwinnable = 0, swarmed = 0, portalRisk = 0;
         foreach (var m in snap.Monsters)
         {
@@ -407,9 +432,14 @@ public sealed partial class BotBehavior
             if (!forced && !forecast.CanWin) { unwinnable++; continue; }
             var group = EngagementGroup(snap, m);
             if (!forced && group.Count > 1 && !ForecastGroupOf(snap, group).CanWin) { swarmed++; continue; }
-            var score = Dist(snap.SelfPos, m.Pos);
-            var mlvl = _data?.Monster(m.ClassId)?.Level ?? 0;
-            if (mlvl > 0 && mlvl <= snap.SelfLevel - 15) score += 100; // grey mob: poor exp, deprioritize
+            double score = Dist(snap.SelfPos, m.Pos);
+            if (solo)
+                score = -ExpPerSecond(snap, m, forecast, (int)score); // negated: candidates sort ascending
+            else
+            {
+                var mlvl = _data?.Monster(m.ClassId)?.Level ?? 0;
+                if (mlvl > 0 && mlvl <= snap.SelfLevel - 15) score += 100; // grey mob: poor exp, deprioritize
+            }
             candidates.Add((score, m, forecast));
         }
 

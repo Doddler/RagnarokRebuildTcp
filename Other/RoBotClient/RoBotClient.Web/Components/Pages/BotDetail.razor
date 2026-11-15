@@ -2,6 +2,7 @@
 @inherits LiveComponent
 @inject BotManager Bots
 @inject GameDatabase Db
+@inject RoBotClient.Web.Mcp.BuildStore Builds
 @inject RoBotClient.Web.MonsterSprites Sprites
 @using System.Linq
 @using RebuildSharedData.Enum
@@ -140,6 +141,57 @@ else
                         <BotMap BotId="@Id" />
                     </div>
                 </div>
+
+                @if (deep is not null)
+                {
+                    var desired = Bots.GetBehaviorConfig(Id)?.DesiredJobId ?? 0;
+                    var plan = Builds.Read(s.CharacterName);
+                    <div class="card mb-3">
+                        <div class="card-header py-2 fw-semibold">Build <span class="text-muted">(what the bot does with its progression today)</span></div>
+                        <div class="card-body py-2">
+                            @* Three aligned columns: label | value | note, so every row reads the same way. *@
+                            <table class="table table-sm align-middle mb-0" style="table-layout:fixed">
+                                <colgroup><col style="width:7.5rem" /><col style="width:8.5rem" /><col /></colgroup>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-muted text-nowrap">Job</td>
+                                        <td class="fw-semibold text-nowrap">@Job(deep.JobId)</td>
+                                        <td class="small text-muted">job Lv @s.JobLevel</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted text-nowrap">Desired job</td>
+                                        <td class="fw-semibold text-nowrap">@(desired == 0 ? "None" : Job(desired))</td>
+                                        <td class="small text-muted">@DesiredJobStatus(desired, deep.JobId, s.JobLevel)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted text-nowrap">Stat points</td>
+                                        <td class="fw-semibold text-nowrap">@deep.StatPoints unspent</td>
+                                        <td class="small text-muted">Never auto-spent. Use + under Stats or allocate_stats.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted text-nowrap">Skill points</td>
+                                        <td class="fw-semibold text-nowrap">@deep.SkillPoints unspent</td>
+                                        <td class="small text-muted">Auto-spent only by a Novice before its job change.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted text-nowrap">Build plan</td>
+                                        <td class="fw-semibold text-nowrap">@(string.IsNullOrWhiteSpace(plan) ? "None" : "Saved")</td>
+                                        <td class="small text-muted">
+                                            @if (string.IsNullOrWhiteSpace(plan))
+                                            {
+                                                <span>Agent notes from write_build. The bot never reads them.</span>
+                                            }
+                                            else
+                                            {
+                                                <details><summary>Agent notes (the bot never reads them)</summary><pre class="mb-0 mt-1" style="white-space:pre-wrap">@plan</pre></details>
+                                            }
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
 
                 <div class="card">
                     <div class="card-header py-2 fw-semibold">Stats</div>
@@ -324,21 +376,36 @@ else
                 </div>
 
                 <div class="card mb-3">
-                    <div class="card-header py-2 fw-semibold">Efficiency <span class="text-muted">(per monster: base exp per attack, HP lost per fight)</span></div>
+                    <div class="card-header py-2 fw-semibold">Efficiency <span class="text-muted">(per monster and fight context)</span></div>
                     <div class="card-body p-2">
-                        @if (Efficiency(s.CharacterName) is { Count: > 0 } eff)
+                        @if (ForecastVsActual(s.CharacterName) is { Count: > 0 } fva)
                         {
-                            <div class="d-flex flex-wrap gap-1">
-                                @foreach (var e in eff)
-                                {
-                                    <span class="badge bg-secondary" title="@($"{e.Exp:N0} exp over {e.Attacks:N0} attacks in {e.Kills} kills" + (e.HpFights > 0 ? $"; {e.HpLost:N0} HP lost over {e.HpFights} fights" : ""))">@MonsterPortrait(e.Monster)@e.Monster&nbsp;<span class="badge bg-light text-dark">@e.PerAttack.ToString("0.#") exp/attack</span>
-                                        <span class="badge bg-danger-subtle text-danger-emphasis">@(e.HpFights > 0 ? (e.HpLost / (double)e.HpFights).ToString("0.#") : "—") HP/fight</span></span>
-                                }
+                            <div class="small">
+                                <div class="table-responsive">
+                                    <table class="table table-sm mb-0 mt-1 align-middle">
+                                        <thead><tr><th>Monster</th><th>Context</th><th class="text-end">Fights</th><th class="text-end">Exp/attack</th><th class="text-end">Attacks</th><th class="text-end">Seconds</th><th class="text-end">HP lost</th></tr></thead>
+                                        <tbody>
+                                            @foreach (var row in fva)
+                                            {
+                                                <tr>
+                                                    <td>@MonsterPortrait(row.Monster)@row.Monster</td>
+                                                    <td>@row.Context</td>
+                                                    <td class="text-end">@row.Fights</td>
+                                                    <td class="text-end fw-semibold">@row.ExpPerAttack.ToString("0.#")</td>
+                                                    <td class="text-end">@Vs(row.PredAttacks, row.Attacks)</td>
+                                                    <td class="text-end">@Vs(row.PredSeconds, row.Seconds)</td>
+                                                    <td class="text-end">@Vs(row.PredHp, row.Hp)</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="text-secondary">Exp/attack is the bot's own exp from these kills over the attacks it spent. Attacks, Seconds and HP lost are averages per fight, forecast → actual. The forecast always assumes a solo duel, so party, healer and help rows show how much those change the fight.</div>
                             </div>
                         }
                         else
                         {
-                            <div class="small text-muted">No kills with attack counts yet.</div>
+                            <div class="small text-muted">No fights recorded with a forecast yet. Each kill this bot lands itself from now on shows up here.</div>
                         }
                     </div>
                 </div>
@@ -439,7 +506,17 @@ else
 
     private string _forceHuntCode = "";
 
-    private bool NoAutoAttack => Bots.GetBehaviorConfig(Id)?.NoAutoAttack ?? false;
+    private static string Job(int jobId) => jobId == 0 ? "Novice" : BotBehavior.JobName(jobId) is { Length: > 0 } n ? n : $"job {jobId}";
+
+    // Mirrors BotBehavior.WantsJobChange: the Adventuring Bard only turns a Novice into a 1st job, at job Lv 10.
+    private static string DesiredJobStatus(int desired, int jobId, int jobLevel) =>
+        desired == 0 ? "Stays in its current job."
+        : desired == jobId ? "Reached."
+        : jobId != 0 ? "Ignored. The Adventuring Bard only changes a Novice."
+        : jobLevel >= 10 ? "Eligible now. Heads to the Adventuring Bard (prt_fild08)."
+        : $"Changes at job Lv 10 at the Adventuring Bard (prt_fild08). {10 - jobLevel} to go.";
+
+    private bool NoAutoAttack =>Bots.GetBehaviorConfig(Id)?.NoAutoAttack ?? false;
     private bool EnableKite => Bots.GetBehaviorConfig(Id)?.EnableKite ?? false;
     private int ForceHuntCount => Bots.GetBehaviorConfig(Id)?.ForceHuntClassIds.Count ?? 0;
     private List<string> ForceHuntList
@@ -586,24 +663,27 @@ else
     private const int ExpRateWindowMin = 15;
     private double? ExpPerHour(string characterName) => Bots.Progress?.ExpPerHour(characterName, ExpRateWindowMin);
 
-    // Exp per attack by monster, from the progress history: a kill's exp is the OwnExp step on its sample (already
-    // capped at what total exp really grew), its attacks the count recorded with it. Highest yield first.
-    private List<(string Monster, int Kills, long Exp, long Attacks, double PerAttack, long HpLost, int HpFights)> Efficiency(string characterName)
+    // Kills that carry the engage-time forecast, averaged per monster and fight context. A kill's exp is the OwnExp
+    // step on its sample (already capped at what total exp really grew).
+    private List<(string Monster, string Context, int Fights, double ExpPerAttack, double PredAttacks, double Attacks, double PredSeconds, double Seconds, double PredHp, double Hp)> ForecastVsActual(string characterName)
     {
         var samples = Bots.Progress?.Get(characterName) ?? Array.Empty<RoBotClient.Bot.Manager.ProgressSample>();
-        var rows = new Dictionary<string, (int Kills, long Exp, long Attacks, long HpLost, int HpFights)>();
-        for (var i = 1; i < samples.Count; i++)
-        {
-            var k = samples[i];
-            if (k.Monster is not { Length: > 0 } m || k.Attacks is not > 0) continue;
-            var r = rows.GetValueOrDefault(m);
-            // HP lost is recorded only since that tracking began, so it averages over its own fight count.
-            rows[m] = (r.Kills + 1, r.Exp + Math.Max(k.OwnExp - samples[i - 1].OwnExp, 0), r.Attacks + k.Attacks.Value,
-                r.HpLost + (k.HpLost ?? 0), r.HpFights + (k.HpLost.HasValue ? 1 : 0));
-        }
-        return rows.Select(kv => (kv.Key, kv.Value.Kills, kv.Value.Exp, kv.Value.Attacks, kv.Value.Exp / (double)kv.Value.Attacks, kv.Value.HpLost, kv.Value.HpFights))
-            .OrderByDescending(r => r.Item5).ToList();
+        return Enumerable.Range(1, Math.Max(samples.Count - 1, 0))
+            .Select(i => (k: samples[i], exp: Math.Max(samples[i].OwnExp - samples[i - 1].OwnExp, 0)))
+            .Where(x => x.k.PredSeconds.HasValue && x.k.Monster is { Length: > 0 } && x.k.Attacks > 0 && x.k.TimeToKill.HasValue && x.k.HpLost.HasValue)
+            .GroupBy(x => (x.k.Monster!, Context(x.k)))
+            .Select(g => (g.Key.Item1, g.Key.Item2, g.Count(),
+                g.Sum(x => x.exp) / (double)g.Sum(x => x.k.Attacks!.Value),
+                g.Average(x => (double)x.k.PredAttacks!.Value), g.Average(x => (double)x.k.Attacks!.Value),
+                g.Average(x => x.k.PredSeconds!.Value), g.Average(x => x.k.TimeToKill!.Value),
+                g.Average(x => x.k.PredHpLost!.Value), g.Average(x => (double)x.k.HpLost!.Value)))
+            .OrderByDescending(r => r.Item4).ThenBy(r => r.Item1).ToList(); // best exp/attack first
     }
+
+    private static string Context(RoBotClient.Bot.Manager.ProgressSample k) =>
+        (k.Party == true ? (k.Healer == true ? "party + healer" : "party") : "solo") + (k.Helped == true ? ", helped" : "");
+
+    private static string Vs(double forecast, double actual) => $"{forecast:0.#} → {actual:0.#}";
 
     // Loot telemetry is keyed by item name (as GameDatabase.ItemName gives it), so map names back to item ids.
     private static Dictionary<string, int>? _itemIdByName;

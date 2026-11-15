@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using RebuildSharedData.Enum;
 using RoBotClient.Bot.Behavior;
 using RoBotClient.Bot.GameData;
 using RoBotClient.Bot.Session;
@@ -99,6 +100,26 @@ public sealed class BotManager
     /// and the server's exp refreshes on login and respawn), and once more when the session ends so the time
     /// after the last update counts. Playtime = the character's saved playtime at login + time in world this
     /// session. Exp granted without a packet (server milestone events) shows up at the next update.</summary>
+    // Party key for bot parties: the leader's character name (a leader's own PartyLeaderName is empty).
+    private static string PartyKey(BotRunner r) =>
+        r.Session.IsPartyLeader || r.Session.PartyLeaderName.Length == 0 ? r.Config.CharacterName : r.Session.PartyLeaderName;
+
+    /// <summary>True when another bot in this bot's party is on the same map and knows Heal. Only bot party
+    /// members are visible here; a human acolyte in the party isn't detected.</summary>
+    private bool HealerInParty(BotRunner r)
+    {
+        if (!r.Session.InParty) return false;
+        var key = PartyKey(r);
+        var map = r.Session.WithState(w => w.Self.Map);
+        foreach (var o in _bots.Values)
+        {
+            if (o == r || !o.Session.InParty || PartyKey(o) != key) continue;
+            if (o.Session.WithState(w => w.Self.Map == map && w.Self.KnownSkills.Any(k => k.Skill == CharacterSkill.Heal && k.Level > 0)))
+                return true;
+        }
+        return false;
+    }
+
     private void SampleProgress(BotRunner r, ExpUpdate? update = null)
     {
         if (_progress == null) return;
@@ -132,7 +153,13 @@ public sealed class BotManager
                         update is { OwnKill: true, Monster.Length: > 0 } k ? k.Monster : null,
                         update?.OwnKill == true ? update.Value.TimeToKill : null,
                         update?.OwnKill == true ? update.Value.Attacks : null,
-                        update?.OwnKill == true ? update.Value.HpLost : null));
+                        update?.OwnKill == true ? update.Value.HpLost : null,
+                        update is { OwnKill: true, Attacks: not null } ? r.Session.InParty : null,
+                        update is { OwnKill: true, Attacks: not null } ? HealerInParty(r) : null,
+                        update?.OwnKill == true ? update.Value.Forecast?.Seconds : null,
+                        update?.OwnKill == true ? update.Value.Forecast?.Attacks : null,
+                        update?.OwnKill == true ? update.Value.Forecast?.HpLost : null,
+                        update is { OwnKill: true, Attacks: not null } ? update.Value.Helped : null));
             }
         }
         catch { }

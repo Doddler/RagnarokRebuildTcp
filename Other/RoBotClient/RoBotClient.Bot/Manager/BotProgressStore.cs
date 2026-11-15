@@ -6,9 +6,12 @@ namespace RoBotClient.Bot.Manager;
 /// OwnExp and PartyExp are running totals, since tracking began, of exp from the bot's own kills and from party
 /// shares. Their sum can differ from TotalExp's growth (exp before tracking, milestone events). On the bot's own
 /// kills, Monster names the kill and TimeToKill is seconds from its first hit to the death and Attacks the swings plus damaging skill uses spent
-/// on it and HpLost the damage it dealt the bot (all null otherwise).</summary>
+/// on it and HpLost the damage it dealt the bot (all null otherwise). Party/Healer give the fight's context (in a
+/// party; a party bot on the map can cast Heal; another player also hit the monster) and Pred* what the solo duel forecast predicted when engaging.</summary>
 public sealed record ProgressSample(DateTime Time, double PlaytimeSeconds, long TotalExp, int Level,
-    long OwnExp = 0, long PartyExp = 0, string? Monster = null, double? TimeToKill = null, int? Attacks = null, int? HpLost = null);
+    long OwnExp = 0, long PartyExp = 0, string? Monster = null, double? TimeToKill = null, int? Attacks = null, int? HpLost = null,
+    bool? Party = null, bool? Healer = null, double? PredSeconds = null, int? PredAttacks = null, double? PredHpLost = null,
+    bool? Helped = null);
 
 /// <summary>
 /// Persistent per-character progression history (playtime vs lifetime base exp) for the dashboard chart.
@@ -55,6 +58,13 @@ public sealed class BotProgressStore
             var hours = (last.PlaytimeSeconds - from.PlaytimeSeconds) / 3600;
             return hours < 1.0 / 60 ? null : (last.TotalExp - from.TotalExp) / hours;
         }
+    }
+
+    /// <summary>When this character last gained exp (its history file's write time), or null if it never did.</summary>
+    public DateTime? LastPlayedUtc(string characterName)
+    {
+        var path = PathFor(characterName);
+        return File.Exists(path) ? File.GetLastWriteTimeUtc(path) : null;
     }
 
     public void Append(string characterName, ProgressSample sample)

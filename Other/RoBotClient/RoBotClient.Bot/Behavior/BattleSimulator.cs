@@ -46,7 +46,9 @@ public readonly record struct BattleForecast(
     int ElementMod = 100,
     int SizeMod = 100,
     double CritChance = 0,
-    double EffectiveDpsWithSkills = 0);
+    double EffectiveDpsWithSkills = 0,
+    double ExpectedDamageTaken = 0,
+    int AttacksToKill = 0);
 
 /// <summary>Outcome of fighting a whole pack at once (assist mobs / aggressive swarms).</summary>
 public readonly record struct GroupForecast(
@@ -286,7 +288,8 @@ public static class BattleSimulator
             myHitChance, monHitChance,
             ClampFinite(secsToKillMonster), ClampFinite(secsToKillMe),
             winChance,
-            elementMod, sizeMod, critChance, myDps);
+            elementMod, sizeMod, critChance, myDps,
+            Math.Min(ClampFinite(damageTaken), 999999), hitsToKill);
     }
 
     /// <summary>JSON has no representation for ±Infinity, so when a forecast computes "effectively
