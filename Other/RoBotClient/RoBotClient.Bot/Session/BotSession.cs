@@ -41,6 +41,7 @@ public sealed class BotSession : IAsyncDisposable
     private readonly object _stateLock = new();
     private GameConnection? _conn;
     private bool _needReady; // set when a ChangeMaps requires us to re-announce PlayerReady
+    private int _readyGen;   // bumps per map change; only the latest pending PlayerReady is sent
     private string _lastAttackerName = "";    // last entity to attack us (for death attribution)
     // Recent attack pairing — target entity id → (attacker entity id, when). Updated from ReadAttack; read
     // by ReadHit to attribute damage to the most recent attacker even when the HitTarget packet itself
@@ -416,9 +417,20 @@ public sealed class BotSession : IAsyncDisposable
                 Dispatch(r);
                 if (_needReady)
                 {
+                    // Coalesce: landing on a warp (moc_fild02's arrival cell sits inside its warp back to
+                    // moc_fild01) makes the server bounce us through two maps in one tick, i.e. two ChangeMaps.
+                    // It only wants one PlayerReady; a second one throws server-side and drops the connection.
+                    // So wait briefly and send one ready, for whichever map change came last.
                     _needReady = false;
-                    await _conn.SendSimpleAsync(PacketType.PlayerReady, ct);
-                    Log($"Map changed to '{World.Self.Map}' — re-sent PlayerReady.");
+                    var gen = ++_readyGen;
+                    var conn = _conn;
+                    _ = Task.Run(async () =>
+                    {
+                        await Task.Delay(200, ct);
+                        if (gen != _readyGen) return;
+                        await conn.SendSimpleAsync(PacketType.PlayerReady, ct);
+                        Log($"Map changed to '{World.Self.Map}' — re-sent PlayerReady.");
+                    }, ct);
                 }
             }
         }

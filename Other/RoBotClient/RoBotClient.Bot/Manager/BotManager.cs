@@ -342,6 +342,8 @@ public sealed class BotManager
             {
                 failureReason = $"fatal: {ex.GetType().Name}: {ex.Message}";
                 runner.Log(failureReason);
+                // The runner's buffer dies with the runner (swept below), so also write it to the bot's log file.
+                session.RaiseLog($"Session ended — {failureReason}\n{ex.StackTrace}");
             }
             finally { await session.DisposeAsync(); }
             SampleProgress(runner); // final sample: same exp, but counts the time since the last kill

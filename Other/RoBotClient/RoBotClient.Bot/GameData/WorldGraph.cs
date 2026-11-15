@@ -286,6 +286,21 @@ public sealed class WorldGraph
             if (dr == 0 && !_regionGrid.ContainsKey(dst)) dr = 1;
             if (sr == 0 || dr == 0) continue; // genuinely off-grid portal — skip
 
+            // Record the actual warp footprint. Area.CreateAroundPoint(pos, w, h) makes a rectangle
+            // (x-w..x+w, y-h..y+h) — i.e. (2w+1) × (2h+1) cells. ANY cell in that rectangle triggers
+            // the warp when a player steps onto it.
+            if (!_portalFootprints.TryGetValue(src, out var foots))
+                _portalFootprints[src] = foots = new List<(int, int, int, int)>();
+            foots.Add((sx - sw, sy - sh, sx + sw, sy + sh));
+
+            // A warp that lands inside another warp's footprint is useless: the server fires the landing warp
+            // on arrival (Map.AddEntity triggers AoEs), e.g. moc_fild01 -> moc_fild02 (77,338) bounces
+            // straight back to moc_fild01. Keep the footprint (still a cell to avoid) but don't route through it.
+            // ponytail: O(warps²) scan at startup, ~1M cheap checks; index by map if warp count grows a lot.
+            if (rawWarps.Any(o => string.Equals(o.src, dst, StringComparison.OrdinalIgnoreCase)
+                                  && Math.Abs(dx - o.sx) <= o.sw && Math.Abs(dy - o.sy) <= o.sh))
+                continue;
+
             var edge = new Edge(src, sr, sx, sy, dst, dr, dx, dy);
             if (!_edgesBySrcMap.TryGetValue(src, out var bucket))
                 _edgesBySrcMap[src] = bucket = new List<Edge>();
@@ -295,13 +310,6 @@ public sealed class WorldGraph
             srcNode.Out.Add(edge);
             // Pre-create the destination node so Dijkstra doesn't have to alloc one on first visit.
             GetOrCreateNode(dst, dr);
-
-            // Record the actual warp footprint. Area.CreateAroundPoint(pos, w, h) makes a rectangle
-            // (x-w..x+w, y-h..y+h) — i.e. (2w+1) × (2h+1) cells. ANY cell in that rectangle triggers
-            // the warp when a player steps onto it.
-            if (!_portalFootprints.TryGetValue(src, out var foots))
-                _portalFootprints[src] = foots = new List<(int, int, int, int)>();
-            foots.Add((sx - sw, sy - sh, sx + sw, sy + sh));
         }
 
         // Add kafra edges. Each kafra NPC sits in a specific region of its map; from that region the
@@ -388,6 +396,8 @@ public sealed class WorldGraph
     /// edge — returning false excludes it from the search. Used by the bot to skip kafra edges whose
     /// dialog timed out repeatedly (so Dijkstra picks portal-walking instead of looping on a broken
     /// kafra) without rebuilding the whole graph.</summary>
+    /// <paramref name="mapPenalty"/>, when non-null, adds a cost (in walked-cell units) for entering each map,
+    /// so the bot can route around maps that are dangerous at its level.
     public TravelPlan? Plan(string fromMap, int fromX, int fromY, string toMap, int toX, int toY,
         Func<Edge, bool>? edgeFilter = null)
     {
