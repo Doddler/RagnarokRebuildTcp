@@ -47,6 +47,10 @@ public sealed class BotSession : IAsyncDisposable
     public event Action<string /* senderName */, string /* text */, byte /* chatType */>? OnChatHeard;
     private string _lastDeadMonsterName = "";  // last monster to die near us (for kill attribution)
     private DateTime _lastDeadMonsterAt;
+    private int _lastDeadMonsterId;
+    // Last skill hit per target (damage owner). Kill attribution only; kept apart from _recentAttacks, which
+    // also drives OnAllyHit, so reading skill packets doesn't change how bots react to attacks.
+    private readonly System.Collections.Concurrent.ConcurrentDictionary<int, (int Attacker, DateTime At)> _recentSkillHits = new();
     private readonly NpcDialogState _npc = new();
     private readonly List<(DateTime at, string msg)> _errors = new();
     private readonly object _errLock = new();
@@ -67,6 +71,10 @@ public sealed class BotSession : IAsyncDisposable
     /// <summary>Fires whenever this bot's local party state changes (Create/Accept/Leave/inbound broadcast).
     /// The BotManager hooks this to persist the new state to disk so a reconnect can restore it.</summary>
     public event Action? OnPartyStateChanged;
+
+    /// <summary>Raised on every GainExp packet from the receive loop. <c>gained</c> is 0 for the server's plain
+    /// exp refreshes; <c>ownKill</c> says whether a gain was our own kill rather than a party share.</summary>
+    public event Action<int /* level */, int /* expIntoLevel */, int /* gained */, bool /* ownKill */>? OnBaseExpUpdated;
 
     /// <summary>Set the party state from a persisted snapshot, without sending anything to the server. Used
     /// when reconnecting to a character that's still in a party server-side, so MCP get_party doesn't lie.</summary>
@@ -747,6 +755,7 @@ public sealed class BotSession : IAsyncDisposable
                     case PacketType.UpdateParty: ReadUpdateParty(r); break;
                     case PacketType.UpdateMapImportantEntityTracking: ReadMapImportantEntities(r); break;
                     case PacketType.Attack: ReadAttack(r); break;
+                    case PacketType.Skill: ReadSkill(r); break;
                     case PacketType.TakeDamage: ApplyDamage(r.ReadInt32(), r.ReadInt32()); break;
                     case PacketType.HitTarget: ReadHit(r); break;
                     case PacketType.Death: SetDead(r.ReadInt32()); break;
@@ -1109,6 +1118,37 @@ public sealed class BotSession : IAsyncDisposable
         }
     }
 
+    // Only the attribution prefix of an enemy-targeted skill: who owns the damage and who it hit. Every server
+    // Skill packet starts with its SkillTarget byte; the rest (skill, level, damage, timings) is visual.
+    private void ReadSkill(PacketReader r)
+    {
+        if ((SkillTarget)r.ReadByte() != SkillTarget.Enemy) return;
+        var caster = r.ReadInt32();
+        var owner = r.ReadInt32();  // -1 unless the damage belongs to someone other than the caster
+        var target = r.ReadInt32();
+        if (target <= 0) return;
+        _recentSkillHits[target] = (owner > 0 ? owner : caster, DateTime.UtcNow);
+        if (_recentSkillHits.Count > 256)
+        {
+            var cutoff = DateTime.UtcNow.AddSeconds(-10);
+            foreach (var kv in _recentSkillHits)
+                if (kv.Value.At < cutoff) _recentSkillHits.TryRemove(kv.Key, out _);
+        }
+    }
+
+    // Solo, every exp gain is our own kill. In a party, members also get shares of each other's kills, so it
+    // only counts when a monster just died and our character landed the last hit (auto-attack or skill).
+    private bool IsOwnKill()
+    {
+        if (!_inParty) return true;
+        if ((DateTime.UtcNow - _lastDeadMonsterAt).TotalSeconds >= 3) return false;
+        (int Attacker, DateTime At)? last = null;
+        if (_recentAttacks.TryGetValue(_lastDeadMonsterId, out var hit)) last = hit;
+        if (_recentSkillHits.TryGetValue(_lastDeadMonsterId, out var skill) && (last == null || skill.At > last.Value.At))
+            last = skill;
+        return last?.Attacker == World.Self.EntityId;
+    }
+
     private void ReadHit(PacketReader r)
     {
         var id = r.ReadInt32();
@@ -1181,12 +1221,23 @@ public sealed class BotSession : IAsyncDisposable
         r.ReadInt32(); // job total
         r.ReadInt32(); // job gained
         World.Self.BaseExp = baseTotal;
+        var ownKill = false;
         if (baseGained > 0)
         {
-            World.Self.Kills++; // for this bot, exp only comes from kills
             var killed = (DateTime.UtcNow - _lastDeadMonsterAt).TotalSeconds < 3 ? _lastDeadMonsterName : "";
-            Telemetry.Record(TelemetryEventType.Kill, World.Self.Level, killed); // no Value → counts as 1 kill
+            ownKill = IsOwnKill();
+            // In a party, a death backs at most one counted kill: a share from a kill we didn't see would
+            // otherwise be matched against our own previous kill.
+            if (_inParty) _lastDeadMonsterAt = default;
+            if (ownKill)
+            {
+                World.Self.Kills++;
+                Telemetry.Record(TelemetryEventType.Kill, World.Self.Level, killed); // no Value → counts as 1 kill
+            }
         }
+        // Every exp packet, not just gains: the server also sends the current exp with gained=0 on entering the
+        // world and after respawning, and party shares arrive here too.
+        OnBaseExpUpdated?.Invoke(World.Self.Level, baseTotal, Math.Max(baseGained, 0), ownKill);
     }
 
     private void UpdatePosition(int id, Position pos, CharacterState state)
@@ -1400,6 +1451,7 @@ public sealed class BotSession : IAsyncDisposable
         {
             _lastDeadMonsterName = e.Name;
             _lastDeadMonsterAt = DateTime.UtcNow;
+            _lastDeadMonsterId = id;
         }
     }
 
@@ -1411,6 +1463,7 @@ public sealed class BotSession : IAsyncDisposable
         {
             _lastDeadMonsterName = e.Name;
             _lastDeadMonsterAt = DateTime.UtcNow;
+            _lastDeadMonsterId = id;
         }
     }
 

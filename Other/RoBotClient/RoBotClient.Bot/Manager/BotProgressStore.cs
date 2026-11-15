@@ -1,0 +1,79 @@
+using System.Text.Json;
+
+namespace RoBotClient.Bot.Manager;
+
+/// <summary>One point on a character's progression curve. TotalExp is lifetime base exp (from the level chart);
+/// OwnExp and PartyExp are running totals, since tracking began, of exp from the bot's own kills and from party
+/// shares. Their sum can differ from TotalExp's growth (exp before tracking, death penalties, milestone events).</summary>
+public sealed record ProgressSample(DateTime Time, double PlaytimeSeconds, long TotalExp, int Level,
+    long OwnExp = 0, long PartyExp = 0);
+
+/// <summary>
+/// Persistent per-character progression history (playtime vs lifetime base exp) for the dashboard chart.
+/// Kept apart from <see cref="BotTelemetryStore"/> because telemetry is a capped rolling window of events and
+/// would drop the early part of the curve. One append-only JSON-lines file per character under
+/// <c>bot-progress/</c>, appended on every exp update (~20 KB per hour of solo play); a sample is one short line, so
+/// appending is cheap and history is never truncated.
+/// </summary>
+public sealed class BotProgressStore
+{
+    private readonly string _dir;
+    private readonly object _lock = new();
+    private readonly Dictionary<string, List<ProgressSample>> _cache = new(StringComparer.OrdinalIgnoreCase);
+
+    public BotProgressStore(string? dir = null)
+    {
+        _dir = string.IsNullOrWhiteSpace(dir)
+            ? Path.Combine(AppContext.BaseDirectory, "bot-progress")
+            : dir;
+        try { Directory.CreateDirectory(_dir); } catch { }
+    }
+
+    public IReadOnlyList<ProgressSample> Get(string characterName)
+    {
+        lock (_lock)
+            return GetOrLoad(characterName).ToList();
+    }
+
+    public void Append(string characterName, ProgressSample sample)
+    {
+        lock (_lock)
+        {
+            GetOrLoad(characterName).Add(sample);
+            try { File.AppendAllText(PathFor(characterName), JsonSerializer.Serialize(sample) + "\n"); }
+            catch { }
+        }
+    }
+
+    private List<ProgressSample> GetOrLoad(string characterName)
+    {
+        if (_cache.TryGetValue(characterName, out var samples))
+            return samples;
+
+        samples = new List<ProgressSample>();
+        try
+        {
+            var path = PathFor(characterName);
+            if (File.Exists(path))
+            {
+                foreach (var line in File.ReadLines(path))
+                {
+                    // A line cut short by a crash mid-write is skipped rather than losing the whole file.
+                    try { if (JsonSerializer.Deserialize<ProgressSample>(line) is { } s) samples.Add(s); }
+                    catch (JsonException) { }
+                }
+            }
+        }
+        catch { }
+        _cache[characterName] = samples;
+        return samples;
+    }
+
+    private string PathFor(string characterName)
+    {
+        // Same filename sanitizing as BotTelemetryStore.
+        var safe = new string((characterName ?? "").Where(c => char.IsLetterOrDigit(c) || " _-[]()".Contains(c)).ToArray()).Trim();
+        if (string.IsNullOrEmpty(safe)) safe = "unnamed";
+        return Path.Combine(_dir, safe + ".jsonl");
+    }
+}

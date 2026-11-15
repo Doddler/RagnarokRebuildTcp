@@ -1,0 +1,210 @@
+@using System.Globalization
+@using RoBotClient.Bot.Manager
+@inherits LiveComponent
+@inject BotManager Bots
+
+@* Base exp against total in-world playtime: lifetime total, plus exp from the bot's own kills vs party shares
+   (running totals since tracking began). Pure SVG; the hover crosshair + tooltip is CSS-only (one invisible
+   hit column per point), so hovering costs no server round trips. *@
+<style>
+    .pc-col .pc-hover { visibility: hidden; }
+    .pc-col:hover .pc-hover { visibility: visible; }
+</style>
+
+@{
+    var points = Downsample(Bots.Progress?.Get(CharacterName) ?? Array.Empty<ProgressSample>(), MaxPoints);
+}
+@if (points.Count < 2)
+{
+    <div class="text-muted small">No progression data yet. A point is recorded on every exp update from the server.</div>
+}
+else
+{
+    var x0 = points[0].PlaytimeSeconds;
+    var x1 = Math.Max(points[^1].PlaytimeSeconds, x0 + 1);
+    // Solo bots never get party shares; their "own kills" line would just repeat Total, so only Total is shown.
+    var shown = points.Any(p => p.PartyExp > 0) ? Series : Series[..1];
+    var yTicks = NiceTicks(points.Max(p => shown.Max(s => s.Value(p))));
+    var yMax = yTicks[^1];
+    var xTicks = TimeTicks(x0, x1);
+    double X(double t) => Left + (t - x0) / (x1 - x0) * PlotW;
+    double Y(double v) => Top + PlotH - v / yMax * PlotH;
+    var last = points[^1];
+    var endLabels = SpreadLabels(shown.Select(s => (s, Y(s.Value(last)))).ToList());
+
+    @if (shown.Length > 1)
+    {
+        <div class="d-flex flex-wrap gap-3 small text-secondary mb-1">
+            @foreach (var s in shown)
+            {
+                <span><svg width="16" height="8" class="me-1"><line x1="0" x2="16" y1="4" y2="4" stroke="@s.Color" stroke-width="2" /></svg>@s.Name</span>
+            }
+        </div>
+    }
+    <svg viewBox="0 0 @W @H" width="100%" role="img"
+         aria-label="@($"After {Duration(last.PlaytimeSeconds)} of playtime: {last.TotalExp:N0} total base exp, {last.OwnExp:N0} from own kills, {last.PartyExp:N0} from party shares")"
+         style="display:block;font-family:system-ui,sans-serif;font-size:11px">
+        @foreach (var t in yTicks)
+        {
+            <g>
+                <line x1="@Left" x2="@(Left + PlotW)" y1="@F(Y(t))" y2="@F(Y(t))" stroke="var(--bs-border-color)" stroke-width="1" />
+                <text x="@(Left - 6)" y="@F(Y(t))" text-anchor="end" dominant-baseline="middle" fill="var(--bs-secondary-color)">@Compact(t)</text>
+            </g>
+        }
+        @foreach (var t in xTicks)
+        {
+            <g>
+                <text x="@F(X(t))" y="@(Top + PlotH + 16)" text-anchor="middle" fill="var(--bs-secondary-color)">@Duration(t)</text>
+            </g>
+        }
+
+        @foreach (var s in shown)
+        {
+            <g>
+                <path d="@string.Join(" ", points.Select((p, i) => $"{(i == 0 ? "M" : "L")}{F(X(p.PlaytimeSeconds))},{F(Y(s.Value(p)))}"))"
+                      fill="none" stroke="@s.Color" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" />
+                <circle cx="@F(X(last.PlaytimeSeconds))" cy="@F(Y(s.Value(last)))" r="4" fill="@s.Color" stroke="var(--bs-body-bg)" stroke-width="2" />
+            </g>
+        }
+        @foreach (var (s, y) in endLabels)
+        {
+            <g>
+                <text x="@(Left + PlotW + 8)" y="@F(y)" dominant-baseline="middle" fill="var(--bs-body-color)">@s.Name @Compact(s.Value(last))</text>
+            </g>
+        }
+
+        @for (var i = 0; i < points.Count; i++)
+        {
+            var p = points[i];
+            var cx = X(p.PlaytimeSeconds);
+            var prev = i == 0 ? cx : X(points[i - 1].PlaytimeSeconds);
+            var next = i == points.Count - 1 ? cx : X(points[i + 1].PlaytimeSeconds);
+            var hitL = i == 0 ? Left : (prev + cx) / 2;
+            var hitR = i == points.Count - 1 ? Left + PlotW : (cx + next) / 2;
+            var tipW = 170.0;
+            var tipX = cx + 8 + tipW > Left + PlotW ? cx - 8 - tipW : cx + 8;
+            <g class="pc-col">
+                <rect x="@F(hitL)" y="@Top" width="@F(Math.Max(hitR - hitL, 1))" height="@PlotH" fill="transparent" />
+                <g class="pc-hover" pointer-events="none">
+                    <line x1="@F(cx)" x2="@F(cx)" y1="@Top" y2="@(Top + PlotH)" stroke="var(--bs-secondary-color)" stroke-width="1" />
+                    @foreach (var s in shown)
+                    {
+                        <circle cx="@F(cx)" cy="@F(Y(s.Value(p)))" r="4" fill="@s.Color" stroke="var(--bs-body-bg)" stroke-width="2" />
+                    }
+                    <rect x="@F(tipX)" y="@(Top + 4)" width="@tipW" height="@(28 + 16 * shown.Length)" rx="4" fill="var(--bs-tertiary-bg)" stroke="var(--bs-border-color)" />
+                    <text x="@F(tipX + 8)" y="@(Top + 20)" fill="var(--bs-secondary-color)">@Duration(p.PlaytimeSeconds) played · Lv @p.Level</text>
+                    @for (var k = 0; k < shown.Length; k++)
+                    {
+                        var s = shown[k];
+                        var rowY = Top + 38 + k * 16;
+                        <g>
+                            <line x1="@F(tipX + 8)" x2="@F(tipX + 20)" y1="@(rowY - 4)" y2="@(rowY - 4)" stroke="@s.Color" stroke-width="2" />
+                            <text x="@F(tipX + 26)" y="@rowY" fill="var(--bs-body-color)">@s.Name: @s.Value(p).ToString("N0")</text>
+                        </g>
+                    }
+                </g>
+            </g>
+        }
+    </svg>
+    <div class="small text-secondary mt-1">
+        After <span class="text-body fw-semibold">@Duration(last.PlaytimeSeconds)</span> in game (Lv @last.Level):
+        <span class="text-body fw-semibold">@last.TotalExp.ToString("N0")</span> total base exp.
+        @if (shown.Length > 1)
+        {
+            <span>Since tracking began, <span class="text-body fw-semibold">@last.OwnExp.ToString("N0")</span> from own kills and
+            <span class="text-body fw-semibold">@last.PartyExp.ToString("N0")</span> from party shares.</span>
+        }
+    </div>
+    <details class="small mt-1">
+        <summary class="text-secondary">Data table</summary>
+        <table class="table table-sm mb-0 mt-1">
+            <thead><tr><th>Playtime</th><th class="text-end">Level</th><th class="text-end">Total</th>@if (shown.Length > 1) {<th class="text-end">Own kills</th><th class="text-end">Party share</th>}</tr></thead>
+            <tbody>
+                @foreach (var p in points.AsEnumerable().Reverse())
+                {
+                    <tr>
+                        <td>@Duration(p.PlaytimeSeconds)</td><td class="text-end">@p.Level</td>
+                        <td class="text-end">@p.TotalExp.ToString("N0")</td>
+                        @if (shown.Length > 1)
+                        {
+                            <td class="text-end">@p.OwnExp.ToString("N0")</td><td class="text-end">@p.PartyExp.ToString("N0")</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </details>
+}
+
+@code {
+    [Parameter] public string CharacterName { get; set; } = "";
+
+    private sealed record ChartSeries(string Name, string Color, Func<ProgressSample, long> Value);
+
+    // Dataviz palette categorical slots 1-3 (dark steps), validated together against the dashboard's dark surface.
+    private static readonly ChartSeries[] Series =
+    {
+        new("Total", "#3987e5", p => p.TotalExp),
+        new("Own kills", "#d95926", p => p.OwnExp),
+        new("Party share", "#199e70", p => p.PartyExp),
+    };
+
+    private const int MaxPoints = 240;
+    private const int W = 640, H = 230, Left = 52, Top = 10, PlotW = W - Left - 130, PlotH = H - Top - 30;
+
+    // End-of-line labels sorted top to bottom and pushed apart so none overlap (min 14px between baselines).
+    private static List<(ChartSeries, double)> SpreadLabels(List<(ChartSeries S, double Y)> labels)
+    {
+        var sorted = labels.OrderBy(l => l.Y).ToList();
+        for (var i = 1; i < sorted.Count; i++)
+            if (sorted[i].Y - sorted[i - 1].Y < 14)
+                sorted[i] = (sorted[i].S, sorted[i - 1].Y + 14);
+        return sorted.Select(l => (l.S, l.Y)).ToList();
+    }
+
+    // Evenly thinned to at most `max` points, always keeping the newest.
+    private static List<ProgressSample> Downsample(IReadOnlyList<ProgressSample> all, int max)
+    {
+        if (all.Count <= max) return all.ToList();
+        var step = (all.Count - 1) / (double)(max - 1);
+        return Enumerable.Range(0, max).Select(i => all[(int)Math.Round(i * step)]).ToList();
+    }
+
+    // 0-based "nice" ticks (1/2/5 × 10^k) covering max, at most ~5 of them.
+    private static List<long> NiceTicks(long max)
+    {
+        max = Math.Max(max, 1);
+        var raw = max / 4.0;
+        var mag = Math.Pow(10, Math.Floor(Math.Log10(raw)));
+        var step = (long)Math.Max(1, new[] { 1, 2, 5, 10 }.Select(m => m * mag).First(s => s >= raw));
+        var ticks = new List<long>();
+        for (long v = 0; ; v += step)
+        {
+            ticks.Add(v);
+            if (v >= max) break;
+        }
+        return ticks;
+    }
+
+    private static List<double> TimeTicks(double from, double to)
+    {
+        var steps = new[] { 60, 300, 600, 900, 1800, 3600, 7200, 10800, 21600, 43200, 86400 };
+        var step = steps.FirstOrDefault(s => (to - from) / s <= 6, 172800);
+        var ticks = new List<double>();
+        for (var t = Math.Ceiling(from / step) * step; t <= to; t += step) ticks.Add(t);
+        return ticks;
+    }
+
+    private static string Duration(double seconds)
+    {
+        var t = TimeSpan.FromSeconds(seconds);
+        return t.TotalHours >= 1 ? $"{(int)t.TotalHours}h{t.Minutes:00}min" : $"{t.Minutes}min";
+    }
+
+    private static string Compact(long v) =>
+        v >= 1_000_000 ? (v / 1_000_000.0).ToString("0.#", CultureInfo.InvariantCulture) + "M"
+        : v >= 10_000 ? (v / 1_000.0).ToString("0.#", CultureInfo.InvariantCulture) + "K"
+        : v.ToString("N0", CultureInfo.InvariantCulture);
+
+    private static string F(double v) => v.ToString("0.#", CultureInfo.InvariantCulture);
+}

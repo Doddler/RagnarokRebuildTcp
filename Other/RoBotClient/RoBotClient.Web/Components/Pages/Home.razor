@@ -104,7 +104,7 @@ else
                                 @bot.TargetName
                             }
                         </td>
-                        <td class="text-end">@bot.Kills</td>
+                        <td class="text-end text-nowrap">@(Bots.GetSession(id)?.Telemetry.Count(TelemetryEventType.Kill) ?? bot.Kills) <span class="small text-muted">(@bot.Kills)</span></td>
                         <td class="text-end">@bot.BaseExp.ToString("N0")</td>
                         <td class="text-end text-nowrap">@bot.Zeny.ToString("N0")z</td>
                         <td class="text-end">@bot.MonstersInView</td>

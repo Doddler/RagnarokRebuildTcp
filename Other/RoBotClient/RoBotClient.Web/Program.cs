@@ -44,6 +44,9 @@ builder.Services.AddSingleton(new BotTelemetryStore(string.IsNullOrEmpty(repoRoB
 // agents that want to tail the bot's narrative without round-tripping through MCP.
 builder.Services.AddSingleton(new BotLogStore(string.IsNullOrEmpty(repoRoBot) ? "" : Path.Combine(repoRoBot, "bot-logs")));
 
+// Per-character progression curve (playtime vs lifetime base exp) at bot-progress/<character>.jsonl.
+builder.Services.AddSingleton(new BotProgressStore(string.IsNullOrEmpty(repoRoBot) ? "" : Path.Combine(repoRoBot, "bot-progress")));
+
 builder.Services.AddSingleton<BotManager>();
 
 // Auto-formed dynamic squads: every ~8s, scan each bot's visible-players list and cluster bots that can

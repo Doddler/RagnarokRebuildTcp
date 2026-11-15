@@ -65,7 +65,7 @@ else
                     <div class="col-md-8">
                         <div class="row text-center g-2">
                             <div class="col"><div class="small text-muted">Target</div><div class="fw-semibold text-truncate">@(string.IsNullOrEmpty(s.TargetName) ? "—" : s.TargetName)</div></div>
-                            <div class="col"><div class="small text-muted">Kills</div><div class="fw-semibold">@s.Kills</div></div>
+                            <div class="col"><div class="small text-muted">Kills</div><div class="fw-semibold">@(tele?.Count(TelemetryEventType.Kill) ?? s.Kills) <span class="small text-muted fw-normal">(@s.Kills this session)</span></div></div>
                             <div class="col"><div class="small text-muted">Base Exp</div><div class="fw-semibold">@s.BaseExp</div></div>
                             <div class="col"><div class="small text-muted">Zeny</div><div class="fw-semibold">@s.Zeny</div></div>
                             <div class="col"><div class="small text-muted">Weight</div><div class="fw-semibold">@s.Weight / @s.MaxWeight</div></div>
@@ -168,6 +168,13 @@ else
                                 </tbody>
                             </table>
                         }
+                    </div>
+                </div>
+
+                <div class="card mt-3">
+                    <div class="card-header py-2 fw-semibold">Base exp by playtime</div>
+                    <div class="card-body">
+                        <ProgressChart CharacterName="@s.CharacterName" />
                     </div>
                 </div>
             </div>

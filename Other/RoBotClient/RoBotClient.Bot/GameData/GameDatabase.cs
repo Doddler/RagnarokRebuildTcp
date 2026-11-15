@@ -30,6 +30,10 @@ public sealed class GameDatabase
     public IReadOnlyList<NpcEntry> Npcs { get; private set; } = Array.Empty<NpcEntry>();
     public IReadOnlyList<KafraEntry> Kafras { get; private set; } = Array.Empty<KafraEntry>();
 
+    /// <summary>Base exp needed to level up, from levelchart.txt: entry N (0-based) takes level N+1 to N+2.
+    /// Empty when the file isn't exported.</summary>
+    public IReadOnlyList<int> BaseExpToNextLevel { get; private set; } = Array.Empty<int>();
+
     /// <summary>Region-aware cross-map pathfinder. Built from the warp .txt scripts + walkmaps at boot.
     /// Empty / unbuilt when warp scripts aren't on disk (e.g. dev environments without the server repo);
     /// callers should null-check and fall back to the legacy BFS in that case.</summary>
@@ -98,6 +102,13 @@ public sealed class GameDatabase
         db.Npcs = ReadEnvelope<NpcEntry>(Path.Combine(clientConfigDir, "npcdatabase.json"));
         db.Kafras = ReadEnvelope<KafraEntry>(Path.Combine(clientConfigDir, "kafradatabase.json"));
 
+        var levelChart = Path.Combine(clientConfigDir, "levelchart.txt");
+        if (File.Exists(levelChart))
+            db.BaseExpToNextLevel = File.ReadAllLines(levelChart)
+                .Where(l => l.Trim().Length > 0)
+                .Select(l => int.Parse(l.Trim(), System.Globalization.CultureInfo.InvariantCulture))
+                .ToArray();
+
         // World graph (region-aware Dijkstra). Built from the warp .txt scripts which carry both
         // source AND destination cells — the existing mapwarps.json throws those away. The knownMaps
         // allowlist is the canonical map list from maps.json; warps referencing maps the server hasn't
@@ -135,6 +146,16 @@ public sealed class GameDatabase
 
     public int? ClassIdOf(string monsterCode) =>
         MonstersByCode.TryGetValue(monsterCode, out var m) ? m.Id : null;
+
+    /// <summary>Lifetime base exp: every completed level's requirement plus progress into the current level
+    /// (the server's Experience stat resets to 0 on each level-up).</summary>
+    public long TotalBaseExp(int level, int expIntoLevel)
+    {
+        long total = expIntoLevel;
+        for (var l = 1; l < level && l - 1 < BaseExpToNextLevel.Count; l++)
+            total += BaseExpToNextLevel[l - 1];
+        return total;
+    }
 
     // ---- items ----
 

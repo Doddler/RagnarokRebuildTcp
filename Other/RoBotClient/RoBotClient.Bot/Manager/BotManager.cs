@@ -71,8 +71,10 @@ public sealed class BotManager
     }
 
     public BotManager(GameDatabase data, AccountStore? accounts = null, BotConfigStore? configs = null,
-        PartyStateStore? partyStates = null, BotTelemetryStore? telemetry = null, BotLogStore? logStore = null)
+        PartyStateStore? partyStates = null, BotTelemetryStore? telemetry = null, BotLogStore? logStore = null,
+        BotProgressStore? progress = null)
     {
+        _progress = progress;
         _data = data;
         _accounts = accounts;
         _configs = configs;
@@ -89,6 +91,48 @@ public sealed class BotManager
     public PartyStateStore? PartyStates => _partyStates;
     public BotTelemetryStore? TelemetryStore => _telemetry;
     public BotLogStore? LogStore => _logStore;
+    public BotProgressStore? Progress => _progress;
+
+    private readonly BotProgressStore? _progress;
+
+    /// <summary>Append a (playtime, lifetime base exp) sample. Called on every exp packet (own kills, party shares,
+    /// and the server's exp refreshes on login and respawn), and once more when the session ends so the time
+    /// after the last update counts. Playtime = the character's saved playtime at login + time in world this
+    /// session. Exp granted without a packet (server milestone events) shows up at the next update.</summary>
+    private void SampleProgress(BotRunner r, int? level = null, int? expIntoLevel = null, int gained = 0, bool ownKill = false)
+    {
+        if (_progress == null) return;
+        try
+        {
+            lock (r)
+            {
+                if (r.SessionStartedAt == default) return;
+                if (level != null)
+                {
+                    // Attribute the real change in lifetime exp, not the packet's "gained": the server reports the
+                    // monster's exp before capping it at one level per kill. Capping at "gained" keeps exp granted
+                    // without a packet (milestone events) out of the own/party split.
+                    var hadExp = r.LastLevel != 0;
+                    var before = _data.TotalBaseExp(r.LastLevel, r.LastExpIntoLevel);
+                    r.LastLevel = level.Value;
+                    r.LastExpIntoLevel = expIntoLevel ?? 0;
+                    var delta = Math.Min(Math.Max(_data.TotalBaseExp(r.LastLevel, r.LastExpIntoLevel) - before, 0), gained);
+                    if (hadExp && delta > 0)
+                    {
+                        if (ownKill) r.OwnExp += delta; else r.PartyExp += delta;
+                    }
+                }
+                // Base exp isn't in the login data; it arrives with the first exp packet (sent on entering the world).
+                if (r.LastLevel == 0) return;
+                var now = DateTime.UtcNow;
+                var playtime = r.PlaytimeAtSessionStart + (now - r.SessionStartedAt).TotalSeconds;
+                _progress.Append(r.Config.CharacterName,
+                    new ProgressSample(now, playtime, _data.TotalBaseExp(r.LastLevel, r.LastExpIntoLevel), r.LastLevel,
+                        r.OwnExp, r.PartyExp));
+            }
+        }
+        catch { }
+    }
 
     private void FlushDirtyTelemetry()
     {
@@ -228,6 +272,19 @@ public sealed class BotManager
                     // recent deaths, items used, skill casts, map times) without having to re-observe them.
                     var savedEvents = _telemetry?.Load(config.CharacterName);
                     if (savedEvents != null) session.Telemetry.Load(savedEvents);
+                    // Resume the playtime clock from this character's last progression sample.
+                    if (_progress != null)
+                    {
+                        lock (runner)
+                        {
+                            var lastSample = _progress.Get(config.CharacterName).LastOrDefault();
+                            runner.PlaytimeAtSessionStart = lastSample?.PlaytimeSeconds ?? 0;
+                            runner.OwnExp = lastSample?.OwnExp ?? 0;
+                            runner.PartyExp = lastSample?.PartyExp ?? 0;
+                            runner.SessionStartedAt = DateTime.UtcNow;
+                        }
+                        session.OnBaseExpUpdated += (level, exp, gained, ownKill) => SampleProgress(runner, level, exp, gained, ownKill);
+                    }
                     // The session's receive loop owns the bot's lifetime: when it ends (server close, socket
                     // abort, or stop_bot), cancel the behavior loop too. Otherwise a dropped bot keeps ticking on
                     // its last snapshot and stays listed as active.
@@ -256,6 +313,7 @@ public sealed class BotManager
                 runner.Log(failureReason);
             }
             finally { await session.DisposeAsync(); }
+            SampleProgress(runner); // final sample: same exp, but counts the time since the last kill
             // Final telemetry flush — last chance to persist anything that accumulated since the periodic
             // timer's previous fire (and which would otherwise be lost when we drop the runner reference).
             try
@@ -425,6 +483,14 @@ internal sealed class BotRunner
     public BotBehaviorConfig BehaviorConfig { get; }
     public CancellationTokenSource Cts { get; }
     public Task? Task { get; set; }
+
+    // Progression clock and last known exp, guarded by lock(this) in BotManager.SampleProgress.
+    public double PlaytimeAtSessionStart;
+    public DateTime SessionStartedAt;
+    public int LastLevel;
+    public int LastExpIntoLevel;
+    public long OwnExp;
+    public long PartyExp;
 
     private readonly object _logLock = new();
     private readonly Queue<string> _log = new();

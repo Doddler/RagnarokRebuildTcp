@@ -5,6 +5,7 @@ obj/
 # Runtime artifacts
 bot-logs/
 bot-telemetry/
+bot-progress/
 BotBuilds/
 bot-party-state.json
 *.log
