@@ -5,9 +5,10 @@ namespace RoBotClient.Bot.Manager;
 /// <summary>One point on a character's progression curve. TotalExp is lifetime base exp (from the level chart);
 /// OwnExp and PartyExp are running totals, since tracking began, of exp from the bot's own kills and from party
 /// shares. Their sum can differ from TotalExp's growth (exp before tracking, milestone events). On the bot's own
-/// kills, Monster names the kill and TimeToKill is seconds from its first hit to the death (both null otherwise).</summary>
+/// kills, Monster names the kill and TimeToKill is seconds from its first hit to the death and Attacks the swings plus damaging skill uses spent
+/// on it (all null otherwise).</summary>
 public sealed record ProgressSample(DateTime Time, double PlaytimeSeconds, long TotalExp, int Level,
-    long OwnExp = 0, long PartyExp = 0, string? Monster = null, double? TimeToKill = null);
+    long OwnExp = 0, long PartyExp = 0, string? Monster = null, double? TimeToKill = null, int? Attacks = null);
 
 /// <summary>
 /// Persistent per-character progression history (playtime vs lifetime base exp) for the dashboard chart.

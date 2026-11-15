@@ -21,8 +21,9 @@ public sealed class PendingPartyInvite
 
 /// <summary>One GainExp packet. <c>Gained</c> is 0 for the server's plain exp refreshes. <c>OwnKill</c> is true
 /// for our own kill (not a party share); then <c>Monster</c> names it when we saw it die, and <c>TimeToKill</c>
-/// is the seconds from our first hit on it to its death when we hit it.</summary>
-public readonly record struct ExpUpdate(int Level, int ExpIntoLevel, int Gained, bool OwnKill, string Monster, double? TimeToKill);
+/// is the seconds from our first hit on it to its death when we hit it, and <c>Attacks</c> how many attacks (auto-attack
+/// swings plus damaging skill uses, misses included) we spent on it.</summary>
+public readonly record struct ExpUpdate(int Level, int ExpIntoLevel, int Gained, bool OwnKill, string Monster, double? TimeToKill, int? Attacks);
 
 /// <summary>
 /// One bot: owns a connection, drives login/character/enter, then keeps a live picture of the world
@@ -56,16 +57,17 @@ public sealed class BotSession : IAsyncDisposable
     // Last skill hit per target (damage owner). Kill attribution only; kept apart from _recentAttacks, which
     // also drives OnAllyHit, so reading skill packets doesn't change how bots react to attacks.
     private readonly System.Collections.Concurrent.ConcurrentDictionary<int, (int Attacker, DateTime At)> _recentSkillHits = new();
-    // When we first hit each monster (auto-attack or skill), for time-to-kill. Consumed on our kill.
-    private readonly System.Collections.Concurrent.ConcurrentDictionary<int, DateTime> _firstOwnHitAt = new();
+    // When we first hit each monster (auto-attack or skill) and how many attacks we've spent on it, for
+    // time-to-kill and attacks-per-kill. Consumed on our kill.
+    private readonly System.Collections.Concurrent.ConcurrentDictionary<int, (DateTime First, int Attacks)> _ownHits = new();
 
     private void NoteOwnHit(int target)
     {
         var now = DateTime.UtcNow;
-        _firstOwnHitAt.TryAdd(target, now);
-        if (_firstOwnHitAt.Count > 256)
-            foreach (var kv in _firstOwnHitAt)
-                if ((now - kv.Value).TotalMinutes > 10) _firstOwnHitAt.TryRemove(kv.Key, out _);
+        _ownHits.AddOrUpdate(target, (now, 1), (_, h) => (h.First, h.Attacks + 1));
+        if (_ownHits.Count > 256)
+            foreach (var kv in _ownHits)
+                if ((now - kv.Value.First).TotalMinutes > 10) _ownHits.TryRemove(kv.Key, out _);
     }
     private readonly NpcDialogState _npc = new();
     private readonly List<(DateTime at, string msg)> _errors = new();
@@ -1241,13 +1243,17 @@ public sealed class BotSession : IAsyncDisposable
         var ownKill = false;
         var killed = "";
         double? timeToKill = null;
+        int? attacks = null;
         if (baseGained > 0)
         {
             killed = (DateTime.UtcNow - _lastDeadMonsterAt).TotalSeconds < 3 ? _lastDeadMonsterName : "";
             ownKill = IsOwnKill();
             // Time to kill = our first hit on the monster -> its death. Only when we saw the death and hit it.
-            if (ownKill && killed.Length > 0 && _firstOwnHitAt.TryRemove(_lastDeadMonsterId, out var firstHit))
-                timeToKill = (DateTime.UtcNow - firstHit).TotalSeconds;
+            if (ownKill && killed.Length > 0 && _ownHits.TryRemove(_lastDeadMonsterId, out var hits))
+            {
+                timeToKill = (DateTime.UtcNow - hits.First).TotalSeconds;
+                attacks = hits.Attacks;
+            }
             // In a party, a death backs at most one counted kill: a share from a kill we didn't see would
             // otherwise be matched against our own previous kill.
             if (_inParty) _lastDeadMonsterAt = default;
@@ -1260,7 +1266,7 @@ public sealed class BotSession : IAsyncDisposable
         // Every exp packet, not just gains: the server also sends the current exp with gained=0 on entering the
         // world and after respawning, and party shares arrive here too.
         OnBaseExpUpdated?.Invoke(new ExpUpdate(World.Self.Level, baseTotal, Math.Max(baseGained, 0), ownKill,
-            ownKill ? killed : "", timeToKill));
+            ownKill ? killed : "", timeToKill, attacks));
     }
 
     private void UpdatePosition(int id, Position pos, CharacterState state)

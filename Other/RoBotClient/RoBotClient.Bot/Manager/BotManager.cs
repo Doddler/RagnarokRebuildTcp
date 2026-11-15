@@ -130,7 +130,8 @@ public sealed class BotManager
                     new ProgressSample(now, playtime, _data.TotalBaseExp(r.LastLevel, r.LastExpIntoLevel), r.LastLevel,
                         r.OwnExp, r.PartyExp,
                         update is { OwnKill: true, Monster.Length: > 0 } k ? k.Monster : null,
-                        update?.OwnKill == true ? update.Value.TimeToKill : null));
+                        update?.OwnKill == true ? update.Value.TimeToKill : null,
+                        update?.OwnKill == true ? update.Value.Attacks : null));
             }
         }
         catch { }

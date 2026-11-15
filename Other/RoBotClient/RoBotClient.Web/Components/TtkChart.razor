@@ -4,13 +4,13 @@
 @inherits LiveComponent
 @inject BotManager Bots
 
-@* Time to kill (first hit -> death) for one monster at a time, by playtime: one dot per kill plus a rolling
+@* Time to kill (first hit -> death), or attacks spent per kill, for one monster at a time, by playtime: one dot per kill plus a rolling
    median, so the trend reads through fight-to-fight noise. Different monsters have very different HP, so they
    are never mixed on one axis. *@
 
 @{
     var kills = (Bots.Progress?.Get(CharacterName) ?? Array.Empty<ProgressSample>())
-        .Where(p => p.TimeToKill is > 0 && !string.IsNullOrEmpty(p.Monster))
+        .Where(p => (_attacks ? p.Attacks is > 0 : p.TimeToKill is > 0) && !string.IsNullOrEmpty(p.Monster))
         .ToList();
     var monsters = kills.GroupBy(k => k.Monster!).OrderByDescending(g => g.Count()).Select(g => (Name: g.Key, Count: g.Count())).ToList();
     if (monsters.Count > 0 && !monsters.Any(m => m.Name == _monster))
@@ -19,11 +19,12 @@
 }
 @if (series.Count == 0)
 {
-    <div class="text-muted small">No timed kills yet. Timing started with this version, so kills from before it have none; the next kill this bot lands itself shows up here.</div>
+    @MetricPicker
+    <div class="text-muted small">No @(_attacks ? "attack counts" : "timed kills") yet. Kills from before this was recorded have none; the next kill this bot lands itself shows up here.</div>
 }
 else
 {
-    var ttk = series.Select(k => k.TimeToKill!.Value).ToList();
+    var ttk = series.Select(k => _attacks ? k.Attacks!.Value : k.TimeToKill!.Value).ToList();
     var median = RollingMedian(ttk, MedianWindow);
     var shown = Downsample(Enumerable.Range(0, series.Count).ToList(), MaxPoints);
     // Scale to the 95th percentile so one stuck fight doesn't flatten the rest; anything above is pinned to the top.
@@ -46,19 +47,20 @@ else
                 <option value="@m.Name">@m.Name (@m.Count kills)</option>
             }
         </select>
+        @MetricPicker
         <span class="small text-secondary">
             Median of first 10 kills <span class="text-body fw-semibold">@Sec(first)</span>,
             latest 10 <span class="text-body fw-semibold">@Sec(latest)</span>
         </span>
     </div>
     <svg viewBox="0 0 @W @H" width="100%" role="img"
-         aria-label="@($"Time to kill {_monster}: median {Sec(first)} over the first 10 kills, {Sec(latest)} over the latest 10")"
+         aria-label="@($"{(_attacks ? "Attacks" : "Time")} to kill {_monster}: median {Sec(first)} over the first 10 kills, {Sec(latest)} over the latest 10")"
          style="display:block;font-family:system-ui,sans-serif;font-size:11px">
         @foreach (var t in yTicks)
         {
             <g>
                 <line x1="@Left" x2="@(Left + PlotW)" y1="@F(Y(t))" y2="@F(Y(t))" stroke="var(--bs-border-color)" stroke-width="1" />
-                <text x="@(Left - 6)" y="@F(Y(t))" text-anchor="end" dominant-baseline="middle" fill="var(--bs-secondary-color)">@(t)s</text>
+                <text x="@(Left - 6)" y="@F(Y(t))" text-anchor="end" dominant-baseline="middle" fill="var(--bs-secondary-color)">@(_attacks ? t.ToString() : $"{t}s")</text>
             </g>
         }
         @foreach (var t in xTicks)
@@ -87,7 +89,7 @@ else
         Dots are single kills; the line is the median of the last @MedianWindow.
         @if (pinned > 0)
         {
-            <span>@pinned slower @(pinned == 1 ? "kill is" : "kills are") pinned to the top edge.</span>
+            <span>@pinned longer @(pinned == 1 ? "kill is" : "kills are") pinned to the top edge.</span>
         }
     </div>
 }
@@ -96,6 +98,14 @@ else
     [Parameter] public string CharacterName { get; set; } = "";
 
     private string _monster = "";
+    private bool _attacks = true;
+
+    // Seconds, or attacks (auto-attack swings + damaging skill uses, misses included), which reads in whole steps
+    // instead of attack-delay multiples and still counts skills like Bash.
+    private RenderFragment MetricPicker => @<div class="btn-group btn-group-sm" role="group" aria-label="Measure">
+        <button type="button" class="btn @(_attacks ? "btn-secondary" : "btn-outline-secondary")" @onclick="() => _attacks = true">Attacks</button>
+        <button type="button" class="btn @(_attacks ? "btn-outline-secondary" : "btn-secondary")" @onclick="() => _attacks = false">Seconds</button>
+    </div>;
 
     // Dataviz palette categorical slot 1 (dark step): dots at reduced opacity, the median line solid.
     private const string DotColor = "#3987e5";
@@ -113,5 +123,7 @@ else
         return s.Count % 2 == 1 ? s[s.Count / 2] : (s[s.Count / 2 - 1] + s[s.Count / 2]) / 2;
     }
 
-    private static string Sec(double s) => s.ToString("0.0", CultureInfo.InvariantCulture) + "s";
+    private string Sec(double v) => _attacks
+        ? v.ToString("0.#", CultureInfo.InvariantCulture) + (v == 1 ? " attack" : " attacks")
+        : v.ToString("0.0", CultureInfo.InvariantCulture) + "s";
 }
