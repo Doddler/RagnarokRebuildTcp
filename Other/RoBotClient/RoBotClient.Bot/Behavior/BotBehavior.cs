@@ -1443,6 +1443,17 @@ public sealed partial class BotBehavior
         _targetId = 0;
         _targetClass = -1;
 
+        // Walking away rarely outruns an aggressive mob (Angeling on pay_fild04 killed Bot3 that way).
+        // A Fly Wing (random spot on this map) gets out of its sight instantly; travel/hunt just replans.
+        if (DateTime.UtcNow >= _nextEscapeItem && _data?.IsUsableItem(_config.FlyWingItemId) == true
+            && _bot.WithState(w => w.Self.Inventory.Any(it => it.ItemId == _config.FlyWingItemId && it.Count > 0)))
+        {
+            OnLog?.Invoke($"Using Fly Wing to escape '{hz.name}'.");
+            _nextEscapeItem = DateTime.UtcNow.AddSeconds(3); // let the teleport land before judging again
+            await _bot.UseInventoryItemAsync(_config.FlyWingItemId, -1, ct);
+            return true;
+        }
+
         var self = snap.SelfPos;
         var dx = Math.Sign(self.X - hz.pos.X);
         var dy = Math.Sign(self.Y - hz.pos.Y);

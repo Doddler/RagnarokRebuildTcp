@@ -510,7 +510,7 @@ public static class McpBotTools
         bots.StopBot(botId) ? $"Stopped {botId}." : $"No bot '{botId}'.";
 
     [McpServerTool(Name = "configure_bot"),
-     Description("Update a running bot's behavior config. Omitted fields are unchanged. Monster lists are comma-separated CODES; healingItemIds/lootBlacklist are comma-separated item ids. Fractional units: healHpPercent and restBelowPercent are 0..1 (e.g. 0.5 = 50%); winMargin is 0..2 (smaller = pickier targets). partyRole = Auto|Tank|Dps|Healer|Buffer|Utility (Auto derives from JobId at runtime). Build: statTargets = six comma-separated goals STR,AGI,VIT,INT,DEX,LUK (0 = no goal), e.g. \"40,50,30,0,20,0\"; skillOrder = learning order like \"Bash 10, MagnumBreak 3, Endure 1\". The bot spends points toward both automatically. buildPreset = a named build that sets desiredJob, statTargets, skillOrder and the skill script at once: Agi Swordsman, Vit Swordsman, Dex Archer, Int Mage, Heal Acolyte, Agi Thief, Str Merchant.")]
+     Description("Update a running bot's behavior config. Omitted fields are unchanged. Monster lists are comma-separated CODES; healingItemIds/lootBlacklist are comma-separated item ids. Fractional units: healHpPercent and restBelowPercent are 0..1 (e.g. 0.5 = 50%); winMargin is 0..2 (smaller = pickier targets). partyRole = Auto|Tank|Dps|Healer|Buffer|Utility (Auto derives from JobId at runtime). Build: statTargets = six comma-separated goals STR,AGI,VIT,INT,DEX,LUK (0 = no goal), e.g. \"40,50,30,0,20,0\"; skillOrder = learning order like \"Bash 10, MagnumBreak 3, Endure 1\". The bot spends points toward both automatically. buildPreset = a named build that sets desiredJob, statTargets, skillOrder and the skill script at once: Agi Swordsman, Vit Swordsman, Dex Archer, Int Mage, Heal Acolyte, Agi Thief, Str Merchant. Shopping (needs autoShop): restockItemId is bought back up to restockTargetCount whenever fewer than restockBelow are held, e.g. 601 (Fly Wing), 10, 3. With a Fly Wing in the bag the bot uses one to escape an aggressive monster it would lose to.")]
     public static string ConfigureBot(BotManager bots, GameDatabase db, string botId,
         bool? enabled = null, string? homeMap = null,
         string? huntCodes = null, string? fleeCodes = null, string? ignoreCodes = null,
@@ -521,11 +521,15 @@ public static class McpBotTools
         bool? restWhenNoPotions = null, double? restBelowPercent = null,
         bool? autoEscapeWhenStuck = null, string? partyRole = null, string? itemScript = null,
         bool? announceTarget = null, bool? listenToPartyChat = null,
-        string? statTargets = null, string? skillOrder = null, string? buildPreset = null)
+        string? statTargets = null, string? skillOrder = null, string? buildPreset = null,
+        int? restockItemId = null, int? restockTargetCount = null, int? restockBelow = null)
     {
         var cfg = bots.GetBehaviorConfig(botId);
         if (cfg == null) return $"No bot '{botId}'.";
         if (enabled.HasValue) cfg.Enabled = enabled.Value;
+        if (restockItemId.HasValue) cfg.RestockItemId = restockItemId.Value;
+        if (restockTargetCount.HasValue) cfg.RestockTargetCount = Math.Max(0, restockTargetCount.Value);
+        if (restockBelow.HasValue) cfg.RestockBelow = Math.Max(0, restockBelow.Value);
         if (homeMap != null) cfg.HomeMap = homeMap;
         if (huntCodes != null) { cfg.HuntClassIds.Clear(); ResolveCodes(db, cfg.HuntClassIds, huntCodes); }
         if (fleeCodes != null) { cfg.FleeClassIds.Clear(); ResolveCodes(db, cfg.FleeClassIds, fleeCodes); }
