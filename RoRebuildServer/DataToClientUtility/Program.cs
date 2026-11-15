@@ -45,6 +45,9 @@ class Program
         if (!Directory.Exists(outPath))
             Directory.CreateDirectory(outPath);
 
+        // Bot route planner input only; regenerating it shouldn't rewrite every other client file.
+        if (args.Contains("--kafra-only")) { KafraExport.Write(npcsPath, outPath); return; }
+
         AppSettings.LoadConfigFromServerPath();
         DataManager.Initialize();
 
@@ -60,6 +63,7 @@ class Program
         WriteEmoteData();
         WriteMonsterDatabase();
         WriteMapWarps();
+        KafraExport.Write(npcsPath, outPath); // kafradatabase.json: kafra teleports for the bot's route planner
     }
 
     private static void WriteMonsterDatabase() => MonsterJsonExport.Write(outPath);

@@ -40,8 +40,7 @@ public sealed class WorldGraph
 
     /// <summary>Per-edge data for kafra teleport edges: which menu option to pick in the kafra's first
     /// menu (e.g. 2 for "Teleport Service" on @Kafra NPCs), which option in the destination menu, and
-    /// the zeny cost (informational — currently free on this server, but kept for future-proofing and
-    /// for the bot to refuse routes it can't afford).</summary>
+    /// the zeny cost (priced into Plan, and the bot skips teleports it can't afford).</summary>
     public sealed record KafraEdgeInfo(int TopMenuOption, int DestOptionIndex, int Zeny, string OptionLabel);
 
     /// <summary>Cached query result — the ordered list of portal edges from a (map,cell) to a (map,cell).</summary>
@@ -399,7 +398,7 @@ public sealed class WorldGraph
     /// <paramref name="mapPenalty"/>, when non-null, adds a cost (in walked-cell units) for entering each map,
     /// so the bot can route around maps that are dangerous at its level.
     public TravelPlan? Plan(string fromMap, int fromX, int fromY, string toMap, int toX, int toY,
-        Func<Edge, bool>? edgeFilter = null)
+        Func<Edge, bool>? edgeFilter = null, Func<string, float>? mapPenalty = null)
     {
         if (!IsBuilt) return null;
         var srcRegion = RegionAt(fromMap, fromX, fromY);
@@ -424,7 +423,7 @@ public sealed class WorldGraph
         // Extra cost for kafra hops: ~60 cells equivalent for the dialog overhead (click, advance,
         // pick top menu, advance, pick destination, await warp). Roughly the time it takes to walk that
         // many tiles, so the planner prefers a portal that's <60 cells closer than a kafra hop. Above
-        // that, kafra wins — which is the right tradeoff since kafra warps are currently free.
+        // that, kafra wins. The zeny price is added on top (below).
         const float KafraDialogOverhead = 60f;
         var dist = new Dictionary<(string, ushort), float>();
         var prevEdge = new Dictionary<(string, ushort), Edge?>();
@@ -448,7 +447,10 @@ public sealed class WorldGraph
                 var nbr = (e.DstMap, e.DstRegion);
                 var walkIn = ChebyshevDist(cx, cy, e.Sx, e.Sy); // in-region walk cost
                 var stepCost = EdgeBase + walkIn;
-                if (e.Kafra != null) stepCost += KafraDialogOverhead;
+                // Price too: 20z ≈ 1 walked cell, so Prontera→Payon (1200z) costs another 60 cells.
+                if (e.Kafra != null) stepCost += KafraDialogOverhead + e.Kafra.Zeny / 20f;
+                if (mapPenalty != null && !string.Equals(e.SrcMap, e.DstMap, StringComparison.OrdinalIgnoreCase))
+                    stepCost += mapPenalty(e.DstMap);
                 var alt = curDist + stepCost;
                 if (!dist.TryGetValue(nbr, out var existing) || alt < existing)
                 {

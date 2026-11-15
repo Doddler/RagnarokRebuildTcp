@@ -777,6 +777,9 @@ public sealed partial class BotBehavior
 
     private string _lastReachabilityLog = "";
     private string _lastTravelLog = "";
+    // ponytail: one global knob; raise it if bots still cross deadly maps, lower it if detours get silly.
+    private const float MapDangerRouteWeight = 5f;
+    private string? _lastRouteLog;
 
     private void LogTravelOnce(string msg)
     {
@@ -1099,10 +1102,17 @@ public sealed partial class BotBehavior
         if (destSeed == null) return false;
         // Edge filter: drop kafra edges whose NPC we've blacklisted (a previous interaction timed out).
         // Lets Dijkstra pick portal-walking or a different kafra without rebuilding the graph.
+        // ponytail: checks each teleport against current zeny, not the route's total; fine while routes use one kafra hop.
+        var zeny = _bot.WithState(w => w.Self.Zeny);
         var plan = _data.World.Plan(snap.Map, snap.SelfPos.X, snap.SelfPos.Y,
                                     destMap, destSeed.Value.X, destSeed.Value.Y,
-                                    edgeFilter: e => e.Kafra == null || !IsKafraBlacklisted(e.SrcMap, e.Sx, e.Sy));
+                                    edgeFilter: e => e.Kafra == null || (!IsKafraBlacklisted(e.SrcMap, e.Sx, e.Sy) && e.Kafra.Zeny <= zeny),
+                                    // 1 danger point ≈ 5 walked cells. 2 (the legacy BFS weight) still sent a Lv13 bot through moc_fild03 (danger 301, one-hit Greatest Generals).
+                                    mapPenalty: m => GetMapDanger(m) * MapDangerRouteWeight);
         if (plan == null || plan.Edges.Count == 0) return false;
+        var route = $"Route to {destMap}: {snap.Map} → {string.Join(" → ", plan.Edges.Select(e => e.Kafra != null ? $"{e.DstMap} (kafra {e.Kafra.Zeny}z)" : e.DstMap))}"
+                    + $" (danger {string.Join(", ", plan.Edges.Select(e => GetMapDanger(e.DstMap).ToString("0")))}).";
+        if (route != _lastRouteLog) { _lastRouteLog = route; OnLog?.Invoke(route); }
         var first = plan.Edges[0];
         px = first.Sx;
         py = first.Sy;
