@@ -34,7 +34,6 @@ else
                     @s.MapDisplayName <span class="badge bg-light text-dark">@s.X, @s.Y</span>
                     &nbsp;Lv @s.Level/@s.JobLevel
                 </div>
-                <div class="text-body">@(Bots.GetBehavior(Id)?.Activity)</div>
             </div>
             <div class="text-end">
                 <span class="badge @ModeClass(s.Mode) fs-6 me-2">@s.Mode</span>
@@ -46,6 +45,27 @@ else
                 <button class="btn btn-danger btn-sm" @onclick="Stop">Stop</button>
             </div>
         </div>
+
+        @if (RecentWarnings() is { Count: > 0 } warns)
+        {
+            var last = warns[^1];
+            <div class="alert alert-warning py-2 mb-3 d-flex gap-2 align-items-start" role="alert">
+                <span class="fw-bold">&#9888;</span>
+                <div class="flex-grow-1">
+                    <div class="fw-semibold">@last[9..]</div>
+                    <div class="small">
+                        @last[..8]
+                        @if (warns.Count > 1) { <span> · @warns.Count warnings in the last @WarnWindowMin min</span> }
+                        @* Same message with different coordinates counts as one kind of warning. *@
+                        @foreach (var kind in warns.GroupBy(w => System.Text.RegularExpressions.Regex.Replace(w[9..], @"\d+", "#"))
+                                      .Where(g => g.Key != System.Text.RegularExpressions.Regex.Replace(last[9..], @"\d+", "#")).TakeLast(3))
+                        {
+                            <div class="text-truncate">also: @kind.Last()[9..] @(kind.Count() > 1 ? $"(×{kind.Count()})" : "")</div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
 
         <div class="card mb-3">
             <div class="card-body py-2">
@@ -137,9 +157,100 @@ else
         <div class="row g-3">
             <div class="col-lg-6">
                 <div class="card mb-3">
-                    <div class="card-header py-2 fw-semibold">Map</div>
-                    <div class="card-body">
+                    <div class="card-header py-2 d-flex gap-2">
+                        <span class="fw-semibold">Map</span>
+                        <span class="text-muted">·</span>
+                        <span class="text-truncate">@(Bots.GetBehavior(Id)?.Activity)</span>
+                    </div>
+                    <div class="card-body d-flex flex-wrap gap-3 align-items-start">
                         <BotMap BotId="@Id" />
+                        @{ var mapKills = KillsOnMap(s.Map); var stay = Runs(s.CharacterName).FirstOrDefault(run => run.Ongoing && string.Equals(run.Map, s.Map, StringComparison.OrdinalIgnoreCase)); }
+                        @if (stay != null || mapKills.Count > 0)
+                        {
+                            <div style="min-width:10rem;flex:1">
+                                @if (stay != null)
+                                {
+                                    <div class="d-flex flex-wrap gap-2 mb-2">
+                                        <span class="badge bg-dark-subtle text-body fs-6 fw-normal"><b>@StayTime(stay.Active)</b> on this map</span>
+                                        <span class="badge bg-dark-subtle text-body fs-6 fw-normal"><b>@(stay.Active.TotalMinutes >= 1 ? (stay.Exp / stay.Active.TotalHours).ToString("N0") : "—")</b> exp/h so far</span>
+                                        @if (MedianKillGap(stay.Start) is { } gap)
+                                        {
+                                            <span class="badge bg-dark-subtle text-body fs-6 fw-normal" title="Median time from one kill to the next on this stay (finding + fighting + resting)"><b>@StayTime(gap)</b> median between duels</span>
+                                        }
+                                    </div>
+                                    @if (stay.Time.Total >= 1)
+                                    {
+                                        var split = stay.Time;
+                                        <div class="d-flex flex-wrap gap-2 mb-2 small" title="Share of hunting time on this stay, from the bot's own activity clock">
+                                            <span class="badge bg-danger-subtle text-body fw-normal">fighting <b>@((split.Fight / split.Total).ToString("P0"))</b></span>
+                                            <span class="badge bg-info-subtle text-body fw-normal">searching <b>@((split.Search / split.Total).ToString("P0"))</b></span>
+                                            <span class="badge bg-success-subtle text-body fw-normal">recovering <b>@((split.Recover / split.Total).ToString("P0"))</b></span>
+                                            <span class="badge bg-warning-subtle text-body fw-normal">fleeing <b>@((split.Flee / split.Total).ToString("P0"))</b></span>
+                                        </div>
+                                    }
+                                }
+                                @if (mapKills.Count > 0)
+                                {
+                                    <div class="small text-muted mb-1">Killed on @s.Map</div>
+                                    <div class="d-flex flex-wrap gap-1">
+                                        @foreach (var (name, count) in mapKills.OrderByDescending(entry => entry.Value))
+                                        {
+                                            <span class="badge bg-secondary">@MonsterPortrait(name)@name&nbsp;<span class="badge bg-light text-dark">@count</span></span>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                @{ var behavior = Bots.GetBehavior(Id); }
+                <div class="card mb-3">
+                    <div class="card-header py-2 fw-semibold">Map choice
+                        @if (Bots.GetBehaviorConfig(Id)?.AutoMap == false) { <span class="text-muted fw-normal">· off (fixed hunt map)</span> }
+                    </div>
+                    <div class="card-body py-2 small">
+                        <div class="mb-2 @(behavior?.MapDecision.StartsWith("Next map") == true ? "text-primary fw-semibold" : "")">
+                            @(string.IsNullOrEmpty(behavior?.MapDecision) ? "No decision yet (first check ~2 min after login, then every 10 min and on level-up)." : behavior!.MapDecision)
+                        </div>
+                        @if (behavior?.CurrentMapOption is { } currentMap)
+                        {
+                            <table class="table table-sm mb-2">
+                                <thead><tr><th>Current map</th><th class="text-end">Exp/h</th><th>From</th><th class="text-end">Minimum to change</th><th>Per kill</th><th>Monsters</th></tr></thead>
+                                <tbody>
+                                    <tr class="table-primary">
+                                        <td class="fw-semibold" title="@currentMap.Name">@currentMap.Map</td>
+                                        <td class="text-end">@currentMap.ExpPerHour.ToString("N0")</td>
+                                        <td>@(currentMap.Measured ? "measured" : "estimate")</td>
+                                        <td class="text-end fw-semibold" title="A new map must reach this exp/h after its travel time (1.25× current)">@behavior.MinToChange.ToString("N0") exp/h</td>
+                                        <td class="text-nowrap" title="Measured seconds per kill on this map, by activity">@PerKill(currentMap.PerKill)</td>
+                                        <td>@MapMonsters(currentMap)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }
+                        @if (behavior?.MapOptions.Count > 0)
+                        {
+                            <div class="text-muted mb-1">Potential maps (best first; vs current includes travel time, move at ≥ 1.25×)</div>
+                            <table class="table table-sm mb-2">
+                                <thead><tr><th>Map</th><th class="text-end">Exp/h</th><th>From</th><th class="text-end">Hops</th><th class="text-end">vs current</th><th>Per kill (predicted)</th><th>Monsters</th></tr></thead>
+                                <tbody>
+                                @foreach (var option in behavior.MapOptions)
+                                {
+                                    var isNext = string.Equals(option.Map, behavior.NextMap, StringComparison.OrdinalIgnoreCase);
+                                    <tr class="@(isNext ? "table-warning fw-semibold" : "")">
+                                        <td title="@option.Name">@option.Map @if (isNext) { <span class="badge bg-warning text-dark ms-1">next</span> }</td>
+                                        <td class="text-end">@option.ExpPerHour.ToString("N0")</td>
+                                        <td class="text-muted">@(option.Measured ? "measured" : "estimate")</td>
+                                        <td class="text-end">@option.Hops</td>
+                                        <td class="text-end @(option.VsCurrent >= 1.25 ? "text-success fw-semibold" : "text-muted")">@(option.VsCurrent > 0 ? $"{Math.Floor(option.VsCurrent * 100) / 100:0.00}×" : "—")</td>
+                                        <td class="text-nowrap text-muted">@PerKill(option.PerKill)</td>
+                                        <td>@MapMonsters(option)</td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
+                        }
                     </div>
                 </div>
 
@@ -300,23 +411,20 @@ else
                         }
                         else
                         {
-                            <table class="table table-sm mb-0">
-                                <tbody>
-                                    @foreach (var sk in deep.Learnable)
-                                    {
-                                        <tr class="@(sk.Level > 0 ? "" : "text-muted")">
-                                            <td><img src="@SkillIcon(sk.Skill)" alt="" width="24" height="24" class="me-2" style="object-fit:contain" onerror="this.style.visibility='hidden'" />@sk.Name</td>
-                                            <td class="text-end">Lv @sk.Level / @sk.MaxLevel</td>
-                                            <td class="text-end" style="width:3.5rem;">
-                                                @if (deep.SkillPoints > 0 && sk.Level < sk.MaxLevel)
-                                                {
-                                                    <button class="btn btn-sm btn-outline-success py-0 px-2" @onclick="() => RaiseSkill(sk.Skill)">+1</button>
-                                                }
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
+                            <div class="p-1" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.25rem">
+                                @foreach (var sk in deep.Learnable)
+                                {
+                                    <div class="d-flex align-items-center gap-1 border rounded px-1 py-1 small @(sk.Level > 0 ? "" : "text-muted")" title="@sk.Name">
+                                        <img src="@SkillIcon(sk.Skill)" alt="" width="24" height="24" style="object-fit:contain;flex:none" onerror="this.style.visibility='hidden'" />
+                                        <span class="text-truncate flex-grow-1">@sk.Name</span>
+                                        <span class="text-nowrap @(sk.Level > 0 ? "fw-semibold" : "")">@sk.Level/@sk.MaxLevel</span>
+                                        @if (deep.SkillPoints > 0 && sk.Level < sk.MaxLevel)
+                                        {
+                                            <button class="btn btn-sm btn-outline-success py-0 px-1" @onclick="() => RaiseSkill(sk.Skill)">+1</button>
+                                        }
+                                    </div>
+                                }
+                            </div>
                         }
                     </div>
                 </div>
@@ -357,6 +465,28 @@ else
                                         </div>
                                     </div>
                                 }
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-header py-2 fw-semibold">
+                        Equipment <span class="text-muted">(@(deep?.Equipped.Count(e => e != null) ?? 0) equipped)</span>
+                    </div>
+                    <div class="card-body p-1">
+                        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.25rem">
+                            @for (var i = 0; i < EquipLeft.Length; i++)
+                            {
+                                @EquipCell(EquipLeft[i].Slot, EquipLeft[i].Label, true)
+                                @EquipCell(EquipRight[i].Slot, EquipRight[i].Label, false)
+                            }
+                        </div>
+                        @if (deep is { AmmoId: > 0 })
+                        {
+                            <div class="d-flex align-items-center justify-content-center gap-2 small mt-1 text-muted">
+                                <img src="@ItemIcon(deep.AmmoId)" alt="" width="20" height="20" style="object-fit:contain" onerror="this.style.display='none'" />
+                                Ammo: <span class="text-body">@Db.ItemName(deep.AmmoId)</span>
                             </div>
                         }
                     </div>
@@ -485,7 +615,7 @@ else
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="small text-secondary">Time counts only while the bot was online and active (gaps over 2 min between its events are left out). Runs under a minute, like passing through on the way somewhere, are hidden.</div>
+                            <div class="small text-secondary">Time counts while the bot was online, quiet stretches included (waiting for respawns is part of a map's cost); after a disconnect or a gap over 15 min only 2 min count. Runs under a minute, like passing through on the way somewhere, are hidden.</div>
                         }
                         else
                         {
@@ -497,7 +627,7 @@ else
                 <div class="card">
                     <div class="card-header py-2 fw-semibold">Combat Log</div>
                     <div class="card-body p-0">
-                        <pre class="mb-0 p-2 bg-dark text-light small" style="height: 16rem; overflow-y: auto;">@LogText()</pre>
+                        <pre class="mb-0 p-2 bg-dark text-light small" style="height: 16rem; overflow-y: auto;">@if (Bots.GetLog(Id) is { Length: > 0 } logLines) { foreach (var line in logLines) { if (BotManager.IsWarning(line)) { <span class="text-warning fw-semibold">@line</span> } else { @line }@("\n") } } else { @("(no log)") }</pre>
                     </div>
                 </div>
             </div>
@@ -575,6 +705,8 @@ else
             AttackSpeed = self.AttackSpeed,
             StatPoints = self.StatPoints, SkillPoints = self.SkillPoints, JobId = self.JobId,
             Skills = skills, Learnable = learnable, Inventory = inventory,
+            Equipped = self.EquippedBagIds.Select(b => inventory.FindIndex(i => i.BagId == b) is var k && b != 0 && k >= 0 ? inventory[k] : (InvRow?)null).ToArray(),
+            AmmoId = self.AmmoId,
         };
     }
 
@@ -745,10 +877,15 @@ else
         Refresh();
     }
 
-    private string LogText()
+    private const int WarnWindowMin = 3;
+
+    /// <summary>Warning lines (stuck / failed) from the last few minutes, oldest first. Lines start "HH:mm:ss ".</summary>
+    private List<string> RecentWarnings()
     {
-        var lines = Bots.GetLog(Id);
-        return lines.Length == 0 ? "(no log)" : string.Join("\n", lines);
+        var cutoff = DateTime.Now.AddMinutes(-WarnWindowMin).TimeOfDay;
+        return Bots.GetLog(Id)
+            .Where(l => l.Length > 9 && BotManager.IsWarning(l) && TimeSpan.TryParse(l[..8], out var t) && t >= cutoff)
+            .ToList(); // ponytail: ignores the midnight wrap; the banner just goes quiet for a few minutes
     }
 
     private static int Pct(double fraction) => (int)Math.Round(Math.Clamp(fraction, 0, 1) * 100);
@@ -774,7 +911,36 @@ else
         public List<SkillRow> Skills = new();
         public List<SkillAllocRow> Learnable = new();
         public List<InvRow> Inventory = new();
+        public InvRow?[] Equipped = new InvRow?[10]; // indexed by EquipSlot (HeadTop..Accessory2)
+        public int AmmoId;
     }
+
+    // Alt+Q layout: left and right columns of slots, icons facing the middle like the game's window.
+    private static readonly (EquipSlot Slot, string Label)[] EquipLeft =
+        { (EquipSlot.HeadTop, "Upper Headgear"), (EquipSlot.HeadBottom, "Lower Headgear"), (EquipSlot.RightHand, "Weapon"), (EquipSlot.Garment, "Garment"), (EquipSlot.Accessory1, "Accessory") };
+    private static readonly (EquipSlot Slot, string Label)[] EquipRight =
+        { (EquipSlot.HeadMid, "Middle Headgear"), (EquipSlot.Body, "Armor"), (EquipSlot.LeftHand, "Shield"), (EquipSlot.Footgear, "Footgear"), (EquipSlot.Accessory2, "Accessory") };
+
+    private RenderFragment EquipCell(EquipSlot slot, string label, bool left) => __builder =>
+    {
+        var slotItem = deep?.Equipped[(int)slot];
+        <div class="d-flex align-items-center gap-2 border rounded px-2 py-1 small @(left ? "flex-row-reverse text-end" : "")" style="min-height:2.6rem" title="@(slotItem?.Name ?? label)">
+            @if (slotItem is not { } it)
+            {
+                <span style="width:24px;flex:none"></span>
+                <span class="text-muted text-truncate flex-grow-1">@label</span>
+            }
+            else
+            {
+                <img src="@ItemIcon(it.ItemId)" alt="" width="24" height="24" style="object-fit:contain;flex:none" onerror="this.style.visibility='hidden'" />
+                <span class="text-truncate flex-grow-1">
+                    @if (it.Refine > 0) { <span class="text-warning fw-semibold">+@it.Refine </span> }@it.Name
+                    <span class="d-block text-muted" style="font-size:.7rem">@label</span>
+                </span>
+                <button class="btn btn-sm btn-outline-secondary py-0 px-1" title="Unequip" @onclick="() => UnequipItem(it.BagId)">×</button>
+            }
+        </div>
+    };
 
     // A monster's first sprite frame, cropped from its atlas with CSS and shrunk to fit a badge.
     private RenderFragment MonsterPortrait(string monsterName) => builder =>
@@ -820,53 +986,48 @@ else
 
     // Loot telemetry is keyed by item name (as GameDatabase.ItemName gives it), so map names back to item ids.
     private static Dictionary<string, int>? _itemIdByName;
-    private sealed record Run(string Map, DateTime Start, DateTime End, TimeSpan Active, int Kills, long Exp, Dictionary<string, int> Items, bool Ongoing);
+    private List<MapRun> Runs(string characterName) =>
+        MapRuns.Compute(tele?.Snapshot() ?? new List<TelemetryEvent>(), Bots.Progress?.Get(characterName) ?? Array.Empty<ProgressSample>(), snapshot?.InGame == true);
 
-    // Splits telemetry into stays on one map: a run starts at each MapChange to a different map (re-entering the
-    // same map after a reconnect continues it). Active time sums gaps between consecutive events, capped at 2 min,
-    // so offline stretches don't count. Exp comes from the progress history over the run's wall-clock window.
-    // ponytail: telemetry keeps the last 5000 events, so older runs drop off; persist runs if long history matters.
-    private List<Run> Runs(string characterName)
+    // Spawn badges styled like "Kills by monster" (portrait, name, count); too-strong ones faded and struck out.
+    private RenderFragment MapMonsters(RoBotClient.Bot.Behavior.MapOption option) => @<div class="d-flex flex-wrap gap-1">
+        @if (option.Note.Length > 0) { <span class="badge bg-warning text-dark">@option.Note</span> }
+        @foreach (var (name, count, huntable) in option.Monsters.Take(5))
+        {
+            <span class="badge bg-secondary @(huntable ? "" : "opacity-50 text-decoration-line-through")" title="@(huntable ? "can beat it" : "too strong at this level: skipped")">@MonsterPortrait(name)@name&nbsp;<span class="badge bg-light text-dark">@count</span></span>
+        }
+    </div>;
+
+    // Kills per monster made on one map, across the saved telemetry (a kill belongs to the map of the last MapChange).
+    private Dictionary<string, int> KillsOnMap(string map)
     {
-        var events = tele?.Snapshot() ?? new List<TelemetryEvent>();
-        var samples = Bots.Progress?.Get(characterName) ?? Array.Empty<ProgressSample>();
-        long ExpAt(DateTime t) => samples.LastOrDefault(p => p.Time <= t)?.TotalExp ?? samples.FirstOrDefault()?.TotalExp ?? 0;
-
-        var runs = new List<Run>();
-        string? map = null;
-        DateTime start = default, last = default;
-        var active = TimeSpan.Zero;
-        int kills = 0;
-        var items = new Dictionary<string, int>();
-        void Close(DateTime end, bool ongoing)
+        var kills = new Dictionary<string, int>();
+        string? current = null;
+        foreach (var e in tele?.Snapshot() ?? new List<TelemetryEvent>())
         {
-            if (map == null || active.TotalMinutes < 1) return;
-            // A hidden short stop (a detour, a respawn in town) shouldn't split one stay into two runs.
-            if (runs.Count > 0 && string.Equals(runs[^1].Map, map, StringComparison.OrdinalIgnoreCase))
-            {
-                var prev = runs[^1];
-                foreach (var (k, v) in prev.Items) items[k] = items.GetValueOrDefault(k) + v;
-                runs[^1] = new Run(map, prev.Start, end, prev.Active + active, prev.Kills + kills, Math.Max(0, ExpAt(end) - ExpAt(prev.Start)), items, ongoing);
-            }
-            else runs.Add(new Run(map, start, end, active, kills, Math.Max(0, ExpAt(end) - ExpAt(start)), items, ongoing));
+            if (e.Type == TelemetryEventType.MapChange) current = e.Detail;
+            else if (e.Type == TelemetryEventType.Kill && e.Detail.Length > 0 && string.Equals(current, map, StringComparison.OrdinalIgnoreCase))
+                kills[e.Detail] = kills.GetValueOrDefault(e.Detail) + 1;
         }
-        foreach (var e in events)
-        {
-            if (map != null) active += TimeSpan.FromSeconds(Math.Min((e.Time - last).TotalSeconds, 120));
-            last = e.Time;
-            if (e.Type == TelemetryEventType.MapChange && !string.Equals(e.Detail, map, StringComparison.OrdinalIgnoreCase))
-            {
-                Close(e.Time, false);
-                (map, start, active, kills, items) = (e.Detail, e.Time, TimeSpan.Zero, 0, new Dictionary<string, int>());
-            }
-            else if (e.Type == TelemetryEventType.Kill) kills++;
-            else if (e.Type == TelemetryEventType.Loot && e.Detail.Length > 0) items[e.Detail] = items.GetValueOrDefault(e.Detail) + Math.Max(1, e.Value);
-        }
-        if (map != null && (DateTime.UtcNow - last).TotalSeconds < 120) active += DateTime.UtcNow - last;
-        Close(DateTime.UtcNow, snapshot?.InGame == true);
-        runs.Reverse();
-        return runs;
+        return kills;
     }
+
+    // Median gap between consecutive kills since the stay began; gaps over 15 min (offline, shop trips) are skipped.
+    private TimeSpan? MedianKillGap(DateTime since)
+    {
+        var times = (tele?.Snapshot() ?? new List<TelemetryEvent>())
+            .Where(e => e.Type == TelemetryEventType.Kill && e.Time >= since).Select(e => e.Time).ToList();
+        var gaps = times.Zip(times.Skip(1), (a, b) => b - a).Where(g => g.TotalMinutes <= 15).OrderBy(g => g).ToList();
+        return gaps.Count == 0 ? null : gaps[gaps.Count / 2];
+    }
+
+    // "fight 4.1s · search 2.3s · recover 1.0s" (flee only when it happened)
+    private static string PerKill(RoBotClient.Bot.Behavior.ActivityTime t) => t.Total <= 0 ? "—"
+        : $"fight {t.Fight:0.0}s · search {t.Search:0.0}s · recover {t.Recover:0.0}s" + (t.Flee >= 0.05 ? $" · flee {t.Flee:0.0}s" : "");
+
+    // 45s, 1min30s, 1h05min
+    private static string StayTime(TimeSpan t) => t.TotalHours >= 1 ? $"{(int)t.TotalHours}h{t.Minutes:00}min"
+        : t.TotalMinutes >= 1 ? $"{t.Minutes}min{t.Seconds:00}s" : $"{t.Seconds}s";
 
     private string MapLabel(string code) => Db.MapsByCode.TryGetValue(code, out var m) && !string.IsNullOrEmpty(m.Name) ? $"{m.Name} ({code})" : code;
 

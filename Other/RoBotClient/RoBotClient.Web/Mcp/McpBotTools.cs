@@ -300,6 +300,18 @@ public static class McpBotTools
         return new { message = $"{botId}: sell queue cleared." };
     }
 
+    [McpServerTool(Name = "reset_skills"),
+     Description("Refund all of a bot's job skill points (Basic Mastery and First Aid stay). Optional skillOrder replaces the build's skill order first (e.g. \"OwlEye 3, VultureEye 10, DoubleStrafe 10\"), so the refunded points are re-spent along it. Needs the server in debug mode (admin).")]
+    public static async Task<object> ResetSkills(BotManager bots, string botId, string? skillOrder = null)
+    {
+        var session = bots.GetSession(botId);
+        var cfg = bots.GetBehaviorConfig(botId);
+        if (session == null || cfg == null) return new { error = $"No bot '{botId}'." };
+        if (skillOrder != null) { cfg.SkillOrder = skillOrder; bots.SaveConfig(botId); }
+        await session.ResetSkillsAsync();
+        return new { message = $"{botId}: skills reset; re-spending along \"{cfg.SkillOrder}\"." };
+    }
+
     [McpServerTool(Name = "set_restock"),
      Description("Add or update a target stock level for an item — every shop trip the bot takes, any visited NPC that stocks this item will top the bot up to this count (limited by zeny). 'item' = id/code/name; 'target' is the count to maintain. Use target=0 to remove the entry. Doesn't trigger a shop trip on its own — rides along whenever the bot naturally shops. Use force_restock to trigger an immediate trip.")]
     public static object SetRestock(BotManager bots, GameDatabase db, string botId, string item, int target)

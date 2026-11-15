@@ -14,6 +14,9 @@ public sealed partial class BotBehavior
     private enum ShopGoal { Sell, Buy }
 
     private ShopPhase _shopPhase = ShopPhase.None;
+// Why the current trip exists, for the dashboard ("buy Rapier (weapon upgrade, atk 70)", "sell loot + restock Fly Wing").
+private string _shopPurpose = "";
+private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItems
     private readonly Queue<ShopGoal> _shopGoals = new();
     private ShopGoal _shopGoal;
     private bool _shopOrderSent;
@@ -309,13 +312,20 @@ public sealed partial class BotBehavior
             var customWhat = _customSellItems != null && _customBuyItems != null ? "sell + buy"
                 : _customSellItems != null ? "sell" : "buy";
             OnLog?.Invoke($"Custom shop trip: heading to {_data!.MapName(_shopMap)} ({_shopMap}) to {customWhat} at '{_shopNpcName}'.");
+            var parts = new List<string>();
+            if (_customBuyItems != null)
+                parts.Add("buy " + string.Join(", ", _customBuyItems.Select(b => (b.qty > 1 ? $"{b.qty}x " : "") + _data.ItemName(b.itemId)))
+                          + (_customBuyWhy != null ? $" ({_customBuyWhy})" : ""));
+            if (_customSellItems != null) parts.Add($"sell {_customSellItems.Count} item type(s)");
+            _shopPurpose = string.Join(" + ", parts);
+            _customBuyWhy = null;
             return;
         }
 
         var st = ReadShopState();
         var needSell = force
                        || (st.maxWeight > 0 && st.weight >= st.maxWeight * _config.SellWeightPercent)
-                       || st.stacks >= _config.SellItemStacks
+                       || (st.stacks >= _config.SellItemStacks && CountSaleableItems() > 0) // kept stacks alone have nothing to sell
                        || (_config.JunkSellCount > 0 && CountSaleableItems() >= _config.JunkSellCount);
         // Build the "needed for buy" item set: the single-item config restock (when below its low
         // threshold) + every restock-list item below its target. The list items don't trigger a trip
@@ -359,6 +369,9 @@ public sealed partial class BotBehavior
         _shopNextAction = DateTime.MinValue;
         var what = needSell && needBuy ? "sell + restock" : needSell ? "sell" : "restock";
         OnLog?.Invoke($"AutoShop: heading to {_data!.MapName(_shopMap)} ({_shopMap}) to {what} at '{_shopNpcName}'.");
+        var restockNames = needBuy ? string.Join(", ", needBuyAny.Select(_data.ItemName)) : "";
+        _shopPurpose = needSell && needBuy ? $"sell loot + restock {restockNames}"
+            : needSell ? "sell loot" : $"restock {restockNames}";
     }
 
     // Pick the NEAREST reachable trader by warp-hop distance. When <paramref name="requireAnyOf"/>
@@ -367,26 +380,40 @@ public sealed partial class BotBehavior
     private bool ResolveShop(string fromMap, IReadOnlyCollection<int> requireAnyOf)
     {
         if (_data == null) return false;
+        var traders = _data.Npcs.Where(npc => npc.IsTrader
+                && (string.IsNullOrEmpty(_config.ShopMap) || npc.Map.Equals(_config.ShopMap, StringComparison.OrdinalIgnoreCase))
+                && (requireAnyOf == null || requireAnyOf.Count == 0 || (npc.SellsItems != null && requireAnyOf.Any(npc.SellsItems.Contains))))
+            .ToList();
+
+        // A Butterfly Wing drops us in the save town; worth it when that makes the whole trip shorter.
+        var saveMap = HasItem(_config.ButterflyWingItemId) && _data.IsUsableItem(_config.ButterflyWingItemId) ? SaveMap() : null;
+        if (string.Equals(saveMap, fromMap, StringComparison.OrdinalIgnoreCase)) saveMap = null;
+
+        // Cheap pass by map hops; the few closest go on to the real walking estimate.
+        var near = traders
+            .Select(npc => (npc, hops: Math.Min(Hops(fromMap, npc.Map), saveMap == null ? int.MaxValue : Hops(saveMap, npc.Map) + 1)))
+            .Where(c => c.hops < int.MaxValue).OrderBy(c => c.hops).Take(6).ToList();
+        if (near.Count == 0) return false;
+
+        var here = _bot.WithState(w => w.SelfPosition);
+        var home = string.IsNullOrEmpty(_config.HomeMap) ? fromMap : _config.HomeMap;
+        var homeCell = _data.World.EntryCell(home) is { } entry ? (entry.X, entry.Y) : (here.X, here.Y);
+        var landing = saveMap != null && FindAnyWalkableCell(saveMap) is { } land ? (land.X, land.Y) : (0, 0); // ponytail: town centre as the wing landing spot
         NpcEntry? best = null;
-        var bestHops = int.MaxValue;
-        foreach (var npc in _data.Npcs)
+        var bestCost = float.MaxValue;
+        var bestViaWing = false;
+        foreach (var (npc, _) in near)
         {
-            if (!npc.IsTrader) continue;
-            if (!string.IsNullOrEmpty(_config.ShopMap) &&
-                !npc.Map.Equals(_config.ShopMap, StringComparison.OrdinalIgnoreCase)) continue;
-            if (requireAnyOf != null && requireAnyOf.Count > 0)
-            {
-                if (npc.SellsItems == null) continue;
-                var stocksOne = false;
-                foreach (var id in requireAnyOf)
-                    if (npc.SellsItems.Contains(id)) { stocksOne = true; break; }
-                if (!stocksOne) continue;
-            }
-            var hops = _data.HopCount(fromMap, npc.Map);
-            if (hops < 0) continue; // unreachable
-            if (hops < bestHops) { bestHops = hops; best = npc; }
+            var back = WalkCost(npc.Map, npc.X, npc.Y, home, homeCell.Item1, homeCell.Item2);
+            if (back < 0) back = 0; // can't estimate the way back: judge on the way there
+            var walk = WalkCost(fromMap, here.X, here.Y, npc.Map, npc.X, npc.Y);
+            if (walk >= 0 && walk + back < bestCost) { bestCost = walk + back; best = npc; bestViaWing = false; }
+            if (saveMap == null) continue;
+            var wing = WalkCost(saveMap, landing.Item1, landing.Item2, npc.Map, npc.X, npc.Y);
+            if (wing >= 0 && WingCostCells + wing + back < bestCost) { bestCost = WingCostCells + wing + back; best = npc; bestViaWing = true; }
         }
         if (best == null) return false;
+        _shopWingTo = bestViaWing ? saveMap : null;
         _shopMap = best.Map;
         _shopX = best.X;
         _shopY = best.Y;
@@ -394,31 +421,86 @@ public sealed partial class BotBehavior
         return true;
     }
 
+    private const float WingCostCells = 25; // using the wing + loading the town ≈ walking this many cells
+
+    private int Hops(string from, string to) => _data!.HopCount(from, to) is var hops and >= 0 ? hops : int.MaxValue;
+
+    /// <summary>Route planner cost (walked cells + portal overhead) between two cells, including the last stretch from the
+    /// final portal to the target. -1 when unreachable.</summary>
+    private float WalkCost(string fromMap, int fromX, int fromY, string toMap, int toX, int toY)
+    {
+        var plan = _data!.World.Plan(fromMap, fromX, fromY, toMap, toX, toY, mapPenalty: m => GetMapDanger(m) * MapDangerRouteWeight);
+        if (plan == null) return -1;
+        var (lastX, lastY) = plan.Edges.Count > 0 ? (plan.Edges[^1].Dx, plan.Edges[^1].Dy) : (fromX, fromY);
+        return plan.Cost + Math.Max(Math.Abs(toX - lastX), Math.Abs(toY - lastY));
+    }
+
+    private string? _shopWingTo; // save town to Butterfly Wing to at the start of this trip, if that beats walking
+
+    private bool HasItem(int itemId) => itemId > 0 && _bot.WithState(w => w.Self.Inventory.Any(i => i.ItemId == itemId && i.Count > 0));
+
+    /// <summary>The town we respawn in: where we landed after the last death or Butterfly Wing, from saved telemetry.
+    /// Null until that happened once.</summary>
+    private string? SaveMap()
+    {
+        string? save = null;
+        var wingName = _data?.ItemName(_config.ButterflyWingItemId);
+        var returning = false;
+        foreach (var e in _bot.Telemetry.Snapshot())
+        {
+            if (e.Type == RoBotClient.Bot.State.TelemetryEventType.Death
+                || (e.Type == RoBotClient.Bot.State.TelemetryEventType.UsedItem && e.Detail == wingName)) returning = true;
+            else if (returning && e.Type == RoBotClient.Bot.State.TelemetryEventType.MapChange) { save = e.Detail; returning = false; }
+        }
+        return save;
+    }
+
     // Single-item overload kept for the custom-buy path that needs an exact item.
     private bool ResolveShop(string fromMap, int requireItemId) =>
         ResolveShop(fromMap, requireItemId > 0 ? new[] { requireItemId } : Array.Empty<int>());
 
+    /// <summary>Whether we stand in the same walkable region (room) as the shop NPC. Unknown regions count as yes.</summary>
+    private bool InShopRoom(Snapshot snap)
+    {
+        if (_data == null || !_data.World.IsBuilt) return true;
+        var mine = _data.World.RegionAt(snap.Map, snap.SelfPos.X, snap.SelfPos.Y);
+        var shop = _data.World.RegionAt(_shopMap, _shopX, _shopY);
+        if (shop == 0 && _data.GetWalkMap(_shopMap) is { } wm && wm.TryFindWalkableNear(_shopX, _shopY, 4, out var nx, out var ny))
+            shop = _data.World.RegionAt(_shopMap, nx, ny); // NPCs often stand on a blocked cell (behind a counter)
+        return mine == 0 || shop == 0 || mine == shop;
+    }
+
     private async Task TickShopTripAsync(Snapshot snap, bool stuck, CancellationToken ct)
     {
         if (DateTime.UtcNow > _shopDeadline) { await AbortShopAsync("trip timed out", ct); return; }
-        Mode = BotMode.Shopping;
+        // Done buying and walking back is just travel; don't keep showing "Shopping" out in the fields.
+        Mode = _shopPhase == ShopPhase.ReturnTravel ? BotMode.Traveling : BotMode.Shopping;
 
         switch (_shopPhase)
         {
             case ShopPhase.Travel:
-                if (string.Equals(snap.Map, _shopMap, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(snap.Map, _shopMap, StringComparison.OrdinalIgnoreCase) && InShopRoom(snap))
                 {
                     _shopPhase = ShopPhase.Approach;
                     _shopNextAction = DateTime.MinValue;
                     return;
                 }
+                if (_shopWingTo != null)
+                {
+                    OnLog?.Invoke($"AutoShop: Butterfly Wing to {_data!.MapName(_shopWingTo)} ({_shopWingTo}), closer to {_shopNpcName} than walking.");
+                    _shopWingTo = null; // one try; if it fails we just walk
+                    _shopNextAction = DateTime.UtcNow.AddSeconds(3);
+                    await _bot.UseInventoryItemAsync(_config.ButterflyWingItemId, -1, ct);
+                    return;
+                }
                 if (stuck) { ResetStuck(snap.SelfPos); await NudgeAsync(snap, ct); return; } // wedged en route
                 if (DateTime.UtcNow < _shopNextAction) return;
                 _shopNextAction = DateTime.UtcNow.AddSeconds(1.3);
-                await StepTowardMapAsync(snap, _shopMap, ct);
+                await StepTowardMapAsync(snap, _shopMap, ct, (_shopX, _shopY));
                 return;
 
             case ShopPhase.Approach:
+                if (!InShopRoom(snap)) { _shopPhase = ShopPhase.Travel; return; } // wrong room of an indoor map
                 var npcId = _bot.WithState(FindNpcEntityId);
                 if (npcId != 0) // NPC is in view — the server has no click range check, so click from here
                 {
@@ -957,7 +1039,7 @@ public sealed partial class BotBehavior
     // is sufficient — and any remaining bouncing in that mode is a deployment problem to fix, not
     // something to defend against here.
 
-    private async Task StepTowardMapAsync(Snapshot snap, string destMap, CancellationToken ct)
+    private async Task StepTowardMapAsync(Snapshot snap, string destMap, CancellationToken ct, (int X, int Y)? destCell = null)
     {
         if (_data == null) return;
         RememberMap(snap.Map); // record where we are before picking the next hop
@@ -979,7 +1061,7 @@ public sealed partial class BotBehavior
         // different region than the bot. If we can't reach any portal toward the next hop, look for
         // portals to ANY neighbouring map that strictly REDUCE hop-distance to the destination — never
         // backtrack to a map we just came from. Last resort: escalate via blacklist + Fly Wing.
-        if (TryPickReachablePortalToward(snap, destMap, out var px, out var py, out var via, out var kafraInfo))
+        if (TryPickReachablePortalToward(snap, destMap, out var px, out var py, out var via, out var kafraInfo, destCell))
         {
             _lastReachabilityLog = "";
             _subRegionTrapSince = null;
@@ -1083,7 +1165,7 @@ public sealed partial class BotBehavior
     /// portal that does. Falls back to the legacy BFS-based picker only if the world graph isn't built
     /// (no warp scripts on disk).</summary>
     private bool TryPickReachablePortalTowardGraph(Snapshot snap, string destMap, out int px, out int py,
-        out string? viaMap, out WorldGraph.KafraEdgeInfo? kafra)
+        out string? viaMap, out WorldGraph.KafraEdgeInfo? kafra, (int X, int Y)? destCell = null)
     {
         px = py = 0;
         viaMap = null;
@@ -1096,7 +1178,10 @@ public sealed partial class BotBehavior
         // good enough for now is to find the first walkable cell.
         // Aim at a portal landing cell when one exists: the map's center can sit in a pocket no portal
         // reaches (pay_fild04), which made Plan() return null and stranded the bot on its way there.
-        var destSeed = _data.World.EntryCell(destMap) is { } entry
+        // A known target cell (a shop NPC) wins: indoor maps like prt_in are many rooms, and only the
+        // right door reaches the right one.
+        var destSeed = destCell is { } dc ? new RebuildSharedData.Data.Position(dc.X, dc.Y)
+            : _data.World.EntryCell(destMap) is { } entry
             ? new RebuildSharedData.Data.Position(entry.X, entry.Y)
             : FindAnyWalkableCell(destMap);
         if (destSeed == null) return false;
@@ -1137,7 +1222,7 @@ public sealed partial class BotBehavior
     }
 
     private bool TryPickReachablePortalToward(Snapshot snap, string destMap, out int px, out int py,
-        out string? viaMap, out WorldGraph.KafraEdgeInfo? kafra)
+        out string? viaMap, out WorldGraph.KafraEdgeInfo? kafra, (int X, int Y)? destCell = null)
     {
         px = py = 0;
         viaMap = null;
@@ -1149,7 +1234,7 @@ public sealed partial class BotBehavior
         // construction free of sub-region traps — every portal in the chain lands the bot in a region
         // that has a path forward. Kafra warps are included as additional edges; the first edge may
         // therefore be a kafra-teleport hop instead of a portal-walk hop.
-        if (TryPickReachablePortalTowardGraph(snap, destMap, out px, out py, out viaMap, out kafra))
+        if (TryPickReachablePortalTowardGraph(snap, destMap, out px, out py, out viaMap, out kafra, destCell))
             return true;
 
         // When the WorldGraph IS built but returns no plan, the bot's current REGION genuinely has no

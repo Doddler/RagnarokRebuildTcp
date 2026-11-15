@@ -38,7 +38,8 @@ public static class ShopPolicy
     public static bool ShouldStartTrip(int weight, int maxWeight, int stacks, int restockHeld, BotBehaviorConfig cfg, Func<int> countSaleable)
     {
         if (maxWeight > 0 && weight >= maxWeight * cfg.SellWeightPercent) return true;
-        if (stacks >= cfg.SellItemStacks) return true;
+        // Only when something would sell: kept stacks (slotted gear, cards) alone looped the bot to a shop and back.
+        if (stacks >= cfg.SellItemStacks && countSaleable() > 0) return true;
         if (cfg.RestockItemId > 0 && restockHeld < cfg.RestockBelow) return true;
         // Saleable-junk trigger: catches the "inventory filling with low-rank weapon drops" case before
         // weight or stack-count thresholds fire. We count items the ShopPolicy would actually sell so the

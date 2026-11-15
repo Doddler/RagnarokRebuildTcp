@@ -105,6 +105,7 @@ public sealed partial class BotBehavior
     {
         if (!_config.Enabled) return;
         var snap = _bot.WithState(Snapshot.From);
+        CountActivityTime(snap);
 
         await AnnounceModeAsync(ct);
 
@@ -160,6 +161,7 @@ public sealed partial class BotBehavior
             if (Mode != BotMode.Dead)
             {
                 Mode = BotMode.Dead;
+                NoteMapDeath(snap.Map);
                 // Attribute to whoever ACTUALLY hit us last (assist mobs / aggressor pile-ons are usually NOT
                 // our committed target). Fall back to the committed target only when the last-attacker entity
                 // is gone from view by death-handling time.
@@ -218,6 +220,19 @@ public sealed partial class BotBehavior
         ComputeHazards(snap);
         if (await AvoidHazardsAsync(snap, ct)) return;
 
+        // Dropped inside a wall (bad teleport coordinate): the server can't path out of a blocked cell, so
+        // every walk is silently ignored. A Fly Wing is the only way out.
+        if (stuck && snap.SelfPos is not { X: 0, Y: 0 } // (0,0) = position not received yet after a map change
+            && DateTime.UtcNow >= _nextEscapeItem && _data?.GetWalkMap(snap.Map) is { } here
+            && !here.IsWalkable(snap.SelfPos.X, snap.SelfPos.Y)
+            && _bot.WithState(w => w.Self.Inventory.Any(it => it.ItemId == _config.FlyWingItemId && it.Count > 0)))
+        {
+            _nextEscapeItem = DateTime.UtcNow.AddSeconds(3);
+            OnLog?.Invoke($"Standing in a wall at ({snap.SelfPos.X},{snap.SelfPos.Y}) on {snap.Map} — using a Fly Wing to get out.");
+            await _bot.UseInventoryItemAsync(_config.FlyWingItemId, -1, ct);
+            return;
+        }
+
         // Chat-driven leader commands (!engage / !flee / !hold / !regroup / !stop / !hunt / !follow).
         // Runs AFTER real-hazard avoidance — a !engage shouldn't pull a follower into an aggressive
         // monster they can't fight — but BEFORE ally rules / shopping / hunting, so the leader's
@@ -237,6 +252,8 @@ public sealed partial class BotBehavior
 
         // Spend stat/skill points per the build (StatTargets / SkillOrder). One point per tick, never blocks.
         await TickBuildAsync(ct);
+        await TickGearAsync(snap, ct);
+        TickMapChoice(snap);
 
         // A pending job change (a milestone) takes priority over shopping and hunting.
         if (JobChangeActive) { await TickJobChangeAsync(snap, stuck, ct); return; }
@@ -387,7 +404,9 @@ public sealed partial class BotBehavior
         BotMode.Traveling => string.IsNullOrEmpty(_config.HomeMap) ? "Traveling" : $"Traveling to {_config.HomeMap}",
         BotMode.Dead => "Dead, respawning",
         BotMode.Fleeing => "Fleeing danger",
-        BotMode.Shopping => "Shopping in town",
+        BotMode.Shopping => (_shopPhase == ShopPhase.Travel
+            ? $"Heading to {_shopNpcName} in {_data?.MapName(_shopMap) ?? _shopMap}"
+            : $"At {_shopNpcName}") + (_shopPurpose.Length > 0 ? $" to {_shopPurpose}" : ""),
         BotMode.JobChange => $"Changing job to {JobName(_config.DesiredJobId)}",
         BotMode.Parked => "Holding position (ordered)",
         BotMode.Resting => "Sitting to recover HP/SP",

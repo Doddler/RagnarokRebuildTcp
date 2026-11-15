@@ -483,6 +483,11 @@ public sealed class BotSession : IAsyncDisposable
     public Task StopAsync(CancellationToken ct = default) =>
         _conn?.SendSimpleAsync(PacketType.StopAction, ct) ?? Task.CompletedTask;
 
+    /// <summary>Refund all job skill points (Basic Mastery / First Aid stay). Admin-only on the server, which a
+    /// Development server grants every player; the server ignores it otherwise.</summary>
+    public Task ResetSkillsAsync(CancellationToken ct = default) =>
+        _conn?.SendSimpleAsync(PacketType.AdminResetSkills, ct) ?? Task.CompletedTask;
+
     /// <summary>Respawn after death. inPlace=false returns to the save point (the normal case).</summary>
     public Task RespawnAsync(bool inPlace = false, CancellationToken ct = default)
     {
@@ -1083,6 +1088,8 @@ public sealed class BotSession : IAsyncDisposable
         var isEquip = r.ReadBoolean();
         if (slot < World.Self.EquippedBagIds.Length)
             World.Self.EquippedBagIds[slot] = isEquip ? bagId : 0;
+        else if (slot == (byte)EquipSlot.Ammunition) // server sends the ammo item id here
+            World.Self.AmmoId = isEquip ? bagId : 0;
     }
 
     private void ReadOpenShop(PacketReader r)

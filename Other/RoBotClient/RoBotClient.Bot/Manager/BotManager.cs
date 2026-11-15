@@ -159,7 +159,9 @@ public sealed class BotManager
                         update?.OwnKill == true ? update.Value.Forecast?.Seconds : null,
                         update?.OwnKill == true ? update.Value.Forecast?.Attacks : null,
                         update?.OwnKill == true ? update.Value.Forecast?.HpLost : null,
-                        update is { OwnKill: true, Attacks: not null } ? update.Value.Helped : null));
+                        update is { OwnKill: true, Attacks: not null } ? update.Value.Helped : null,
+                        Math.Round(r.Brain.TimeSpent.Fight, 1), Math.Round(r.Brain.TimeSpent.Search, 1),
+                        Math.Round(r.Brain.TimeSpent.Recover, 1), Math.Round(r.Brain.TimeSpent.Flee, 1)));
             }
         }
         catch { }
@@ -243,6 +245,25 @@ public sealed class BotManager
 
         var session = new BotSession(config, _data);
         var brain = new BotBehavior(session, behavior, _data);
+        // Real exp/h on a map, from the saved Runs history (survives restarts): the most recent stays there, up to
+        // 20 min of hunting, ignoring stays older than 3 h (the bot was weaker then).
+        if (_configs != null) brain.OnHomeMapChanged += () => _configs.Set(config.CharacterName, behavior);
+        brain.MeasureMap = map =>
+        {
+            double seconds = 0, exp = 0, other = 0;
+            var kills = 0;
+            ActivityTime time = default;
+            foreach (var run in MapRuns.Compute(session.Telemetry.Snapshot(), _progress?.Get(config.CharacterName) ?? Array.Empty<ProgressSample>(), true))
+            {
+                if (seconds >= 1200 || DateTime.UtcNow - run.End > TimeSpan.FromHours(3)) break;
+                if (!string.Equals(run.Map, map, StringComparison.OrdinalIgnoreCase)) continue;
+                seconds += run.Active.TotalSeconds;
+                exp += run.Exp;
+                // The split counts only kills from stays where it was tracked, so per-kill numbers aren't diluted.
+                if (run.Time.Total > 0) { time += run.Time; kills += run.TimedKills; other += Math.Max(0, run.TimedSeconds - run.Time.Total); }
+            }
+            return (seconds, exp, kills, time, other);
+        };
         var cts = new CancellationTokenSource();
         var runner = new BotRunner(id, config, session, brain, behavior, cts);
 
@@ -312,6 +333,7 @@ public sealed class BotManager
                             runner.PlaytimeAtSessionStart = lastSample?.PlaytimeSeconds ?? 0;
                             runner.OwnExp = lastSample?.OwnExp ?? 0;
                             runner.PartyExp = lastSample?.PartyExp ?? 0;
+                            brain.TimeSpent = _progress.Get(config.CharacterName).LastOrDefault(sample => sample.Activity != null)?.Activity ?? default;
                             runner.SessionStartedAt = DateTime.UtcNow;
                         }
                         session.OnBaseExpUpdated += u => SampleProgress(runner, u);
@@ -464,6 +486,17 @@ public sealed class BotManager
     public BotBehavior? GetBehavior(string id) => _bots.TryGetValue(id, out var r) ? r.Brain : null;
     public BotBehaviorConfig? GetBehaviorConfig(string id) => _bots.TryGetValue(id, out var r) ? r.BehaviorConfig : null;
     public string[] GetLog(string id) => _bots.TryGetValue(id, out var r) ? r.LogLines() : Array.Empty<string>();
+
+    // ponytail: severity by keyword so every existing log call is covered; pass a severity through OnLog if this misfires
+    private static readonly string[] WarningMarkers =
+    {
+        "no path", "no reachable", "aborted", "abandoning", "timed out", "Stuck for", "Standing in a wall",
+        "blocked", "Session ended", "FAILED",
+    };
+
+    /// <summary>Whether a log line signals the bot is stuck or something failed (shown as a warning in the UI).</summary>
+    public static bool IsWarning(string line) =>
+        WarningMarkers.Any(m => line.Contains(m, StringComparison.OrdinalIgnoreCase));
 
     public BotSnapshot? GetSnapshot(string id) => _bots.TryGetValue(id, out var r) ? Snapshot(r) : null;
 

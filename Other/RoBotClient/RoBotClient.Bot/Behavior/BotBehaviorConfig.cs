@@ -41,6 +41,9 @@ public sealed class BotBehaviorConfig
     /// avoids wandering into portals so it stays on the hunting field.</summary>
     public string HomeMap = "";
 
+    /// <summary>Let the bot move HomeMap on its own to the map with the best exp/hour (see BotBehavior.MapChoice).</summary>
+    public bool AutoMap = true;
+
     public bool Enabled = true;
 
     /// <summary>If the bot makes no progress (no movement AND no target-HP drop) for this many seconds,
@@ -293,6 +296,7 @@ public sealed class BotBehaviorConfig
         FleeHpPercent = other.FleeHpPercent;
         FleeMonsterRange = other.FleeMonsterRange;
         HomeMap = other.HomeMap;
+        AutoMap = other.AutoMap;
         Enabled = other.Enabled;
         StuckSeconds = other.StuckSeconds;
         Verbose = other.Verbose;

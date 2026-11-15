@@ -120,9 +120,67 @@ public sealed class GameDatabase
         {
             var knownMaps = new HashSet<string>(db.MapsByCode.Keys, StringComparer.OrdinalIgnoreCase);
             db.World.Build(warpScriptDir, db.GetWalkMap, knownMaps, db.Kafras);
+            // ponytail: gear stats aren't in the client export, so read the server CSVs that sit next to Script/Warps
+            db.LoadGear(Path.GetFullPath(Path.Combine(warpScriptDir, "..", "..", "Db")));
         }
 
         return db;
+    }
+
+    // ---- gear (attack / defense / who can wear it) ----
+
+    /// <summary>One wearable item. Type is the weapon class (Sword, Bow…), the armor type (Armor, Shield,
+    /// Headgear…) or "Arrow"; Position is MainHand/BothHands for weapons, Top/Mid/Bottom… for headgear.</summary>
+    public sealed record GearInfo(int Id, string Type, string Position, int Power, int MinLvl, string Group);
+
+    public IReadOnlyDictionary<int, GearInfo> Gear { get; private set; } = new Dictionary<int, GearInfo>();
+    private Dictionary<string, string[]> _equipGroups = new(StringComparer.OrdinalIgnoreCase);
+
+    private void LoadGear(string dbDir)
+    {
+        if (!Directory.Exists(dbDir)) return;
+        // None of these files quote fields that contain commas, so a plain split is enough.
+        IEnumerable<string[]> Rows(string file) => File.Exists(Path.Combine(dbDir, file))
+            ? File.ReadLines(Path.Combine(dbDir, file)).Skip(1).Select(l => l.Split(',')).Where(c => c.Length > 3)
+            : Enumerable.Empty<string[]>();
+        static int I(string s) => int.TryParse(s, out var v) ? v : 0;
+
+        var gear = new Dictionary<int, GearInfo>();
+        // Id,Code,Name,Attack,Range,Slot,Price,Weight,Type,Position,Property,MinLvl,Rank,EquipGroup
+        foreach (var c in Rows("ItemsWeapons.csv"))
+            gear[I(c[0])] = new GearInfo(I(c[0]), c[8], c[9], I(c[3]), I(c[11]), c[13]);
+        // Id,Code,Name,Defense,MagicDef,Slot,Price,Weight,Type,Position,Property,MinLvl,EquipGroup
+        foreach (var c in Rows("ItemsEquipment.csv"))
+            gear[I(c[0])] = new GearInfo(I(c[0]), c[8], c[9], I(c[3]), I(c[11]), c[12]);
+        // Id,Code,Name,Attack,Price,Weight,Property,MinLvl,Type
+        foreach (var c in Rows("ItemsAmmo.csv"))
+            gear[I(c[0])] = new GearInfo(I(c[0]), c[8], "", I(c[3]), I(c[7]), "");
+        Gear = gear;
+
+        // Group,"Display name",member,member… where a member is a job name or an earlier group.
+        var groups = new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase);
+        if (File.Exists(Path.Combine(dbDir, "EquipmentGroups.csv")))
+            foreach (var c in File.ReadLines(Path.Combine(dbDir, "EquipmentGroups.csv")).Select(l => l.Split(',')))
+                if (c.Length > 2) groups[c[0].Trim()] = c[2..].Select(s => s.Trim()).ToArray();
+        _equipGroups = groups;
+    }
+
+    /// <summary>Whether a job (by name, e.g. "Archer") may wear the item, following the server's
+    /// EquipmentGroups.csv nesting. Ammo has no group and is always allowed.</summary>
+    public bool CanEquip(GearInfo g, string jobName)
+    {
+        if (g.Group.Length == 0) return true;
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var stack = new Stack<string>();
+        stack.Push(g.Group);
+        while (stack.Count > 0)
+        {
+            var name = stack.Pop();
+            if (string.Equals(name, jobName, StringComparison.OrdinalIgnoreCase)) return true;
+            if (seen.Add(name) && _equipGroups.TryGetValue(name, out var members))
+                foreach (var m in members) stack.Push(m);
+        }
+        return false;
     }
 
     private static List<T> ReadEnvelope<T>(string path)

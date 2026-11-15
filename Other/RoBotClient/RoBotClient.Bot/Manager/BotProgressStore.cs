@@ -11,7 +11,11 @@ namespace RoBotClient.Bot.Manager;
 public sealed record ProgressSample(DateTime Time, double PlaytimeSeconds, long TotalExp, int Level,
     long OwnExp = 0, long PartyExp = 0, string? Monster = null, double? TimeToKill = null, int? Attacks = null, int? HpLost = null,
     bool? Party = null, bool? Healer = null, double? PredSeconds = null, int? PredAttacks = null, double? PredHpLost = null,
-    bool? Helped = null);
+    bool? Helped = null, double? Fight = null, double? Search = null, double? Recover = null, double? Flee = null)
+{
+    /// <summary>Running totals of seconds fighting / searching / recovering / fleeing (null on samples from before they were tracked).</summary>
+    [System.Text.Json.Serialization.JsonIgnore] public RoBotClient.Bot.Behavior.ActivityTime? Activity => Fight is { } fight ? new(fight, Search ?? 0, Recover ?? 0, Flee ?? 0) : null;
+}
 
 /// <summary>
 /// Persistent per-character progression history (playtime vs lifetime base exp) for the dashboard chart.
