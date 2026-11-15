@@ -34,6 +34,7 @@ else
                     @s.MapDisplayName <span class="badge bg-light text-dark">@s.X, @s.Y</span>
                     &nbsp;Lv @s.Level/@s.JobLevel
                 </div>
+                <div class="text-body">@(Bots.GetBehavior(Id)?.Activity)</div>
             </div>
             <div class="text-end">
                 <span class="badge @ModeClass(s.Mode) fs-6 me-2">@s.Mode</span>
@@ -455,6 +456,41 @@ else
                         {
                             <div class="small text-muted">No fights recorded with a forecast yet. Each kill this bot lands itself from now on shows up here.</div>
                         }
+
+                        <div class="fw-semibold small mt-3">Runs <span class="text-muted fw-normal">(each stay on a map, newest first)</span></div>
+                        @if (Runs(s.CharacterName) is { Count: > 0 } runs)
+                        {
+                            <div class="table-responsive small">
+                                <table class="table table-sm mb-0 mt-1 align-middle">
+                                    <thead class="text-nowrap"><tr><th>Map</th><th>Started</th><th class="text-end">Time</th><th class="text-end">Kills</th><th class="text-end">Base exp</th><th class="text-end">Exp/h</th><th>Items</th></tr></thead>
+                                    <tbody>
+                                        @foreach (var r in runs)
+                                        {
+                                            <tr>
+                                                <td class="text-nowrap" title="@r.Map"><img src="minimap/@(Uri.EscapeDataString(r.Map)).png" alt="" width="28" height="28" class="me-2 rounded" style="object-fit:cover;vertical-align:middle" onerror="this.style.visibility='hidden'" />@MapLabel(r.Map)@if (r.Ongoing) {<span class="badge bg-success ms-1">now</span>}</td>
+                                                <td class="text-nowrap">@r.Start.ToLocalTime().ToString("MMM d HH:mm")</td>
+                                                <td class="text-end text-nowrap">@RunTime(r.Active)</td>
+                                                <td class="text-end">@r.Kills</td>
+                                                <td class="text-end">@r.Exp.ToString("N0")</td>
+                                                <td class="text-end fw-semibold">@(r.Active.TotalMinutes >= 1 ? (r.Exp / r.Active.TotalHours).ToString("N0") : "—")</td>
+                                                <td>
+                                                    @foreach (var it in r.Items.OrderByDescending(i => i.Value).Take(3))
+                                                    {
+                                                        <span class="me-2 text-nowrap" title="@it.Key">@if (LootIcon(it.Key) is { } icon) {<img src="@icon" alt="" width="16" height="16" class="me-1" />}@it.Value</span>
+                                                    }
+                                                    <span class="text-muted text-nowrap">· @r.Items.Values.Sum() total</span>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="small text-secondary">Time counts only while the bot was online and active (gaps over 2 min between its events are left out). Runs under a minute, like passing through on the way somewhere, are hidden.</div>
+                        }
+                        else
+                        {
+                            <div class="small text-muted">No map history yet.</div>
+                        }
                     </div>
                 </div>
 
@@ -784,6 +820,58 @@ else
 
     // Loot telemetry is keyed by item name (as GameDatabase.ItemName gives it), so map names back to item ids.
     private static Dictionary<string, int>? _itemIdByName;
+    private sealed record Run(string Map, DateTime Start, DateTime End, TimeSpan Active, int Kills, long Exp, Dictionary<string, int> Items, bool Ongoing);
+
+    // Splits telemetry into stays on one map: a run starts at each MapChange to a different map (re-entering the
+    // same map after a reconnect continues it). Active time sums gaps between consecutive events, capped at 2 min,
+    // so offline stretches don't count. Exp comes from the progress history over the run's wall-clock window.
+    // ponytail: telemetry keeps the last 5000 events, so older runs drop off; persist runs if long history matters.
+    private List<Run> Runs(string characterName)
+    {
+        var events = tele?.Snapshot() ?? new List<TelemetryEvent>();
+        var samples = Bots.Progress?.Get(characterName) ?? Array.Empty<ProgressSample>();
+        long ExpAt(DateTime t) => samples.LastOrDefault(p => p.Time <= t)?.TotalExp ?? samples.FirstOrDefault()?.TotalExp ?? 0;
+
+        var runs = new List<Run>();
+        string? map = null;
+        DateTime start = default, last = default;
+        var active = TimeSpan.Zero;
+        int kills = 0;
+        var items = new Dictionary<string, int>();
+        void Close(DateTime end, bool ongoing)
+        {
+            if (map == null || active.TotalMinutes < 1) return;
+            // A hidden short stop (a detour, a respawn in town) shouldn't split one stay into two runs.
+            if (runs.Count > 0 && string.Equals(runs[^1].Map, map, StringComparison.OrdinalIgnoreCase))
+            {
+                var prev = runs[^1];
+                foreach (var (k, v) in prev.Items) items[k] = items.GetValueOrDefault(k) + v;
+                runs[^1] = new Run(map, prev.Start, end, prev.Active + active, prev.Kills + kills, Math.Max(0, ExpAt(end) - ExpAt(prev.Start)), items, ongoing);
+            }
+            else runs.Add(new Run(map, start, end, active, kills, Math.Max(0, ExpAt(end) - ExpAt(start)), items, ongoing));
+        }
+        foreach (var e in events)
+        {
+            if (map != null) active += TimeSpan.FromSeconds(Math.Min((e.Time - last).TotalSeconds, 120));
+            last = e.Time;
+            if (e.Type == TelemetryEventType.MapChange && !string.Equals(e.Detail, map, StringComparison.OrdinalIgnoreCase))
+            {
+                Close(e.Time, false);
+                (map, start, active, kills, items) = (e.Detail, e.Time, TimeSpan.Zero, 0, new Dictionary<string, int>());
+            }
+            else if (e.Type == TelemetryEventType.Kill) kills++;
+            else if (e.Type == TelemetryEventType.Loot && e.Detail.Length > 0) items[e.Detail] = items.GetValueOrDefault(e.Detail) + Math.Max(1, e.Value);
+        }
+        if (map != null && (DateTime.UtcNow - last).TotalSeconds < 120) active += DateTime.UtcNow - last;
+        Close(DateTime.UtcNow, snapshot?.InGame == true);
+        runs.Reverse();
+        return runs;
+    }
+
+    private string MapLabel(string code) => Db.MapsByCode.TryGetValue(code, out var m) && !string.IsNullOrEmpty(m.Name) ? $"{m.Name} ({code})" : code;
+
+    private static string RunTime(TimeSpan t) => t.TotalHours >= 1 ? $"{(int)t.TotalHours}h {t.Minutes:00}m" : $"{t.Minutes}m {t.Seconds:00}s";
+
     private string? LootIcon(string name)
     {
         _itemIdByName ??= Db.ItemsById.Values.GroupBy(i => i.Name).ToDictionary(g => g.Key, g => g.First().Id);

@@ -72,12 +72,11 @@ else
                     <th class="text-nowrap">Lv</th>
                     <th class="text-nowrap">Build</th>
                     <th class="text-nowrap">Desired job</th>
-                    <th style="min-width: 140px;">HP</th>
-                    <th style="min-width: 120px;">SP</th>
-                    <th>Mode</th>
+                    <th style="min-width: 140px;">HP / SP</th>
+                    <th>Activity</th>
                     <th>Target</th>
                     <th class="text-end">Kills</th>
-                    <th class="text-end">Base Exp</th>
+                    <th class="text-end text-nowrap">Base Exp</th>
                     <th class="text-end" title="Base exp over the last 15 min of playtime, per hour">Exp/h</th>
                     <th class="text-end text-nowrap">Zeny</th>
                     <th class="text-end text-nowrap">Mobs</th>
@@ -89,7 +88,7 @@ else
                 {
                     var id = bot.Id;
                     <tr>
-                        <td>
+                        <td class="text-nowrap">
                             <a href="@($"/bot/{id}")" class="fw-semibold text-decoration-none">
                                 @(string.IsNullOrEmpty(bot.CharacterName) ? id : bot.CharacterName)
                             </a>
@@ -112,9 +111,7 @@ else
                                     @bot.Hp/@bot.MaxHp
                                 </span>
                             </div>
-                        </td>
-                        <td>
-                            <div class="progress position-relative" role="progressbar" style="height: 18px;"
+                            <div class="progress position-relative mt-1" role="progressbar" style="height: 18px;"
                                  aria-valuenow="@bot.Sp" aria-valuemin="0" aria-valuemax="@bot.MaxSp">
                                 <div class="progress-bar bg-info"
                                      style="width: @PercentWidth(bot.SpPercent)"></div>
@@ -125,6 +122,7 @@ else
                         </td>
                         <td>
                             <span class="badge @ModeBadgeClass(bot.Mode)">@bot.Mode</span>
+                            <div class="small text-muted text-nowrap">@(Bots.GetBehavior(bot.Id)?.Activity)</div>
                         </td>
                         <td class="text-nowrap">
                             @if (string.IsNullOrEmpty(bot.TargetName))

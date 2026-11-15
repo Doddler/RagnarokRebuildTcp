@@ -378,6 +378,23 @@ public sealed partial class BotBehavior
     }
 
     private string _lastIdleReason = "";
+    private string _idleSummary = "";
+
+    /// <summary>One-line description of what the bot is doing right now, for the dashboard and map chat.</summary>
+    public string Activity => Mode switch
+    {
+        BotMode.Hunting => string.IsNullOrEmpty(TargetName) ? "Hunting" : $"Hunting {TargetName}",
+        BotMode.Traveling => string.IsNullOrEmpty(_config.HomeMap) ? "Traveling" : $"Traveling to {_config.HomeMap}",
+        BotMode.Dead => "Dead, respawning",
+        BotMode.Fleeing => "Fleeing danger",
+        BotMode.Shopping => "Shopping in town",
+        BotMode.JobChange => $"Changing job to {JobName(_config.DesiredJobId)}",
+        BotMode.Parked => "Holding position (ordered)",
+        BotMode.Resting => "Sitting to recover HP/SP",
+        BotMode.Following => "Following the party leader",
+        BotMode.Looting => "Picking up loot",
+        _ => string.IsNullOrEmpty(_idleSummary) ? "Looking for targets" : $"Looking for targets: {_idleSummary}",
+    };
 
     /// <summary>Expected base exp per second of walking to, killing and then sitting off the HP lost to
     /// <paramref name="m"/>, solo. The server pays a solo killer the monster's full base exp (no level-gap
@@ -455,12 +472,17 @@ public sealed partial class BotBehavior
             if (!IsReachable(snap, c.m.Pos)) { unreachable++; continue; }
             chosen = c.f;
             _lastIdleReason = ""; // armed for the next idle window
+            _idleSummary = "";
             return c.m;
         }
 
         // No target. Log WHY (deduped — only fire when the reason string actually changes), so the user can
         // diagnose "FSM keeps the bot Idle" without enabling Verbose chat.
         var reason = $"PickTarget idle — {snap.Monsters.Count} mon in view (not-huntable={notHuntable}, avoided-class={avoided}, blacklisted={blacklisted}, in-hazard={hazardous}, near-portal={portalRisk}, unwinnable={unwinnable}, group-swarm={swarmed}, unreachable={unreachable}).";
+        _idleSummary = snap.Monsters.Count == 0 ? "none in view"
+            : hazardous > 0 ? $"{hazardous} near a dangerous monster"
+            : unwinnable > 0 ? $"{unwinnable} too strong"
+            : $"{snap.Monsters.Count} in view, none huntable";
         if (reason != _lastIdleReason)
         {
             _lastIdleReason = reason;
@@ -1208,19 +1230,7 @@ public sealed partial class BotBehavior
     {
         if (!_config.Verbose || Mode == _lastAnnouncedMode || Mode == BotMode.Looting) return;
         _lastAnnouncedMode = Mode;
-        var msg = Mode switch
-        {
-            BotMode.Hunting => string.IsNullOrEmpty(TargetName) ? "Hunting." : $"Hunting {TargetName}.",
-            BotMode.Traveling => string.IsNullOrEmpty(_config.HomeMap) ? "Traveling." : $"Traveling to {_config.HomeMap}.",
-            BotMode.Dead => "I died — respawning.",
-            BotMode.Fleeing => "Fleeing — too dangerous here!",
-            BotMode.Shopping => "Heading to town to shop.",
-            BotMode.JobChange => "Off to change my job!",
-            BotMode.Parked => "Holding position as ordered.",
-            BotMode.Resting => "Resting to recover HP/SP.",
-            BotMode.Following => "Following the party leader.",
-            _ => "Idle — looking for targets.",
-        };
+        var msg = Activity + ".";
         await _bot.SayAsync(msg, ct);
     }
 
@@ -1333,6 +1343,8 @@ public sealed partial class BotBehavior
     {
         var m = _data?.Monster(classId);
         if (m == null) return false;
+        // Plants never move or attack, even boss-flagged ones (the prt_fild08 Target Dummy is Special=Boss).
+        if (string.Equals(m.Ai, "AiPlant", StringComparison.Ordinal)) return false;
         if (string.Equals(m.Special, "Boss", StringComparison.OrdinalIgnoreCase)) return true; // bosses/MVPs: always dangerous
         if (string.IsNullOrEmpty(m.Ai)) return false;
         return m.Ai.StartsWith("AiAggressive", StringComparison.Ordinal)
