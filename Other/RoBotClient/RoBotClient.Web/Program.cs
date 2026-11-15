@@ -110,6 +110,44 @@ if (int.TryParse(Environment.GetEnvironmentVariable("ROBOT_SEED"), out var seedC
     catch (Exception ex) { app.Logger.LogError(ex, "Bot seed failed"); }
 }
 
+// Dev loop: remember which bots were online and bring them back after a restart (including the automatic
+// restarts `dotnet watch` does for edits hot reload can't apply). Shutdown logs them out cleanly first so
+// the server releases the accounts instead of answering "username taken".
+var runningBotsFile = string.IsNullOrEmpty(repoRoBot) ? "" : Path.Combine(repoRoBot, "running-bots.json");
+if (runningBotsFile.Length > 0)
+{
+    var botManager = app.Services.GetRequiredService<BotManager>();
+    app.Lifetime.ApplicationStopping.Register(() =>
+    {
+        var names = botManager.RunningCharacters();
+        if (names.Count > 0) File.WriteAllText(runningBotsFile, System.Text.Json.JsonSerializer.Serialize(names));
+        botManager.StopAllAsync(TimeSpan.FromSeconds(3)).GetAwaiter().GetResult();
+    });
+    app.Lifetime.ApplicationStarted.Register(() => _ = Task.Run(async () =>
+    {
+        if (!File.Exists(runningBotsFile)) return;
+        var names = System.Text.Json.JsonSerializer.Deserialize<List<string>>(File.ReadAllText(runningBotsFile)) ?? new();
+        File.Delete(runningBotsFile); // a crash mid-respawn shouldn't replay forever
+        await Task.WhenAll(names.Select(async (name, i) =>
+        {
+            await Task.Delay(TimeSpan.FromMilliseconds(500 * i)); // stagger logins a little
+            // Saved per-character config (hunt map, build, shop settings) is rehydrated inside spawn.
+            for (var attempt = 0; attempt < 4; attempt++)
+            {
+                try
+                {
+                    if (botManager.SpawnExistingBot(new BotBehaviorConfig { HomeMap = "prt_fild08" }, name) == null) break; // unknown character
+                    await Task.Delay(TimeSpan.FromSeconds(4)); // login takes a moment; failures land in the spawn-failure list
+                    if (!botManager.SpawnFailedRecently(name, TimeSpan.FromSeconds(5))) break;
+                }
+                catch (InvalidOperationException) { } // session cooldown: the old login is still being released
+                await Task.Delay(TimeSpan.FromSeconds(5));
+            }
+        }));
+        app.Logger.LogInformation("Respawned {Count} bot(s) from the previous run.", names.Count);
+    }));
+}
+
 app.Run();
 
 // Serves <relativeDir>/<name>.png, falling back to aliases[name]. Names never contain a slash, and the resolved

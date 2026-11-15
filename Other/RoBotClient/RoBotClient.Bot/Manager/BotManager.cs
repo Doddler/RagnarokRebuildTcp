@@ -443,6 +443,23 @@ public sealed class BotManager
             StopBot(id);
     }
 
+    /// <summary>Character names of every running bot, in spawn order.</summary>
+    public List<string> RunningCharacters() =>
+        _bots.OrderBy(kv => kv.Key.Length).ThenBy(kv => kv.Key).Select(kv => kv.Value.Config.CharacterName).ToList();
+
+    /// <summary>Stop every bot and wait (up to <paramref name="timeout"/>) for their sessions to close, so the
+    /// server sees clean logouts and a restarted dashboard can log straight back in.</summary>
+    public async Task StopAllAsync(TimeSpan timeout)
+    {
+        var tasks = _bots.Values.Select(r => r.Task).OfType<Task>().ToArray();
+        StopAll();
+        await Task.WhenAny(Task.WhenAll(tasks), Task.Delay(timeout));
+    }
+
+    /// <summary>Whether a spawn attempt for this character failed within the last <paramref name="window"/>.</summary>
+    public bool SpawnFailedRecently(string characterName, TimeSpan window) =>
+        GetRecentSpawnFailures(window).Any(f => f.CharacterName.Equals(characterName, StringComparison.OrdinalIgnoreCase));
+
     public BotSession? GetSession(string id) => _bots.TryGetValue(id, out var r) ? r.Session : null;
     public BotBehavior? GetBehavior(string id) => _bots.TryGetValue(id, out var r) ? r.Brain : null;
     public BotBehaviorConfig? GetBehaviorConfig(string id) => _bots.TryGetValue(id, out var r) ? r.BehaviorConfig : null;
