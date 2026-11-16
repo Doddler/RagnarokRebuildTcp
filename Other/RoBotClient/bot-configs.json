@@ -1846,7 +1846,7 @@
     "MaxRoundsToKill": 120,
     "FleeHpPercent": 0.3,
     "FleeMonsterRange": 5,
-    "HomeMap": "pay_fild10",
+    "HomeMap": "mjolnir_02",
     "AutoMap": true,
     "Enabled": true,
     "StuckSeconds": 3.5,

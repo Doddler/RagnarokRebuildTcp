@@ -248,10 +248,13 @@ public sealed partial class BotBehavior
                 // the death-animation lockout anyway, so retrying sooner just shortens the wait once the
                 // server is ready to accept it.
                 _nextRespawn = DateTime.UtcNow.AddSeconds(1.5);
+                _respawnPending = true;
                 await _bot.RespawnAsync(inPlace: false, ct);
             }
             return;
         }
+
+        LearnSavePoint(snap);
 
         // Item-rule DSL goes first: when the user configured an ItemScript, it takes priority over the
         // hard-coded HealHpPercent logic. The script can fire a potion, Fly Wing, etc. and signal "done
@@ -343,6 +346,9 @@ public sealed partial class BotBehavior
         // Follower mode: in a party, NOT the leader, leader visible — mirror leader's target / stay close.
         // When the leader isn't in view this returns false and we fall through to normal travel/wander.
         if (await TickAsFollowerAsync(snap, ct)) return;
+
+        // Respawning far from the hunting map? Re-save at a Kafra closer to it first.
+        if (await TickSavePointAsync(snap, ct)) return;
 
         // Travel to the hunting map if we're elsewhere (e.g. respawned in town).
         if (!string.IsNullOrEmpty(_config.HomeMap) &&

@@ -80,7 +80,9 @@ public sealed partial class BotBehavior
             _kafraDeadline = DateTime.UtcNow.AddSeconds(45);
             _kafraNextAction = DateTime.MinValue;
             _kafraLastSeq = 0;
-            OnLog?.Invoke($"Kafra warp: heading to NPC ({npcX},{npcY}) on {snap.Map} to teleport to '{info.OptionLabel}' (option {info.DestOptionIndex}).");
+            OnLog?.Invoke(info.DestOptionIndex < 0
+                ? $"Kafra save: heading to NPC ({npcX},{npcY}) on {snap.Map} to save my respawn point."
+                : $"Kafra warp: heading to NPC ({npcX},{npcY}) on {snap.Map} to teleport to '{info.OptionLabel}' (option {info.DestOptionIndex}).");
         }
 
         if (DateTime.UtcNow > _kafraDeadline)
@@ -177,6 +179,15 @@ public sealed partial class BotBehavior
                     _kafraNextAction = DateTime.UtcNow.AddMilliseconds(300);
                     return;
                 }
+                // Save (dest -1): the reply after "Save" is the "Your Respawn Point has been saved" dialog.
+                if (_kafraDestOption < 0 && npc.Phase == NpcPhase.Dialog)
+                {
+                    _kafraLastSeq = npc.Seq;
+                    await _bot.NpcAdvanceAsync(ct);
+                    _kafraSaved = true;
+                    ResetKafraStep();
+                    return;
+                }
                 switch (npc.Phase)
                 {
                     case NpcPhase.Dialog:
@@ -185,7 +196,7 @@ public sealed partial class BotBehavior
                         await _bot.NpcAdvanceAsync(ct);
                         return;
                     case NpcPhase.Option:
-                        if (_kafraDestOption < 0 || _kafraDestOption >= npc.Options.Count)
+                        if (_kafraDestOption < 0 ||_kafraDestOption >= npc.Options.Count)
                         {
                             OnLog?.Invoke($"Kafra warp aborted: destination option {_kafraDestOption} out of range " +
                                           $"({npc.Options.Count} options shown). Server menu shape may have changed.");

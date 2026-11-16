@@ -41,6 +41,10 @@ public sealed class BotBehaviorConfig
     /// avoids wandering into portals so it stays on the hunting field.</summary>
     public string HomeMap = "";
 
+    /// <summary>Where the bot reappears after dying, learned on each respawn (see BotBehavior.SavePoint). Empty = not seen yet.</summary>
+    public string SavePointMap = "";
+    public int SavePointX, SavePointY;
+
     /// <summary>Let the bot move HomeMap on its own to the map with the best exp/hour (see BotBehavior.MapChoice).</summary>
     public bool AutoMap = true;
 
@@ -295,6 +299,9 @@ public sealed class BotBehaviorConfig
         FleeHpPercent = other.FleeHpPercent;
         FleeMonsterRange = other.FleeMonsterRange;
         HomeMap = other.HomeMap;
+        SavePointMap = other.SavePointMap;
+        SavePointX = other.SavePointX;
+        SavePointY = other.SavePointY;
         AutoMap = other.AutoMap;
         Enabled = other.Enabled;
         StuckSeconds = other.StuckSeconds;
