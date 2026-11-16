@@ -1846,7 +1846,7 @@
     "MaxRoundsToKill": 120,
     "FleeHpPercent": 0.3,
     "FleeMonsterRange": 5,
-    "HomeMap": "moc_fild03",
+    "HomeMap": "pay_fild10",
     "AutoMap": true,
     "Enabled": true,
     "StuckSeconds": 3.5,

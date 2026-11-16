@@ -373,6 +373,7 @@ public sealed partial class BotBehavior
             Mode = BotMode.Hunting;
             TargetName = current.Name;
             if (await HoldFiringSpotAsync(snap, current, ct)) return; // fixed monster: get to a safe firing cell first
+            if (await WalkAroundToTargetAsync(snap, current, ct)) return; // behind a wall: server won't path there
             if (await TickSkillsAsync(snap, current, ct)) return; // a skill rule fired — skip the basic attack this tick
             // Kite sub-FSM: ranged classes with EnableKite set get positional management here. If it
             // owned the tick (stepped / fired / held), we're done; otherwise fall through to the
@@ -1579,6 +1580,35 @@ public sealed partial class BotBehavior
         foreach (var h in _hazards) list.Add((h.pos.X, h.pos.Y, h.radius));
         foreach (var h in _seenHazards.Values) list.Add((h.pos.X, h.pos.Y, h.radius));
         return list;
+    }
+
+    // The server's pathfinder gives up past 20 cells (PathFinder.MaxDistance) and skills/attacks need line of sight, so
+    // a target behind a wall got "Bash: no line of sight" spam with the bot standing still until it timed out as
+    // unreachable. Walk our own uncapped A* until we can see it and the server can path the rest.
+    private const int ServerMaxPath = 18; // 20 minus slack for the server stopping one cell short
+    private DateTime _nextChaseWalk;
+    private int _chaseLoggedFor;
+
+    private async Task<bool> WalkAroundToTargetAsync(Snapshot snap, MonsterInfo target, CancellationToken ct)
+    {
+        var map = _data?.GetWalkMap(snap.Map);
+        if (map == null) return false;
+        string why;
+        if (!map.HasLineOfSight(snap.SelfPos.X, snap.SelfPos.Y, target.Pos.X, target.Pos.Y)) why = "no line of sight";
+        else if (Dist(snap.SelfPos, target.Pos) <= InferAttackRange(snap)) return false;
+        else if (map.FindPath(snap.SelfPos.X, snap.SelfPos.Y, target.Pos.X, target.Pos.Y, 4000) is { } p && p.Count - 1 > ServerMaxPath)
+            why = $"walk is {p.Count - 1} cells, server only paths {ServerMaxPath}";
+        else return false;
+
+        if (_chaseLoggedFor != target.Id)
+        {
+            _chaseLoggedFor = target.Id;
+            OnLog?.Invoke($"Can't hit '{target.Name}' from here ({why}) — walking around to it myself.");
+        }
+        if (DateTime.UtcNow < _nextChaseWalk) return true;
+        _nextChaseWalk = DateTime.UtcNow.AddSeconds(0.5);
+        await WalkPathTowardAsync(snap, target.Pos.X, target.Pos.Y, 12, ct);
+        return true;
     }
 
     // Last target WalkPathTowardAsync aimed at (travel, shop, kafra, bard...), so fleeing can keep heading there.
