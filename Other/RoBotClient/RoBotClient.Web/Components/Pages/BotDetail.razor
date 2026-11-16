@@ -164,41 +164,17 @@ else
                     </div>
                     <div class="card-body d-flex flex-wrap gap-3 align-items-start">
                         <WorldMap MapCode="@s.Map" @key="s.Map" />
-                        @{ var mapKills = KillsOnMap(s.Map); var stay = Runs(s.CharacterName).FirstOrDefault(run => run.Ongoing && string.Equals(run.Map, s.Map, StringComparison.OrdinalIgnoreCase)); }
-                        @if (stay != null || mapKills.Count > 0)
+                        @{ var mapKills = KillsOnMap(s.Map); }
+                        @if (mapKills.Count > 0)
                         {
                             <div style="min-width:10rem;flex:1">
-                                @if (stay != null)
-                                {
-                                    <div class="d-flex flex-wrap gap-2 mb-2">
-                                        <span class="badge bg-dark-subtle text-body fs-6 fw-normal"><b>@StayTime(stay.Active)</b> on this map</span>
-                                        <span class="badge bg-dark-subtle text-body fs-6 fw-normal"><b>@(stay.Active.TotalMinutes >= 1 ? (stay.Exp / stay.Active.TotalHours).ToString("N0") : "—")</b> exp/h so far</span>
-                                        @if (MedianKillGap(stay.Start) is { } gap)
-                                        {
-                                            <span class="badge bg-dark-subtle text-body fs-6 fw-normal" title="Median time from one kill to the next on this stay (finding + fighting + resting)"><b>@StayTime(gap)</b> median between duels</span>
-                                        }
-                                    </div>
-                                    @if (stay.Time.Total >= 1)
+                                <div class="small text-muted mb-1">Killed on @s.Map</div>
+                                <div class="d-flex flex-wrap gap-1">
+                                    @foreach (var (name, count) in mapKills.OrderByDescending(entry => entry.Value))
                                     {
-                                        var split = stay.Time;
-                                        <div class="d-flex flex-wrap gap-2 mb-2 small" title="Share of hunting time on this stay, from the bot's own activity clock">
-                                            <span class="badge bg-danger-subtle text-body fw-normal">fighting <b>@((split.Fight / split.Total).ToString("P0"))</b></span>
-                                            <span class="badge bg-info-subtle text-body fw-normal">searching <b>@((split.Search / split.Total).ToString("P0"))</b></span>
-                                            <span class="badge bg-success-subtle text-body fw-normal">recovering <b>@((split.Recover / split.Total).ToString("P0"))</b></span>
-                                            <span class="badge bg-warning-subtle text-body fw-normal">fleeing <b>@((split.Flee / split.Total).ToString("P0"))</b></span>
-                                        </div>
+                                        <span class="badge bg-secondary">@MonsterPortrait(name)@name&nbsp;<span class="badge bg-light text-dark">@count</span></span>
                                     }
-                                }
-                                @if (mapKills.Count > 0)
-                                {
-                                    <div class="small text-muted mb-1">Killed on @s.Map</div>
-                                    <div class="d-flex flex-wrap gap-1">
-                                        @foreach (var (name, count) in mapKills.OrderByDescending(entry => entry.Value))
-                                        {
-                                            <span class="badge bg-secondary">@MonsterPortrait(name)@name&nbsp;<span class="badge bg-light text-dark">@count</span></span>
-                                        }
-                                    </div>
-                                }
+                                </div>
                             </div>
                         }
                     </div>
@@ -207,7 +183,7 @@ else
                 <div class="card mb-3">
                     <div class="card-header py-2 fw-semibold">Combat Log <span class="text-muted fw-normal small">· newest first</span></div>
                     <div class="card-body p-0">
-                        <pre class="mb-0 p-2 bg-dark text-light small" style="height: 16rem; overflow-y: auto;">@if (Bots.GetLog(Id) is { Length: > 0 } logLines) { foreach (var line in logLines.Reverse()) { if (BotManager.IsWarning(line)) { <span class="text-warning fw-semibold">@line</span> } else if (line.Contains(" Engaging ")) { <span style="color:#6ea8fe">@line</span> } else if (line.Contains(" Duel lost: ")) { <span style="color:#ea868f" class="fw-semibold">@line</span> } else if (line.Contains(" Duel won: ")) { <span style="color:#75b798" class="fw-semibold">@line</span> } else { @line }@("\n") } } else { @("(no log)") }</pre>
+                        <pre class="mb-0 p-2 bg-dark text-light small" style="height: 16rem; overflow-y: auto;">@if (Bots.GetLog(Id) is { Length: > 0 } logLines) { foreach (var line in logLines.Reverse()) { if (BotManager.IsWarning(line)) { <span class="text-warning fw-semibold">@line</span> } else if (line.Contains("Healing: ")) { <span style="color:#75b798" class="fw-semibold">@line</span> } else if (line.Contains("Damage taken: ")) { <span style="color:#ea868f" class="fw-semibold">@line</span> } else if (line.Contains("Damage dealt: ")) { <span style="color:#6edff6" class="fw-semibold">@line</span> } else if (line.Contains(" Engaging ")) { <span style="color:#6ea8fe">@line</span> } else if (line.Contains(" Duel lost: ")) { <span style="color:#ea868f" class="fw-semibold">@line</span> } else if (line.Contains(" Duel won: ")) { <span style="color:#fd9843" class="fw-semibold">@line</span> } else { @line }@("\n") } } else { @("(no log)") }</pre>
                     </div>
                 </div>
 
@@ -220,40 +196,41 @@ else
                         <div class="mb-2 @(behavior?.MapDecision.StartsWith("Next map") == true ? "text-primary fw-semibold" : "")">
                             @(string.IsNullOrEmpty(behavior?.MapDecision) ? "No decision yet (first check ~2 min after login, then every 10 min and on level-up)." : behavior!.MapDecision)
                         </div>
-                        @if (behavior?.CurrentMapOption is { } currentMap)
+                        @if (behavior?.CurrentMapOption is not null || behavior?.MapOptions.Count > 0)
                         {
-                            <table class="table table-sm mb-2">
-                                <thead><tr><th>Current map</th><th class="text-end">Exp/h</th><th>From</th><th class="text-end">Minimum to change</th><th>Per kill</th><th>Monsters</th></tr></thead>
+                            <table class="table table-sm map-choice-table mb-2" style="table-layout:fixed;width:100%;overflow-wrap:anywhere">
+                                <colgroup><col style="width:15%" /><col style="width:11%" /><col style="width:11%" /><col style="width:7%" /><col style="width:10%" /><col style="width:16%" /><col style="width:30%" /></colgroup>
+                                <thead><tr><th class="text-nowrap">Map</th><th class="text-end text-nowrap">Exp/h</th><th class="text-nowrap">From</th><th class="text-end text-nowrap">Hops</th><th class="text-end text-nowrap" title="Minimum exp/h after travel to justify changing maps">Min / vs</th><th class="text-nowrap">Per kill</th><th class="text-nowrap">Monsters</th></tr></thead>
                                 <tbody>
+                                @if (behavior.CurrentMapOption is { } current)
+                                {
                                     <tr class="table-primary">
-                                        <td class="fw-semibold" title="@currentMap.Name">@currentMap.Map</td>
-                                        <td class="text-end">@currentMap.ExpPerHour.ToString("N0")</td>
-                                        <td>@(currentMap.Measured ? "measured" : "estimate")</td>
-                                        <td class="text-end fw-semibold" title="A new map must reach this exp/h after its travel time (1.25× current)">@behavior.MinToChange.ToString("N0") exp/h</td>
-                                        <td class="text-nowrap" title="Measured seconds per kill on this map, by activity">@PerKill(currentMap.PerKill)</td>
-                                        <td>@MapMonsters(currentMap)</td>
+                                        <td class="fw-semibold text-break" title="@current.Name">@current.Map</td>
+                                        <td class="text-end">@current.ExpPerHour.ToString("N0")</td>
+                                        <td class="text-break">@(current.Measured ? "measured" : "estimate")</td>
+                                        <td class="text-end">—</td>
+                                        <td class="text-end fw-semibold" title="A new map must reach this exp/h after its travel time (1.25× current)">@behavior.MinToChange.ToString("N0")</td>
+                                        <td title="Measured seconds per kill on this map, by activity">@PerKillBadges(current.PerKill)</td>
+                                        <td>@MapMonsters(current)</td>
                                     </tr>
-                                </tbody>
-                            </table>
-                        }
-                        @if (behavior?.MapOptions.Count > 0)
-                        {
-                            <div class="text-muted mb-1">Potential maps (best first; vs current includes travel time, move at ≥ 1.25×)</div>
-                            <table class="table table-sm mb-2">
-                                <thead><tr><th>Map</th><th class="text-end">Exp/h</th><th>From</th><th class="text-end">Hops</th><th class="text-end">vs current</th><th>Per kill (predicted)</th><th>Monsters</th></tr></thead>
-                                <tbody>
+                                }
+                                @if (behavior.MapOptions.Count > 0)
+                                {
+                                var firstOption = true;
                                 @foreach (var option in behavior.MapOptions)
                                 {
                                     var isNext = string.Equals(option.Map, behavior.NextMap, StringComparison.OrdinalIgnoreCase);
-                                    <tr class="@(isNext ? "table-warning fw-semibold" : "")">
-                                        <td title="@option.Name">@option.Map @if (isNext) { <span class="badge bg-warning text-dark ms-1">next</span> }</td>
+                                    <tr class="@(firstOption ? "border-top" : "") @(isNext ? "table-warning fw-semibold" : "")">
+                                        <td class="text-break" title="@option.Name">@option.Map @if (isNext) { <span class="badge bg-warning text-dark ms-1">next</span> }</td>
                                         <td class="text-end">@option.ExpPerHour.ToString("N0")</td>
-                                        <td class="text-muted">@(option.Measured ? "measured" : "estimate")</td>
+                                        <td class="text-muted text-break">@(option.Measured ? "measured" : "estimate")</td>
                                         <td class="text-end">@option.Hops</td>
                                         <td class="text-end @(option.VsCurrent >= 1.25 ? "text-success fw-semibold" : "text-muted")">@(option.VsCurrent > 0 ? $"{Math.Floor(option.VsCurrent * 100) / 100:0.00}×" : "—")</td>
-                                        <td class="text-nowrap text-muted">@PerKill(option.PerKill)</td>
+                                        <td>@PerKillBadges(option.PerKill)</td>
                                         <td>@MapMonsters(option)</td>
                                     </tr>
+                                    firstOption = false;
+                                }
                                 }
                                 </tbody>
                             </table>
@@ -980,12 +957,34 @@ else
 
     // Spawn badges styled like "Kills by monster" (portrait, name, count); too-strong ones faded and struck out.
     private RenderFragment MapMonsters(RoBotClient.Bot.Behavior.MapOption option) => @<div class="d-flex flex-wrap gap-1">
-        @if (option.Note.Length > 0) { <span class="badge bg-warning text-dark">@option.Note</span> }
-        @foreach (var (name, count, huntable) in option.Monsters.Take(5))
+        @if (option.Note.Length > 0)
         {
-            <span class="badge bg-secondary @(huntable ? "" : "opacity-50 text-decoration-line-through")" title="@(huntable ? "can beat it" : "too strong at this level: skipped")">@MonsterPortrait(name)@name&nbsp;<span class="badge bg-light text-dark">@count</span></span>
+            var noteParts = option.Note.Split(" (", 2, StringSplitOptions.None);
+            var threat = RouteThreat(option.Note);
+            <div class="w-100"><span class="badge bg-warning text-dark text-wrap" style="max-width:100%;overflow-wrap:anywhere">@if (threat is not null) { @MonsterPortrait(threat) }@noteParts[0]@if (noteParts.Length > 1) { <br />@("(" + noteParts[1]) }</span></div>
+        }
+        @foreach (var (name, count, huntable, hpLoss) in option.Monsters.Take(5))
+        {
+            <span class="badge bg-secondary @(huntable ? "" : "opacity-50 text-decoration-line-through")" title="@((huntable ? "can beat it" : "too strong at this level: skipped") + HpLossText(hpLoss))">@MonsterPortrait(name)@name&nbsp;<span class="badge bg-light text-dark">@count</span></span>
         }
     </div>;
+
+    private string? RouteThreat(string note) => Db.MonstersById.Values
+        .Select(monster => monster.Name)
+        .Where(name => note.Contains($"aggressive {name} (", StringComparison.OrdinalIgnoreCase))
+        .OrderByDescending(name => name.Length)
+        .FirstOrDefault();
+
+    // Forecast HP lost per fight, against the bot's max HP (the simulator's figure for a lost fight can exceed it).
+    private string HpLossText(double hpLoss)
+    {
+        var maxHp = snapshot?.MaxHp ?? 0;
+        if (hpLoss <= 0) return " · expected HP loss: none";
+        if (maxHp <= 0) return $" · expected HP loss: {hpLoss:N0}";
+        return hpLoss >= maxHp
+            ? $" · expected HP loss: {hpLoss:N0}, more than its {maxHp:N0} max HP (dies first)"
+            : $" · expected HP loss: {hpLoss:N0} of {maxHp:N0} ({hpLoss / maxHp:P0})";
+    }
 
     // Kills per monster made on one map, across the saved telemetry (a kill belongs to the map of the last MapChange).
     private Dictionary<string, int> KillsOnMap(string map)
@@ -1001,22 +1000,20 @@ else
         return kills;
     }
 
-    // Median gap between consecutive kills since the stay began; gaps over 15 min (offline, shop trips) are skipped.
-    private TimeSpan? MedianKillGap(DateTime since)
-    {
-        var times = (tele?.Snapshot() ?? new List<TelemetryEvent>())
-            .Where(e => e.Type == TelemetryEventType.Kill && e.Time >= since).Select(e => e.Time).ToList();
-        var gaps = times.Zip(times.Skip(1), (a, b) => b - a).Where(g => g.TotalMinutes <= 15).OrderBy(g => g).ToList();
-        return gaps.Count == 0 ? null : gaps[gaps.Count / 2];
-    }
-
-    // "fight 4.1s · search 2.3s · recover 1.0s" (flee only when it happened)
-    private static string PerKill(RoBotClient.Bot.Behavior.ActivityTime t) => t.Total <= 0 ? "—"
-        : $"fight {t.Fight:0.0}s · search {t.Search:0.0}s · recover {t.Recover:0.0}s" + (t.Flee >= 0.05 ? $" · flee {t.Flee:0.0}s" : "");
-
-    // 45s, 1min30s, 1h05min
-    private static string StayTime(TimeSpan t) => t.TotalHours >= 1 ? $"{(int)t.TotalHours}h{t.Minutes:00}min"
-        : t.TotalMinutes >= 1 ? $"{t.Minutes}min{t.Seconds:00}s" : $"{t.Seconds}s";
+    // Match the activity colors used by the map activity cards, with one badge per line.
+    private static RenderFragment PerKillBadges(RoBotClient.Bot.Behavior.ActivityTime t) => @<div class="d-flex flex-column align-items-start gap-1">
+        @if (t.Total <= 0)
+        {
+            <span class="text-muted">—</span>
+        }
+        else
+        {
+            <span class="badge bg-danger-subtle text-body fw-normal">Fight <b>@($"{t.Fight:0.0}s")</b></span>
+            <span class="badge bg-info-subtle text-body fw-normal">Search <b>@($"{t.Search:0.0}s")</b></span>
+            <span class="badge bg-success-subtle text-body fw-normal">Recover <b>@($"{t.Recover:0.0}s")</b></span>
+            @if (t.Flee >= 0.05) { <span class="badge bg-warning-subtle text-body fw-normal">Flee <b>@($"{t.Flee:0.0}s")</b></span> }
+        }
+    </div>;
 
     private string MapLabel(string code) => Db.MapsByCode.TryGetValue(code, out var m) && !string.IsNullOrEmpty(m.Name) ? $"{m.Name} ({code})" : code;
 

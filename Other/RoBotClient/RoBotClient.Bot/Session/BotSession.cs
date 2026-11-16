@@ -43,6 +43,12 @@ public sealed class BotSession : IAsyncDisposable
     private bool _needReady; // set when a ChangeMaps requires us to re-announce PlayerReady
     private int _readyGen;   // bumps per map change; only the latest pending PlayerReady is sent
     private string _lastAttackerName = "";    // last entity to attack us (for death attribution)
+    // Biggest single hit each monster name has landed on us. Catches monster skills the simulator doesn't model
+    // (Elder Willow melee ~50, its Fire Bolt / Fire Attack 180-1100).
+    private readonly System.Collections.Concurrent.ConcurrentDictionary<string, int> _maxHitTaken = new(StringComparer.Ordinal);
+    public int MaxHitTakenFrom(string monsterName) => _maxHitTaken.GetValueOrDefault(monsterName);
+    private string _lastUsedItemName = "";
+    private DateTime _lastUsedItemAt = DateTime.MinValue;
     // Recent attack pairing — target entity id → (attacker entity id, when). Updated from ReadAttack; read
     // by ReadHit to attribute damage to the most recent attacker even when the HitTarget packet itself
     // doesn't carry an attacker id. ~3s freshness window matches typical melee swing rate.
@@ -547,7 +553,9 @@ public sealed class BotSession : IAsyncDisposable
     public Task UseInventoryItemAsync(int itemId, int target = -1, CancellationToken ct = default)
     {
         if (_conn == null) return Task.CompletedTask;
-        Telemetry.Record(TelemetryEventType.UsedItem, World.Self.Level, _data?.ItemName(itemId) ?? $"#{itemId}");
+        _lastUsedItemName = _data?.ItemName(itemId) ?? $"#{itemId}";
+        _lastUsedItemAt = DateTime.UtcNow;
+        Telemetry.Record(TelemetryEventType.UsedItem, World.Self.Level, _lastUsedItemName);
         var w = new PacketWriter();
         w.WritePacketType(PacketType.UseInventoryItem);
         w.Write(itemId);
@@ -1281,6 +1289,9 @@ public sealed class BotSession : IAsyncDisposable
         {
             // We took a hit. Attacker name is whatever ReadAttack last recorded as targeting us.
             NoteDamageTaken(dmg);
+            if (!string.IsNullOrEmpty(_lastAttackerName))
+                _maxHitTaken.AddOrUpdate(_lastAttackerName, dmg, (_, old) => Math.Max(old, dmg));
+            Log($"Damage taken: {(string.IsNullOrEmpty(_lastAttackerName) ? "(unknown)" : _lastAttackerName)} hit me for {dmg} damage.");
             Telemetry.Record(TelemetryEventType.DamageReceived, World.Self.Level,
                 string.IsNullOrEmpty(_lastAttackerName) ? "(unknown)" : _lastAttackerName, dmg);
         }
@@ -1299,6 +1310,7 @@ public sealed class BotSession : IAsyncDisposable
         {
             // Best-effort "we dealt damage": the bot's own CurrentTargetId matches the HitTarget id, so
             // the just-received hit on it is most likely from us.
+            Log($"Damage dealt: {e?.Name ?? $"#{id}"} took {dmg} damage.");
             Telemetry.Record(TelemetryEventType.DamageDealt, World.Self.Level, e?.Name ?? $"#{id}", dmg);
         }
     }
@@ -1318,11 +1330,28 @@ public sealed class BotSession : IAsyncDisposable
     private void ReadHpRecovery(PacketReader r)
     {
         var id = r.ReadInt32();
-        r.ReadInt32();              // amount healed
+        var amount = r.ReadInt32(); // amount healed
         var hp = r.ReadInt32();
         var maxHp = r.ReadInt32();
+        var healType = (HealType)r.ReadByte();
+        var wasSitting = id == World.Self.EntityId
+            && World.Entities.TryGetValue(id, out var self)
+            && self.State == CharacterState.Sitting;
         if (World.Entities.TryGetValue(id, out var e)) { e.Hp = hp; e.MaxHp = maxHp; }
-        if (id == World.Self.EntityId) { World.Self.Stats[CharacterStat.Hp] = hp; World.Self.Stats[CharacterStat.MaxHp] = maxHp; }
+        if (id == World.Self.EntityId)
+        {
+            World.Self.Stats[CharacterStat.Hp] = hp;
+            World.Self.Stats[CharacterStat.MaxHp] = maxHp;
+            if (amount > 0 && healType == HealType.Item)
+            {
+                var itemName = DateTime.UtcNow - _lastUsedItemAt < TimeSpan.FromSeconds(5)
+                    ? _lastUsedItemName
+                    : "healing item";
+                Log($"Healing: +{amount} HP from {itemName}.");
+            }
+            else if (amount > 0 && wasSitting)
+                Log($"Healing: +{amount} HP from sitting recovery.");
+        }
     }
 
     private void ReadChangeSp(PacketReader r)

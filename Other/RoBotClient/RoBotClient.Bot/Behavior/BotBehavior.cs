@@ -80,6 +80,8 @@ public sealed partial class BotBehavior
         _bot = bot;
         _config = config;
         _data = data;
+        if (config.ButterflyWingRestockCount > 0)
+            SetRestockTarget(config.ButterflyWingItemId, config.ButterflyWingRestockCount);
         _bot.OnAllyHit += OnAllyHit;
         _bot.OnChatHeard += OnChatHeard;
         _bot.OnBaseExpUpdated += update => { if (update.OwnKill) lock (_duelLock) _duelKill = (update, DateTime.UtcNow); };
@@ -158,6 +160,8 @@ public sealed partial class BotBehavior
             // portal we just successfully traversed — a one-off trap shouldn't carry bias.
             BeginApronDeparture(snap.SelfPos, arrivedFrom, snap.Map);
             _travelWingMap = null; // a fresh visit gets a fresh Fly Wing budget
+            _seenHazards.Clear();
+            _walkGoal = null;
             OnLog?.Invoke($"Changed maps → {snap.Map}.");
         }
 
@@ -218,10 +222,12 @@ public sealed partial class BotBehavior
                     var fresh = !_avoidClasses.ContainsKey(killerClass);
                     _avoidClasses[killerClass] = expires;
                     _mapDangerLastLevel = -1; // re-score maps now that this class has killed us
+                    var context = DateTime.UtcNow - _lastFleeAt < TimeSpan.FromSeconds(15)
+                        ? $" Was fleeing: {_lastFleeAction}" : "";
                     if (fresh)
-                        OnLog?.Invoke($"Died to '{killerName}' (class {killerClass}) — avoiding it for the next {AvoidClassDuration.TotalMinutes:F0} min.");
+                        OnLog?.Invoke($"Died to '{killerName}' (class {killerClass}) — avoiding it for the next {AvoidClassDuration.TotalMinutes:F0} min.{context}");
                     else
-                        OnLog?.Invoke($"Died to '{killerName}' (class {killerClass}) again — avoidance timer extended.");
+                        OnLog?.Invoke($"Died to '{killerName}' (class {killerClass}) again — avoidance timer extended.{context}");
                 }
                 else
                     OnLog?.Invoke($"Died (couldn't attribute the kill; last attacker '{attackerName}', committed target '{TargetName}').");
@@ -589,9 +595,8 @@ public sealed partial class BotBehavior
     /// want to walk around aggressive mobs on the way to the portal.</summary>
     private Func<int, int, float>? MakeHazardOnlyCost()
     {
-        if (_hazards.Count == 0) return null;
-        var hz = new List<(int x, int y, int radius)>(_hazards.Count);
-        foreach (var h in _hazards) hz.Add((h.pos.X, h.pos.Y, h.radius));
+        var hz = HazardZones();
+        if (hz.Count == 0) return null;
         return (x, y) =>
         {
             var cost = 0f;
@@ -614,8 +619,7 @@ public sealed partial class BotBehavior
     {
         if (_data == null) return null;
         // Snapshot inputs into locals so the closure doesn't keep re-evaluating volatile fields.
-        var hzList = new List<(int x, int y, int radius)>(_hazards.Count);
-        foreach (var h in _hazards) hzList.Add((h.pos.X, h.pos.Y, h.radius));
+        var hzList = HazardZones();
         // Immobile-ranged-mob attack zones: Mandragora et al. don't chase, but if the bot walks into
         // their attack radius they shoot. Treat their fixed attack circles as soft hazards so paths
         // naturally bend around them when possible. (For approaching to engage, the kite FSM picks a
@@ -766,9 +770,17 @@ public sealed partial class BotBehavior
             ExtraSkillDps = EstimateScriptedDps(snap, me),
             AttackerAttackRange = InferAttackRange(snap),
             DefenderAttackRange = mDb?.Range ?? 1,
-            DefenderIsImmobile = IsMonsterImmobile(mDb),
+            // Only grants the out-of-range free kill; a mob that answers arrows with a spell doesn't get it.
+            DefenderIsImmobile = IsMonsterImmobile(mDb) && !(mDb != null && _data!.PunishesRangedAttacks(mDb.Code)),
         };
-        return BattleSimulator.Forecast(me, MonsterCombatant(m), mods, _config.WinMargin, _config.MaxRoundsToKill);
+        var f = BattleSimulator.Forecast(me, MonsterCombatant(m), mods, _config.WinMargin, _config.MaxRoundsToKill);
+        // The simulator only models auto-attacks. If this monster has hit us far harder than that (a skill),
+        // assume one more of those lands mid-fight.
+        // ponytail: learned per name, not per skill; parse MonsterSkills/*.txt if first-contact deaths matter.
+        var burst = _bot.MaxHitTakenFrom(m.Name);
+        if (burst > f.MonsterDamagePerHit * 2)
+            f = BattleSimulator.Forecast(me with { Hp = Math.Max(0, me.Hp - burst) }, MonsterCombatant(m), mods, _config.WinMargin, _config.MaxRoundsToKill);
+        return f;
     }
 
     /// <summary>Effective attack range for the bot. Prefers the server-synced <c>CharacterStat.Range</c>
@@ -789,10 +801,10 @@ public sealed partial class BotBehavior
         }
         foreach (var (skill, _) in snap.KnownSkills)
         {
+            // No bow skills here: without a bow equipped (handled above) they fail with "wrong weapon equipped",
+            // and counting them made a bowless Archer think it outranged Mandragora while it walked up to knife it.
             switch (skill)
             {
-                case CharacterSkill.DoubleStrafe:
-                case CharacterSkill.ArrowShower:
                 case CharacterSkill.FireBolt:
                 case CharacterSkill.ColdBolt:
                 case CharacterSkill.LightningBolt:
@@ -1166,6 +1178,8 @@ public sealed partial class BotBehavior
     // somewhere instead of jittering.
     private Position? _wanderTarget;
     private DateTime _wanderTargetUntil = DateTime.MinValue;
+    /// <summary>The active wander A* destination, for the dashboard minimap.</summary>
+    public Position? WanderTarget => DateTime.UtcNow <= _wanderTargetUntil ? _wanderTarget : null;
     private DateTime _nextWanderWedgeLog = DateTime.MinValue;
     private const int WanderStep = 35;       // far-destination offset in cells (~7 s of walking)
     private const int WanderHopCells = 12;   // per-WalkTo waypoint distance — safely under the server cap
@@ -1492,7 +1506,10 @@ public sealed partial class BotBehavior
             // yet the forecast loses to all three and 85 of them spawn there. So every aggressive spawn we can't
             // beat counts on its own, whatever its level. Immobile ones only hurt next to them: a quarter.
             var aggressive = IsAggressive(m.Id);
-            var unwinnable = aggressive && !Forecast(snap, new MonsterInfo(0, m.Id, m.Name, default, m.HP, m.HP)).CanWin;
+            // A class that killed us counts as unwinnable, whatever the forecast says: otherwise a same-level killer
+            // scored 0 (the diedTo multiplier below never ran) and routes kept walking back through its map.
+            var unwinnable = aggressive && (_avoidClasses.ContainsKey(m.Id)
+                || !Forecast(snap, new MonsterInfo(0, m.Id, m.Name, default, m.HP, m.HP)).CanWin);
             if (levelGap == 0 && !unwinnable) continue; // mob is at or below the bot's level and beatable — not a danger
             var unwinnableDanger = unwinnable ? UnwinnableSpawnDanger * (IsMonsterImmobile(m) ? 0.25f : 1f) : 0f;
             var aggMul = aggressive ? 3.0f : 1.0f;
@@ -1544,7 +1561,57 @@ public sealed partial class BotBehavior
             if (!IsAggressive(m.ClassId)) continue;
             if (Forecast(snap, m).CanWin) continue; // aggressive but winnable = a target, not a hazard
             _hazards.Add((m.Pos, HazardRadius(m.ClassId), m.Name));
+            _seenHazards[m.Id] = (m.Pos, HazardRadius(m.ClassId), DateTime.UtcNow);
         }
+        foreach (var (id, h) in _seenHazards)
+            if (DateTime.UtcNow - h.at > HazardMemory) _seenHazards.Remove(id);
+    }
+
+    // Hazards seen recently but now out of view. Only path costs use them: once a fled-from mob left view, the
+    // next A* went straight back through it and the bot ping-ponged between fleeing and traveling.
+    // ponytail: last-seen position only; a chasing mob may have moved. Predict its position if that bites.
+    private readonly Dictionary<int, (Position pos, int radius, DateTime at)> _seenHazards = new();
+    private static readonly TimeSpan HazardMemory = TimeSpan.FromSeconds(30);
+
+    private List<(int x, int y, int radius)> HazardZones()
+    {
+        var list = new List<(int x, int y, int radius)>(_seenHazards.Count + _hazards.Count);
+        foreach (var h in _hazards) list.Add((h.pos.X, h.pos.Y, h.radius));
+        foreach (var h in _seenHazards.Values) list.Add((h.pos.X, h.pos.Y, h.radius));
+        return list;
+    }
+
+    // Last target WalkPathTowardAsync aimed at (travel, shop, kafra, bard...), so fleeing can keep heading there.
+    private (string map, int x, int y, DateTime at)? _walkGoal;
+
+    /// <summary>First waypoint (≤ 8 cells) of an A* path to the current walk goal where every hazard zone is
+    /// steeply priced (deeper = dearer, so from inside the path leaves by the shortest way out). Null when there's
+    /// no fresh goal, no path, or the waypoint wouldn't take us farther from <paramref name="threat"/>.</summary>
+    private (int x, int y)? DodgeTowardGoal(Snapshot snap, Position threat, out string whyNot)
+    {
+        whyNot = "";
+        if (_walkGoal is not { } g || g.map != snap.Map || DateTime.UtcNow - g.at > TimeSpan.FromSeconds(5))
+        { whyNot = "not walking anywhere"; return null; }
+        var map = _data?.GetWalkMap(snap.Map);
+        if (map == null) { whyNot = "no walk map"; return null; }
+        var zones = HazardZones();
+        var path = map.FindPath(snap.SelfPos.X, snap.SelfPos.Y, g.x, g.y, 20000, (x, y) =>
+        {
+            var cost = 0f;
+            foreach (var h in zones)
+            {
+                var d = Math.Max(Math.Abs(h.x - x), Math.Abs(h.y - y));
+                if (d <= h.radius) cost += 40f * (h.radius - d + 1);
+            }
+            return cost;
+        });
+        if (path is not { Count: > 1 }) { whyNot = $"no path to my goal ({g.x},{g.y})"; return null; }
+        var step = FurthestStraightLineSafeStep(snap.Map, snap.SelfPos.X, snap.SelfPos.Y, path, Math.Min(8, path.Count - 1), (g.x, g.y));
+        if (step < 1) { whyNot = "a portal is in the way"; return null; }
+        var wp = new Position(path[step].x, path[step].y);
+        if (Dist(wp, threat) > Dist(snap.SelfPos, threat)) return path[step];
+        whyNot = $"the way to my goal ({g.x},{g.y}) goes toward it";
+        return null;
     }
 
     private bool CellNearHazard(int x, int y)
@@ -1569,25 +1636,40 @@ public sealed partial class BotBehavior
             // tail of the bot's log shows the flee window ending instead of just going silent.
             if (Mode == BotMode.Fleeing)
                 OnLog?.Invoke("Hazard no longer in range — resuming normal behavior.");
+            _lastFleeLog = "";
             return false;
         }
         var hz = _hazards[bestIdx];
 
         if (Mode != BotMode.Fleeing)
         {
-            OnLog?.Invoke($"Avoiding '{hz.name}' (aggressive, forecast says I'd lose) — fleeing.");
+            OnLog?.Invoke($"Avoiding '{hz.name}' (aggressive, forecast says I'd lose) — fleeing. It's {nearestD} cells away "
+                + $"(danger radius {hz.radius}), I'm at ({snap.SelfPos.X},{snap.SelfPos.Y}), it's at ({hz.pos.X},{hz.pos.Y}).");
             NoteMapFlee(snap.Map);
         }
         Mode = BotMode.Fleeing;
         _targetId = 0;
         _targetClass = -1;
 
+        // On the way somewhere: sidestep along an A* path to the goal that bends out of the danger zone, instead
+        // of running straight back the way we came. Fly Wing / flee-away only when it's closing in or no such path.
+        string noDodge;
+        if (nearestD <= hz.radius / 2) noDodge = $"it's {nearestD} cells away, too close to sidestep";
+        else if (DodgeTowardGoal(snap, hz.pos, out noDodge) is { } dodge)
+        {
+            LogFlee("dodge", $"Flee: sidestepping '{hz.name}' toward my goal ({_walkGoal!.Value.x},{_walkGoal.Value.y}) via ({dodge.x},{dodge.y}).");
+            await _bot.WalkToAsync(dodge.x, dodge.y, ct);
+            return true;
+        }
+
         // Walking away rarely outruns an aggressive mob (Angeling on pay_fild04 killed Bot3 that way).
         // A Fly Wing (random spot on this map) gets out of its sight instantly; travel/hunt just replans.
         if (DateTime.UtcNow >= _nextEscapeItem && _data?.IsUsableItem(_config.FlyWingItemId) == true
             && _bot.WithState(w => w.Self.Inventory.Any(it => it.ItemId == _config.FlyWingItemId && it.Count > 0)))
         {
-            OnLog?.Invoke($"Using Fly Wing to escape '{hz.name}'.");
+            OnLog?.Invoke($"Using Fly Wing to escape '{hz.name}' (no sidestep: {noDodge}).");
+            _lastFleeAction = $"Fly Wing away from '{hz.name}'";
+            _lastFleeAt = DateTime.UtcNow;
             _nextEscapeItem = DateTime.UtcNow.AddSeconds(3); // let the teleport land before judging again
             await _bot.UseInventoryItemAsync(_config.FlyWingItemId, -1, ct);
             return true;
@@ -1598,6 +1680,7 @@ public sealed partial class BotBehavior
         var dy = Math.Sign(self.Y - hz.pos.Y);
         if (dx == 0 && dy == 0) { dx = 1; dy = 1; }
         var map = _data?.GetWalkMap(snap.Map);
+        var why = $"no sidestep: {noDodge}; no Fly Wing";
         for (var step = 14; step >= 6; step -= 4)
         {
             var tx = self.X + dx * step;
@@ -1605,12 +1688,27 @@ public sealed partial class BotBehavior
             if (map == null) { await _bot.WalkToAsync(Math.Max(1, tx), Math.Max(1, ty), ct); return true; }
             if (map.TryFindWalkableNear(tx, ty, 5, out var fx, out var fy) && !CellNearHazard(fx, fy))
             {
+                LogFlee("away", $"Flee: running straight away from '{hz.name}' to ({fx},{fy}) ({why}).");
                 await _bot.WalkToAsync(fx, fy, ct);
                 return true;
             }
         }
+        LogFlee("cornered", $"Flee: no safe cell away from '{hz.name}' — stepping blindly 6 cells off ({why}).");
         await _bot.WalkToAsync(Math.Max(1, self.X + dx * 6), Math.Max(1, self.Y + dy * 6), ct);
         return true;
+    }
+
+    // Flee decisions log once per change of action (not every tick); the last one is quoted in the death log.
+    private string _lastFleeLog = "";
+    private string _lastFleeAction = "";
+    private DateTime _lastFleeAt;
+    private void LogFlee(string kind, string msg)
+    {
+        _lastFleeAction = msg.StartsWith("Flee: ") ? msg[6..] : msg;
+        _lastFleeAt = DateTime.UtcNow;
+        if (kind == _lastFleeLog) return;
+        _lastFleeLog = kind;
+        OnLog?.Invoke(msg);
     }
 
     private static MonsterInfo? FindMonster(Snapshot snap, int id)

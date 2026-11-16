@@ -7,7 +7,7 @@
    read from the immutable per-bot snapshots. *@
 <canvas @ref="_canvasRef" width="600" height="600"
         style="width:600px;max-width:100%;aspect-ratio:1;background:#10131a;border-radius:6px;display:block;"></canvas>
-<div style="width:600px;max-width:100%;" class="mt-2 small">
+<div style="width:100%;" class="mt-3">
     @if (_species.Count > 0)
     {
         <div class="d-flex flex-wrap gap-1 mb-2" title="Monsters some bot on this map can see. Hover one on the map for its name.">
@@ -21,20 +21,36 @@
     }
     @foreach (var row in _rows)
     {
-        <div class="mb-2">
-            <div><strong>@row.Name</strong> <span class="text-muted">· @row.Activity</span></div>
-            @ExpBar("Base", row.Level, row.BasePercent, "bg-primary")
-            @ExpBar("Job", row.JobLevel, row.JobPercent, "bg-warning")
-            @if (row.Hunt is { } hunt)
-            {
-                <div class="d-flex flex-wrap gap-1 mt-1" title="Median seconds per kill by activity on this stay (@hunt.Kills kills), and exp/h so far on it">
-                    <span class="badge bg-dark-subtle text-body fw-normal"><b>@(hunt.ExpPerHour is { } eph ? eph.ToString("N0") : "—")</b> exp/h</span>
-                    <span class="badge bg-danger-subtle text-body fw-normal">fight <b>@Seconds(hunt.Median?.Fight)</b></span>
-                    <span class="badge bg-info-subtle text-body fw-normal">search <b>@Seconds(hunt.Median?.Search)</b></span>
-                    <span class="badge bg-success-subtle text-body fw-normal">recover <b>@Seconds(hunt.Median?.Recover)</b></span>
-                    <span class="text-muted">median per kill · @hunt.Kills kills</span>
+        <div class="card mb-3 border-secondary-subtle bg-body-tertiary">
+            <div class="card-body p-3">
+                <div class="d-flex flex-wrap align-items-baseline gap-2 mb-2">
+                    <strong class="fs-5">@row.Name</strong>
+                    <span class="text-muted">@row.Activity</span>
                 </div>
-            }
+                @ExpBar("Base", row.Level, row.BasePercent, "bg-primary")
+                @ExpBar("Job", row.JobLevel, row.JobPercent, "bg-warning")
+                @if (row.Hunt is { } hunt)
+                {
+                    <div class="d-flex flex-wrap gap-2 mt-3">
+                        <span class="badge bg-dark-subtle text-body fs-6 fw-normal"><b>@(hunt.Active is { } active ? Duration(active) : "—")</b> on map</span>
+                        <span class="badge bg-dark-subtle text-body fs-6 fw-normal"><b>@(hunt.ExpPerHour is { } eph ? eph.ToString("N0") : "—")</b> exp/h</span>
+                    </div>
+                    <div class="row g-2 mt-1" title="This bot's activity time on this map">
+                        <div class="col-6 col-sm-3"><div class="rounded bg-danger-subtle text-body p-2 h-100"><div class="small">Fighting</div><div class="fs-5 fw-semibold">@Duration(hunt.Time?.Fight)</div></div></div>
+                        <div class="col-6 col-sm-3"><div class="rounded bg-info-subtle text-body p-2 h-100"><div class="small">Searching</div><div class="fs-5 fw-semibold">@Duration(hunt.Time?.Search)</div></div></div>
+                        <div class="col-6 col-sm-3"><div class="rounded bg-success-subtle text-body p-2 h-100"><div class="small">Recovering</div><div class="fs-5 fw-semibold">@Duration(hunt.Time?.Recover)</div></div></div>
+                        <div class="col-6 col-sm-3"><div class="rounded bg-warning-subtle text-body p-2 h-100"><div class="small">Fleeing</div><div class="fs-5 fw-semibold">@Duration(hunt.Time?.Flee)</div></div></div>
+                    </div>
+                    <div class="border-top mt-3 pt-2" title="Median time per kill by activity on this stay">
+                        <div class="small text-muted mb-1">Median per kill · @hunt.Kills kills</div>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="badge bg-danger-subtle text-body fs-6 fw-normal">Fight <b>@Seconds(hunt.Median?.Fight)</b></span>
+                            <span class="badge bg-info-subtle text-body fs-6 fw-normal">Search <b>@Seconds(hunt.Median?.Search)</b></span>
+                            <span class="badge bg-success-subtle text-body fs-6 fw-normal">Recover <b>@Seconds(hunt.Median?.Recover)</b></span>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
     }
 </div>
@@ -88,6 +104,7 @@
             x = s.X, y = s.Y,
             name = string.IsNullOrEmpty(s.CharacterName) ? s.Id : s.CharacterName,
             path = RemainingPath(s),
+            target = Bots.GetBehavior(s.Id)?.WanderTarget is { } goal ? new { x = goal.X, y = goal.Y } : null,
             hp = s.Hp, maxHp = s.MaxHp, sp = s.Sp, maxSp = s.MaxSp,
         }).ToList();
         _rows = here.Select(s =>
@@ -98,7 +115,9 @@
             if (behavior?.IsHuntingHere(s.Map) == true)
             {
                 var median = behavior.MedianKillSplit(s.Map);
-                hunt = new HuntStats(StayExpPerHour(s), median?.Median, median?.Kills ?? 0);
+                var stay = StayFor(s);
+                var expPerHour = stay != null && stay.Active.TotalMinutes >= 1 ? stay.Exp / stay.Active.TotalHours : (double?)null;
+                hunt = new HuntStats(expPerHour, stay?.Active, stay?.Time, median?.Median, median?.Kills ?? 0);
             }
             return new Row(string.IsNullOrEmpty(s.CharacterName) ? s.Id : s.CharacterName, behavior?.Activity ?? s.Mode,
                 s.Level, Percent(s.BaseExp, Bots.Data.BaseExpToNext(s.Level)),
@@ -148,7 +167,8 @@
 
     private List<(string Name, int Count)> _species = new();
 
-    private sealed record HuntStats(double? ExpPerHour, RoBotClient.Bot.Behavior.ActivityTime? Median, int Kills);
+    private sealed record HuntStats(double? ExpPerHour, TimeSpan? Active, RoBotClient.Bot.Behavior.ActivityTime? Time,
+        RoBotClient.Bot.Behavior.ActivityTime? Median, int Kills);
     private sealed record Row(string Name, string Activity, int Level, double? BasePercent, int JobLevel, double? JobPercent, HuntStats? Hunt);
     private List<Row> _rows = new();
 
@@ -156,18 +176,21 @@
 
     // Exp/h so far on the ongoing stay, the same number the bot page shows. Recomputed every 5 s per bot: it walks the
     // whole telemetry history.
-    private readonly Dictionary<string, (DateTime At, double? Value)> _stayRates = new();
+    private readonly Dictionary<string, (DateTime At, RoBotClient.Bot.Manager.MapRun? Value)> _stays = new();
 
-    private double? StayExpPerHour(RoBotClient.Bot.Manager.BotSnapshot s)
+    private RoBotClient.Bot.Manager.MapRun? StayFor(RoBotClient.Bot.Manager.BotSnapshot s)
     {
-        if (_stayRates.TryGetValue(s.Id, out var cached) && DateTime.UtcNow - cached.At < TimeSpan.FromSeconds(5)) return cached.Value;
+        if (_stays.TryGetValue(s.Id, out var cached) && DateTime.UtcNow - cached.At < TimeSpan.FromSeconds(5)) return cached.Value;
         var events = Bots.GetSession(s.Id)?.Telemetry.Snapshot() ?? new List<RoBotClient.Bot.State.TelemetryEvent>();
         var stay = RoBotClient.Bot.Manager.MapRuns.Compute(events, Bots.Progress?.Get(s.CharacterName) ?? Array.Empty<RoBotClient.Bot.Manager.ProgressSample>(), true)
             .FirstOrDefault(run => run.Ongoing && string.Equals(run.Map, s.Map, StringComparison.OrdinalIgnoreCase));
-        double? value = stay != null && stay.Active.TotalMinutes >= 1 ? stay.Exp / stay.Active.TotalHours : null;
-        _stayRates[s.Id] = (DateTime.UtcNow, value);
-        return value;
+        _stays[s.Id] = (DateTime.UtcNow, stay);
+        return stay;
     }
+
+    private static string Duration(double? seconds) => seconds is { } value ? Duration(TimeSpan.FromSeconds(value)) : "—";
+    private static string Duration(TimeSpan duration) => duration.TotalHours >= 1 ? $"{(int)duration.TotalHours}h{duration.Minutes:00}min"
+        : duration.TotalMinutes >= 1 ? $"{duration.Minutes}min{duration.Seconds:00}s" : $"{duration.Seconds}s";
 
     private static double? Percent(int have, int need) => need > 0 ? Math.Clamp(100.0 * have / need, 0, 100) : null;
 
@@ -177,7 +200,7 @@
             <div class="progress flex-grow-1" style="height:8px;">
                 <div class="progress-bar @color" style="width:@((percent ?? 0).ToString("0.#", System.Globalization.CultureInfo.InvariantCulture))%"></div>
             </div>
-            <span style="width:44px;" class="text-end">@(percent is { } q ? q.ToString("0.0") + "%" : "—")</span>
+            <span style="min-width:52px;white-space:nowrap;flex-shrink:0;" class="text-end">@(percent is { } q ? q.ToString("0.0") + "%" : "—")</span>
         </div>;
 
     // The walk still ahead of a traveling bot on this map, as flat [x0,y0,x1,y1,...] from the path cell nearest it.

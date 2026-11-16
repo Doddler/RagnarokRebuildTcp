@@ -8,7 +8,7 @@ namespace RoBotClient.Bot.Behavior;
 /// Monsters = the map's regular spawns (name, count, whether the bot can beat it), huntable first; Note = a warning, or empty.
 /// PerKill = seconds per kill by activity: measured on the current map, predicted (calibrated) elsewhere.
 public sealed record MapOption(string Map, string Name, double ExpPerHour, bool Measured, int Hops, string Note,
-    IReadOnlyList<(string Name, int Count, bool Huntable)> Monsters, double VsCurrent = 0, ActivityTime PerKill = default);
+    IReadOnlyList<(string Name, int Count, bool Huntable, double HpLoss)> Monsters, double VsCurrent = 0, ActivityTime PerKill = default);
 
 /// <summary>Seconds by activity. Fight = in a duel (target within reach), Search = looking for and walking to the next
 /// target (looting included), Recover = sitting for HP/SP, Flee = running from a monster it can't beat.</summary>
@@ -118,7 +118,7 @@ public sealed partial class BotBehavior
     private readonly Dictionary<string, DateTime> _mapBannedUntil = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, int> _walkableCells = new(StringComparer.OrdinalIgnoreCase);
     // Per map, per kill: exp, predicted seconds by activity, and the respawn cap (exp/s the spawns can supply).
-    private sealed record MapEstimate(double Rate, bool Safe, string Note, List<(string Name, int Count, bool Huntable)> Monsters,
+    private sealed record MapEstimate(double Rate, bool Safe, string Note, List<(string Name, int Count, bool Huntable, double HpLoss)> Monsters,
         double ExpPerKill, ActivityTime PerKill, double SupplyPerSecond, HuntZone? Zone = null);
     private Dictionary<string, MapEstimate> _mapEstimates = new(StringComparer.OrdinalIgnoreCase);
     private int _estimatesLevel = -1;
@@ -184,8 +184,7 @@ public sealed partial class BotBehavior
     private void RefreshEstimates(Snapshot snap)
     {
         _mapEstimates = EstimateMaps(snap);
-        _estimatesLevel = snap.SelfLevel;
-    }
+        _estimatesLevel = snap.SelfLevel;    }
 
     private void DecideMap(Snapshot snap, DateTime now)
     {
@@ -246,13 +245,18 @@ public sealed partial class BotBehavior
         // Away from the hunting map (respawned at the save point, back from shopping): is the way back still safe?
         var homeRiskyStop = string.Equals(snap.Map, home, StringComparison.OrdinalIgnoreCase) ? null : HopsTo(snap, home).RiskyStop;
         double Effective(MapOption option) => option.ExpPerHour * Math.Max(0, StayHorizonSeconds - option.Hops * SecondsPerHop) / StayHorizonSeconds;
+        // Trapped: every way out crosses a map it loses on (Bot1 took the one-way Kafra to Yuno; at Lv 31 every exit field
+        // but yuno_fild04 is deadly). Dying costs no exp on this server and respawns at the save point, so go anyway:
+        // it either gets through or lands outside the trap.
+        var away = options.Where(option => option.Hops > 0 && !string.Equals(option.Map, home, StringComparison.OrdinalIgnoreCase)).ToList();
+        var trapped = away.Count > 0 && away.All(option => riskyRoute.ContainsKey(option.Map));
         var best = options.Where(option => !string.Equals(option.Map, home, StringComparison.OrdinalIgnoreCase)
-                                      && _mapBannedUntil.GetValueOrDefault(option.Map) <= now && !riskyRoute.ContainsKey(option.Map))
+                                      && _mapBannedUntil.GetValueOrDefault(option.Map) <= now && (trapped || !riskyRoute.ContainsKey(option.Map)))
                           .OrderByDescending(Effective).FirstOrDefault();
         var currentRate = current?.ExpPerHour ?? 0;
         CurrentMapOption = current ?? (_mapEstimates.TryGetValue(home, out var homeEstimate)
             ? new MapOption(home, _data!.MapName(home), 0, false, 0, homeEstimate.Note, homeEstimate.Monsters)
-            : new MapOption(home, _data!.MapName(home), 0, false, 0, "no monsters spawn here", Array.Empty<(string, int, bool)>()));
+            : new MapOption(home, _data!.MapName(home), 0, false, 0, "no monsters spawn here", Array.Empty<(string, int, bool, double)>()));
         MinToChange = currentRate * MoveFactor;
         MapOptions = options.Where(option => !string.Equals(option.Map, home, StringComparison.OrdinalIgnoreCase))
             .Select(option => option with { VsCurrent = currentRate > 0 ? Effective(option) / currentRate : 0 })
@@ -271,7 +275,8 @@ public sealed partial class BotBehavior
         if (best == null) { MapDecision = $"Staying on {home}. Reason: no other reachable map is safe at Lv {snap.SelfLevel}."; return; }
         var ratio = currentRate > 0 ? Effective(best) / currentRate : double.PositiveInfinity;
         var bestText = $"{best.Map} {(best.Measured ? "measured" : "estimated")} {best.ExpPerHour:N0} exp/h, {best.Hops} map(s) away"
-                       + (_mapEstimates.GetValueOrDefault(best.Map)?.Zone != null ? $" ({_mapEstimates[best.Map].Note})" : "");
+                       + (_mapEstimates.GetValueOrDefault(best.Map)?.Zone != null ? $" ({_mapEstimates[best.Map].Note})" : "")
+                       + (trapped && riskyRoute.TryGetValue(best.Map, out var trapNote) ? $"; trapped, every way out is risky ({trapNote}), going anyway: a death only respawns it at the save point, no exp lost" : "");
         if (_retreatReason != null || banned) reason = $"{_retreatReason ?? $"avoiding {home}"}; {bestText}";
         else if (homeRiskyStop != null) reason = $"the way back to {home} crosses {homeRiskyStop} ({_mapEstimates[homeRiskyStop].Note}); {bestText}";
         else if (!currentSafe) reason = $"{home} has monsters it can't beat at Lv {snap.SelfLevel}; {bestText}";
@@ -313,7 +318,21 @@ public sealed partial class BotBehavior
     }
 
     /// <summary>Simulator exp/hour per spawn map at the bot's current stats. Unsafe = an aggressive regular monster
-    /// spawns there that the bot loses to (bosses/MVPs are ignored: rare, and the hazard system steers around them).</summary>
+    /// spawns there that the bot loses to AND can't walk away from: faster than a player (Arclouse) or ranged (Kobold
+    /// Archer). A slow melee one is just scenery the hazard system steers around: Bot1 crossed five yuno fields "unsafe"
+    /// for slow monsters without a scratch. Bosses/MVPs are ignored: rare, and the hazard system steers around them.</summary>
+    // ponytail: the server's base player walk (WorldObject.MoveSpeed); ignores Increase Agility and other speed buffs.
+    private const float PlayerSecondsPerCell = 0.15f;
+    private const int RangedMonsterRange = 3; // spear reach (2) still has to walk up to you
+
+    // Immobile ones (Geographer, Greatest General) only hit what walks into their small circle, which the hazard
+    // overlay already routes around: counting them made ten yuno fields "unsafe" for Bot1.
+    private static string? InescapableReason(RebuildSharedData.ClientTypes.MonsterDbEntry monster) =>
+        IsMonsterImmobile(monster) ? null
+        : monster.Range >= RangedMonsterRange ? $"ranged {monster.Range}"
+        : monster.MoveSpeed > 0 && monster.MoveSpeed < PlayerSecondsPerCell ? "faster than you"
+        : null;
+
     private Dictionary<string, MapEstimate> EstimateMaps(Snapshot snap)
     {
         var perMap = new Dictionary<string, List<(RebuildSharedData.ClientTypes.MonsterDbEntry Monster, int Count, double RespawnSeconds)>>(StringComparer.OrdinalIgnoreCase);
@@ -336,6 +355,7 @@ public sealed partial class BotBehavior
             string? threat = null;
             var huntable = new List<(RebuildSharedData.ClientTypes.MonsterDbEntry Monster, int Count, double RespawnSeconds, BattleForecast Forecast)>();
             var tooStrong = new HashSet<string>();
+            var hpLoss = new Dictionary<string, double>(); // forecast HP lost per fight, by monster name
             // Healers spread evenly: about count x (19x19 / walkable cells) of them within heal reach of any monster.
             var healArea = Math.Min(1.0, (2 * HealerRadius + 1) * (2 * HealerRadius + 1) / (double)cells);
             var mapHealing = spawns.Sum(spawn => spawn.Count * HealPerSecond(spawn.Monster)) * healArea;
@@ -345,7 +365,13 @@ public sealed partial class BotBehavior
                 var ownHeal = HealPerSecond(monster); // a healer heals itself too
                 var healing = mapHealing - ownHeal * healArea + ownHeal;
                 var forecast = WithHealing(Forecast(snap, new MonsterInfo(0, monster.Id, monster.Name, default, monster.HP, monster.HP)), monster.HP, healing);
-                if (!forecast.CanWin) { tooStrong.Add(monster.Name); if (IsAggressive(monster.Id)) threat ??= monster.Name; continue; }
+                hpLoss[monster.Name] = Math.Max(hpLoss.GetValueOrDefault(monster.Name), forecast.ExpectedDamageTaken);
+                if (!forecast.CanWin)
+                {
+                    tooStrong.Add(monster.Name);
+                    if (IsAggressive(monster.Id) && InescapableReason(monster) is { } why) threat ??= $"{monster.Name} ({why})";
+                    continue;
+                }
                 huntable.Add((monster, count, respawnSeconds, forecast));
             }
 
@@ -390,7 +416,7 @@ public sealed partial class BotBehavior
                 if (option.Rate > best.Rate) { best = option; bestZone = zone; }
             }
             var monsters = spawns.GroupBy(spawn => spawn.Monster.Name)
-                .Select(group => (Name: group.Key, Count: group.Sum(spawn => spawn.Count), Huntable: !tooStrong.Contains(group.Key)))
+                .Select(group => (Name: group.Key, Count: group.Sum(spawn => spawn.Count), Huntable: !tooStrong.Contains(group.Key), HpLoss: hpLoss.GetValueOrDefault(group.Key)))
                 .OrderByDescending(entry => entry.Huntable).ThenByDescending(entry => entry.Count).ToList();
             var note = threat != null ? $"aggressive {threat} too strong"
                 : bestZone != null ? $"camp at ({(bestZone.MinX + bestZone.MaxX) / 2},{(bestZone.MinY + bestZone.MaxY) / 2}): {string.Join(", ", bestZone.Counts.Select(c => $"{c.Value} {_data.MonstersByCode.GetValueOrDefault(c.Key)?.Name ?? c.Key}"))}" : "";

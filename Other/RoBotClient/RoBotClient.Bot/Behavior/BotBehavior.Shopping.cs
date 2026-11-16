@@ -817,6 +817,7 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
         // destination itself may be ON a portal cell (when we're walking to a forward portal) and that's
         // fine — A* still picks the destination because it's the goal; the path leading to it avoids
         // every OTHER portal.
+        _walkGoal = (snap.Map, gx, gy, DateTime.UtcNow);
         var path = map.FindPath(snap.SelfPos.X, snap.SelfPos.Y, gx, gy, extraCost: MakePathCost(snap.Map));
         PlannedPath = path is { Count: > 1 } ? (snap.Map, path) : null;
         if (path == null || path.Count <= 1)

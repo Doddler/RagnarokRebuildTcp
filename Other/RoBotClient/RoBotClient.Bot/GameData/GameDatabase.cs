@@ -178,6 +178,19 @@ public sealed class GameDatabase
                 if (idByCode.TryGetValue(m.Groups[1].Value, out var id) && I(m.Groups[3].Value) > 0)
                     _hpRecovery[id] = (I(m.Groups[2].Value) + I(m.Groups[3].Value)) / 2;
 
+        // Monsters with a [WasRangedAttacked] reaction (Greatest General's Earth Spike) can't be shot for free from range.
+        var skillDir = Path.Combine(dbDir, "..", "Script", "MonsterSkills");
+        if (Directory.Exists(skillDir))
+            foreach (var file in Directory.EnumerateFiles(skillDir, "*.txt", SearchOption.AllDirectories))
+            {
+                var code = "";
+                foreach (var line in File.ReadLines(file))
+                {
+                    if (Regex.Match(line, @"SkillHandler\(""(\w+)""\)") is { Success: true } h) code = h.Groups[1].Value;
+                    else if (code != "" && line.Contains("[WasRangedAttacked]")) _punishesRanged.Add(code);
+                }
+            }
+
         // CreateSpawn("ANT_EGG", 1, %(28, 266, 0, 0), ...) pins spawns to x±w, y±h. The client export drops the area.
         var spawnDir = Path.Combine(dbDir, "..", "Script", "Spawns");
         if (Directory.Exists(spawnDir))
@@ -199,6 +212,8 @@ public sealed class GameDatabase
     /// <summary>A spawn pinned to a rectangle (inclusive cells) instead of anywhere on the map.</summary>
     public sealed record SpawnArea(string MonsterCode, int Count, int MinX, int MinY, int MaxX, int MaxY);
     private readonly Dictionary<string, List<SpawnArea>> _spawnAreas = new(StringComparer.OrdinalIgnoreCase);
+    private readonly HashSet<string> _punishesRanged = new(StringComparer.OrdinalIgnoreCase);
+    public bool PunishesRangedAttacks(string monsterCode) => _punishesRanged.Contains(monsterCode);
     public IReadOnlyList<SpawnArea> SpawnAreas(string map) => _spawnAreas.TryGetValue(map, out var list) ? list : Array.Empty<SpawnArea>();
 
     private readonly Dictionary<int, int> _hpRecovery = new();

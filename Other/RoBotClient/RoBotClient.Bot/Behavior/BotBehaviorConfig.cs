@@ -163,6 +163,8 @@ public sealed class BotBehaviorConfig
     /// <summary>Item ids for the two escape consumables. Override here if a server uses non-standard ids.</summary>
     public int FlyWingItemId = 601;
     public int ButterflyWingItemId = 602;
+    /// <summary>Top up to this many Butterfly Wings during an existing shop trip. 0 disables restocking.</summary>
+    public int ButterflyWingRestockCount;
 
     /// <summary>Stuck duration (seconds) before reaching for a Fly Wing.</summary>
     public double FlyWingStuckSeconds = 8.0;
@@ -320,6 +322,7 @@ public sealed class BotBehaviorConfig
         FlyWingItemId = other.FlyWingItemId;
         PortalSafeDistance = other.PortalSafeDistance;
         ButterflyWingItemId = other.ButterflyWingItemId;
+        ButterflyWingRestockCount = other.ButterflyWingRestockCount;
         FlyWingStuckSeconds = other.FlyWingStuckSeconds;
         ButterflyWingStuckSeconds = other.ButterflyWingStuckSeconds;
         FollowerLostFallthroughSeconds = other.FollowerLostFallthroughSeconds;

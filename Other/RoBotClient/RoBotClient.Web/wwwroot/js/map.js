@@ -160,7 +160,10 @@ export function drawWorld(canvas, payload) {
             hits.push({ x: mx, y: my, name: m.name || "monster" });
         }
     }
-    for (const b of payload.bots || []) hits.push({ x: ox + (b.x + 0.5) * scale, y: oy + (t.h - 1 - b.y + 0.5) * scale, name: b.name || "bot" });
+    for (const b of payload.bots || []) {
+        hits.push({ x: ox + (b.x + 0.5) * scale, y: oy + (t.h - 1 - b.y + 0.5) * scale, name: b.name || "bot" });
+        if (b.target) hits.push({ x: ox + (b.target.x + 0.5) * scale, y: oy + (t.h - 1 - b.target.y + 0.5) * scale, name: `${b.name || "bot"} A* target` });
+    }
     hoverTargets.set(canvas, hits);
     attachHover(canvas);
     // Planned walk of traveling bots: dashed line from the bot along its A* path, ring on the goal cell.
@@ -178,6 +181,18 @@ export function drawWorld(canvas, payload) {
         ctx.setLineDash([]);
         ctx.beginPath();
         ctx.arc(toX(p[p.length - 2]), toY(p[p.length - 1]), Math.max(4, r), 0, Math.PI * 2);
+        ctx.stroke();
+    }
+    // Wander A* destinations: one gold dot per bot, separate from the bot's current position.
+    for (const b of payload.bots || []) {
+        if (!b.target) continue;
+        const tx = toX(b.target.x), ty = toY(b.target.y);
+        ctx.fillStyle = "#ffe066";
+        ctx.strokeStyle = "#171717";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(tx, ty, Math.max(4, r * 0.9), 0, Math.PI * 2);
+        ctx.fill();
         ctx.stroke();
     }
     for (const b of payload.bots || []) {
