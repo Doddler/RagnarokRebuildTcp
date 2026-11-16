@@ -467,9 +467,19 @@ public sealed class BotSession : IAsyncDisposable
 
     // ---- actions ----
 
+    // The server ignores walk/attack from a sitting character, and only the rest logic stood us back up — so a shop
+    // trip (or a flee) that started mid-rest sent walks forever while seated (Bot2 frozen in mjo_dun01). Standing
+    // costs an input delay that eats a walk sent right after it, so stand now and let the caller's next tick move.
+    private bool StandUpFirst()
+    {
+        if (!World.Entities.TryGetValue(World.Self.EntityId, out var me) || me.State != CharacterState.Sitting) return false;
+        _ = SitAsync(false);
+        return true;
+    }
+
     public Task WalkToAsync(int x, int y, CancellationToken ct = default)
     {
-        if (_conn == null) return Task.CompletedTask;
+        if (_conn == null || StandUpFirst()) return Task.CompletedTask;
         var w = new PacketWriter();
         w.WritePacketType(PacketType.StartWalk);
         w.Write((short)x);
@@ -479,7 +489,7 @@ public sealed class BotSession : IAsyncDisposable
 
     public Task AttackAsync(int entityId, CancellationToken ct = default)
     {
-        if (_conn == null) return Task.CompletedTask;
+        if (_conn == null || StandUpFirst()) return Task.CompletedTask;
         var w = new PacketWriter();
         w.WritePacketType(PacketType.Attack);
         w.Write(entityId);
@@ -898,8 +908,10 @@ public sealed class BotSession : IAsyncDisposable
     private void ReadUpdatePlayerData(PacketReader r)
     {
         var self = World.Self;
+        var oldJobLv = self.JobLevel;
         foreach (var stat in PlayerClientStatusDef.PlayerUpdateData)
             self.Data[stat] = r.ReadInt32();
+        if (oldJobLv > 0 && self.JobLevel > oldJobLv) Log($"Progress: job level {oldJobLv} -> {self.JobLevel}.");
         foreach (var stat in PlayerClientStatusDef.PlayerUpdateStats)
             self.Stats[stat] = r.ReadInt32();
 
@@ -1323,6 +1335,7 @@ public sealed class BotSession : IAsyncDisposable
         if (id == World.Self.EntityId)
         {
             World.Self.Data[PlayerStat.Level] = level;
+            Log($"Progress: base level {level} (job {World.Self.JobLevel}) on {World.Self.Map}.");
             Telemetry.Record(TelemetryEventType.LevelUp, level, "", level);
         }
     }
