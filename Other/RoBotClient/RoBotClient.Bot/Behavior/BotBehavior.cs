@@ -1343,7 +1343,7 @@ public sealed partial class BotBehavior
             if (_data != null && _data.World.IsInPortalFootprint(snap.Map, tx, ty, margin: 1)) continue; // don't nudge into / next to a warp
             if (map == null || map.IsWalkable(tx, ty))
             {
-                OnLog?.Invoke($"Stuck: no progress for {(DateTime.UtcNow - _lastProgressAt).TotalSeconds:F0}s at ({self.X},{self.Y}) on {snap.Map} — nudging to ({tx},{ty}).");
+                OnLog?.Invoke($"Stuck: no progress for {_config.StuckSeconds}s+ at ({self.X},{self.Y}) on {snap.Map} — nudging to ({tx},{ty}).");
                 await _bot.WalkToAsync(Math.Max(1, tx), Math.Max(1, ty), ct);
                 return;
             }
