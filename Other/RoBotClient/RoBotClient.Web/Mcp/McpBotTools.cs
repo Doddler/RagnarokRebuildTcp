@@ -312,6 +312,24 @@ public static class McpBotTools
         return new { message = $"{botId}: skills reset; re-spending along \"{cfg.SkillOrder}\"." };
     }
 
+    [McpServerTool(Name = "admin_move"),
+     Description("Teleport a bot to a walkable cell on any map (debug server only), e.g. to pull it out of a wall.")]
+    public static async Task<object> AdminMove(BotManager bots, string botId, string map, int x, int y)
+    {
+        if (bots.GetSession(botId) is not { } session) return new { error = $"No bot '{botId}'." };
+        await session.AdminMoveAsync(map, x, y);
+        return new { message = $"{botId}: asked the server to move it to {map} ({x},{y})." };
+    }
+
+    [McpServerTool(Name = "reload_server_scripts"),
+     Description("Make the game server reload its NPC/warp scripts from disk (debug server only), sent through any connected bot.")]
+    public static async Task<object> ReloadServerScripts(BotManager bots, string botId)
+    {
+        if (bots.GetSession(botId) is not { } session) return new { error = $"No bot '{botId}'." };
+        await session.ReloadServerScriptsAsync();
+        return new { message = "Asked the server to reload its scripts." };
+    }
+
     [McpServerTool(Name = "set_restock"),
      Description("Add or update a target stock level for an item — every shop trip the bot takes, any visited NPC that stocks this item will top the bot up to this count (limited by zeny). 'item' = id/code/name; 'target' is the count to maintain. Use target=0 to remove the entry. Doesn't trigger a shop trip on its own — rides along whenever the bot naturally shops. Use force_restock to trigger an immediate trip.")]
     public static object SetRestock(BotManager bots, GameDatabase db, string botId, string item, int target)
@@ -534,7 +552,7 @@ public static class McpBotTools
         bool? autoEscapeWhenStuck = null, string? partyRole = null, string? itemScript = null,
         bool? announceTarget = null, bool? listenToPartyChat = null,
         string? statTargets = null, string? skillOrder = null, string? buildPreset = null,
-        int? restockItemId = null, int? restockTargetCount = null, int? restockBelow = null)
+        int? restockItemId = null, int? restockTargetCount = null, int? restockBelow = null, bool? autoMap = null)
     {
         var cfg = bots.GetBehaviorConfig(botId);
         if (cfg == null) return $"No bot '{botId}'.";
@@ -543,6 +561,7 @@ public static class McpBotTools
         if (restockTargetCount.HasValue) cfg.RestockTargetCount = Math.Max(0, restockTargetCount.Value);
         if (restockBelow.HasValue) cfg.RestockBelow = Math.Max(0, restockBelow.Value);
         if (homeMap != null) cfg.HomeMap = homeMap;
+        if (autoMap.HasValue) cfg.AutoMap = autoMap.Value; // false = stay on homeMap (no automatic map choice)
         if (huntCodes != null) { cfg.HuntClassIds.Clear(); ResolveCodes(db, cfg.HuntClassIds, huntCodes); }
         if (fleeCodes != null) { cfg.FleeClassIds.Clear(); ResolveCodes(db, cfg.FleeClassIds, fleeCodes); }
         if (ignoreCodes != null) { cfg.IgnoreClassIds.Clear(); ResolveCodes(db, cfg.IgnoreClassIds, ignoreCodes); }

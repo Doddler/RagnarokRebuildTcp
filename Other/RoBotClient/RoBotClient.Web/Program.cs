@@ -117,9 +117,12 @@ var runningBotsFile = string.IsNullOrEmpty(repoRoBot) ? "" : Path.Combine(repoRo
 if (runningBotsFile.Length > 0)
 {
     var botManager = app.Services.GetRequiredService<BotManager>();
+    // Bots still waiting in the staggered respawn below: a restart during it must keep them, or they're lost.
+    var pendingRespawn = new HashSet<string>();
     app.Lifetime.ApplicationStopping.Register(() =>
     {
-        var names = botManager.RunningCharacters();
+        List<string> names;
+        lock (pendingRespawn) names = botManager.RunningCharacters().Union(pendingRespawn).ToList();
         if (names.Count > 0) File.WriteAllText(runningBotsFile, System.Text.Json.JsonSerializer.Serialize(names));
         botManager.StopAllAsync(TimeSpan.FromSeconds(3)).GetAwaiter().GetResult();
     });
@@ -128,8 +131,10 @@ if (runningBotsFile.Length > 0)
         if (!File.Exists(runningBotsFile)) return;
         var names = System.Text.Json.JsonSerializer.Deserialize<List<string>>(File.ReadAllText(runningBotsFile)) ?? new();
         File.Delete(runningBotsFile); // a crash mid-respawn shouldn't replay forever
+        lock (pendingRespawn) pendingRespawn.UnionWith(names);
         await Task.WhenAll(names.Select(async (name, i) =>
         {
+            try {
             await Task.Delay(TimeSpan.FromMilliseconds(500 * i)); // stagger logins a little
             // Saved per-character config (hunt map, build, shop settings) is rehydrated inside spawn.
             for (var attempt = 0; attempt < 4; attempt++)
@@ -143,6 +148,7 @@ if (runningBotsFile.Length > 0)
                 catch (InvalidOperationException) { } // session cooldown: the old login is still being released
                 await Task.Delay(TimeSpan.FromSeconds(5));
             }
+            } finally { lock (pendingRespawn) pendingRespawn.Remove(name); }
         }));
         app.Logger.LogInformation("Respawned {Count} bot(s) from the previous run.", names.Count);
     }));

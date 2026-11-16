@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using RebuildSharedData.ClientTypes;
@@ -131,7 +132,7 @@ public sealed class GameDatabase
 
     /// <summary>One wearable item. Type is the weapon class (Sword, Bow…), the armor type (Armor, Shield,
     /// Headgear…) or "Arrow"; Position is MainHand/BothHands for weapons, Top/Mid/Bottom… for headgear.</summary>
-    public sealed record GearInfo(int Id, string Type, string Position, int Power, int MinLvl, string Group);
+    public sealed record GearInfo(int Id, string Type, string Position, int Power, int MinLvl, string Group, int Range = 0);
 
     public IReadOnlyDictionary<int, GearInfo> Gear { get; private set; } = new Dictionary<int, GearInfo>();
     private Dictionary<string, string[]> _equipGroups = new(StringComparer.OrdinalIgnoreCase);
@@ -148,7 +149,7 @@ public sealed class GameDatabase
         var gear = new Dictionary<int, GearInfo>();
         // Id,Code,Name,Attack,Range,Slot,Price,Weight,Type,Position,Property,MinLvl,Rank,EquipGroup
         foreach (var c in Rows("ItemsWeapons.csv"))
-            gear[I(c[0])] = new GearInfo(I(c[0]), c[8], c[9], I(c[3]), I(c[11]), c[13]);
+            gear[I(c[0])] = new GearInfo(I(c[0]), c[8], c[9], I(c[3]), I(c[11]), c[13], I(c[4]));
         // Id,Code,Name,Defense,MagicDef,Slot,Price,Weight,Type,Position,Property,MinLvl,EquipGroup
         foreach (var c in Rows("ItemsEquipment.csv"))
             gear[I(c[0])] = new GearInfo(I(c[0]), c[8], c[9], I(c[3]), I(c[11]), c[12]);
@@ -163,7 +164,50 @@ public sealed class GameDatabase
             foreach (var c in File.ReadLines(Path.Combine(dbDir, "EquipmentGroups.csv")).Select(l => l.Split(',')))
                 if (c.Length > 2) groups[c[0].Trim()] = c[2..].Select(s => s.Trim()).ToArray();
         _equipGroups = groups;
+
+        // JobLvl,Novice,FirstJob,SecondJob  /  Id,Class,ExpChart,MaxJobLevel,...
+        _jobExpToNext = Rows("ExpJobChart.csv").Select(c => c[1..].Select(I).ToArray()).ToArray();
+        foreach (var c in Rows("Jobs.csv")) _jobTier[I(c[0])] = I(c[2]);
+        // Id,Code,Name,Weight,Price,...
+        var idByCode = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        foreach (var c in Rows("ItemsUsable.csv")) { _usablePrice[I(c[0])] = I(c[4]); idByCode[c[1]] = I(c[0]); }
+        // RecoveryItem("Apple", 16, 22, 0, 0) — HP min/max, SP min/max, from the server's item effect script.
+        var effects = Path.Combine(dbDir, "..", "Script", "Items", "ItemEffects.txt");
+        if (File.Exists(effects))
+            foreach (Match m in Regex.Matches(File.ReadAllText(effects), @"RecoveryItem\(""(\w+)"",\s*(\d+),\s*(\d+)"))
+                if (idByCode.TryGetValue(m.Groups[1].Value, out var id) && I(m.Groups[3].Value) > 0)
+                    _hpRecovery[id] = (I(m.Groups[2].Value) + I(m.Groups[3].Value)) / 2;
+
+        // CreateSpawn("ANT_EGG", 1, %(28, 266, 0, 0), ...) pins spawns to x±w, y±h. The client export drops the area.
+        var spawnDir = Path.Combine(dbDir, "..", "Script", "Spawns");
+        if (Directory.Exists(spawnDir))
+            foreach (var file in Directory.EnumerateFiles(spawnDir, "*.txt", SearchOption.AllDirectories))
+            {
+                var map = "";
+                foreach (var line in File.ReadLines(file))
+                {
+                    if (Regex.Match(line, @"MapConfig\(""(\w+)""\)") is { Success: true } mapMatch) { map = mapMatch.Groups[1].Value; continue; }
+                    var spawn = Regex.Match(line, @"CreateSpawn\(""(\w+)"",\s*(\d+),\s*%\(\s*(\d+),\s*(\d+),\s*(\d+),\s*(\d+)\s*\)");
+                    if (!spawn.Success || map == "" || line.Contains("Boss") || line.Contains("Mvp")) continue;
+                    int G(int i) => I(spawn.Groups[i].Value);
+                    if (!_spawnAreas.TryGetValue(map, out var list)) _spawnAreas[map] = list = new();
+                    list.Add(new SpawnArea(spawn.Groups[1].Value, G(2), G(3) - G(5), G(4) - G(6), G(3) + G(5), G(4) + G(6)));
+                }
+            }
     }
+
+    /// <summary>A spawn pinned to a rectangle (inclusive cells) instead of anywhere on the map.</summary>
+    public sealed record SpawnArea(string MonsterCode, int Count, int MinX, int MinY, int MaxX, int MaxY);
+    private readonly Dictionary<string, List<SpawnArea>> _spawnAreas = new(StringComparer.OrdinalIgnoreCase);
+    public IReadOnlyList<SpawnArea> SpawnAreas(string map) => _spawnAreas.TryGetValue(map, out var list) ? list : Array.Empty<SpawnArea>();
+
+    private readonly Dictionary<int, int> _hpRecovery = new();
+    /// <summary>Average HP an item restores (Apple 19, Novice Potion 27, Meat 85), 0 when it doesn't heal HP.</summary>
+    public int HpRecovery(int itemId) => _hpRecovery.GetValueOrDefault(itemId);
+
+    private readonly Dictionary<int, int> _usablePrice = new();
+    /// <summary>NPC buy price of a usable item (Fly Wing 140z), 0 when unknown.</summary>
+    public int UsableItemPrice(int itemId) => _usablePrice.GetValueOrDefault(itemId);
 
     /// <summary>Whether a job (by name, e.g. "Archer") may wear the item, following the server's
     /// EquipmentGroups.csv nesting. Ammo has no group and is always allowed.</summary>
@@ -204,6 +248,19 @@ public sealed class GameDatabase
 
     public int? ClassIdOf(string monsterCode) =>
         MonstersByCode.TryGetValue(monsterCode, out var m) ? m.Id : null;
+
+    // Job exp to next job level by job tier (ExpJobChart.csv: Novice, FirstJob, SecondJob) and each job's tier (Jobs.csv).
+    private int[][] _jobExpToNext = Array.Empty<int[]>();
+    private readonly Dictionary<int, int> _jobTier = new();
+
+    public int BaseExpToNext(int level) => level >= 1 && level - 1 < BaseExpToNextLevel.Count ? BaseExpToNextLevel[level - 1] : 0;
+
+    public int JobExpToNext(int jobId, int jobLevel)
+    {
+        var tier = _jobTier.GetValueOrDefault(jobId);
+        return jobLevel >= 1 && jobLevel - 1 < _jobExpToNext.Length && tier < _jobExpToNext[jobLevel - 1].Length
+            ? _jobExpToNext[jobLevel - 1][tier] : 0;
+    }
 
     /// <summary>Lifetime base exp: every completed level's requirement plus progress into the current level
     /// (the server's Experience stat resets to 0 on each level-up).</summary>

@@ -247,7 +247,13 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
         if (!_config.AutoShop || _data == null) return false;
         if (DateTime.UtcNow < _shopCooldownUntil) return false;
         var st = ReadShopState();
-        return ShopPolicy.ShouldStartTrip(st.weight, st.maxWeight, st.stacks, st.restockHeld, _config, CountSaleableItems);
+        // A wing restock alone isn't worth a trip unless spare zeny buys at least half the shortfall.
+        var restockHeld = st.restockHeld;
+        if (IsConvenienceItem(_config.RestockItemId) && restockHeld < _config.RestockBelow
+            && _data!.UsableItemPrice(_config.RestockItemId) is var price and > 0
+            && ConvenienceBudget(st.zeny, 0) / price < (_config.RestockTargetCount - restockHeld + 1) / 2)
+            restockHeld = int.MaxValue;
+        return ShopPolicy.ShouldStartTrip(st.weight, st.maxWeight, restockHeld, _config, CountSaleableItems);
     }
 
     /// <summary>Force an immediate shop trip to restock items on the restock-targets list. No-op when
@@ -307,7 +313,7 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
             _shopOrderSent = false;
             _shopSteps = 0;
             _shopPhase = ShopPhase.Travel;
-            _shopDeadline = DateTime.UtcNow.AddSeconds(150);
+            _shopDeadline = ShopTripDeadline();
             _shopNextAction = DateTime.MinValue;
             var customWhat = _customSellItems != null && _customBuyItems != null ? "sell + buy"
                 : _customSellItems != null ? "sell" : "buy";
@@ -323,10 +329,8 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
         }
 
         var st = ReadShopState();
-        var needSell = force
-                       || (st.maxWeight > 0 && st.weight >= st.maxWeight * _config.SellWeightPercent)
-                       || (st.stacks >= _config.SellItemStacks && CountSaleableItems() > 0) // kept stacks alone have nothing to sell
-                       || (_config.JunkSellCount > 0 && CountSaleableItems() >= _config.JunkSellCount);
+        var saleable = CountSaleableItems();
+        var needSell = force || ShopPolicy.ShouldStartTrip(st.weight, st.maxWeight, int.MaxValue, _config, () => saleable);
         // Build the "needed for buy" item set: the single-item config restock (when below its low
         // threshold) + every restock-list item below its target. The list items don't trigger a trip
         // on their own (ShouldStartShopTrip ignores them) — but once a trip IS happening, the bot
@@ -340,6 +344,7 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
             if (CountInInventory(id) < target && !needBuyAny.Contains(id)) needBuyAny.Add(id);
         var needBuy = needBuyAny.Count > 0;
         if (!needSell && !needBuy) return;
+        needSell |= saleable > 0; // already making the trip: sell whatever there is
 
         // A buy goal requires a trader that stocks at least one needed item. Prefer such a trader so
         // sell + buy happen at the same NPC; if none is reachable, fall back to any trader for selling.
@@ -365,7 +370,7 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
         _shopOrderSent = false;
         _shopSteps = 0;
         _shopPhase = ShopPhase.Travel;
-        _shopDeadline = DateTime.UtcNow.AddSeconds(150);
+        _shopDeadline = ShopTripDeadline();
         _shopNextAction = DateTime.MinValue;
         var what = needSell && needBuy ? "sell + restock" : needSell ? "sell" : "restock";
         OnLog?.Invoke($"AutoShop: heading to {_data!.MapName(_shopMap)} ({_shopMap}) to {what} at '{_shopNpcName}'.");
@@ -392,7 +397,7 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
         // Cheap pass by map hops; the few closest go on to the real walking estimate.
         var near = traders
             .Select(npc => (npc, hops: Math.Min(Hops(fromMap, npc.Map), saveMap == null ? int.MaxValue : Hops(saveMap, npc.Map) + 1)))
-            .Where(c => c.hops < int.MaxValue).OrderBy(c => c.hops).Take(6).ToList();
+            .Where(c => c.hops < int.MaxValue).OrderBy(c => c.hops).Take(12).ToList(); // unreachable interiors (ama_in01, xmas_in) used to fill a top 6
         if (near.Count == 0) return false;
 
         var here = _bot.WithState(w => w.SelfPosition);
@@ -414,12 +419,18 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
         }
         if (best == null) return false;
         _shopWingTo = bestViaWing ? saveMap : null;
+        _shopTripCells = bestCost;
         _shopMap = best.Map;
         _shopX = best.X;
         _shopY = best.Y;
         _shopNpcName = best.Name;
         return true;
     }
+
+    // A fixed 150 s timed out every cross-region walk (Payon from prt_fild08 is ~1200 cells) halfway, then the bot
+    // started over. ~0.2 s per estimated cell of the round trip on top.
+    private float _shopTripCells;
+    private DateTime ShopTripDeadline() => DateTime.UtcNow.AddSeconds(150 + Math.Min(_shopTripCells, 3000) * 0.2);
 
     private const float WingCostCells = 25; // using the wing + loading the town ≈ walking this many cells
 
@@ -429,7 +440,7 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
     /// final portal to the target. -1 when unreachable.</summary>
     private float WalkCost(string fromMap, int fromX, int fromY, string toMap, int toX, int toY)
     {
-        var plan = _data!.World.Plan(fromMap, fromX, fromY, toMap, toX, toY, mapPenalty: m => GetMapDanger(m) * MapDangerRouteWeight);
+        var plan = PlanRoute(fromMap, fromX, fromY, toMap, toX, toY);
         if (plan == null) return -1;
         var (lastX, lastY) = plan.Edges.Count > 0 ? (plan.Edges[^1].Dx, plan.Edges[^1].Dy) : (fromX, fromY);
         return plan.Cost + Math.Max(Math.Abs(toX - lastX), Math.Abs(toY - lastY));
@@ -627,7 +638,9 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
         // limited by available zeny (greedy per item — first the legacy RestockItemId, then the list
         // in dictionary order). Single packet per visit.
         var lines2 = new List<(int, int)>();
-        var zenyLeft = st.zeny;
+        var homeFares = ZenyForTripHome(snap);
+        var zenyLeft = Math.Max(0, st.zeny - homeFares);
+        var convenienceLeft = ConvenienceBudget(st.zeny, homeFares);
         var totalCost = 0;
 
         if (_config.RestockItemId > 0)
@@ -638,12 +651,13 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
                 if (id == _config.RestockItemId) { defaultPrice = p; break; }
             if (need > 0 && defaultPrice > 0)
             {
-                var affordable = zenyLeft / defaultPrice;
+                var affordable = (IsConvenienceItem(_config.RestockItemId) ? Math.Min(zenyLeft, convenienceLeft) : zenyLeft) / defaultPrice;
                 var qty = Math.Min(need, affordable);
                 if (qty > 0)
                 {
                     lines2.Add((_config.RestockItemId, qty));
                     zenyLeft -= qty * defaultPrice;
+                    if (IsConvenienceItem(_config.RestockItemId)) convenienceLeft -= qty * defaultPrice;
                     totalCost += qty * defaultPrice;
                     _bot.Telemetry.Record(TelemetryEventType.Bought, snap.SelfLevel,
                         _data?.ItemName(_config.RestockItemId) ?? "", qty);
@@ -662,17 +676,19 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
             var held = CountInInventory(itemId);
             var need = target - held;
             if (need <= 0) continue;
-            var affordable = zenyLeft / price;
+            var affordable = (IsConvenienceItem(itemId) ? Math.Min(zenyLeft, convenienceLeft) : zenyLeft) / price;
             var qty = Math.Min(need, affordable);
             if (qty <= 0) continue;
             lines2.Add((itemId, qty));
             zenyLeft -= qty * price;
+            if (IsConvenienceItem(itemId)) convenienceLeft -= qty * price;
             totalCost += qty * price;
             _bot.Telemetry.Record(TelemetryEventType.Bought, snap.SelfLevel, _data?.ItemName(itemId) ?? $"#{itemId}", qty);
         }
 
         if (lines2.Count == 0) { await _bot.ShopCloseAsync(ct); return; }
-        OnLog?.Invoke($"Restocking: {string.Join(", ", lines2.Select(l => $"{l.Item2}x {_data?.ItemName(l.Item1) ?? $"#{l.Item1}"}"))} ({totalCost}z).");
+        OnLog?.Invoke($"Restocking: {string.Join(", ", lines2.Select(l => $"{l.Item2}x {_data?.ItemName(l.Item1) ?? $"#{l.Item1}"}"))} ({totalCost}z)"
+                      + (homeFares > 0 ? $", keeping {homeFares}z for the Kafra home." : "."));
         await _bot.ShopBuySellAsync(lines2, ct);
     }
 
@@ -785,6 +801,10 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
         return best;
     }
 
+    /// <summary>The last A* path the travel walker planned (map, cells start..goal), for the dashboard's world view.
+    /// Stale once the bot stops traveling, so readers should check the mode and map.</summary>
+    public (string Map, IReadOnlyList<(int x, int y)> Cells)? PlannedPath { get; private set; }
+
     // Walk toward (tx,ty) along an A* path so the server gets a reachable, obstacle-aware target. The exact
     // tile may be blocked (NPCs stand on blocked tiles) and far/blocked WalkTo targets are rejected, so we
     // aim at a walkable cell near the goal and only send a waypoint `step` tiles ahead along the path.
@@ -798,6 +818,7 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
         // fine — A* still picks the destination because it's the goal; the path leading to it avoids
         // every OTHER portal.
         var path = map.FindPath(snap.SelfPos.X, snap.SelfPos.Y, gx, gy, extraCost: MakePathCost(snap.Map));
+        PlannedPath = path is { Count: > 1 } ? (snap.Map, path) : null;
         if (path == null || path.Count <= 1)
         {
             LogTravelOnce($"Travel: no path on {snap.Map} from ({snap.SelfPos.X},{snap.SelfPos.Y}) to ({gx},{gy}) — asking the server to walk there directly.");
@@ -829,30 +850,26 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
         for (var i = maxStep; i >= 1; i--)
         {
             var (tx, ty) = path[i];
-            if (!StraightLineCrossesPortal(map, fromX, fromY, tx, ty, allowedPortalCell))
+            if (!WalkMayCrossPortal(map, fromX, fromY, tx, ty, allowedPortalCell))
                 return i;
         }
         return 0;
     }
 
-    /// <summary>Bresenham-step the straight line from (x0,y0) to (x1,y1) and return true if ANY cell
-    /// along the line (excluding the start) lies inside a real warp footprint — except the explicitly-
-    /// allowed goal portal cell, which is exempt. Uses <see cref="WorldGraph.IsInPortalFootprint"/>
-    /// (full rectangular footprint with half-extents from the Warp() script) rather than the legacy
-    /// distance-to-center check, which silently passed cells on the long edge of fat warps.</summary>
-    private bool StraightLineCrossesPortal(string map, int x0, int y0, int x1, int y1,
-        (int x, int y)? allowedPortalCell)
+    /// <summary>True if the server's walk from (x0,y0) to (x1,y1) could step on a warp footprint other than the
+    /// goal portal. The server runs its own pathfinder rather than a straight line (from alberta's (102,153) it
+    /// went diagonal first, into the shop warp at 98,153, and the bots bounced in and out forever), so test the
+    /// whole box between the two points: on open ground every shortest 8-way path stays inside it.</summary>
+    private bool WalkMayCrossPortal(string map, int x0, int y0, int x1, int y1, (int x, int y)? allowedPortalCell)
     {
-        if (_data == null) return false;
-        var steps = Math.Max(Math.Abs(x1 - x0), Math.Abs(y1 - y0));
-        if (steps == 0) return false;
-        for (var i = 1; i <= steps; i++)
+        if (_data == null || (x0 == x1 && y0 == y1)) return false;
+        int minX = Math.Min(x0, x1), maxX = Math.Max(x0, x1), minY = Math.Min(y0, y1), maxY = Math.Max(y0, y1);
+        foreach (var f in _data.World.PortalFootprintsOn(map))
         {
-            var x = x0 + (x1 - x0) * i / steps;
-            var y = y0 + (y1 - y0) * i / steps;
-            if (allowedPortalCell is { } a && Math.Abs(a.x - x) <= 1 && Math.Abs(a.y - y) <= 1)
-                continue; // goal portal — crossing it is the point
-            if (_data.World.IsInPortalFootprint(map, x, y)) return true;
+            if (f.maxX < minX || f.minX > maxX || f.maxY < minY || f.minY > maxY) continue;
+            if (allowedPortalCell is { } a && a.x >= f.minX - 1 && a.x <= f.maxX + 1 && a.y >= f.minY - 1 && a.y <= f.maxY + 1)
+                continue; // goal portal: crossing it is the point
+            return true;
         }
         return false;
     }
@@ -1080,6 +1097,7 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
             _lastEntryPortal = (snap.Map, px, py);
             var dist = Math.Max(Math.Abs(px - snap.SelfPos.X), Math.Abs(py - snap.SelfPos.Y));
             if (dist <= 4) { await _bot.WalkToAsync(Math.Max(1, px), Math.Max(1, py), ct); return; }
+            if (await TryTravelFlyWingAsync(snap, px, py, dist, ct)) return;
             await WalkPathTowardAsync(snap, px, py, 16, ct);
             return;
         }
@@ -1117,6 +1135,51 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
         {
             await TryTrapWingEscapeAsync(trapSecs, ct);
         }
+    }
+
+    // Fly Wing shortcut on long walks: fly only when we're clearly farther from the portal than a random landing
+    // would be on average. At most 5 per map visited, and a few stay in the bag for escapes.
+    private const int TravelFlyWingDistance = 100, TravelFlyWingsPerMap = 5, TravelFlyWingReserve = 3;
+    private const double TravelFlyWingMargin = 1.3;
+    private readonly Dictionary<(string, int, int), double> _averageLandingDistance = new();
+    private string? _travelWingMap;
+    private int _travelWingsUsed;
+    private DateTime _nextTravelWing;
+
+    private async Task<bool> TryTravelFlyWingAsync(Snapshot snap, int portalX, int portalY, int distanceToPortal, CancellationToken ct)
+    {
+        if (distanceToPortal < TravelFlyWingDistance || DateTime.UtcNow < _nextTravelWing || _data?.IsUsableItem(_config.FlyWingItemId) != true)
+            return false;
+        var average = AverageLandingDistance(snap.Map, portalX, portalY);
+        if (average is not { } expected || distanceToPortal < expected * TravelFlyWingMargin) return false;
+        if (_travelWingMap == null) { _travelWingMap = snap.Map; _travelWingsUsed = 0; }
+        if (_travelWingsUsed >= TravelFlyWingsPerMap || CountInInventory(_config.FlyWingItemId) <= TravelFlyWingReserve) return false;
+        _travelWingsUsed++;
+        _nextTravelWing = DateTime.UtcNow.AddSeconds(2);
+        OnLog?.Invoke($"Travel: Fly Wing shortcut on {snap.Map}, {distanceToPortal} cells from the portal vs ~{expected:0} from a random landing ({_travelWingsUsed}/{TravelFlyWingsPerMap} on this map).");
+        await _bot.UseInventoryItemAsync(_config.FlyWingItemId, -1, ct);
+        return true;
+    }
+
+    // Mean straight-line distance from a random walkable cell to the portal: where a Fly Wing lands on average.
+    // ponytail: straight-line, not walked distance; walls make real walks longer on mazy maps.
+    private double? AverageLandingDistance(string map, int portalX, int portalY)
+    {
+        if (_averageLandingDistance.TryGetValue((map, portalX, portalY), out var cached)) return cached;
+        if (_data?.GetWalkMap(map) is not { } walk) return null;
+        var random = new Random(portalX * 31 + portalY);
+        double total = 0;
+        var samples = 0;
+        for (var tries = 0; tries < 5000 && samples < 400; tries++)
+        {
+            int x = random.Next(walk.Width), y = random.Next(walk.Height);
+            if (!walk.IsWalkable(x, y)) continue;
+            total += Math.Max(Math.Abs(x - portalX), Math.Abs(y - portalY));
+            samples++;
+        }
+        double? average = samples > 0 ? total / samples : null;
+        if (average is { } value) _averageLandingDistance[(map, portalX, portalY)] = value;
+        return average;
     }
 
     /// <summary>Wing-escape regardless of <see cref="BotBehaviorConfig.AutoEscapeWhenStuck"/> — the
@@ -1188,12 +1251,7 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
         // Edge filter: drop kafra edges whose NPC we've blacklisted (a previous interaction timed out).
         // Lets Dijkstra pick portal-walking or a different kafra without rebuilding the graph.
         // ponytail: checks each teleport against current zeny, not the route's total; fine while routes use one kafra hop.
-        var zeny = _bot.WithState(w => w.Self.Zeny);
-        var plan = _data.World.Plan(snap.Map, snap.SelfPos.X, snap.SelfPos.Y,
-                                    destMap, destSeed.Value.X, destSeed.Value.Y,
-                                    edgeFilter: e => e.Kafra == null || (!IsKafraBlacklisted(e.SrcMap, e.Sx, e.Sy) && e.Kafra.Zeny <= zeny),
-                                    // 1 danger point ≈ 5 walked cells. 2 (the legacy BFS weight) still sent a Lv13 bot through moc_fild03 (danger 301, one-hit Greatest Generals).
-                                    mapPenalty: m => GetMapDanger(m) * MapDangerRouteWeight);
+        var plan = PlanRoute(snap.Map, snap.SelfPos.X, snap.SelfPos.Y, destMap, destSeed.Value.X, destSeed.Value.Y);
         if (plan == null || plan.Edges.Count == 0) return false;
         var route = $"Route to {destMap}: {snap.Map} → {string.Join(" → ", plan.Edges.Select(e => e.Kafra != null ? $"{e.DstMap} (kafra {e.Kafra.Zeny}z)" : e.DstMap))}"
                     + $" (danger {string.Join(", ", plan.Edges.Select(e => GetMapDanger(e.DstMap).ToString("0")))}).";
@@ -1204,6 +1262,41 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
         viaMap = first.DstMap;
         kafra = first.Kafra; // non-null when the next hop is a kafra teleport (drives a dialog instead of crossing a portal)
         return true;
+    }
+
+    // Shop choice and travel must agree on which teleports exist: the shop picker used to price a Kafra hop the bot
+    // couldn't pay for, then travel walked six maps instead.
+    private bool UsableEdge(WorldGraph.Edge e, int zeny) =>
+        e.Kafra == null || (!IsKafraBlacklisted(e.SrcMap, e.Sx, e.Sy) && e.Kafra.Zeny <= zeny);
+
+    // Every route the bot plans or prices. Maps with an aggressive monster it loses to are walls on the way (not just
+    // expensive): with only the danger penalty, Bot1 on yuno_fild04 found every map "through yuno_fild03", the shortest
+    // way, though the Yuno Kafra avoided it. Falls back to the risky route when nothing else connects.
+    private WorldGraph.TravelPlan? PlanRoute(string fromMap, int fromX, int fromY, string toMap, int toX, int toY)
+    {
+        var zeny = _bot.WithState(w => w.Self.Zeny);
+        var estimates = _mapEstimates;
+        bool Unsafe(string map) => !string.Equals(map, fromMap, StringComparison.OrdinalIgnoreCase)
+            && !string.Equals(map, toMap, StringComparison.OrdinalIgnoreCase)
+            && estimates.TryGetValue(map, out var estimate) && !estimate.Safe;
+        float Penalty(string map) => GetMapDanger(map) * MapDangerRouteWeight;
+        return _data!.World.Plan(fromMap, fromX, fromY, toMap, toX, toY, edgeFilter: e => UsableEdge(e, zeny) && !Unsafe(e.DstMap), mapPenalty: Penalty)
+            ?? _data.World.Plan(fromMap, fromX, fromY, toMap, toX, toY, edgeFilter: e => UsableEdge(e, zeny), mapPenalty: Penalty);
+    }
+
+    // Fly and Butterfly Wings save time but never decide progress: they get a quarter of the zeny left after the Kafra
+    // fares home, so a poor bot keeps its money for gear and teleports instead of draining it on wings.
+    private const double ConvenienceBudgetShare = 0.25;
+    private bool IsConvenienceItem(int itemId) => itemId > 0 && (itemId == _config.FlyWingItemId || itemId == _config.ButterflyWingItemId);
+    private static int ConvenienceBudget(int zeny, int homeFares) => (int)(Math.Max(0, zeny - homeFares) * ConvenienceBudgetShare);
+
+    // Kafra fares on the planned way home from here. Restocking leaves them in the purse: Bot1 and Bot5 spent their
+    // last zeny on Fly Wings in izlude_in, and izlude has no walking exit, so they were stranded.
+    private int ZenyForTripHome(Snapshot snap)
+    {
+        if (_data == null || string.IsNullOrEmpty(_config.HomeMap) || _data.World.EntryCell(_config.HomeMap) is not { } entry) return 0;
+        var plan = PlanRoute(snap.Map, snap.SelfPos.X, snap.SelfPos.Y, _config.HomeMap, entry.X, entry.Y);
+        return plan?.Edges.Sum(e => e.Kafra?.Zeny ?? 0) ?? 0;
     }
 
     private RebuildSharedData.Data.Position? FindAnyWalkableCell(string map)
@@ -1369,7 +1462,7 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
     private async Task AbortShopAsync(string reason, CancellationToken ct)
     {
         OnLog?.Invoke($"AutoShop aborted: {reason}.");
-        await _bot.ShopCloseAsync(ct); // harmless if no shop is open
+        await _bot.CloseNpcConversationAsync(ct);
         EndShopTrip();
     }
 

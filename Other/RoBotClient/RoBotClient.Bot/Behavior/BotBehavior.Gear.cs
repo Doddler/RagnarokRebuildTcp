@@ -108,6 +108,7 @@ public sealed partial class BotBehavior
         var isSquadFollower = !string.IsNullOrEmpty(_config.SquadId) && !_config.IsSquadLeader;
         if (!_config.AutoShop || isSquadFollower || ShopTripActive || _forceShop || DateTime.UtcNow < _nextGearBuy) return;
         _nextGearBuy = DateTime.UtcNow.AddSeconds(30);
+        if (TryBuyJobWeapon(job, inv.Select(i => i.ItemId), arrows, zeny, snap.SelfLevel)) return;
         var budget = zeny - GearZenyReserve;
 
         if (preferred?.Contains("Bow") == true && arrows < ArrowLow && budget > 0)
@@ -130,6 +131,57 @@ public sealed partial class BotBehavior
             TryBuyGear(upgrade.g.Id, 1, $"{SlotLabel(upgrade.slot)} upgrade, {(upgrade.slot == EquipSlot.RightHand ? "atk" : "def")} {upgrade.g.Power}, {upgrade.item.Price}z");
     }
 
+    // The bare minimum before any other gear: a weapon of the job's own kind. An Archer needs a bow (and arrows, or the bow
+    // can't attack); every other job just needs some weapon. Bot5 hunted with a Knife because a bow only counts once arrows
+    // are carried (so it never looked like an upgrade) and gear buys keep a 3000z reserve.
+    private static readonly Dictionary<string, string> RequiredWeaponType = new(StringComparer.OrdinalIgnoreCase) { ["Archer"] = "Bow" };
+    private const int JobWeaponZenyReserve = 500; // potions; the weapon itself matters more than the usual reserve
+    private const int ArrowItemId = 1750;
+    private DateTime _nextJobWeaponWarning = DateTime.MinValue;
+
+    private bool TryBuyJobWeapon(string job, IEnumerable<int> ownedItemIds, int arrows, int zeny, int level)
+    {
+        RequiredWeaponType.TryGetValue(job, out var requiredType);
+        bool Fits(GameDatabase.GearInfo g) => SlotOf(g) == EquipSlot.RightHand && g.MinLvl <= level && _data!.CanEquip(g, job)
+                                             && (requiredType == null || g.Type == requiredType);
+        var owned = ownedItemIds.Where(id => _data!.Gear.TryGetValue(id, out var g) && Fits(g)).Select(id => _data!.Gear[id]).ToList();
+        var needsArrows = requiredType == "Bow" || owned.Any(g => g.Type == "Bow");
+        var arrowPrice = Math.Max(1, _data!.Item(ArrowItemId)?.Price ?? 1);
+        var spendable = zeny - JobWeaponZenyReserve;
+
+        if (owned.Count > 0)
+        {
+            if (!needsArrows || arrows >= ArrowLow || spendable < arrowPrice * 10) return false;
+            SetRestockTarget(ArrowItemId, ArrowStock);
+            return TryBuyGear(new[] { (ArrowItemId, Math.Min(ArrowStock - arrows, spendable / arrowPrice)) }, $"the {job}'s bow needs arrows");
+        }
+
+        // None owned: the strongest one a vendor sells that we can afford, plus arrows for a bow, in one trip.
+        var arrowCost = needsArrows ? Math.Min(ArrowStock, Math.Max(0, ArrowLow - arrows)) * arrowPrice : 0;
+        var pick = _data.Gear.Values
+            .Where(g => Fits(g) && _data.Item(g.Id) is { SoldBy.Count: > 0 } item && item.Price + arrowCost <= spendable
+                        && _gearBuyRetryAt.GetValueOrDefault(g.Id) < DateTime.UtcNow)
+            .OrderByDescending(g => g.Power).FirstOrDefault();
+        if (pick == null)
+        {
+            if (DateTime.UtcNow >= _nextJobWeaponWarning)
+            {
+                _nextJobWeaponWarning = DateTime.UtcNow.AddMinutes(5);
+                OnLog?.Invoke($"Gear: no {requiredType?.ToLowerInvariant() ?? "weapon"} for a {job} and can't afford one yet ({zeny}z) — hunting with what it has.");
+            }
+            return false;
+        }
+        var price = _data.Item(pick.Id)!.Price;
+        var buy = new List<(int, int)> { (pick.Id, 1) };
+        if (pick.Type == "Bow")
+        {
+            var arrowQty = Math.Min(ArrowStock - arrows, (spendable - price) / arrowPrice);
+            if (arrowQty > 0) buy.Add((ArrowItemId, arrowQty));
+            SetRestockTarget(ArrowItemId, ArrowStock);
+        }
+        return TryBuyGear(buy, $"a {job} needs a {requiredType?.ToLowerInvariant() ?? "weapon"}: {_data.ItemName(pick.Id)}, atk {pick.Power}, {price}z");
+    }
+
     private static string SlotLabel(EquipSlot s) => s switch
     {
         EquipSlot.RightHand => "weapon", EquipSlot.LeftHand => "shield", EquipSlot.Body => "armor",
@@ -137,12 +189,15 @@ public sealed partial class BotBehavior
         EquipSlot.HeadMid => "mid headgear", EquipSlot.HeadBottom => "lower headgear", _ => s.ToString(),
     };
 
-    private bool TryBuyGear(int itemId, int qty, string why)
+    private bool TryBuyGear(int itemId, int qty, string why) => TryBuyGear(new[] { (itemId, qty) }, why);
+
+    // The first item picks the vendor (it must stock it); the rest are bought there too when it has them.
+    private bool TryBuyGear(IReadOnlyList<(int ItemId, int Qty)> items, string why)
     {
-        if (qty <= 0) return false;
-        _gearBuyRetryAt[itemId] = DateTime.UtcNow.AddMinutes(10); // unreachable vendor / failed trip: don't loop on it
-        OnLog?.Invoke($"Gear: buying {qty}x {_data!.ItemName(itemId)} ({why}).");
-        RequestBuyItems(new[] { (itemId, qty) });
+        if (items.Count == 0 || items[0].Qty <= 0) return false;
+        _gearBuyRetryAt[items[0].ItemId] = DateTime.UtcNow.AddMinutes(10); // unreachable vendor / failed trip: don't loop on it
+        OnLog?.Invoke($"Gear: buying {string.Join(" + ", items.Select(i => $"{i.Qty}x {_data!.ItemName(i.ItemId)}"))} ({why}).");
+        RequestBuyItems(items);
         _customBuyWhy = why;
         return true;
     }

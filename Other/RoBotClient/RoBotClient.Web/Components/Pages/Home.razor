@@ -148,46 +148,19 @@ else
         </table>
     </div>
 
-    <div class="btn-group btn-group-sm mt-4 mb-2" role="group">
-        <button class="btn @(_worldView ? "btn-outline-secondary" : "btn-secondary")" @onclick="() => _worldView = false">Minimaps</button>
-        <button class="btn @(_worldView ? "btn-secondary" : "btn-outline-secondary")" @onclick="() => _worldView = true">World</button>
-    </div>
-    @if (_worldView)
-    {
-        <div class="d-flex flex-wrap gap-3">
-            @foreach (var map in snapshots.Where(s => s.InGame && !string.IsNullOrEmpty(s.Map)).Select(s => s.Map).Distinct())
-            {
-                <div class="card" @key="map">
-                    <div class="card-body p-2">
-                        <WorldMap MapCode="@map" />
-                    </div>
-                </div>
-            }
-        </div>
-    }
-    else
-    {
-    <div class="d-flex flex-wrap gap-3">
-        @foreach (var bot in snapshots)
+    <div class="d-flex flex-wrap gap-3 mt-4">
+        @foreach (var map in snapshots.Where(s => s.InGame && !string.IsNullOrEmpty(s.Map)).Select(s => s.Map).Distinct())
         {
-            <div class="card" @key="bot.Id">
-                <div class="card-header py-2">
-                    <a href="@($"/bot/{bot.Id}")" class="fw-semibold text-decoration-none">
-                        @(string.IsNullOrEmpty(bot.CharacterName) ? bot.Id : bot.CharacterName)
-                    </a>
-                </div>
+            <div class="card" @key="map">
                 <div class="card-body p-2">
-                    <BotMap BotId="@bot.Id" />
+                    <WorldMap MapCode="@map" />
                 </div>
             </div>
         }
     </div>
-    }
 }
 
 @code {
-    private bool _worldView;
-
     private void StopAll() => Bots.StopAll();
 
     // Desired job plus a short status, same rules as the bot page's Build card.

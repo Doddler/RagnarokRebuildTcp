@@ -163,7 +163,7 @@ else
                         <span class="text-truncate">@(Bots.GetBehavior(Id)?.Activity)</span>
                     </div>
                     <div class="card-body d-flex flex-wrap gap-3 align-items-start">
-                        <BotMap BotId="@Id" />
+                        <WorldMap MapCode="@s.Map" @key="s.Map" />
                         @{ var mapKills = KillsOnMap(s.Map); var stay = Runs(s.CharacterName).FirstOrDefault(run => run.Ongoing && string.Equals(run.Map, s.Map, StringComparison.OrdinalIgnoreCase)); }
                         @if (stay != null || mapKills.Count > 0)
                         {
@@ -201,6 +201,13 @@ else
                                 }
                             </div>
                         }
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-header py-2 fw-semibold">Combat Log <span class="text-muted fw-normal small">· newest first</span></div>
+                    <div class="card-body p-0">
+                        <pre class="mb-0 p-2 bg-dark text-light small" style="height: 16rem; overflow-y: auto;">@if (Bots.GetLog(Id) is { Length: > 0 } logLines) { foreach (var line in logLines.Reverse()) { if (BotManager.IsWarning(line)) { <span class="text-warning fw-semibold">@line</span> } else if (line.Contains(" Engaging ")) { <span style="color:#6ea8fe">@line</span> } else if (line.Contains(" Duel lost: ")) { <span style="color:#ea868f" class="fw-semibold">@line</span> } else if (line.Contains(" Duel won: ")) { <span style="color:#75b798" class="fw-semibold">@line</span> } else { @line }@("\n") } } else { @("(no log)") }</pre>
                     </div>
                 </div>
 
@@ -624,12 +631,6 @@ else
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-header py-2 fw-semibold">Combat Log</div>
-                    <div class="card-body p-0">
-                        <pre class="mb-0 p-2 bg-dark text-light small" style="height: 16rem; overflow-y: auto;">@if (Bots.GetLog(Id) is { Length: > 0 } logLines) { foreach (var line in logLines) { if (BotManager.IsWarning(line)) { <span class="text-warning fw-semibold">@line</span> } else { @line }@("\n") } } else { @("(no log)") }</pre>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -942,19 +943,7 @@ else
         </div>
     };
 
-    // A monster's first sprite frame, cropped from its atlas with CSS and shrunk to fit a badge.
-    private RenderFragment MonsterPortrait(string monsterName) => builder =>
-    {
-        if (Sprites.Get(monsterName) is not { } f)
-            return;
-        var zoom = Math.Min(1.0, 28.0 / Math.Max(f.Width, f.Height)).ToString(System.Globalization.CultureInfo.InvariantCulture);
-        builder.OpenElement(0, "span");
-        builder.AddAttribute(1, "class", "d-inline-block align-middle me-1");
-        builder.AddAttribute(2, "style",
-            $"width:{f.Width}px;height:{f.Height}px;zoom:{zoom};" +
-            $"background:url('monster-atlas/{Uri.EscapeDataString(f.AtlasName)}.png') -{f.X}px -{f.Top}px no-repeat");
-        builder.CloseElement();
-    };
+    private static RenderFragment MonsterPortrait(string monsterName) => @<RoBotClient.Web.Components.MonsterPortrait Name="@monsterName" />;
 
     // Client icon art served by Program.cs (/icons/...); rows hide the <img> when an icon is missing.
     private string ItemIcon(int itemId) => $"icons/{Uri.EscapeDataString(Db.Item(itemId)?.Code ?? "")}.png";

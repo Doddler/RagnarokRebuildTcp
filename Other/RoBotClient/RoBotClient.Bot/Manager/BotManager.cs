@@ -223,8 +223,20 @@ public sealed class BotManager
             }
         }
 
-        var n = Interlocked.Increment(ref _counter);
-        var id = $"bot{n}";
+        // A character keeps its id across failed logins and retries, so dashboard links (/bot/bot2) stay valid.
+        string id;
+        int n;
+        lock (_idByCharacter)
+        {
+            if (characterName != null && _idByCharacter.TryGetValue(characterName, out var known) && !_bots.ContainsKey(known))
+                (id, n) = (known, int.Parse(known[3..]));
+            else
+            {
+                n = Interlocked.Increment(ref _counter);
+                id = $"bot{n}";
+            }
+            if (characterName != null) _idByCharacter[characterName] = id;
+        }
         var config = new BotConfig
         {
             Account = account ?? $"bot_{n:00}",
@@ -245,24 +257,24 @@ public sealed class BotManager
 
         var session = new BotSession(config, _data);
         var brain = new BotBehavior(session, behavior, _data);
-        // Real exp/h on a map, from the saved Runs history (survives restarts): the most recent stays there, up to
+        // Real exp/h per map, from the saved Runs history (survives restarts): the most recent stays on each, up to
         // 20 min of hunting, ignoring stays older than 3 h (the bot was weaker then).
         if (_configs != null) brain.OnHomeMapChanged += () => _configs.Set(config.CharacterName, behavior);
-        brain.MeasureMap = map =>
+        brain.MeasureMaps = () =>
         {
-            double seconds = 0, exp = 0, other = 0;
-            var kills = 0;
-            ActivityTime time = default;
+            var result = new Dictionary<string, (double Seconds, double Exp, int Kills, ActivityTime Time, double Other)>(StringComparer.OrdinalIgnoreCase);
             foreach (var run in MapRuns.Compute(session.Telemetry.Snapshot(), _progress?.Get(config.CharacterName) ?? Array.Empty<ProgressSample>(), true))
             {
-                if (seconds >= 1200 || DateTime.UtcNow - run.End > TimeSpan.FromHours(3)) break;
-                if (!string.Equals(run.Map, map, StringComparison.OrdinalIgnoreCase)) continue;
+                if (DateTime.UtcNow - run.End > TimeSpan.FromHours(3)) break;
+                var (seconds, exp, kills, time, other) = result.GetValueOrDefault(run.Map);
+                if (seconds >= 1200) continue; // most recent 20 min per map
                 seconds += run.Active.TotalSeconds;
                 exp += run.Exp;
                 // The split counts only kills from stays where it was tracked, so per-kill numbers aren't diluted.
                 if (run.Time.Total > 0) { time += run.Time; kills += run.TimedKills; other += Math.Max(0, run.TimedSeconds - run.Time.Total); }
+                result[run.Map] = (seconds, exp, kills, time, other);
             }
-            return (seconds, exp, kills, time, other);
+            return result;
         };
         var cts = new CancellationTokenSource();
         var runner = new BotRunner(id, config, session, brain, behavior, cts);
@@ -278,6 +290,7 @@ public sealed class BotManager
             // Local copy by another name — `characterName` is already the SpawnBot parameter, so the lambda
             // would shadow it and the compiler errors. Capture the resolved CharacterName instead.
             var logKey = config.CharacterName;
+            runner.SeedLog(_logStore.Tail(logKey, BotRunner.MaxLogLines));
             Action<string> tee = msg => _logStore.Append(logKey, msg);
             session.OnLog += tee;
             brain.OnLog += tee;
@@ -466,6 +479,8 @@ public sealed class BotManager
     }
 
     /// <summary>Character names of every running bot, in spawn order.</summary>
+    private readonly Dictionary<string, string> _idByCharacter = new(StringComparer.OrdinalIgnoreCase);
+
     public List<string> RunningCharacters() =>
         _bots.OrderBy(kv => kv.Key.Length).ThenBy(kv => kv.Key).Select(kv => kv.Value.Config.CharacterName).ToList();
 
@@ -593,8 +608,22 @@ internal sealed class BotRunner
         lock (_logLock)
         {
             _log.Enqueue($"{DateTime.Now:HH:mm:ss} {message}");
-            while (_log.Count > 200) _log.Dequeue();
+            while (_log.Count > MaxLogLines) _log.Dequeue();
         }
+    }
+
+    public const int MaxLogLines = 1000;
+
+    /// <summary>Preload lines saved by an earlier run (bot-logs/), so the dashboard's log survives restarts.</summary>
+    public void SeedLog(IEnumerable<string> lines)
+    {
+        lock (_logLock)
+            foreach (var line in lines)
+            {
+                // The file stamps HH:mm:ss.fff; the buffer stamps HH:mm:ss.
+                _log.Enqueue(line.Length > 12 && line[8] == '.' ? line[..8] + line[12..] : line);
+                while (_log.Count > MaxLogLines) _log.Dequeue();
+            }
     }
 
     public string[] LogLines()

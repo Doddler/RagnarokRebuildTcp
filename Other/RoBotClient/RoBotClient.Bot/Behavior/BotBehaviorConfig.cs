@@ -93,9 +93,6 @@ public sealed class BotBehaviorConfig
     /// <summary>Go sell when carried weight reaches this fraction of capacity.</summary>
     public float SellWeightPercent = 0.9f;
 
-    /// <summary>Also go sell when holding at least this many distinct item stacks.</summary>
-    public int SellItemStacks = 30;
-
     /// <summary>Also go sell when holding at least this many SALEABLE items (per <see cref="ShopPolicy"/>).
     /// Catches the case where the bot's inventory fills with junk weapon / armor drops well before either
     /// weight or stack-count triggers fire. 0 disables this trigger.</summary>
@@ -134,9 +131,9 @@ public sealed class BotBehaviorConfig
 
     // ---- rest / sit to recover ----
 
-    /// <summary>When low on HP or SP and out of usable healing items, sit to regen instead of fighting.
+    /// <summary>Sit to regen when low on HP or SP and nothing is attacking; healing items are saved for fights.
     /// A Novice (job 0) can only sit with Basic Mastery level 2+, so the bot won't try otherwise.</summary>
-    public bool RestWhenNoPotions = false;
+    public bool RestWhenNoPotions = true;
 
     /// <summary>Sit to rest when HP% or SP% falls below this (and no healing item is held). Stands back up
     /// once both are nearly full again, a threat appears, or a healing item becomes available.</summary>
@@ -307,7 +304,6 @@ public sealed class BotBehaviorConfig
         HealCooldownSeconds = other.HealCooldownSeconds;
         AutoShop = other.AutoShop;
         SellWeightPercent = other.SellWeightPercent;
-        SellItemStacks = other.SellItemStacks;
         JunkSellCount = other.JunkSellCount;
         RestockItemId = other.RestockItemId;
         RestockTargetCount = other.RestockTargetCount;

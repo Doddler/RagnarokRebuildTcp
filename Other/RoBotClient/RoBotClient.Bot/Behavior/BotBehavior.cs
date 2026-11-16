@@ -82,6 +82,31 @@ public sealed partial class BotBehavior
         _data = data;
         _bot.OnAllyHit += OnAllyHit;
         _bot.OnChatHeard += OnChatHeard;
+        _bot.OnBaseExpUpdated += update => { if (update.OwnKill) lock (_duelLock) _duelKill = (update, DateTime.UtcNow); };
+    }
+
+    // One duel = Engaging a target until our kill of it, summarised in the log on the tick after the kill.
+    private sealed record DuelStart(DateTime At, int Hp, int Sp, string Name);
+    private DuelStart? _duel;
+    private readonly object _duelLock = new();
+    private (ExpUpdate Update, DateTime At)? _duelKill;
+
+    private void LogDuelResult(Snapshot snap)
+    {
+        ExpUpdate update;
+        lock (_duelLock)
+        {
+            if (_duelKill is not { } kill) return;
+            update = kill.Update;
+            _duelKill = null;
+        }
+        var duel = _duel;
+        _duel = null;
+        if (duel == null) return;
+        var job = $"+{update.JobGained:N0} job exp";
+        var hpLost = update.HpLost ?? Math.Max(0, duel.Hp - snap.SelfHp);
+        OnLog?.Invoke($"Duel won: {(update.Monster.Length > 0 ? update.Monster : duel.Name)} in {(DateTime.UtcNow - duel.At).TotalSeconds:F1}s — " +
+                      $"+{update.Gained:N0} base exp, {job}, HP -{hpLost}, SP -{Math.Max(0, duel.Sp - snap.SelfSp)}.");
     }
 
     public async Task RunAsync(CancellationToken ct)
@@ -106,6 +131,7 @@ public sealed partial class BotBehavior
         if (!_config.Enabled) return;
         var snap = _bot.WithState(Snapshot.From);
         CountActivityTime(snap);
+        LogDuelResult(snap);
 
         await AnnounceModeAsync(ct);
 
@@ -131,13 +157,14 @@ public sealed partial class BotBehavior
             // penalize the back-portal for the next few seconds. Also clear any soft penalty against the
             // portal we just successfully traversed — a one-off trap shouldn't carry bias.
             BeginApronDeparture(snap.SelfPos, arrivedFrom, snap.Map);
+            _travelWingMap = null; // a fresh visit gets a fresh Fly Wing budget
             OnLog?.Invoke($"Changed maps → {snap.Map}.");
         }
 
         // Refresh per-map danger when our level moves enough to change which mobs threaten us. Step-based
         // so we don't burn CPU rebuilding on every tick during exp-rich training.
         if (_mapDangerLastLevel < 0 || Math.Abs(snap.SelfLevel - _mapDangerLastLevel) >= DangerLevelStep)
-            RecomputeMapDanger(snap.SelfLevel);
+            RecomputeMapDanger(snap);
 
         // Stuck detection: moving, or the current target losing HP, counts as progress.
         var targetHpNow = _targetId != 0 ? (FindMonster(snap, _targetId)?.Hp ?? -1) : -1;
@@ -160,8 +187,13 @@ public sealed partial class BotBehavior
         {
             if (Mode != BotMode.Dead)
             {
+                var modeBefore = Mode;
                 Mode = BotMode.Dead;
                 NoteMapDeath(snap.Map);
+                // Dying on the way to the hunting map is the hunting map's cost too: the route there is part of the choice.
+                if (!string.Equals(snap.Map, _config.HomeMap, StringComparison.OrdinalIgnoreCase) && _shopPhase == ShopPhase.None)
+                    NoteMapDeath(_config.HomeMap, onTheWay: true);
+                _nextMapCheck = DateTime.MinValue; // re-judge from wherever it respawns
                 // Attribute to whoever ACTUALLY hit us last (assist mobs / aggressor pile-ons are usually NOT
                 // our committed target). Fall back to the committed target only when the last-attacker entity
                 // is gone from view by death-handling time.
@@ -185,6 +217,7 @@ public sealed partial class BotBehavior
                     var expires = DateTime.UtcNow + AvoidClassDuration;
                     var fresh = !_avoidClasses.ContainsKey(killerClass);
                     _avoidClasses[killerClass] = expires;
+                    _mapDangerLastLevel = -1; // re-score maps now that this class has killed us
                     if (fresh)
                         OnLog?.Invoke($"Died to '{killerName}' (class {killerClass}) — avoiding it for the next {AvoidClassDuration.TotalMinutes:F0} min.");
                     else
@@ -192,6 +225,13 @@ public sealed partial class BotBehavior
                 }
                 else
                     OnLog?.Invoke($"Died (couldn't attribute the kill; last attacker '{attackerName}', committed target '{TargetName}').");
+                // Every death is a lost duel, including an ambush while travelling (no Engaging line before it).
+                var duel = _duel;
+                _duel = null;
+                var killer = killerName.Length > 0 ? killerName : attackerName ?? "unknown";
+                OnLog?.Invoke(duel != null
+                    ? $"Duel lost: {duel.Name} engaged {(DateTime.UtcNow - duel.At).TotalSeconds:F1}s ago, killed by {killer} — HP -{duel.Hp}, SP -{Math.Max(0, duel.Sp - snap.SelfSp)}."
+                    : $"Duel lost: ambushed by {killer} while {modeBefore.ToString().ToLowerInvariant()} — HP -{snap.SelfMaxHp}.");
                 _targetId = 0;
                 _targetClass = -1;
                 await _bot.StopAsync(ct);
@@ -326,6 +366,7 @@ public sealed partial class BotBehavior
             }
             Mode = BotMode.Hunting;
             TargetName = current.Name;
+            if (await HoldFiringSpotAsync(snap, current, ct)) return; // fixed monster: get to a safe firing cell first
             if (await TickSkillsAsync(snap, current, ct)) return; // a skill rule fired — skip the basic attack this tick
             // Kite sub-FSM: ranged classes with EnableKite set get positional management here. If it
             // owned the tick (stepped / fired / held), we're done; otherwise fall through to the
@@ -382,6 +423,7 @@ public sealed partial class BotBehavior
         ResetStuck(snap.SelfPos, target.Hp); // start the progress clock for this target
         _bot.NoteForecast(target.Id, forecast.SecondsToKillMonster, forecast.AttacksToKill, forecast.ExpectedDamageTaken);
         _nextAttack = DateTime.UtcNow.AddSeconds(3);
+        _duel = new DuelStart(DateTime.UtcNow, snap.SelfHp, snap.SelfSp, target.Name);
         OnLog?.Invoke($"Engaging {target.Name} (hp {target.MaxHp}): my hit ~{forecast.MyDamagePerHit}@{forecast.MyHitChance:P0}, " +
                       $"its hit ~{forecast.MonsterDamagePerHit}@{forecast.MonsterHitChance:P0}, " +
                       $"kill ~{forecast.SecondsToKillMonster:F1}s vs my death ~{forecast.SecondsToKillMe:F1}s" +
@@ -390,7 +432,10 @@ public sealed partial class BotBehavior
         // Skill-only bots still need the server to know who their target is (skills auto-target the
         // bot's current target id when no explicit target is passed in the rule). Just don't issue the
         // basic attack — the next tick's TickSkillsAsync will fire the right rule.
-        if (!_config.NoAutoAttack)
+        // A fixed monster is shot from a safe cell; the next tick walks there first (the server's attack-walk would stop
+        // at the first in-range cell, maybe inside another plant's reach).
+        var walkFirst = SnipesFixed(snap, target) && FindFiringSpot(snap, target) is { } spot && (spot.X != snap.SelfPos.X || spot.Y != snap.SelfPos.Y);
+        if (!_config.NoAutoAttack && !walkFirst)
             await _bot.AttackAsync(target.Id, ct);
     }
 
@@ -401,7 +446,8 @@ public sealed partial class BotBehavior
     public string Activity => Mode switch
     {
         BotMode.Hunting => string.IsNullOrEmpty(TargetName) ? "Hunting" : $"Hunting {TargetName}",
-        BotMode.Traveling => string.IsNullOrEmpty(_config.HomeMap) ? "Traveling" : $"Traveling to {_config.HomeMap}",
+        BotMode.Traveling => string.IsNullOrEmpty(_config.HomeMap) ? "Traveling"
+            : $"Traveling to {_data?.MapName(_config.HomeMap) ?? _config.HomeMap}" + (_shopPhase == ShopPhase.ReturnTravel ? " after shopping" : ""),
         BotMode.Dead => "Dead, respawning",
         BotMode.Fleeing => "Fleeing danger",
         BotMode.Shopping => (_shopPhase == ShopPhase.Travel
@@ -442,7 +488,7 @@ public sealed partial class BotBehavior
         // Solo, rank by expected exp per second (walk + fight) so the bot prefers efficient monsters over merely
         // close ones. In a party, healing and shared exp change the math, so keep the nearest-first rule there.
         var solo = !_bot.InParty;
-        int notHuntable = 0, avoided = 0, blacklisted = 0, hazardous = 0, unwinnable = 0, swarmed = 0, portalRisk = 0;
+        int notHuntable = 0, avoided = 0, blacklisted = 0, hazardous = 0, unwinnable = 0, swarmed = 0, portalRisk = 0, noSafeCell = 0, winnableRested = 0;
         foreach (var m in snap.Monsters)
         {
             if (!IsHuntable(m)) { notHuntable++; continue; }
@@ -461,14 +507,26 @@ public sealed partial class BotBehavior
             if (_config.PortalSafeDistance > 0 && _data != null
                 && _data.IsNearPortal(snap.Map, m.Pos.X, m.Pos.Y, _config.PortalSafeDistance))
             { portalRisk++; continue; }
-            var forecast = Forecast(snap, m);
+            var forecast = WithHealing(Forecast(snap, m), m.MaxHp, HealingOn(snap, m));
+            if (SnipesFixed(snap, m) && FindFiringSpot(snap, m) == null) { noSafeCell++; continue; }
             // Failsafe override: operator-set ForceHuntClassIds bypasses the forecast veto. The bot
             // still consults the forecast (numbers go in the Engaging log), but the unwinnable gate
             // and the group-swarm gate both yield to the override. Useful when the simulator under-
             // estimates a fight (e.g. element gear it can't see, or until the kite FSM is on for a
             // ranged build) and the operator wants the bot to commit anyway.
             var forced = _config.ForceHuntClassIds.Contains(m.ClassId);
-            if (!forced && !forecast.CanWin) { unwinnable++; continue; }
+            if (!forced && !forecast.CanWin)
+            {
+                unwinnable++;
+                if (snap.SelfHp < snap.SelfMaxHp)
+                {
+                    var hp = snap.SelfHp;
+                    snap.SelfHp = snap.SelfMaxHp;
+                    if (WithHealing(Forecast(snap, m), m.MaxHp, HealingOn(snap, m)).CanWin) winnableRested++;
+                    snap.SelfHp = hp;
+                }
+                continue;
+            }
             var group = EngagementGroup(snap, m);
             if (!forced && group.Count > 1 && !ForecastGroupOf(snap, group).CanWin) { swarmed++; continue; }
             double score = Dist(snap.SelfPos, m.Pos);
@@ -490,6 +548,7 @@ public sealed partial class BotBehavior
         {
             if (!IsReachable(snap, c.m.Pos)) { unreachable++; continue; }
             chosen = c.f;
+            _restToWin = false;
             _lastIdleReason = ""; // armed for the next idle window
             _idleSummary = "";
             return c.m;
@@ -497,10 +556,12 @@ public sealed partial class BotBehavior
 
         // No target. Log WHY (deduped — only fire when the reason string actually changes), so the user can
         // diagnose "FSM keeps the bot Idle" without enabling Verbose chat.
-        var reason = $"PickTarget idle — {snap.Monsters.Count} mon in view (not-huntable={notHuntable}, avoided-class={avoided}, blacklisted={blacklisted}, in-hazard={hazardous}, near-portal={portalRisk}, unwinnable={unwinnable}, group-swarm={swarmed}, unreachable={unreachable}).";
+        _restToWin = winnableRested > 0;
+        var reason = $"PickTarget idle — {snap.Monsters.Count} mon in view (not-huntable={notHuntable}, avoided-class={avoided}, blacklisted={blacklisted}, in-hazard={hazardous}, near-portal={portalRisk}, unwinnable={unwinnable}, group-swarm={swarmed}, no-safe-cell={noSafeCell}, unreachable={unreachable}).";
         _idleSummary = snap.Monsters.Count == 0 ? "none in view"
             : hazardous > 0 ? $"{hazardous} near a dangerous monster"
             : unwinnable > 0 ? $"{unwinnable} too strong"
+            : noSafeCell > 0 ? $"{noSafeCell} fixed, no safe cell to shoot from"
             : $"{snap.Monsters.Count} in view, none huntable";
         if (reason != _lastIdleReason)
         {
@@ -667,7 +728,8 @@ public sealed partial class BotBehavior
                 { hpTrig = true; break; }
             }
             if (!hpTrig) continue;
-            if (!PotionHealApprox.TryGetValue(r.ItemId, out var heal)) continue;
+            var heal = HealPerUse(r.ItemId);
+            if (heal <= 0) continue;
             var count = invCounts.GetValueOrDefault(r.ItemId);
             rescues.Add((r.ItemId, count, heal));
         }
@@ -714,9 +776,17 @@ public sealed partial class BotBehavior
     /// build or before first stat-update), falls back to a skill heuristic: a bot with bow skills
     /// (DoubleStrafe / ArrowShower) or any magic Bolt skill is treated as ranged at 9 tiles, otherwise
     /// melee at 1.</summary>
-    private static int InferAttackRange(Snapshot snap)
+    private int InferAttackRange(Snapshot snap)
     {
         if (snap.SelfAttackRange > 0) return snap.SelfAttackRange;
+        // The server never sends Range (not in PlayerUpdateStats), so rebuild it like Player.UpdateStats does for a bow:
+        // weapon range + Vulture's Eye level. Without this a bow user with no bow skill learned looked like melee (range 1).
+        if (_data != null && _data.Gear.TryGetValue(snap.SelfWeaponItemId, out var weapon) && weapon.Type == "Bow" && weapon.Range > 0)
+        {
+            var vultureEye = 0;
+            foreach (var (skill, level) in snap.KnownSkills) if (skill == CharacterSkill.VultureEye) vultureEye = Math.Max(vultureEye, level);
+            return weapon.Range + vultureEye;
+        }
         foreach (var (skill, _) in snap.KnownSkills)
         {
             switch (skill)
@@ -941,24 +1011,8 @@ public sealed partial class BotBehavior
         return fromMelee + fromMagic;
     }
 
-    /// <summary>Approximate per-use HP heal for common potions. Server doesn't expose the heal value via
-    /// any client data, so we mirror the canonical RO ranges. Used by the forecaster to estimate how
-    /// much "extra HP" the bot effectively has when it'll pop potions mid-fight per its ItemScript.</summary>
-    private static readonly Dictionary<int, int> PotionHealApprox = new()
-    {
-        [501] = 50,    // Red Potion (~30-65 mean ~50)
-        [502] = 110,   // Orange Potion
-        [503] = 175,   // Yellow Potion
-        [504] = 425,   // White Potion
-        [507] = 30,    // Apple
-        [512] = 17,    // Banana
-        [515] = 40,    // Carrot
-        [521] = 60,    // Pumpkin
-        [545] = 80,    // Condensed Red Potion
-        [546] = 200,   // Condensed Yellow Potion
-        [547] = 475,   // Condensed White Potion
-        [569] = 100,   // Novice Potion
-    };
+    /// <summary>Average HP one use restores, from the server's item effect script (0 = doesn't heal HP).</summary>
+    private int HealPerUse(int itemId) => _data?.HpRecovery(itemId) ?? 0;
 
     /// <summary>Estimate an "effective HP buffer" the bot gets from healing potions it actually carries
     /// AND has an item-script rule for. A Mage with 50 White Potions and `use 504 if hppct < 60` is much
@@ -967,7 +1021,22 @@ public sealed partial class BotBehavior
     /// doesn't get treated as effectively immortal.</summary>
     private double EstimatePotionHpBuffer(Snapshot snap)
     {
-        if (string.IsNullOrEmpty(_config.ItemScript)) return 0;
+        if (string.IsNullOrEmpty(_config.ItemScript))
+        {
+            // No script: MaybeHealAsync eats whatever heals, so count the biggest heals held, at most 5 uses a fight.
+            if (_config.HealHpPercent <= 0) return 0;
+            var heals = _bot.WithState(w => w.Self.Inventory.Where(it => it.Count > 0 && HealPerUse(it.ItemId) > 0 && _data?.IsUsableItem(it.ItemId) == true)
+                .Select(it => (Heal: HealPerUse(it.ItemId), it.Count)).ToList());
+            double total = 0;
+            var uses = 0;
+            foreach (var (heal, count) in heals.OrderByDescending(h => h.Heal))
+            {
+                var take = Math.Min(count, 5 - uses);
+                total += take * heal;
+                if ((uses += take) >= 5) break;
+            }
+            return Math.Min(total, snap.SelfMaxHp * 1.5);
+        }
         ReloadItemScriptIfChanged();
         if (_itemRules.Count == 0) return 0;
         // Tally inventory by item id (skip equipped — they're not consumable here).
@@ -996,7 +1065,8 @@ public sealed partial class BotBehavior
                 if (c.Op == "<" || c.Op == "<=") { triggersOnLowHp = true; break; }
             }
             if (!triggersOnLowHp) continue;
-            if (!PotionHealApprox.TryGetValue(r.ItemId, out var healPerUse) || healPerUse <= 0) continue;
+            var healPerUse = HealPerUse(r.ItemId);
+            if (healPerUse <= 0) continue;
             if (!invByItem.TryGetValue(r.ItemId, out var count) || count <= 0) continue;
             // Cap usable potions per fight by inventory AND by a realistic 5-uses-per-fight ceiling —
             // even an infinite stack runs into cast-time / animation throttling.
@@ -1021,12 +1091,16 @@ public sealed partial class BotBehavior
     {
         var group = new List<MonsterInfo> { target };
         var targetAssists = IsAssist(target.ClassId);
+        // Without the range to snipe it, the bot stands next to the target, inside any neighbouring fixed monster's reach.
+        var standsAtTarget = !SnipesFixed(snap, target);
         foreach (var m in snap.Monsters)
         {
             if (m.Id == target.Id) continue;
             if (m.MaxHp > 0 && m.Hp <= 0) continue;
             var joins = (targetAssists && m.ClassId == target.ClassId && Dist(m.Pos, target.Pos) <= AssistRadius)
-                        || (IsAggressive(m.ClassId) && Dist(snap.SelfPos, m.Pos) <= HazardRadius(m.ClassId));
+                        || (IsAggressive(m.ClassId) && Dist(snap.SelfPos, m.Pos) <= HazardRadius(m.ClassId))
+                        || (standsAtTarget && _data?.Monster(m.ClassId) is { } fixedDb && IsMonsterImmobile(fixedDb)
+                            && ServerDistance(m.Pos.X, m.Pos.Y, target.Pos.X, target.Pos.Y) <= fixedDb.Range + 1);
             if (joins) group.Add(m);
         }
         return group;
@@ -1134,10 +1208,18 @@ public sealed partial class BotBehavior
                 _heading = RandomHeading();
             }
 
+            // The map was chosen for a camp (a cluster of pinned spawns): walk there and stay inside it.
+            var zone = string.Equals(snap.Map, _config.HomeMap, StringComparison.OrdinalIgnoreCase)
+                       && _mapEstimates.TryGetValue(snap.Map, out var homeEstimate) ? homeEstimate.Zone : null;
+            const int zoneMargin = 3;
             for (var attempt = 0; attempt < 6; attempt++)
             {
                 var tx = self.X + _heading.dx * WanderStep;
                 var ty = self.Y + _heading.dy * WanderStep;
+                if (zone != null)
+                    (tx, ty) = zone.Contains(self.X, self.Y, zoneMargin)
+                        ? (Random.Shared.Next(zone.MinX - zoneMargin, zone.MaxX + zoneMargin + 1), Random.Shared.Next(zone.MinY - zoneMargin, zone.MaxY + zoneMargin + 1))
+                        : ((zone.MinX + zone.MaxX) / 2, (zone.MinY + zone.MaxY) / 2);
                 if (!map.TryFindWalkableNear(tx, ty, 8, out var fx, out var fy) || (fx == self.X && fy == self.Y))
                 {
                     _heading = RandomHeading();
@@ -1153,7 +1235,9 @@ public sealed partial class BotBehavior
                 if (p == null) { _heading = RandomHeading(); continue; }
                 _wanderTarget = new Position(fx, fy);
                 _wanderTargetUntil = DateTime.UtcNow.AddSeconds(15);
-                OnLog?.Invoke($"Wander: heading to ({fx},{fy}) — {p.Count} cells via A*.");
+                OnLog?.Invoke(zone == null ? $"Wander: heading to ({fx},{fy}) — {p.Count} cells via A*."
+                    : zone.Contains(self.X, self.Y, zoneMargin) ? $"Wander: staying in the camp, heading to ({fx},{fy}) — {p.Count} cells via A*."
+                    : $"Wander: heading to the camp at ({fx},{fy}) this map was chosen for ({_mapEstimates.GetValueOrDefault(snap.Map)?.Note}) — {p.Count} cells via A*.");
                 break;
             }
             if (_wanderTarget == null)
@@ -1257,6 +1341,8 @@ public sealed partial class BotBehavior
     {
         if (_data == null || _config.HealHpPercent <= 0 || snap.SelfMaxHp <= 0) return;
         if ((double)snap.SelfHp / snap.SelfMaxHp > _config.HealHpPercent) return;
+        // Out of a fight the bot rests for free; items are for when something is hitting us.
+        if (_config.RestWhenNoPotions && _targetId == 0 && !AnyAdjacentMonster(snap) && _hazards.Count == 0) return;
         if (DateTime.UtcNow < _nextHeal) return;
         var itemId = _bot.WithState(FindHealItem);
         if (itemId <= 0) return;
@@ -1268,13 +1354,24 @@ public sealed partial class BotBehavior
     // the DB is mandatory: the server disconnects the player if sent an unknown/non-usable item id.
     private int FindHealItem(WorldState w)
     {
+        if (_data == null) return 0;
         foreach (var id in _config.HealingItemIds)
         {
-            if (_data == null || !_data.IsUsableItem(id)) continue;
+            if (!_data.IsUsableItem(id)) continue;
             foreach (var it in w.Self.Inventory)
                 if (it.ItemId == id && it.Count > 0) return id;
         }
-        return 0;
+        // Then anything else that heals HP (Novice Potions, Apples, Meat, herbs), cheapest zeny per HP first.
+        var best = 0;
+        var bestCost = double.MaxValue;
+        foreach (var it in w.Self.Inventory)
+        {
+            var heal = HealPerUse(it.ItemId);
+            if (it.Count <= 0 || heal <= 0 || !_data.IsUsableItem(it.ItemId)) continue;
+            var cost = (double)_data.UsableItemPrice(it.ItemId) / heal;
+            if (cost < bestCost) { bestCost = cost; best = it.ItemId; }
+        }
+        return best;
     }
 
     // Sit to recover HP/SP when we're hurt and out of usable healing items. Stands back up once nearly full,
@@ -1282,15 +1379,16 @@ public sealed partial class BotBehavior
     private async Task<bool> TickRestAsync(Snapshot snap, CancellationToken ct)
     {
         var hpPct = snap.SelfMaxHp > 0 ? (double)snap.SelfHp / snap.SelfMaxHp : 1.0;
-        var spPct = snap.SelfMaxSp > 0 ? (double)snap.SelfSp / snap.SelfMaxSp : 1.0;
-        var hasHeal = _bot.WithState(FindHealItem) > 0;
+        // SP only matters to bots that kill with spells. A Thief out of SP for Envenom just keeps stabbing.
+        var spPct = snap.SelfMaxSp > 0 && KillsWithSpells(snap) ? (double)snap.SelfSp / snap.SelfMaxSp : 1.0;
 
         if (_resting)
         {
             var recovered = hpPct >= 0.95 && spPct >= 0.95;
-            if (!_config.RestWhenNoPotions || recovered || hasHeal || AnyAdjacentMonster(snap))
+            if ((!_config.RestWhenNoPotions && !_restToWin) || recovered || AnyAdjacentMonster(snap) || _hazards.Count > 0)
             {
                 _resting = false;
+                _restToWin = false;
                 if (snap.SelfSitting) await _bot.SitAsync(false, ct);
                 return false;
             }
@@ -1303,21 +1401,27 @@ public sealed partial class BotBehavior
             return true;
         }
 
-        if (!_config.RestWhenNoPotions) return false;
-        var wantRest = hpPct < _config.RestBelowPercent || spPct < _config.RestBelowPercent;
-        if (!wantRest || hasHeal || !CanSit(snap) || AnyAdjacentMonster(snap)) return false;
+        // Resting to win: something in view is beatable at full HP but not as hurt as we are. Sitting is free, while
+        // wandering at 77% HP turned every Spore on pay_fild02 into "too strong" (81 s searching per kill).
+        var wantRest = _config.RestWhenNoPotions && (hpPct < _config.RestBelowPercent || spPct < _config.RestBelowPercent);
+        // Never sit with a monster we can't beat in view (Bot3 sat down among Greatest Generals on moc_fild03).
+        if (!(wantRest || _restToWin) || !CanSit(snap) || AnyAdjacentMonster(snap) || _hazards.Count > 0) return false;
 
         _resting = true;
         _targetId = 0;
         _targetClass = -1;
         Mode = BotMode.Resting;
         _nextSit = DateTime.UtcNow.AddSeconds(1.5);
-        OnLog?.Invoke("Out of healing items and low — sitting to rest.");
+        OnLog?.Invoke(wantRest ? "Low on HP/SP — sitting to rest." : "Too hurt to win the fights in view — sitting to recover first.");
         await _bot.SitAsync(true, ct);
         return true;
     }
 
     // A Novice (job 0) needs Basic Mastery level 2 to sit; everyone else always can.
+    private bool _restToWin;
+
+    private bool KillsWithSpells(Snapshot snap) => _config.NoAutoAttack || snap.SelfJobId is 3 or 8 or 14; // Mage, Wizard, Sage // the last target pick found fights we'd win at full HP but not now
+
     private bool CanSit(Snapshot snap)
     {
         if (snap.SelfJobId != 0) return true;
@@ -1375,27 +1479,34 @@ public sealed partial class BotBehavior
     /// level gap (mob_level - bot_level), aggression, boss/MVP flag, and spawn count. Mobs at or below
     /// the bot's level contribute 0 (no threat). Run on bot level change in steps of <see cref="DangerLevelStep"/>
     /// so it's not recomputed every tick.</summary>
-    private void RecomputeMapDanger(int botLevel)
+    private void RecomputeMapDanger(Snapshot snap)
     {
         if (_data == null) return;
+        var botLevel = snap.SelfLevel;
         var fresh = new Dictionary<string, float>(StringComparer.OrdinalIgnoreCase);
         foreach (var m in _data.MonstersById.Values)
         {
             if (m.Spawns == null) continue;
             var levelGap = Math.Max(0, m.Level - botLevel);
-            if (levelGap == 0) continue; // mob is at or below the bot's level — not a danger
-            var aggMul = IsAggressive(m.Id) ? 3.0f : 1.0f;
+            // Level gap alone missed mjolnir_02 for a Lv31: Argos/Mantis/Flora are only 1-5 levels up (danger 24),
+            // yet the forecast loses to all three and 85 of them spawn there. So every aggressive spawn we can't
+            // beat counts on its own, whatever its level. Immobile ones only hurt next to them: a quarter.
+            var aggressive = IsAggressive(m.Id);
+            var unwinnable = aggressive && !Forecast(snap, new MonsterInfo(0, m.Id, m.Name, default, m.HP, m.HP)).CanWin;
+            if (levelGap == 0 && !unwinnable) continue; // mob is at or below the bot's level and beatable — not a danger
+            var unwinnableDanger = unwinnable ? UnwinnableSpawnDanger * (IsMonsterImmobile(m) ? 0.25f : 1f) : 0f;
+            var aggMul = aggressive ? 3.0f : 1.0f;
             // Per-class severity. Pow(1.5) makes the gap super-linear so a 35-level gap (instant-death)
             // weights ~6× a 10-level gap.
             var perGap = (float)Math.Pow(levelGap, 1.5);
             // Self-experience penalty: bot died to this class → treat as MUCH more dangerous than its
             // raw level suggests (it actually killed us before).
-            if (_avoidClasses.ContainsKey(m.Id)) perGap *= 4.0f;
+            var diedTo = _avoidClasses.ContainsKey(m.Id) ? 4.0f : 1.0f;
             foreach (var sp in m.Spawns)
             {
                 if (string.IsNullOrEmpty(sp.Map)) continue;
                 var bossMul = sp.IsMvp ? 10.0f : (sp.IsBoss ? 4.0f : 1.0f);
-                var contrib = perGap * aggMul * bossMul * Math.Max(1, sp.Count) / 100.0f;
+                var contrib = (perGap * aggMul / 100.0f + unwinnableDanger) * diedTo * bossMul * Math.Max(1, sp.Count);
                 fresh[sp.Map] = (fresh.TryGetValue(sp.Map, out var prev) ? prev : 0) + contrib;
             }
         }
@@ -1407,7 +1518,13 @@ public sealed partial class BotBehavior
     private float GetMapDanger(string map) =>
         _mapDanger.TryGetValue(map, out var d) ? d : 0f;
 
-    private int HazardRadius(int classId) => (_data?.Monster(classId)?.ScanDist ?? 10) + 2;
+    // A mob that never moves can only hit us within its attack range; fleeing at its scan distance (12 for Flora, range 3)
+    // made the bot flee, walk back toward its exit and flee again every 10 s.
+    private int HazardRadius(int classId) => _data?.Monster(classId) is { } db && IsMonsterImmobile(db)
+        ? Math.Max(1, db.Range) + 2
+        : (_data?.Monster(classId)?.ScanDist ?? 10) + 2;
+
+    private const float UnwinnableSpawnDanger = 3f; // per spawn of an aggressive mob the forecast loses to ≈ 15 walked cells
 
     // Recompute danger zones once per tick (one Forecast per aggressive monster) so the cell checks
     // are cheap lookups instead of re-running the battle simulator for every candidate cell.
@@ -1457,7 +1574,10 @@ public sealed partial class BotBehavior
         var hz = _hazards[bestIdx];
 
         if (Mode != BotMode.Fleeing)
+        {
             OnLog?.Invoke($"Avoiding '{hz.name}' (aggressive, forecast says I'd lose) — fleeing.");
+            NoteMapFlee(snap.Map);
+        }
         Mode = BotMode.Fleeing;
         _targetId = 0;
         _targetClass = -1;
@@ -1527,6 +1647,7 @@ public sealed partial class BotBehavior
         public int SelfMagicAtkMin;
         public int SelfMagicAtkMax;
         public double SelfAttackInterval;
+        public int SelfWeaponItemId; // item in the weapon (right hand) slot, 0 = none
         public int SelfAttackRange; // server-synced (CharacterStat.Range); 0 when not synced — caller falls back to skill heuristic
         public bool SelfDead;
         public int SelfSp;
@@ -1539,6 +1660,14 @@ public sealed partial class BotBehavior
         // entityId → active status effects (still-current at snapshot time). Used by the skill DSL so a
         // rule like `use Curse 1 ally if target.status.poison == 0` can check what's on the ALLY/ENEMY.
         public readonly Dictionary<int, HashSet<CharacterStatusEffect>> EntityStatuses = new();
+
+        private static int WeaponItemId(WorldState w)
+        {
+            var bag = w.Self.EquippedBagIds[(int)EquipSlot.RightHand];
+            if (bag == 0) return 0;
+            foreach (var item in w.Self.Inventory) if (item.BagId == bag) return item.ItemId;
+            return 0;
+        }
 
         public static Snapshot From(WorldState w)
         {
@@ -1567,6 +1696,7 @@ public sealed partial class BotBehavior
                 SelfMagicAtkMax = w.Self.MagicAtkMax,
                 SelfAttackInterval = w.Self.AttackSpeed,
                 SelfAttackRange = w.Self.AttackRange,
+                SelfWeaponItemId = WeaponItemId(w),
                 SelfDead = hasSelf && self!.State == CharacterState.Dead,
                 SelfSp = w.Self.Sp,
                 SelfMaxSp = w.Self.MaxSp,

@@ -24,7 +24,7 @@ public sealed class PendingPartyInvite
 /// is the seconds from our first hit on it to its death when we hit it, and <c>Attacks</c> how many attacks (auto-attack
 /// swings plus damaging skill uses, misses included) we spent on it, and <c>HpLost</c> the damage it dealt us.</summary>
 public readonly record struct ExpUpdate(int Level, int ExpIntoLevel, int Gained, bool OwnKill, string Monster, double? TimeToKill, int? Attacks, int? HpLost,
-    KillForecast? Forecast = null, bool Helped = false);
+    KillForecast? Forecast = null, bool Helped = false, int JobGained = 0);
 
 /// <summary>What the solo duel forecast predicted when the bot engaged a monster, to compare with the real fight.</summary>
 public readonly record struct KillForecast(double Seconds, int Attacks, double HpLost);
@@ -488,6 +488,29 @@ public sealed class BotSession : IAsyncDisposable
     public Task ResetSkillsAsync(CancellationToken ct = default) =>
         _conn?.SendSimpleAsync(PacketType.AdminResetSkills, ct) ?? Task.CompletedTask;
 
+    /// <summary>Admin teleport to a walkable cell (debug server only), e.g. to pull a bot out of a wall.</summary>
+    public Task AdminMoveAsync(string map, int x, int y, CancellationToken ct = default)
+    {
+        if (_conn == null) return Task.CompletedTask;
+        var w = new PacketWriter();
+        w.WritePacketType(PacketType.AdminRequestMove);
+        w.Write(map);
+        w.Write((short)x);
+        w.Write((short)y);
+        w.Write(false); // not forced: the server rejects unwalkable cells
+        return _conn.SendPacketAsync(w, ct);
+    }
+
+    /// <summary>Admin: make the server reload its NPC/warp scripts from disk (debug server only).</summary>
+    public Task ReloadServerScriptsAsync(CancellationToken ct = default)
+    {
+        if (_conn == null) return Task.CompletedTask;
+        var w = new PacketWriter(8);
+        w.WritePacketType(PacketType.AdminServerAction);
+        w.Write((byte)AdminAction.ReloadScripts);
+        return _conn.SendPacketAsync(w, ct);
+    }
+
     /// <summary>Respawn after death. inPlace=false returns to the save point (the normal case).</summary>
     public Task RespawnAsync(bool inPlace = false, CancellationToken ct = default)
     {
@@ -576,6 +599,17 @@ public sealed class BotSession : IAsyncDisposable
         w.WritePacketType(PacketType.NpcClick);
         w.Write(entityId);
         return _conn.SendPacketAsync(w, ct);
+    }
+
+    /// <summary>Close whatever NPC conversation the server still holds open. While one is open the server silently
+    /// drops every NPC click (PacketNpcClick checks IsInNpcInteraction), so a half-finished talk left Bot1 failing
+    /// every shop trip for hours. Each packet is a no-op in the wrong state: close a shop window, advance a dialog,
+    /// then pick option 9, which the server treats as invalid on any menu shorter than 10 and cancels.</summary>
+    public async Task CloseNpcConversationAsync(CancellationToken ct = default)
+    {
+        await ShopCloseAsync(ct);
+        await NpcAdvanceAsync(ct);
+        await NpcSelectOptionAsync(9, ct);
     }
 
     public Task NpcAdvanceAsync(CancellationToken ct = default) =>
@@ -1303,9 +1337,10 @@ public sealed class BotSession : IAsyncDisposable
     {
         var baseTotal = r.ReadInt32();
         var baseGained = r.ReadInt32();
-        r.ReadInt32(); // job total
-        r.ReadInt32(); // job gained
+        var jobTotal = r.ReadInt32();
+        var jobGained = r.ReadInt32();
         World.Self.BaseExp = baseTotal;
+        World.Self.Data[PlayerStat.JobExp] = jobTotal;
         var ownKill = false;
         var killed = "";
         double? timeToKill = null;
@@ -1338,7 +1373,7 @@ public sealed class BotSession : IAsyncDisposable
         // Every exp packet, not just gains: the server also sends the current exp with gained=0 on entering the
         // world and after respawning, and party shares arrive here too.
         OnBaseExpUpdated?.Invoke(new ExpUpdate(World.Self.Level, baseTotal, Math.Max(baseGained, 0), ownKill,
-            ownKill ? killed : "", timeToKill, attacks, hpLost, forecast, helped));
+            ownKill ? killed : "", timeToKill, attacks, hpLost, forecast, helped, Math.Max(jobGained, 0)));
     }
 
     private void UpdatePosition(int id, Position pos, CharacterState state)

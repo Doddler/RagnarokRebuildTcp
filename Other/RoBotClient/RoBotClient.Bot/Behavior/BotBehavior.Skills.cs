@@ -197,9 +197,9 @@ public sealed partial class BotBehavior
                 (skipReasons ??= new()).Add($"{rule.Skill}: not known by this bot");
                 continue;
             }
-            if (!EvaluateConditions(rule.Conditions, snap, target))
+            if (FailedCondition(rule.Conditions, snap, target) is { } failed)
             {
-                (skipReasons ??= new()).Add($"{rule.Skill}: conditions don't match");
+                (skipReasons ??= new()).Add($"{rule.Skill}: {failed}");
                 continue;
             }
 
@@ -237,9 +237,11 @@ public sealed partial class BotBehavior
         if (skipReasons != null && skipReasons.Count > 0)
         {
             var combined = string.Join("; ", skipReasons);
-            if (combined != _lastSkillSkipReason)
+            // Dedupe on which conditions failed, not their live values (SP ticking up would log every tick).
+            var key = System.Text.RegularExpressions.Regex.Replace(combined, @", is [^;]*", "");
+            if (key != _lastSkillSkipReason)
             {
-                _lastSkillSkipReason = combined;
+                _lastSkillSkipReason = key;
                 OnLog?.Invoke($"Skills: no rule fired — {combined}.");
             }
         }
@@ -312,16 +314,19 @@ public sealed partial class BotBehavior
         return lv > 0;
     }
 
-    private bool EvaluateConditions(IReadOnlyList<SkillCond> conds, Snapshot snap, MonsterInfo target)
+    private bool EvaluateConditions(IReadOnlyList<SkillCond> conds, Snapshot snap, MonsterInfo target) =>
+        FailedCondition(conds, snap, target) == null;
+
+    /// <summary>The first condition that doesn't hold, as "needs self.sp >= 8, is 4" for the log; null when all hold.</summary>
+    private static string? FailedCondition(IReadOnlyList<SkillCond> conds, Snapshot snap, MonsterInfo target)
     {
-        for (var i = 0; i < conds.Count; i++)
+        foreach (var c in conds)
         {
-            var c = conds[i];
             var lhs = LhsValue(c.Lhs, snap, target);
-            if (double.IsNaN(lhs)) return false; // unknown variable → rule doesn't fire
-            if (!Compare(lhs, c.Op, c.Value)) return false;
+            if (double.IsNaN(lhs)) return $"unknown variable '{c.Lhs}'"; // rule doesn't fire
+            if (!Compare(lhs, c.Op, c.Value)) return $"needs {c.Lhs} {c.Op} {c.Value:0.##}, is {lhs:0.##}";
         }
-        return true;
+        return null;
     }
 
     private static double LhsValue(string name, Snapshot snap, MonsterInfo target)

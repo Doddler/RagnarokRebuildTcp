@@ -212,7 +212,7 @@ public sealed partial class BotBehavior
     private async Task AbortJobChangeAsync(string reason, CancellationToken ct)
     {
         OnLog?.Invoke($"Job change aborted: {reason}.");
-        await _bot.NpcAdvanceAsync(ct); // nudge any open dialog toward closing
+        await _bot.CloseNpcConversationAsync(ct);
         EndJobChange();
     }
 

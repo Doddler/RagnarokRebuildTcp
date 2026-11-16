@@ -4,18 +4,19 @@ namespace RoBotClient.Tests;
 
 public class ShopPolicyTests
 {
-    private static BotBehaviorConfig Cfg() => new() { SellWeightPercent = 0.9f, SellItemStacks = 30, RestockItemId = 0, JunkSellCount = 0 };
+    private static BotBehaviorConfig Cfg() => new() { SellWeightPercent = 0.9f, RestockItemId = 0, JunkSellCount = 8 };
 
     [Theory]
-    [InlineData(899, false)]
-    [InlineData(900, true)]
-    [InlineData(901, true)]
-    public void WeightThreshold_IsInclusive(int weight, bool expected)
-        => Assert.Equal(expected, ShopPolicy.ShouldStartTrip(weight, 1000, 0, 0, Cfg(), () => 0));
+    [InlineData(899, 4, false)]
+    [InlineData(900, 4, true)]
+    [InlineData(900, 3, false)] // heavy, but barely anything would sell: not worth the walk
+    [InlineData(900, 0, false)]
+    public void Weight_TriggersOnlyWithEnoughToSell(int weight, int saleable, bool expected)
+        => Assert.Equal(expected, ShopPolicy.ShouldStartTrip(weight, 1000, int.MaxValue, Cfg(), () => saleable));
 
     [Fact]
-    public void ZeroMaxWeight_NeverTriggersOnWeight()
-        => Assert.False(ShopPolicy.ShouldStartTrip(5000, 0, 0, 0, Cfg(), () => 0));
+    public void ManyKeptStacks_DoNotTrigger() // the old loop: 31 kept stacks (food, cards, equipped gear) + 7 junk
+        => Assert.False(ShopPolicy.ShouldStartTrip(100, 1000, int.MaxValue, Cfg(), () => 7));
 
     [Fact]
     public void RestockBelowTarget_Triggers()
@@ -23,19 +24,7 @@ public class ShopPolicyTests
         var cfg = Cfg();
         cfg.RestockItemId = 501;
         cfg.RestockBelow = 10;
-        Assert.True(ShopPolicy.ShouldStartTrip(0, 1000, 0, 9, cfg, () => 0));
-        Assert.False(ShopPolicy.ShouldStartTrip(0, 1000, 0, 10, cfg, () => 0));
-    }
-
-    [Fact]
-    public void SaleableCount_OnlyEvaluatedWhenCheaperThresholdsMiss()
-    {
-        var cfg = Cfg();
-        cfg.JunkSellCount = 2;
-        var calls = 0;
-        Assert.True(ShopPolicy.ShouldStartTrip(0, 1000, 30, 0, cfg, () => { calls++; return 0; }));
-        Assert.Equal(0, calls);
-        Assert.True(ShopPolicy.ShouldStartTrip(0, 1000, 0, 0, cfg, () => { calls++; return 2; }));
-        Assert.Equal(1, calls);
+        Assert.True(ShopPolicy.ShouldStartTrip(0, 1000, 9, cfg, () => 0));
+        Assert.False(ShopPolicy.ShouldStartTrip(0, 1000, 10, cfg, () => 0));
     }
 }

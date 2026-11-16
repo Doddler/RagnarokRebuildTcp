@@ -25,6 +25,23 @@ public sealed class WalkMap
 
     public bool IsWalkable(int x, int y) => InBounds(x, y) && (_cells[x + y * Width] & 1) == 1;
 
+    /// <summary>Same test as the server's MapWalkData.HasLineOfSight: a Bresenham line (end cell excluded) is blocked
+    /// by any cell that is neither walkable (bit 1) nor snipable (bit 4).</summary>
+    public bool HasLineOfSight(int x0, int y0, int x1, int y1)
+    {
+        int dx = Math.Abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+        int dy = Math.Abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+        var err = (dx > dy ? dx : -dy) / 2;
+        while (x0 != x1 || y0 != y1)
+        {
+            if (!InBounds(x0, y0) || (_cells[x0 + y0 * Width] & 5) == 0) return false;
+            var e2 = err;
+            if (e2 > -dx) { err -= dy; x0 += sx; }
+            if (e2 < dy) { err += dx; y0 += sy; }
+        }
+        return true;
+    }
+
     public static WalkMap? LoadFromFile(string path)
     {
         if (!File.Exists(path))
