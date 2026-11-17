@@ -73,12 +73,26 @@ function attachHover(canvas) {
         const rect = canvas.getBoundingClientRect();
         const k = canvas.width / rect.width;
         const px = (e.clientX - rect.left) * k, py = (e.clientY - rect.top) * k;
+        const targets = hoverTargets.get(canvas) || [];
         let best = null, bestDistance = 10 * k; // within 10 css px
-        for (const h of hoverTargets.get(canvas) || []) {
+        for (const h of targets) {
+            if (h.left != null) continue;
             const d = Math.hypot(h.x - px, h.y - py);
             if (d < bestDistance) { bestDistance = d; best = h; }
         }
-        canvas.title = best ? best.name : "";
+        if (best) {
+            canvas.title = best.name;
+            return;
+        }
+
+        // Overlapping spawn zones can cover most of the map. Prefer the most specific (smallest) zones,
+        // and show a few when multiple monsters share the hovered cell instead of whichever drew first.
+        const areas = targets.filter(h => h.left != null
+            && px >= h.left && px <= h.left + h.width && py >= h.top && py <= h.top + h.height)
+            .sort((a, b) => a.width * a.height - b.width * b.height);
+        canvas.title = areas.length
+            ? areas.slice(0, 3).map(h => h.name).join("\n") + (areas.length > 3 ? `\n+${areas.length - 3} more spawn areas` : "")
+            : "";
     });
 }
 
@@ -110,7 +124,7 @@ export function drawWorld(canvas, payload) {
             }
         }
         ictx.putImageData(data, 0, 0);
-        worldTerrain.set(canvas, { map: payload.map, img, w, h });
+        worldTerrain.set(canvas, { map: payload.map, img, w, h, spawns: payload.spawns || [] });
     }
 
     const t = worldTerrain.get(canvas);
@@ -128,6 +142,27 @@ export function drawWorld(canvas, payload) {
     ctx.imageSmoothingEnabled = !!art;
     ctx.drawImage(art || t.img, ox, oy, t.w * scale, t.h * scale);
 
+    // Fixed monster spawn zones are inclusive world-cell rectangles. Draw them lightly so the map stays
+    // readable, and retain their bounds for hover names/counts.
+    const spawnHits = [];
+    if (payload.showSpawnAreas !== false) {
+        for (const area of t.spawns || []) {
+            const left = ox + area.minX * scale;
+            const top = oy + (t.h - 1 - area.maxY) * scale;
+            const width = (area.maxX - area.minX + 1) * scale;
+            const height = (area.maxY - area.minY + 1) * scale;
+            let hash = 0;
+            for (let i = 0; i < (area.name || "").length; i++) hash = (hash * 31 + area.name.charCodeAt(i)) | 0;
+            const hue = (hash >>> 0) % 360;
+            ctx.fillStyle = `hsla(${hue}, 85%, 60%, 0.10)`;
+            ctx.strokeStyle = `hsla(${hue}, 90%, 68%, 0.82)`;
+            ctx.lineWidth = Math.max(1, window.devicePixelRatio || 1);
+            ctx.fillRect(left, top, width, height);
+            ctx.strokeRect(left + 0.5, top + 0.5, Math.max(0, width - 1), Math.max(0, height - 1));
+            spawnHits.push({ left, top, width, height, name: `${area.name} spawn area · ${area.count} mob(s)` });
+        }
+    }
+
     const fs = Math.max(11, Math.round(px * 0.022));
     const r = Math.max(4, scale * 1.6);
     ctx.font = `${fs}px system-ui, sans-serif`;
@@ -137,7 +172,7 @@ export function drawWorld(canvas, payload) {
     // A red dot until the atlas loads, or when the monster has no sprite.
     const mr = Math.max(3.5, r * 0.8);
     const spriteHeight = 22 * (window.devicePixelRatio || 1);
-    const hits = []; // for the hover tooltip: canvas-pixel position + name of everything drawn
+    const hits = [...spawnHits]; // rectangles and point positions for hover tooltips
     const mobs = [...(payload.mobs || [])].sort((a, b) => b.y - a.y);
     for (const m of mobs) {
         const mx = ox + (m.x + 0.5) * scale, my = oy + (t.h - 1 - m.y + 0.5) * scale;

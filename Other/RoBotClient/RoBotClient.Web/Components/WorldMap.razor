@@ -5,6 +5,10 @@
 
 @* Whole-map overview of every bot on one map. Terrain is sent once; each tick sends only bot positions,
    read from the immutable per-bot snapshots. *@
+<div class="form-check form-switch mb-2">
+    <input class="form-check-input" type="checkbox" role="switch" id="show-spawn-areas" @bind="_showSpawnAreas" />
+    <label class="form-check-label" for="show-spawn-areas">Spawn areas</label>
+</div>
 <canvas @ref="_canvasRef" width="600" height="600"
         style="width:600px;max-width:100%;aspect-ratio:1;background:#10131a;border-radius:6px;display:block;"></canvas>
 <div style="width:100%;" class="mt-3">
@@ -66,6 +70,7 @@
     private IJSObjectReference? _module;
     private PeriodicTimer? _timer;
     private bool _terrainSent;
+    private bool _showSpawnAreas = true;
     private bool _disposed;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -151,9 +156,30 @@
         if (wm == null)
             payload = new { ok = false, message = $"no walk data for {MapCode}" };
         else if (_terrainSent)
-            payload = new { ok = true, map = MapCode, minimap = $"minimap/{MapCode}.png", bots, mobs, sprites };
+            payload = new { ok = true, map = MapCode, minimap = $"minimap/{MapCode}.png", bots, mobs, sprites, showSpawnAreas = _showSpawnAreas };
         else
-            payload = new { ok = true, map = MapCode, minimap = $"minimap/{MapCode}.png", width = wm.Width, height = wm.Height, cells = TerrainString(wm), bots, mobs, sprites };
+            payload = new
+            {
+                ok = true,
+                map = MapCode,
+                minimap = $"minimap/{MapCode}.png",
+                width = wm.Width,
+                height = wm.Height,
+                cells = TerrainString(wm),
+                bots,
+                mobs,
+                sprites,
+                showSpawnAreas = _showSpawnAreas,
+                spawns = Bots.Data.SpawnAreas(MapCode).Select(area => new
+                {
+                    minX = area.MinX,
+                    minY = area.MinY,
+                    maxX = area.MaxX,
+                    maxY = area.MaxY,
+                    name = Bots.Data.MonstersByCode.TryGetValue(area.MonsterCode, out var monster) ? monster.Name : area.MonsterCode,
+                    count = area.Count,
+                }).ToList(),
+            };
 
         try
         {
