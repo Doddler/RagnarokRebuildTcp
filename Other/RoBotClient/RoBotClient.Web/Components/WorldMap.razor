@@ -66,6 +66,14 @@
     [Parameter] public string MapCode { get; set; } = "";
     [Parameter] public bool? ShowSpawnAreas { get; set; }
 
+    // "Bash!!" for 3 s after the bot uses a skill, like Unity's ShowSkillCastMessage(skill, 3).
+    private string? Shout(string botId)
+    {
+        var (skill, at) = Bots.GetSession(botId)?.WithState(w => (w.Self.LastShoutSkill, w.Self.LastShoutAt)) ?? default;
+        if ((DateTime.UtcNow - at).TotalSeconds > 3) return null;
+        return (Bots.Data.SkillInfoById.TryGetValue(skill, out var info) ? info.Name : skill.ToString()) + "!!";
+    }
+
     private const int RefreshMs = 500;
     // New on every dashboard start, so a browser never runs a cached map.js from before an edit (Firefox kept a stale one).
     private static readonly string ScriptVersion = DateTime.UtcNow.Ticks.ToString();
@@ -116,6 +124,7 @@
             path = RemainingPath(s),
             target = Bots.GetBehavior(s.Id)?.WanderTarget is { } goal ? new { x = goal.X, y = goal.Y } : null,
             hp = s.Hp, maxHp = s.MaxHp, sp = s.Sp, maxSp = s.MaxSp,
+            shout = Shout(s.Id),
         }).ToList();
         _rows = here.Select(s =>
         {

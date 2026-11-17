@@ -93,6 +93,7 @@ function render(canvas, s, payload, now) {
     bots.forEach(b => drawWanderTarget(v, b));
     bots.forEach(b => drawBot(v, s, b, mobs));
     mobs.forEach(m => drawHpBar(v, s, m)); // over the name plates
+    bots.forEach(b => b.shout && drawShout(v, b.shout, v.toX(b.x), v.toY(b.y) - v.r));
     spawnDamageNumbers(s, mobs, bots, now);
     drawDamageNumbers(v, s, mobs);
     drawLegend(v, payload, bots);
@@ -347,6 +348,20 @@ function drawBot(v, s, b, mobs) {
     ctx.lineWidth = 1.5;
     ctx.stroke();
     drawNamePlate(v, s, b.name || "?", x, y + v.r, mobs);
+}
+
+/** Skill shout ("Bash!!") above the dot, styled like the name plate. */
+function drawShout(v, text, x, above) {
+    const { ctx } = v;
+    const size = Math.max(9, Math.round(v.fs * 0.75));
+    ctx.font = font(size, true);
+    ctx.textBaseline = "middle";
+    const w = ctx.measureText(text).width;
+    const y = above - 3 - size / 2 - 2;
+    ctx.fillStyle = "#000000aa";
+    ctx.fillRect(x - w / 2 - 3, y - size / 2 - 2, w + 6, size + 4);
+    ctx.fillStyle = COLORS.text;
+    ctx.fillText(text, x - w / 2, y);
 }
 
 /** Name centred under the bot dot. A monster under the plate fades it so the monster shows through. */

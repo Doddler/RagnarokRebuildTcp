@@ -1256,15 +1256,31 @@ public sealed class BotSession : IAsyncDisposable
         }
     }
 
+    // Unity's ServerControllable.ShowSkillCastMessage: the caster shouts the skill name, except hiding skills.
+    // ponytail: also shouts indirect (auto-cast) skills; Unity skips those via a flag at the packet's tail.
+    private void Shout(int caster, CharacterSkill skill)
+    {
+        if (caster != World.Self.EntityId || skill is CharacterSkill.Hiding or CharacterSkill.Cloaking or CharacterSkill.NoCast) return;
+        World.Self.LastShoutSkill = skill;
+        World.Self.LastShoutAt = DateTime.UtcNow;
+    }
+
     // Only the attribution prefix of an enemy-targeted skill: who owns the damage and who it hit. Every server
     // Skill packet starts with its SkillTarget byte; the rest (skill, level, damage, timings) is visual.
     private void ReadSkill(PacketReader r)
     {
-        if ((SkillTarget)r.ReadByte() != SkillTarget.Enemy) return;
+        var kind = (SkillTarget)r.ReadByte();
         var caster = r.ReadInt32();
+        if (kind is SkillTarget.Ground or SkillTarget.Self)
+        {
+            if (kind == SkillTarget.Ground) { r.ReadInt16(); r.ReadInt16(); }
+            Shout(caster, (CharacterSkill)r.ReadByte());
+            return;
+        }
         var owner = r.ReadInt32();  // -1 unless the damage belongs to someone other than the caster
         var target = r.ReadInt32();
-        if (target <= 0) return;
+        Shout(caster, (CharacterSkill)r.ReadByte());
+        if (kind != SkillTarget.Enemy || target <= 0) return;
         _recentSkillHits[target] = (owner > 0 ? owner : caster, DateTime.UtcNow);
         if ((owner > 0 ? owner : caster) == World.Self.EntityId) NoteOwnHit(target); else NoteOtherHit(owner > 0 ? owner : caster, target);
         if (_recentSkillHits.Count > 256)

@@ -22,6 +22,9 @@ public sealed class SelfState
     public int EntityId;
     public string Name = "";
     public string Map = "";
+    /// <summary>Last skill the server says we used and when; the dashboard map shouts it ("Bash!!") like the Unity client.</summary>
+    public CharacterSkill LastShoutSkill;
+    public DateTime LastShoutAt;
 
     // Raw values keyed by the same enums the server packs them under (see PlayerClientStatusDef).
     public readonly Dictionary<PlayerStat, int> Data = new();
