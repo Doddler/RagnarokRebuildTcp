@@ -152,6 +152,28 @@ function plateFade(canvas, key, target) {
     return a;
 }
 
+// Damage numbers, ported from the Unity client: DamageIndicator.OnUpdate driven by Data/FlyingText/DamagePath.asset.
+// Keys are Unity AnimationCurve keys [time, value, inSlope, outSlope]; lifetime 0..1 over TweenTime = 1 s. The number
+// starts at its spawn point (not attached to the monster), drifts sideways away from the attacker (DistanceMultiplier)
+// while arcing up and back down (Trajectory x HeightMultiplier), punches in at 5x size then settles, and fades out.
+const DAMAGE_PATH = {
+    trajectory: [[0.0019874573, -0.0014190674, 4.052195, 4.052195], [0.9942106, 0.011132479, -3.9042158, -3.9042158]],
+    size: [[-0.0009186715, 5.0193124, -14.1374855, -14.1374855], [0.3964636, 0.99757385, -0.60127693, -0.3272466], [1, 0.8000686, -0.3272466, -0.3272466]],
+    alpha: [[0, 1, -0.00026645948, -0.00026645948], [0.11452991, 0.9999695, -0.00026645948, -0.075074494], [0.56060225, 0.70585805, -1.3047085, -1.4544252], [1.0042865, 0.006022349, -0.2006653, -0.2006653]],
+};
+function evalCurve(keys, t) { // Unity's cubic Hermite AnimationCurve.Evaluate, clamped at the ends
+    if (t <= keys[0][0]) return keys[0][1];
+    for (let i = 0; i < keys.length - 1; i++) {
+        const [t0, v0, , o0] = keys[i], [t1, v1, i1] = keys[i + 1];
+        if (t > t1) continue;
+        const d = t1 - t0, u = (t - t0) / d, u2 = u * u, u3 = u2 * u;
+        return (2 * u3 - 3 * u2 + 1) * v0 + (u3 - 2 * u2 + u) * d * o0 + (-2 * u3 + 3 * u2) * v1 + (u3 - u2) * d * i1;
+    }
+    return keys[keys.length - 1][1];
+}
+const lastHp = new WeakMap();   // canvas -> Map(monster id -> hp)
+const floaters = new WeakMap(); // canvas -> [{ value, x, y, dir, born }]
+
 function startLoop(canvas) {
     animating.add(canvas);
     let last = performance.now();
@@ -367,6 +389,46 @@ function render(canvas, payload) {
         ctx.font = `${fs}px system-ui, sans-serif`;
     }
     for (const [m, x, y] of hpBars) hpBar(m, x, y);
+
+    // Spawn a number whenever a dueled monster's HP drops; it flies away from the nearest bot (the attacker).
+    const now = performance.now();
+    let seenHp = lastHp.get(canvas);
+    if (!seenHp) lastHp.set(canvas, seenHp = new Map());
+    let flying = floaters.get(canvas);
+    if (!flying) floaters.set(canvas, flying = []);
+    for (const [m, x, y] of hpBars) {
+        if (m.hp == null) continue;
+        const before = seenHp.get(m.id);
+        seenHp.set(m.id, m.hp);
+        if (before == null || m.hp >= before) continue;
+        let near = null, best = Infinity;
+        for (const b of payload.bots || []) {
+            const d = Math.hypot(b.x - m.x, b.y - m.y);
+            if (d < best) { best = d; near = b; }
+        }
+        const dir = near && near.x !== m.x ? Math.sign(m.x - near.x) : (Math.random() < 0.5 ? -1 : 1);
+        flying.push({ value: before - m.hp, x, y: y - 6, dir, born: now });
+    }
+    const unit = spriteHeight * 0.5; // one Unity world unit on the minimap, relative to the ~30 px sprite
+    ctx.textAlign = "center";
+    ctx.textBaseline = "alphabetic";
+    for (let i = flying.length - 1; i >= 0; i--) {
+        const f = flying[i], life = (now - f.born) / 1000;
+        if (life > 1) { flying.splice(i, 1); continue; }
+        const size = evalCurve(DAMAGE_PATH.size, life);
+        const fx = f.x + f.dir * 4 * unit * life * 0.5;
+        const fy = f.y - evalCurve(DAMAGE_PATH.trajectory, life) * 4 * unit;
+        ctx.globalAlpha = Math.max(0, Math.min(1, evalCurve(DAMAGE_PATH.alpha, life)));
+        ctx.font = `bold ${Math.round(9 * (window.devicePixelRatio || 1) * size)}px system-ui, sans-serif`;
+        ctx.lineWidth = Math.max(2, 2.5 * size);
+        ctx.strokeStyle = "#000000";
+        ctx.strokeText(String(f.value), fx, fy);
+        ctx.fillStyle = "#ffffff";
+        ctx.fillText(String(f.value), fx, fy);
+    }
+    ctx.globalAlpha = 1;
+    ctx.textAlign = "start";
+    ctx.font = `${fs}px system-ui, sans-serif`;
 
     const title = `${payload.map}  ${t.w}×${t.h} cells  ·  shown ${canvas.clientWidth}×${canvas.clientHeight}px (${(canvas.clientWidth / Math.max(1, canvas.clientHeight)).toFixed(2)}:1)  ·  ${(payload.bots || []).length} bot(s)  ·  ${(payload.mobs || []).length} mob(s) in view`;
     // Under the title, one row per bot: name plus tiny HP (green/yellow/red like the dashboard) and SP bars.
