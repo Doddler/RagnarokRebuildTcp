@@ -463,10 +463,13 @@ public sealed partial class BotBehavior
                 var healing = mapHealing - ownHeal * healArea + ownHeal;
                 var forecast = WithHealing(Forecast(snap, new MonsterInfo(0, monster.Id, monster.Name, default, monster.HP, monster.HP)), monster.HP, healing);
                 hpLoss[monster.Name] = Math.Max(hpLoss.GetValueOrDefault(monster.Name), forecast.ExpectedDamageTaken);
-                if (!forecast.CanWin)
+                // A slow monster is only scenery until it kills us: Bot3 died to Elder Willow (slower than a player) on
+                // pay_fild07, moc_fild03 and pay_fild08 in a row, each map banned in turn while the next one still looked safe.
+                var killedMe = _avoidClasses.TryGetValue(monster.Id, out var avoidUntil) && avoidUntil > DateTime.UtcNow;
+                if (!forecast.CanWin || killedMe)
                 {
                     tooStrong.Add(monster.Name);
-                    if (IsAggressive(monster.Id) && InescapableReason(monster) is { } why) threat ??= $"{monster.Name} ({why})";
+                    if (IsAggressive(monster.Id) && (killedMe ? "killed me recently" : InescapableReason(monster)) is { } why) threat ??= $"{monster.Name} ({why})";
                     continue;
                 }
                 huntable.Add((monster, count, respawnSeconds, forecast));

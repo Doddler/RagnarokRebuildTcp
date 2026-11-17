@@ -97,6 +97,7 @@
     "FlyWingItemId": 601,
     "ButterflyWingItemId": 602,
     "ButterflyWingRestockCount": 0,
+    "FlyWingPoolSize": 0,
     "FlyWingStuckSeconds": 8,
     "PortalSafeDistance": 3,
     "ButterflyWingStuckSeconds": 20,
@@ -119,8 +120,7 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5,
-    "FlyWingPoolSize": 0
+    "KiteSuspendSeconds": 5
   },
   "[BOT] Bran": {
     "HuntClassIds": [
@@ -233,6 +233,7 @@
     "FlyWingItemId": 601,
     "ButterflyWingItemId": 602,
     "ButterflyWingRestockCount": 0,
+    "FlyWingPoolSize": 0,
     "FlyWingStuckSeconds": 8,
     "PortalSafeDistance": 3,
     "ButterflyWingStuckSeconds": 20,
@@ -249,8 +250,7 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5,
-    "FlyWingPoolSize": 0
+    "KiteSuspendSeconds": 5
   },
   "[BOT] Nyx": {
     "HuntClassIds": [
@@ -359,6 +359,7 @@
     "FlyWingItemId": 601,
     "ButterflyWingItemId": 602,
     "ButterflyWingRestockCount": 0,
+    "FlyWingPoolSize": 0,
     "FlyWingStuckSeconds": 8,
     "PortalSafeDistance": 3,
     "ButterflyWingStuckSeconds": 20,
@@ -379,8 +380,7 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5,
-    "FlyWingPoolSize": 0
+    "KiteSuspendSeconds": 5
   },
   "[BOT] Cael": {
     "HuntClassIds": [
@@ -457,6 +457,7 @@
     "FlyWingItemId": 601,
     "ButterflyWingItemId": 602,
     "ButterflyWingRestockCount": 0,
+    "FlyWingPoolSize": 0,
     "FlyWingStuckSeconds": 8,
     "PortalSafeDistance": 3,
     "ButterflyWingStuckSeconds": 20,
@@ -473,8 +474,7 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5,
-    "FlyWingPoolSize": 0
+    "KiteSuspendSeconds": 5
   },
   "[BOT] Selene": {
     "HuntClassIds": [
@@ -587,6 +587,7 @@
     "FlyWingItemId": 601,
     "ButterflyWingItemId": 602,
     "ButterflyWingRestockCount": 0,
+    "FlyWingPoolSize": 0,
     "FlyWingStuckSeconds": 8,
     "PortalSafeDistance": 3,
     "ButterflyWingStuckSeconds": 20,
@@ -603,8 +604,7 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5,
-    "FlyWingPoolSize": 0
+    "KiteSuspendSeconds": 5
   },
   "[BOT] Hawke": {
     "HuntClassIds": [
@@ -713,6 +713,7 @@
     "FlyWingItemId": 601,
     "ButterflyWingItemId": 602,
     "ButterflyWingRestockCount": 0,
+    "FlyWingPoolSize": 0,
     "FlyWingStuckSeconds": 8,
     "PortalSafeDistance": 3,
     "ButterflyWingStuckSeconds": 20,
@@ -733,8 +734,7 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5,
-    "FlyWingPoolSize": 0
+    "KiteSuspendSeconds": 5
   },
   "[BOT] Mira": {
     "HuntClassIds": [
@@ -843,6 +843,7 @@
     "FlyWingItemId": 601,
     "ButterflyWingItemId": 602,
     "ButterflyWingRestockCount": 0,
+    "FlyWingPoolSize": 0,
     "FlyWingStuckSeconds": 8,
     "PortalSafeDistance": 3,
     "ButterflyWingStuckSeconds": 20,
@@ -863,8 +864,7 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5,
-    "FlyWingPoolSize": 0
+    "KiteSuspendSeconds": 5
   },
   "[BOT] Sera": {
     "HuntClassIds": [
@@ -926,6 +926,7 @@
     "FlyWingItemId": 601,
     "ButterflyWingItemId": 602,
     "ButterflyWingRestockCount": 0,
+    "FlyWingPoolSize": 0,
     "FlyWingStuckSeconds": 8,
     "PortalSafeDistance": 3,
     "ButterflyWingStuckSeconds": 20,
@@ -942,8 +943,7 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5,
-    "FlyWingPoolSize": 0
+    "KiteSuspendSeconds": 5
   },
   "[BOT] [BOT] Valdric": {
     "HuntClassIds": [
@@ -1038,6 +1038,7 @@
     "FlyWingItemId": 601,
     "ButterflyWingItemId": 602,
     "ButterflyWingRestockCount": 0,
+    "FlyWingPoolSize": 0,
     "FlyWingStuckSeconds": 8,
     "PortalSafeDistance": 3,
     "ButterflyWingStuckSeconds": 20,
@@ -1054,8 +1055,7 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5,
-    "FlyWingPoolSize": 0
+    "KiteSuspendSeconds": 5
   },
   "[BOT] [BOT] Sylvara": {
     "HuntClassIds": [
@@ -1146,6 +1146,7 @@
     "FlyWingItemId": 601,
     "ButterflyWingItemId": 602,
     "ButterflyWingRestockCount": 0,
+    "FlyWingPoolSize": 0,
     "FlyWingStuckSeconds": 8,
     "PortalSafeDistance": 3,
     "ButterflyWingStuckSeconds": 20,
@@ -1162,8 +1163,7 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5,
-    "FlyWingPoolSize": 0
+    "KiteSuspendSeconds": 5
   },
   "[BOT] [BOT] Pyrion": {
     "HuntClassIds": [
@@ -1255,6 +1255,7 @@
     "FlyWingItemId": 601,
     "ButterflyWingItemId": 602,
     "ButterflyWingRestockCount": 0,
+    "FlyWingPoolSize": 0,
     "FlyWingStuckSeconds": 8,
     "PortalSafeDistance": 3,
     "ButterflyWingStuckSeconds": 20,
@@ -1273,8 +1274,7 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5,
-    "FlyWingPoolSize": 0
+    "KiteSuspendSeconds": 5
   },
   "[BOT] [BOT] Lumina": {
     "HuntClassIds": [
@@ -1366,6 +1366,7 @@
     "FlyWingItemId": 601,
     "ButterflyWingItemId": 602,
     "ButterflyWingRestockCount": 0,
+    "FlyWingPoolSize": 0,
     "FlyWingStuckSeconds": 8,
     "PortalSafeDistance": 3,
     "ButterflyWingStuckSeconds": 20,
@@ -1382,8 +1383,7 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5,
-    "FlyWingPoolSize": 0
+    "KiteSuspendSeconds": 5
   },
   "[BOT] [BOT] Shivkin": {
     "HuntClassIds": [
@@ -1480,6 +1480,7 @@
     "FlyWingItemId": 601,
     "ButterflyWingItemId": 602,
     "ButterflyWingRestockCount": 0,
+    "FlyWingPoolSize": 0,
     "FlyWingStuckSeconds": 8,
     "PortalSafeDistance": 3,
     "ButterflyWingStuckSeconds": 20,
@@ -1496,8 +1497,7 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5,
-    "FlyWingPoolSize": 0
+    "KiteSuspendSeconds": 5
   },
   "[BOT] [BOT] Coinwhisper": {
     "HuntClassIds": [
@@ -1592,6 +1592,7 @@
     "FlyWingItemId": 601,
     "ButterflyWingItemId": 602,
     "ButterflyWingRestockCount": 0,
+    "FlyWingPoolSize": 0,
     "FlyWingStuckSeconds": 8,
     "PortalSafeDistance": 3,
     "ButterflyWingStuckSeconds": 20,
@@ -1608,8 +1609,7 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5,
-    "FlyWingPoolSize": 0
+    "KiteSuspendSeconds": 5
   },
   "[BOT] Bot1": {
     "HuntClassIds": [],
@@ -1668,6 +1668,7 @@
     "FlyWingItemId": 601,
     "ButterflyWingItemId": 602,
     "ButterflyWingRestockCount": 0,
+    "FlyWingPoolSize": 0,
     "FlyWingStuckSeconds": 8,
     "PortalSafeDistance": 3,
     "ButterflyWingStuckSeconds": 20,
@@ -1684,8 +1685,7 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5,
-    "FlyWingPoolSize": 0
+    "KiteSuspendSeconds": 5
   },
   "[BOT] Bot2": {
     "HuntClassIds": [],
@@ -1696,10 +1696,10 @@
     "MaxRoundsToKill": 120,
     "FleeHpPercent": 0.3,
     "FleeMonsterRange": 5,
-    "HomeMap": "mjo_dun01",
-    "SavePointMap": "aldebaran",
-    "SavePointX": 143,
-    "SavePointY": 119,
+    "HomeMap": "mjolnir_09",
+    "SavePointMap": "prontera",
+    "SavePointX": 29,
+    "SavePointY": 207,
     "AutoMap": true,
     "Enabled": true,
     "StuckSeconds": 3.5,
@@ -1742,6 +1742,7 @@
     "FlyWingItemId": 601,
     "ButterflyWingItemId": 602,
     "ButterflyWingRestockCount": 1,
+    "FlyWingPoolSize": 0,
     "FlyWingStuckSeconds": 8,
     "PortalSafeDistance": 3,
     "ButterflyWingStuckSeconds": 20,
@@ -1758,8 +1759,7 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5,
-    "FlyWingPoolSize": 0
+    "KiteSuspendSeconds": 5
   },
   "[BOT] Bot3": {
     "HuntClassIds": [],
@@ -1770,7 +1770,7 @@
     "MaxRoundsToKill": 120,
     "FleeHpPercent": 0.3,
     "FleeMonsterRange": 5,
-    "HomeMap": "pay_fild02",
+    "HomeMap": "mjo_dun01",
     "SavePointMap": "aldebaran",
     "SavePointX": 143,
     "SavePointY": 119,
@@ -1816,6 +1816,7 @@
     "FlyWingItemId": 601,
     "ButterflyWingItemId": 602,
     "ButterflyWingRestockCount": 0,
+    "FlyWingPoolSize": 0,
     "FlyWingStuckSeconds": 8,
     "PortalSafeDistance": 3,
     "ButterflyWingStuckSeconds": 20,
@@ -1832,8 +1833,7 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5,
-    "FlyWingPoolSize": 0
+    "KiteSuspendSeconds": 5
   },
   "[BOT] Bot4": {
     "HuntClassIds": [],
@@ -1890,6 +1890,7 @@
     "FlyWingItemId": 601,
     "ButterflyWingItemId": 602,
     "ButterflyWingRestockCount": 0,
+    "FlyWingPoolSize": 0,
     "FlyWingStuckSeconds": 8,
     "PortalSafeDistance": 3,
     "ButterflyWingStuckSeconds": 20,
@@ -1906,8 +1907,7 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5,
-    "FlyWingPoolSize": 0
+    "KiteSuspendSeconds": 5
   },
   "[BOT] Bot5": {
     "HuntClassIds": [],
@@ -1918,10 +1918,10 @@
     "MaxRoundsToKill": 120,
     "FleeHpPercent": 0.3,
     "FleeMonsterRange": 5,
-    "HomeMap": "mjolnir_11",
-    "SavePointMap": "geffen",
-    "SavePointX": 203,
-    "SavePointY": 123,
+    "HomeMap": "mjolnir_10",
+    "SavePointMap": "prontera",
+    "SavePointX": 29,
+    "SavePointY": 207,
     "AutoMap": true,
     "Enabled": true,
     "StuckSeconds": 3.5,
@@ -1964,6 +1964,7 @@
     "FlyWingItemId": 601,
     "ButterflyWingItemId": 602,
     "ButterflyWingRestockCount": 0,
+    "FlyWingPoolSize": 0,
     "FlyWingStuckSeconds": 8,
     "PortalSafeDistance": 3,
     "ButterflyWingStuckSeconds": 20,
@@ -1980,7 +1981,6 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5,
-    "FlyWingPoolSize": 0
+    "KiteSuspendSeconds": 5
   }
 }

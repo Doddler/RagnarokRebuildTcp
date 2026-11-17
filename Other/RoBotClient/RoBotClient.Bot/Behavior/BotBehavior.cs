@@ -28,6 +28,8 @@ public sealed partial class BotBehavior
     // unable to hunt the most common mob on their map for the rest of the session.
     private readonly Dictionary<int, DateTime> _avoidClasses = new();
     private static readonly TimeSpan AvoidClassDuration = TimeSpan.FromMinutes(5);
+    // Dying to the same class again inside the window means it's no fluke: Bot3 died to Elder Willow on three maps in 4 min.
+    private static readonly TimeSpan RepeatKillerAvoidDuration = TimeSpan.FromMinutes(30);
 
     private int _targetId;
     private int _targetClass = -1;
@@ -218,8 +220,8 @@ public sealed partial class BotBehavior
                 if (killerClass < 0 && _targetClass >= 0) { killerClass = _targetClass; killerName = TargetName; }
                 if (killerClass >= 0)
                 {
-                    var expires = DateTime.UtcNow + AvoidClassDuration;
-                    var fresh = !_avoidClasses.ContainsKey(killerClass);
+                    var fresh = !(_avoidClasses.TryGetValue(killerClass, out var prevUntil) && prevUntil > DateTime.UtcNow);
+                    var expires = DateTime.UtcNow + (fresh ? AvoidClassDuration : RepeatKillerAvoidDuration);
                     _avoidClasses[killerClass] = expires;
                     OnMemoryChanged?.Invoke();
                     _mapDangerLastLevel = -1; // re-score maps now that this class has killed us
@@ -228,7 +230,7 @@ public sealed partial class BotBehavior
                     if (fresh)
                         OnLog?.Invoke($"Died to '{killerName}' (class {killerClass}) — avoiding it for the next {AvoidClassDuration.TotalMinutes:F0} min.{context}");
                     else
-                        OnLog?.Invoke($"Died to '{killerName}' (class {killerClass}) again — avoidance timer extended.{context}");
+                        OnLog?.Invoke($"Died to '{killerName}' (class {killerClass}) again — avoiding it for the next {RepeatKillerAvoidDuration.TotalMinutes:F0} min.{context}");
                 }
                 else
                     OnLog?.Invoke($"Died (couldn't attribute the kill; last attacker '{attackerName}', committed target '{TargetName}').");
@@ -941,7 +943,7 @@ public sealed partial class BotBehavior
     /// the bot's melee DPS; magic-based skills (FireBolt, NapalmBeat, HolyLight, SoulStrike) multiply a
     /// magic DPS derived from MagicAtkMin/Max — server reports the real number so a Mage doesn't get its
     /// FireBolt damage estimated from 0 melee.</summary>
-    private static double EstimateSkillDps(Snapshot snap, double meleeDps)
+    private double EstimateSkillDps(Snapshot snap, double meleeDps)
     {
         var magicAtkAvg = (snap.SelfMagicAtkMin + snap.SelfMagicAtkMax) / 2.0;
         var attackInterval = snap.SelfAttackInterval > 0.05 ? snap.SelfAttackInterval : 1.5;
@@ -958,19 +960,19 @@ public sealed partial class BotBehavior
             switch (skill)
             {
                 // Melee — scale melee DPS.
-                case CharacterSkill.Bash:            meleeBonus += 0.15 * level; break;
-                case CharacterSkill.MagnumBreak:     meleeBonus += 0.10 * level; break;
-                case CharacterSkill.DoubleStrafe:    meleeBonus += 0.30 * level; break;
-                case CharacterSkill.ArrowShower:     meleeBonus += 0.10 * level; break;
-                case CharacterSkill.SonicBlow:       meleeBonus += 0.20 * level; break;
+                case CharacterSkill.Bash:            meleeBonus += SpAffordable(snap, skill, level) * 0.15 * level; break;
+                case CharacterSkill.MagnumBreak:     meleeBonus += SpAffordable(snap, skill, level) * 0.10 * level; break;
+                case CharacterSkill.DoubleStrafe:    meleeBonus += SpAffordable(snap, skill, level) * 0.30 * level; break;
+                case CharacterSkill.ArrowShower:     meleeBonus += SpAffordable(snap, skill, level) * 0.10 * level; break;
+                case CharacterSkill.SonicBlow:       meleeBonus += SpAffordable(snap, skill, level) * 0.20 * level; break;
                 // Magic — scale magic DPS using the bot's real MATK.
-                case CharacterSkill.FireBolt:        magicBonus += 0.40 * level; break;
-                case CharacterSkill.ColdBolt:        magicBonus += 0.40 * level; break;
-                case CharacterSkill.LightningBolt:   magicBonus += 0.40 * level; break;
-                case CharacterSkill.SoulStrike:      magicBonus += 0.30 * level; break;
-                case CharacterSkill.FireBall:        magicBonus += 0.20 * level; break;
-                case CharacterSkill.NapalmBeat:      magicBonus += 0.20 * level; break;
-                case CharacterSkill.HolyLight:       magicBonus += 0.30 * level; break;
+                case CharacterSkill.FireBolt:        magicBonus += SpAffordable(snap, skill, level) * 0.40 * level; break;
+                case CharacterSkill.ColdBolt:        magicBonus += SpAffordable(snap, skill, level) * 0.40 * level; break;
+                case CharacterSkill.LightningBolt:   magicBonus += SpAffordable(snap, skill, level) * 0.40 * level; break;
+                case CharacterSkill.SoulStrike:      magicBonus += SpAffordable(snap, skill, level) * 0.30 * level; break;
+                case CharacterSkill.FireBall:        magicBonus += SpAffordable(snap, skill, level) * 0.20 * level; break;
+                case CharacterSkill.NapalmBeat:      magicBonus += SpAffordable(snap, skill, level) * 0.20 * level; break;
+                case CharacterSkill.HolyLight:       magicBonus += SpAffordable(snap, skill, level) * 0.30 * level; break;
             }
         }
         var fromMelee = Math.Clamp(meleeBonus, 0, 3) * meleeDps;
@@ -1014,23 +1016,34 @@ public sealed partial class BotBehavior
         {
             switch (skill)
             {
-                case CharacterSkill.Bash:            meleeBonus += 0.15 * level; break;
-                case CharacterSkill.MagnumBreak:     meleeBonus += 0.10 * level; break;
-                case CharacterSkill.DoubleStrafe:    meleeBonus += 0.30 * level; break;
-                case CharacterSkill.ArrowShower:     meleeBonus += 0.10 * level; break;
-                case CharacterSkill.SonicBlow:       meleeBonus += 0.20 * level; break;
-                case CharacterSkill.FireBolt:        magicBonus += 0.40 * level; break;
-                case CharacterSkill.ColdBolt:        magicBonus += 0.40 * level; break;
-                case CharacterSkill.LightningBolt:   magicBonus += 0.40 * level; break;
-                case CharacterSkill.SoulStrike:      magicBonus += 0.30 * level; break;
-                case CharacterSkill.FireBall:        magicBonus += 0.20 * level; break;
-                case CharacterSkill.NapalmBeat:      magicBonus += 0.20 * level; break;
-                case CharacterSkill.HolyLight:       magicBonus += 0.30 * level; break;
+                case CharacterSkill.Bash:            meleeBonus += SpAffordable(snap, skill, level) * 0.15 * level; break;
+                case CharacterSkill.MagnumBreak:     meleeBonus += SpAffordable(snap, skill, level) * 0.10 * level; break;
+                case CharacterSkill.DoubleStrafe:    meleeBonus += SpAffordable(snap, skill, level) * 0.30 * level; break;
+                case CharacterSkill.ArrowShower:     meleeBonus += SpAffordable(snap, skill, level) * 0.10 * level; break;
+                case CharacterSkill.SonicBlow:       meleeBonus += SpAffordable(snap, skill, level) * 0.20 * level; break;
+                case CharacterSkill.FireBolt:        magicBonus += SpAffordable(snap, skill, level) * 0.40 * level; break;
+                case CharacterSkill.ColdBolt:        magicBonus += SpAffordable(snap, skill, level) * 0.40 * level; break;
+                case CharacterSkill.LightningBolt:   magicBonus += SpAffordable(snap, skill, level) * 0.40 * level; break;
+                case CharacterSkill.SoulStrike:      magicBonus += SpAffordable(snap, skill, level) * 0.30 * level; break;
+                case CharacterSkill.FireBall:        magicBonus += SpAffordable(snap, skill, level) * 0.20 * level; break;
+                case CharacterSkill.NapalmBeat:      magicBonus += SpAffordable(snap, skill, level) * 0.20 * level; break;
+                case CharacterSkill.HolyLight:       magicBonus += SpAffordable(snap, skill, level) * 0.30 * level; break;
             }
         }
         var fromMelee = Math.Clamp(meleeBonus, 0, 3) * meleeDps;
         var fromMagic = Math.Clamp(magicBonus, 0, 3) * magicDps;
         return fromMelee + fromMagic;
+    }
+
+    /// <summary>Share of a skill's damage the bot can deliver right now: none without the SP to cast it. Bot3 took
+    /// Horn after Horn on a "4 s kill" forecast that counted Bash at 2 SP; the real fights took 15 s and it died.</summary>
+    // ponytail: SP for 3 casts = full credit, linear below. Model SP per cast vs fight length if forecasts still drift.
+    private double SpAffordable(Snapshot snap, CharacterSkill skill, int level)
+    {
+        var costs = _data?.SkillInfo(skill)?.SpCost;
+        if (costs == null || costs.Length == 0) return 1;
+        var cost = costs[Math.Clamp(level, 1, costs.Length) - 1];
+        return cost <= 0 ? 1 : Math.Clamp(snap.SelfSp / (3.0 * cost), 0, 1);
     }
 
     /// <summary>Average HP one use restores, from the server's item effect script (0 = doesn't heal HP).</summary>
@@ -1410,7 +1423,11 @@ public sealed partial class BotBehavior
         if (_resting)
         {
             var recovered = hpPct >= 0.95 && spPct >= 0.95;
-            if ((!_config.RestWhenNoPotions && !_restToWin) || recovered || AnyAdjacentMonster(snap) || _hazards.Count > 0)
+            // Only a monster that will attack ends the rest: a passive Horn wandering by used to stand Bot3 up at low HP.
+            // HP only climbs while sitting, so any drop means something (a provoked passive mob) is hitting us.
+            var hit = snap.SelfHp < _restHp;
+            _restHp = snap.SelfHp;
+            if ((!_config.RestWhenNoPotions && !_restToWin) || recovered || hit || AnyAdjacentMonster(snap, aggressiveOnly: true) || _hazards.Count > 0)
             {
                 _resting = false;
                 _restToWin = false;
@@ -1430,9 +1447,10 @@ public sealed partial class BotBehavior
         // wandering at 77% HP turned every Spore on pay_fild02 into "too strong" (81 s searching per kill).
         var wantRest = _config.RestWhenNoPotions && (hpPct < _config.RestBelowPercent || spPct < _config.RestBelowPercent);
         // Never sit with a monster we can't beat in view (Bot3 sat down among Greatest Generals on moc_fild03).
-        if (!(wantRest || _restToWin) || !CanSit(snap) || AnyAdjacentMonster(snap) || _hazards.Count > 0) return false;
+        if (!(wantRest || _restToWin) || !CanSit(snap) || AnyAdjacentMonster(snap, aggressiveOnly: true) || _hazards.Count > 0) return false;
 
         _resting = true;
+        _restHp = snap.SelfHp;
         _targetId = 0;
         _targetClass = -1;
         Mode = BotMode.Resting;
@@ -1444,6 +1462,7 @@ public sealed partial class BotBehavior
 
     // A Novice (job 0) needs Basic Mastery level 2 to sit; everyone else always can.
     private bool _restToWin;
+    private int _restHp;
 
     private bool KillsWithSpells(Snapshot snap) => _config.NoAutoAttack || snap.SelfJobId is 3 or 8 or 14; // Mage, Wizard, Sage // the last target pick found fights we'd win at full HP but not now
 
@@ -1458,11 +1477,12 @@ public sealed partial class BotBehavior
         });
     }
 
-    private bool AnyAdjacentMonster(Snapshot snap, int range = 3)
+    private bool AnyAdjacentMonster(Snapshot snap, int range = 3, bool aggressiveOnly = false)
     {
         foreach (var m in snap.Monsters)
         {
             if (m.MaxHp > 0 && m.Hp <= 0) continue;
+            if (aggressiveOnly && !IsAggressive(m.ClassId)) continue;
             if (Dist(snap.SelfPos, m.Pos) <= range) return true;
         }
         return false;
