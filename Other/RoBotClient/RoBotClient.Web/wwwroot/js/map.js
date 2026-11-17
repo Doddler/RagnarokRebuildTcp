@@ -31,25 +31,25 @@ function minimap(url) {
 }
 
 function fitCanvas(canvas) {
-    // Keep the backing store square and crisp on HiDPI without depending on CSS layout size.
-    const cssSize = canvas.clientWidth || canvas.width || 420;
+    // Backing store matches the CSS box (any aspect), crisp on HiDPI.
     const dpr = window.devicePixelRatio || 1;
-    const px = Math.round(cssSize * dpr);
-    if (canvas.width !== px || canvas.height !== px) {
-        canvas.width = px;
-        canvas.height = px;
+    const pw = Math.round((canvas.clientWidth || canvas.width || 420) * dpr);
+    const ph = Math.round((canvas.clientHeight || canvas.height || 420) * dpr);
+    if (canvas.width !== pw || canvas.height !== ph) {
+        canvas.width = pw;
+        canvas.height = ph;
     }
-    return { px, dpr, css: cssSize };
+    return { px: Math.min(pw, ph), pw, ph, dpr };
 }
 
 function message(ctx, px, text) {
     ctx.fillStyle = COLORS.bg;
-    ctx.fillRect(0, 0, px, px);
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.fillStyle = COLORS.textDim;
     ctx.font = `${Math.max(12, Math.round(px * 0.04))}px system-ui, sans-serif`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText(text || "no data", px / 2, px / 2);
+    ctx.fillText(text || "no data", ctx.canvas.width / 2, ctx.canvas.height / 2);
     ctx.textAlign = "start";
     ctx.textBaseline = "alphabetic";
 }
@@ -96,11 +96,54 @@ function attachHover(canvas) {
     });
 }
 
+// HP bar "damage trail", copied from the Unity client's SliderBar: on a hit the bar drops at once and a white chunk
+// (ProgressDelayed) stays behind, then drains with accelerating speed (accel += 20/s each second) until it meets the bar.
+const hpTrails = new WeakMap(); // canvas -> Map(monster id -> { delayed, accel, moving })
+const lastPayload = new WeakMap();
+const animating = new WeakSet();
+
+function trailFor(canvas, m, pct) {
+    let trails = hpTrails.get(canvas);
+    if (!trails) hpTrails.set(canvas, trails = new Map());
+    let st = trails.get(m.id);
+    if (!st) trails.set(m.id, st = { delayed: pct, accel: 0, moving: false, seen: 0 });
+    st.seen = performance.now();
+    st.target = pct;
+    if (pct >= st.delayed) { st.delayed = pct; st.moving = false; }
+    else if (!st.moving) { st.moving = true; st.accel = 0; }
+    if (st.moving && !animating.has(canvas)) animateTrails(canvas);
+    return st;
+}
+
+function animateTrails(canvas) {
+    animating.add(canvas);
+    let last = performance.now();
+    const step = now => {
+        const dt = Math.min(0.1, (now - last) / 1000);
+        last = now;
+        let any = false;
+        for (const [id, st] of hpTrails.get(canvas) || []) {
+            if (now - st.seen > 2000) { hpTrails.get(canvas).delete(id); continue; }
+            if (!st.moving) continue;
+            st.delayed -= st.accel * dt;
+            st.accel += dt * 20;
+            if (st.delayed < st.target) st.moving = false; // caught up with the bar, like SliderBar.Update
+            else any = true;
+        }
+        const p = lastPayload.get(canvas);
+        if (p && canvas.isConnected) drawWorld(canvas, p);
+        if (any && canvas.isConnected) requestAnimationFrame(step);
+        else animating.delete(canvas);
+    };
+    requestAnimationFrame(step);
+}
+
 export function drawWorld(canvas, payload) {
     if (!canvas) return;
+    if (payload && payload.ok) lastPayload.set(canvas, { ...payload, cells: undefined });
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    const { px } = fitCanvas(canvas);
+    const { px, pw, ph } = fitCanvas(canvas);
 
     if (!payload || !payload.ok) {
         message(ctx, px, payload && payload.message ? payload.message : "no data");
@@ -133,24 +176,24 @@ export function drawWorld(canvas, payload) {
         return;
     }
 
-    // Fit the (possibly non-square) map inside the square canvas.
-    const scale = px / Math.max(t.w, t.h);
-    const ox = (px - t.w * scale) / 2, oy = (px - t.h * scale) / 2;
+    // Stretch the map to fill the canvas: x and y scale independently (a 400x400 map fills a wide card).
+    const sx = pw / t.w, sy = ph / t.h, scale = Math.min(sx, sy);
+    const ox = 0, oy = 0;
     ctx.fillStyle = COLORS.bg;
-    ctx.fillRect(0, 0, px, px);
+    ctx.fillRect(0, 0, pw, ph);
     const art = minimap(payload.minimap);
     ctx.imageSmoothingEnabled = !!art;
-    ctx.drawImage(art || t.img, ox, oy, t.w * scale, t.h * scale);
+    ctx.drawImage(art || t.img, ox, oy, t.w * sx, t.h * sy);
 
     // Fixed monster spawn zones are inclusive world-cell rectangles. Draw them lightly so the map stays
     // readable, and retain their bounds for hover names/counts.
     const spawnHits = [];
     if (payload.showSpawnAreas !== false) {
         for (const area of t.spawns || []) {
-            const left = ox + area.minX * scale;
-            const top = oy + (t.h - 1 - area.maxY) * scale;
-            const width = (area.maxX - area.minX + 1) * scale;
-            const height = (area.maxY - area.minY + 1) * scale;
+            const left = ox + area.minX * sx;
+            const top = oy + (t.h - 1 - area.maxY) * sy;
+            const width = (area.maxX - area.minX + 1) * sx;
+            const height = (area.maxY - area.minY + 1) * sy;
             let hash = 0;
             for (let i = 0; i < (area.name || "").length; i++) hash = (hash * 31 + area.name.charCodeAt(i)) | 0;
             const hue = (hash >>> 0) % 360;
@@ -179,13 +222,18 @@ export function drawWorld(canvas, payload) {
         if (m.hp == null) return;
         const w = Math.max(18, spriteHeight * 1.2), h = Math.max(3, spriteHeight * 0.16);
         const pct = Math.max(0, Math.min(1, m.hp / m.maxHp));
+        const st = trailFor(canvas, m, pct);
         ctx.fillStyle = "#000000cc";
         ctx.fillRect(cx - w / 2 - 1, bottom - h - 1, w + 2, h + 2);
+        if (st.moving && st.delayed > pct) {
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(cx - w / 2, bottom - h, w * st.delayed, h);
+        }
         ctx.fillStyle = pct <= 0.25 ? "#dc3545" : pct <= 0.5 ? "#ffc107" : "#198754";
         ctx.fillRect(cx - w / 2, bottom - h, w * pct, h);
     }
     for (const m of mobs) {
-        const mx = ox + (m.x + 0.5) * scale, my = oy + (t.h - 1 - m.y + 0.5) * scale;
+        const mx = ox + (m.x + 0.5) * sx, my = oy + (t.h - 1 - m.y + 0.5) * sy;
         const s = payload.sprites && payload.sprites[m.name];
         const atlas = s ? minimap(s.atlas) : null;
         if (atlas) {
@@ -208,13 +256,13 @@ export function drawWorld(canvas, payload) {
         }
     }
     for (const b of payload.bots || []) {
-        hits.push({ x: ox + (b.x + 0.5) * scale, y: oy + (t.h - 1 - b.y + 0.5) * scale, name: b.name || "bot" });
-        if (b.target) hits.push({ x: ox + (b.target.x + 0.5) * scale, y: oy + (t.h - 1 - b.target.y + 0.5) * scale, name: `${b.name || "bot"} A* target` });
+        hits.push({ x: ox + (b.x + 0.5) * sx, y: oy + (t.h - 1 - b.y + 0.5) * sy, name: b.name || "bot" });
+        if (b.target) hits.push({ x: ox + (b.target.x + 0.5) * sx, y: oy + (t.h - 1 - b.target.y + 0.5) * sy, name: `${b.name || "bot"} A* target` });
     }
     hoverTargets.set(canvas, hits);
     attachHover(canvas);
     // Planned walk of traveling bots: dashed line from the bot along its A* path, ring on the goal cell.
-    const toX = x => ox + (x + 0.5) * scale, toY = y => oy + (t.h - 1 - y + 0.5) * scale;
+    const toX = x => ox + (x + 0.5) * sx, toY = y => oy + (t.h - 1 - y + 0.5) * sy;
     for (const b of payload.bots || []) {
         const p = b.path || [];
         if (p.length < 4) continue;
@@ -243,8 +291,8 @@ export function drawWorld(canvas, payload) {
         ctx.stroke();
     }
     for (const b of payload.bots || []) {
-        const cx = ox + (b.x + 0.5) * scale;
-        const cy = oy + (t.h - 1 - b.y + 0.5) * scale;
+        const cx = ox + (b.x + 0.5) * sx;
+        const cy = oy + (t.h - 1 - b.y + 0.5) * sy;
         ctx.fillStyle = COLORS.self;
         ctx.beginPath();
         ctx.arc(cx, cy, r, 0, Math.PI * 2);
@@ -261,7 +309,7 @@ export function drawWorld(canvas, payload) {
         ctx.fillText(label, cx + r + 7, cy);
     }
 
-    const title = `${payload.map}  ${t.w}×${t.h}  ·  ${(payload.bots || []).length} bot(s)  ·  ${(payload.mobs || []).length} mob(s) in view`;
+    const title = `${payload.map}  ${t.w}×${t.h} cells  ·  shown ${canvas.clientWidth}×${canvas.clientHeight}px (${(canvas.clientWidth / Math.max(1, canvas.clientHeight)).toFixed(2)}:1)  ·  ${(payload.bots || []).length} bot(s)  ·  ${(payload.mobs || []).length} mob(s) in view`;
     // Under the title, one row per bot: name plus tiny HP (green/yellow/red like the dashboard) and SP bars.
     const bots = payload.bots || [];
     const rowHeight = fs + 6;

@@ -13,7 +13,7 @@
     </div>
 }
 <canvas @ref="_canvasRef" width="600" height="600"
-        style="width:600px;max-width:100%;aspect-ratio:1;background:#10131a;border-radius:6px;display:block;"></canvas>
+        style="width:100%;aspect-ratio:3/2;background:#10131a;border-radius:6px;display:block;"></canvas>
 <div style="width:100%;" class="mt-3">
     @if (_species.Count > 0)
     {
@@ -148,7 +148,7 @@
         var dueling = here.Select(s => Bots.GetBehavior(s.Id)?.TargetId ?? 0).Where(id => id != 0).ToHashSet();
         var mobs = seen.Select(kv => new
         {
-            x = kv.Value.X, y = kv.Value.Y, name = kv.Value.Name,
+            id = kv.Key, x = kv.Value.X, y = kv.Value.Y, name = kv.Value.Name,
             hp = dueling.Contains(kv.Key) && kv.Value.MaxHp > 0 ? kv.Value.Hp : (int?)null, maxHp = kv.Value.MaxHp,
         }).ToList();
         _species = seen.Values.GroupBy(m => m.Name).Select(g => (Name: g.Key, Count: g.Count()))
