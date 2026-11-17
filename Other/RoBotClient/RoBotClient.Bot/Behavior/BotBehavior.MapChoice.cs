@@ -42,6 +42,7 @@ public sealed record MapMoveAudit(DateTime Time, int Level, string From, string 
 public sealed class BotMemory
 {
     public Dictionary<string, DateTime> MapBannedUntil { get; set; } = new();
+    public Dictionary<string, int> MapBanCount { get; set; } = new();
     public Dictionary<string, List<DateTime>> MapDeaths { get; set; } = new();
     public Dictionary<string, List<DateTime>> MapFlees { get; set; } = new();
     public Dictionary<int, DateTime> AvoidClasses { get; set; } = new();
@@ -156,6 +157,7 @@ public sealed partial class BotBehavior
             return new BotMemory
             {
                 MapBannedUntil = new(_mapBannedUntil),
+                MapBanCount = new(_mapBanCount),
                 MapDeaths = _mapDeaths.ToDictionary(kv => kv.Key, kv => kv.Value.ToList()),
                 MapFlees = _mapFlees.ToDictionary(kv => kv.Key, kv => kv.Value.ToList()),
                 AvoidClasses = new(_avoidClasses),
@@ -170,6 +172,7 @@ public sealed partial class BotBehavior
     {
         var now = DateTime.UtcNow;
         foreach (var (map, until) in memory.MapBannedUntil) if (until > now) _mapBannedUntil[map] = until;
+        foreach (var (map, count) in memory.MapBanCount ?? new()) _mapBanCount[map] = count;
         foreach (var (map, times) in memory.MapDeaths) _mapDeaths[map] = times.ToList();
         foreach (var (map, times) in memory.MapFlees) _mapFlees[map] = times.ToList();
         foreach (var (cls, until) in memory.AvoidClasses) if (until > now) _avoidClasses[cls] = until;
@@ -197,6 +200,18 @@ public sealed partial class BotBehavior
 
     private readonly Dictionary<string, List<DateTime>> _mapDeaths = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, DateTime> _mapBannedUntil = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, int> _mapBanCount = new(StringComparer.OrdinalIgnoreCase);
+
+    // Only maps the bot really died or fled on get banned, and each repeat ban doubles: 30min, 1h, 2h, 4h, 8h. Bot5 (Lv 23)
+    // cycled six mjolnir maps for a day on flat 30 min bans, every ban expired by the time the rotation came back around.
+    // ponytail: the count never decays; cap at 8h so a bot that outlevels the map still gets to retry it the same day.
+    private string BanMap(string map)
+    {
+        var count = _mapBanCount[map] = _mapBanCount.GetValueOrDefault(map) + 1;
+        var minutes = Math.Min(30 * Math.Pow(2, count - 1), 480);
+        _mapBannedUntil[map] = DateTime.UtcNow.AddMinutes(minutes);
+        return Duration(minutes * 60);
+    }
     private readonly Dictionary<string, int> _walkableCells = new(StringComparer.OrdinalIgnoreCase);
     // Per map, per kill: exp, predicted seconds by activity, and the respawn cap (exp/s the spawns can supply).
     private sealed record MapEstimate(double Rate, bool Safe, string Note, List<(string Name, int Count, bool Huntable, double HpLoss)> Monsters,
@@ -214,10 +229,10 @@ public sealed partial class BotBehavior
         list.RemoveAll(t => DateTime.UtcNow - t > TimeSpan.FromMinutes(10));
         OnMemoryChanged?.Invoke();
         if (list.Count < 2 || !string.Equals(map, _config.HomeMap, StringComparison.OrdinalIgnoreCase)) return;
-        _mapBannedUntil[map] = DateTime.UtcNow.AddMinutes(30);
+        var ban = BanMap(map);
         list.Clear();
         _nextMapCheck = DateTime.MinValue; // re-pick right away
-        _retreatReason = onTheWay ? $"died twice on the way to {map} in 10 min" : $"died twice on {map} in 10 min";
+        _retreatReason = (onTheWay ? $"died twice on the way to {map} in 10 min" : $"died twice on {map} in 10 min") + $", avoiding it for {ban}";
     }
     private string? _retreatReason;
 
@@ -233,10 +248,10 @@ public sealed partial class BotBehavior
         list.RemoveAll(t => DateTime.UtcNow - t > TimeSpan.FromMinutes(10));
         OnMemoryChanged?.Invoke();
         if (list.Count < FleesToBan) return;
-        _mapBannedUntil[map] = DateTime.UtcNow.AddMinutes(30);
+        var ban = BanMap(map);
         list.Clear();
         _nextMapCheck = DateTime.MinValue;
-        _retreatReason = $"fled {FleesToBan} times on {map} in 10 min";
+        _retreatReason = $"fled {FleesToBan} times on {map} in 10 min, avoiding it for {ban}";
     }
 
     private void TickMapChoice(Snapshot snap)
