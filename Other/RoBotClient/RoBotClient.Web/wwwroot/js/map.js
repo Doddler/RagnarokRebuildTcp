@@ -211,10 +211,10 @@ export function drawWorld(canvas, payload) {
     ctx.font = `${fs}px system-ui, sans-serif`;
     ctx.textBaseline = "middle";
     // Monsters (only those inside some bot's view) under the bots, smaller and with a dark ring.
-    // Monsters as their first sprite frame, feet on their cell, ~22 css px tall; nearer the bottom drawn on top.
+    // Monsters as their first sprite frame, feet on their cell, ~30 css px tall; nearer the bottom drawn on top.
     // A red dot until the atlas loads, or when the monster has no sprite.
     const mr = Math.max(3.5, r * 0.8);
-    const spriteHeight = 22 * (window.devicePixelRatio || 1);
+    const spriteHeight = 30 * (window.devicePixelRatio || 1);
     const hits = [...spawnHits]; // rectangles and point positions for hover tooltips
     const mobs = [...(payload.mobs || [])].sort((a, b) => b.y - a.y);
     // Dueled monsters only (hp is null otherwise): a small bar above the sprite, coloured like the bots' HP bars.
@@ -304,9 +304,10 @@ export function drawWorld(canvas, payload) {
         const label = b.name || "?";
         const lw = ctx.measureText(label).width;
         ctx.fillStyle = "#000000aa";
-        ctx.fillRect(cx + r + 3, cy - fs / 2 - 3, lw + 8, fs + 6);
+        const ly = cy + r + 4 + fs / 2 + 3; // centred under the dot
+        ctx.fillRect(cx - lw / 2 - 4, ly - fs / 2 - 3, lw + 8, fs + 6);
         ctx.fillStyle = COLORS.text;
-        ctx.fillText(label, cx + r + 7, cy);
+        ctx.fillText(label, cx - lw / 2, ly);
     }
 
     const title = `${payload.map}  ${t.w}×${t.h} cells  ·  shown ${canvas.clientWidth}×${canvas.clientHeight}px (${(canvas.clientWidth / Math.max(1, canvas.clientHeight)).toFixed(2)}:1)  ·  ${(payload.bots || []).length} bot(s)  ·  ${(payload.mobs || []).length} mob(s) in view`;
