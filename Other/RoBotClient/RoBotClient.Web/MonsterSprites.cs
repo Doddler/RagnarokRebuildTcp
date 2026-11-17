@@ -18,6 +18,19 @@ public sealed class MonsterSprites
     private readonly string _monstersDir;
     private readonly Lazy<Dictionary<string, string>> _spriteByName;
     private readonly ConcurrentDictionary<string, Frame?> _frames = new(StringComparer.OrdinalIgnoreCase);
+    private readonly ConcurrentDictionary<string, Anim?> _anims = new(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>Every action of a monster sprite, for the minimap animator. Rects: [x, top, w, h] per sprite index.
+    /// Actions: motion * 8 + facing (idle 0, walk 8, attack 16, hit 24, dead 32), each with its frame delay (ms) and
+    /// frames of layers [sprite index, x, y, mirror 0/1, scaleX, scaleY, alpha]; x/y place the layer's centre
+    /// relative to the feet, y down (RO act coordinates, as Unity's SpriteMeshBuilder reads them).</summary>
+    public sealed record Anim(string Atlas, List<int[]> Rects, List<AnimAction> Actions);
+    public sealed record AnimAction(int Delay, List<List<double[]>> Frames);
+
+    public Anim? GetAnim(string monsterName) =>
+        _monstersDir.Length == 0
+            ? null
+            : _anims.GetOrAdd(monsterName, n => _spriteByName.Value.TryGetValue(n, out var sprite) ? ReadAnim(sprite) : null);
 
     public MonsterSprites(string clientConfigDir, string importedMonstersDir)
     {
@@ -77,5 +90,76 @@ public sealed class MonsterSprites
         return new Frame(sprite + "_atlas", (int)x, textureHeight - (int)y - (int)h, (int)w, (int)h);
 
         static double Num(string s) => Math.Round(double.Parse(s, CultureInfo.InvariantCulture));
+    }
+
+    // Hand-rolled walk over the Unity YAML (no YAML package here): Sprite documents give each fileID's m_Rect; the
+    // RoSpriteData MonoBehaviour lists Actions -> Frames -> Layers, then Sprites (fileIDs in layer-index order).
+    // "Pos:" entries also start with "- Position:" at the layer indent, so they're skipped by tracking inPos.
+    private Anim? ReadAnim(string sprite)
+    {
+        var asset = Path.Combine(_monstersDir, sprite + ".asset");
+        var atlas = Path.Combine(_monstersDir, "Atlas", sprite + "_atlas.png");
+        if (!File.Exists(asset) || !File.Exists(atlas))
+            return null;
+
+        var rectById = new Dictionary<string, double[]>();
+        var spriteIds = new List<string>();
+        var actions = new List<AnimAction>();
+        List<double[]>? frame = null;
+        double[]? layer = null;
+        string? docId = null;
+        double[] rect = new double[4];
+        bool inPos = false, inSprites = false;
+        foreach (var raw in File.ReadLines(asset))
+        {
+            if (raw.StartsWith("--- "))
+            {
+                docId = raw[(raw.IndexOf('&') + 1)..].Trim();
+                rect = new double[4];
+                inSprites = false;
+                continue;
+            }
+            var line = raw.Trim();
+            if (inSprites)
+            {
+                if (line.StartsWith("- {fileID: ")) { spriteIds.Add(line[11..^1]); continue; }
+                inSprites = false;
+            }
+            if (line.StartsWith("x: ")) rect[0] = Num(line[3..]);
+            else if (line.StartsWith("y: ")) rect[1] = Num(line[3..]);
+            else if (line.StartsWith("width: ")) rect[2] = Num(line[7..]);
+            else if (line.StartsWith("height: ")) { rect[3] = Num(line[8..]); rectById[docId ?? ""] = rect; }
+            else if (line.StartsWith("- Delay: ")) actions.Add(new AnimAction((int)Num(line[9..]), new()));
+            else if (line == "- Layers:" && actions.Count > 0) { actions[^1].Frames.Add(frame = new()); inPos = false; }
+            else if (line.StartsWith("Pos:")) inPos = true;
+            else if (line.StartsWith("- Position: ") && !inPos && frame != null)
+            {
+                var (px, py) = Vec(line[12..]);
+                frame.Add(layer = [0, px, py, 0, 1, 1, 1]);
+            }
+            else if (layer != null && !inPos && line.StartsWith("Index: ")) layer[0] = Num(line[7..]);
+            else if (layer != null && !inPos && line.StartsWith("IsMirror: ")) layer[3] = Num(line[10..]);
+            else if (layer != null && !inPos && line.StartsWith("Scale: ")) (layer[4], layer[5]) = Vec(line[7..]);
+            else if (layer != null && !inPos && line.StartsWith("Color: ")) layer[6] = Num(line[(line.LastIndexOf("a: ") + 3)..^1]);
+            else if (line == "Sprites:") inSprites = true;
+        }
+        if (spriteIds.Count == 0 || actions.Count == 0)
+            return null;
+
+        Span<byte> header = stackalloc byte[24];
+        using (var f = File.OpenRead(atlas))
+            f.ReadExactly(header);
+        var textureHeight = BinaryPrimitives.ReadInt32BigEndian(header[20..]);
+        var rects = spriteIds.Select(id => rectById.TryGetValue(id, out var r)
+            ? new[] { (int)r[0], textureHeight - (int)r[1] - (int)r[3], (int)r[2], (int)r[3] }
+            : new[] { 0, 0, 0, 0 }).ToList();
+        return new Anim($"monster-atlas/{Uri.EscapeDataString(sprite + "_atlas")}.png", rects, actions);
+
+        static double Num(string s) => double.Parse(s, CultureInfo.InvariantCulture);
+        static (double, double) Vec(string s) // "{x: 1, y: -12}"
+        {
+            var p = s.Trim('{', '}').Split(',');
+            return (Num(p[0].Split(':')[1]), Num(p[1].Split(':')[1]));
+        }
     }
 }

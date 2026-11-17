@@ -862,7 +862,7 @@ public sealed class BotSession : IAsyncDisposable
                 {
                     case PacketType.UpdatePlayerData: ReadUpdatePlayerData(r); break;
                     case PacketType.CreateEntity2: ReadCreateEntity2(r); break;
-                    case PacketType.RemoveEntity: World.Entities.TryRemove(r.ReadInt32(), out _); break;
+                    case PacketType.RemoveEntity: ReadRemoveEntity(r); break;
                     case PacketType.RemoveAllEntities: World.Entities.Clear(); break;
                     case PacketType.DropItem: ReadDropItem(r); break;
                     case PacketType.PickUpItem: ReadPickUpItem(r); break;
@@ -983,6 +983,7 @@ public sealed class BotSession : IAsyncDisposable
         World.Self.Map = r.ReadString();
         World.Entities.Clear();
         World.GroundItems.Clear();
+        World.RecentDeaths.Clear();
         _mapPositions.Clear(); // minimap broadcast is per-map; old entries are stale across map changes
         Telemetry.Record(TelemetryEventType.MapChange, World.Self.Level, World.Self.Map);
         _needReady = true; // the receive loop will re-send PlayerReady to re-activate us
@@ -1217,6 +1218,7 @@ public sealed class BotSession : IAsyncDisposable
             e.WalkPath = path;
             e.MoveCellTime = cellTime;
             e.WalkStartUtc = DateTime.UtcNow;
+            if (path is { Length: > 1 }) e.Facing = path[0].GetDirectionTowardsTarget(path[1]);
         }
     }
 
@@ -1224,7 +1226,7 @@ public sealed class BotSession : IAsyncDisposable
     {
         var src = r.ReadInt32();
         var target = r.ReadInt32();   // target
-        r.ReadByte();                 // dir
+        var dir = (Direction)r.ReadByte();
         r.ReadByte();                 // skill
         var hitCount = r.ReadByte();
         r.ReadByte();                 // result
@@ -1241,6 +1243,8 @@ public sealed class BotSession : IAsyncDisposable
         {
             atk.Position = pos;
             atk.CurrentTargetId = target; // lets a follower mirror its leader's target
+            atk.Facing = dir;
+            atk.LastAttackAt = DateTime.UtcNow;
         }
         // Record pair-up for HitTarget attribution. Drop the oldest entries when the dict grows past a
         // reasonable bound (the World.Entities turnover already evicts stale entities, but a noisy map can
@@ -1637,6 +1641,17 @@ public sealed class BotSession : IAsyncDisposable
         }
     }
 
+    private void ReadRemoveEntity(PacketReader r)
+    {
+        if (!World.Entities.TryRemove(r.ReadInt32(), out var e) || !e.IsMonster || !r.HasUnreadData
+            || (CharacterRemovalReason)r.ReadByte() != CharacterRemovalReason.Dead)
+            return;
+        foreach (var (id, d) in World.RecentDeaths)
+            if (DateTime.UtcNow - d.At > TimeSpan.FromSeconds(5)) World.RecentDeaths.TryRemove(id, out _);
+        e.State = CharacterState.Dead;
+        World.RecentDeaths[e.Id] = (e, DateTime.UtcNow);
+    }
+
     private void SetDead(int id)
     {
         if (!World.Entities.TryGetValue(id, out var e)) return;
@@ -1656,6 +1671,7 @@ public sealed class BotSession : IAsyncDisposable
     {
         if (dmg <= 0 || !World.Entities.TryGetValue(id, out var e)) return;
         e.Hp = Math.Max(0, e.Hp - dmg);
+        e.LastHitAt = DateTime.UtcNow;
         if (e.Hp == 0 && e.IsMonster) // killing blow — remember it so the following GainExp can name the kill
         {
             _lastDeadMonsterName = e.Name;

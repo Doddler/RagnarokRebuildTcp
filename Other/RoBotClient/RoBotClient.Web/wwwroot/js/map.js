@@ -37,6 +37,8 @@ function stateOf(canvas) {
         plates: new Map(),    // bot name -> name-plate opacity
         lastHp: new Map(),    // monster id -> hp at the previous frame (a drop spawns damage numbers)
         numbers: [],          // flying damage numbers
+        payloadAt: 0,         // performance.now() when the latest payload arrived (its atk/hit ages are as of then)
+        deadAt: new Map(),    // monster id -> when it was first seen dead (the death animation plays from there)
     });
     return s;
 }
@@ -55,6 +57,7 @@ export function drawWorld(canvas, payload) {
     }
     if (payload.cells) s.terrain = buildTerrain(payload);
     s.payload = { ...payload, cells: undefined };
+    s.payloadAt = performance.now();
     if (!s.animating) startLoop(canvas, s);
 }
 
@@ -84,7 +87,7 @@ function render(canvas, s, payload, now) {
 
     const v = makeView(canvas, ctx, t, now);
     const bots = payload.bots || [];
-    const mobs = layoutMobs(v, payload);
+    const mobs = layoutMobs(v, s, payload);
 
     drawTerrain(v, payload.minimap);
     const spawnHover = payload.showSpawnAreas !== false ? drawSpawnAreas(v, t.spawns) : [];
@@ -152,6 +155,17 @@ function message(canvas, text) {
 
 // Images by URL (minimap art, monster atlases): undefined while loading, null if missing.
 const images = new Map();
+
+/** Same lazy cache for the per-species monster animation JSON (MonsterSprites.Anim). */
+const anims = new Map();
+function animData(url) {
+    if (!url) return null;
+    if (!anims.has(url)) {
+        anims.set(url, undefined);
+        fetch(url).then(r => r.ok ? r.json() : null).then(a => anims.set(url, a), () => anims.set(url, null));
+    }
+    return anims.get(url) || null;
+}
 
 function image(url) {
     if (!url) return null;
@@ -227,24 +241,73 @@ function drawSpawnAreas(v, spawns) {
 // Monsters
 // ---------------------------------------------------------------------------------------------------------------
 
-/** Screen layout for each monster (nearer the bottom drawn on top): sprite rect or dot, HP bar anchor, hover point,
- *  and the box it covers (for fading bot name plates). A red dot until the atlas loads, or with no sprite. */
-function layoutMobs(v, payload) {
+/** Screen layout for each monster (nearer the bottom drawn on top): the sprite's layers for the current animation
+ *  frame (or a single first-frame rect until the animation JSON loads), HP bar anchor, hover point, and the box it
+ *  covers (for fading bot name plates). A red dot until the atlas loads, or with no sprite. */
+function layoutMobs(v, s, payload) {
+    for (const [id, t] of s.deadAt) if (v.now - t > 5000) s.deadAt.delete(id);
     return [...(payload.mobs || [])].sort((a, b) => b.y - a.y).map(m => {
         const x = v.toX(m.x), y = v.toY(m.y);
-        const s = payload.sprites?.[m.name];
-        const atlas = s ? image(s.atlas) : null;
+        const sp = payload.sprites?.[m.name];
+        const atlas = sp ? image(sp.atlas) : null;
         const barSpace = m.hp != null ? 12 : 0;
         const name = m.name || "monster";
         if (atlas) {
-            const k = Math.min(1, v.spriteHeight / Math.max(s.w, s.h));
-            const w = s.w * k, h = s.h * k, top = y - h + v.mr;
-            return { m, x, y, sprite: { atlas, src: s, left: x - w / 2, top, w, h }, barY: top - 3,
-                hover: { x, y: top + h / 2, name }, box: [x - w / 2, top - barSpace, x + w / 2, y + v.mr] };
+            const k = Math.min(1, v.spriteHeight / Math.max(sp.w, sp.h)); // same size as the first-frame portrait
+            const feet = y + v.mr;
+            const a = animData(sp.anim);
+            const pose = a && animFrame(s, m, a, v.now);
+            const layers = pose
+                ? pose.layers.filter(l => l[0] >= 0 && a.rects[l[0]]).map(([i, lx, ly, mirror, scx, scy, alpha]) => {
+                    const r = a.rects[i], w = r[2] * Math.abs(scx) * k, h = r[3] * Math.abs(scy) * k;
+                    return { r, left: x + lx * k - w / 2, top: feet + ly * k - h / 2, w, h, mirror: !!mirror !== scx < 0, alpha: alpha * pose.alpha };
+                })
+                : [{ r: [sp.x, sp.y, sp.w, sp.h], left: x - sp.w * k / 2, top: feet - sp.h * k, w: sp.w * k, h: sp.h * k, mirror: false, alpha: 1 }];
+            if (!layers.length) return null;
+            const left = Math.min(...layers.map(l => l.left)), right = Math.max(...layers.map(l => l.left + l.w));
+            const top = Math.min(...layers.map(l => l.top)), bottom = Math.max(...layers.map(l => l.top + l.h));
+            return { m, x, y, sprite: { atlas, layers }, barY: top - 3,
+                hover: { x, y: (top + bottom) / 2, name }, box: [left, top - barSpace, right, bottom] };
         }
         return { m, x, y, sprite: null, barY: y - v.mr - 3,
             hover: { x, y, name }, box: [x - v.mr, y - v.mr - barSpace, x + v.mr, y + v.mr] };
-    });
+    }).filter(Boolean);
+}
+
+// Monster motions as RoAnimationHelper.GetMotionIdForSprite lays them out: action = motion * 8 + facing.
+const MOTION = { idle: 0, walk: 8, attack: 16, hit: 24, dead: 32 };
+
+/** The animation frame to show now, like RoSpriteAnimator: dead plays once and holds its last frame (then the corpse
+ *  fades, as the server already removed it), a swing or a flinch plays once from when it happened (whichever is
+ *  newer), walking and idle loop. Facing is the server's Direction, which matches the sprite's facing order. */
+function animFrame(s, m, a, now) {
+    const since = performance.now() - s.payloadAt; // the ages below are as of the last payload
+    const once = (motion, age) => {
+        const act = a.actions[motion + (m.dir & 7)] || a.actions[motion];
+        if (!act?.frames.length) return null;
+        const i = Math.floor(age / Math.max(1, act.delay));
+        return i < act.frames.length || motion === MOTION.dead ? act.frames[Math.min(i, act.frames.length - 1)] : null;
+    };
+    let alpha = 1, frame = null;
+    if (m.dead) {
+        if (!s.deadAt.has(m.id)) s.deadAt.set(m.id, now);
+        const age = now - s.deadAt.get(m.id);
+        frame = once(MOTION.dead, age);
+        alpha = clamp01((1900 - age) / 700); // fade out before WorldMap drops the corpse at 2 s
+    } else {
+        const atk = m.atk + since, hit = m.hit + since;
+        frame = atk <= hit ? once(MOTION.attack, atk) || once(MOTION.hit, hit) : once(MOTION.hit, hit) || once(MOTION.attack, atk);
+    }
+    if (!frame) {
+        const motion = m.walk ? MOTION.walk : MOTION.idle;
+        const act = a.actions[motion + (m.dir & 7)] || a.actions[0];
+        if (!act?.frames.length) return null;
+        const delay = Math.max(1, act.delay);
+        // RoSpriteAnimator walks by distance: frame = cells * 4.6 * 0.37 * 4 / (delay / 24); idle loops on its delay.
+        const step = m.walk && m.cell > 0 ? (now / 1000 / m.cell) * 6.808 * 24 / delay : now / delay;
+        frame = act.frames[Math.floor(step) % act.frames.length];
+    }
+    return { layers: frame.layers ?? frame, alpha };
 }
 
 /** An item on the ground: its inventory icon (half a monster sprite), else a small gold diamond. Returns its hover point. */
@@ -271,9 +334,15 @@ function drawItem(v, it) {
 function drawMob(v, { x, y, sprite }) {
     const { ctx } = v;
     if (sprite) {
-        const { atlas, src, left, top, w, h } = sprite;
         ctx.imageSmoothingEnabled = true;
-        ctx.drawImage(atlas, src.x, src.y, src.w, src.h, left, top, w, h);
+        for (const { r, left, top, w, h, mirror, alpha } of sprite.layers) {
+            if (alpha <= 0) continue;
+            ctx.save();
+            ctx.globalAlpha = clamp01(alpha);
+            if (mirror) { ctx.translate(left * 2 + w, 0); ctx.scale(-1, 1); } // flip about the layer's centre
+            ctx.drawImage(sprite.atlas, r[0], r[1], r[2], r[3], left, top, w, h);
+            ctx.restore();
+        }
         return;
     }
     ctx.fillStyle = COLORS.monster;

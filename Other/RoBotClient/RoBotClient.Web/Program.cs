@@ -103,6 +103,9 @@ var sharedIcons = File.Exists(sharedIconsFile)
 MapRepoPngs("/minimap/{name}.png", Path.Combine("RebuildClient", "Assets", "Maps", "minimap"), new Dictionary<string, string>());
 MapRepoPngs("/icons/{name}.png", Path.Combine("RebuildClient", "Assets", "Sprites", "Imported", "Icons", "Sprites"), sharedIcons);
 MapRepoPngs("/monster-atlas/{name}.png", Path.Combine("RebuildClient", "Assets", "Sprites", "Imported", "Monsters", "Atlas"), new Dictionary<string, string>());
+// Monster sprite actions (parsed once per species from the Unity .asset) for the minimap's animated sprites.
+app.MapGet("/monster-anim/{name}", (string name, MonsterSprites sprites) =>
+    sprites.GetAnim(name) is { } anim ? Results.Json(anim) : Results.NotFound());
 
 // Optional demo seed: spawn N hunting bots on startup (set the ROBOT_SEED env var).
 if (int.TryParse(Environment.GetEnvironmentVariable("ROBOT_SEED"), out var seedCount) && seedCount > 0)
