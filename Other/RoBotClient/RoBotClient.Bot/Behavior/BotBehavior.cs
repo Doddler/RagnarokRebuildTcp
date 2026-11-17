@@ -1722,17 +1722,94 @@ public sealed partial class BotBehavior
         {
             var tx = self.X + dx * step;
             var ty = self.Y + dy * step;
-            if (map == null) { await _bot.WalkToAsync(Math.Max(1, tx), Math.Max(1, ty), ct); return true; }
-            if (map.TryFindWalkableNear(tx, ty, 5, out var fx, out var fy) && !CellNearHazard(fx, fy))
+            if (map == null)
             {
-                LogFlee("away", $"Flee: running straight away from '{hz.name}' to ({fx},{fy}) ({why}).");
-                await _bot.WalkToAsync(fx, fy, ct);
+                await _bot.WalkToAsync(Math.Max(1, tx), Math.Max(1, ty), ct);
                 return true;
             }
+            if (!map.TryFindWalkableNear(tx, ty, 5, out var fx, out var fy)
+                || CellNearHazard(fx, fy)
+                || Dist(new Position(fx, fy), hz.pos) <= nearestD)
+                continue;
+
+            // A direct flee vector can point straight through a warp (e.g. mjolnir_02's Coal Mine
+            // entrance). Plan around portal footprints, then send only a short waypoint whose server-side
+            // walk cannot touch a portal. Otherwise the bot enters the neighboring map, resumes behavior,
+            // and immediately walks back into the same hazard and portal.
+            var path = map.FindPath(self.X, self.Y, fx, fy, 6000, MakePathCost(snap.Map));
+            if (path is not { Count: > 1 }) continue;
+            var safeStep = FurthestStraightLineSafeStep(snap.Map, self.X, self.Y, path, Math.Min(6, path.Count - 1));
+            if (safeStep < 1)
+            {
+                if (FindPortalFleeWaypoint(snap.Map, map, self, fx, fy, hz.pos) is { } aroundPortal)
+                {
+                    LogFlee("portal", $"Flee: stepping around a portal via ({aroundPortal.x},{aroundPortal.y}) to get away from '{hz.name}'.");
+                    await _bot.WalkToAsync(aroundPortal.x, aroundPortal.y, ct);
+                    return true;
+                }
+                continue;
+            }
+            var waypoint = path[safeStep];
+            LogFlee("away", $"Flee: moving away from '{hz.name}' via ({waypoint.x},{waypoint.y}) toward ({fx},{fy}) ({why}).");
+            await _bot.WalkToAsync(waypoint.x, waypoint.y, ct);
+            return true;
         }
-        LogFlee("cornered", $"Flee: no safe cell away from '{hz.name}' — stepping blindly 6 cells off ({why}).");
-        await _bot.WalkToAsync(Math.Max(1, self.X + dx * 6), Math.Max(1, self.Y + dy * 6), ct);
+        if (map == null)
+        {
+            LogFlee("cornered", $"Flee: no safe cell away from '{hz.name}' — stepping blindly 6 cells off ({why}).");
+            await _bot.WalkToAsync(Math.Max(1, self.X + dx * 6), Math.Max(1, self.Y + dy * 6), ct);
+        }
+        else
+            LogFlee("cornered", $"Flee: no portal-safe path away from '{hz.name}' ({why}); holding position.");
         return true;
+    }
+
+    private (int x, int y)? FindPortalFleeWaypoint(string map, WalkMap walkMap, Position self,
+        int goalX, int goalY, Position threat)
+    {
+        if (_data == null || !WalkMayCrossPortal(map, self.X, self.Y, goalX, goalY, allowedPortalCell: null)) return null;
+        var best = (x: 0, y: 0);
+        var bestRemaining = int.MaxValue;
+        foreach (var portal in _data.World.PortalFootprintsOn(map))
+        {
+            var minX = Math.Min(self.X, goalX);
+            var maxX = Math.Max(self.X, goalX);
+            var minY = Math.Min(self.Y, goalY);
+            var maxY = Math.Max(self.Y, goalY);
+            if (portal.maxX < minX || portal.minX > maxX || portal.maxY < minY || portal.minY > maxY)
+                continue;
+
+            var candidates = new HashSet<(int x, int y)>();
+            for (var y = portal.minY - 1; y <= portal.maxY + 1; y++)
+            {
+                candidates.Add((portal.minX - 1, y));
+                candidates.Add((portal.maxX + 1, y));
+            }
+            for (var x = portal.minX - 1; x <= portal.maxX + 1; x++)
+            {
+                candidates.Add((x, portal.minY - 1));
+                candidates.Add((x, portal.maxY + 1));
+            }
+
+            foreach (var candidate in candidates)
+            {
+                if ((candidate.x == self.X && candidate.y == self.Y)
+                    || !walkMap.IsWalkable(candidate.x, candidate.y)
+                    || WalkMayCrossPortal(map, self.X, self.Y, candidate.x, candidate.y, allowedPortalCell: null)
+                    || _data.World.IsInPortalFootprint(map, candidate.x, candidate.y)
+                    || Dist(new Position(candidate.x, candidate.y), threat) < Dist(self, threat))
+                    continue;
+
+                var onward = walkMap.FindPath(candidate.x, candidate.y, goalX, goalY, 4000, MakePathCost(map));
+                if (onward is not { Count: > 1 }
+                    || onward.Any(p => _data.World.IsInPortalFootprint(map, p.x, p.y)))
+                    continue;
+                if (onward.Count >= bestRemaining) continue;
+                best = candidate;
+                bestRemaining = onward.Count;
+            }
+        }
+        return bestRemaining < int.MaxValue ? best : null;
     }
 
     // Flee decisions log once per change of action (not every tick); the last one is quoted in the death log.
