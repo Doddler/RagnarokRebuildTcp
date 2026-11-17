@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -98,7 +98,7 @@ namespace Assets.Scripts.Sprites
         private const string EmoteDataPath = "ClientConfigGenerated/emotes.json";
         private const string StatusEffectDataPath = "ClientConfigGenerated/statusinfo.json";
 
-// #if UNITY_WEBGL
+        // #if UNITY_WEBGL
         private string[] streamingAssets = new[]
         {
             "ClientConfigGenerated/effects.json",
@@ -137,7 +137,7 @@ namespace Assets.Scripts.Sprites
         };
 
         private Dictionary<string, string> streamingAssetsData;
-// #endif
+        // #endif
 
         public Sprite GetIconAtlasSprite(string name) => EffectSharedMaterialManager.GetAtlasSprite(ItemIconAtlas, name);
 
@@ -223,7 +223,7 @@ namespace Assets.Scripts.Sprites
                 var assetList = new List<string>();
                 assetList.AddRange(streamingAssets);
                 assetList.AddRange(initializeOnlyStreamingAssets);
-                
+
                 var bom = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
 
                 foreach (var assetName in assetList)
@@ -316,15 +316,15 @@ namespace Assets.Scripts.Sprites
                     var mPath = h.SpriteMale.Replace("<id>", h.MaleIds[i]);
                     var fPath = h.SpriteFemale.Replace("<id>", h.FemaleIds[i]);
 
-// #if UNITY_WEBGL
-//                     Debug.Log(mPath);
-//                     Debug.Log(fPath);
-// #else
-//                     var handle = Addressables.LoadResourceLocationsAsync(mPath);
-//                     handle.WaitForCompletion();
-//                     var handle2 = Addressables.LoadResourceLocationsAsync(fPath);
-//                     handle2.WaitForCompletion();
-// #endif
+                    // #if UNITY_WEBGL
+                    //                     Debug.Log(mPath);
+                    //                     Debug.Log(fPath);
+                    // #else
+                    //                     var handle = Addressables.LoadResourceLocationsAsync(mPath);
+                    //                     handle.WaitForCompletion();
+                    //                     var handle2 = Addressables.LoadResourceLocationsAsync(fPath);
+                    //                     handle2.WaitForCompletion();
+                    // #endif
                     if (AssetExists(mPath) && AssetExists(fPath))
                     {
                         PlayerHeadLookup.Add(colorHead, new PlayerHeadData()
@@ -497,7 +497,7 @@ namespace Assets.Scripts.Sprites
 
             var builder = gameObject.GetComponent<EntityBuilder>();
             builder.Initialize();
-            
+
             isInitialized = true;
         }
 
@@ -592,7 +592,7 @@ namespace Assets.Scripts.Sprites
                 return null;
             }
 
-            return $"Assets/Sprites/Headgear/{(isMale ? "Male/남_" : "Female/여_")}{hatSprite}.spr";
+            return $"Assets/Sprites/Headgear/{(isMale ? "Male/?_" : "Female/?_")}{hatSprite}.spr";
         }
 
         public static bool AssetExists(object key)
@@ -721,7 +721,7 @@ namespace Assets.Scripts.Sprites
             var offHand = 0;
             if (param.Shield > 0 && TryGetItemById(param.Shield, out var item) && item.ItemClass == ItemClass.Weapon)
             {
-                
+
                 offHand = item.SubType;
                 shield = 0;
             }
@@ -753,11 +753,10 @@ namespace Assets.Scripts.Sprites
 
             if (control.IsMainCharacter)
             {
-                CameraFollower.Instance.CharacterDetailBox.CharacterJob.text = pData.Name;
-                state.PlayerName = control.Name;
-                state.UpdatePlayerName();
+                state.SetPlayerName(control.Name);
+                state.SetJobId(pData.Id);
+                state.SetBaseLevel(control.Level);
                 state.WeaponClass = param.WeaponClass;
-                CameraFollower.Instance.CharacterDetailBox.BaseLvlDisplay.text = $"Base Lv. {control.Level}";
             }
 
             control.Init();
@@ -858,7 +857,7 @@ namespace Assets.Scripts.Sprites
 
             if (!weaponsByJob.TryGetValue(weaponClass, out var weapon))
             {
-                if(offHand == 0)
+                if (offHand == 0)
                     Debug.Log($"Could not load default weapon sprite for weapon class {ctrl.WeaponClass} for job {ctrl.OverrideClassId}");
                 else
                     Debug.Log($"Could not load default weapon sprite for weapon class {ctrl.WeaponClass}/{offHand} for job {ctrl.OverrideClassId}");
@@ -889,7 +888,7 @@ namespace Assets.Scripts.Sprites
             if (isEffect)
                 weaponSprite.SpriteOrder = 5;
 
-            if(!isEffect)
+            if (!isEffect)
                 ctrl.SpriteAnimator.PreferredAttackMotion = ctrl.IsMale ? weapon.AttackMale : weapon.AttackFemale;
             ctrl.SpriteAnimator.ChildrenSprites.Add(weaponSprite);
 
@@ -931,7 +930,7 @@ namespace Assets.Scripts.Sprites
             }
             else
             {
-                spriteName = $"Assets/Sprites/Headgear/{(ctrl.IsMale ? "Male/남_" : "Female/여_")}{hatSprite}.spr";
+                spriteName = $"Assets/Sprites/Headgear/{(ctrl.IsMale ? "Male/?_" : "Female/?_")}{hatSprite}.spr";
             }
 
             // var folderName = position != EquipPosition.Shield ? "Headgear" : $"Shields/{GetJobNameForId(ctrl.ClassId)}";
@@ -1038,7 +1037,7 @@ namespace Assets.Scripts.Sprites
                     highlighter.MaxTime = 10f;
                     break;
                 case NpcEffectType.Demonstration:
-                    var demonstration = RoSpriteEffect.AttachSprite(control, "Assets/Sprites/Effects/데몬스트레이션.spr", -0.15f, 1f, RoSpriteEffectFlags.None);
+                    var demonstration = RoSpriteEffect.AttachSprite(control, "Assets/Sprites/Effects/???????.spr", -0.15f, 1f, RoSpriteEffectFlags.None);
                     control.gameObject.transform.localScale = new Vector3(1.8f, 1.8f, 1.8f);
                     demonstration.SetDurationByFrames(9999);
                     AudioManager.Instance.OneShotSoundEffect(control.Id, $"ef_firewall.ogg", control.transform.position);
@@ -1078,7 +1077,7 @@ namespace Assets.Scripts.Sprites
                 case NpcEffectType.FirePillar:
                     FirePillarEffect.Create(control);
                     break;
-            case NpcEffectType.Quagmire:
+                case NpcEffectType.Quagmire:
                     //DummyGroundEffect.Create(obj, $"<color=#33FF33>Quagmire!!");
                     QuagmireEffect.Create(control);
                     break;
@@ -1180,7 +1179,7 @@ namespace Assets.Scripts.Sprites
                         sprite.Controllable = control;
 
                     if (obj2.TryGetComponent<ServerControllable>(out var ctrl) && ctrl.EntityObject && ctrl.EntityObject.TryGetComponent<IEntityActionHandler>(out var handler))
-                        handler.ChangeCharacterState(ctrl.CharacterState);                   
+                        handler.ChangeCharacterState(ctrl.CharacterState);
                 }
             };
 
