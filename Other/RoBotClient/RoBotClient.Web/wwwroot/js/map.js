@@ -462,6 +462,7 @@ const DAMAGE_PATH = {
     size: [[-0.0009186715, 5.0193124, -14.1374855, -14.1374855], [0.3964636, 0.99757385, -0.60127693, -0.3272466], [1, 0.8000686, -0.3272466, -0.3272466]],
     alpha: [[0, 1, -0.00026645948, -0.00026645948], [0.11452991, 0.9999695, -0.00026645948, -0.075074494], [0.56060225, 0.70585805, -1.3047085, -1.4544252], [1.0042865, 0.006022349, -0.2006653, -0.2006653]],
     tween: 1, height: 4, distance: 4, color: "#ffffff",
+    maxSize: 2.5, // minimap: Unity pops to 5x, capped so the yellow total stays the biggest number
 };
 // Multi-hit (Double Attack): EntityMessageQueue.SendDamageEvent shows each hit 0.2 s apart, and ServerControllable
 // .AttachDamageIndicator adds a yellow running total (ComboPath.asset) that rides with the monster, each new hit
@@ -471,6 +472,7 @@ const COMBO_PATH = {
     size: [[0.0007741172, 0.0036451616, 18.02707, 18.02707], [0.10320092, 1.4825153, 2.0349398, 0.004584544], [0.9957344, 1.4866072, 0.004584544, 0.004584544]],
     alpha: [[0, 1, -0.00006110869, -0.00006110869], [0.49939838, 0.9999695, -0.00006110869, -0.075074494], [0.75252, 0.70585805, -2.4358597, -2.8889782], [1.0042865, 0.006022349, -0.2006653, -0.2006653]],
     tween: 3, height: 6, distance: 0, color: "#ffff00",
+    scale: 2, // minimap: settles at ~3x, above any (capped) white hit
 };
 const HIT_INTERVAL_MS = 200;
 
@@ -539,7 +541,7 @@ function drawDamageNumbers(v, s, mobs) {
 function drawNumber(v, n, life) {
     const { ctx } = v, P = n.path;
     const unit = v.spriteHeight * 0.5; // one Unity world unit on the minimap, relative to the sprite
-    const size = evalCurve(P.size, life);
+    const size = Math.min(evalCurve(P.size, life), P.maxSize ?? Infinity) * (P.scale ?? 1);
     const x = n.x + (n.dir || 0) * P.distance * unit * life * 0.5;
     const y = n.y - evalCurve(P.trajectory, life) * P.height * unit;
     ctx.globalAlpha = clamp01(evalCurve(P.alpha, life));
