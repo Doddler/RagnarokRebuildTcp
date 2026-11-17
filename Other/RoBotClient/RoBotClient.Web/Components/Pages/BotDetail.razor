@@ -190,32 +190,36 @@ else
             </div>
         </div>
 
+        <div class="card mb-3">
+            <div class="card-header py-2 d-flex gap-2">
+                <span class="fw-semibold">Map</span>
+                <span class="text-muted">·</span>
+                <span class="text-truncate">@(Bots.GetBehavior(Id)?.Activity)</span>
+                <div class="form-check form-switch mb-0 ms-3">
+                    <input class="form-check-input" type="checkbox" role="switch" id="show-spawn-areas" @bind="_showSpawnAreas" />
+                    <label class="form-check-label" for="show-spawn-areas">Spawn areas</label>
+                </div>
+            </div>
+            <div class="card-body d-flex flex-wrap gap-3 align-items-start">
+                <WorldMap MapCode="@s.Map" @key="s.Map" ShowSpawnAreas="_showSpawnAreas" />
+                @{ var mapKills = KillsOnMap(s.Map); }
+                @if (mapKills.Count > 0)
+                {
+                    <div style="min-width:10rem;flex:1">
+                        <div class="small text-muted mb-1">Killed on @s.Map</div>
+                        <div class="d-flex flex-wrap gap-1">
+                            @foreach (var (name, count) in mapKills.OrderByDescending(entry => entry.Value))
+                            {
+                                <span class="badge bg-secondary">@MonsterPortrait(name)@name&nbsp;<span class="badge bg-light text-dark">@count</span></span>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
         <div class="row g-3">
             <div class="col-lg-6">
-                <div class="card mb-3">
-                    <div class="card-header py-2 d-flex gap-2">
-                        <span class="fw-semibold">Map</span>
-                        <span class="text-muted">·</span>
-                        <span class="text-truncate">@(Bots.GetBehavior(Id)?.Activity)</span>
-                    </div>
-                    <div class="card-body d-flex flex-wrap gap-3 align-items-start">
-                        <WorldMap MapCode="@s.Map" @key="s.Map" />
-                        @{ var mapKills = KillsOnMap(s.Map); }
-                        @if (mapKills.Count > 0)
-                        {
-                            <div style="min-width:10rem;flex:1">
-                                <div class="small text-muted mb-1">Killed on @s.Map</div>
-                                <div class="d-flex flex-wrap gap-1">
-                                    @foreach (var (name, count) in mapKills.OrderByDescending(entry => entry.Value))
-                                    {
-                                        <span class="badge bg-secondary">@MonsterPortrait(name)@name&nbsp;<span class="badge bg-light text-dark">@count</span></span>
-                                    }
-                                </div>
-                            </div>
-                        }
-                    </div>
-                </div>
-
                 <div class="card mb-3">
                     <div class="card-header py-2 fw-semibold">Combat Log <span class="text-muted fw-normal small">· newest first</span></div>
                     <div class="card-body p-0">
@@ -717,6 +721,7 @@ else
 }
 
 @code {
+    private bool _showSpawnAreas = true;
     [Parameter] public string Id { get; set; } = "";
 
     private BotSnapshot? snapshot;

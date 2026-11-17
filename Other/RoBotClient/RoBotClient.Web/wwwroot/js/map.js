@@ -174,6 +174,16 @@ export function drawWorld(canvas, payload) {
     const spriteHeight = 22 * (window.devicePixelRatio || 1);
     const hits = [...spawnHits]; // rectangles and point positions for hover tooltips
     const mobs = [...(payload.mobs || [])].sort((a, b) => b.y - a.y);
+    // Dueled monsters only (hp is null otherwise): a small bar above the sprite, coloured like the bots' HP bars.
+    function hpBar(m, cx, bottom) {
+        if (m.hp == null) return;
+        const w = Math.max(18, spriteHeight * 1.2), h = Math.max(3, spriteHeight * 0.16);
+        const pct = Math.max(0, Math.min(1, m.hp / m.maxHp));
+        ctx.fillStyle = "#000000cc";
+        ctx.fillRect(cx - w / 2 - 1, bottom - h - 1, w + 2, h + 2);
+        ctx.fillStyle = pct <= 0.25 ? "#dc3545" : pct <= 0.5 ? "#ffc107" : "#198754";
+        ctx.fillRect(cx - w / 2, bottom - h, w * pct, h);
+    }
     for (const m of mobs) {
         const mx = ox + (m.x + 0.5) * scale, my = oy + (t.h - 1 - m.y + 0.5) * scale;
         const s = payload.sprites && payload.sprites[m.name];
@@ -184,6 +194,7 @@ export function drawWorld(canvas, payload) {
             ctx.imageSmoothingEnabled = true;
             ctx.drawImage(atlas, s.x, s.y, s.w, s.h, mx - dw / 2, my - dh + mr, dw, dh);
             hits.push({ x: mx, y: my - dh / 2 + mr, name: m.name || "monster" });
+            hpBar(m, mx, my - dh + mr - 3);
         } else {
             ctx.fillStyle = COLORS.monster;
             ctx.strokeStyle = "#000000cc";
@@ -193,6 +204,7 @@ export function drawWorld(canvas, payload) {
             ctx.fill();
             ctx.stroke();
             hits.push({ x: mx, y: my, name: m.name || "monster" });
+            hpBar(m, mx, my - mr - 3);
         }
     }
     for (const b of payload.bots || []) {

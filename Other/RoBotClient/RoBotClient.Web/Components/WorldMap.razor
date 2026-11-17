@@ -5,10 +5,13 @@
 
 @* Whole-map overview of every bot on one map. Terrain is sent once; each tick sends only bot positions,
    read from the immutable per-bot snapshots. *@
-<div class="form-check form-switch mb-2">
-    <input class="form-check-input" type="checkbox" role="switch" id="show-spawn-areas" @bind="_showSpawnAreas" />
-    <label class="form-check-label" for="show-spawn-areas">Spawn areas</label>
-</div>
+@if (ShowSpawnAreas == null) @* a parent that passes ShowSpawnAreas renders its own switch (BotDetail's card header) *@
+{
+    <div class="form-check form-switch mb-2">
+        <input class="form-check-input" type="checkbox" role="switch" id="show-spawn-areas" @bind="_showSpawnAreas" />
+        <label class="form-check-label" for="show-spawn-areas">Spawn areas</label>
+    </div>
+}
 <canvas @ref="_canvasRef" width="600" height="600"
         style="width:600px;max-width:100%;aspect-ratio:1;background:#10131a;border-radius:6px;display:block;"></canvas>
 <div style="width:100%;" class="mt-3">
@@ -61,6 +64,7 @@
 
 @code {
     [Parameter] public string MapCode { get; set; } = "";
+    [Parameter] public bool? ShowSpawnAreas { get; set; }
 
     private const int RefreshMs = 500;
     // New on every dashboard start, so a browser never runs a cached map.js from before an edit (Firefox kept a stale one).
@@ -132,15 +136,21 @@
 
         // Monsters are only known within some bot's view, so merge what every bot on this map sees (entity ids are
         // server-wide, so the same monster seen by two bots collapses to one dot).
-        var seen = new Dictionary<int, (int X, int Y, string Name)>();
+        var seen = new Dictionary<int, (int X, int Y, string Name, int Hp, int MaxHp)>();
         foreach (var s in Bots.GetSnapshots().Where(s => s.InGame && string.Equals(s.Map, MapCode, StringComparison.OrdinalIgnoreCase)))
             Bots.GetSession(s.Id)?.WithState(w =>
             {
                 foreach (var e in w.Entities.Values)
-                    if (e.IsMonster) seen[e.Id] = (e.Position.X, e.Position.Y, e.Name);
+                    if (e.IsMonster) seen[e.Id] = (e.Position.X, e.Position.Y, e.Name, e.Hp, e.MaxHp);
                 return 0;
             });
-        var mobs = seen.Values.Select(m => new { x = m.X, y = m.Y, name = m.Name }).ToList();
+        // HP only for monsters some bot is dueling right now.
+        var dueling = here.Select(s => Bots.GetBehavior(s.Id)?.TargetId ?? 0).Where(id => id != 0).ToHashSet();
+        var mobs = seen.Select(kv => new
+        {
+            x = kv.Value.X, y = kv.Value.Y, name = kv.Value.Name,
+            hp = dueling.Contains(kv.Key) && kv.Value.MaxHp > 0 ? kv.Value.Hp : (int?)null, maxHp = kv.Value.MaxHp,
+        }).ToList();
         _species = seen.Values.GroupBy(m => m.Name).Select(g => (Name: g.Key, Count: g.Count()))
             .OrderByDescending(entry => entry.Count).ThenBy(entry => entry.Name).ToList();
         // First sprite frame per species in view (atlas file + rect), drawn on the map in place of a dot.
@@ -156,7 +166,7 @@
         if (wm == null)
             payload = new { ok = false, message = $"no walk data for {MapCode}" };
         else if (_terrainSent)
-            payload = new { ok = true, map = MapCode, minimap = $"minimap/{MapCode}.png", bots, mobs, sprites, showSpawnAreas = _showSpawnAreas };
+            payload = new { ok = true, map = MapCode, minimap = $"minimap/{MapCode}.png", bots, mobs, sprites, showSpawnAreas = ShowSpawnAreas ?? _showSpawnAreas };
         else
             payload = new
             {
@@ -169,7 +179,7 @@
                 bots,
                 mobs,
                 sprites,
-                showSpawnAreas = _showSpawnAreas,
+                showSpawnAreas = ShowSpawnAreas ?? _showSpawnAreas,
                 spawns = Bots.Data.SpawnAreas(MapCode).Select(area => new
                 {
                     minX = area.MinX,
