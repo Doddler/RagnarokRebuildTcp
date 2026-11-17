@@ -111,36 +111,70 @@ function trailFor(canvas, m, pct) {
     st.target = pct;
     if (pct >= st.delayed) { st.delayed = pct; st.moving = false; }
     else if (!st.moving) { st.moving = true; st.accel = 0; }
-    if (st.moving && !animating.has(canvas)) animateTrails(canvas);
     return st;
 }
 
-function animateTrails(canvas) {
+// The server sends cell positions ~10x/s, so drawn as-is bots hop cell to cell. Each payload is only stored; a
+// per-canvas animation-frame loop redraws it with every bot/monster gliding toward its latest cell (and drains the
+// HP trails). Jumps over 12 cells (warp, Fly Wing, a new mob) snap instead of sliding across the map.
+const glides = new WeakMap(); // canvas -> Map(key -> { x, y, seen })
+
+function smooth(canvas, p, dt, now) {
+    let pos = glides.get(canvas);
+    if (!pos) glides.set(canvas, pos = new Map());
+    const glide = (key, x, y) => {
+        let g = pos.get(key);
+        if (!g || Math.max(Math.abs(x - g.x), Math.abs(y - g.y)) > 12) pos.set(key, g = { x, y });
+        else {
+            const dx = x - g.x, dy = y - g.y, d = Math.hypot(dx, dy);
+            const len = Math.max(7, d / 0.2) * dt; // walking pace (~7 cells/s), faster if we fell behind
+            if (d <= len) { g.x = x; g.y = y; } else { g.x += dx / d * len; g.y += dy / d * len; }
+        }
+        g.seen = now;
+        return { x: g.x, y: g.y };
+    };
+    const out = {
+        ...p,
+        bots: (p.bots || []).map(b => ({ ...b, ...glide("b:" + b.name, b.x, b.y) })),
+        mobs: (p.mobs || []).map(m => ({ ...m, ...glide("m:" + m.id, m.x, m.y) })),
+    };
+    for (const [k, g] of pos) if (now - g.seen > 2000) pos.delete(k);
+    return out;
+}
+
+function startLoop(canvas) {
     animating.add(canvas);
     let last = performance.now();
     const step = now => {
+        const p = lastPayload.get(canvas);
+        if (!p || !canvas.isConnected) { animating.delete(canvas); return; }
         const dt = Math.min(0.1, (now - last) / 1000);
         last = now;
-        let any = false;
-        for (const [id, st] of hpTrails.get(canvas) || []) {
-            if (now - st.seen > 2000) { hpTrails.get(canvas).delete(id); continue; }
+        const trails = hpTrails.get(canvas);
+        for (const [id, st] of trails || []) {
+            if (now - st.seen > 2000) { trails.delete(id); continue; }
             if (!st.moving) continue;
             st.delayed -= st.accel * dt;
             st.accel += dt * 20;
             if (st.delayed < st.target) st.moving = false; // caught up with the bar, like SliderBar.Update
-            else any = true;
         }
-        const p = lastPayload.get(canvas);
-        if (p && canvas.isConnected) drawWorld(canvas, p);
-        if (any && canvas.isConnected) requestAnimationFrame(step);
-        else animating.delete(canvas);
+        render(canvas, smooth(canvas, p, dt, now));
+        requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
 }
 
 export function drawWorld(canvas, payload) {
     if (!canvas) return;
-    if (payload && payload.ok) lastPayload.set(canvas, { ...payload, cells: undefined });
+    if (!payload || !payload.ok || payload.cells) render(canvas, payload); // messages, and the one-off terrain build
+    if (payload && payload.ok) {
+        lastPayload.set(canvas, { ...payload, cells: undefined });
+        if (!animating.has(canvas)) startLoop(canvas);
+    } else lastPayload.delete(canvas);
+}
+
+function render(canvas, payload) {
+    if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     const { px, pw, ph } = fitCanvas(canvas);

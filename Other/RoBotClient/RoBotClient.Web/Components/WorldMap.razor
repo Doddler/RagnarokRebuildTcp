@@ -76,6 +76,7 @@
     private bool _terrainSent;
     private bool _showSpawnAreas = true;
     private bool _disposed;
+    private DateTime _nextRowsRender;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -85,7 +86,7 @@
         _module = await JS.InvokeAsync<IJSObjectReference>("import", $"./js/map.js?v={ScriptVersion}");
         await DrawAsync();
 
-        _timer = new PeriodicTimer(TimeSpan.FromMilliseconds(RefreshMs));
+        _timer = new PeriodicTimer(TimeSpan.FromMilliseconds(100)); // 10 fps: at 500 ms a walking bot jumped ~3 cells per frame
         _ = LoopAsync();
     }
 
@@ -132,7 +133,11 @@
                 s.Level, Percent(s.BaseExp, Bots.Data.BaseExpToNext(s.Level)),
                 s.JobLevel, Percent(jobExp, Bots.Data.JobExpToNext(jobId, s.JobLevel)), hunt);
         }).ToList();
-        StateHasChanged();
+        if (DateTime.UtcNow >= _nextRowsRender) // the stat rows below the map don't need 10 fps
+        {
+            _nextRowsRender = DateTime.UtcNow.AddMilliseconds(RefreshMs);
+            StateHasChanged();
+        }
 
         // Monsters are only known within some bot's view, so merge what every bot on this map sees (entity ids are
         // server-wide, so the same monster seen by two bots collapses to one dot).
