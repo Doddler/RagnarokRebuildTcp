@@ -73,9 +73,10 @@ public sealed class BotManager
 
     public BotManager(GameDatabase data, AccountStore? accounts = null, BotConfigStore? configs = null,
         PartyStateStore? partyStates = null, BotTelemetryStore? telemetry = null, BotLogStore? logStore = null,
-        BotProgressStore? progress = null)
+        BotProgressStore? progress = null, MapAuditStore? mapAudit = null)
     {
         _progress = progress;
+        MapAudit = mapAudit;
         _data = data;
         _accounts = accounts;
         _configs = configs;
@@ -93,6 +94,7 @@ public sealed class BotManager
     public BotTelemetryStore? TelemetryStore => _telemetry;
     public BotLogStore? LogStore => _logStore;
     public BotProgressStore? Progress => _progress;
+    public MapAuditStore? MapAudit { get; }
 
     private readonly BotProgressStore? _progress;
 
@@ -260,6 +262,7 @@ public sealed class BotManager
         // Real exp/h per map, from the saved Runs history (survives restarts): the most recent stays on each, up to
         // 20 min of hunting, ignoring stays older than 3 h (the bot was weaker then).
         if (_configs != null) brain.OnHomeMapChanged += () => _configs.Set(config.CharacterName, behavior);
+        if (MapAudit != null) brain.OnMapMove += audit => MapAudit.Append(config.CharacterName, audit);
         brain.MeasureMaps = () =>
         {
             var result = new Dictionary<string, (double Seconds, double Exp, int Kills, ActivityTime Time, double Other)>(StringComparer.OrdinalIgnoreCase);

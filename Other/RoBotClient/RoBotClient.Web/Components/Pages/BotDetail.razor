@@ -6,8 +6,44 @@
 @inject RoBotClient.Web.MonsterSprites Sprites
 @using System.Linq
 @using RebuildSharedData.Enum
+@using RebuildSharedData.Enum.EntityStats
 @using RebuildSharedData.ClientTypes
 @using RoBotClient.Bot.GameData
+
+<style>
+    .map-exp-hover { position: relative; display: inline-block; }
+    .map-exp-hover__value { cursor: help; text-decoration: underline dotted; text-underline-offset: .15em; }
+    .map-exp-hover__panel {
+        display: none;
+        position: absolute;
+        z-index: 1200;
+        top: 100%;
+        left: 0;
+        width: min(28rem, calc(100vw - 2rem));
+        padding: .85rem 1rem;
+        border: 1px solid #6c757d;
+        border-radius: .5rem;
+        background: #212529;
+        color: #f8f9fa;
+        box-shadow: 0 .5rem 1.25rem rgb(0 0 0 / 45%);
+        text-align: left;
+        white-space: normal;
+        font-size: .875rem;
+        line-height: 1.45;
+        font-weight: 400;
+    }
+    .map-exp-hover__panel .exp-tip-row { display: flex; justify-content: space-between; gap: 1rem; padding: .25rem 0; border-bottom: 1px solid #495057; }
+    .map-exp-hover__panel .exp-tip-value { font-weight: 700; text-align: right; white-space: nowrap; }
+    .map-exp-hover__panel .exp-tip-total { color: #8be9a6; font-size: 1rem; font-weight: 700; }
+    .map-exp-comparison { width: 100%; margin-top: .5rem; font-size: .82rem; }
+    .map-exp-comparison th, .map-exp-comparison td { padding: .3rem .2rem; border-bottom: 1px solid #495057; }
+    .map-exp-comparison thead { color: #adb5bd; font-size: .75rem; }
+    .map-exp-comparison .expected { color: #adb5bd; }
+    .map-exp-comparison .actual { color: #5ddcff; font-weight: 700; }
+    .map-exp-comparison .delta { color: #ffd166; text-align: right; font-weight: 700; white-space: nowrap; }
+    .map-exp-hover:hover .map-exp-hover__panel,
+    .map-exp-hover:focus .map-exp-hover__panel { display: block; }
+</style>
 
 <PageTitle>@(snapshot?.CharacterName ?? "Bot") — RoBot</PageTitle>
 
@@ -206,7 +242,7 @@ else
                                 {
                                     <tr class="table-primary">
                                         <td class="fw-semibold text-break" title="@current.Name">@current.Map</td>
-                                        <td class="text-end">@current.ExpPerHour.ToString("N0")</td>
+                                        <td class="text-end">@MapExpValue(current, isCurrent: true)</td>
                                         <td class="text-break">@(current.Measured ? "measured" : "estimate")</td>
                                         <td class="text-end">—</td>
                                         <td class="text-end fw-semibold" title="A new map must reach this exp/h after its travel time (1.25× current)">@behavior.MinToChange.ToString("N0")</td>
@@ -222,7 +258,7 @@ else
                                     var isNext = string.Equals(option.Map, behavior.NextMap, StringComparison.OrdinalIgnoreCase);
                                     <tr class="@(firstOption ? "border-top" : "") @(isNext ? "table-warning fw-semibold" : "")">
                                         <td class="text-break" title="@option.Name">@option.Map @if (isNext) { <span class="badge bg-warning text-dark ms-1">next</span> }</td>
-                                        <td class="text-end">@option.ExpPerHour.ToString("N0")</td>
+                                        <td class="text-end">@MapExpValue(option)</td>
                                         <td class="text-muted text-break">@(option.Measured ? "measured" : "estimate")</td>
                                         <td class="text-end">@option.Hops</td>
                                         <td class="text-end @(option.VsCurrent >= 1.25 ? "text-success fw-semibold" : "text-muted")">@(option.VsCurrent > 0 ? $"{Math.Floor(option.VsCurrent * 100) / 100:0.00}×" : "—")</td>
@@ -234,6 +270,56 @@ else
                                 }
                                 </tbody>
                             </table>
+                        }
+                        @if (Bots.MapAudit is { } auditStore && AuditRows(auditStore.Get(s.CharacterName)) is { } auditRows)
+                        {
+                            var calib = Calibrate(auditStore.All());
+                            <details class="mt-2">
+                                <summary class="fw-semibold">Move audit <span class="text-muted fw-normal">· predicted vs what it really got, newest first</span></summary>
+                                <div class="mt-1 mb-2 @(calib.N > 0 && Math.Abs(calib.Suggested / BotBehavior.CandidateRealization - 1) > 0.25 ? "text-warning" : "text-muted")">
+                                    @if (calib.N > 0)
+                                    {
+                                        @($"All bots, {calib.N} measured moves to estimated maps: median actual ÷ predicted {calib.Median:0.00}, so CandidateRealization should be {calib.Suggested:0.00} (now {BotBehavior.CandidateRealization:0.00}). {calib.PaidOff:P0} of moves beat the map they left.")
+                                    }
+                                    else
+                                    {
+                                        @("No move has been measured yet (the bot needs 3 min of hunting on the new map before the next move).")
+                                    }
+                                </div>
+                                @if (auditRows.Count == 0)
+                                {
+                                    <div class="text-muted">No map moves recorded yet. Each move from now on shows up here.</div>
+                                }
+                                else
+                                {
+                                <div class="table-responsive">
+                                    <table class="table table-sm mb-0 align-middle">
+                                        <thead class="text-nowrap"><tr><th>When</th><th>Move</th><th class="text-end">Predicted</th><th class="text-end">Actual</th><th class="text-end">÷</th><th>Exp/kill</th><th>Fight</th><th>Search</th><th>Recover</th><th>Other</th><th>Biggest miss</th></tr></thead>
+                                        <tbody>
+                                            @foreach (var row in auditRows)
+                                            {
+                                                var p = row.Move.Predicted;
+                                                var a = row.Outcome is { Seconds: >= AuditMinSeconds } o ? o : null;
+                                                <tr>
+                                                    <td class="text-nowrap">@row.Move.Time.ToLocalTime().ToString("MMM d HH:mm") <span class="text-muted">Lv @row.Move.Level</span></td>
+                                                    <td title="@row.Move.Reason">@row.Move.From → <b>@row.Move.To</b></td>
+                                                    <td class="text-end text-nowrap" title="@(p.Measured ? "measured on an earlier stay" : $"estimate × {p.Calibration:0.00} calibration")">@p.ExpPerHour.ToString("N0")@(p.Measured ? " m" : "")</td>
+                                                    <td class="text-end text-nowrap">@(a?.ExpPerHour.ToString("N0") ?? (row.Outcome is { } early ? $"left after {early.Seconds:0}s" : "—"))</td>
+                                                    <td class="text-end @(a is null ? "" : a.ExpPerHour < p.ExpPerHour * 0.67 ? "text-danger fw-semibold" : a.ExpPerHour > p.ExpPerHour * 1.5 ? "text-success" : "")">@(a is null || p.ExpPerHour <= 0 ? "" : $"{a.ExpPerHour / p.ExpPerHour:0.00}")</td>
+                                                    <td class="text-nowrap">@PredVs(p.ExpPerKill, a?.ExpPerKill)</td>
+                                                    <td class="text-nowrap">@PredVs(p.PerKill.Fight, a?.PerKill.Fight)</td>
+                                                    <td class="text-nowrap">@PredVs(p.PerKill.Search, a?.PerKill.Search)</td>
+                                                    <td class="text-nowrap">@PredVs(p.PerKill.Recover, a?.PerKill.Recover)</td>
+                                                    <td class="text-nowrap" title="Seconds per kill in no activity (shopping, dying, walking back), plus fleeing">@PredVs(p.Other + p.PerKill.Flee, a is null ? null : a.Other + a.PerKill.Flee)</td>
+                                                    <td class="text-nowrap">@(a is null ? "" : BiggestMiss(p, a))</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="text-muted">Actual = the next move's measurement of that map (its recent stays, up to 20 min), shown once it had @(AuditMinSeconds / 60) min of hunting. Per-kill cells are predicted → actual. Biggest miss = the term that, predicted right, would have changed the rate most. "m" = ranked by an earlier measurement, not the estimate. Hover a move for the reason.</div>
+                                }
+                            </details>
                         }
                     </div>
                 </div>
@@ -346,24 +432,41 @@ else
                         }
                         else
                         {
-                            <div class="small text-muted mb-1">Stat points: <span class="fw-semibold">@deep.StatPoints</span></div>
-                            <div class="row text-center g-2 mb-3">
-                                <div class="col"><div class="small text-muted">STR</div><div class="fw-semibold">@deep.Str</div>@if (deep.StatPoints > 0) { <button class="btn btn-sm btn-outline-success py-0 px-2 mt-1" @onclick="() => RaiseStat(0)">+</button> }</div>
-                                <div class="col"><div class="small text-muted">AGI</div><div class="fw-semibold">@deep.Agi</div>@if (deep.StatPoints > 0) { <button class="btn btn-sm btn-outline-success py-0 px-2 mt-1" @onclick="() => RaiseStat(1)">+</button> }</div>
-                                <div class="col"><div class="small text-muted">VIT</div><div class="fw-semibold">@deep.Vit</div>@if (deep.StatPoints > 0) { <button class="btn btn-sm btn-outline-success py-0 px-2 mt-1" @onclick="() => RaiseStat(2)">+</button> }</div>
-                                <div class="col"><div class="small text-muted">INT</div><div class="fw-semibold">@deep.Int</div>@if (deep.StatPoints > 0) { <button class="btn btn-sm btn-outline-success py-0 px-2 mt-1" @onclick="() => RaiseStat(3)">+</button> }</div>
-                                <div class="col"><div class="small text-muted">DEX</div><div class="fw-semibold">@deep.Dex</div>@if (deep.StatPoints > 0) { <button class="btn btn-sm btn-outline-success py-0 px-2 mt-1" @onclick="() => RaiseStat(4)">+</button> }</div>
-                                <div class="col"><div class="small text-muted">LUK</div><div class="fw-semibold">@deep.Luk</div>@if (deep.StatPoints > 0) { <button class="btn btn-sm btn-outline-success py-0 px-2 mt-1" @onclick="() => RaiseStat(5)">+</button> }</div>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <section class="border rounded p-3">
+                                        <div class="fw-semibold mb-2">Attributes <span class="small text-muted">· @deep.StatPoints points</span></div>
+                                        <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-6 g-2 text-center">
+                                            <div class="col"><div class="small text-muted">STR</div><span class="fw-semibold">@deep.Str</span>@if (deep.StatPoints > 0) { <button class="btn btn-sm btn-outline-success py-0 px-2 ms-1" @onclick="() => RaiseStat(0)">+</button> }</div>
+                                            <div class="col"><div class="small text-muted">AGI</div><span class="fw-semibold">@deep.Agi</span>@if (deep.StatPoints > 0) { <button class="btn btn-sm btn-outline-success py-0 px-2 ms-1" @onclick="() => RaiseStat(1)">+</button> }</div>
+                                            <div class="col"><div class="small text-muted">VIT</div><span class="fw-semibold">@deep.Vit</span>@if (deep.StatPoints > 0) { <button class="btn btn-sm btn-outline-success py-0 px-2 ms-1" @onclick="() => RaiseStat(2)">+</button> }</div>
+                                            <div class="col"><div class="small text-muted">INT</div><span class="fw-semibold">@deep.Int</span>@if (deep.StatPoints > 0) { <button class="btn btn-sm btn-outline-success py-0 px-2 ms-1" @onclick="() => RaiseStat(3)">+</button> }</div>
+                                            <div class="col"><div class="small text-muted">DEX</div><span class="fw-semibold">@deep.Dex</span>@if (deep.StatPoints > 0) { <button class="btn btn-sm btn-outline-success py-0 px-2 ms-1" @onclick="() => RaiseStat(4)">+</button> }</div>
+                                            <div class="col"><div class="small text-muted">LUK</div><span class="fw-semibold">@deep.Luk</span>@if (deep.StatPoints > 0) { <button class="btn btn-sm btn-outline-success py-0 px-2 ms-1" @onclick="() => RaiseStat(5)">+</button> }</div>
+                                        </div>
+                                    </section>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <section class="border rounded p-3 h-100">
+                                        <div class="fw-semibold mb-2">Offense</div>
+                                        <div class="d-flex justify-content-between border-bottom py-1"><span class="text-muted">Attack</span><span class="fw-semibold">@deep.Attack–@deep.AttackMax</span></div>
+                                        @if (deep.MagicAtkMin > 0 || deep.MagicAtkMax > 0) { <div class="d-flex justify-content-between border-bottom py-1"><span class="text-muted">Magic attack</span><span class="fw-semibold">@deep.MagicAtkMin–@deep.MagicAtkMax</span></div> }
+                                        <div class="d-flex justify-content-between border-bottom py-1"><span class="text-muted">Hit</span><span class="fw-semibold" title="Base level + DEX + bonus">@deep.EffectiveHit <span class="small text-muted">(+@deep.HitBonus)</span></span></div>
+                                        <div class="d-flex justify-content-between border-bottom py-1"><span class="text-muted">Critical</span><span class="fw-semibold">@deep.CritPercent.ToString("0.#")%</span></div>
+                                        <div class="d-flex justify-content-between py-1"><span class="text-muted">Attack speed</span><span class="fw-semibold">@deep.AttackSpeed.ToString("0.##")</span></div>
+                                    </section>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <section class="border rounded p-3 h-100">
+                                        <div class="fw-semibold mb-2">Defense & reach</div>
+                                        <div class="d-flex justify-content-between border-bottom py-1"><span class="text-muted">Defense</span><span class="fw-semibold">@deep.Def</span></div>
+                                        <div class="d-flex justify-content-between border-bottom py-1"><span class="text-muted">Magic defense</span><span class="fw-semibold">@deep.MDef</span></div>
+                                        <div class="d-flex justify-content-between border-bottom py-1"><span class="text-muted">Flee</span><span class="fw-semibold" title="Base level + AGI + bonus">@deep.EffectiveFlee <span class="small text-muted">(+@deep.FleeBonus)</span></span></div>
+                                        <div class="d-flex justify-content-between border-bottom py-1"><span class="text-muted">Perfect dodge</span><span class="fw-semibold">@deep.PerfectDodge</span></div>
+                                        <div class="d-flex justify-content-between py-1"><span class="text-muted">Range</span><span class="fw-semibold">@(deep.AttackRange > 0 ? $"{deep.AttackRange} cells" : "—")</span></div>
+                                    </section>
+                                </div>
                             </div>
-                            <table class="table table-sm mb-0">
-                                <tbody>
-                                    <tr><td class="text-muted">Attack</td><td class="text-end">@deep.Attack - @deep.AttackMax</td></tr>
-                                    <tr><td class="text-muted">Def</td><td class="text-end">@deep.Def</td></tr>
-                                    <tr><td class="text-muted">Hit</td><td class="text-end">@deep.Hit</td></tr>
-                                    <tr><td class="text-muted">Flee</td><td class="text-end">@deep.Flee</td></tr>
-                                    <tr><td class="text-muted">Attack Speed</td><td class="text-end">@deep.AttackSpeed.ToString("0.##")</td></tr>
-                                </tbody>
-                            </table>
                         }
                     </div>
                 </div>
@@ -676,10 +779,14 @@ else
 
         return new DeepState
         {
+            Level = self.Level,
             Str = self.Str, Agi = self.Agi, Vit = self.Vit,
             Int = self.Int, Dex = self.Dex, Luk = self.Luk,
             Attack = self.Attack, AttackMax = self.AttackMax,
             Def = self.Def, Flee = self.Flee, Hit = self.Hit,
+            MDef = self.MDef, MagicAtkMin = self.MagicAtkMin, MagicAtkMax = self.MagicAtkMax,
+            AddCrit = self.AddCrit, PerfectDodge = self.Stats.GetValueOrDefault(CharacterStat.PerfectDodge),
+            AttackRange = self.AttackRange,
             AttackSpeed = self.AttackSpeed,
             StatPoints = self.StatPoints, SkillPoints = self.SkillPoints, JobId = self.JobId,
             Skills = skills, Learnable = learnable, Inventory = inventory,
@@ -882,8 +989,14 @@ else
 
     private sealed class DeepState
     {
+        public int Level;
         public int Str, Agi, Vit, Int, Dex, Luk;
-        public int Attack, AttackMax, Def, Flee, Hit;
+        public int Attack, AttackMax, Def, Flee, Hit, MDef, MagicAtkMin, MagicAtkMax, AddCrit, PerfectDodge, AttackRange;
+        public int EffectiveHit => Level + Dex + Hit;
+        public int EffectiveFlee => Level + Agi + Flee;
+        public int HitBonus => Hit;
+        public int FleeBonus => Flee;
+        public double CritPercent => AddCrit / 10.0;
         public float AttackSpeed;
         public int StatPoints, SkillPoints, JobId;
         public List<SkillRow> Skills = new();
@@ -1014,6 +1127,120 @@ else
             @if (t.Flee >= 0.05) { <span class="badge bg-warning-subtle text-body fw-normal">Flee <b>@($"{t.Flee:0.0}s")</b></span> }
         }
     </div>;
+
+    private static RenderFragment MapExpValue(RoBotClient.Bot.Behavior.MapOption option, bool isCurrent = false) => @<span class="map-exp-hover" tabindex="0">
+        <span class="map-exp-hover__value">@option.ExpPerHour.ToString("N0")</span>
+        <span class="map-exp-hover__panel" role="tooltip">
+            @if (isCurrent)
+            {
+                <strong>Current map · expected vs actual</strong>
+                <table class="map-exp-comparison">
+                    <thead><tr><th>Metric</th><th class="text-end">Expected</th><th class="text-end">Actual</th><th class="text-end">Δ</th></tr></thead>
+                    <tbody>
+                        <tr><th>EXP / hour</th><td class="expected text-end">@option.ModeledExpPerHour.ToString("N0")</td><td class="actual text-end">@(ActualExpPerHour(option) is { } actualRate ? actualRate.ToString("N0") : "—")</td><td class="delta">@(ActualExpPerHour(option) is { } rateDelta ? Delta(rateDelta - option.ModeledExpPerHour, "#,##0") : "—")</td></tr>
+                        <tr><th>EXP / kill</th><td class="expected text-end">@option.ExpPerKill.ToString("N0")</td><td class="actual text-end">@(ActualExpPerKill(option) is { } actualExp ? actualExp.ToString("N0") : "—")</td><td class="delta">@(ActualExpPerKill(option) is { } expDelta ? Delta(expDelta - option.ExpPerKill, "#,##0") : "—")</td></tr>
+                        <tr><th>Fight / kill</th><td class="expected text-end">@($"{option.ExpectedPerKill.Fight:0.0}s")</td><td class="actual text-end">@(option.MeasuredKills > 0 ? $"{option.ActualPerKill.Fight:0.0}s" : "—")</td><td class="delta">@(option.MeasuredKills > 0 ? Delta(option.ActualPerKill.Fight - option.ExpectedPerKill.Fight, "0.0") + "s" : "—")</td></tr>
+                        <tr><th>Search / kill</th><td class="expected text-end">@($"{option.ExpectedPerKill.Search:0.0}s")</td><td class="actual text-end">@(option.MeasuredKills > 0 ? $"{option.ActualPerKill.Search:0.0}s" : "—")</td><td class="delta">@(option.MeasuredKills > 0 ? Delta(option.ActualPerKill.Search - option.ExpectedPerKill.Search, "0.0") + "s" : "—")</td></tr>
+                        <tr><th>Recover / kill</th><td class="expected text-end">@($"{option.ExpectedPerKill.Recover:0.0}s")</td><td class="actual text-end">@(option.MeasuredKills > 0 ? $"{option.ActualPerKill.Recover:0.0}s" : "—")</td><td class="delta">@(option.MeasuredKills > 0 ? Delta(option.ActualPerKill.Recover - option.ExpectedPerKill.Recover, "0.0") + "s" : "—")</td></tr>
+                        <tr><th>Other / kill</th><td class="expected text-end">—</td><td class="actual text-end">@(option.MeasuredKills > 0 ? $"{option.ActualOtherSecondsPerKill:0.0}s" : "—")</td><td class="delta">@(option.MeasuredKills > 0 ? $"+{option.ActualOtherSecondsPerKill:0.0}s" : "—")</td></tr>
+                    </tbody>
+                </table>
+                <div class="small text-muted mt-2">Actual EXP/h uses @option.MeasuredExp.ToString("N0") EXP over @option.MeasuredSeconds.ToString("N0")s on this map; activity rows use @option.MeasuredKills tracked kills.</div>
+            }
+            else if (option.Measured)
+            {
+                <strong>Measured rate</strong>
+                <div class="font-monospace mt-2">@option.MeasuredExp.ToString("N0") exp ÷ @option.MeasuredSeconds.ToString("N0") s × 3,600 = @option.ExpPerHour.ToString("N0") exp/h</div>
+            }
+            else
+            {
+                <strong>Estimated rate · before travel</strong>
+                var totalSecondsPerKill = option.HuntSecondsPerKill + option.OtherSecondsPerKill;
+                var killLimitedRate = totalSecondsPerKill > 0 ? option.ExpPerKill / totalSecondsPerKill * 3600 : 0;
+                var cappedRate = Math.Min(killLimitedRate, option.SupplyExpPerHour);
+                @if (option.ExpPerKill > 0 && totalSecondsPerKill > 0 && option.SupplyExpPerHour > 0)
+                {
+                    <div class="exp-tip-row mt-2"><span class="text-info">EXP per kill</span><span class="exp-tip-value">@option.ExpPerKill.ToString("N0")</span></div>
+                    <div class="exp-tip-row"><span>Fight + search + recovery</span><span class="exp-tip-value">@option.PerKill.Fight.ToString("0.0") + @option.PerKill.Search.ToString("0.0") + @option.PerKill.Recover.ToString("0.0") = @option.HuntSecondsPerKill.ToString("0.0")s</span></div>
+                    @if (option.OtherSecondsPerKill > 0)
+                    {
+                        <div class="exp-tip-row"><span>Other overhead</span><span class="exp-tip-value">+ @option.OtherSecondsPerKill.ToString("0.0")s</span></div>
+                    }
+                    <div class="exp-tip-row"><span class="text-warning">Kill-limited rate</span><span class="exp-tip-value">@option.ExpPerKill.ToString("N0") ÷ @totalSecondsPerKill.ToString("0.0") × 3,600 = @killLimitedRate.ToString("N0")/h</span></div>
+                    <div class="exp-tip-row"><span class="text-info">Respawn supply cap</span><span class="exp-tip-value">@option.SupplyExpPerHour.ToString("N0")/h</span></div>
+                    <div class="exp-tip-row"><span>After cap</span><span class="exp-tip-value">min(@killLimitedRate.ToString("N0"), @option.SupplyExpPerHour.ToString("N0")) = @cappedRate.ToString("N0")/h</span></div>
+                    @if (option.Calibration < 1)
+                    {
+                        <div class="exp-tip-row"><span class="text-warning">Measured calibration</span><span class="exp-tip-value">× @option.Calibration.ToString("0.00")</span></div>
+                    }
+                    <div class="exp-tip-row exp-tip-total"><span>Final estimate</span><span class="exp-tip-value">@option.ExpPerHour.ToString("N0") exp/h</span></div>
+                }
+                else
+                {
+                    <div class="text-warning mt-2">Breakdown unavailable for this map option yet. Its map estimate hasn’t refreshed with these calculation details.</div>
+                }
+            }
+        </span>
+    </span>;
+
+    private static double? ActualExpPerHour(RoBotClient.Bot.Behavior.MapOption option) =>
+        option.MeasuredSeconds > 0 ? option.MeasuredExp / option.MeasuredSeconds * 3600 : null;
+
+    private static double? ActualExpPerKill(RoBotClient.Bot.Behavior.MapOption option) =>
+        option.MeasuredKills > 0 ? option.MeasuredExp / option.MeasuredKills : null;
+
+    private static string Delta(double value, string format) => value.ToString($"+{format};-{format};{format}");
+
+    // Move audit: each move into a map paired with the next move out of it, whose Left side is what that map really gave.
+    private const double AuditMinSeconds = 180; // = BotBehavior.MeasureSeconds: less is too noisy to judge
+    private sealed record AuditRow(MapMoveAudit Move, MapBreakdown? Outcome);
+
+    private static List<AuditRow> AuditRows(List<MapMoveAudit> moves) => moves.Select((move, i) =>
+        new AuditRow(move, i + 1 < moves.Count && string.Equals(moves[i + 1].From, move.To, StringComparison.OrdinalIgnoreCase) ? moves[i + 1].Left : null))
+        .Reverse().ToList();
+
+    // Median actual ÷ predicted over moves to estimated (never-measured) maps, and the CandidateRealization that would have
+    // made those predictions right. Ratios outside 0.05-5 are dropped: a bot stuck or dying in a loop says nothing about the model.
+    private static (int N, double Median, double Suggested, double PaidOff) Calibrate(List<List<MapMoveAudit>> bots)
+    {
+        var ratios = new List<double>();
+        var paid = 0;
+        var judged = 0;
+        foreach (var bot in bots)
+            foreach (var row in AuditRows(bot))
+            {
+                if (row.Outcome is not { Seconds: >= AuditMinSeconds } outcome) continue;
+                if (row.Move.Left is { ExpPerHour: > 0 } left) { judged++; if (outcome.ExpPerHour > left.ExpPerHour) paid++; }
+                if (row.Move.Predicted.Measured || row.Move.Predicted.ExpPerHour <= 0) continue;
+                var ratio = outcome.ExpPerHour / row.Move.Predicted.ExpPerHour;
+                if (ratio is >= 0.05 and <= 5) ratios.Add(ratio * row.Move.Realization / BotBehavior.CandidateRealization);
+            }
+        if (ratios.Count == 0) return (0, 0, 0, 0);
+        ratios.Sort();
+        var median = ratios[ratios.Count / 2];
+        return (ratios.Count, median, median * BotBehavior.CandidateRealization, judged > 0 ? paid / (double)judged : 0);
+    }
+
+    private static string PredVs(double predicted, double? actual) => actual is { } a ? $"{predicted:0.#} → {a:0.#}" : $"{predicted:0.#}";
+
+    // The term whose error cost the most: the rate it would have predicted with only that term right, vs the prediction.
+    private static string BiggestMiss(MapBreakdown p, MapBreakdown a)
+    {
+        var seconds = p.PerKill.Total + p.Other;
+        if (seconds <= 0 || p.ExpPerKill <= 0) return "";
+        double Time(double predicted, double actual) => seconds / Math.Max(0.1, seconds + actual - predicted);
+        var terms = new (string Name, double Effect, double Predicted, double Actual)[]
+        {
+            ("exp/kill", a.ExpPerKill / p.ExpPerKill, p.ExpPerKill, a.ExpPerKill),
+            ("fight", Time(p.PerKill.Fight, a.PerKill.Fight), p.PerKill.Fight, a.PerKill.Fight),
+            ("search", Time(p.PerKill.Search, a.PerKill.Search), p.PerKill.Search, a.PerKill.Search),
+            ("recover", Time(p.PerKill.Recover, a.PerKill.Recover), p.PerKill.Recover, a.PerKill.Recover),
+            ("flee", Time(p.PerKill.Flee, a.PerKill.Flee), p.PerKill.Flee, a.PerKill.Flee),
+            ("other", Time(p.Other, a.Other), p.Other, a.Other),
+        };
+        var worst = terms.MinBy(t => Math.Min(t.Effect, 1 / t.Effect)); // furthest from 1 either way
+        return $"{worst.Name} {worst.Predicted:0.#} → {worst.Actual:0.#} (×{worst.Effect:0.00} rate)";
+    }
 
     private string MapLabel(string code) => Db.MapsByCode.TryGetValue(code, out var m) && !string.IsNullOrEmpty(m.Name) ? $"{m.Name} ({code})" : code;
 

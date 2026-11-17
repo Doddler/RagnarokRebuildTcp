@@ -10,3 +10,4 @@ BotBuilds/
 bot-party-state.json
 *.log
 running-bots.json
+bot-map-audit/

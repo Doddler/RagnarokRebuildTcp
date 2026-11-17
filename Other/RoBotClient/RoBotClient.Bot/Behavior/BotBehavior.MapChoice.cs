@@ -8,7 +8,34 @@ namespace RoBotClient.Bot.Behavior;
 /// Monsters = the map's regular spawns (name, count, whether the bot can beat it), huntable first; Note = a warning, or empty.
 /// PerKill = seconds per kill by activity: measured on the current map, predicted (calibrated) elsewhere.
 public sealed record MapOption(string Map, string Name, double ExpPerHour, bool Measured, int Hops, string Note,
-    IReadOnlyList<(string Name, int Count, bool Huntable, double HpLoss)> Monsters, double VsCurrent = 0, ActivityTime PerKill = default);
+    IReadOnlyList<(string Name, int Count, bool Huntable, double HpLoss)> Monsters, double VsCurrent = 0, ActivityTime PerKill = default,
+    double ExpPerKill = 0, double HuntSecondsPerKill = 0, double OtherSecondsPerKill = 0,
+    double SupplyExpPerHour = 0, double Calibration = 1, double MeasuredExp = 0, double MeasuredSeconds = 0,
+    double ModeledExpPerHour = 0, ActivityTime ExpectedPerKill = default, int MeasuredKills = 0,
+    ActivityTime ActualPerKill = default, double ActualOtherSecondsPerKill = 0)
+{
+    /// <summary>What the bot predicts for this map (rate shown is what it ranked by: measured if it hunted here recently).</summary>
+    public MapBreakdown Predicted() => new(Map, ExpPerHour, Measured, Hops, ExpPerKill, ExpectedPerKill, OtherSecondsPerKill,
+        SupplyExpPerHour, Calibration, 0, 0, 0);
+    /// <summary>What the bot measured here (its recent stays, up to 20 min): exp per tracked kill and seconds per kill by activity.</summary>
+    public MapBreakdown Actual() => new(Map, MeasuredSeconds > 0 ? MeasuredExp / MeasuredSeconds * 3600 : 0, Measured, Hops,
+        MeasuredKills > 0 ? MeasuredExp / MeasuredKills : 0, ActualPerKill, ActualOtherSecondsPerKill, SupplyExpPerHour, 1,
+        MeasuredKills, MeasuredSeconds, MeasuredExp);
+}
+
+/// <summary>One side of a map move, per kill. Other = seconds in no activity (shopping, dying, walking back);
+/// Calibration = factor already applied to the predicted rate (includes CandidateRealization).</summary>
+public sealed record MapBreakdown(string Map, double ExpPerHour, bool Measured, int Hops, double ExpPerKill, ActivityTime PerKill,
+    double Other, double SupplyExpPerHour, double Calibration, int Kills, double Seconds, double Exp)
+{
+    public string Describe() => $"{ExpPerKill:N0} exp/kill ÷ ({PerKill.Fight:0.0} fight + {PerKill.Search:0.0} search + {PerKill.Recover:0.0} recover"
+        + (PerKill.Flee >= 0.05 ? $" + {PerKill.Flee:0.0} flee" : "") + $" + {Other:0.0} other)s = {ExpPerHour:N0} exp/h";
+}
+
+/// <summary>A map move with both sides, so a bad move can be traced to the term that misled it: Predicted = the map it went
+/// to, as it looked when chosen; Left = what it really got on the map it left (pair with the earlier move into that map).</summary>
+public sealed record MapMoveAudit(DateTime Time, int Level, string From, string To, string Reason, MapBreakdown Predicted,
+    MapBreakdown? Left, double Realization);
 
 /// <summary>Seconds by activity. Fight = in a duel (target within reach), Search = looking for and walking to the next
 /// target (looting included), Recover = sitting for HP/SP, Flee = running from a monster it can't beat.</summary>
@@ -37,6 +64,8 @@ public sealed partial class BotBehavior
     // ponytail: one global constant; re-derive after model changes by pairing each bot-logs "Map: moving → X. X estimated E"
     // with the next decision's "X measured A" and taking the median A/E (drop A/E outside 0.05-5); per-bot if they diverge.
     public const double CandidateRealization = 0.37;
+    /// <summary>Raised on every map move with its prediction breakdown, so the manager can persist it for auditing.</summary>
+    public event Action<MapMoveAudit>? OnMapMove;
 
     public string MapDecision { get; private set; } = "";
     public IReadOnlyList<MapOption> MapOptions { get; private set; } = Array.Empty<MapOption>(); // candidates, current map excluded
@@ -238,7 +267,7 @@ public sealed partial class BotBehavior
             if (riskyStop != null && !isHome) riskyRoute[map] = $"route crosses {riskyStop} ({_mapEstimates[riskyStop].Note})";
             // A map the bot hunted recently is judged on what it really earned there, current map or not; otherwise a map
             // that measured badly looks good again as a candidate (its estimate) and the bot ping-pongs back to it.
-            var (seconds, exp, _, _, _) = measurements.GetValueOrDefault(map);
+            var (seconds, exp, mapKills, mapTime, mapOther) = measurements.GetValueOrDefault(map);
             var measured = isHome ? homeMeasured : seconds >= MeasureSeconds;
             var realization = isHome ? 1 : CandidateRealization;
             var modeledRate = (split ? PredictRate(estimate) : estimate.Rate * calibration) * realization;
@@ -246,7 +275,14 @@ public sealed partial class BotBehavior
             var note = _mapBannedUntil.GetValueOrDefault(map) > now ? "avoiding: died or fled too often here"
                 : riskyRoute.TryGetValue(map, out var risk) ? risk : estimate.Note;
             var perKill = isHome ? measuredPerKill : split ? Predict(estimate) : estimate.PerKill; // current map: measured only ("—" until then)
-            options.Add(new MapOption(map, _data!.MapName(map), rate, measured, hops, note, estimate.Monsters, PerKill: perKill));
+            var expectedPerKill = split ? Predict(estimate) : estimate.PerKill;
+            var modeledSeconds = expectedPerKill.Total;
+            options.Add(new MapOption(map, _data!.MapName(map), rate, measured, hops, note, estimate.Monsters, PerKill: perKill,
+                ExpPerKill: estimate.ExpPerKill, HuntSecondsPerKill: modeledSeconds,
+                OtherSecondsPerKill: split ? overheadPerKill : 0, SupplyExpPerHour: estimate.SupplyPerSecond * 3600,
+                Calibration: (split ? 1 : calibration) * realization, MeasuredExp: exp, MeasuredSeconds: seconds,
+                ModeledExpPerHour: modeledRate, ExpectedPerKill: expectedPerKill, MeasuredKills: mapKills,
+                ActualPerKill: mapTime.Per(mapKills), ActualOtherSecondsPerKill: mapKills > 0 ? mapOther / mapKills : 0));
         }
         var current = options.FirstOrDefault(option => string.Equals(option.Map, home, StringComparison.OrdinalIgnoreCase));
         var currentSafe = homeEstimateEntry?.Safe == true;
@@ -300,6 +336,11 @@ public sealed partial class BotBehavior
         }
         MapDecision = $"Next map → {best.Map}. Reason: {reason}.";
         OnLog?.Invoke($"Map: moving {home} → {best.Map}. {reason}.");
+        var predicted = best.Predicted();
+        var left = current?.Actual();
+        OnLog?.Invoke($"Map: predicted {best.Map}: " + (best.Measured ? $"measured {best.ExpPerHour:N0} exp/h" : predicted.Describe() + $" (× {best.Calibration:0.00} calibration)"));
+        if (left is { Kills: > 0 }) OnLog?.Invoke($"Map: left {home}: actual {left.Describe()} over {left.Kills} kills, {Duration(left.Seconds)}.");
+        OnMapMove?.Invoke(new MapMoveAudit(now, snap.SelfLevel, home, best.Map, reason, predicted, left, CandidateRealization));
         _config.HomeMap = best.Map;
         NextMap = best.Map;
         OnHomeMapChanged?.Invoke();
