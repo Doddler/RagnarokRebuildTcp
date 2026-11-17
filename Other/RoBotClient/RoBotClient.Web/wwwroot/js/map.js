@@ -142,6 +142,16 @@ function smooth(canvas, p, dt, now) {
     return out;
 }
 
+// Name-plate opacity per bot, eased toward its target each frame (~0.15 s) so the fade isn't a flicker.
+const plateAlphas = new WeakMap();
+function plateFade(canvas, key, target) {
+    let m = plateAlphas.get(canvas);
+    if (!m) plateAlphas.set(canvas, m = new Map());
+    const a = (m.get(key) ?? 1) + (target - (m.get(key) ?? 1)) * 0.2;
+    m.set(key, a);
+    return a;
+}
+
 function startLoop(canvas) {
     animating.add(canvas);
     let last = performance.now();
@@ -252,6 +262,7 @@ function render(canvas, payload) {
     const hits = [...spawnHits]; // rectangles and point positions for hover tooltips
     const mobs = [...(payload.mobs || [])].sort((a, b) => b.y - a.y);
     // Dueled monsters only (hp is null otherwise): a small bar above the sprite, coloured like the bots' HP bars.
+    const hpBars = [];
     function hpBar(m, cx, bottom) {
         if (m.hp == null) return;
         const w = Math.max(18, spriteHeight * 1.2), h = Math.max(3, spriteHeight * 0.16);
@@ -266,6 +277,7 @@ function render(canvas, payload) {
         ctx.fillStyle = pct <= 0.25 ? "#dc3545" : pct <= 0.5 ? "#ffc107" : "#198754";
         ctx.fillRect(cx - w / 2, bottom - h, w * pct, h);
     }
+    const mobRects = []; // [left, top, right, bottom] of each sprite/dot + its HP bar, for name-plate fading
     for (const m of mobs) {
         const mx = ox + (m.x + 0.5) * sx, my = oy + (t.h - 1 - m.y + 0.5) * sy;
         const s = payload.sprites && payload.sprites[m.name];
@@ -276,7 +288,8 @@ function render(canvas, payload) {
             ctx.imageSmoothingEnabled = true;
             ctx.drawImage(atlas, s.x, s.y, s.w, s.h, mx - dw / 2, my - dh + mr, dw, dh);
             hits.push({ x: mx, y: my - dh / 2 + mr, name: m.name || "monster" });
-            hpBar(m, mx, my - dh + mr - 3);
+            hpBars.push([m, mx, my - dh + mr - 3]); // drawn last, over bot name plates
+            mobRects.push([mx - dw / 2, my - dh + mr - (m.hp != null ? 12 : 0), mx + dw / 2, my + mr]);
         } else {
             ctx.fillStyle = COLORS.monster;
             ctx.strokeStyle = "#000000cc";
@@ -286,7 +299,8 @@ function render(canvas, payload) {
             ctx.fill();
             ctx.stroke();
             hits.push({ x: mx, y: my, name: m.name || "monster" });
-            hpBar(m, mx, my - mr - 3);
+            hpBars.push([m, mx, my - mr - 3]);
+            mobRects.push([mx - mr, my - mr - (m.hp != null ? 12 : 0), mx + mr, my + mr]);
         }
     }
     for (const b of payload.bots || []) {
@@ -336,13 +350,23 @@ function render(canvas, payload) {
         ctx.stroke();
 
         const label = b.name || "?";
+        const nfs = Math.max(9, Math.round(fs * 0.75)); // name plate smaller than the title text
+        ctx.font = `${nfs}px system-ui, sans-serif`;
         const lw = ctx.measureText(label).width;
+        const ly = cy + r + 3 + nfs / 2 + 2; // centred under the dot
+        const pl = cx - lw / 2 - 3, pt = ly - nfs / 2 - 2, pr = pl + lw + 6, pb = pt + nfs + 4;
+        // A monster under the plate: fade it so the monster shows through, fade back in once it's clear.
+        const covered = mobRects.some(([l, t2, rr, bb]) => l < pr && rr > pl && t2 < pb && bb > pt);
+        const fade = plateFade(canvas, b.name, covered ? 0.65 : 1);
+        ctx.globalAlpha = fade;
         ctx.fillStyle = "#000000aa";
-        const ly = cy + r + 4 + fs / 2 + 3; // centred under the dot
-        ctx.fillRect(cx - lw / 2 - 4, ly - fs / 2 - 3, lw + 8, fs + 6);
+        ctx.fillRect(pl, pt, pr - pl, pb - pt);
         ctx.fillStyle = COLORS.text;
         ctx.fillText(label, cx - lw / 2, ly);
+        ctx.globalAlpha = 1;
+        ctx.font = `${fs}px system-ui, sans-serif`;
     }
+    for (const [m, x, y] of hpBars) hpBar(m, x, y);
 
     const title = `${payload.map}  ${t.w}×${t.h} cells  ·  shown ${canvas.clientWidth}×${canvas.clientHeight}px (${(canvas.clientWidth / Math.max(1, canvas.clientHeight)).toFixed(2)}:1)  ·  ${(payload.bots || []).length} bot(s)  ·  ${(payload.mobs || []).length} mob(s) in view`;
     // Under the title, one row per bot: name plus tiny HP (green/yellow/red like the dashboard) and SP bars.
