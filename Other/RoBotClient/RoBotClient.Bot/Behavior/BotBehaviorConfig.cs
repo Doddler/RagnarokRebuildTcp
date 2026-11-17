@@ -168,6 +168,8 @@ public sealed class BotBehaviorConfig
     public int ButterflyWingItemId = 602;
     /// <summary>Top up to this many Butterfly Wings during an existing shop trip. 0 disables restocking.</summary>
     public int ButterflyWingRestockCount;
+    /// <summary>Fly Wings to keep in the bag (topped up on shop trips, capped at 3% of max weight). 0 disables.</summary>
+    public int FlyWingPoolSize = 15;
 
     /// <summary>Stuck duration (seconds) before reaching for a Fly Wing.</summary>
     public double FlyWingStuckSeconds = 8.0;
@@ -329,6 +331,7 @@ public sealed class BotBehaviorConfig
         PortalSafeDistance = other.PortalSafeDistance;
         ButterflyWingItemId = other.ButterflyWingItemId;
         ButterflyWingRestockCount = other.ButterflyWingRestockCount;
+        FlyWingPoolSize = other.FlyWingPoolSize;
         FlyWingStuckSeconds = other.FlyWingStuckSeconds;
         ButterflyWingStuckSeconds = other.ButterflyWingStuckSeconds;
         FollowerLostFallthroughSeconds = other.FollowerLostFallthroughSeconds;

@@ -119,7 +119,8 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5
+    "KiteSuspendSeconds": 5,
+    "FlyWingPoolSize": 0
   },
   "[BOT] Bran": {
     "HuntClassIds": [
@@ -248,7 +249,8 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5
+    "KiteSuspendSeconds": 5,
+    "FlyWingPoolSize": 0
   },
   "[BOT] Nyx": {
     "HuntClassIds": [
@@ -377,7 +379,8 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5
+    "KiteSuspendSeconds": 5,
+    "FlyWingPoolSize": 0
   },
   "[BOT] Cael": {
     "HuntClassIds": [
@@ -470,7 +473,8 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5
+    "KiteSuspendSeconds": 5,
+    "FlyWingPoolSize": 0
   },
   "[BOT] Selene": {
     "HuntClassIds": [
@@ -599,7 +603,8 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5
+    "KiteSuspendSeconds": 5,
+    "FlyWingPoolSize": 0
   },
   "[BOT] Hawke": {
     "HuntClassIds": [
@@ -728,7 +733,8 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5
+    "KiteSuspendSeconds": 5,
+    "FlyWingPoolSize": 0
   },
   "[BOT] Mira": {
     "HuntClassIds": [
@@ -857,7 +863,8 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5
+    "KiteSuspendSeconds": 5,
+    "FlyWingPoolSize": 0
   },
   "[BOT] Sera": {
     "HuntClassIds": [
@@ -935,7 +942,8 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5
+    "KiteSuspendSeconds": 5,
+    "FlyWingPoolSize": 0
   },
   "[BOT] [BOT] Valdric": {
     "HuntClassIds": [
@@ -1046,7 +1054,8 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5
+    "KiteSuspendSeconds": 5,
+    "FlyWingPoolSize": 0
   },
   "[BOT] [BOT] Sylvara": {
     "HuntClassIds": [
@@ -1153,7 +1162,8 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5
+    "KiteSuspendSeconds": 5,
+    "FlyWingPoolSize": 0
   },
   "[BOT] [BOT] Pyrion": {
     "HuntClassIds": [
@@ -1263,7 +1273,8 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5
+    "KiteSuspendSeconds": 5,
+    "FlyWingPoolSize": 0
   },
   "[BOT] [BOT] Lumina": {
     "HuntClassIds": [
@@ -1371,7 +1382,8 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5
+    "KiteSuspendSeconds": 5,
+    "FlyWingPoolSize": 0
   },
   "[BOT] [BOT] Shivkin": {
     "HuntClassIds": [
@@ -1484,7 +1496,8 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5
+    "KiteSuspendSeconds": 5,
+    "FlyWingPoolSize": 0
   },
   "[BOT] [BOT] Coinwhisper": {
     "HuntClassIds": [
@@ -1595,7 +1608,8 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5
+    "KiteSuspendSeconds": 5,
+    "FlyWingPoolSize": 0
   },
   "[BOT] Bot1": {
     "HuntClassIds": [],
@@ -1670,7 +1684,8 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5
+    "KiteSuspendSeconds": 5,
+    "FlyWingPoolSize": 0
   },
   "[BOT] Bot2": {
     "HuntClassIds": [],
@@ -1743,7 +1758,8 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5
+    "KiteSuspendSeconds": 5,
+    "FlyWingPoolSize": 0
   },
   "[BOT] Bot3": {
     "HuntClassIds": [],
@@ -1754,7 +1770,7 @@
     "MaxRoundsToKill": 120,
     "FleeHpPercent": 0.3,
     "FleeMonsterRange": 5,
-    "HomeMap": "mjo_dun01",
+    "HomeMap": "pay_fild02",
     "SavePointMap": "aldebaran",
     "SavePointX": 143,
     "SavePointY": 119,
@@ -1816,7 +1832,8 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5
+    "KiteSuspendSeconds": 5,
+    "FlyWingPoolSize": 0
   },
   "[BOT] Bot4": {
     "HuntClassIds": [],
@@ -1889,7 +1906,8 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5
+    "KiteSuspendSeconds": 5,
+    "FlyWingPoolSize": 0
   },
   "[BOT] Bot5": {
     "HuntClassIds": [],
@@ -1900,10 +1918,10 @@
     "MaxRoundsToKill": 120,
     "FleeHpPercent": 0.3,
     "FleeMonsterRange": 5,
-    "HomeMap": "mjolnir_05",
-    "SavePointMap": "aldebaran",
-    "SavePointX": 143,
-    "SavePointY": 119,
+    "HomeMap": "mjolnir_11",
+    "SavePointMap": "geffen",
+    "SavePointX": 203,
+    "SavePointY": 123,
     "AutoMap": true,
     "Enabled": true,
     "StuckSeconds": 3.5,
@@ -1962,6 +1980,7 @@
     "EnableKite": false,
     "KiteBufferTiles": 1,
     "KiteFastMobThreshold": 12,
-    "KiteSuspendSeconds": 5
+    "KiteSuspendSeconds": 5,
+    "FlyWingPoolSize": 0
   }
 }

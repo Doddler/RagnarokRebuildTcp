@@ -233,6 +233,24 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
     }
 
     private (int weight, int maxWeight, int stacks, int restockHeld, int zeny) ReadShopState()
+    {
+        var st = ReadShopStateRaw();
+        RefreshFlyWingPool(st.maxWeight);
+        return st;
+    }
+
+    // Fly Wing pool: enough for travel shortcuts plus ambush escapes, never more than 3% of max weight so the
+    // wings themselves don't pull the next sell trip forward. Only bought on trips already happening.
+    // ponytail: fixed 3% cap; derive from the bot's typical loot weight if wings ever crowd out loot.
+    private const double FlyWingPoolWeightShare = 0.03;
+    private void RefreshFlyWingPool(int maxWeight)
+    {
+        if (_config.FlyWingPoolSize <= 0 || _data == null || maxWeight <= 0) return;
+        var each = Math.Max(1, _data.UsableItemWeight(_config.FlyWingItemId));
+        SetRestockTarget(_config.FlyWingItemId, Math.Min(_config.FlyWingPoolSize, (int)(maxWeight * FlyWingPoolWeightShare / each)));
+    }
+
+    private (int weight, int maxWeight, int stacks, int restockHeld, int zeny) ReadShopStateRaw()
         => _bot.WithState(w =>
         {
             var held = 0;
@@ -1145,7 +1163,7 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
 
     // Fly Wing shortcut on long walks: fly only when we're clearly farther from the portal than a random landing
     // would be on average. At most 5 per map visited, and a few stay in the bag for escapes.
-    private const int TravelFlyWingDistance = 100, TravelFlyWingsPerMap = 5, TravelFlyWingReserve = 3;
+    private const int TravelFlyWingDistance = 100, TravelFlyWingsPerMap = 5, TravelFlyWingReserve = 5; // reserve = ambush escapes
     private const double TravelFlyWingMargin = 1.3;
     private readonly Dictionary<(string, int, int), double> _averageLandingDistance = new();
     private string? _travelWingMap;

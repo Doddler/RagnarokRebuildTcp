@@ -170,7 +170,7 @@ public sealed class GameDatabase
         foreach (var c in Rows("Jobs.csv")) _jobTier[I(c[0])] = I(c[2]);
         // Id,Code,Name,Weight,Price,...
         var idByCode = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
-        foreach (var c in Rows("ItemsUsable.csv")) { _usablePrice[I(c[0])] = I(c[4]); idByCode[c[1]] = I(c[0]); }
+        foreach (var c in Rows("ItemsUsable.csv")) { _usablePrice[I(c[0])] = I(c[4]); _usableWeight[I(c[0])] = I(c[3]); idByCode[c[1]] = I(c[0]); }
         // RecoveryItem("Apple", 16, 22, 0, 0) — HP min/max, SP min/max, from the server's item effect script.
         var effects = Path.Combine(dbDir, "..", "Script", "Items", "ItemEffects.txt");
         if (File.Exists(effects))
@@ -221,6 +221,9 @@ public sealed class GameDatabase
     public int HpRecovery(int itemId) => _hpRecovery.GetValueOrDefault(itemId);
 
     private readonly Dictionary<int, int> _usablePrice = new();
+    private readonly Dictionary<int, int> _usableWeight = new();
+    /// <summary>Weight of one usable item in the server's tenths (Fly Wing = 50), 0 if unknown.</summary>
+    public int UsableItemWeight(int itemId) => _usableWeight.GetValueOrDefault(itemId);
     /// <summary>NPC buy price of a usable item (Fly Wing 140z), 0 when unknown.</summary>
     public int UsableItemPrice(int itemId) => _usablePrice.GetValueOrDefault(itemId);
 

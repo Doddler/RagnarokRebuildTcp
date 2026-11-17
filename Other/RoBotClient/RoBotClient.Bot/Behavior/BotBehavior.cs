@@ -267,8 +267,10 @@ public sealed partial class BotBehavior
 
         // Steer clear of aggressive monsters the forecast says we'd lose to: if one's aggro range
         // already covers us, drop everything and flee away from it.
+        NoteHp(snap);
         ComputeHazards(snap);
         if (await AvoidHazardsAsync(snap, ct)) return;
+        if (await TryEmergencyFlyWingAsync(snap, ct)) return;
 
         // Dropped inside a wall (bad teleport coordinate): the server can't path out of a blocked cell, so
         // every walk is silently ignored. A Fly Wing is the only way out.
@@ -1652,6 +1654,46 @@ public sealed partial class BotBehavior
         return null;
     }
 
+    // HP over the last few seconds, to tell "a scary mob is in view" from "something is chewing on me".
+    private readonly Queue<(DateTime at, int hp)> _hpHistory = new();
+    private static readonly TimeSpan HpWindow = TimeSpan.FromSeconds(5);
+
+    private void NoteHp(Snapshot snap)
+    {
+        var now = DateTime.UtcNow;
+        _hpHistory.Enqueue((now, snap.SelfHp));
+        while (_hpHistory.Count > 0 && now - _hpHistory.Peek().at > HpWindow) _hpHistory.Dequeue();
+    }
+
+    /// <summary>HP dropped from its peak in the last 5 s: by 15%+ of max, or at all while under 35%.</summary>
+    private bool Ambushed(Snapshot snap, out string why)
+    {
+        why = "";
+        if (snap.SelfMaxHp <= 0 || _hpHistory.Count == 0) return false;
+        var lost = _hpHistory.Max(h => h.hp) - snap.SelfHp;
+        if (lost <= 0) return false;
+        why = $"lost {lost} HP in {HpWindow.TotalSeconds:0}s, at {snap.SelfHp}/{snap.SelfMaxHp}";
+        return IsAmbushed(snap.SelfHp + lost, snap.SelfHp, snap.SelfMaxHp);
+    }
+
+    public static bool IsAmbushed(int peakHp, int hp, int maxHp) =>
+        maxHp > 0 && peakHp > hp && (peakHp - hp >= maxHp * 0.15 || hp < maxHp * 0.35);
+
+    // Outside a hazard flee (a forecast-winnable fight gone wrong, a pack we didn't see coming): wing out when low
+    // and still bleeding after MaybeHealAsync had its go, instead of fighting to the death.
+    private async Task<bool> TryEmergencyFlyWingAsync(Snapshot snap, CancellationToken ct)
+    {
+        if (snap.SelfMaxHp <= 0 || snap.SelfHp >= snap.SelfMaxHp * 0.25 || !Ambushed(snap, out var hurt)) return false;
+        if (DateTime.UtcNow < _nextEscapeItem || _data?.IsUsableItem(_config.FlyWingItemId) != true
+            || CountInInventory(_config.FlyWingItemId) <= 0) return false;
+        OnLog?.Invoke($"Emergency: {hurt} — using a Fly Wing to get out.");
+        _nextEscapeItem = DateTime.UtcNow.AddSeconds(3);
+        _targetId = 0;
+        _targetClass = -1;
+        await _bot.UseInventoryItemAsync(_config.FlyWingItemId, -1, ct);
+        return true;
+    }
+
     private bool CellNearHazard(int x, int y)
     {
         foreach (var h in _hazards)
@@ -1702,10 +1744,12 @@ public sealed partial class BotBehavior
 
         // Walking away rarely outruns an aggressive mob (Angeling on pay_fild04 killed Bot3 that way).
         // A Fly Wing (random spot on this map) gets out of its sight instantly; travel/hunt just replans.
-        if (DateTime.UtcNow >= _nextEscapeItem && _data?.IsUsableItem(_config.FlyWingItemId) == true
+        // Only once it's actually hurting us: winging at every hazard in view burnt the stack (Bot1: 239 escapes)
+        // and the bots then died with "no Fly Wing" when a real ambush came.
+        if (Ambushed(snap, out var hurt) && DateTime.UtcNow >= _nextEscapeItem && _data?.IsUsableItem(_config.FlyWingItemId) == true
             && _bot.WithState(w => w.Self.Inventory.Any(it => it.ItemId == _config.FlyWingItemId && it.Count > 0)))
         {
-            OnLog?.Invoke($"Using Fly Wing to escape '{hz.name}' (no sidestep: {noDodge}).");
+            OnLog?.Invoke($"Using Fly Wing to escape '{hz.name}' ({hurt}; no sidestep: {noDodge}).");
             _lastFleeAction = $"Fly Wing away from '{hz.name}'";
             _lastFleeAt = DateTime.UtcNow;
             _nextEscapeItem = DateTime.UtcNow.AddSeconds(3); // let the teleport land before judging again
@@ -1718,7 +1762,7 @@ public sealed partial class BotBehavior
         var dy = Math.Sign(self.Y - hz.pos.Y);
         if (dx == 0 && dy == 0) { dx = 1; dy = 1; }
         var map = _data?.GetWalkMap(snap.Map);
-        var why = $"no sidestep: {noDodge}; no Fly Wing";
+        var why = $"no sidestep: {noDodge}; {(Ambushed(snap, out _) ? "no Fly Wing" : "not hurt yet, saving Fly Wings")}";
         for (var step = 14; step >= 6; step -= 4)
         {
             var tx = self.X + dx * step;
