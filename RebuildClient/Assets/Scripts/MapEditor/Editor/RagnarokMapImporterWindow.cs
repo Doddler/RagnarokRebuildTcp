@@ -317,7 +317,7 @@ namespace Assets.Scripts.MapEditor.Editor
                 // }
 
                 if ((path.Contains("Monsters") &&
-                     monsters.Items.All(m => m.SpriteName.Replace(".spr", "") != fName.ToLowerInvariant()))
+                     monsters.Items.All(m => !string.Equals(Path.GetFileNameWithoutExtension(m.SpriteName), fName, StringComparison.OrdinalIgnoreCase)))
                     || !path.Contains("Imported"))
                 {
                     //Debug.Log("Not found: " + fName);
@@ -333,6 +333,14 @@ namespace Assets.Scripts.MapEditor.Editor
                 var entry = settings.CreateOrMoveEntry(guids[i], defGroup, readOnly: false, postEvent: false);
                 //Debug.Log(AssetDatabase.GUIDToAssetPath(guids[i]));
                 Debug.Log($"[Addressables] Creating/moving entry for '{fName}'");
+                // Runtime requests use the generated class configuration, not source-file casing.
+                if (path.Contains("Imported/Monsters/") || path.Contains("Imported/Npcs/"))
+                {
+                    var spriteClass = monsters.Items.FirstOrDefault(m =>
+                        string.Equals(Path.GetFileNameWithoutExtension(m.SpriteName), fName, StringComparison.OrdinalIgnoreCase));
+                    if (spriteClass != null)
+                        altPath = altPath.Substring(0, altPath.LastIndexOf('/') + 1) + spriteClass.SpriteName;
+                }
                 entry.address = altPath;
                 Debug.Log($"[Addressables] Set sprite address '{entry.address}' for '{path}'");
                 entry.labels.Add("Sprite");
