@@ -210,6 +210,18 @@ public sealed partial class BotBehavior
                 continue;
             }
 
+            var zenyCost = SkillZenyCost(rule.Skill, level);
+            if (zenyCost > 0)
+            {
+                if (_skillZenyLeft < 0) _skillZenyLeft = ConvenienceBudget(_bot.WithState(w => w.Self.Zeny), ZenyForTripHome(snap));
+                if (zenyCost > _skillZenyLeft)
+                {
+                    (skipReasons ??= new()).Add($"{rule.Skill}: zeny budget spent ({_skillZenyLeft}z left of this shop trip's share, needs {zenyCost}z)");
+                    continue;
+                }
+                _skillZenyLeft -= zenyCost;
+            }
+
             _nextSkill = DateTime.UtcNow.AddSeconds(0.25); // global skill throttle: 250ms between any two casts
             var coolSecs = rule.EveryCooldown > 0 ? rule.EveryCooldown : 1.5;
             _skillCooldown[rule.Skill] = DateTime.UtcNow.AddSeconds(coolSecs);

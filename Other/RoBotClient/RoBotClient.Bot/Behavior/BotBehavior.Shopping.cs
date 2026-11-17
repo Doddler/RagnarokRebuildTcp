@@ -1,3 +1,4 @@
+using RebuildSharedData.Enum;
 using RebuildSharedData.ClientTypes;
 using RoBotClient.Bot.GameData;
 using RoBotClient.Bot.State;
@@ -664,6 +665,7 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
         var homeFares = ZenyForTripHome(snap);
         var zenyLeft = Math.Max(0, st.zeny - homeFares);
         var convenienceLeft = ConvenienceBudget(st.zeny, homeFares);
+        _skillZenyLeft = -1; // new shop trip: the Mammonite pool refills from the purse on its next cast
         var totalCost = 0;
 
         if (_config.RestockItemId > 0)
@@ -1313,6 +1315,17 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
     private const double ConvenienceBudgetShare = 0.25;
     private bool IsConvenienceItem(int itemId) => itemId > 0 && (itemId == _config.FlyWingItemId || itemId == _config.ButterflyWingItemId);
     private static int ConvenienceBudget(int zeny, int homeFares) => (int)(Math.Max(0, zeny - homeFares) * ConvenienceBudgetShare);
+
+    // Zeny-cost skills (Mammonite) get their own pool, the same share as the wings: filled from the purse on the first
+    // cast after each shop trip, spent per cast, so a merchant can't pour its whole purse into damage.
+    private int _skillZenyLeft = -1; // -1 = refill on the next cast
+    private int SkillZenyCost(CharacterSkill skill, int level)
+    {
+        if (skill != CharacterSkill.Mammonite) return 0;
+        var cost = 50 * level; // server: MammoniteHandler.GetMammoniteCost
+        var discount = KnowsSkill(CharacterSkill.Discount, out var discountLevel) && discountLevel > 0 ? 5 + discountLevel * 2 : 0;
+        return cost - cost * discount / 100;
+    }
 
     // Kafra fares on the planned way home from here. Restocking leaves them in the purse: Bot1 and Bot5 spent their
     // last zeny on Fly Wings in izlude_in, and izlude has no walking exit, so they were stranded.

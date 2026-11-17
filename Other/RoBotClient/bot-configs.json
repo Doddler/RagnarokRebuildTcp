@@ -1884,7 +1884,7 @@
     "SkillOrder": "BasicMastery 8, FirstAid 1, Mammonite 10, EnlargeWeightLimit 10, Discount 10",
     "RestWhenNoPotions": true,
     "RestBelowPercent": 0.5,
-    "SkillScript": "",
+    "SkillScript": "use Mammonite 0 if self.sp \u003E= 12 and target.hppct \u003E 20",
     "ItemScript": "",
     "AutoEscapeWhenStuck": false,
     "FlyWingItemId": 601,
