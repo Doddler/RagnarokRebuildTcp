@@ -557,6 +557,11 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
         {
             case NpcPhase.None: // waiting for the first packet after the click
                 _shopNextAction = DateTime.UtcNow.AddMilliseconds(600);
+                // The server silently drops a click inside its input cooldown, which every walk step starts: the bot clicked
+                // right after its last step and waited out the whole conversation ("conversation stalled", 11-16: Bot2 looped
+                // on prt_fild05's Tool Dealer every ~2 min). No reply after ~2 s: click again.
+                if (_shopSteps % 4 == 0 && _bot.WithState(FindNpcEntityId) is var npcId and not 0)
+                    await _bot.NpcClickAsync(npcId, ct);
                 return;
             case NpcPhase.Dialog:
                 _shopNextAction = DateTime.UtcNow.AddMilliseconds(450);
