@@ -191,6 +191,8 @@ public sealed partial class BotBehavior
         // Dead -> blacklist the killer's class, stop, and respawn (retry on a cooldown). Never flee.
         if (snap.SelfDead || (snap.SelfMaxHp > 0 && snap.SelfHp <= 0))
         {
+            _hpHistory.Clear(); // the pre-death peak made the 1 HP respawn look like an ambush: Bot2 burnt two wings in comodo
+
             if (Mode != BotMode.Dead)
             {
                 var modeBefore = Mode;
@@ -1253,8 +1255,11 @@ public sealed partial class BotBehavior
             {
                 var tx = self.X + _heading.dx * WanderStep;
                 var ty = self.Y + _heading.dy * WanderStep;
-                if (zone != null)
-                    (tx, ty) = zone.Contains(self.X, self.Y, zoneMargin)
+                // Outside the camp every try used to aim at its centre, so one unreachable centre failed all six, forever:
+                // Bot2 sat 23 min on mjo_dun01 where a Fly Wing dropped it. Centre once, then camp cells, then plain wander.
+                var useZone = zone != null && attempt < 4;
+                if (useZone)
+                    (tx, ty) = zone!.Contains(self.X, self.Y, zoneMargin) || attempt > 0
                         ? (Random.Shared.Next(zone.MinX - zoneMargin, zone.MaxX + zoneMargin + 1), Random.Shared.Next(zone.MinY - zoneMargin, zone.MaxY + zoneMargin + 1))
                         : ((zone.MinX + zone.MaxX) / 2, (zone.MinY + zone.MaxY) / 2);
                 if (!map.TryFindWalkableNear(tx, ty, 8, out var fx, out var fy) || (fx == self.X && fy == self.Y))
@@ -1268,12 +1273,12 @@ public sealed partial class BotBehavior
                 // A*-verify reachability with a generous budget — far targets need more nodes than the old
                 // 2000 cap allowed, but a 6000 budget still completes in well under a millisecond.
                 var pathCost = MakePathCost(snap.Map);
-                var p = map.FindPath(self.X, self.Y, fx, fy, 6000, pathCost);
+                var p = map.FindPath(self.X, self.Y, fx, fy, useZone ? 0 : 6000, pathCost); // the camp may be across a maze
                 if (p == null) { _heading = RandomHeading(); continue; }
                 _wanderTarget = new Position(fx, fy);
                 _wanderTargetUntil = DateTime.UtcNow.AddSeconds(15);
-                OnLog?.Invoke(zone == null ? $"Wander: heading to ({fx},{fy}) — {p.Count} cells via A*."
-                    : zone.Contains(self.X, self.Y, zoneMargin) ? $"Wander: staying in the camp, heading to ({fx},{fy}) — {p.Count} cells via A*."
+                OnLog?.Invoke(!useZone ? $"Wander: heading to ({fx},{fy}) — {p.Count} cells via A*."
+                    : zone!.Contains(self.X, self.Y, zoneMargin) ? $"Wander: staying in the camp, heading to ({fx},{fy}) — {p.Count} cells via A*."
                     : $"Wander: heading to the camp at ({fx},{fy}) this map was chosen for ({_mapEstimates.GetValueOrDefault(snap.Map)?.Note}) — {p.Count} cells via A*.");
                 break;
             }
@@ -1696,6 +1701,19 @@ public sealed partial class BotBehavior
         return IsAmbushed(snap.SelfHp + lost, snap.SelfHp, snap.SelfMaxHp);
     }
 
+    // Waiting to get hurt only works if the first hits don't kill: a Lv 65 Fur Seal hit Bot2 (614 HP) for 796 while it
+    // was still "saving Fly Wings". Closing in (half its danger radius) and two of its hits kill us: wing now.
+    private bool KillsMeFast(Snapshot snap, string name, int dist, int radius, out string why)
+    {
+        why = "";
+        if (dist > radius / 2) return false;
+        var m = snap.Monsters.Where(x => x.Name == name).MinBy(x => Dist(snap.SelfPos, x.Pos));
+        if (m == null) return false;
+        var hit = Forecast(snap, m).MonsterDamagePerHit;
+        why = $"its hit ~{hit} vs my {snap.SelfHp} HP";
+        return hit * 2 >= snap.SelfHp;
+    }
+
     public static bool IsAmbushed(int peakHp, int hp, int maxHp) =>
         maxHp > 0 && peakHp > hp && (peakHp - hp >= maxHp * 0.15 || hp < maxHp * 0.35);
 
@@ -1766,7 +1784,7 @@ public sealed partial class BotBehavior
         // A Fly Wing (random spot on this map) gets out of its sight instantly; travel/hunt just replans.
         // Only once it's actually hurting us: winging at every hazard in view burnt the stack (Bot1: 239 escapes)
         // and the bots then died with "no Fly Wing" when a real ambush came.
-        if (Ambushed(snap, out var hurt) && DateTime.UtcNow >= _nextEscapeItem && _data?.IsUsableItem(_config.FlyWingItemId) == true
+        if ((Ambushed(snap, out var hurt) || KillsMeFast(snap, hz.name, nearestD, hz.radius, out hurt)) && DateTime.UtcNow >= _nextEscapeItem && _data?.IsUsableItem(_config.FlyWingItemId) == true
             && _bot.WithState(w => w.Self.Inventory.Any(it => it.ItemId == _config.FlyWingItemId && it.Count > 0)))
         {
             OnLog?.Invoke($"Using Fly Wing to escape '{hz.name}' ({hurt}; no sidestep: {noDodge}).");
@@ -1782,7 +1800,7 @@ public sealed partial class BotBehavior
         var dy = Math.Sign(self.Y - hz.pos.Y);
         if (dx == 0 && dy == 0) { dx = 1; dy = 1; }
         var map = _data?.GetWalkMap(snap.Map);
-        var why = $"no sidestep: {noDodge}; {(Ambushed(snap, out _) ? "no Fly Wing" : "not hurt yet, saving Fly Wings")}";
+        var why = $"no sidestep: {noDodge}; {(Ambushed(snap, out _) || KillsMeFast(snap, hz.name, nearestD, hz.radius, out _) ? "no Fly Wing" : "not hurt yet, saving Fly Wings")}";
         for (var step = 14; step >= 6; step -= 4)
         {
             var tx = self.X + dx * step;
