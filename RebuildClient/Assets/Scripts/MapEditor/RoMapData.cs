@@ -348,7 +348,7 @@ namespace Assets.Scripts.MapEditor
         public void RequireTransparentTexture()
         {
             var curPath = Path.GetDirectoryName(AssetDatabase.GetAssetPath(this));
-            var transPath = "Assets/textures/transparent.png";
+            var transPath = "Assets/Textures/transparent.png";
             if (File.Exists(transPath))
             {
                 var tex = AssetDatabase.LoadAssetAtPath<Texture2D>(transPath);
