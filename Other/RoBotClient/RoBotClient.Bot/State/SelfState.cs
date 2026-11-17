@@ -25,6 +25,10 @@ public sealed class SelfState
     /// <summary>Last skill the server says we used and when; the dashboard map shouts it ("Bash!!") like the Unity client.</summary>
     public CharacterSkill LastShoutSkill;
     public DateTime LastShoutAt;
+    /// <summary>Last item gained (pickup, purchase, ...): the dashboard map shows "Jellopy - 1 obtained." like Unity.</summary>
+    public int LastObtainedItemId;
+    public int LastObtainedCount;
+    public DateTime LastObtainedAt;
 
     // Raw values keyed by the same enums the server packs them under (see PlayerClientStatusDef).
     public readonly Dictionary<PlayerStat, int> Data = new();

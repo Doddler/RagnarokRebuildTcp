@@ -88,6 +88,7 @@ function render(canvas, s, payload, now) {
 
     drawTerrain(v, payload.minimap);
     const spawnHover = payload.showSpawnAreas !== false ? drawSpawnAreas(v, t.spawns) : [];
+    const items = (payload.items || []).map(it => drawItem(v, it));
     mobs.forEach(m => drawMob(v, m));
     bots.forEach(b => drawPath(v, b));
     bots.forEach(b => drawWanderTarget(v, b));
@@ -97,8 +98,9 @@ function render(canvas, s, payload, now) {
     spawnDamageNumbers(s, mobs, bots, now);
     drawDamageNumbers(v, s, mobs);
     drawLegend(v, payload, bots);
+    if (payload.toast) drawToast(v, payload.toast);
 
-    s.hover = [...spawnHover, ...mobs.map(m => m.hover), ...bots.flatMap(b => botHover(v, b))];
+    s.hover = [...spawnHover, ...items, ...mobs.map(m => m.hover), ...bots.flatMap(b => botHover(v, b))];
     attachHover(canvas, s);
 }
 
@@ -245,6 +247,27 @@ function layoutMobs(v, payload) {
     });
 }
 
+/** An item on the ground: its inventory icon (half a monster sprite), else a small gold diamond. Returns its hover point. */
+function drawItem(v, it) {
+    const { ctx } = v;
+    const x = v.toX(it.x), y = v.toY(it.y), icon = image(it.icon), k = v.spriteHeight * 0.5;
+    if (icon) {
+        ctx.imageSmoothingEnabled = true;
+        ctx.drawImage(icon, x - k / 2, y - k / 2, k, k);
+    } else {
+        const d = v.mr * 0.8;
+        ctx.fillStyle = "#ffd54a";
+        ctx.strokeStyle = "#000000cc";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(x, y - d); ctx.lineTo(x + d, y); ctx.lineTo(x, y + d); ctx.lineTo(x - d, y);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+    }
+    return { x, y, name: it.count > 1 ? `${it.name} x${it.count}` : it.name };
+}
+
 function drawMob(v, { x, y, sprite }) {
     const { ctx } = v;
     if (sprite) {
@@ -348,6 +371,21 @@ function drawBot(v, s, b, mobs) {
     ctx.lineWidth = 1.5;
     ctx.stroke();
     drawNamePlate(v, s, b.name || "?", x, y + v.r, mobs);
+}
+
+/** Unity's ItemObtainedToast: icon + "Jellopy - 1 obtained." at the top middle, name-plate style. */
+function drawToast(v, { text, icon }) {
+    const { ctx } = v;
+    const size = Math.max(10, Math.round(v.fs * 0.9)), img = image(icon), k = img ? size * 1.6 : 0;
+    ctx.font = font(size, true);
+    ctx.textBaseline = "middle";
+    const w = ctx.measureText(text).width + (k ? k + 6 : 0), h = Math.max(size, k) + 8;
+    const left = ctx.canvas.width / 2 - w / 2, top = 8 * dpr(), mid = top + h / 2;
+    ctx.fillStyle = "#000000aa";
+    ctx.fillRect(left - 6, top, w + 12, h);
+    if (img) ctx.drawImage(img, left, mid - k / 2, k, k);
+    ctx.fillStyle = COLORS.text;
+    ctx.fillText(text, left + (k ? k + 6 : 0), mid);
 }
 
 /** Skill shout ("Bash!!") above the dot, styled like the name plate. */
@@ -558,7 +596,7 @@ function drawNumber(v, n, life) {
     const unit = v.spriteHeight * 0.5; // one Unity world unit on the minimap, relative to the sprite
     const size = Math.min(evalCurve(P.size, life), P.maxSize ?? Infinity) * (P.scale ?? 1);
     const x = n.x + (n.dir || 0) * P.distance * unit * life * 0.5;
-    const y = n.y - evalCurve(P.trajectory, life) * P.height * unit;
+    const y = n.y - evalCurve(P.trajectory, life) * P.height * unit * 0.6; // minimap: Unity's full arc (4 units) read too high, 0.3 too low
     ctx.globalAlpha = clamp01(evalCurve(P.alpha, life));
     ctx.font = font(Math.round(9 * dpr() * size), true);
     ctx.lineWidth = Math.max(2, 2.5 * size);

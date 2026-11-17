@@ -1049,7 +1049,7 @@ public sealed class BotSession : IAsyncDisposable
         {
             var type = (ItemType)r.ReadByte();
             var bagId = r.ReadInt32();
-            r.ReadInt16();              // change (delta) — for the client's popup only
+            var change = r.ReadInt16(); // delta: the dashboard map's "obtained" toast (Unity's ItemObtainedToast)
             World.Self.Weight = r.ReadInt32();
             if (type == ItemType.RegularItem)
             {
@@ -1080,6 +1080,8 @@ public sealed class BotSession : IAsyncDisposable
                     Refine = refine, UniqueId = guid, Cards = cards,
                 });
             }
+            if (inv.FirstOrDefault(i => i.BagId == bagId) is { } got)
+                (World.Self.LastObtainedItemId, World.Self.LastObtainedCount, World.Self.LastObtainedAt) = (got.ItemId, change, DateTime.UtcNow);
         }
         else // remove
         {
