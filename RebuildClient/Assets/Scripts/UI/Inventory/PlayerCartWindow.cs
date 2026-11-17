@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+using Assets.Scripts.UI.ConfigWindow;
+using Assets.Scripts.UI.Classic;
+using System.Collections.Generic;
 using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
@@ -10,8 +12,16 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.Inventory
 {
-    public class PlayerCartWindow : WindowBase
+    public class PlayerCartWindow : WindowBase, IStyledWindow
     {
+        public override void HideWindow()
+        {
+            base.HideWindow();
+            UiManagerV2.Instance?.TrackClosed(this);
+        }
+
+        public bool IsVisible => gameObject.activeSelf;
+
         public Vector2 UnitSize;
         public RectTransform ItemBoxRoot;
         public RectTransform ViewBoxTransform;
@@ -25,6 +35,7 @@ namespace Assets.Scripts.UI.Inventory
         
         public void Awake()
         {
+            UiManagerV2.Instance.RegisterWindow(WindowID.CART, this, UiStyle.Modern, KeyCode.W);
             if (ItemBoxRoot.childCount != 0)
                 Destroy(ItemBoxRoot.transform.GetChild(0).gameObject);
         }
@@ -38,6 +49,7 @@ namespace Assets.Scripts.UI.Inventory
         public override void ShowWindow()
         {
             base.ShowWindow();
+            UiManagerV2.Instance?.TrackOpen(this);
             UpdateActiveVisibleBag();
         }
         

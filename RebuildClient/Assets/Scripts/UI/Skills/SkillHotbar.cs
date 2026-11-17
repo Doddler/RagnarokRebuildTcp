@@ -1,4 +1,5 @@
-﻿using System;
+using Assets.Scripts.UI.Classic;
+using System;
 using System.Collections.Generic;
 using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
@@ -11,8 +12,27 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.UI
 {
-    public class SkillHotbar : WindowBase
+    public class SkillHotbar : WindowBase, IStyledWindow
     {
+        public override void HideWindow()
+        {
+            base.HideWindow();
+            UiManagerV2.Instance?.TrackClosed(this);
+        }
+
+        public override void ShowWindow()
+        {
+            base.ShowWindow();
+            UiManagerV2.Instance?.TrackOpen(this);
+        }
+
+        private void Awake()
+        {
+            UiManagerV2.Instance.RegisterWindow(WindowID.HOTBAR, this, UiStyle.Modern);
+        }
+
+        public bool IsVisible => gameObject.activeSelf;
+
         public Transform SkillBarContainer;
         public GameObject SkillBarRowTemplate;
         public GameObject EntryPrefab;
@@ -34,15 +54,15 @@ namespace Assets.Scripts.UI
             var img = GetComponent<Image>();
             isTransparentState = !isTransparentState;
 
-            var color = isTransparentState ? new Color(1f, 1f, 1f, 1 / 255f) : Color.white; 
-            
+            var color = isTransparentState ? new Color(1f, 1f, 1f, 1 / 255f) : Color.white;
+
             img.color = color;
             foreach (var entry in HotBarEntries)
             {
                 entry.GetComponent<Image>().color = color;
             }
         }
-        
+
         public void UpdateDrag() //drag as in resize drag
         {
             // Debug.Log(ResizeHandle.CurrentStepSize);
@@ -117,7 +137,7 @@ namespace Assets.Scripts.UI
                 {
                     if (entry.ItemId >= 20000)
                     {
-                        if(PlayerState.Instance.EquippedBagIdHashes.Contains(HotBarEntries[i].DragItem.ItemId))
+                        if (PlayerState.Instance.EquippedBagIdHashes.Contains(HotBarEntries[i].DragItem.ItemId))
                             entry.SetEquipped();
                         else
                             entry.HideCount();
@@ -237,7 +257,7 @@ namespace Assets.Scripts.UI
                         ActivateHotBarEntry(HotBarEntries[i]);
                     if (mod == KeyCode.LeftAlt && !hasControl && !hasShift && hasAlt)
                         ActivateHotBarEntry(HotBarEntries[i]);
-                    if(mod == KeyCode.None && !hasShift && !hasControl && !hasAlt)
+                    if (mod == KeyCode.None && !hasShift && !hasControl && !hasAlt)
                         ActivateHotBarEntry(HotBarEntries[i]);
                 }
             }

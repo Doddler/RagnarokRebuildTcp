@@ -1,4 +1,5 @@
-﻿using System;
+using Assets.Scripts.UI.Classic;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Assets.Scripts.Network;
@@ -15,8 +16,10 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.UI
 {
-    public class SkillWindow : WindowBase
+    public class SkillWindow : WindowBase, IStyledWindow
     {
+        public bool IsVisible => gameObject.activeSelf;
+
         public SkillWindowEntry TemplateObject;
         public Sprite LevelUpNormal;
         public SpriteAtlas SkillAtlas;
@@ -61,6 +64,7 @@ namespace Assets.Scripts.UI
             HighlightedEntry?.ReleaseHighlightSkillBox();
             HighlightedEntry = null;
             base.HideWindow();
+            UiManagerV2.Instance?.TrackClosed(this);
         }
 
         public void ShowTooltip(CharacterSkill skill, SkillWindowEntry entry)
@@ -199,6 +203,7 @@ namespace Assets.Scripts.UI
         public override void ShowWindow()
         {
             base.ShowWindow();
+            UiManagerV2.Instance?.TrackOpen(this);
             Initialize();
         }
 
@@ -378,6 +383,7 @@ namespace Assets.Scripts.UI
 
         public void Awake()
         {
+            UiManagerV2.Instance.RegisterWindow(WindowID.SKILLS, this, UiStyle.Modern, KeyCode.S);
             TemplateObject.gameObject.SetActive(false);
             tooltipWidth = TooltipBox.sizeDelta.x;
             tooltipTextTemplate = TooltipText.text;

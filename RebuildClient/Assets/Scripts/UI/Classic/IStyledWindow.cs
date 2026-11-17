@@ -3,6 +3,7 @@ namespace Assets.Scripts.UI.Classic
 {
     public interface IStyledWindow
     {
+        bool IsVisible { get; }
         public void ShowWindow();
         public void HideWindow();
         public void ToggleVisibility();

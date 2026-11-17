@@ -1802,14 +1802,7 @@ namespace Assets.Scripts
                     InTextBox = false;
                     TextBoxInputField.text = "";
                 }
-                else if (UiManager.Instance.WindowStack.Count > 0)
-                {
-                    UiManager.Instance.CloseLastWindow();
-                }
-                // else
-                // {
-                //     UiManager.Instance.MainMenu.ShowWindow();
-                // }
+                // Window dismissal is owned by UiManagerV2.
 
                 EventSystem.current.SetSelectedGameObject(null);
             }
@@ -1900,56 +1893,9 @@ namespace Assets.Scripts
             }
 
 
-            // WASD for movement or for ui panels
-            if (GameConfig.Data.EnableWASDControls)
-            {
-                if (!inInputUI)
-                {
-                    WASDMove();
-                }
-            }
-            else
-            {
-                if (!inInputUI && Input.GetKeyDown(KeyCode.W))
-                {
-#if UNITY_EDITOR
-                    if (Input.GetKey(KeyCode.LeftShift))
-                    {
-                        if (!WarpPanel.activeInHierarchy)
-                            WarpPanel.GetComponent<WarpWindow>().ShowWindow();
-                        else
-                            WarpPanel.GetComponent<WarpWindow>().HideWindow();
-                    }
-                    else
-#endif
-                        if (PlayerState.Instance.HasCart)
-                            UiManager.Instance.CartWindow.ToggleVisibility();
-                }
-
-                //if (Input.GetKeyDown(KeyCode.S))
-                //	controllable.SpriteAnimator.Standby = true;
-
-                if (!inInputUI && Input.GetKeyDown(KeyCode.S))
-                    UiManager.Instance.SkillManager.ToggleVisibility();
-
-                if (!inInputUI && Input.GetKeyDown(KeyCode.A))
-                    UiManager.Instance.StatusWindow.ToggleVisibility();
-
-                if (!inInputUI && Input.GetKeyDown(KeyCode.D))
-                    UiManager.Instance.EmoteManager.GetComponent<WindowBase>().ToggleVisibility();
-            }
-
-            if (!inInputUI && Input.GetKeyDown(KeyCode.O))
-                UiManager.Instance.ConfigManager.ToggleVisibility();
-
-            if (!inInputUI && Input.GetKeyDown(KeyCode.Q))
-                UiManager.Instance.EquipmentWindow.ToggleVisibility();
-
-            if (!inInputUI && Input.GetKeyDown(KeyCode.E))
-                UiManager.Instance.InventoryWindow.ToggleVisibility();
-
-            if (!inInputUI && Input.GetKeyDown(KeyCode.I) && UiManager.Instance.ClientDatabaseWindow != null)
-                UiManager.Instance.ClientDatabaseWindow.ToggleVisibility();
+            // Window visibility shortcuts are owned by UiManagerV2.
+            if (GameConfig.Data.EnableWASDControls && !inInputUI)
+                WASDMove();
 
             //remove the flag to enable cinemachine recording on this
 #if UNITY_EDITOR

@@ -1,12 +1,25 @@
-﻿using System;
+using Assets.Scripts.UI.Classic;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.ConfigWindow
 {
-    public partial class OptionsWindow : WindowBase
+    public partial class OptionsWindow : WindowBase, IStyledWindow
     {
+        public override void HideWindow()
+        {
+            base.HideWindow();
+            UiManagerV2.Instance?.TrackClosed(this);
+        }
+
+        public override void ShowWindow()
+        {
+            base.ShowWindow();
+            UiManagerV2.Instance?.TrackOpen(this);
+        }
+
         public ScrollRect MainScrollArea;
         public List<GameObject> TabContents;
         public List<Button> TabButtons;
@@ -16,11 +29,18 @@ namespace Assets.Scripts.UI.ConfigWindow
         private Action uiUpdateEvent;
         private bool isInitialized;
 
+        public bool IsVisible => gameObject.activeSelf;
+
+        public void Awake()
+        {
+            UiManagerV2.Instance.RegisterWindow(WindowID.OPTIONS, this, UiStyle.Modern, KeyCode.O);
+        }
+
         public void Initialize()
         {
             if (isInitialized || TabContents == null || TabContents.Count <= 0 || TabButtons == null || TabButtons.Count <= 0)
                 return;
-            
+
 
             currentTab = 0;
 
@@ -41,7 +61,7 @@ namespace Assets.Scripts.UI.ConfigWindow
             InitializeDisplayOptions();
             isInitialized = true;
             //RefreshGameSettings();
-            
+
             ColorPickerObject.SetActive(currentTab == colorPickerTab);
         }
 
@@ -53,9 +73,9 @@ namespace Assets.Scripts.UI.ConfigWindow
             TabButtons[id].interactable = false;
             currentTab = id;
             MainScrollArea.content = TabContents[currentTab].transform as RectTransform;
-            
+
             ColorPickerObject.SetActive(currentTab == colorPickerTab);
-                
+
         }
 
         public void Update()

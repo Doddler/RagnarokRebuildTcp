@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+using Assets.Scripts.UI.ConfigWindow;
+using Assets.Scripts.UI.Classic;
+using System.Collections.Generic;
 using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
 using RebuildSharedData.Enum.EntityStats;
@@ -8,8 +10,27 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.Stats
 {
-    public class StatsWindow : WindowBase
+    public class StatsWindow : WindowBase, IStyledWindow
     {
+        public override void HideWindow()
+        {
+            base.HideWindow();
+            UiManagerV2.Instance?.TrackClosed(this);
+        }
+
+        public override void ShowWindow()
+        {
+            base.ShowWindow();
+            UiManagerV2.Instance?.TrackOpen(this);
+        }
+
+        private void Awake()
+        {
+            UiManagerV2.Instance.RegisterWindow(WindowID.STATS, this, UiStyle.Modern, KeyCode.A);
+        }
+
+        public bool IsVisible => gameObject.activeSelf;
+
         public List<TextMeshProUGUI> BaseStatText;
         public List<TextMeshProUGUI> AddStatText;
         public List<TextMeshProUGUI> StatPointCostText;

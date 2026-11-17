@@ -1,3 +1,4 @@
+using Assets.Scripts.UI.ConfigWindow;
 using System.Collections.Generic;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
@@ -77,7 +78,7 @@ namespace Assets.Scripts.UI.Classic
         {
             base.Awake();
             Instance = this;
-            UiManagerV2.Instance.RegisterWindow(WindowID.EQUIPMENT, this, KeyCode.Q);
+            UiManagerV2.Instance.RegisterWindow(WindowID.EQUIPMENT, this, UiStyle.Classic, KeyCode.Q);
         }
 
         private void Start()

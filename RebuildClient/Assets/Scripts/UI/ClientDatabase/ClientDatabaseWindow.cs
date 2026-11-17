@@ -1,3 +1,5 @@
+using Assets.Scripts.UI.ConfigWindow;
+using Assets.Scripts.UI.Classic;
 using System;
 using System.Collections.Generic;
 using Assets.Scripts.Network;
@@ -10,8 +12,27 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.ClientDatabase
 {
-    public partial class ClientDatabaseWindow : WindowBase
+    public partial class ClientDatabaseWindow : WindowBase, IStyledWindow
     {
+        public override void HideWindow()
+        {
+            base.HideWindow();
+            UiManagerV2.Instance?.TrackClosed(this);
+        }
+
+        public override void ShowWindow()
+        {
+            base.ShowWindow();
+            UiManagerV2.Instance?.TrackOpen(this);
+        }
+
+        private void Awake()
+        {
+            UiManagerV2.Instance.RegisterWindow(WindowID.CLIENT_DATABASE, this, UiStyle.Modern, KeyCode.I);
+        }
+
+        public bool IsVisible => gameObject.activeSelf;
+
         public TMP_FontAsset TmpFont;
         public Material MinimapMaterial;
 

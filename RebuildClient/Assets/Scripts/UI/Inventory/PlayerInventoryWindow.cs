@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
+using Assets.Scripts.UI.Classic;
+using Assets.Scripts.UI.ConfigWindow;
 using RebuildSharedData.Enum;
 using TMPro;
 using UnityEngine;
@@ -10,8 +12,10 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.Inventory
 {
-    public class PlayerInventoryWindow : WindowBase
+    public class PlayerInventoryWindow : WindowBase, IStyledWindow
     {
+        public bool IsVisible => gameObject.activeSelf;
+
         public Button[] UiTabButtons;
         public GameObject[] UiButtonGroups;
         public Vector2 UnitSize;
@@ -25,28 +29,34 @@ namespace Assets.Scripts.UI.Inventory
         private int activeEntryCount;
         private int activeItemSection;
         private bool isInit;
-        
-        
 
         public void Awake()
         {
             if (ItemBoxRoot.childCount != 0)
                 Destroy(ItemBoxRoot.transform.GetChild(0).gameObject);
+            UiManagerV2.Instance.RegisterWindow(WindowID.INVENTORY, this, UiStyle.Modern, KeyCode.E);
         }
 
         public override void ShowWindow()
         {
             base.ShowWindow();
+            UiManagerV2.Instance?.TrackOpen(this);
             UpdateActiveVisibleBag();
             CartButton.gameObject.SetActive(PlayerState.Instance.HasCart);
         }
 
+        public override void HideWindow()
+        {
+            UiManagerV2.Instance?.TrackClosed(this);
+            base.HideWindow();
+        }
+
         public void ToggleCart()
         {
-            if(PlayerState.Instance.HasCart)
+            if (PlayerState.Instance.HasCart)
                 UiManager.Instance.CartWindow.ShowWindow();
         }
-        
+
         public void ClickTabButton(int tab)
         {
             switch (tab)
@@ -118,31 +128,31 @@ namespace Assets.Scripts.UI.Inventory
                     CameraFollower.Instance.BeginTargetingItem(item.Id, SkillTarget.Enemy);
                     break;
                 default:
-                {
-                    var itemClass = item.ItemData.ItemClass;
-                    if (itemClass == ItemClass.Weapon || itemClass == ItemClass.Equipment || itemClass == ItemClass.Ammo)
                     {
-                        if (!state.EquippedItems.Contains(item.BagSlotId))
+                        var itemClass = item.ItemData.ItemClass;
+                        if (itemClass == ItemClass.Weapon || itemClass == ItemClass.Equipment || itemClass == ItemClass.Ammo)
                         {
-                            if (itemClass == ItemClass.Ammo)
+                            if (!state.EquippedItems.Contains(item.BagSlotId))
                             {
-                                if (state.AmmoId == item.Id)
-                                    itemEntry.DragItem.BlueCount();
+                                if (itemClass == ItemClass.Ammo)
+                                {
+                                    if (state.AmmoId == item.Id)
+                                        itemEntry.DragItem.BlueCount();
+                                }
+                                else
+                                    itemEntry.DragItem.HideCount();
+
+                                NetworkManager.Instance.SendEquipItem(item.BagSlotId);
                             }
-                            else
-                                itemEntry.DragItem.HideCount();
-
-                            NetworkManager.Instance.SendEquipItem(item.BagSlotId);
                         }
-                    }
-                    else if (itemClass == ItemClass.Card)
-                        CardSocketWindow.BeginCardSocketing(item);
+                        else if (itemClass == ItemClass.Card)
+                            CardSocketWindow.BeginCardSocketing(item);
 
-                    break;
-                }
+                        break;
+                    }
             }
         }
-        
+
         public void UpdateActiveVisibleBag()
         {
             if (!gameObject.activeSelf || PlayerState.Instance == null)
@@ -158,9 +168,9 @@ namespace Assets.Scripts.UI.Inventory
             var weightPercent = curWeight * 100 / totalWeight;
             var countText = bagItems.Count < 190 ? $"{bagItems.Count}/200" : $"<color=red>{bagItems.Count}</color>/200";
             var percentText = weightPercent < 90 ? $"{weightPercent}%" : $"<color=red>{weightPercent}%</color>";
-            
+
             WeightText.text = $"Items: {countText}  Weight: {curWeight}/{totalWeight} ({percentText})";
-            
+
             foreach (var bagEntry in bagItems)
             {
                 var item = bagEntry.Value;
@@ -201,7 +211,7 @@ namespace Assets.Scripts.UI.Inventory
 
                 activeEntryCount++;
             }
-            
+
             var left = ItemBoxRoot.anchoredPosition;
             var entriesPerRow = (int)((ViewBoxTransform.rect.width - 40 + 5 - left.x) / UnitSize.x); //the 5 is cause there's no spacing after the last item in a row
             var requiredRows = Mathf.CeilToInt((float)activeEntryCount / entriesPerRow);
@@ -210,7 +220,7 @@ namespace Assets.Scripts.UI.Inventory
             var minRows = (int)((ViewBoxTransform.rect.height - 8) / UnitSize.y);
             var minBoxes = entriesPerRow * minRows;
             var totalBoxes = Mathf.Max(requiredBoxes, minBoxes);
-            
+
             // Debug.Log($"TotalBoxes: {totalBoxes} EntryList.Count: {entryList.Count} ActiveEntryCount: {activeEntryCount}");
 
             while (totalBoxes > entryList.Count)
@@ -219,7 +229,7 @@ namespace Assets.Scripts.UI.Inventory
                 var drag = newEntry.GetComponent<InventoryEntry>();
                 entryList.Add(drag);
             }
-            
+
             // Debug.Log($"EntriesPerRow:{entriesPerRow} RequiredRows:{requiredRows} RequiredBoxes:{requiredBoxes} MinBoxes:{minBoxes} MinRows: {minRows} Rect:{ViewBoxTransform.rect}");
 
             for (var i = activeEntryCount; i < entryList.Count; i++)

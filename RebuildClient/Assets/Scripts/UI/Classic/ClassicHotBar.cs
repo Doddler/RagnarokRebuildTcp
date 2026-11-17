@@ -1,11 +1,14 @@
+using Assets.Scripts.UI.ConfigWindow;
 using RO_Flex_UI.Components;
 using RO_Flex_UI.Panels;
 using UnityEngine;
 
 namespace Assets.Scripts.UI.Classic
 {
-    public class ClassicHotBar : Window
+    public class ClassicHotBar : Window, IStyledWindow
     {
+        public bool IsVisible => gameObject.activeSelf;
+
         [SerializeField] private IconAmount slotPrefab;
         [SerializeField] private Transform slotContainer;
         [SerializeField] private int containerCount;
@@ -16,8 +19,21 @@ namespace Assets.Scripts.UI.Classic
         protected override void Awake()
         {
             base.Awake();
+            UiManagerV2.Instance.RegisterWindow(WindowID.HOTBAR, this, UiStyle.Classic);
             slotPrefab.gameObject.SetActive(false);
             slotContainer.gameObject.SetActive(false);
+        }
+
+        public override void ShowWindow()
+        {
+            base.ShowWindow();
+            UiManagerV2.Instance?.TrackOpen(this);
+        }
+
+        public override void HideWindow()
+        {
+            UiManagerV2.Instance?.TrackClosed(this);
+            base.HideWindow();
         }
 
         protected void Start()

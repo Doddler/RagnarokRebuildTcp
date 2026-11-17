@@ -1,3 +1,4 @@
+using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.PlayerControl;
 using RO_Flex_UI.Components;
 using RO_Flex_UI.Panels;
@@ -60,7 +61,7 @@ namespace Assets.Scripts.UI.Classic
                 Debug.LogWarning($"[{name}] Missing reference for Swap Panel.");
 
             playerState = PlayerState.Instance;
-            UiManagerV2.Instance.RegisterWindow(WindowID.PLAYER_INFO, this);
+            UiManagerV2.Instance.RegisterWindow(WindowID.PLAYER_INFO, this, UiStyle.Classic);
         }
 
         private void Start()

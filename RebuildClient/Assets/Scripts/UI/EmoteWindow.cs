@@ -1,3 +1,5 @@
+using Assets.Scripts.UI.ConfigWindow;
+using Assets.Scripts.UI.Classic;
 using Assets.Scripts.Sprites;
 using PlayerControl;
 using RebuildSharedData.ClientTypes;
@@ -9,8 +11,27 @@ using UnityEngine.AddressableAssets;
 
 namespace Assets.Scripts.UI
 {
-    public class EmoteWindow : WindowBase
+    public class EmoteWindow : WindowBase, IStyledWindow
     {
+        public override void HideWindow()
+        {
+            base.HideWindow();
+            UiManagerV2.Instance?.TrackClosed(this);
+        }
+
+        public override void ShowWindow()
+        {
+            base.ShowWindow();
+            UiManagerV2.Instance?.TrackOpen(this);
+        }
+
+        private void Awake()
+        {
+            UiManagerV2.Instance.RegisterWindow(WindowID.EMOTES, this, UiStyle.Modern, KeyCode.D);
+        }
+
+        public bool IsVisible => gameObject.activeSelf;
+
         public GameObject ContentArea;
         public GameObject EntryTemplate;
         public RoSpriteRendererUI EmoteRenderer;

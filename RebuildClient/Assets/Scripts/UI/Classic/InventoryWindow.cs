@@ -1,3 +1,4 @@
+using Assets.Scripts.UI.ConfigWindow;
 using System.Collections.Generic;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
@@ -34,7 +35,7 @@ namespace Assets.Scripts.UI.Classic
         protected override void Awake()
         {
             base.Awake();
-            UiManagerV2.Instance.RegisterWindow(WindowID.INVENTORY, this, KeyCode.E);
+            UiManagerV2.Instance.RegisterWindow(WindowID.INVENTORY, this, UiStyle.Classic, KeyCode.E);
             if (GetComponent<ClassicInventoryDropZone>() == null)
                 gameObject.AddComponent<ClassicInventoryDropZone>();
         }

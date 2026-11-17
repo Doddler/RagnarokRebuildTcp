@@ -461,7 +461,7 @@ public class UiManager : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.F10) || Input.GetKeyDown(KeyCode.F12))
-            SkillHotbar.ToggleVisibility();
+            Classic.UiManagerV2.Instance.Get(Classic.WindowID.HOTBAR)?.ToggleVisibility();
 
         // if(Input.GetKeyDown(KeyCode.O) && (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)))
         //     ConfigManager.ToggleVisibility();

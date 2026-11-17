@@ -1,3 +1,4 @@
+using Assets.Scripts.UI.ConfigWindow;
 using System.Collections.Generic;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
@@ -35,7 +36,7 @@ namespace Assets.Scripts.UI.Classic
             // Only deactivate an in-scene template, never the source prefab asset.
             if (skillEntryPrefab != null && skillEntryPrefab.gameObject.scene.IsValid())
                 skillEntryPrefab.gameObject.SetActive(false);
-            UiManagerV2.Instance.RegisterWindow(WindowID.SKILLS, this, KeyCode.S);
+            UiManagerV2.Instance.RegisterWindow(WindowID.SKILLS, this, UiStyle.Classic, KeyCode.S);
         }
 
         private void Start()

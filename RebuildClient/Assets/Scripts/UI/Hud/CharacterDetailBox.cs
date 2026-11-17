@@ -1,3 +1,4 @@
+using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.UI.Classic;
 using RebuildSharedData.Enum;
@@ -11,6 +12,8 @@ namespace Assets.Scripts.UI.Hud
 {
     public class CharacterDetailBox : MonoBehaviour, IStyledWindow, IPointerEnterHandler, IPointerExitHandler
     {
+        public bool IsVisible => gameObject.activeSelf;
+
         private PlayerState playerState;
 
         public TextMeshProUGUI CharacterName;
@@ -34,7 +37,7 @@ namespace Assets.Scripts.UI.Hud
         private void Awake()
         {
             playerState = PlayerState.Instance;
-            UiManagerV2.Instance.RegisterWindow(WindowID.PLAYER_INFO_MODERN, this);
+            UiManagerV2.Instance.RegisterWindow(WindowID.PLAYER_INFO, this, UiStyle.Modern);
         }
 
         private void Start()

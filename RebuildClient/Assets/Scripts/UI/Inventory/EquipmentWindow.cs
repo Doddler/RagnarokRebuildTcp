@@ -1,4 +1,7 @@
-﻿using Assets.Scripts.Network;
+using UnityEngine;
+using Assets.Scripts.UI.ConfigWindow;
+using Assets.Scripts.UI.Classic;
+using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using RebuildSharedData.Enum;
@@ -7,8 +10,27 @@ using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.UI.Inventory
 {
-    public class EquipmentWindow : WindowBase
+    public class EquipmentWindow : WindowBase, IStyledWindow
     {
+        public override void HideWindow()
+        {
+            base.HideWindow();
+            UiManagerV2.Instance?.TrackClosed(this);
+        }
+
+        public override void ShowWindow()
+        {
+            base.ShowWindow();
+            UiManagerV2.Instance?.TrackOpen(this);
+        }
+
+        private void Awake()
+        {
+            UiManagerV2.Instance.RegisterWindow(WindowID.EQUIPMENT, this, UiStyle.Modern, KeyCode.Q);
+        }
+
+        public bool IsVisible => gameObject.activeSelf;
+
         public EquipWindowEntry[] EquipEntries;
         public UiPlayerSprite PlayerSprite;
         public TextMeshProUGUI AmmoType;

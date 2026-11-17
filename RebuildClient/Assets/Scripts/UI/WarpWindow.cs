@@ -1,3 +1,5 @@
+using Assets.Scripts.UI.ConfigWindow;
+using Assets.Scripts.UI.Classic;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,8 +9,22 @@ using Assets.Scripts.Utility;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WarpWindow : WindowBase
+public class WarpWindow : WindowBase, IStyledWindow
 {
+        public override void HideWindow()
+        {
+            base.HideWindow();
+            UiManagerV2.Instance?.TrackClosed(this);
+        }
+
+        public override void ShowWindow()
+        {
+            base.ShowWindow();
+            UiManagerV2.Instance?.TrackOpen(this);
+        }
+
+        public bool IsVisible => gameObject.activeSelf;
+
     public GameObject InitialRowPrefab;
     public GameObject RowContainer;
 
@@ -25,6 +41,7 @@ public class WarpWindow : WindowBase
 
     public void Awake()
     {
+            UiManagerV2.Instance.RegisterWindow(WindowID.WARP, this, UiStyle.Modern);
         if (!isInitialized)
             Init();
     }
