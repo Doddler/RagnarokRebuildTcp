@@ -600,7 +600,10 @@ public sealed partial class BotBehavior
         if (!map.TryFindWalkableNear(target.X, target.Y, 4, out var gx, out var gy)) return false;
         // Reachability check uses the danger overlay too — a target that's only reachable through a kill-
         // you mob's aggro should be treated as effectively unreachable for safety.
-        return map.FindPath(snap.SelfPos.X, snap.SelfPos.Y, gx, gy, 6000, MakePathCost(snap.Map)) != null;
+        var path = map.FindPath(snap.SelfPos.X, snap.SelfPos.Y, gx, gy, 6000, MakePathCost(snap.Map));
+        // A mob across a wall is in view but the walk loops away from it: it leaves view mid-detour, we wander back,
+        // see it, re-engage (resetting the stuck clock) — Bot2 ping-ponged with a Stainer 60-76 cells of walk away.
+        return path != null && path.Count - 1 <= Math.Max(30, 2.5 * Dist(snap.SelfPos, target));
     }
 
     /// <summary>Build a per-cell HAZARD-ONLY cost closure — for path searches where the goal itself is
@@ -1206,7 +1209,6 @@ public sealed partial class BotBehavior
     /// <summary>The active wander A* destination, for the dashboard minimap.</summary>
     public Position? WanderTarget => DateTime.UtcNow <= _wanderTargetUntil ? _wanderTarget : null;
     private DateTime _nextWanderWedgeLog = DateTime.MinValue;
-    private const int WanderStep = 35;       // far-destination offset in cells (~7 s of walking)
     private const int WanderHopCells = 12;   // per-WalkTo waypoint distance — safely under the server cap
 
     private async Task WanderAsync(Snapshot snap, CancellationToken ct)
@@ -1253,8 +1255,11 @@ public sealed partial class BotBehavior
             const int zoneMargin = 3;
             for (var attempt = 0; attempt < 6; attempt++)
             {
-                var tx = self.X + _heading.dx * WanderStep;
-                var ty = self.Y + _heading.dy * WanderStep;
+                // ponytail: a random 35-cell hop per 15 s is a random walk — net drift ~35·√n, so the bot circled one
+                // corner. Aim at a random far cell anywhere on the map instead; combat still interrupts on the way.
+                var tx = Random.Shared.Next(1, map.Width - 1);
+                var ty = Random.Shared.Next(1, map.Height - 1);
+                if (zone == null && Dist(self, new Position(tx, ty)) < Math.Min(map.Width, map.Height) / 3 && attempt < 5) continue;
                 // Outside the camp every try used to aim at its centre, so one unreachable centre failed all six, forever:
                 // Bot2 sat 23 min on mjo_dun01 where a Fly Wing dropped it. Centre once, then camp cells, then plain wander.
                 var useZone = zone != null && attempt < 4;
@@ -1273,10 +1278,11 @@ public sealed partial class BotBehavior
                 // A*-verify reachability with a generous budget — far targets need more nodes than the old
                 // 2000 cap allowed, but a 6000 budget still completes in well under a millisecond.
                 var pathCost = MakePathCost(snap.Map);
-                var p = map.FindPath(self.X, self.Y, fx, fy, useZone ? 0 : 6000, pathCost); // the camp may be across a maze
+                var p = map.FindPath(self.X, self.Y, fx, fy, 0, pathCost); // far targets / camps may be across a maze
                 if (p == null) { _heading = RandomHeading(); continue; }
                 _wanderTarget = new Position(fx, fy);
-                _wanderTargetUntil = DateTime.UtcNow.AddSeconds(15);
+                // Hold the target long enough to actually get there (0.15 s/cell walking, x2 for fights on the way).
+                _wanderTargetUntil = DateTime.UtcNow.AddSeconds(useZone ? 15 : 20 + p.Count * 0.3);
                 OnLog?.Invoke(!useZone ? $"Wander: heading to ({fx},{fy}) — {p.Count} cells via A*."
                     : zone!.Contains(self.X, self.Y, zoneMargin) ? $"Wander: staying in the camp, heading to ({fx},{fy}) — {p.Count} cells via A*."
                     : $"Wander: heading to the camp at ({fx},{fy}) this map was chosen for ({_mapEstimates.GetValueOrDefault(snap.Map)?.Note}) — {p.Count} cells via A*.");
@@ -1297,7 +1303,7 @@ public sealed partial class BotBehavior
         // adapt to a moving fog of new hazards / unwalkable cells without going through stuck recovery.
         // Re-uses the danger overlay so a freshly-spawned aggressive mob in our path triggers a detour
         // mid-walk without needing to enter AvoidHazards / flee mode.
-        var path = map.FindPath(self.X, self.Y, _wanderTarget!.Value.X, _wanderTarget!.Value.Y, 6000, MakePathCost(snap.Map));
+        var path = map.FindPath(self.X, self.Y, _wanderTarget!.Value.X, _wanderTarget!.Value.Y, 0, MakePathCost(snap.Map));
         if (path == null || path.Count <= 1)
         {
             // Mid-route path break — drop the target so next tick picks a fresh one rather than thrashing.
