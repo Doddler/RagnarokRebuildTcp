@@ -160,6 +160,16 @@ const DAMAGE_PATH = {
     trajectory: [[0.0019874573, -0.0014190674, 4.052195, 4.052195], [0.9942106, 0.011132479, -3.9042158, -3.9042158]],
     size: [[-0.0009186715, 5.0193124, -14.1374855, -14.1374855], [0.3964636, 0.99757385, -0.60127693, -0.3272466], [1, 0.8000686, -0.3272466, -0.3272466]],
     alpha: [[0, 1, -0.00026645948, -0.00026645948], [0.11452991, 0.9999695, -0.00026645948, -0.075074494], [0.56060225, 0.70585805, -1.3047085, -1.4544252], [1.0042865, 0.006022349, -0.2006653, -0.2006653]],
+    tween: 1, height: 4, distance: 4, color: "#ffffff",
+};
+// Multi-hit (Double Attack): EntityMessageQueue.SendDamageEvent shows each hit 0.2 s apart, and ServerControllable
+// .AttachDamageIndicator adds a yellow (#FFFF00) running total on ComboPath.asset that rides with the monster, each
+// new hit replacing the previous total (ComboIndicator.EndDamageIndicator).
+const COMBO_PATH = {
+    trajectory: [[0.0039138794, 0.51712036, 0.4858895, 0.4858895], [0.9932951, 0.9978503, 0.4858895, 0.4858895]],
+    size: [[0.0007741172, 0.0036451616, 18.02707, 18.02707], [0.10320092, 1.4825153, 2.0349398, 0.004584544], [0.9957344, 1.4866072, 0.004584544, 0.004584544]],
+    alpha: [[0, 1, -0.00006110869, -0.00006110869], [0.49939838, 0.9999695, -0.00006110869, -0.075074494], [0.75252, 0.70585805, -2.4358597, -2.8889782], [1.0042865, 0.006022349, -0.2006653, -0.2006653]],
+    tween: 3, height: 6, distance: 0, color: "#ffff00",
 };
 function evalCurve(keys, t) { // Unity's cubic Hermite AnimationCurve.Evaluate, clamped at the ends
     if (t <= keys[0][0]) return keys[0][1];
@@ -407,23 +417,34 @@ function render(canvas, payload) {
             if (d < best) { best = d; near = b; }
         }
         const dir = near && near.x !== m.x ? Math.sign(m.x - near.x) : (Math.random() < 0.5 ? -1 : 1);
-        flying.push({ value: before - m.hp, x, y: y - 6, dir, born: now });
+        const hits = Math.max(1, m.hits || 1), per = Math.round((before - m.hp) / hits);
+        for (let h = 0; h < hits; h++) {
+            const born = now + 200 * h;
+            flying.push({ path: DAMAGE_PATH, value: per, x, y: y - 6, dir, born });
+            if (hits > 1) flying.push({ path: COMBO_PATH, value: per * (h + 1), id: m.id, born });
+        }
     }
+    const barAt = new Map(hpBars.map(([m, x, y]) => [m.id, [x, y - 6]]));
     const unit = spriteHeight * 0.5; // one Unity world unit on the minimap, relative to the ~30 px sprite
     ctx.textAlign = "center";
     ctx.textBaseline = "alphabetic";
+    // A combo total that has started ends the older totals on the same monster.
+    const newestCombo = new Map();
+    for (const f of flying) if (f.id != null && f.born <= now && f.born > (newestCombo.get(f.id) ?? -1)) newestCombo.set(f.id, f.born);
     for (let i = flying.length - 1; i >= 0; i--) {
-        const f = flying[i], life = (now - f.born) / 1000;
-        if (life > 1) { flying.splice(i, 1); continue; }
-        const size = evalCurve(DAMAGE_PATH.size, life);
-        const fx = f.x + f.dir * 4 * unit * life * 0.5;
-        const fy = f.y - evalCurve(DAMAGE_PATH.trajectory, life) * 4 * unit;
-        ctx.globalAlpha = Math.max(0, Math.min(1, evalCurve(DAMAGE_PATH.alpha, life)));
+        const f = flying[i], P = f.path, life = (now - f.born) / 1000 / P.tween;
+        if (life > 1 || (f.id != null && f.born < (newestCombo.get(f.id) ?? -1))) { flying.splice(i, 1); continue; }
+        if (life < 0) continue; // a later hit of a multi-hit, not shown yet
+        if (f.id != null && barAt.has(f.id)) [f.x, f.y] = barAt.get(f.id); // the total rides with the monster
+        const size = evalCurve(P.size, life);
+        const fx = f.x + (f.dir || 0) * P.distance * unit * life * 0.5;
+        const fy = f.y - evalCurve(P.trajectory, life) * P.height * unit;
+        ctx.globalAlpha = Math.max(0, Math.min(1, evalCurve(P.alpha, life)));
         ctx.font = `bold ${Math.round(9 * (window.devicePixelRatio || 1) * size)}px system-ui, sans-serif`;
         ctx.lineWidth = Math.max(2, 2.5 * size);
         ctx.strokeStyle = "#000000";
         ctx.strokeText(String(f.value), fx, fy);
-        ctx.fillStyle = "#ffffff";
+        ctx.fillStyle = P.color;
         ctx.fillText(String(f.value), fx, fy);
     }
     ctx.globalAlpha = 1;

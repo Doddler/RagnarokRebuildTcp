@@ -141,12 +141,12 @@
 
         // Monsters are only known within some bot's view, so merge what every bot on this map sees (entity ids are
         // server-wide, so the same monster seen by two bots collapses to one dot).
-        var seen = new Dictionary<int, (int X, int Y, string Name, int Hp, int MaxHp)>();
+        var seen = new Dictionary<int, (int X, int Y, string Name, int Hp, int MaxHp, int Hits)>();
         foreach (var s in Bots.GetSnapshots().Where(s => s.InGame && string.Equals(s.Map, MapCode, StringComparison.OrdinalIgnoreCase)))
             Bots.GetSession(s.Id)?.WithState(w =>
             {
                 foreach (var e in w.Entities.Values)
-                    if (e.IsMonster) seen[e.Id] = (e.Position.X, e.Position.Y, e.Name, e.Hp, e.MaxHp);
+                    if (e.IsMonster) seen[e.Id] = (e.Position.X, e.Position.Y, e.Name, e.Hp, e.MaxHp, e.LastHitCount);
                 return 0;
             });
         // HP only for monsters some bot is dueling right now.
@@ -154,7 +154,7 @@
         var mobs = seen.Select(kv => new
         {
             id = kv.Key, x = kv.Value.X, y = kv.Value.Y, name = kv.Value.Name,
-            hp = dueling.Contains(kv.Key) && kv.Value.MaxHp > 0 ? kv.Value.Hp : (int?)null, maxHp = kv.Value.MaxHp,
+            hp = dueling.Contains(kv.Key) && kv.Value.MaxHp > 0 ? kv.Value.Hp : (int?)null, maxHp = kv.Value.MaxHp, hits = kv.Value.Hits,
         }).ToList();
         _species = seen.Values.GroupBy(m => m.Name).Select(g => (Name: g.Key, Count: g.Count()))
             .OrderByDescending(entry => entry.Count).ThenBy(entry => entry.Name).ToList();

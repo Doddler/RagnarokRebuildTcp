@@ -16,6 +16,8 @@ public sealed class EntityView
     public byte Level;
     public int Hp;
     public int MaxHp;
+    /// <summary>Hits in the last attack on this entity (2 = Double Attack); the dashboard splits damage numbers by it.</summary>
+    public int LastHitCount = 1;
 
     // Walk interpolation (#2): the reconstructed remaining path, seconds-per-cell, and the time the walk
     // started. Lets us estimate where a moving entity actually is between sparse position updates.

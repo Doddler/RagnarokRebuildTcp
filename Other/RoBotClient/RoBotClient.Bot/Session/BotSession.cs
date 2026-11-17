@@ -1224,7 +1224,7 @@ public sealed class BotSession : IAsyncDisposable
         var target = r.ReadInt32();   // target
         r.ReadByte();                 // dir
         r.ReadByte();                 // skill
-        r.ReadByte();                 // hitCount
+        var hitCount = r.ReadByte();
         r.ReadByte();                 // result
         var pos = r.ReadPosition();   // attacker's authoritative cell
         // remaining fields (per-hit display dmg, offhand dmg, timings, showMotion) drive visuals only.
@@ -1232,6 +1232,7 @@ public sealed class BotSession : IAsyncDisposable
         // arrives in the HitTarget packet (server applies Damage*HitCount+offhand once). Counting both
         // double-decremented the target's tracked Hp, making it look "dead" after 1-2 hits so the bot
         // abandoned a still-alive monster. The real client only updates Hp from HitTarget (OnMessageHit).
+        if (World.Entities.TryGetValue(target, out var struck)) struck.LastHitCount = Math.Max(1, (int)hitCount);
         if (target == World.Self.EntityId && World.Entities.TryGetValue(src, out var attacker))
             _lastAttackerName = attacker.Name;
         if (World.Entities.TryGetValue(src, out var atk))
