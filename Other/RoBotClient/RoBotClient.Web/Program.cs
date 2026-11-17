@@ -50,6 +50,9 @@ builder.Services.AddSingleton(new BotProgressStore(string.IsNullOrEmpty(repoRoBo
 // Per-character map move audit (predicted vs measured breakdown per move) at bot-map-audit/<character>.jsonl.
 builder.Services.AddSingleton(new MapAuditStore(string.IsNullOrEmpty(repoRoBot) ? "" : Path.Combine(repoRoBot, "bot-map-audit")));
 
+// Per-character learned state (map bans, death/flee counters, monster avoidance, kill timings) at bot-memory.json.
+builder.Services.AddSingleton(new BotMemoryStore(string.IsNullOrEmpty(repoRoBot) ? "" : Path.Combine(repoRoBot, "bot-memory.json")));
+
 builder.Services.AddSingleton<BotManager>();
 
 // Auto-formed dynamic squads: every ~8s, scan each bot's visible-players list and cluster bots that can

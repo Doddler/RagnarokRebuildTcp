@@ -221,6 +221,7 @@ public sealed partial class BotBehavior
                     var expires = DateTime.UtcNow + AvoidClassDuration;
                     var fresh = !_avoidClasses.ContainsKey(killerClass);
                     _avoidClasses[killerClass] = expires;
+                    OnMemoryChanged?.Invoke();
                     _mapDangerLastLevel = -1; // re-score maps now that this class has killed us
                     var context = DateTime.UtcNow - _lastFleeAt < TimeSpan.FromSeconds(15)
                         ? $" Was fleeing: {_lastFleeAction}" : "";

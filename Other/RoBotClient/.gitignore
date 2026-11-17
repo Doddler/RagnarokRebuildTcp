@@ -11,3 +11,5 @@ bot-party-state.json
 *.log
 running-bots.json
 bot-map-audit/
+bot-memory.json
+bot-memory.json.tmp

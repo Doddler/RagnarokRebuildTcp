@@ -37,6 +37,18 @@ public sealed record MapBreakdown(string Map, double ExpPerHour, bool Measured, 
 public sealed record MapMoveAudit(DateTime Time, int Level, string From, string To, string Reason, MapBreakdown Predicted,
     MapBreakdown? Left, double Realization);
 
+/// <summary>What the bot learned that must survive a restart: map bans and the deaths/flees counting toward them,
+/// monster classes it died to, and the per-kill timings on the map it was hunting.</summary>
+public sealed class BotMemory
+{
+    public Dictionary<string, DateTime> MapBannedUntil { get; set; } = new();
+    public Dictionary<string, List<DateTime>> MapDeaths { get; set; } = new();
+    public Dictionary<string, List<DateTime>> MapFlees { get; set; } = new();
+    public Dictionary<int, DateTime> AvoidClasses { get; set; } = new();
+    public string KillSplitMap { get; set; } = "";
+    public List<ActivityTime> KillSplits { get; set; } = new();
+}
+
 /// <summary>Seconds by activity. Fight = in a duel (target within reach), Search = looking for and walking to the next
 /// target (looting included), Recover = sitting for HP/SP, Flee = running from a monster it can't beat.</summary>
 public readonly record struct ActivityTime(double Fight, double Search, double Recover, double Flee)
@@ -111,11 +123,13 @@ public sealed partial class BotBehavior
 
     private void NoteKillSplit(string map)
     {
+        if (string.IsNullOrEmpty(map)) return; // not loaded yet: don't wipe splits restored from memory
         var kills = _bot.WithState(w => w.Self.Kills);
-        if (!string.Equals(map, _killSplitMap, StringComparison.OrdinalIgnoreCase))
+        var sameMap = string.Equals(map, _killSplitMap, StringComparison.OrdinalIgnoreCase);
+        if (!sameMap || _killSplitCount < 0) // new map, or first tick after a restart restored this map's splits
         {
             _killSplitMap = map;
-            lock (_killSplits) _killSplits.Clear();
+            if (!sameMap) lock (_killSplits) _killSplits.Clear();
             _killSplitCount = kills;
             _killSplitStart = TimeSpent;
             return;
@@ -130,6 +144,37 @@ public sealed partial class BotBehavior
             _killSplits.Add(split);
             if (_killSplits.Count > 200) _killSplits.RemoveAt(0);
         }
+        OnMemoryChanged?.Invoke();
+    }
+
+    /// <summary>Raised when something in <see cref="ExportMemory"/> changed (BotManager saves it).</summary>
+    public event Action? OnMemoryChanged;
+
+    public BotMemory ExportMemory()
+    {
+        lock (_killSplits)
+            return new BotMemory
+            {
+                MapBannedUntil = new(_mapBannedUntil),
+                MapDeaths = _mapDeaths.ToDictionary(kv => kv.Key, kv => kv.Value.ToList()),
+                MapFlees = _mapFlees.ToDictionary(kv => kv.Key, kv => kv.Value.ToList()),
+                AvoidClasses = new(_avoidClasses),
+                KillSplitMap = _killSplitMap,
+                KillSplits = _killSplits.ToList(),
+            };
+    }
+
+    /// <summary>Restore before the first tick. Expired bans/avoidances are dropped; stale death/flee times are pruned
+    /// by the 10 min window on the next death/flee.</summary>
+    public void ImportMemory(BotMemory memory)
+    {
+        var now = DateTime.UtcNow;
+        foreach (var (map, until) in memory.MapBannedUntil) if (until > now) _mapBannedUntil[map] = until;
+        foreach (var (map, times) in memory.MapDeaths) _mapDeaths[map] = times.ToList();
+        foreach (var (map, times) in memory.MapFlees) _mapFlees[map] = times.ToList();
+        foreach (var (cls, until) in memory.AvoidClasses) if (until > now) _avoidClasses[cls] = until;
+        _killSplitMap = memory.KillSplitMap ?? "";
+        lock (_killSplits) { _killSplits.Clear(); _killSplits.AddRange(memory.KillSplits); }
     }
 
     /// <summary>Median seconds per kill by activity on <paramref name="map"/> (each activity's own median), and how many
@@ -167,6 +212,7 @@ public sealed partial class BotBehavior
         if (!_mapDeaths.TryGetValue(map, out var list)) _mapDeaths[map] = list = new();
         list.Add(DateTime.UtcNow);
         list.RemoveAll(t => DateTime.UtcNow - t > TimeSpan.FromMinutes(10));
+        OnMemoryChanged?.Invoke();
         if (list.Count < 2 || !string.Equals(map, _config.HomeMap, StringComparison.OrdinalIgnoreCase)) return;
         _mapBannedUntil[map] = DateTime.UtcNow.AddMinutes(30);
         list.Clear();
@@ -185,6 +231,7 @@ public sealed partial class BotBehavior
         if (!_mapFlees.TryGetValue(map, out var list)) _mapFlees[map] = list = new();
         list.Add(DateTime.UtcNow);
         list.RemoveAll(t => DateTime.UtcNow - t > TimeSpan.FromMinutes(10));
+        OnMemoryChanged?.Invoke();
         if (list.Count < FleesToBan) return;
         _mapBannedUntil[map] = DateTime.UtcNow.AddMinutes(30);
         list.Clear();
