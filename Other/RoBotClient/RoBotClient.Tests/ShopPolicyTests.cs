@@ -19,6 +19,10 @@ public class ShopPolicyTests
         => Assert.False(ShopPolicy.ShouldStartTrip(100, 1000, int.MaxValue, Cfg(), () => 7));
 
     [Fact]
+    public void ManyLightJunkStacks_DoNotTrigger() // 8+ junk types in a light bag sent bots shopping every ~6 min
+        => Assert.False(ShopPolicy.ShouldStartTrip(300, 1000, int.MaxValue, Cfg(), () => 20));
+
+    [Fact]
     public void RestockBelowTarget_Triggers()
     {
         var cfg = Cfg();

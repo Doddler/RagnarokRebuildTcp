@@ -97,9 +97,8 @@ public sealed class BotBehaviorConfig
     /// <summary>Go sell when carried weight reaches this fraction of capacity.</summary>
     public float SellWeightPercent = 0.9f;
 
-    /// <summary>Also go sell when holding at least this many SALEABLE items (per <see cref="ShopPolicy"/>).
-    /// Catches the case where the bot's inventory fills with junk weapon / armor drops well before either
-    /// weight or stack-count triggers fire. 0 disables this trigger.</summary>
+    /// <summary>A weight-triggered sell trip needs at least half this many SALEABLE items (per <see cref="ShopPolicy"/>)
+    /// to be worth the walk. Not a trigger on its own.</summary>
     public int JunkSellCount = 8;
 
     /// <summary>Healing item to restock at a tool dealer (Red Potion by default). 0 disables restock.</summary>

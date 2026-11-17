@@ -48,10 +48,9 @@ public static class ShopPolicy
         int Saleable() => saleable ??= countSaleable();
         var worthATrip = Math.Max(1, cfg.JunkSellCount / 2);
         if (maxWeight > 0 && weight >= maxWeight * cfg.SellWeightPercent && Saleable() >= worthATrip) return true;
-        // Saleable-junk trigger: catches the "inventory filling with low-rank weapon drops" case before
-        // weight or stack-count thresholds fire. We count items the ShopPolicy would actually sell so the
-        // trigger doesn't false-fire on a bot holding equipped/usable/valuable gear.
-        if (cfg.JunkSellCount > 0 && Saleable() >= cfg.JunkSellCount) return true;
+        // No junk-count trigger: 8 distinct junk stacks is a few minutes of drops on any map, and it walked bots to a shop
+        // every ~6 min regardless of weight (11-16 logs: 21 of 33 hunting stays ended in a sell trip). Junk weapons are heavy,
+        // so the weight trigger above catches the case that rule was for.
         // Sell queue and restock-targets list are NOT standalone triggers (the operator queues these
         // ahead of time and doesn't want to disrupt the bot mid-hunt). They merge into the next natural
         // sell trip — restock items as opportunistic buys in DoBuyAsync, sell items in BuildSellOrders.
