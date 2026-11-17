@@ -30,6 +30,13 @@ public sealed partial class BotBehavior
     private const double StayHorizonSeconds = 1800;  // travel time is spread over a ~30 min stay
     private const double SecondsPerHop = 40;          // ponytail: flat per-map walk estimate; use route cell length if it misleads
     private static readonly TimeSpan MapCheckEvery = TimeSpan.FromMinutes(10);
+    // Share of a candidate map's modeled exp/h a bot really earns after moving there. The home map's factors are fit on
+    // the home map, so they don't capture what a new map adds: a different kill mix, deaths/flees, layout, and picking
+    // the most optimistic estimate of ~40 (winner's curse). Logs from 11-15..11-16 (5 bots, 65 moves): median 0.37
+    // (IQR 0.21-0.59); moves claiming 1.25-3x actually earned 0.55-0.60x of the old map.
+    // ponytail: one global constant; re-derive after model changes by pairing each bot-logs "Map: moving → X. X estimated E"
+    // with the next decision's "X measured A" and taking the median A/E (drop A/E outside 0.05-5); per-bot if they diverge.
+    public const double CandidateRealization = 0.37;
 
     public string MapDecision { get; private set; } = "";
     public IReadOnlyList<MapOption> MapOptions { get; private set; } = Array.Empty<MapOption>(); // candidates, current map excluded
@@ -233,7 +240,9 @@ public sealed partial class BotBehavior
             // that measured badly looks good again as a candidate (its estimate) and the bot ping-pongs back to it.
             var (seconds, exp, _, _, _) = measurements.GetValueOrDefault(map);
             var measured = isHome ? homeMeasured : seconds >= MeasureSeconds;
-            var rate = isHome && homeMeasured ? homeRate : measured ? exp / seconds * 3600 : split ? PredictRate(estimate) : estimate.Rate * calibration;
+            var realization = isHome ? 1 : CandidateRealization;
+            var modeledRate = (split ? PredictRate(estimate) : estimate.Rate * calibration) * realization;
+            var rate = isHome && homeMeasured ? homeRate : measured ? exp / seconds * 3600 : modeledRate;
             var note = _mapBannedUntil.GetValueOrDefault(map) > now ? "avoiding: died or fled too often here"
                 : riskyRoute.TryGetValue(map, out var risk) ? risk : estimate.Note;
             var perKill = isHome ? measuredPerKill : split ? Predict(estimate) : estimate.PerKill; // current map: measured only ("—" until then)
