@@ -18,11 +18,19 @@ public sealed class BotLogStore
         try { Directory.CreateDirectory(_dir); } catch { }
     }
 
+    /// <summary>A bot-logs file line in the buffer's "HH:mm:ss msg" form. The file stamps "yyyy-MM-dd HH:mm:ss.fff"
+    /// (older files: "HH:mm:ss.fff").</summary>
+    public static string BufferLine(string line) =>
+        line.Length > 23 && line[4] == '-' && line[10] == ' ' && line[19] == '.' ? line[11..19] + line[23..]
+        : line.Length > 12 && line[8] == '.' ? line[..8] + line[12..]
+        : line;
+
     public void Append(string characterName, string line)
     {
         if (string.IsNullOrWhiteSpace(characterName)) return;
         var path = PathFor(characterName);
-        var stamped = $"{DateTime.Now:HH:mm:ss.fff} {line}{Environment.NewLine}";
+        // Dated: the files span days, and a time-only stamp made a Nov 15 portal loop read like a live bug on Nov 18.
+        var stamped = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} {line}{Environment.NewLine}";
         var perFile = GetLock(characterName);
         try
         {

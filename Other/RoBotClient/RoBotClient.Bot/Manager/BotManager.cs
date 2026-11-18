@@ -633,8 +633,7 @@ internal sealed class BotRunner
         lock (_logLock)
             foreach (var line in lines)
             {
-                // The file stamps HH:mm:ss.fff; the buffer stamps HH:mm:ss.
-                _log.Enqueue(line.Length > 12 && line[8] == '.' ? line[..8] + line[12..] : line);
+                _log.Enqueue(BotLogStore.BufferLine(line));
                 while (_log.Count > MaxLogLines) _log.Dequeue();
             }
     }
