@@ -138,6 +138,7 @@ public class NetworkManager
 
         if (clientTimeoutTime < 20)
             clientTimeoutTime = 20;
+        clientTimeoutTime = (int)(clientTimeoutTime * Time.TimeScale); //clients ping in real time, the timeout is checked in game time
 
         IsRunning = true;
         IsServerOpen = true;

@@ -35,6 +35,15 @@ internal class ZoneWorker : BackgroundService
     {
         ServerLogger.Log("Ragnarok Rebuild Zone Server, starting up!");
 
+        var timeScale = ServerConfig.DebugConfig.TimeScale;
+        if (timeScale <= 0)
+            throw new Exception($"ServerDebugConfig.TimeScale must be greater than 0 (was {timeScale}).");
+        if (ServerConfig.OperationConfig.ServerTickMs <= 0)
+            throw new Exception($"ServerOperationConfig.ServerTickMs must be greater than 0 (was {ServerConfig.OperationConfig.ServerTickMs}).");
+        Time.TimeScale = timeScale;
+        if (timeScale != 1)
+            ServerLogger.LogWarning($"Server time scale set to {timeScale}x.");
+
         DistanceCache.Init();
         RoDatabase.Initialize();
         DataManager.Initialize();
@@ -86,6 +95,9 @@ internal class ZoneWorker : BackgroundService
         var lastLog = Time.ElapsedTime - noticeTime + 5f; //make the first check-in 5s after start no matter what
 
         var loopCount = 0;
+        
+        var targetFrameMs = ServerConfig.OperationConfig.ServerTickMs / Time.TimeScale;
+        var gcLoopInterval = (int)(10_000 / targetFrameMs);
 
         try
         {
@@ -104,20 +116,22 @@ internal class ZoneWorker : BackgroundService
 
                 await NetworkManager.ScanAndDisconnect();
 
-                //if we spent less than 10ms on this frame, sleep for the remaining time
+                //if we finished this frame early, sleep for the remaining time
                 var elapsed = Time.GetExactTime() - startTime;
                 loopCount++;
-                var ms = (int)(elapsed * 1000) + 1;
-                if (ms < 10)
+                var remainingMs = targetFrameMs - elapsed * 1000;
+                if (remainingMs > 0)
                 {
-                    if (loopCount > 1000 && elapsed < 5)
+                    if (loopCount > gcLoopInterval && elapsed < 5)
                     {
                         //it's been a while and we had a fast frame, so may as well? No idea if this is a bad idea or not.
                         GC.Collect(2, GCCollectionMode.Optimized, false);
                         loopCount = 0;
                     }
+                    else if (remainingMs >= 1)
+                        await Task.Delay((int)remainingMs, stoppingToken);
                     else
-                        await Task.Delay(10 - ms, stoppingToken);
+                        await Task.Yield(); // sub-ms frames (high time scales) just run back to back
                 }
                 else
                     await Task.Yield();
