@@ -197,12 +197,14 @@ public static class McpGameTools
             var mods = new List<CombatModifiers>(pack.Count);
             foreach (var mdb in pack)
             {
-                mons.Add(new Combatant(mdb.Level, mdb.AtkMin, mdb.AtkMax, mdb.Def, mdb.Vit, mdb.Dex, mdb.Agi, 0, 0, db.MonsterAttackDelay(mdb.Id), mdb.HP, mdb.HP));
+                var mon = new Combatant(mdb.Level, mdb.AtkMin, mdb.AtkMax, mdb.Def, mdb.Vit, mdb.Dex, mdb.Agi, 0, 0, db.MonsterAttackDelay(mdb.Id), mdb.HP, mdb.HP);
+                mons.Add(mon);
                 var (defEle, defLvl) = ElementChart.Parse(mdb.Element ?? "");
                 mods.Add(new CombatModifiers(
                     DefenderElement: defEle, DefenderElementLevel: defLvl,
                     DefenderSize: WeaponSizeChart.ParseSize(mdb.Size ?? ""),
-                    DefenderRace: WeaponSizeChart.ParseRace(mdb.Race ?? "")));
+                    DefenderRace: WeaponSizeChart.ParseRace(mdb.Race ?? ""),
+                    MonsterSkillDps: BattleSimulator.MonsterSkillDps(me, s.Int, s.MDef, mon, db.MonsterInt(mdb.Id), db.MonsterCasts(mdb.Code))));
             }
             var playerMods = new CombatModifiers(
                 AttackerElement: SimElement.Neutral,

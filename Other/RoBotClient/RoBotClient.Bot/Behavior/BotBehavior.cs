@@ -828,7 +828,7 @@ public sealed partial class BotBehavior
         // a `use 504 if hppct < 60` rule is way harder to kill than the raw HP number suggests.
         var hpBuffer = (int)EstimatePotionHpBuffer(snap);
         if (hpBuffer > 0) me = me with { Hp = me.Hp + hpBuffer };
-        var mods = BuildMonsterMods(m) with
+        var mods = BuildMonsterMods(snap, m) with
         {
             AttackerElement = SimElement.Neutral,
             AttackerWeapon = SimWeaponClass.OneHandSword, // TODO read equipped weapon class once exposed
@@ -845,11 +845,10 @@ public sealed partial class BotBehavior
             DefenderIsImmobile = IsMonsterImmobile(mDb) && !(mDb != null && _data!.PunishesRangedAttacks(mDb.Code)),
         };
         var f = BattleSimulator.Forecast(me, MonsterCombatant(m), mods, _config.WinMargin, _config.MaxRoundsToKill);
-        // The simulator only models auto-attacks. If this monster has hit us far harder than that (a skill),
-        // assume one more of those lands mid-fight.
-        // ponytail: learned per name, not per skill; parse MonsterSkills/*.txt if first-contact deaths matter.
+        // A monster with no modeled skills that has hit us far harder than a swing (something we don't model)
+        // gets one more of those mid-fight. Modeled skills are already in MonsterSkillDps.
         var burst = _bot.MaxHitTakenFrom(m.Name);
-        if (burst > f.MonsterDamagePerHit * 2)
+        if (mods.MonsterSkillDps == 0 && burst > f.MonsterDamagePerHit * 2)
             f = BattleSimulator.Forecast(me with { Hp = Math.Max(0, me.Hp - burst) }, MonsterCombatant(m), mods, _config.WinMargin, _config.MaxRoundsToKill);
         return f;
     }
@@ -965,7 +964,7 @@ public sealed partial class BotBehavior
 
     /// <summary>Look up monster element/size/race from the exported DB and stash them on the modifier
     /// record. Defaults to "no effect" if the DB is missing or the strings don't match the enum.</summary>
-    private CombatModifiers BuildMonsterMods(MonsterInfo m)
+    private CombatModifiers BuildMonsterMods(Snapshot snap, MonsterInfo m)
     {
         var db = _data?.Monster(m.ClassId);
         if (db == null) return CombatModifiers.Default;
@@ -974,7 +973,9 @@ public sealed partial class BotBehavior
             DefenderElement: defEle,
             DefenderElementLevel: defLvl,
             DefenderSize: WeaponSizeChart.ParseSize(db.Size ?? ""),
-            DefenderRace: WeaponSizeChart.ParseRace(db.Race ?? ""));
+            DefenderRace: WeaponSizeChart.ParseRace(db.Race ?? ""),
+            MonsterSkillDps: BattleSimulator.MonsterSkillDps(MeCombatant(snap), snap.SelfInt, snap.SelfMDef,
+                MonsterCombatant(m), _data!.MonsterInt(m.ClassId), _data.MonsterCasts(db.Code)));
     }
 
     /// <summary>Build the player-side attacker modifier for a group forecast (where defender mods are per-
@@ -1207,7 +1208,7 @@ public sealed partial class BotBehavior
         foreach (var g in group)
         {
             mons.Add(MonsterCombatant(g));
-            mods.Add(BuildMonsterMods(g));
+            mods.Add(BuildMonsterMods(snap, g));
         }
         var me = MeCombatant(snap);
         return BattleSimulator.ForecastGroup(me, mons, mods, BuildPlayerMods(snap, me),
@@ -1547,7 +1548,8 @@ public sealed partial class BotBehavior
         foreach (var m in snap.Monsters)
         {
             if (m.MaxHp > 0 && m.Hp <= 0) continue;
-            if (aggressiveOnly && !IsAggressive(m.ClassId)) continue;
+            // "Will attack": aggressive, or already fighting us (Bot3 sat down mid-fight with a Horn and sat/stood under its hits).
+            if (aggressiveOnly && !IsAggressive(m.ClassId) && !_bot.HasHitMe(m.Id)) continue;
             if (Dist(snap.SelfPos, m.Pos) <= range) return true;
         }
         return false;
@@ -1766,12 +1768,37 @@ public sealed partial class BotBehavior
     private bool KillsMeFast(Snapshot snap, string name, int dist, int radius, out string why)
     {
         why = "";
-        if (dist > radius / 2) return false;
         var m = snap.Monsters.Where(x => x.Name == name).MinBy(x => Dist(snap.SelfPos, x.Pos));
         if (m == null) return false;
+        // Running only escapes what can't reach: a skill it casts while chasing hits us anywhere inside that skill's
+        // range. Two of those kill us → wing out now, however far it still is.
+        var (reachHit, reachSkill) = ChaseSkillReaching(snap, m, dist);
+        if (reachHit * 2 >= snap.SelfHp)
+        {
+            why = $"its {reachSkill} (~{reachHit:F0}) reaches me while it chases, vs my {snap.SelfHp} HP";
+            return true;
+        }
+        if (dist > radius / 2) return false;
         var hit = Forecast(snap, m).MonsterDamagePerHit;
         why = $"its hit ~{hit} vs my {snap.SelfHp} HP";
         return hit * 2 >= snap.SelfHp;
+    }
+
+    /// <summary>Biggest expected hit among the skills this monster casts while chasing that reach <paramref name="dist"/>
+    /// cells (0 when none do).</summary>
+    private (double hit, CharacterSkill skill) ChaseSkillReaching(Snapshot snap, MonsterInfo m, int dist)
+    {
+        if (_data?.Monster(m.ClassId) is not { } db) return (0, CharacterSkill.None);
+        var me = MeCombatant(snap);
+        var mon = MonsterCombatant(m);
+        (double hit, CharacterSkill skill) best = (0, CharacterSkill.None);
+        foreach (var c in _data.MonsterChaseCasts(db.Code))
+        {
+            if (BattleSimulator.MonsterSkillShape(c.Skill, c.Level) is not { } s || BattleSimulator.MonsterSkillReach(s, db.Range) < dist) continue;
+            var hit = BattleSimulator.MonsterCastDamage(me, snap.SelfInt, snap.SelfMDef, mon, _data.MonsterInt(m.ClassId), c);
+            if (hit > best.hit) best = (hit, c.Skill);
+        }
+        return best;
     }
 
     public static bool IsAmbushed(int peakHp, int hp, int maxHp) =>
@@ -2009,6 +2036,8 @@ public sealed partial class BotBehavior
         public int SelfJobLevel;
         public int SelfSkillPoints;
         public int SelfVit;
+        public int SelfInt;
+        public int SelfMDef;
         public int SelfDex;
         public int SelfAgi;
         public int SelfHit;
@@ -2057,6 +2086,8 @@ public sealed partial class BotBehavior
                 SelfJobLevel = w.Self.JobLevel,
                 SelfSkillPoints = w.Self.SkillPoints,
                 SelfVit = w.Self.Vit,
+                SelfInt = w.Self.Int,
+                SelfMDef = w.Self.MDef,
                 SelfDex = w.Self.Dex,
                 SelfAgi = w.Self.Agi,
                 SelfHit = w.Self.Hit,

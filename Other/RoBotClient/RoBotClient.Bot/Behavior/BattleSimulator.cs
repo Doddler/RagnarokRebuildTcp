@@ -1,3 +1,6 @@
+using RebuildSharedData.Enum;
+using RoBotClient.Bot.GameData;
+
 namespace RoBotClient.Bot.Behavior;
 
 /// <summary>Combat inputs for one side of a fight (player or monster).</summary>
@@ -24,6 +27,7 @@ public readonly record struct CombatModifiers(
     int AttackerBeastBaneLevel = 0, // player's max-learned BeastBane level (+5 per lvl vs Beast/Insect).
     double ExtraSkillDps = 0,
     double SkillBurstDamage = 0,
+    double MonsterSkillDps = 0,     // incoming: the monster's TryCast spells/skills, net of the swings it skips while casting. See MonsterSkillDps().
     bool DefenderIsBoss = false,    // bosses get specific resists; flag exposed to callers, not yet used in damage scale.
     // --- range model (added for ranged-fight forecasting) ---
     int AttackerAttackRange = 1,    // player's effective attack range in tiles (bow = ~9, staff bolt = ~9, melee = 1).
@@ -247,6 +251,8 @@ public static class BattleSimulator
         // mobs prefers cells outside their range.
         if (mods.DefenderIsImmobile && mods.AttackerAttackRange > mods.DefenderAttackRange)
             monDps = 0;
+        else
+            monDps = Math.Max(0, monDps + mods.MonsterSkillDps);
 
         // hitsToKill: how many discrete "actions" (basic swings OR skill casts) to drop the monster.
         // For a NoAutoAttack caster, AtkMin/Max are zeroed → expectedDmgPerSwing collapses to 1, so
@@ -373,7 +379,7 @@ public static class BattleSimulator
             if (perMonReachInfo.DefenderIsImmobile && atkRange > perMonReachInfo.DefenderAttackRange)
                 monDps[i] = 0;
             else
-                monDps[i] = monDmg / monInterval;
+                monDps[i] = Math.Max(0, monDmg / monInterval + mods.MonsterSkillDps);
             killTime[i] = myDpsThis > 0.01 ? mon.MaxHp / myDpsThis : double.PositiveInfinity;
             var hits = (int)Math.Ceiling(mon.MaxHp / Math.Max(0.01, myEffDmg));
             if (hits > maxRounds || double.IsInfinity(killTime[i])) feasible = false;
@@ -416,5 +422,101 @@ public static class BattleSimulator
             n > 0 ? eleAcc / n : 100,
             n > 0 ? sizeAcc / n : 100,
             ClampFinite(effectiveDps));
+    }
+
+    /// <summary>Damage shape of a monster skill: ATK (or MATK) multiplier per hit, hit count, how it bypasses defense,
+    /// and its reach. Mirrors the handlers in RoRebuildServer/Simulation/Skills/SkillHandlers. Null = deals no damage,
+    /// or deals it in a way we don't model (ground events, % HP). MonsterSkillParseTests fails when a script uses a
+    /// damaging handler that's missing here, or when a handler's GetSkillRange disagrees with Range.</summary>
+    public static MonsterSkillHit? MonsterSkillShape(CharacterSkill skill, int lvl) => skill switch
+    {
+        // TargetedSpellBase and friends: 1x MATK per hit, one hit per level.
+        CharacterSkill.FireBolt or CharacterSkill.ColdBolt or CharacterSkill.LightningBolt or CharacterSkill.EarthSpike
+            or CharacterSkill.HeavensDrive or CharacterSkill.ThunderStorm => new(1, lvl, true),
+        CharacterSkill.JupitelThunder or CharacterSkill.DarkThunder => new(1, lvl + 2, true),
+        CharacterSkill.DarkStrike => new(1, 1 + (lvl - 1) / 2, true, Range: -1), // no SkillClass: the monster's own range
+        CharacterSkill.SoulStrike => new(1.2, 1 + (lvl - 1) / 2, true),
+        CharacterSkill.MagicalAttack => new(1 + lvl * 0.5, 1, true),
+        CharacterSkill.EnergyDrain => new(2, 1, true),
+        CharacterSkill.FrostDiver => new(1 + lvl * 0.1, 1, true),
+        CharacterSkill.FireBall => new(1.4 + lvl * 0.2, 1, true),
+        CharacterSkill.WaterBall => new(1 + lvl * 0.3, 1, true),      // ponytail: one ball; more near water tiles
+        CharacterSkill.FireWall => new(0.5, 1, true),                  // ponytail: one touch
+        CharacterSkill.LordOfVermilion => new(0.8 + lvl * 0.2, 1, true), // ponytail: one wave
+        // ElementalAttackHandler
+        CharacterSkill.WindAttack or CharacterSkill.FireAttack or CharacterSkill.IceAttack or CharacterSkill.WaterAttack
+            or CharacterSkill.EarthAttack or CharacterSkill.GhostAttack or CharacterSkill.UndeadAttack
+            or CharacterSkill.PoisonAttack or CharacterSkill.DarkAttack or CharacterSkill.HolyAttack => new(0.8 + lvl * 0.6, 1, false, Range: 7),
+        CharacterSkill.ComboAttack => new((1 + lvl * 0.4) / (lvl + 1), lvl + 1, false, Range: 8),
+        CharacterSkill.CriticalAttack => new(0.7 + lvl * 0.3, 1, false, IgnoreDef: true, SureHit: true),
+        CharacterSkill.PiercingAttack => new(1 + lvl * 0.1, 1, false, IgnoreDef: true, Range: 7),
+        CharacterSkill.Poison or CharacterSkill.ChargeArrow => new(1.5, 1, false),
+        CharacterSkill.SandAttack => new(1.3, 1, false, Range: 2),
+        CharacterSkill.Curse => new(1.2, 1, false, Range: 7),
+        CharacterSkill.Blind or CharacterSkill.Silence or CharacterSkill.Stun or CharacterSkill.Sleep
+            or CharacterSkill.BloodDrain => new(1, 1, false, Range: 7),
+        CharacterSkill.Petrify => new(1, 1, false, Range: 9),          // SkillClass.Magic: magic cast range
+        CharacterSkill.SplashAttack or CharacterSkill.ArrowShower or CharacterSkill.MentalBreaker => new(1, 1, false),
+        CharacterSkill.GuidedAttack => new(1 + lvl * 0.1, 1, false, Range: 7),
+        CharacterSkill.RangedAttack => new(1 + lvl * 0.2, 1, false, Range: 7),
+        CharacterSkill.MagnumBreak => new(1 + lvl * 0.2, 1, false),
+        CharacterSkill.SpearStab => new(1 + lvl * 0.2, 1, false, Range: 4),
+        CharacterSkill.Grimtooth => new(1 + lvl * 0.2, 1, false, Range: 1 + lvl),
+        CharacterSkill.Bash => new(1 + lvl * 0.3, 1, false),
+        CharacterSkill.Mammonite => new(1 + lvl * 0.5, 1, false),
+        CharacterSkill.Envenom => new(1 + lvl * 0.05, 1, false, Range: 2),
+        CharacterSkill.Pierce => new(1 + lvl * 0.1, 2, false),         // players count as Medium: 2 hits
+        CharacterSkill.DoubleStrafe => new(0.9 + lvl * 0.1, 2, false),
+        CharacterSkill.SonicBlow => new(0.5 + lvl * 0.05, 8, false, Range: 1),
+        _ => null,
+    };
+
+    /// <summary>Range = the handler's GetSkillRange override; 0 = the server default (magic cast range 9 for spells,
+    /// the monster's own attack range otherwise); -1 = always the monster's own range.</summary>
+    public readonly record struct MonsterSkillHit(double Ratio, int Hits, bool Magic, bool IgnoreDef = false, bool SureHit = false, int Range = 0);
+
+    /// <summary>Cells this skill reaches from, as SkillHandler.GetSkillRange resolves it.</summary>
+    public static int MonsterSkillReach(MonsterSkillHit s, int monsterRange) =>
+        s.Range > 0 ? s.Range : s.Range == 0 && s.Magic ? 9 : monsterRange;
+
+    /// <summary>Expected damage one landed cast does to me (all its hits; physical ones weighted by hit chance).
+    /// 0 for a skill with no modeled damage.</summary>
+    public static double MonsterCastDamage(Combatant me, int myInt, int myMDef, Combatant monster, int monsterInt, GameDatabase.MonsterCast c)
+    {
+        if (MonsterSkillShape(c.Skill, c.Level) is not { } s) return 0;
+        // Monster.InitializeStats (integer math, left to right), floored at ATK / 6.
+        var matk = (Math.Max(monsterInt + monsterInt / 7 * monsterInt / 7, monster.AtkMin / 6)
+                    + Math.Max(monsterInt + monsterInt / 5 * monsterInt / 5, monster.AtkMax / 6)) / 2.0;
+        var atk = (monster.AtkMin + monster.AtkMax) / 2.0;
+        var levelCut = Math.Clamp(1 - 0.0025 * (me.Level - monster.Level), 0.5, 1.0);
+        var perHit = s.Magic ? matk * s.Ratio * DefCut(myMDef) - (myInt + me.Vit / 2)
+            : s.IgnoreDef ? (s.SureHit ? monster.AtkMax : atk) * s.Ratio
+            : atk * s.Ratio * DefCut(me.Def) - PlayerSubDef(me.Vit);
+        return Math.Max(1, perHit) * levelCut * s.Hits * (s.Magic || s.SureHit ? 1 : HitChance(monster, me));
+    }
+
+
+    /// <summary>Monster-side TryCast damage per second against me, net of the swings the casts replace.
+    /// In StateAttacking the server rolls the skill list on every auto-attack (Monster.Ai.cs, OnPerformAttack), and a
+    /// cast takes that swing's place. So a cast off cooldown fires after (1-p)/p failed swings, then occupies its cast
+    /// time plus one attack cooldown, and can't roll again until its cooldown (delay + cast, from cast start) ends.
+    /// Magic always hits: MATK × MDEF cut − (INT + VIT/2). Physical skills scale the auto-attack roll and can miss.</summary>
+    public static double MonsterSkillDps(Combatant me, int myInt, int myMDef, Combatant monster, int monsterInt,
+        IReadOnlyList<GameDatabase.MonsterCast> casts)
+    {
+        if (casts.Count == 0) return 0;
+        var levelCut = Math.Clamp(1 - 0.0025 * (me.Level - monster.Level), 0.5, 1.0);
+        var hitChance = HitChance(monster, me);
+        var interval = monster.AttackInterval > 0.05 ? monster.AttackInterval : DefaultMonsterAttackInterval;
+        double dps = 0, castShare = 0;
+        foreach (var c in casts)
+        {
+            var p = Math.Clamp((c.ChancePerMille + 1) / 1000.0, 0.001, 1);
+            var castsPerSec = c.Weight / (interval * (1 - p) / p + c.CastSeconds + Math.Max(c.DelaySeconds, interval));
+            castShare += castsPerSec * (c.CastSeconds + interval);
+            dps += MonsterCastDamage(me, myInt, myMDef, monster, monsterInt, c) * castsPerSec;
+        }
+        var swingDps = DamagePerHit(monster, me, PlayerSubDef(me.Vit), levelCut) * hitChance / interval;
+        return dps - swingDps * Math.Min(1, castShare);
     }
 }

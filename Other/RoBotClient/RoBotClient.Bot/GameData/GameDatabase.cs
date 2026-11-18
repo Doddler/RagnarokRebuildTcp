@@ -149,7 +149,10 @@ public sealed class GameDatabase
 // Auto-attack cadence, as the server's Monster.UpdateStats: max(RechargeTime col 23, AttackTime col 25), in ms.
         // The client export leaves both out.
         foreach (var c in Rows("Monsters.csv"))
+            {
             if (c.Length > 25 && Math.Max(I(c[23]), I(c[25])) is > 0 and var ms) _attackDelay[I(c[0])] = ms / 1000.0;
+            if (c.Length > 6) _monsterInt[I(c[0])] = I(c[6]); // MATK comes from INT (Monster.InitializeStats)
+        }
 
         var gear = new Dictionary<int, GearInfo>();
         // Id,Code,Name,Attack,Range,Slot,Price,Weight,Type,Position,Property,MinLvl,Rank,EquipGroup
@@ -184,15 +187,33 @@ public sealed class GameDatabase
                     _hpRecovery[id] = (I(m.Groups[2].Value) + I(m.Groups[3].Value)) / 2;
 
         // Monsters with a [WasRangedAttacked] reaction (Greatest General's Earth Spike) can't be shot for free from range.
+        // TryCast(FireBolt, 3, 5%, 1.5s, 5s) lines in the fighting states feed the forecast's skill damage.
         var skillDir = Path.Combine(dbDir, "..", "Script", "MonsterSkills");
         if (Directory.Exists(skillDir))
             foreach (var file in Directory.EnumerateFiles(skillDir, "*.txt", SearchOption.AllDirectories))
             {
                 var code = "";
+                var state = "";
                 foreach (var line in File.ReadLines(file))
                 {
-                    if (Regex.Match(line, @"SkillHandler\(""(\w+)""\)") is { Success: true } h) code = h.Groups[1].Value;
+                    if (Regex.Match(line, @"SkillHandler\(""(\w+)""\)") is { Success: true } h) { code = h.Groups[1].Value; state = ""; }
                     else if (code != "" && line.Contains("[WasRangedAttacked]")) _punishesRanged.Add(code);
+                    else if (Regex.Match(line, @"^\s*State(\w+):") is { Success: true } st) state = st.Groups[1].Value;
+                    else if (state is "Attacking" or "Chase" or "Any" && code != "" && Regex.Match(line, @"TryCast\((\w+),\s*(\d+),\s*([\d.]+%?),\s*([\d.]+s?),\s*([\d.]+s?)[^)]*\)\s*(?:\[([^\]]*)\])?") is { Success: true } tc
+                             && Enum.TryParse<CharacterSkill>(tc.Groups[1].Value, out var skill)
+                             && CastWeight(tc.Groups[6].Value) is > 0 and var weight)
+                    {
+                        var cast = new MonsterCast(skill, I(tc.Groups[2].Value), ScriptNumber(tc.Groups[3].Value),
+                            ScriptNumber(tc.Groups[4].Value) / 1000.0, ScriptNumber(tc.Groups[5].Value) / 1000.0, weight);
+                        foreach (var into in state switch { "Attacking" => new[] { _casts }, "Chase" => new[] { _chaseCasts }, _ => new[] { _casts, _chaseCasts } })
+                        {
+                            if (!into.TryGetValue(code, out var list)) into[code] = list = new();
+                            // StateAny and the state's own line share one cooldown: keep the likelier line.
+                            var same = list.FindIndex(x => x.Skill == skill);
+                            if (same < 0) list.Add(cast);
+                            else if (cast.ChancePerMille > list[same].ChancePerMille) list[same] = cast;
+                        }
+                    }
                 }
             }
 
@@ -219,6 +240,30 @@ public sealed class GameDatabase
     private readonly Dictionary<string, List<SpawnArea>> _spawnAreas = new(StringComparer.OrdinalIgnoreCase);
     private readonly HashSet<string> _punishesRanged = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<int, double> _attackDelay = new();
+    private readonly Dictionary<int, int> _monsterInt = new();
+    private readonly Dictionary<string, List<MonsterCast>> _casts = new(StringComparer.OrdinalIgnoreCase);
+    /// <summary>One TryCast a monster rolls on each auto-attack (StateAttacking / StateAny); cast and cooldown in
+    /// seconds. Weight is the share of the fight its condition holds: 1 when unconditional, 0.3 for [HpPercent &lt; 30].</summary>
+    public sealed record MonsterCast(CharacterSkill Skill, int Level, int ChancePerMille, double CastSeconds, double DelaySeconds, double Weight = 1);
+
+    // [HpPercent < 30]: the monster spends about the last 30% of the fight below 30% HP.
+    // ponytail: every other trigger (RudeAttacked, MinionsDeadFor, WasRangedAttacked…) counts as never firing in a
+    // plain fight; they're teleports, summons and the ranged punish PunishesRangedAttacks already covers.
+    private static double CastWeight(string condition) =>
+        condition == "" ? 1
+        : Regex.Match(condition, @"^\s*HpPercent\s*<=?\s*(\d+)\s*$") is { Success: true } hp ? int.Parse(hp.Groups[1].Value) / 100.0
+        : 0;
+    public IReadOnlyList<MonsterCast> MonsterCasts(string monsterCode) => _casts.TryGetValue(monsterCode, out var l) ? l : Array.Empty<MonsterCast>();
+    private readonly Dictionary<string, List<MonsterCast>> _chaseCasts = new(StringComparer.OrdinalIgnoreCase);
+    /// <summary>TryCasts from StateChase / StateAny: what it throws at someone running away (rolled about once a second).</summary>
+    public IReadOnlyList<MonsterCast> MonsterChaseCasts(string monsterCode) => _chaseCasts.TryGetValue(monsterCode, out var l) ? l : Array.Empty<MonsterCast>();
+    public int MonsterInt(int classId) => _monsterInt.GetValueOrDefault(classId);
+
+    // The server script's number literals (ScriptTreeWalker): "5%" = 50 per mille, "1.5s" = 1500 ms, bare = as is.
+    private static int ScriptNumber(string s) =>
+        s.EndsWith('%') ? (int)(double.Parse(s[..^1], System.Globalization.CultureInfo.InvariantCulture) * 10)
+        : s.EndsWith('s') ? (int)(double.Parse(s[..^1], System.Globalization.CultureInfo.InvariantCulture) * 1000)
+        : (int)double.Parse(s, System.Globalization.CultureInfo.InvariantCulture);
     /// <summary>Seconds between a monster's auto-attacks; 0 when unknown (the simulator falls back to its default).</summary>
     public double MonsterAttackDelay(int classId) => _attackDelay.GetValueOrDefault(classId);
     public bool PunishesRangedAttacks(string monsterCode) => _punishesRanged.Contains(monsterCode);
