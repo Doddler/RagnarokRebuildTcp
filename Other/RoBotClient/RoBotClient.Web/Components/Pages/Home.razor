@@ -67,8 +67,7 @@ else
             <thead>
                 <tr>
                     <th>Character</th>
-                    <th>Map</th>
-                    <th class="text-nowrap">Pos</th>
+                    <th>Map / Pos</th>
                     <th class="text-nowrap">Lv</th>
                     <th class="text-nowrap">Build</th>
                     <th class="text-nowrap">Desired job</th>
@@ -97,8 +96,10 @@ else
                                 <span class="badge bg-warning text-dark ms-1">connecting</span>
                             }
                         </td>
-                        <td class="text-nowrap">@(string.IsNullOrEmpty(bot.MapDisplayName) ? bot.Map : bot.MapDisplayName)</td>
-                        <td class="text-nowrap font-monospace">(@bot.X, @bot.Y)</td>
+                        <td class="text-nowrap">
+                            <div>@(string.IsNullOrEmpty(bot.MapDisplayName) ? bot.Map : bot.MapDisplayName)</div>
+                            <div class="small text-muted font-monospace">(@bot.X, @bot.Y)</div>
+                        </td>
                         <td class="text-nowrap">Lv @bot.Level/@bot.JobLevel</td>
                         <td class="text-nowrap">@(Bots.GetBehaviorConfig(bot.Id)?.BuildName is { Length: > 0 } bn ? bn : "—")</td>
                         <td class="text-nowrap">@DesiredJob(bot.Id)</td>
