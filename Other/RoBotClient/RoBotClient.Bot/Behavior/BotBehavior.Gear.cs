@@ -108,7 +108,7 @@ public sealed partial class BotBehavior
         var isSquadFollower = !string.IsNullOrEmpty(_config.SquadId) && !_config.IsSquadLeader;
         if (!_config.AutoShop || isSquadFollower || ShopTripActive || _forceShop || DateTime.UtcNow < _nextGearBuy) return;
         _nextGearBuy = DateTime.UtcNow.AddSeconds(30);
-        if (TryBuyJobWeapon(job, inv.Select(i => i.ItemId), arrows, zeny, snap.SelfLevel)) return;
+        if (TryBuyJobWeapon(snap, job, inv.Select(i => i.ItemId), arrows, zeny)) return;
         var budget = zeny - GearZenyReserve;
 
         if (preferred?.Contains("Bow") == true && arrows < ArrowLow && budget > 0)
@@ -139,8 +139,9 @@ public sealed partial class BotBehavior
     private const int ArrowItemId = 1750;
     private DateTime _nextJobWeaponWarning = DateTime.MinValue;
 
-    private bool TryBuyJobWeapon(string job, IEnumerable<int> ownedItemIds, int arrows, int zeny, int level)
+    private bool TryBuyJobWeapon(Snapshot snap, string job, IEnumerable<int> ownedItemIds, int arrows, int zeny)
     {
+        var level = snap.SelfLevel;
         RequiredWeaponType.TryGetValue(job, out var requiredType);
         bool Fits(GameDatabase.GearInfo g) => SlotOf(g) == EquipSlot.RightHand && g.MinLvl <= level && _data!.CanEquip(g, job)
                                              && (requiredType == null || g.Type == requiredType);
@@ -152,6 +153,10 @@ public sealed partial class BotBehavior
         if (owned.Count > 0)
         {
             if (!needsArrows || arrows >= ArrowLow || spendable < arrowPrice * 10) return false;
+            // The shop keeps the fare home (DoBuyAsync), so fares must fit too. Bot5 (1200z, home anthell01) passed the
+            // 500z check, paid 1200z to Payon, bought nothing and walked back — every 6 min for hours, stuck at level 25.
+            spendable -= ShopTripFares(snap, ArrowItemId);
+            if (spendable < arrowPrice * 10) return false;
             SetRestockTarget(ArrowItemId, ArrowStock);
             return TryBuyGear(new[] { (ArrowItemId, Math.Min(ArrowStock - arrows, spendable / arrowPrice)) }, $"the {job}'s bow needs arrows");
         }
@@ -188,6 +193,17 @@ public sealed partial class BotBehavior
         EquipSlot.Footgear => "shoes", EquipSlot.Garment => "garment", EquipSlot.HeadTop => "hat",
         EquipSlot.HeadMid => "mid headgear", EquipSlot.HeadBottom => "lower headgear", _ => s.ToString(),
     };
+
+    // Kafra fares to the vendor ResolveShop would pick and from there back home.
+    // ponytail: ignores a Butterfly Wing start (overestimates the way there); fine while it only gates trips.
+    private int ShopTripFares(Snapshot snap, int itemId)
+    {
+        if (_data == null || !ResolveShop(snap.Map, itemId)) return 0;
+        int Fares(WorldGraph.TravelPlan? p) => p?.Edges.Sum(e => e.Kafra?.Zeny ?? 0) ?? 0;
+        var home = string.IsNullOrEmpty(_config.HomeMap) ? snap.Map : _config.HomeMap;
+        var back = _data.World.EntryCell(home) is { } c ? Fares(PlanRoute(_shopMap, _shopX, _shopY, home, c.X, c.Y)) : 0;
+        return Fares(PlanRoute(snap.Map, snap.SelfPos.X, snap.SelfPos.Y, _shopMap, _shopX, _shopY)) + back;
+    }
 
     private bool TryBuyGear(int itemId, int qty, string why) => TryBuyGear(new[] { (itemId, qty) }, why);
 
