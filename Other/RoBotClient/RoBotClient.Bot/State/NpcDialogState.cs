@@ -14,10 +14,11 @@ public sealed class NpcDialogState
     public string DialogText = "";
     public readonly List<string> Options = new();
     public readonly List<(int itemId, int price)> ShopItems = new();
+    public int OverchargeLevel;     // sent with the sell-to-NPC shop
 
     public NpcDialogState Clone()
     {
-        var c = new NpcDialogState { Phase = Phase, Seq = Seq, DialogText = DialogText };
+        var c = new NpcDialogState { Phase = Phase, Seq = Seq, DialogText = DialogText, OverchargeLevel = OverchargeLevel };
         c.Options.AddRange(Options);
         c.ShopItems.AddRange(ShopItems);
         return c;

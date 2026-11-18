@@ -5,41 +5,77 @@ namespace RoBotClient.Bot.State;
 public enum TelemetryEventType { Kill, Death, MapChange, Loot, Sold, Bought, UsedItem, LevelUp, SkillCast, DamageDealt, DamageReceived, Disconnect }
 
 /// <summary>One bot event, stamped with the bot's level at the time so stale (low-level) data can be aged out.</summary>
-public sealed record TelemetryEvent(DateTime Time, int Level, TelemetryEventType Type, string Detail, int Value = 0);
+/// <remarks>Zeny: zeny received (Sold) for this event; 0 on events logged before it was recorded.</remarks>
+public sealed record TelemetryEvent(DateTime Time, int Level, TelemetryEventType Type, string Detail, int Value = 0, int Zeny = 0);
 
 /// <summary>
 /// Per-bot, level-stamped event log (kills, deaths, map changes, items looted/sold/used, level-ups).
 /// Feeds the dashboard and the MCP agent; the level stamp lets a consumer ignore stale low-level data.
+/// Two tiers: history events (economy, progression, maps) are kept forever and persisted append-only;
+/// rolling events (per-hit damage, skill casts) go stale as the bot levels, so only the newest MaxRolling are kept.
 /// Thread-safe: the session writes from its receive loop while the UI/agent reads.
 /// </summary>
 public sealed class BotTelemetry
 {
-    private const int MaxEvents = 5000;
-    private readonly object _lock = new();
-    private readonly List<TelemetryEvent> _events = new();
-    private bool _dirty;
+    public const int MaxRolling = 4000;
+    private const int TrimSlack = 500; // trim in batches so a damage flood doesn't scan the list on every hit
+    public static bool IsRolling(TelemetryEventType t) =>
+        t is TelemetryEventType.DamageDealt or TelemetryEventType.DamageReceived or TelemetryEventType.SkillCast;
 
-    public void Record(TelemetryEventType type, int level, string detail = "", int value = 0)
+    private readonly object _lock = new();
+    private readonly List<TelemetryEvent> _events = new();          // both tiers, oldest first
+    private readonly List<TelemetryEvent> _unsavedHistory = new();  // history events not yet appended to disk
+    private int _rolling;
+    private bool _rollingDirty;
+
+    public void Record(TelemetryEventType type, int level, string detail = "", int value = 0, int zeny = 0)
     {
         lock (_lock)
         {
-            _events.Add(new TelemetryEvent(DateTime.UtcNow, level, type, detail, value));
-            if (_events.Count > MaxEvents) _events.RemoveRange(0, _events.Count - MaxEvents);
-            _dirty = true;
+            var e = new TelemetryEvent(DateTime.UtcNow, level, type, detail, value, zeny);
+            _events.Add(e);
+            if (!IsRolling(type)) { _unsavedHistory.Add(e); return; }
+            _rolling++;
+            _rollingDirty = true;
+            if (_rolling > MaxRolling + TrimSlack) TrimRolling();
         }
     }
 
-    /// <summary>Replace the in-memory log with persisted events (capped to MaxEvents). Called once on bot
-    /// spawn so the agent's historical context survives a stop+respawn / dashboard restart.</summary>
+    /// <summary>Merge persisted events in front of anything recorded since spawn. Called once on connect so
+    /// the history survives a stop+respawn / dashboard restart; loaded events already match disk.</summary>
     public void Load(IEnumerable<TelemetryEvent> events)
     {
         lock (_lock)
         {
+            var merged = events.Concat(_events).OrderBy(e => e.Time).ToList();
             _events.Clear();
-            _events.AddRange(events);
-            if (_events.Count > MaxEvents) _events.RemoveRange(0, _events.Count - MaxEvents);
-            _dirty = false; // freshly loaded = matches disk
+            _events.AddRange(merged);
+            _rolling = _events.Count(e => IsRolling(e.Type));
+            TrimRolling();
         }
+    }
+
+    /// <summary>What a flush must write: history events since the last call (to append) and, when rolling events
+    /// changed, the whole rolling window (to overwrite). Each history event is handed out exactly once.</summary>
+    public (List<TelemetryEvent> NewHistory, List<TelemetryEvent>? Rolling) TakeUnsaved()
+    {
+        lock (_lock)
+        {
+            var history = new List<TelemetryEvent>(_unsavedHistory);
+            _unsavedHistory.Clear();
+            var rolling = _rollingDirty ? _events.Where(e => IsRolling(e.Type)).ToList() : null;
+            _rollingDirty = false;
+            return (history, rolling);
+        }
+    }
+
+    // Keep the newest MaxRolling rolling events. Caller holds _lock.
+    private void TrimRolling()
+    {
+        if (_rolling <= MaxRolling) return;
+        var drop = _rolling - MaxRolling;
+        _events.RemoveAll(e => IsRolling(e.Type) && drop-- > 0); // RemoveAll visits in order: drops the oldest
+        _rolling = MaxRolling;
     }
 
     /// <summary>Snapshot the current event list for persistence (deep copy, safe to write to disk while the
@@ -47,17 +83,6 @@ public sealed class BotTelemetry
     public List<TelemetryEvent> Snapshot()
     {
         lock (_lock) return new List<TelemetryEvent>(_events);
-    }
-
-    /// <summary>Return true exactly once between Record calls, so a periodic flush can skip idle bots.</summary>
-    public bool TakeDirty()
-    {
-        lock (_lock)
-        {
-            if (!_dirty) return false;
-            _dirty = false;
-            return true;
-        }
     }
 
     public List<TelemetryEvent> Recent(int minLevel = 0)

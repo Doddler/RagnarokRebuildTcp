@@ -16,7 +16,7 @@ public static class MapRuns
     // Active time sums gaps between consecutive events. A quiet gap still counts (a bot waiting in an emptied room is
     // hunting there, just badly), unless it follows a Disconnect or runs past 15 min: then the bot was offline and
     // only 2 min count. Exp comes from the progress history over the run's wall-clock window. Runs under a minute are dropped (passing through).
-    // ponytail: telemetry keeps the last 5000 events, so older runs drop off; persist runs if long history matters.
+    // MapChange/Kill/Loot are history-tier telemetry (kept forever), so runs reach back to the first tracked event.
     public static List<MapRun> Compute(IReadOnlyList<TelemetryEvent> events, IReadOnlyList<ProgressSample> samples, bool inGame)
     {
         long ExpAt(DateTime t) => samples.LastOrDefault(p => p.Time <= t)?.TotalExp ?? samples.FirstOrDefault()?.TotalExp ?? 0;

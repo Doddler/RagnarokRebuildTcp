@@ -779,11 +779,16 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
         var orders = _bot.WithState(BuildSellOrders); // (bagId, itemId, count)
         if (orders.Count == 0) { await _bot.ShopCloseAsync(ct); return; }
 
+        // Zeny per stack, same formula as the server's sale (Npc.cs): overcharge = 5 + 2*lvl (max 24%), ammo sells for 0.
+        var oc = _bot.SnapshotNpc().OverchargeLevel;
+        var bonus = oc > 0 ? Math.Min(24, 5 + oc * 2) : 0;
         var lines = new List<(int, int)>(orders.Count);
         foreach (var (bagId, itemId, count) in orders)
         {
             lines.Add((bagId, count));
-            _bot.Telemetry.Record(TelemetryEventType.Sold, snap.SelfLevel, _data?.ItemName(itemId) ?? $"#{itemId}", count);
+            var def = _data?.ItemsById.GetValueOrDefault(itemId);
+            var zeny = def is null || def.ItemClass == ItemClass.Ammo ? 0 : def.SellPrice * (100 + bonus) / 100 * count;
+            _bot.Telemetry.Record(TelemetryEventType.Sold, snap.SelfLevel, _data?.ItemName(itemId) ?? $"#{itemId}", count, zeny);
         }
         OnLog?.Invoke($"Selling {lines.Count} junk/common stack(s).");
         await _bot.ShopBuySellAsync(lines, ct);

@@ -1200,7 +1200,7 @@ public sealed class BotSession : IAsyncDisposable
         }
         else // sell-to-NPC: overchargeLevel (we sell from our own inventory)
         {
-            r.ReadInt32();
+            _npc.OverchargeLevel = r.ReadInt32();
             _npc.Phase = NpcPhase.ShopSell;
         }
     }

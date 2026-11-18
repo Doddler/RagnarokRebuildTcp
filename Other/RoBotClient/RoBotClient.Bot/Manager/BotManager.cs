@@ -151,6 +151,7 @@ public sealed class BotManager
                 if (r.LastLevel == 0) return;
                 var now = DateTime.UtcNow;
                 var playtime = r.PlaytimeAtSessionStart + (now - r.SessionStartedAt).TotalSeconds;
+                var zenyMap = r.Session.WithState(w => (w.Self.Zeny, w.Self.Map));
                 _progress.Append(r.Config.CharacterName,
                     new ProgressSample(now, playtime, _data.TotalBaseExp(r.LastLevel, r.LastExpIntoLevel), r.LastLevel,
                         r.OwnExp, r.PartyExp,
@@ -165,7 +166,8 @@ public sealed class BotManager
                         update?.OwnKill == true ? update.Value.Forecast?.HpLost : null,
                         update is { OwnKill: true, Attacks: not null } ? update.Value.Helped : null,
                         Math.Round(r.Brain.TimeSpent.Fight, 1), Math.Round(r.Brain.TimeSpent.Search, 1),
-                        Math.Round(r.Brain.TimeSpent.Recover, 1), Math.Round(r.Brain.TimeSpent.Flee, 1)));
+                        Math.Round(r.Brain.TimeSpent.Recover, 1), Math.Round(r.Brain.TimeSpent.Flee, 1),
+                        zenyMap.Zeny, zenyMap.Map.Length > 0 ? zenyMap.Map : null));
             }
         }
         catch { }
@@ -178,8 +180,8 @@ public sealed class BotManager
         {
             try
             {
-                if (!kvp.Value.Session.Telemetry.TakeDirty()) continue;
-                _telemetry.Save(kvp.Value.Config.CharacterName, kvp.Value.Session.Telemetry.Snapshot());
+                var (history, rolling) = kvp.Value.Session.Telemetry.TakeUnsaved();
+                _telemetry.Save(kvp.Value.Config.CharacterName, history, rolling);
             }
             catch { }
         }
@@ -399,8 +401,11 @@ public sealed class BotManager
             // timer's previous fire (and which would otherwise be lost when we drop the runner reference).
             try
             {
-                if (_telemetry != null && session.Telemetry.TakeDirty())
-                    _telemetry.Save(config.CharacterName, session.Telemetry.Snapshot());
+                if (_telemetry != null)
+                {
+                    var (history, rolling) = session.Telemetry.TakeUnsaved();
+                    _telemetry.Save(config.CharacterName, history, rolling);
+                }
             }
             catch { }
             // Stale-entry sweep: when the run loop ends (failed login, server kick, disconnect, stop_bot),

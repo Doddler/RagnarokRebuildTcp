@@ -7,11 +7,13 @@ namespace RoBotClient.Bot.Manager;
 /// shares. Their sum can differ from TotalExp's growth (exp before tracking, milestone events). On the bot's own
 /// kills, Monster names the kill and TimeToKill is seconds from its first hit to the death and Attacks the swings plus damaging skill uses spent
 /// on it and HpLost the damage it dealt the bot (all null otherwise). Party/Healer give the fight's context (in a
-/// party; a party bot on the map can cast Heal; another player also hit the monster) and Pred* what the solo duel forecast predicted when engaging.</summary>
+/// party; a party bot on the map can cast Heal; another player also hit the monster) and Pred* what the solo duel forecast predicted when engaging.
+/// Zeny and Map are the bot's purse and map at the sample (null on samples from before they were tracked).</summary>
 public sealed record ProgressSample(DateTime Time, double PlaytimeSeconds, long TotalExp, int Level,
     long OwnExp = 0, long PartyExp = 0, string? Monster = null, double? TimeToKill = null, int? Attacks = null, int? HpLost = null,
     bool? Party = null, bool? Healer = null, double? PredSeconds = null, int? PredAttacks = null, double? PredHpLost = null,
-    bool? Helped = null, double? Fight = null, double? Search = null, double? Recover = null, double? Flee = null)
+    bool? Helped = null, double? Fight = null, double? Search = null, double? Recover = null, double? Flee = null,
+    int? Zeny = null, string? Map = null)
 {
     /// <summary>Running totals of seconds fighting / searching / recovering / fleeing (null on samples from before they were tracked).</summary>
     [System.Text.Json.Serialization.JsonIgnore] public RoBotClient.Bot.Behavior.ActivityTime? Activity => Fight is { } fight ? new(fight, Search ?? 0, Recover ?? 0, Flee ?? 0) : null;

@@ -1,6 +1,7 @@
 @page "/bot/{Id}"
 @inherits LiveComponent
 @inject BotManager Bots
+@inject NavigationManager Nav
 @inject GameDatabase Db
 @inject RoBotClient.Web.Mcp.BuildStore Builds
 @inject RoBotClient.Web.MonsterSprites Sprites
@@ -73,26 +74,42 @@ else
         @HeaderBar
         @WarningBanner
         @VitalsCard
-        @CommandsCard
-        @MapCard
 
-        <div class="row g-3">
-            <div class="col-lg-6">
+        <ul class="nav nav-tabs mb-3">
+            @foreach (var (key, label) in Tabs)
+            {
+                <li class="nav-item">
+                    <a class="nav-link @(CurrentTab == key ? "active" : "")" href="bot/@Id?tab=@key" @onclick="() => SelectTab(key)" @onclick:preventDefault>@label</a>
+                </li>
+            }
+        </ul>
+
+        @switch (CurrentTab)
+        {
+            case "character":
+                <div class="row g-3">
+                    <div class="col-lg-6">@StatsCard @BuildCard</div>
+                    <div class="col-lg-6">@SkillsCard @EquipmentCard @InventoryCard</div>
+                </div>
+                break;
+            case "hunting":
+                <div class="row g-3">
+                    <div class="col-lg-6">@MapChoiceCard</div>
+                    <div class="col-lg-6">@EfficiencyCard</div>
+                </div>
+                break;
+            case "analytics":
+                <div class="row g-3">
+                    <div class="col-lg-6">@ChartCards</div>
+                    <div class="col-lg-6">@TelemetryCard @ZenyCard</div>
+                </div>
+                break;
+            default:
+                @MapCard
                 <CombatLog Lines="Bots.GetLog(Id)" />
-                @MapChoiceCard
-                @BuildCard
-                @StatsCard
-                @ChartCards
-            </div>
-
-            <div class="col-lg-6">
-                @SkillsCard
-                @InventoryCard
-                @EquipmentCard
-                @TelemetryCard
-                @EfficiencyCard
-            </div>
-        </div>
+                @CommandsCard
+                break;
+        }
     </div>
 }
 
@@ -748,6 +765,49 @@ else
         </div>
     };
 
+    // Current zeny plus every item sold to NPCs, valued at the DB sell price with Overcharge applied.
+    private RenderFragment ZenyCard => __builder =>
+    {
+        var s = snapshot!;
+        var rows = (tele?.Recent() ?? new()).Where(e => e.Type == TelemetryEventType.Sold && e.Detail.Length > 0)
+            .GroupBy(e => e.Detail)
+            .Select(g => (name: g.Key, count: g.Sum(e => Math.Max(1, e.Value)),
+                          zeny: g.Sum(e => e.Zeny > 0 ? e.Zeny : (long)Math.Max(1, e.Value) * SellPrice(g.Key))))
+            .OrderByDescending(r => r.zeny).ToList();
+        <div class="card mb-3">
+            <div class="card-header py-2 fw-semibold">
+                Zeny <span class="text-muted">(@s.Zeny.ToString("N0")z held · @rows.Sum(r => r.zeny).ToString("N0")z from sales)</span>
+            </div>
+            <div class="card-body p-2">
+                @if (rows.Count == 0)
+                {
+                    <div class="text-muted">nothing sold yet</div>
+                }
+                else
+                {
+                    <div class="small text-muted">Sold</div>
+                    <div class="d-flex flex-wrap gap-1">
+                        @foreach (var r in rows)
+                        {
+                            <span class="badge bg-warning text-dark">@if (LootIcon(r.name) is { } icon)
+                            {<img src="@icon" alt="" width="20" height="20" class="me-1" style="object-fit:contain;vertical-align:middle" onerror="this.style.display='none'" />}@r.name&nbsp;<span class="badge bg-light text-dark">@r.count · @r.zeny.ToString("N0")z</span></span>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    };
+
+    // Fallback for Sold events logged before zeny was recorded: server formula with the CURRENT Overcharge level.
+    private int SellPrice(string name)
+    {
+        _itemIdByName ??= Db.ItemsById.Values.GroupBy(i => i.Name).ToDictionary(g => g.Key, g => g.First().Id);
+        if (!_itemIdByName.TryGetValue(name, out var id)) return 0;
+        var oc = deep?.Learnable.FirstOrDefault(k => k.Skill == CharacterSkill.Overcharge).Level ?? 0;
+        var bonus = oc > 0 ? Math.Min(24, 5 + oc * 2) : 0;
+        return Db.ItemsById[id].SellPrice * (100 + bonus) / 100;
+    }
+
     // Forecast vs actual per monster, and per-map runs.
     private RenderFragment EfficiencyCard => __builder =>
     {
@@ -826,6 +886,16 @@ else
     // ---- State and actions ----
     private bool _showSpawnAreas = true;
     [Parameter] public string Id { get; set; } = "";
+    [SupplyParameterFromQuery] public string? Tab { get; set; }
+
+    private static readonly (string Key, string Label)[] Tabs =
+        [("live", "Live"), ("character", "Character"), ("hunting", "Hunting"), ("analytics", "Analytics")];
+    private void SelectTab(string key)
+    {
+        Tab = key; // ponytail: set directly so the switch never waits on query-param propagation
+        Nav.NavigateTo(Nav.GetUriWithQueryParameter("tab", key), replace: true);
+    }
+    private string CurrentTab => Tabs.Any(t => t.Key == Tab) ? Tab! : "live";
 
     private BotSnapshot? snapshot;
     private DeepState? deep;
