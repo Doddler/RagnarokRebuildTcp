@@ -150,8 +150,23 @@ public sealed partial class BotBehavior
         var debuff = SkillPolicy.AppliedDebuff(skill);
         var hasDebuff = debuff != null && snap.EntityStatuses.TryGetValue(target.Id, out var set) && set.Contains(debuff.Value);
         var (autoDmg, hp) = PolicyInputs(snap, target);
+        Func<int, double>? land = null;
+        var poisonedAuto = 0.0;
+        if (debuff == CharacterStatusEffect.Poison && !hasDebuff && _data?.Monster(target.ClassId) is { } mob)
+        {
+            var resist = SkillPolicy.PoisonResist(mob.Vit, string.Equals(mob.Special, "Boss", StringComparison.OrdinalIgnoreCase),
+                ElementChart.Parse(mob.Element ?? "").Item1 == SimElement.Undead);
+            var mobLuk = _data.MonsterLuk(target.ClassId);
+            land = lv => SkillPolicy.LuckModifiedChance(SkillPolicy.DebuffChance(skill, lv) * resist, snap.SelfLuk, mobLuk);
+            if (!_config.NoAutoAttack && autoDmg > 0)
+            {
+                var f = Forecast(snap, target, poisoned: true);
+                poisonedAuto = f.MyDamagePerHit * f.MyHitChance;
+            }
+        }
         return SkillPolicy.ChooseLevel(skill, maxLevel, pinLevel, _data?.SkillInfo(skill)?.SpCost,
-            hp, hasDebuff, autoDmg, snap.SelfSp, SkillPolicy.SpIsFree(snap.SelfSp, snap.SelfMaxSp, snap.SelfInt));
+            hp, hasDebuff, autoDmg, snap.SelfSp, SkillPolicy.SpIsFree(snap.SelfSp, snap.SelfMaxSp, snap.SelfInt),
+            land, snap.SelfAttackInterval > 0.05 ? snap.SelfAttackInterval : 1.5, poisonedAuto);
     }
 
     /// <summary>Expected damage per auto-attack (0 for NoAutoAttack) and the target's HP (MaxHp 0 = not seen yet: fresh mob).</summary>

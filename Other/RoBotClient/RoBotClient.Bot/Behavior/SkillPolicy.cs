@@ -28,6 +28,58 @@ public static class SkillPolicy
         _ => null,
     };
 
+    /// <summary>Chance the skill's debuff lands on a hit, before the target's resist (EnvenomHandler: 50% + 5%/lv). 0 = not modeled.</summary>
+    public static double DebuffChance(CharacterSkill skill, int level) => skill switch
+    {
+        CharacterSkill.Envenom => (500 + 50 * level) / 1000.0,
+        _ => 0,
+    };
+
+    /// <summary>Target's multiplier on that chance, TryPoisonOnTarget: 0.99^VIT (VIT x2 on bosses), Undead immune.</summary>
+    public static double PoisonResist(int vit, bool boss, bool undead)
+        => undead ? 0 : Math.Pow(0.99, boss ? vit * 2 : vit);
+
+    /// <summary>CombatEntity.CheckLuckModifiedRandomChanceVsTarget for a player vs a monster: the chance scaled by
+    /// (myLuk + mod) / (mobLuk + mod), mod = 150 + (chance‰ - 100) / 4, mob LUK capped at mine + 100.</summary>
+    public static double LuckModifiedChance(double chance, int myLuk, int targetLuk)
+    {
+        if (chance <= 0) return 0;
+        if (chance > 1) return 1;
+        var mod = 150 + (chance > 0.1 ? (int)((chance * 1000 - 100) / 4) : 0);
+        targetLuk = Math.Max(0, Math.Min(targetLuk, myLuk + 100));
+        return Math.Min(1, chance * (myLuk + mod) / (targetLuk + mod));
+    }
+
+    /// <summary>A poisoned monster's (Def, Vit), StatusPoison.OnApply: VIT -VIT/4, hard DEF -25% (-10% on bosses).</summary>
+    public static (int Def, int Vit) PoisonedDefense(int def, int vit, bool boss)
+        => (def * (boss ? 90 : 75) / 100, vit - vit / 4);
+
+    /// <summary>StatusPoison on a monster: 15 + 1.5 s, one tick every 2 s, each tick = half the Envenom hit.</summary>
+    public const int PoisonTicks = 8;
+    public const double PoisonTickSeconds = 2, PoisonSeconds = 16.5;
+
+    /// <summary>Like HitsSaved, but the cast also lands poison with &lt;paramref name="landChance"/&gt; (hit chance is already in
+    /// autoDmg/hitDmg): its expected ticks keep chipping while we swing, and swings inside the poison window hit the
+    /// weakened DEF/VIT (&lt;paramref name="poisonedAutoDmg"/&gt;, 0 = same as autoDmg). A mob that dies before that adds up
+    /// isn't worth the SP, so failed rolls on a low mob stop being retried on their own.</summary>
+    public static int PoisonHitsSaved(int hp, double autoDmg, double hitDmg, double landChance, double attackInterval,
+        double poisonedAutoDmg = 0)
+    {
+        if (hp <= 0 || autoDmg <= 0) return 0;
+        var without = (int)Math.Ceiling(hp / autoDmg);
+        var tick = landChance * hitDmg / 2;
+        var buffedSwing = autoDmg + landChance * (Math.Max(poisonedAutoDmg, autoDmg) - autoDmg);
+        double swings = 0;
+        var after = 0;
+        while (after < without && hp - hitDmg - swings
+               - Math.Min(PoisonTicks, Math.Floor(after * attackInterval / PoisonTickSeconds)) * tick > 0)
+        {
+            after++;
+            swings += after * attackInterval <= PoisonSeconds ? buffedSwing : autoDmg;
+        }
+        return without - 1 - after;
+    }
+
     /// <summary>Area skills: Chebyshev radius from the server handler's GatherEnemiesInArea, and whether it's centered on
     /// the caster (else on the target cell). null = single-target.</summary>
     public static (int Radius, bool OnSelf)? Aoe(CharacterSkill skill) => skill switch
@@ -94,29 +146,35 @@ public static class SkillPolicy
 
     /// <summary>Level to cast (0 = don't). &lt;paramref name="maxLevel"/&gt; caps the search (the script's level, or the known level).
     /// &lt;paramref name="pinLevel"/&gt; = the script named an exact level: only decide yes/no at that level.
-    /// - Debuff skill on a target without the debuff: cast (that's what it's for).
+    /// - Pure debuff (no damage, e.g. Provoke) on a target without it: cast (that's what it's for).
+    /// - Damage + debuff (Envenom) on a target without it: a damage skill whose hit carries the debuff's expected ticks
+    ///   and DEF drop (&lt;paramref name="landChance"/&gt;: level → chance it sticks), held to the same ≥1 swing / per-SP bar.
     /// - Damage skill: needs to save ≥1 swing. With free SP pick the level saving the most swings, otherwise the best
     ///   swings-per-SP. (A "save SP for fresh mobs" bar was tried: with server multipliers a finishing cast scores about
     ///   the same per SP as an opener, so the 1-swing rule already does the work.)
     /// - No auto-attack (autoDmg ≤ 0, a pure caster): the skill IS the damage, always cast.</summary>
     public static int ChooseLevel(CharacterSkill skill, int maxLevel, bool pinLevel, int[]? spCosts,
-        int targetHp, bool targetHasDebuff, double autoDmg, int sp, bool spFree)
+        int targetHp, bool targetHasDebuff, double autoDmg, int sp, bool spFree,
+        Func<int, double>? landChance = null, double attackInterval = 1.5, double poisonedAutoDmg = 0)
     {
         if (maxLevel <= 0) return 0;
         var debuff = AppliedDebuff(skill);
-        if (debuff != null && !targetHasDebuff) return maxLevel;
+        if (debuff != null && !targetHasDebuff && DamageMultiplier(skill, 1) <= 0) return maxLevel;
         if (DamageMultiplier(skill, 1) <= 0) return debuff != null ? 0 : maxLevel; // debuff already up / not modeled: leave it to the script
         if (autoDmg <= 0) return maxLevel;
 
         int Cost(int lv) => SpCost(spCosts, lv);
-        double Score(int hp, int lv) => spFree ? HitsSaved(hp, autoDmg, autoDmg * DamageMultiplier(skill, lv))
-            : (double)HitsSaved(hp, autoDmg, autoDmg * DamageMultiplier(skill, lv)) / Cost(lv);
+        var land = debuff != null && !targetHasDebuff ? landChance : null;
+        int Saved(int hp, int lv) => land != null
+            ? PoisonHitsSaved(hp, autoDmg, autoDmg * DamageMultiplier(skill, lv), land(lv), attackInterval, poisonedAutoDmg)
+            : HitsSaved(hp, autoDmg, autoDmg * DamageMultiplier(skill, lv));
+        double Score(int hp, int lv) => spFree ? Saved(hp, lv) : (double)Saved(hp, lv) / Cost(lv);
 
         var (lo, hi) = pinLevel ? (maxLevel, maxLevel) : (1, maxLevel);
         int best = 0; double bestScore = 0;
         for (var lv = lo; lv <= hi; lv++)
         {
-            if (Cost(lv) > sp || HitsSaved(targetHp, autoDmg, autoDmg * DamageMultiplier(skill, lv)) < 1) continue;
+            if (Cost(lv) > sp || Saved(targetHp, lv) < 1) continue;
             var s = Score(targetHp, lv);
             if (s >= bestScore) { bestScore = s; best = lv; } // ties go to the higher level: same efficiency, faster kill
         }

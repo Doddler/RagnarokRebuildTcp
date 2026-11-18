@@ -152,6 +152,7 @@ public sealed class GameDatabase
             {
             if (c.Length > 25 && Math.Max(I(c[23]), I(c[25])) is > 0 and var ms) _attackDelay[I(c[0])] = ms / 1000.0;
             if (c.Length > 6) _monsterInt[I(c[0])] = I(c[6]); // MATK comes from INT (Monster.InitializeStats)
+            if (c.Length > 10) _monsterLuk[I(c[0])] = I(c[10]); // status-chance luck roll
         }
 
         var gear = new Dictionary<int, GearInfo>();
@@ -254,6 +255,7 @@ public sealed class GameDatabase
     private readonly HashSet<string> _punishesRanged = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<int, double> _attackDelay = new();
     private readonly Dictionary<int, int> _monsterInt = new();
+    private readonly Dictionary<int, int> _monsterLuk = new();
     private readonly Dictionary<string, List<MonsterCast>> _casts = new(StringComparer.OrdinalIgnoreCase);
     /// <summary>One TryCast a monster rolls on each auto-attack (StateAttacking / StateAny); cast and cooldown in
     /// seconds. Weight is the share of the fight its condition holds: 1 when unconditional, 0.3 for [HpPercent &lt; 30].</summary>
@@ -271,6 +273,7 @@ public sealed class GameDatabase
     /// <summary>TryCasts from StateChase / StateAny: what it throws at someone running away (rolled about once a second).</summary>
     public IReadOnlyList<MonsterCast> MonsterChaseCasts(string monsterCode) => _chaseCasts.TryGetValue(monsterCode, out var l) ? l : Array.Empty<MonsterCast>();
     public int MonsterInt(int classId) => _monsterInt.GetValueOrDefault(classId);
+    public int MonsterLuk(int classId) => _monsterLuk.GetValueOrDefault(classId);
 
     // The server script's number literals (ScriptTreeWalker): "5%" = 50 per mille, "1.5s" = 1500 ms, bare = as is.
     private static int ScriptNumber(string s) =>

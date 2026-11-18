@@ -821,7 +821,8 @@ public sealed partial class BotBehavior
             rescues);
     }
 
-    private BattleForecast Forecast(Snapshot snap, MonsterInfo m)
+    /// <param name="poisoned">Forecast against the mob with Poison's DEF/VIT drop applied (Envenom's payoff).</param>
+    private BattleForecast Forecast(Snapshot snap, MonsterInfo m, bool poisoned = false)
     {
         var me = MeCombatant(snap);
         var (demonBane, beastBane) = MasteryLevels(snap);
@@ -847,12 +848,18 @@ public sealed partial class BotBehavior
             // Only grants the out-of-range free kill; a mob that answers arrows with a spell doesn't get it.
             DefenderIsImmobile = IsMonsterImmobile(mDb) && !(mDb != null && _data!.PunishesRangedAttacks(mDb.Code)),
         };
-        var f = BattleSimulator.Forecast(me, MonsterCombatant(m), mods, _config.WinMargin, _config.MaxRoundsToKill);
+        var mob = MonsterCombatant(m);
+        if (poisoned)
+        {
+            var (def, vit) = SkillPolicy.PoisonedDefense(mob.Def, mob.Vit, string.Equals(mDb?.Special, "Boss", StringComparison.OrdinalIgnoreCase));
+            mob = mob with { Def = def, Vit = vit };
+        }
+        var f = BattleSimulator.Forecast(me, mob, mods, _config.WinMargin, _config.MaxRoundsToKill);
         // A monster with no modeled skills that has hit us far harder than a swing (something we don't model)
         // gets one more of those mid-fight. Modeled skills are already in MonsterSkillDps.
         var burst = _bot.MaxHitTakenFrom(m.Name);
         if (mods.MonsterSkillDps == 0 && burst > f.MonsterDamagePerHit * 2)
-            f = BattleSimulator.Forecast(me with { Hp = Math.Max(0, me.Hp - burst) }, MonsterCombatant(m), mods, _config.WinMargin, _config.MaxRoundsToKill);
+            f = BattleSimulator.Forecast(me with { Hp = Math.Max(0, me.Hp - burst) }, mob, mods, _config.WinMargin, _config.MaxRoundsToKill);
         return f;
     }
 
