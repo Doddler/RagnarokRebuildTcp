@@ -106,11 +106,15 @@ var sharedIcons = File.Exists(sharedIconsFile)
 MapRepoPngs("/minimap/{name}.png", Path.Combine("RebuildClient", "Assets", "Maps", "minimap"), new Dictionary<string, string>());
 MapRepoPngs("/icons/{name}.png", Path.Combine("RebuildClient", "Assets", "Sprites", "Imported", "Icons", "Sprites"), sharedIcons);
 MapRepoPngs("/monster-atlas/{name}.png", Path.Combine("RebuildClient", "Assets", "Sprites", "Imported", "Monsters", "Atlas"), new Dictionary<string, string>());
-// Player head atlas by appearance (the sprite files have Korean names, so they're looked up rather than named).
-app.MapGet("/player-head/{gender}/{head:int}/{color:int}.png", (string gender, int head, int color, MonsterSprites sprites) =>
-    sprites.GetHead(gender == "m", head, color) is { } f && File.Exists(sprites.HeadAtlasPath(gender == "m", f))
-        ? Results.File(sprites.HeadAtlasPath(gender == "m", f), "image/png")
-        : Results.NotFound());
+// Player body/head atlases for the dashboard portraits (Korean file names, so not MapRepoPngs' ASCII-only pattern).
+var charactersDir = ResolveRepoSubdir(Path.Combine("RebuildClient", "Assets", "Sprites", "Imported", "Characters"));
+app.MapGet("/player-atlas/{dir}/{name}.png", (string dir, string name) =>
+{
+    if (charactersDir.Length == 0 || dir is not ("BodyMale" or "BodyFemale" or "HeadMale" or "HeadFemale") || name.Contains('/') || name.Contains('\\') || name.Contains(".."))
+        return Results.NotFound();
+    var path = Path.Combine(charactersDir, dir, "Atlas", name + ".png");
+    return File.Exists(path) ? Results.File(path, "image/png") : Results.NotFound();
+});
 // Monster sprite actions (parsed once per species from the Unity .asset) for the minimap's animated sprites.
 app.MapGet("/monster-anim/{name}", (string name, MonsterSprites sprites) =>
     sprites.GetAnim(name) is { } anim ? Results.Json(anim) : Results.NotFound());

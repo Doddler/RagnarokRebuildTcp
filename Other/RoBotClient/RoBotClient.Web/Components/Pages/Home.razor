@@ -89,10 +89,16 @@ else
                     var id = bot.Id;
                     <tr>
                         <td class="text-nowrap">
-                            @if (Bots.GetSession(id)?.WithState(w => (w.Self.IsMale, w.Self.HeadType, w.Self.HairColor)) is var (male, head, hair)
-                                 && Sprites.GetHead(male, head, hair) is { } hf)
+                            @if (Bots.GetSession(id)?.WithState(w => (w.Self.IsMale, w.Self.JobId, w.Self.HeadType, w.Self.HairColor)) is var (male, job, head, hair)
+                                 && Sprites.GetPortrait(male, job, head, hair) is { } pt)
                             {
-                                <div class="mx-auto" style="width:@(hf.Width)px;height:@(hf.Height)px;background:url('player-head/@(male ? "m" : "f")/@head/@(hair).png') -@(hf.X)px -@(hf.Top)px no-repeat"></div>
+                                @* Bust only (head + shoulders): the head is the last part; full-body rows were ~100px tall. *@
+                                <div class="mx-auto position-relative overflow-hidden" style="width:@(pt.Width)px;height:@(Math.Min(pt.Height, pt.Parts[^1].Top + pt.Parts[^1].Height + 20))px">
+                                    @foreach (var part in pt.Parts)
+                                    {
+                                        <div class="position-absolute" style="left:@(part.Left)px;top:@(part.Top)px;width:@(part.Width)px;height:@(part.Height)px;background:url('@part.Url') -@(part.SrcX)px -@(part.SrcY)px no-repeat@(part.Mirror ? ";transform:scaleX(-1)" : "")"></div>
+                                    }
+                                </div>
                             }
                             <a href="@($"/bot/{id}")" class="fw-semibold text-decoration-none">
                                 @(string.IsNullOrEmpty(bot.CharacterName) ? id : bot.CharacterName)

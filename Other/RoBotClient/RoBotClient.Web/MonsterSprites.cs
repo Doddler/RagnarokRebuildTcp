@@ -25,12 +25,16 @@ public sealed class MonsterSprites
     /// frames of layers [sprite index, x, y, mirror 0/1, scaleX, scaleY, alpha]; x/y place the layer's centre
     /// relative to the feet, y down (RO act coordinates, as Unity's SpriteMeshBuilder reads them).</summary>
     public sealed record Anim(string Atlas, List<int[]> Rects, List<AnimAction> Actions);
-    public sealed record AnimAction(int Delay, List<List<double[]>> Frames);
+    public sealed record AnimAction(int Delay, List<List<double[]>> Frames)
+    {
+        /// <summary>Per frame, the first "Pos" attach point [x, y] (where a head goes on a body); [0, 0] if none.</summary>
+        public List<double[]> Anchors { get; } = new();
+    }
 
     public Anim? GetAnim(string monsterName) =>
         _monstersDir.Length == 0
             ? null
-            : _anims.GetOrAdd(monsterName, n => _spriteByName.Value.TryGetValue(n, out var sprite) ? ReadAnim(sprite) : null);
+            : _anims.GetOrAdd(monsterName, n => _spriteByName.Value.TryGetValue(n, out var sprite) ? ReadAnim(_monstersDir, sprite, $"monster-atlas/{Uri.EscapeDataString(sprite + "_atlas")}.png") : null);
 
     public MonsterSprites(string clientConfigDir, string importedMonstersDir, string headDataFile = "", string importedCharactersDir = "")
     {
@@ -38,24 +42,63 @@ public sealed class MonsterSprites
         _charactersDir = importedCharactersDir;
         _spriteByName = new(() => LoadSpriteNames(Path.Combine(clientConfigDir, "monsterclass.json")));
         _headSprites = new(() => LoadHeadSprites(headDataFile));
+        _bodySprites = new(() => LoadBodySprites(Path.Combine(clientConfigDir, "playerclass.json")));
     }
 
-    // Player heads: headdata.json lists, per head id, one sprite per hair color ("10_남_3"); imported like monsters
-    // under Characters/Head{Male,Female}; the atlas is HeadAtlasPath.
+    // Player portraits: idle facing-south body (playerclass.json: job -> sprite) with the head (headdata.json: head
+    // id -> one sprite per hair color, "10_남_3") stacked on it, as the client does: the head moves by
+    // bodyAnchor - headAnchor (the frames' "Pos" attach points). Atlases are served from /player-atlas/<dir>/<name>.png.
+    public sealed record PortraitPart(string Url, int SrcX, int SrcY, int Width, int Height, int Left, int Top, bool Mirror);
+    public sealed record Portrait(int Width, int Height, List<PortraitPart> Parts);
+
     private readonly string _charactersDir;
     private readonly Lazy<Dictionary<(bool, int, int), string>> _headSprites;
-    private readonly ConcurrentDictionary<(bool, int, int), Frame?> _heads = new();
+    private readonly Lazy<Dictionary<(bool, int), string>> _bodySprites;
+    private readonly ConcurrentDictionary<(bool, int, int, int), Portrait?> _portraits = new();
 
-    public Frame? GetHead(bool isMale, int head, int color) =>
+    public Portrait? GetPortrait(bool isMale, int job, int head, int color) =>
         _charactersDir.Length == 0
             ? null
-            : _heads.GetOrAdd((isMale, head, color), k =>
-                (_headSprites.Value.TryGetValue(k, out var s) || _headSprites.Value.TryGetValue((isMale, head, 0), out s))
-                    ? ReadFirstFrame(Path.Combine(_charactersDir, isMale ? "HeadMale" : "HeadFemale"), s)
-                    : null);
+            : _portraits.GetOrAdd((isMale, job, head, color), _ =>
+            {
+                var g = isMale ? "Male" : "Female";
+                if (!_bodySprites.Value.TryGetValue((isMale, job), out var bodyName) && !_bodySprites.Value.TryGetValue((isMale, 0), out bodyName))
+                    return null;
+                if (!_headSprites.Value.TryGetValue((isMale, head, color), out var headName) && !_headSprites.Value.TryGetValue((isMale, head, 0), out headName))
+                    return null;
+                var body = ReadAnim(Path.Combine(_charactersDir, "Body" + g), bodyName, $"player-atlas/Body{g}/{Uri.EscapeDataString(bodyName + "_atlas")}.png");
+                var hd = ReadAnim(Path.Combine(_charactersDir, "Head" + g), headName, $"player-atlas/Head{g}/{Uri.EscapeDataString(headName + "_atlas")}.png");
+                if (body?.Actions is not [{ Frames: [var bf, ..] } ba, ..] || hd?.Actions is not [{ Frames: [var hf, ..] } ha, ..])
+                    return null;
+                double dx = ba.Anchors[0][0] - ha.Anchors[0][0], dy = ba.Anchors[0][1] - ha.Anchors[0][1];
+                var parts = new List<(Anim A, double[] L, double Dx, double Dy)>();
+                parts.AddRange(bf.Select(l => (body, l, 0.0, 0.0)));
+                parts.AddRange(hf.Select(l => (hd, l, dx, dy)));
+                var placed = parts.Where(p => p.L[0] >= 0 && p.L[0] < p.A.Rects.Count).Select(p =>
+                {
+                    var r = p.A.Rects[(int)p.L[0]];
+                    return (p.A.Atlas, r, X: (int)Math.Round(p.L[1] + p.Dx - r[2] / 2.0), Y: (int)Math.Round(p.L[2] + p.Dy - r[3] / 2.0), Mirror: p.L[3] != 0);
+                }).ToList();
+                if (placed.Count == 0) return null;
+                int minX = placed.Min(p => p.X), minY = placed.Min(p => p.Y);
+                return new Portrait(placed.Max(p => p.X + p.r[2]) - minX, placed.Max(p => p.Y + p.r[3]) - minY,
+                    placed.Select(p => new PortraitPart(p.Atlas, p.r[0], p.r[1], p.r[2], p.r[3], p.X - minX, p.Y - minY, p.Mirror)).ToList());
+            });
 
-    public string HeadAtlasPath(bool isMale, Frame f) =>
-        Path.Combine(_charactersDir, isMale ? "HeadMale" : "HeadFemale", "Atlas", f.AtlasName + ".png");
+    private static Dictionary<(bool, int), string> LoadBodySprites(string path)
+    {
+        var map = new Dictionary<(bool, int), string>();
+        if (!File.Exists(path))
+            return map;
+        using var doc = JsonDocument.Parse(File.ReadAllText(path));
+        foreach (var c in doc.RootElement.GetProperty("Items").EnumerateArray())
+        {
+            var id = c.GetProperty("Id").GetInt32();
+            if (c.TryGetProperty("SpriteMale", out var m)) map[(true, id)] = Path.GetFileNameWithoutExtension(m.GetString()!);
+            if (c.TryGetProperty("SpriteFemale", out var f)) map[(false, id)] = Path.GetFileNameWithoutExtension(f.GetString()!);
+        }
+        return map;
+    }
 
     private static Dictionary<(bool, int, int), string> LoadHeadSprites(string path)
     {
@@ -131,10 +174,10 @@ public sealed class MonsterSprites
     // Hand-rolled walk over the Unity YAML (no YAML package here): Sprite documents give each fileID's m_Rect; the
     // RoSpriteData MonoBehaviour lists Actions -> Frames -> Layers, then Sprites (fileIDs in layer-index order).
     // "Pos:" entries also start with "- Position:" at the layer indent, so they're skipped by tracking inPos.
-    private Anim? ReadAnim(string sprite)
+    private static Anim? ReadAnim(string dir, string sprite, string atlasUrl)
     {
-        var asset = Path.Combine(_monstersDir, sprite + ".asset");
-        var atlas = Path.Combine(_monstersDir, "Atlas", sprite + "_atlas.png");
+        var asset = Path.Combine(dir, sprite + ".asset");
+        var atlas = Path.Combine(dir, "Atlas", sprite + "_atlas.png");
         if (!File.Exists(asset) || !File.Exists(atlas))
             return null;
 
@@ -145,7 +188,7 @@ public sealed class MonsterSprites
         double[]? layer = null;
         string? docId = null;
         double[] rect = new double[4];
-        bool inPos = false, inSprites = false;
+        bool inPos = false, inSprites = false, anchorSet = false;
         foreach (var raw in File.ReadLines(asset))
         {
             if (raw.StartsWith("--- "))
@@ -166,8 +209,14 @@ public sealed class MonsterSprites
             else if (line.StartsWith("width: ")) rect[2] = Num(line[7..]);
             else if (line.StartsWith("height: ")) { rect[3] = Num(line[8..]); rectById[docId ?? ""] = rect; }
             else if (line.StartsWith("- Delay: ")) actions.Add(new AnimAction((int)Num(line[9..]), new()));
-            else if (line == "- Layers:" && actions.Count > 0) { actions[^1].Frames.Add(frame = new()); inPos = false; }
+            else if (line == "- Layers:" && actions.Count > 0) { actions[^1].Frames.Add(frame = new()); actions[^1].Anchors.Add([0, 0]); inPos = false; anchorSet = false; }
             else if (line.StartsWith("Pos:")) inPos = true;
+            else if (line.StartsWith("- Position: ") && inPos && !anchorSet && actions.Count > 0)
+            {
+                var (ax, ay) = Vec(line[12..]);
+                actions[^1].Anchors[^1] = [ax, ay];
+                anchorSet = true;
+            }
             else if (line.StartsWith("- Position: ") && !inPos && frame != null)
             {
                 var (px, py) = Vec(line[12..]);
@@ -189,7 +238,7 @@ public sealed class MonsterSprites
         var rects = spriteIds.Select(id => rectById.TryGetValue(id, out var r)
             ? new[] { (int)r[0], textureHeight - (int)r[1] - (int)r[3], (int)r[2], (int)r[3] }
             : new[] { 0, 0, 0, 0 }).ToList();
-        return new Anim($"monster-atlas/{Uri.EscapeDataString(sprite + "_atlas")}.png", rects, actions);
+        return new Anim(atlasUrl, rects, actions);
 
         static double Num(string s) => double.Parse(s, CultureInfo.InvariantCulture);
         static (double, double) Vec(string s) // "{x: 1, y: -12}"

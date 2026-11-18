@@ -506,6 +506,22 @@ public sealed class BotSession : IAsyncDisposable
     public Task ResetSkillsAsync(CancellationToken ct = default) =>
         _conn?.SendSimpleAsync(PacketType.AdminResetSkills, ct) ?? Task.CompletedTask;
 
+    /// <summary>The Unity client's "/change hair <style> <color>" / "/change gender <0|1>" (no admin needed). -1 = random
+    /// style / color; gender null = keep, true = male. The server refreshes the entity, so the new look lands in Self.</summary>
+    public async Task ChangeAppearanceAsync(int hairStyle, int hairColor, bool? male, CancellationToken ct = default)
+    {
+        if (_conn == null) return;
+        foreach (var (mode, val, sub) in male is { } m ? new[] { (2, m ? 0 : 1, -1), (1, hairStyle, hairColor) } : new[] { (1, hairStyle, hairColor) })
+        {
+            var w = new PacketWriter();
+            w.WritePacketType(PacketType.AdminChangeAppearance);
+            w.Write(mode);
+            w.Write(val);
+            w.Write(sub);
+            await _conn.SendPacketAsync(w, ct);
+        }
+    }
+
     /// <summary>Admin teleport to a walkable cell (debug server only), e.g. to pull a bot out of a wall.</summary>
     public Task AdminMoveAsync(string map, int x, int y, CancellationToken ct = default)
     {

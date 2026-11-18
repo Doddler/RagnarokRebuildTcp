@@ -312,6 +312,18 @@ public static class McpBotTools
         return new { message = $"{botId}: skills reset; re-spending along \"{cfg.SkillOrder}\"." };
     }
 
+    [McpServerTool(Name = "change_appearance"),
+     Description("Restyle a bot (the client's /change command): hairStyle 0-29 and hairColor 0-8 (what the client has sprites for), -1 = random; gender \"male\"/\"female\", omit to keep.")]
+    public static async Task<object> ChangeAppearance(BotManager bots, string botId, int hairStyle = -1, int hairColor = -1, string? gender = null)
+    {
+        if (bots.GetSession(botId) is not { } session) return new { error = $"No bot '{botId}'." };
+        bool? male = gender?.ToLowerInvariant() switch { "male" or "m" => true, "female" or "f" => false, null => null, _ => throw new ArgumentException("gender: male or female") };
+        await session.ChangeAppearanceAsync(hairStyle, hairColor, male);
+        await Task.Delay(500); // let the server's refresh come back
+        var (m, h, c) = session.WithState(w => (w.Self.IsMale, w.Self.HeadType, w.Self.HairColor));
+        return new { message = $"{botId}: now {(m ? "male" : "female")}, hair {h} color {c}." };
+    }
+
     [McpServerTool(Name = "admin_move"),
      Description("Teleport a bot to a walkable cell on any map (debug server only), e.g. to pull it out of a wall.")]
     public static async Task<object> AdminMove(BotManager bots, string botId, string map, int x, int y)
