@@ -272,7 +272,21 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
             && _data!.UsableItemPrice(_config.RestockItemId) is var price and > 0
             && ConvenienceBudget(st.zeny, 0) / price < (_config.RestockTargetCount - restockHeld + 1) / 2)
             restockHeld = int.MaxValue;
-        return ShopPolicy.ShouldStartTrip(st.weight, st.maxWeight, restockHeld, _config, CountSaleableItems);
+        return ShopPolicy.ShouldStartTrip(st.weight, st.maxWeight, restockHeld, _config, CountSaleableItems) || OutOfFlyWings(snap, st.zeny);
+    }
+
+    // Out of Fly Wings, the escape of last resort is gone: 56 of the 133 deaths fleeing a mob the bot would lose to
+    // had none left. Worth its own trip once the wing budget, after the fares there and back, buys half the pool.
+    private DateTime _nextWingCheck;
+    private bool OutOfFlyWings(Snapshot snap, int zeny)
+    {
+        int target;
+        lock (_restockLock) target = _restockTargets.GetValueOrDefault(_config.FlyWingItemId);
+        if (target <= 0 || _data?.IsUsableItem(_config.FlyWingItemId) != true || CountInInventory(_config.FlyWingItemId) > 0) return false;
+        if (DateTime.UtcNow < _nextWingCheck) return false;
+        _nextWingCheck = DateTime.UtcNow.AddSeconds(60); // fares mean route planning; not every tick
+        var price = _data.UsableItemPrice(_config.FlyWingItemId);
+        return price > 0 && ConvenienceBudget(zeny, ShopTripFares(snap, _config.FlyWingItemId)) / price >= (target + 1) / 2;
     }
 
     /// <summary>Force an immediate shop trip to restock items on the restock-targets list. No-op when

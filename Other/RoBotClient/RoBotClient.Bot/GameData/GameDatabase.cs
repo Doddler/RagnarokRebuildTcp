@@ -146,6 +146,11 @@ public sealed class GameDatabase
             : Enumerable.Empty<string[]>();
         static int I(string s) => int.TryParse(s, out var v) ? v : 0;
 
+// Auto-attack cadence, as the server's Monster.UpdateStats: max(RechargeTime col 23, AttackTime col 25), in ms.
+        // The client export leaves both out.
+        foreach (var c in Rows("Monsters.csv"))
+            if (c.Length > 25 && Math.Max(I(c[23]), I(c[25])) is > 0 and var ms) _attackDelay[I(c[0])] = ms / 1000.0;
+
         var gear = new Dictionary<int, GearInfo>();
         // Id,Code,Name,Attack,Range,Slot,Price,Weight,Type,Position,Property,MinLvl,Rank,EquipGroup
         foreach (var c in Rows("ItemsWeapons.csv"))
@@ -213,6 +218,9 @@ public sealed class GameDatabase
     public sealed record SpawnArea(string MonsterCode, int Count, int MinX, int MinY, int MaxX, int MaxY);
     private readonly Dictionary<string, List<SpawnArea>> _spawnAreas = new(StringComparer.OrdinalIgnoreCase);
     private readonly HashSet<string> _punishesRanged = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<int, double> _attackDelay = new();
+    /// <summary>Seconds between a monster's auto-attacks; 0 when unknown (the simulator falls back to its default).</summary>
+    public double MonsterAttackDelay(int classId) => _attackDelay.GetValueOrDefault(classId);
     public bool PunishesRangedAttacks(string monsterCode) => _punishesRanged.Contains(monsterCode);
     public IReadOnlyList<SpawnArea> SpawnAreas(string map) => _spawnAreas.TryGetValue(map, out var list) ? list : Array.Empty<SpawnArea>();
 

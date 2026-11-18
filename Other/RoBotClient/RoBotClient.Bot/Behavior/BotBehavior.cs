@@ -350,8 +350,11 @@ public sealed partial class BotBehavior
         // Forced shop trips (_forceShop, set by MCP) still go through; the gate only blocks the AUTO
         // trigger so a follower won't auto-detach. A squad leader / solo bot keeps the legacy behavior.
         var isSquadFollower = !string.IsNullOrEmpty(_config.SquadId) && !_config.IsSquadLeader;
-        if (ShopTripActive) { await TickShopTripAsync(snap, stuck, ct); return; }
-        if (_forceShop || (!isSquadFollower && ShouldStartShopTrip(snap)))
+        // Shopping or traveling the bot doesn't hunt, so winnable monsters chasing it pile up into a pack it can't
+        // beat. Kill what's on it first (the target block below fights it), then the trip resumes.
+        var defending = await DefendAsync(snap, ct);
+        if (!defending && ShopTripActive) { await TickShopTripAsync(snap, stuck, ct); return; }
+        if (!defending && (_forceShop || (!isSquadFollower && ShouldStartShopTrip(snap))))
         {
             StartShopTrip(snap, _forceShop);
             _forceShop = false;
@@ -359,17 +362,17 @@ public sealed partial class BotBehavior
         }
 
         // Out of healing items and hurt? Sit to recover (when able + safe) instead of fighting without sustain.
-        if (await TickRestAsync(snap, ct)) return;
+        if (!defending && await TickRestAsync(snap, ct)) return;
 
         // Follower mode: in a party, NOT the leader, leader visible — mirror leader's target / stay close.
         // When the leader isn't in view this returns false and we fall through to normal travel/wander.
-        if (await TickAsFollowerAsync(snap, ct)) return;
+        if (!defending && await TickAsFollowerAsync(snap, ct)) return;
 
         // Respawning far from the hunting map? Re-save at a Kafra closer to it first.
-        if (await TickSavePointAsync(snap, ct)) return;
+        if (!defending && await TickSavePointAsync(snap, ct)) return;
 
         // Travel to the hunting map if we're elsewhere (e.g. respawned in town).
-        if (!string.IsNullOrEmpty(_config.HomeMap) &&
+        if (!defending && !string.IsNullOrEmpty(_config.HomeMap) &&
             !string.Equals(snap.Map, _config.HomeMap, StringComparison.OrdinalIgnoreCase))
         {
             Mode = BotMode.Traveling;
@@ -447,6 +450,41 @@ public sealed partial class BotBehavior
             return;
         }
 
+        await EngageAsync(snap, target, forecast, _bot.InParty ? "." : $", ~{ExpPerSecond(snap, target, forecast, Dist(snap.SelfPos, target.Pos)):F2} exp/s incl. walk + {RestSeconds(snap, forecast):F0}s rest (solo, best in view).", ct);
+    }
+
+    // Close enough that it's on us rather than just around: a monster chasing a walking bot stays within a few cells.
+    private const int DefendRadius = 5;
+    // ponytail: guessed share; re-fit from the "it's chasing me" engagements' HP lost once there are some.
+    private const double DefendDangerShare = 0.3;
+
+    /// <summary>Off the hunt (shop trip, or traveling to the hunting map): keep fighting a target that's on us, or
+    /// engage the nearest winnable monster that has hit us or is an aggressive one at melee range. False when
+    /// there's nothing to defend against, so the trip goes on.</summary>
+    private async Task<bool> DefendAsync(Snapshot snap, CancellationToken ct)
+    {
+        var offHunt = ShopTripActive || (!string.IsNullOrEmpty(_config.HomeMap)
+            && !string.Equals(snap.Map, _config.HomeMap, StringComparison.OrdinalIgnoreCase));
+        if (!offHunt) return false;
+        bool OnMe(MonsterInfo m) => IsHuntable(m) && Dist(snap.SelfPos, m.Pos) <= DefendRadius
+            && (_bot.HasHitMe(m.Id) || IsAggressive(m.ClassId) && Dist(snap.SelfPos, m.Pos) <= 2);
+        var chasers = snap.Monsters.Where(OnMe).ToList();
+        if (chasers.Count == 0) return false;
+        // How dangerous the tail is for THIS character: what fighting all of it would cost. A high-flee thief drags
+        // several and loses little, so it keeps walking; a merchant turns before the pack gets past what it can win.
+        var pack = ForecastGroupOf(snap, chasers);
+        if (pack.CanWin && pack.TotalDamageTaken < snap.SelfHp * DefendDangerShare) return false;
+        if (_targetId != 0 && chasers.Any(c => c.Id == _targetId)) return true; // already fighting one of them
+        // Quickest kill first: it sheds incoming damage soonest (as ForecastGroup orders them).
+        var pick = chasers.Select(m => (m, f: WithHealing(Forecast(snap, m), m.MaxHp, HealingOn(snap, m))))
+            .Where(x => x.f.CanWin).OrderBy(x => x.f.SecondsToKillMonster).FirstOrDefault();
+        if (pick.m == null) return false; // none winnable alone: hazard avoidance flees them
+        await EngageAsync(snap, pick.m, pick.f, $", it's chasing me with {chasers.Count - 1} more (the pack would cost ~{pack.TotalDamageTaken:F0} of my {snap.SelfHp} HP).", ct);
+        return true;
+    }
+
+    private async Task EngageAsync(Snapshot snap, MonsterInfo target, BattleForecast forecast, string why, CancellationToken ct)
+    {
         _targetId = target.Id;
         _targetClass = target.ClassId;
         TargetName = target.Name;
@@ -457,8 +495,7 @@ public sealed partial class BotBehavior
         _duel = new DuelStart(DateTime.UtcNow, snap.SelfHp, snap.SelfSp, target.Name);
         OnLog?.Invoke($"Engaging {target.Name} (hp {target.MaxHp}): my hit ~{forecast.MyDamagePerHit}@{forecast.MyHitChance:P0}, " +
                       $"its hit ~{forecast.MonsterDamagePerHit}@{forecast.MonsterHitChance:P0}, " +
-                      $"kill ~{forecast.SecondsToKillMonster:F1}s vs my death ~{forecast.SecondsToKillMe:F1}s" +
-                      (_bot.InParty ? "." : $", ~{ExpPerSecond(snap, target, forecast, Dist(snap.SelfPos, target.Pos)):F2} exp/s incl. walk + {RestSeconds(snap, forecast):F0}s rest (solo, best in view)."));
+                      $"kill ~{forecast.SecondsToKillMonster:F1}s vs my death ~{forecast.SecondsToKillMe:F1}s{why}");
         await MaybeAnnounceTargetAsync(target, ct);
         // Skill-only bots still need the server to know who their target is (skills auto-target the
         // bot's current target id when no explicit target is passed in the rule). Just don't issue the
@@ -559,7 +596,8 @@ public sealed partial class BotBehavior
                 continue;
             }
             var group = EngagementGroup(snap, m);
-            if (!forced && group.Count > 1 && !ForecastGroupOf(snap, group).CanWin) { swarmed++; continue; }
+            // One already hitting us isn't a pull: idling leaves it (and the pack) on us, so fight it if it's winnable 1v1.
+            if (!forced && group.Count > 1 && !_bot.HasHitMe(m.Id) && !ForecastGroupOf(snap, group).CanWin) { swarmed++; continue; }
             double score = Dist(snap.SelfPos, m.Pos);
             if (solo)
                 score = -ExpPerSecond(snap, m, forecast, (int)score); // negated: candidates sort ascending
@@ -921,7 +959,7 @@ public sealed partial class BotBehavior
         var db = _data?.Monster(m.ClassId);
         var hp = m.MaxHp > 0 ? m.MaxHp : (db?.HP ?? 0);
         return db != null
-            ? new Combatant(db.Level, db.AtkMin, db.AtkMax, db.Def, db.Vit, db.Dex, db.Agi, 0, 0, 0, hp, hp)
+            ? new Combatant(db.Level, db.AtkMin, db.AtkMax, db.Def, db.Vit, db.Dex, db.Agi, 0, 0, _data!.MonsterAttackDelay(m.ClassId), hp, hp)
             : new Combatant(1, 1, 1, 0, 0, 0, 0, 0, 0, 0, hp, hp);
     }
 
@@ -1754,10 +1792,10 @@ public sealed partial class BotBehavior
         return true;
     }
 
-    private bool CellNearHazard(int x, int y)
+    private bool CellNearHazard(int x, int y, int skip = -1)
     {
-        foreach (var h in _hazards)
-            if (Math.Max(Math.Abs(h.pos.X - x), Math.Abs(h.pos.Y - y)) <= h.radius) return true;
+        for (var i = 0; i < _hazards.Count; i++)
+            if (i != skip && Math.Max(Math.Abs(_hazards[i].pos.X - x), Math.Abs(_hazards[i].pos.Y - y)) <= _hazards[i].radius) return true;
         return false;
     }
 
@@ -1832,8 +1870,10 @@ public sealed partial class BotBehavior
                 await _bot.WalkToAsync(Math.Max(1, tx), Math.Max(1, ty), ct);
                 return true;
             }
+            // The one we flee only has to end up farther away: a cell 6-14 steps off can't be outside a radius-12 zone
+            // when it's 1-2 cells behind us, so checking it here too left only "holding position" while it hit us.
             if (!map.TryFindWalkableNear(tx, ty, 5, out var fx, out var fy)
-                || CellNearHazard(fx, fy)
+                || CellNearHazard(fx, fy, skip: bestIdx)
                 || Dist(new Position(fx, fy), hz.pos) <= nearestD)
                 continue;
 
@@ -1863,6 +1903,18 @@ public sealed partial class BotBehavior
         {
             LogFlee("cornered", $"Flee: no safe cell away from '{hz.name}' — stepping blindly 6 cells off ({why}).");
             await _bot.WalkToAsync(Math.Max(1, self.X + dx * 6), Math.Max(1, self.Y + dy * 6), ct);
+        }
+        else if (nearestD <= 2 && snap.Monsters.FirstOrDefault(m => m.Pos == hz.pos && m.Name == hz.name) is { } cornering)
+        {
+            // Standing still while it hits us always loses (Bot1 vs Argos on mjolnir_02: 10 hits, no swing back). A
+            // fight the forecast calls lost still deals damage and sometimes wins.
+            LogFlee("fightback", $"Flee: cornered by '{hz.name}' {nearestD} cell(s) away, no way out ({why}) — fighting back.");
+            if (DateTime.UtcNow >= _nextFightBack || _fightBackId != cornering.Id)
+            {
+                _fightBackId = cornering.Id;
+                _nextFightBack = DateTime.UtcNow.AddSeconds(3); // re-assert like the hunt loop; flee clears _targetId every tick
+                await _bot.AttackAsync(cornering.Id, ct);
+            }
         }
         else
             LogFlee("cornered", $"Flee: no portal-safe path away from '{hz.name}' ({why}); holding position.");
@@ -1919,6 +1971,8 @@ public sealed partial class BotBehavior
 
     // Flee decisions log once per change of action (not every tick); the last one is quoted in the death log.
     private string _lastFleeLog = "";
+    private int _fightBackId;
+    private DateTime _nextFightBack;
     private string _lastFleeAction = "";
     private DateTime _lastFleeAt;
     private void LogFlee(string kind, string msg)

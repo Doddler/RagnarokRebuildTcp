@@ -197,7 +197,7 @@ public static class McpGameTools
             var mods = new List<CombatModifiers>(pack.Count);
             foreach (var mdb in pack)
             {
-                mons.Add(new Combatant(mdb.Level, mdb.AtkMin, mdb.AtkMax, mdb.Def, mdb.Vit, mdb.Dex, mdb.Agi, 0, 0, 0, mdb.HP, mdb.HP));
+                mons.Add(new Combatant(mdb.Level, mdb.AtkMin, mdb.AtkMax, mdb.Def, mdb.Vit, mdb.Dex, mdb.Agi, 0, 0, db.MonsterAttackDelay(mdb.Id), mdb.HP, mdb.HP));
                 var (defEle, defLvl) = ElementChart.Parse(mdb.Element ?? "");
                 mods.Add(new CombatModifiers(
                     DefenderElement: defEle, DefenderElementLevel: defLvl,

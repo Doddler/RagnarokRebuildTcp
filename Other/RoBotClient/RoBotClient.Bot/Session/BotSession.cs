@@ -96,6 +96,9 @@ public sealed class BotSession : IAsyncDisposable
         if (_helpedOn.Count > 256) _helpedOn.Clear(); // ponytail: crude cap
     }
 
+    /// <summary>This monster has hit us and we haven't killed it yet: it's already in the fight.</summary>
+    public bool HasHitMe(int monsterId) => _damageTakenFrom.ContainsKey(monsterId);
+
     private void NoteDamageTaken(int dmg)
     {
         (int Attacker, DateTime At)? last = null;

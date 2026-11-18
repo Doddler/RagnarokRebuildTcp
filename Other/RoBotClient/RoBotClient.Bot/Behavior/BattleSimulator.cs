@@ -97,7 +97,7 @@ public readonly record struct GroupForecast(
 /// </summary>
 public static class BattleSimulator
 {
-    private const double DefaultMonsterAttackInterval = 1.6; // seconds; TODO export real RechargeTime
+    private const double DefaultMonsterAttackInterval = 1.6; // seconds; only when Monsters.csv has no RechargeTime
     // (CritDamageMultiplier removed — the simple "1.4x post-DEF" model has been replaced by the proper
     // crit pipeline in Forecast/ForecastGroup that mirrors the server: atk2 roll, ignore DEF, scale by
     // 1 + AddCritDamage/100. See DefaultAddCritDamagePct below.)
