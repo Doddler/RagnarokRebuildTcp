@@ -13,6 +13,7 @@ public class ServerDebugConfig
     public bool DebugMapOnly { get; set; }
     public string DebugMapName { get; set; }
     public bool UnlimitedSkillPoints { get; set; }
+    public double TimeScale { get; set; } = 1;
     //public bool UseForceEnterMap { get; set; }
     //public string ForceEnterMapName { get; set; }
 }

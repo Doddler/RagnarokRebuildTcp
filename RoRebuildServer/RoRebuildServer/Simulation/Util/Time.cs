@@ -9,6 +9,7 @@ public static class Time
     public static float ElapsedTimeFloat;
     public static float DeltaTimeFloat;
     public static ulong UpdateCount;
+    public static double TimeScale = 1; 
 
     public static byte RollingTimerGen;
     public static float RollingTimerTime;
@@ -35,7 +36,7 @@ public static class Time
     {
         if (StopWatch == null || !StopWatch.IsRunning)
             throw new Exception("Attempting to update Time without it being initialized");
-        var newTime = StopWatch.Elapsed.TotalSeconds;
+        var newTime = StopWatch.Elapsed.TotalSeconds * TimeScale;
         DeltaTime = (newTime - ElapsedTime);
         DeltaTimeFloat = (float)DeltaTime;
         ElapsedTime = newTime;
@@ -67,7 +68,7 @@ public static class Time
 
     public static int MsSinceLastUpdate()
     {
-        var time = StopWatch.Elapsed.TotalSeconds - ElapsedTime;
+        var time = StopWatch.Elapsed.TotalSeconds * TimeScale - ElapsedTime;
         return (int)(time * 1000);
     }
 
