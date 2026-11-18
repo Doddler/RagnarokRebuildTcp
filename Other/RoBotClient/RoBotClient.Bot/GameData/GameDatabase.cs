@@ -182,9 +182,22 @@ public sealed class GameDatabase
         // RecoveryItem("Apple", 16, 22, 0, 0) — HP min/max, SP min/max, from the server's item effect script.
         var effects = Path.Combine(dbDir, "..", "Script", "Items", "ItemEffects.txt");
         if (File.Exists(effects))
-            foreach (Match m in Regex.Matches(File.ReadAllText(effects), @"RecoveryItem\(""(\w+)"",\s*(\d+),\s*(\d+)"))
+            foreach (Match m in Regex.Matches(File.ReadAllText(effects), @"RecoveryItem\(""([^""]+)"",\s*(\d+),\s*(\d+)"))
                 if (idByCode.TryGetValue(m.Groups[1].Value, out var id) && I(m.Groups[3].Value) > 0)
                     _hpRecovery[id] = (I(m.Groups[2].Value) + I(m.Groups[3].Value)) / 2;
+        // Item("Awakening_Potion") { OnValidate: return CharacterLevel >= 40 && JobId != 4; OnUse: AddStatusEffect(StatusIncreasedAttackSpeed, 30m, 15); }
+        if (File.Exists(effects))
+            foreach (Match m in Regex.Matches(File.ReadAllText(effects), @"Item\(""([^""]+)""\)\s*\{([^}]*)\}"))
+            {
+                var body = m.Groups[2].Value;
+                var validate = Regex.Match(body, @"OnValidate:\s*return\s+([^;]*);").Groups[1].Value;
+                if (validate == "false" || !idByCode.TryGetValue(m.Groups[1].Value, out var id)
+                    || Regex.Match(body, @"AddStatusEffect\(Status(\w+),\s*(\d+)([ms]),\s*(\d+)") is not { Success: true } fx
+                    || !Enum.TryParse<CharacterStatusEffect>(fx.Groups[1].Value, out var status)) continue;
+                var minLevel = Regex.Match(validate, @"CharacterLevel\s*>=\s*(\d+)") is { Success: true } lv ? I(lv.Groups[1].Value) : 0;
+                int[] Jobs(string op) => Regex.Matches(validate, @"JobId\s*" + op + @"\s*(\d+)").Select(j => I(j.Groups[1].Value)).ToArray();
+                _buffs[id] = new BuffItem(id, status, I(fx.Groups[2].Value) * (fx.Groups[3].Value == "m" ? 60 : 1), I(fx.Groups[4].Value), minLevel, Jobs("=="), Jobs("!="));
+            }
 
         // Monsters with a [WasRangedAttacked] reaction (Greatest General's Earth Spike) can't be shot for free from range.
         // TryCast(FireBolt, 3, 5%, 1.5s, 5s) lines in the fighting states feed the forecast's skill damage.
@@ -270,6 +283,27 @@ public sealed class GameDatabase
     public IReadOnlyList<SpawnArea> SpawnAreas(string map) => _spawnAreas.TryGetValue(map, out var list) ? list : Array.Empty<SpawnArea>();
 
     private readonly Dictionary<int, int> _hpRecovery = new();
+    private readonly Dictionary<int, BuffItem> _buffs = new();
+
+    /// <summary>A usable item whose effect is a status (Concentration Potion: IncreasedAttackSpeed 1800 s, power 10).
+    /// Only these jobs may drink it when OnlyJobs is non-empty; never NotJobs; MinLevel from its OnValidate.</summary>
+    public sealed record BuffItem(int Id, CharacterStatusEffect Status, int Seconds, int Power, int MinLevel, int[] OnlyJobs, int[] NotJobs)
+    {
+        public bool Usable(int level, int jobId) => level >= MinLevel && !NotJobs.Contains(jobId) && (OnlyJobs.Length == 0 || OnlyJobs.Contains(jobId));
+    }
+    public IEnumerable<BuffItem> BuffItems => _buffs.Values;
+    public BuffItem? Buff(int itemId) => _buffs.GetValueOrDefault(itemId);
+
+    public enum ConsumableKind { None, Healing, Buff, Misc }
+    /// <summary>Healing: one of the bot's own healing items (the potions it buys). Buff: a status effect an NPC sells
+    /// (Concentration Potion). Misc: any other heal or buff, the stuff monsters drop (herbs, Monster's Feed, Apples; some
+    /// shops sell food too, but it's never worth buying). None: everything else (wings, boxes, quest items).</summary>
+    public ConsumableKind Consumable(int itemId, ICollection<int> healingItemIds)
+    {
+        if (_buffs.ContainsKey(itemId)) return Item(itemId)?.SoldBy is { Count: > 0 } ? ConsumableKind.Buff : ConsumableKind.Misc;
+        if (_hpRecovery.ContainsKey(itemId)) return healingItemIds.Contains(itemId) ? ConsumableKind.Healing : ConsumableKind.Misc;
+        return ConsumableKind.None;
+    }
     /// <summary>Average HP an item restores (Apple 19, Novice Potion 27, Meat 85), 0 when it doesn't heal HP.</summary>
     public int HpRecovery(int itemId) => _hpRecovery.GetValueOrDefault(itemId);
 

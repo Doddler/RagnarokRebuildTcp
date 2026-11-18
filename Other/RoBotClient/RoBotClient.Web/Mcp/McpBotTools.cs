@@ -552,7 +552,7 @@ public static class McpBotTools
         bots.StopBot(botId) ? $"Stopped {botId}." : $"No bot '{botId}'.";
 
     [McpServerTool(Name = "configure_bot"),
-     Description("Update a running bot's behavior config. Omitted fields are unchanged. Monster lists are comma-separated CODES; healingItemIds/lootBlacklist are comma-separated item ids. Fractional units: healHpPercent and restBelowPercent are 0..1 (e.g. 0.5 = 50%); winMargin is 0..2 (smaller = pickier targets). partyRole = Auto|Tank|Dps|Healer|Buffer|Utility (Auto derives from JobId at runtime). Build: statTargets = six comma-separated goals STR,AGI,VIT,INT,DEX,LUK (0 = no goal), e.g. \"40,50,30,0,20,0\"; skillOrder = learning order like \"Bash 10, MagnumBreak 3, Endure 1\". The bot spends points toward both automatically. buildPreset = a named build that sets desiredJob, statTargets, skillOrder and the skill script at once: Agi Swordsman, Vit Swordsman, Dex Archer, Int Mage, Heal Acolyte, Agi Thief, Str Merchant. Shopping (needs autoShop): restockItemId is bought back up to restockTargetCount whenever fewer than restockBelow are held, e.g. 601 (Fly Wing), 10, 3. With a Fly Wing in the bag the bot uses one to escape an aggressive monster it would lose to.")]
+     Description("Update a running bot's behavior config. Omitted fields are unchanged. Monster lists are comma-separated CODES; healingItemIds/lootBlacklist are comma-separated item ids. Fractional units: healHpPercent and restBelowPercent are 0..1 (e.g. 0.5 = 50%); winMargin is 0..2 (smaller = pickier targets). partyRole = Auto|Tank|Dps|Healer|Buffer|Utility (Auto derives from JobId at runtime). Build: statTargets = six comma-separated goals STR,AGI,VIT,INT,DEX,LUK (0 = no goal), e.g. \"40,50,30,0,20,0\"; skillOrder = learning order like \"Bash 10, MagnumBreak 3, Endure 1\". The bot spends points toward both automatically. buildPreset = a named build that sets desiredJob, statTargets, skillOrder and the skill script at once: Agi Swordsman, Vit Swordsman, Dex Archer, Int Mage, Heal Acolyte, Agi Thief, Str Merchant. Shopping (needs autoShop): weight budgets, as 0..1 shares of max weight: consumableWeightShare for healing items and other consumables (restockItemId is bought back up to that once fewer than restockBelow are held), flyWingWeightShare for Fly Wings, of which emergencyFlyWingShare is kept for escapes and the rest spent on travel shortcuts. One Butterfly Wing is always kept for the ride home. Zeny: healingZenyShare, buffZenyShare and flyWingZenyShare are 0..1 shares of the income since the last shop trip (the rest is saved for gear); healing may always top up to restockBelow.")]
     public static string ConfigureBot(BotManager bots, GameDatabase db, string botId,
         bool? enabled = null, string? homeMap = null,
         string? huntCodes = null, string? fleeCodes = null, string? ignoreCodes = null,
@@ -564,13 +564,20 @@ public static class McpBotTools
         bool? autoEscapeWhenStuck = null, string? partyRole = null, string? itemScript = null,
         bool? announceTarget = null, bool? listenToPartyChat = null,
         string? statTargets = null, string? skillOrder = null, string? buildPreset = null,
-        int? restockItemId = null, int? restockTargetCount = null, int? restockBelow = null, bool? autoMap = null)
+        int? restockItemId = null, double? consumableWeightShare = null, int? restockBelow = null,
+        double? flyWingWeightShare = null, double? emergencyFlyWingShare = null,
+        double? healingZenyShare = null, double? buffZenyShare = null, double? flyWingZenyShare = null, bool? autoMap = null)
     {
         var cfg = bots.GetBehaviorConfig(botId);
         if (cfg == null) return $"No bot '{botId}'.";
         if (enabled.HasValue) cfg.Enabled = enabled.Value;
         if (restockItemId.HasValue) cfg.RestockItemId = restockItemId.Value;
-        if (restockTargetCount.HasValue) cfg.RestockTargetCount = Math.Max(0, restockTargetCount.Value);
+        if (consumableWeightShare.HasValue) cfg.ConsumableWeightShare = (float)Math.Clamp(consumableWeightShare.Value, 0, 1);
+        if (flyWingWeightShare.HasValue) cfg.FlyWingWeightShare = (float)Math.Clamp(flyWingWeightShare.Value, 0, 1);
+        if (healingZenyShare.HasValue) cfg.HealingZenyShare = (float)Math.Clamp(healingZenyShare.Value, 0, 1);
+        if (buffZenyShare.HasValue) cfg.BuffZenyShare = (float)Math.Clamp(buffZenyShare.Value, 0, 1);
+        if (flyWingZenyShare.HasValue) cfg.FlyWingZenyShare = (float)Math.Clamp(flyWingZenyShare.Value, 0, 1);
+        if (emergencyFlyWingShare.HasValue) cfg.EmergencyFlyWingShare = (float)Math.Clamp(emergencyFlyWingShare.Value, 0, 1);
         if (restockBelow.HasValue) cfg.RestockBelow = Math.Max(0, restockBelow.Value);
         if (homeMap != null) cfg.HomeMap = homeMap;
         if (autoMap.HasValue) cfg.AutoMap = autoMap.Value; // false = stay on homeMap (no automatic map choice)

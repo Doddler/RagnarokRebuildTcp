@@ -104,9 +104,17 @@ public sealed class BotBehaviorConfig
     /// <summary>Healing item to restock at a tool dealer (Red Potion by default). 0 disables restock.</summary>
     public int RestockItemId = 501;
 
-    /// <summary>Restock up to this many when the held count falls below <see cref="RestockBelow"/>.</summary>
-    public int RestockTargetCount = 50;
+    /// <summary>Share of max weight for consumables (healing items, other usable restock items such as speed potions).
+    /// The healing item is bought up to whatever that leaves, once fewer than <see cref="RestockBelow"/> are held.</summary>
+    public float ConsumableWeightShare = 0.10f;
     public int RestockBelow = 10;
+
+    /// <summary>Zeny budgets, as shares of the INCOME since the last shop trip (after the fares home), so whatever is
+    /// left accumulates for gear upgrades: the bot never spends its savings on potions. Healing items may always top up
+    /// to <see cref="RestockBelow"/> from savings (survival floor); buffs (Concentration Potion) and wings never do.</summary>
+    public float HealingZenyShare = 0.30f;
+    public float BuffZenyShare = 0.10f;
+    public float FlyWingZenyShare = 0.15f;
 
     /// <summary>Town map hosting the shop. Empty = auto-pick a town selling <see cref="RestockItemId"/>.</summary>
     public string ShopMap = "";
@@ -166,10 +174,11 @@ public sealed class BotBehaviorConfig
     /// <summary>Item ids for the two escape consumables. Override here if a server uses non-standard ids.</summary>
     public int FlyWingItemId = 601;
     public int ButterflyWingItemId = 602;
-    /// <summary>Top up to this many Butterfly Wings during an existing shop trip. 0 disables restocking.</summary>
-    public int ButterflyWingRestockCount;
-    /// <summary>Fly Wings to keep in the bag (topped up on shop trips, capped at 3% of max weight). 0 disables.</summary>
-    public int FlyWingPoolSize = 15;
+    /// <summary>Share of max weight for Fly Wings, topped up on shop trips. 0 disables. One Butterfly Wing (the ride
+    /// home to sell) is always kept on top of this.</summary>
+    public float FlyWingWeightShare = 0.03f;
+    /// <summary>Part of the Fly Wing pool kept for emergency escapes; travel shortcuts only spend wings above it.</summary>
+    public float EmergencyFlyWingShare = 0.5f;
 
     /// <summary>Stuck duration (seconds) before reaching for a Fly Wing.</summary>
     public double FlyWingStuckSeconds = 8.0;
@@ -316,7 +325,10 @@ public sealed class BotBehaviorConfig
         SellWeightPercent = other.SellWeightPercent;
         JunkSellCount = other.JunkSellCount;
         RestockItemId = other.RestockItemId;
-        RestockTargetCount = other.RestockTargetCount;
+        ConsumableWeightShare = other.ConsumableWeightShare;
+        HealingZenyShare = other.HealingZenyShare;
+        BuffZenyShare = other.BuffZenyShare;
+        FlyWingZenyShare = other.FlyWingZenyShare;
         RestockBelow = other.RestockBelow;
         ShopMap = other.ShopMap;
         DesiredJobId = other.DesiredJobId;
@@ -330,8 +342,8 @@ public sealed class BotBehaviorConfig
         FlyWingItemId = other.FlyWingItemId;
         PortalSafeDistance = other.PortalSafeDistance;
         ButterflyWingItemId = other.ButterflyWingItemId;
-        ButterflyWingRestockCount = other.ButterflyWingRestockCount;
-        FlyWingPoolSize = other.FlyWingPoolSize;
+        FlyWingWeightShare = other.FlyWingWeightShare;
+        EmergencyFlyWingShare = other.EmergencyFlyWingShare;
         FlyWingStuckSeconds = other.FlyWingStuckSeconds;
         ButterflyWingStuckSeconds = other.ButterflyWingStuckSeconds;
         FollowerLostFallthroughSeconds = other.FollowerLostFallthroughSeconds;

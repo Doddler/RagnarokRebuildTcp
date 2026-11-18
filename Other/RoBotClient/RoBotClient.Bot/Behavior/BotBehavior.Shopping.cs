@@ -85,7 +85,7 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
     }
 
     // Per-item restock targets: itemId -> minimum count to maintain. Distinct from the single-item
-    // _config.RestockItemId / RestockBelow / RestockTargetCount which only handles one potion. The list
+    // _config.RestockItemId / RestockBelow / ConsumableWeightShare which only handles one potion. The list
     // here is operator-set via MCP set_restock and processed opportunistically on EVERY shop trip — at
     // whatever NPC the bot reaches, any list item the NPC stocks gets topped up to its target (limited
     // by stock + zeny). Also a Buy-goal trigger: if any item is below target AND a reachable trader
@@ -236,28 +236,51 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
     private (int weight, int maxWeight, int stacks, int restockHeld, int zeny) ReadShopState()
     {
         var st = ReadShopStateRaw();
+        if (_zenyBaseline < 0) _zenyBaseline = st.zeny; // what the bot logged in with is savings, not income
         RefreshFlyWingPool(st.maxWeight);
         return st;
     }
 
-    // Fly Wing pool: enough for travel shortcuts plus ambush escapes, never more than 3% of max weight so the
-    // wings themselves don't pull the next sell trip forward. Only bought on trips already happening.
-    // ponytail: fixed 3% cap; derive from the bot's typical loot weight if wings ever crowd out loot.
-    private const double FlyWingPoolWeightShare = 0.03;
+    // Weight budget: FlyWingWeightShare of max weight goes to Fly Wings (EmergencyFlyWingShare of them held back for
+    // escapes, the rest free for travel shortcuts), ConsumableWeightShare to healing items and other consumables. A
+    // stronger bot carries more of both, and neither pulls the next sell trip forward. Only bought on trips already happening.
     private void RefreshFlyWingPool(int maxWeight)
     {
-        if (_config.FlyWingPoolSize <= 0 || _data == null || maxWeight <= 0) return;
-        var each = Math.Max(1, _data.UsableItemWeight(_config.FlyWingItemId));
-        SetRestockTarget(_config.FlyWingItemId, Math.Min(_config.FlyWingPoolSize, (int)(maxWeight * FlyWingPoolWeightShare / each)));
+        if (_config.FlyWingWeightShare <= 0 || _data == null || maxWeight <= 0) return;
+        SetRestockTarget(_config.FlyWingItemId, (int)(maxWeight * _config.FlyWingWeightShare / Math.Max(1, _data.UsableItemWeight(_config.FlyWingItemId))));
+    }
+
+    private int FlyWingTarget() { lock (_restockLock) return _restockTargets.GetValueOrDefault(_config.FlyWingItemId); }
+    private int EmergencyFlyWings() => (int)Math.Ceiling(FlyWingTarget() * _config.EmergencyFlyWingShare);
+
+    /// <summary>How many of the healing item to carry: the consumable weight share, minus what the other usable
+    /// restock items (wings aside) already claim.</summary>
+    private int HealingTarget(Snapshot snap, int maxWeight)
+    {
+        if (_data == null || _config.RestockItemId <= 0 || maxWeight <= 0) return 0;
+        if (IsConvenienceItem(_config.RestockItemId)) return Math.Max(FlyWingTarget(), _config.RestockBelow); // old configs restock wings here
+        var budget = maxWeight * _config.ConsumableWeightShare;
+        foreach (var (b, n) in BuffTargets(snap, maxWeight)) budget -= n * _data.UsableItemWeight(b.Id);
+        lock (_restockLock)
+            foreach (var (id, n) in _restockTargets)
+                if (id != _config.RestockItemId && !IsConvenienceItem(id) && _data.IsUsableItem(id)) budget -= n * _data.UsableItemWeight(id);
+        return Math.Max(0, (int)(budget / Math.Max(1, _data.UsableItemWeight(_config.RestockItemId))));
     }
 
     private (int weight, int maxWeight, int stacks, int restockHeld, int zeny) ReadShopStateRaw()
         => _bot.WithState(w =>
         {
             var held = 0;
+            var potionHp = _data?.HpRecovery(_config.RestockItemId) ?? 0;
+            var miscHp = 0;
             if (_config.RestockItemId > 0)
                 foreach (var it in w.Self.Inventory)
                     if (it.ItemId == _config.RestockItemId) held += it.Count;
+                    // Dropped heals (100 Yellow Herbs) are farmed for free and drunk first: they count as potions already
+                    // held, in HP, so the bot doesn't buy what it has. Outside the weight budget; they just keep coming.
+                    else if (potionHp > 0 && _data!.Consumable(it.ItemId, _config.HealingItemIds) == GameDatabase.ConsumableKind.Misc)
+                        miscHp += it.Count * _data.HpRecovery(it.ItemId);
+            if (potionHp > 0) held += miscHp / potionHp;
             return (w.Self.Weight, w.Self.MaxWeight, w.Self.Inventory.Count, held, w.Self.Zeny);
         });
 
@@ -270,7 +293,7 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
         var restockHeld = st.restockHeld;
         if (IsConvenienceItem(_config.RestockItemId) && restockHeld < _config.RestockBelow
             && _data!.UsableItemPrice(_config.RestockItemId) is var price and > 0
-            && ConvenienceBudget(st.zeny, 0) / price < (_config.RestockTargetCount - restockHeld + 1) / 2)
+            && ConvenienceBudget(st.zeny, 0) / price < (HealingTarget(snap, st.maxWeight) - restockHeld + 1) / 2)
             restockHeld = int.MaxValue;
         return ShopPolicy.ShouldStartTrip(st.weight, st.maxWeight, restockHeld, _config, CountSaleableItems) || OutOfFlyWings(snap, st.zeny);
     }
@@ -280,8 +303,7 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
     private DateTime _nextWingCheck;
     private bool OutOfFlyWings(Snapshot snap, int zeny)
     {
-        int target;
-        lock (_restockLock) target = _restockTargets.GetValueOrDefault(_config.FlyWingItemId);
+        var target = FlyWingTarget();
         if (target <= 0 || _data?.IsUsableItem(_config.FlyWingItemId) != true || CountInInventory(_config.FlyWingItemId) > 0) return false;
         if (DateTime.UtcNow < _nextWingCheck) return false;
         _nextWingCheck = DateTime.UtcNow.AddSeconds(60); // fares mean route planning; not every tick
@@ -375,6 +397,8 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
         lock (_restockLock) restockSnapshot = new Dictionary<int, int>(_restockTargets);
         foreach (var (id, target) in restockSnapshot)
             if (CountInInventory(id) < target && !needBuyAny.Contains(id)) needBuyAny.Add(id);
+        foreach (var (buff, target) in BuffTargets(snap, st.maxWeight))
+            if (CountInInventory(buff.Id) < target) needBuyAny.Add(buff.Id);
         var needBuy = needBuyAny.Count > 0;
         if (!needSell && !needBuy) return;
         needSell |= saleable > 0; // already making the trip: sell whatever there is
@@ -684,13 +708,15 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
 
         if (_config.RestockItemId > 0)
         {
-            var need = _config.RestockTargetCount - st.restockHeld;
+            var need = HealingTarget(snap, st.maxWeight) - st.restockHeld;
             var defaultPrice = 0;
             foreach (var (id, p) in npc.ShopItems)
                 if (id == _config.RestockItemId) { defaultPrice = p; break; }
             if (need > 0 && defaultPrice > 0)
             {
-                var affordable = (IsConvenienceItem(_config.RestockItemId) ? Math.Min(zenyLeft, convenienceLeft) : zenyLeft) / defaultPrice;
+                // Income share, but never below the survival floor of RestockBelow potions.
+                var healLeft = Math.Max((int)(Income(st.zeny, homeFares) * _config.HealingZenyShare), Math.Max(0, _config.RestockBelow - st.restockHeld) * defaultPrice);
+                var affordable = Math.Min(zenyLeft, IsConvenienceItem(_config.RestockItemId) ? convenienceLeft : healLeft) / defaultPrice;
                 var qty = Math.Min(need, affordable);
                 if (qty > 0)
                 {
@@ -723,6 +749,19 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
             if (IsConvenienceItem(itemId)) convenienceLeft -= qty * price;
             totalCost += qty * price;
             _bot.Telemetry.Record(TelemetryEventType.Bought, snap.SelfLevel, _data?.ItemName(itemId) ?? $"#{itemId}", qty);
+        }
+
+        var buffLeft = (int)(Income(st.zeny, homeFares) * _config.BuffZenyShare);
+        foreach (var (buff, target) in BuffTargets(snap, st.maxWeight))
+        {
+            var price = npc.ShopItems.FirstOrDefault(s => s.Item1 == buff.Id).Item2;
+            var qty = price <= 0 ? 0 : Math.Min(target - CountInInventory(buff.Id), Math.Min(zenyLeft, buffLeft) / price);
+            if (qty <= 0) continue;
+            lines2.Add((buff.Id, qty));
+            zenyLeft -= qty * price;
+            buffLeft -= qty * price;
+            totalCost += qty * price;
+            _bot.Telemetry.Record(TelemetryEventType.Bought, snap.SelfLevel, _data!.ItemName(buff.Id), qty);
         }
 
         if (lines2.Count == 0) { await _bot.ShopCloseAsync(ct); return; }
@@ -1191,8 +1230,8 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
     }
 
     // Fly Wing shortcut on long walks: fly only when we're clearly farther from the portal than a random landing
-    // would be on average. At most 5 per map visited, and a few stay in the bag for escapes.
-    private const int TravelFlyWingDistance = 100, TravelFlyWingsPerMap = 5, TravelFlyWingReserve = 5; // reserve = ambush escapes
+    // would be on average. At most 5 per map visited, and never into the emergency share of the pool.
+    private const int TravelFlyWingDistance = 100, TravelFlyWingsPerMap = 5;
     private const double TravelFlyWingMargin = 1.3;
     private readonly Dictionary<(string, int, int), double> _averageLandingDistance = new();
     private string? _travelWingMap;
@@ -1206,7 +1245,7 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
         var average = AverageLandingDistance(snap.Map, portalX, portalY);
         if (average is not { } expected || distanceToPortal < expected * TravelFlyWingMargin) return false;
         if (_travelWingMap == null) { _travelWingMap = snap.Map; _travelWingsUsed = 0; }
-        if (_travelWingsUsed >= TravelFlyWingsPerMap || CountInInventory(_config.FlyWingItemId) <= TravelFlyWingReserve) return false;
+        if (_travelWingsUsed >= TravelFlyWingsPerMap || CountInInventory(_config.FlyWingItemId) <= EmergencyFlyWings()) return false;
         _travelWingsUsed++;
         _nextTravelWing = DateTime.UtcNow.AddSeconds(2);
         OnLog?.Invoke($"Travel: Fly Wing shortcut on {snap.Map}, {distanceToPortal} cells from the portal vs ~{expected:0} from a random landing ({_travelWingsUsed}/{TravelFlyWingsPerMap} on this map).");
@@ -1343,11 +1382,30 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
             ?? _data.World.Plan(fromMap, fromX, fromY, toMap, toX, toY, edgeFilter: e => UsableEdge(e, zeny), mapPenalty: Penalty);
     }
 
-    // Fly and Butterfly Wings save time but never decide progress: they get a quarter of the zeny left after the Kafra
-    // fares home, so a poor bot keeps its money for gear and teleports instead of draining it on wings.
-    private const double ConvenienceBudgetShare = 0.25;
+    // Fly and Butterfly Wings save time but never decide progress: they get FlyWingZenyShare of the income since the
+    // last trip, so a poor bot keeps its money for gear and teleports instead of draining it on wings.
     private bool IsConvenienceItem(int itemId) => itemId > 0 && (itemId == _config.FlyWingItemId || itemId == _config.ButterflyWingItemId);
-    private static int ConvenienceBudget(int zeny, int homeFares) => (int)(Math.Max(0, zeny - homeFares) * ConvenienceBudgetShare);
+    private int ConvenienceBudget(int zeny, int homeFares) => (int)(Income(zeny, homeFares) * _config.FlyWingZenyShare);
+
+    // Consumables are paid from income, never from savings: a bot that topped up from its whole purse every trip never
+    // reached an 80,000z Plate. The baseline is the purse when the last shop trip ended (or at login).
+    private int _zenyBaseline = -1;
+    private int Income(int zeny, int homeFares) => Math.Max(0, zeny - homeFares - Math.Max(0, _zenyBaseline));
+
+    // Buff consumables worth carrying: per status, the strongest NPC-sold item this bot may drink, with its share of the
+    // consumable weight. ponytail: only attack speed is valued (useless to spell killers); add a status here once the
+    // bot can tell what it's worth.
+    private const double BuffShareOfConsumableWeight = 0.25;
+    private bool BuffIsWorthIt(Snapshot snap, GameDatabase.BuffItem b) =>
+        b.Status == CharacterStatusEffect.IncreasedAttackSpeed && !KillsWithSpells(snap) && b.Usable(snap.SelfLevel, snap.SelfJobId);
+    private List<(GameDatabase.BuffItem Buff, int Target)> BuffTargets(Snapshot snap, int maxWeight)
+    {
+        if (_data == null || maxWeight <= 0) return new();
+        var best = _data.BuffItems.Where(b => _data.Consumable(b.Id, _config.HealingItemIds) == GameDatabase.ConsumableKind.Buff && BuffIsWorthIt(snap, b))
+            .GroupBy(b => b.Status).Select(g => g.MaxBy(b => b.Power)!).ToList();
+        return best.Select(b => (b, (int)(maxWeight * _config.ConsumableWeightShare * BuffShareOfConsumableWeight / best.Count
+                                          / Math.Max(1, _data.UsableItemWeight(b.Id))))).ToList();
+    }
 
     // Zeny-cost skills (Mammonite) get their own pool, the same share as the wings: filled from the purse on the first
     // cast after each shop trip, spent per cast, so a merchant can't pour its whole purse into damage.
@@ -1544,6 +1602,7 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
         _customBuyItems = null;
         _customSellItems = null;
         _shopCooldownUntil = DateTime.UtcNow.AddSeconds(60);
+        _zenyBaseline = _bot.WithState(w => w.Self.Zeny); // what's left now is savings
         OnLog?.Invoke("AutoShop: trip complete — resuming hunt.");
     }
 }

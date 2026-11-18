@@ -82,8 +82,7 @@ public sealed partial class BotBehavior
         _bot = bot;
         _config = config;
         _data = data;
-        if (config.ButterflyWingRestockCount > 0)
-            SetRestockTarget(config.ButterflyWingItemId, config.ButterflyWingRestockCount);
+        SetRestockTarget(config.ButterflyWingItemId, 1); // one is enough: the ride home to sell
         _bot.OnAllyHit += OnAllyHit;
         _bot.OnChatHeard += OnChatHeard;
         _bot.OnBaseExpUpdated += update => { if (update.OwnKill) lock (_duelLock) _duelKill = (update, DateTime.UtcNow); };
@@ -279,6 +278,7 @@ public sealed partial class BotBehavior
 
         // Heal mid-anything (never when dead — handled above) before deciding what to do next.
         await MaybeHealAsync(snap, ct);
+        await MaybeDrinkBuffAsync(snap, ct);
 
         // Steer clear of aggressive monsters the forecast says we'd lose to: if one's aggro range
         // already covers us, drop everything and flee away from it.
@@ -1454,11 +1454,29 @@ public sealed partial class BotBehavior
         await _bot.UseInventoryItemAsync(itemId, -1, ct);
     }
 
-    // First configured healing item we actually hold that the DB confirms is Useable. Validating against
-    // the DB is mandatory: the server disconnects the player if sent an unknown/non-usable item id.
+    // In a fight, keep any worthwhile buff up (Concentration Potion), strongest held first, drops before bought ones.
+    private DateTime _nextBuff;
+    private async Task MaybeDrinkBuffAsync(Snapshot snap, CancellationToken ct)
+    {
+        if (_data == null || _targetId == 0 || DateTime.UtcNow < _nextBuff) return;
+        var pick = _bot.WithState(w => w.Self.Inventory.Where(it => it.Count > 0 && _data.IsUsableItem(it.ItemId))
+            .Select(it => _data.Buff(it.ItemId)).OfType<GameDatabase.BuffItem>()
+            .Where(b => !snap.SelfStatuses.Contains(b.Status) && BuffIsWorthIt(snap, b))
+            .OrderByDescending(b => b.Power).ThenBy(b => _data.Consumable(b.Id, _config.HealingItemIds) != GameDatabase.ConsumableKind.Misc).FirstOrDefault());
+        if (pick == null) return;
+        _nextBuff = DateTime.UtcNow.AddSeconds(5); // the status packet lands after the use
+        OnLog?.Invoke($"Buff: drinking {_data.ItemName(pick.Id)} ({pick.Status}).");
+        await _bot.UseInventoryItemAsync(pick.Id, -1, ct);
+    }
+
+    // Free drops (herbs, Monster's Feed) first, then the configured healing items, then anything else that heals.
+    // Validating against the DB is mandatory: the server disconnects the player if sent an unknown/non-usable item id.
     private int FindHealItem(WorldState w)
     {
         if (_data == null) return 0;
+        foreach (var it in w.Self.Inventory)
+            if (it.Count > 0 && HealPerUse(it.ItemId) > 0 && _data.IsUsableItem(it.ItemId) && _data.Consumable(it.ItemId, _config.HealingItemIds) == GameDatabase.ConsumableKind.Misc)
+                return it.ItemId;
         foreach (var id in _config.HealingItemIds)
         {
             if (!_data.IsUsableItem(id)) continue;
