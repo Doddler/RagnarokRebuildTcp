@@ -633,7 +633,7 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
         if (_customBuyItems != null)
         {
             var lines = new List<(int, int)>();
-            var zeny = st.zeny;
+            var zeny = Math.Max(0, st.zeny - ZenyForTripHome(snap)); // keep the fare home, like the restock path below
             foreach (var (itemId, requestedQty) in _customBuyItems)
             {
                 var p = 0;
@@ -935,6 +935,9 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
     // Butterfly Wing. The 5s threshold (was 1s) reduces false positives from transient blockers (mob in
     // the way, momentary path congestion) and dovetails with the Fly Wing trigger.
     private DateTime? _subRegionTrapSince;
+    // Zeny missing for the only route out (Izlude can only be left by Kafra), set by the last failed plan.
+    private int _fareShortfall;
+    private DateTime _nextFareSell;
     // Last portal we WALKED ONTO that caused a map transition. Used so when the trap is detected on the
     // destination map, we know which source-side portal to soft-penalize.
     private (string sourceMap, int x, int y)? _lastEntryPortal;
@@ -1145,6 +1148,16 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
             OnLog?.Invoke($"Travel: no reachable portal from ({snap.SelfPos.X},{snap.SelfPos.Y}) on {snap.Map} toward {destMap}{(via != null ? $" (via {via})" : "")}. Sub-region trap?");
         }
 
+        // Broke, not trapped: sell loot for the fare instead of nudging around until someone restarts the bot.
+        if (_fareShortfall > 0 && DateTime.UtcNow >= _nextFareSell)
+        {
+            _nextFareSell = DateTime.UtcNow.AddMinutes(5);
+            OnLog?.Invoke($"Travel: the only way to {destMap} is a Kafra teleport and the bot is {_fareShortfall}z short — selling loot for the fare.");
+            _forceShop = true;
+            _shopCooldownUntil = DateTime.MinValue;
+            return;
+        }
+
         // Step 1 — soft-penalize the entry portal so the NEXT pick from that source map biases toward
         // a different portal IF one exists. Threshold is 5s (not 1s) — a brief blocker shouldn't trigger
         // this. The penalty decays over PenaltyTtl and is cleared on a successful traversal, and is a
@@ -1259,6 +1272,7 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
         px = py = 0;
         viaMap = null;
         kafra = null;
+        _fareShortfall = 0;
         if (_data == null || !_data.World.IsBuilt) return false;
         // We don't know a specific destination cell on destMap — pick any walkable seed cell. The
         // planner's region-resolution will pick that cell's region as the goal node; any portal that
@@ -1278,6 +1292,11 @@ private string? _customBuyWhy; // set by the gear logic alongside RequestBuyItem
         // Lets Dijkstra pick portal-walking or a different kafra without rebuilding the graph.
         // ponytail: checks each teleport against current zeny, not the route's total; fine while routes use one kafra hop.
         var plan = PlanRoute(snap.Map, snap.SelfPos.X, snap.SelfPos.Y, destMap, destSeed.Value.X, destSeed.Value.Y);
+        // No route might only mean no money: the way out is a Kafra the bot can't pay for (Bot5 in izlude_in at 500z).
+        _fareShortfall = plan != null ? 0
+            : _data.World.Plan(snap.Map, snap.SelfPos.X, snap.SelfPos.Y, destMap, destSeed.Value.X, destSeed.Value.Y,
+                edgeFilter: e => e.Kafra == null || !IsKafraBlacklisted(e.SrcMap, e.Sx, e.Sy)) is { } paid
+                ? Math.Max(0, paid.Edges.Sum(e => e.Kafra?.Zeny ?? 0) - _bot.WithState(w => w.Self.Zeny)) : 0;
         if (plan == null || plan.Edges.Count == 0) return false;
         var route = $"Route to {destMap}: {snap.Map} → {string.Join(" → ", plan.Edges.Select(e => e.Kafra != null ? $"{e.DstMap} (kafra {e.Kafra.Zeny}z)" : e.DstMap))}"
                     + $" (danger {string.Join(", ", plan.Edges.Select(e => GetMapDanger(e.DstMap).ToString("0")))}).";

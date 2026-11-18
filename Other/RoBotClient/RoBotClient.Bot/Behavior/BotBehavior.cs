@@ -174,6 +174,17 @@ public sealed partial class BotBehavior
 
         // Stuck detection: moving, or the current target losing HP, counts as progress.
         var targetHpNow = _targetId != 0 ? (FindMonster(snap, _targetId)?.Hp ?? -1) : -1;
+        // Healed back up (a Vitata healing an Ant Egg): measure progress from the new HP, not the old low, or the next
+        // hits look like no progress and the target is dropped as "unreachable", then the next one, and so on.
+        if (targetHpNow > _lastTargetHp)
+        {
+            // ponytail: log-only until heals are measured; Vitata (Heal 5, 5.5 s) isn't in Healers because the formula says it
+            // out-heals Bot5 (56 vs 44 HP/s), yet its Ant Eggs died in ~20 s. These lines say how much really lands.
+            if (_lastTargetHp >= 0 && FindMonster(snap, _targetId) is { } healed)
+                OnLog?.Invoke($"Target '{healed.Name}' healed {_lastTargetHp} → {targetHpNow}/{healed.MaxHp} HP; in view: "
+                              + string.Join(", ", snap.Monsters.Where(m => m.Id != healed.Id && Dist(m.Pos, healed.Pos) <= 9).GroupBy(m => m.Name).Select(g => $"{g.Count()} {g.Key}")));
+            _lastTargetHp = targetHpNow;
+        }
         if (snap.SelfPos.X != _lastProgressPos.X || snap.SelfPos.Y != _lastProgressPos.Y ||
             (targetHpNow >= 0 && targetHpNow < _lastTargetHp))
         {
