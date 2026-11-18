@@ -466,7 +466,10 @@ public sealed partial class BotBehavior
         var offHunt = ShopTripActive || (!string.IsNullOrEmpty(_config.HomeMap)
             && !string.Equals(snap.Map, _config.HomeMap, StringComparison.OrdinalIgnoreCase));
         if (!offHunt) return false;
+        // A fixed monster (Flora, Mandragora) can't follow: walking on IS the defense. Turning on one made Bot5 (archer,
+        // 71 HP) stand in Flora's reach on mjolnir_11 trying to "defend" and die to its next hit.
         bool OnMe(MonsterInfo m) => IsHuntable(m) && Dist(snap.SelfPos, m.Pos) <= DefendRadius
+            && !IsMonsterImmobile(_data?.Monster(m.ClassId))
             && (_bot.HasHitMe(m.Id) || IsAggressive(m.ClassId) && Dist(snap.SelfPos, m.Pos) <= 2);
         var chasers = snap.Monsters.Where(OnMe).ToList();
         if (chasers.Count == 0) return false;
@@ -919,7 +922,7 @@ public sealed partial class BotBehavior
             if (!IsMonsterImmobile(db)) continue;
             var range = db?.Range ?? 0;
             if (range < 2) continue; // melee plant has no projectile zone worth detouring around
-            hzList.Add((m.Pos.X, m.Pos.Y, range));
+            hzList.Add((m.Pos.X, m.Pos.Y, range + 1)); // +1: server range is rounded Euclidean, as in InOtherFixedReach
         }
     }
 
@@ -1919,6 +1922,7 @@ public sealed partial class BotBehavior
             // when it's 1-2 cells behind us, so checking it here too left only "holding position" while it hit us.
             if (!map.TryFindWalkableNear(tx, ty, 5, out var fx, out var fy)
                 || CellNearHazard(fx, fy, skip: bestIdx)
+                || InOtherFixedReach(snap, fx, fy, 0) // fleeing a Thief Bug into a Flora's reach killed Bot5
                 || Dist(new Position(fx, fy), hz.pos) <= nearestD)
                 continue;
 
@@ -1939,6 +1943,7 @@ public sealed partial class BotBehavior
                 }
                 continue;
             }
+            while (safeStep > 1 && InOtherFixedReach(snap, path[safeStep].x, path[safeStep].y, 0)) safeStep--;
             var waypoint = path[safeStep];
             LogFlee("away", $"Flee: moving away from '{hz.name}' via ({waypoint.x},{waypoint.y}) toward ({fx},{fy}) ({why}).");
             await _bot.WalkToAsync(waypoint.x, waypoint.y, ct);
