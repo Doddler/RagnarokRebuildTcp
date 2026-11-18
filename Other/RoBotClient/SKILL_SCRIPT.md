@@ -74,6 +74,10 @@ MCP:
 
 The script is per-bot and lives on the running config; it survives Apply but not bot respawn (it's not yet persisted to a config file).
 
+## SP gate (SkillPolicy.cs)
+
+`enemy` rules also have to pass `SkillPolicy` before they fire. A debuff skill (Envenom, Provoke) is skipped when the target already has the debuff. A damage skill (Bash, Magnum Break, Double Strafe, Mammonite, Envenom) is skipped unless it saves at least one auto-attack, so it isn't used on a mob that's about to die. With level `0` it picks the level with the best swings-per-SP, or the most swings saved when SP is nearly full. A fixed level only decides yes or no. An area skill (Magnum Break, Arrow Shower, Cart Revolution) needs 2+ enemies in its blast. The exception is Magnum Break when its fire buff is down, and only if it pays off. Its hit plus the buff's bonus on the swings left on this mob (capped by the 20 s duration, scaled by fire vs the mob's element) must save at least one swing. It must also give at least as many swings saved per SP as the script's best single-target skill (e.g. Bash).
+
 ## Limits
 
 - One skill per combat tick (a successful cast skips the basic attack for that tick).

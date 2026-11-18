@@ -144,6 +144,63 @@ public sealed partial class BotBehavior
         return true;
     }
 
+    /// <summary>Feed SkillPolicy from the live snapshot + the forecast's per-swing damage. 0 = skip this cast.</summary>
+    private int SkillPolicyLevel(Snapshot snap, MonsterInfo target, CharacterSkill skill, int maxLevel, bool pinLevel)
+    {
+        var debuff = SkillPolicy.AppliedDebuff(skill);
+        var hasDebuff = debuff != null && snap.EntityStatuses.TryGetValue(target.Id, out var set) && set.Contains(debuff.Value);
+        var (autoDmg, hp) = PolicyInputs(snap, target);
+        return SkillPolicy.ChooseLevel(skill, maxLevel, pinLevel, _data?.SkillInfo(skill)?.SpCost,
+            hp, hasDebuff, autoDmg, snap.SelfSp, SkillPolicy.SpIsFree(snap.SelfSp, snap.SelfMaxSp, snap.SelfInt));
+    }
+
+    /// <summary>Expected damage per auto-attack (0 for NoAutoAttack) and the target's HP (MaxHp 0 = not seen yet: fresh mob).</summary>
+    private (double AutoDmg, int Hp) PolicyInputs(Snapshot snap, MonsterInfo target)
+    {
+        var autoDmg = 0.0;
+        if (!_config.NoAutoAttack)
+        {
+            var f = Forecast(snap, target);
+            autoDmg = f.MyDamagePerHit * f.MyHitChance;
+        }
+        var hp = target.MaxHp > 0 ? target.Hp : _data?.Monster(target.ClassId)?.HP ?? target.Hp;
+        return (autoDmg, hp);
+    }
+
+    private bool AoeWorthIt(Snapshot snap, MonsterInfo target, CharacterSkill skill, int level, int enemiesInArea)
+    {
+        if (enemiesInArea >= 2 || SkillPolicy.SelfBuff(skill, level) is not { } buff) return enemiesInArea >= 2;
+        if (snap.SelfStatuses.Contains(buff.Status)) return false;
+        var (autoDmg, hp) = PolicyInputs(snap, target);
+        if (autoDmg <= 0) return false; // the buff rides on auto-attacks
+        // Buff element vs the target, relative to the neutral swing autoDmg already includes.
+        var (ele, eleLv) = ElementChart.Parse(_data?.Monster(target.ClassId)?.Element ?? "");
+        var eleMod = ElementChart.GetModifier(buff.Element, ele, eleLv) / (double)Math.Max(1, ElementChart.GetModifier(SimElement.Neutral, ele, eleLv));
+        var interval = snap.SelfAttackInterval > 0.05 ? snap.SelfAttackInterval : 1.5;
+        var saved = SkillPolicy.BuffCastHitsSaved(skill, level, hp, autoDmg, interval, eleMod);
+        var cost = SkillPolicy.SpCost(_data?.SkillInfo(skill)?.SpCost, level);
+        return SkillPolicy.AoeWorthIt(skill, level, enemiesInArea, false, saved, cost, BestSingleTargetSwingsPerSp(snap, target, autoDmg, hp));
+    }
+
+    /// <summary>Best swings-saved-per-SP among the script's single-target damage rules on this target: the SP a buff
+    /// cast competes with. 0 when the script has none (or none would fire).</summary>
+    private double BestSingleTargetSwingsPerSp(Snapshot snap, MonsterInfo target, double autoDmg, int hp)
+    {
+        var best = 0.0;
+        var spFree = SkillPolicy.SpIsFree(snap.SelfSp, snap.SelfMaxSp, snap.SelfInt);
+        foreach (var r in GetSkillRules())
+        {
+            if (r.Target != SkillCastTarget.Enemy || SkillPolicy.Aoe(r.Skill) != null || SkillPolicy.DamageMultiplier(r.Skill, 1) <= 0) continue;
+            if (!KnowsSkill(r.Skill, out var known)) continue;
+            var costs = _data?.SkillInfo(r.Skill)?.SpCost;
+            var lv = SkillPolicy.ChooseLevel(r.Skill, r.Level > 0 ? Math.Min(r.Level, known) : known, r.Level > 0, costs,
+                hp, false, autoDmg, snap.SelfSp, spFree);
+            if (lv <= 0) continue;
+            best = Math.Max(best, (double)SkillPolicy.HitsSaved(hp, autoDmg, autoDmg * SkillPolicy.DamageMultiplier(r.Skill, lv)) / SkillPolicy.SpCost(costs, lv));
+        }
+        return best;
+    }
+
     private MonsterInfo? FindMostInjuredVisiblePlayer()
     {
         return _bot.WithState(w =>
@@ -208,6 +265,28 @@ public sealed partial class BotBehavior
             {
                 (skipReasons ??= new()).Add($"{rule.Skill}: level resolves to 0");
                 continue;
+            }
+
+            if (SkillPolicy.Aoe(rule.Skill) is { } aoe)
+            {
+                var center = aoe.OnSelf ? snap.SelfPos : target.Pos;
+                var hit = 0;
+                foreach (var m in snap.Monsters)
+                    if ((m.MaxHp <= 0 || m.Hp > 0) && Math.Max(Math.Abs(m.Pos.X - center.X), Math.Abs(m.Pos.Y - center.Y)) <= aoe.Radius) hit++;
+                if (!AoeWorthIt(snap, target, rule.Skill, level, hit))
+                {
+                    (skipReasons ??= new()).Add($"{rule.Skill}: area skill would hit {hit} enemy (and its buff is up or not worth the SP here)");
+                    continue;
+                }
+            }
+            else if (rule.Target == SkillCastTarget.Enemy)
+            {
+                level = SkillPolicyLevel(snap, target, rule.Skill, level, pinLevel: rule.Level > 0);
+                if (level <= 0)
+                {
+                    (skipReasons ??= new()).Add($"{rule.Skill}: not worth the SP (debuff already up, or saves no swing)");
+                    continue;
+                }
             }
 
             var zenyCost = SkillZenyCost(rule.Skill, level);
