@@ -43,6 +43,17 @@
     .map-exp-comparison .delta { color: #ffd166; text-align: right; font-weight: 700; white-space: nowrap; }
     .map-exp-hover:hover .map-exp-hover__panel,
     .map-exp-hover:focus .map-exp-hover__panel { display: block; }
+    .ro-equip { overflow: hidden; }
+    .ro-equip__title { padding: .3rem .6rem; font-weight: 600; background: linear-gradient(#3a4a63, #2a3446); border-bottom: 1px solid #495057; }
+    .ro-equip__grid { display: grid; grid-template-columns: minmax(0,1fr) 7rem minmax(0,1fr); }
+    .ro-equip__portrait { display: flex; align-items: center; justify-content: center; border-inline: 1px solid #495057;
+        background: repeating-linear-gradient(0deg, rgb(255 255 255 / 3%) 0 2px, transparent 2px 4px); }
+    .ro-equip__slot { display: flex; align-items: center; gap: .5rem; min-height: 2.4rem; padding: .2rem .5rem; margin: 0 .25rem; border-bottom: 1px solid #495057; font-size: .9rem; cursor: default; }
+    .ro-equip__slot:hover { background: rgb(255 255 255 / 4%); }
+    .ro-equip__empty { flex-grow: 1; text-align: center; font-weight: 700; font-size: 1rem; color: rgb(255 255 255 / 18%); }
+    .ro-equip__x { visibility: hidden; }
+    .ro-equip__slot:hover .ro-equip__x { visibility: visible; }
+    .ro-equip__footer { padding: .3rem .6rem; font-size: .85rem; border-top: 1px solid #495057; color: #adb5bd; }
 </style>
 
 <PageTitle>@(snapshot?.CharacterName ?? "Bot") — RoBot</PageTitle>
@@ -561,25 +572,35 @@ else
                     </div>
                 </div>
 
-                <div class="card mb-3">
-                    <div class="card-header py-2 fw-semibold">
-                        Equipment <span class="text-muted">(@(deep?.Equipped.Count(e => e != null) ?? 0) equipped)</span>
-                    </div>
-                    <div class="card-body p-1">
-                        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.25rem">
-                            @for (var i = 0; i < EquipLeft.Length; i++)
+                <div class="card mb-3 ro-equip">
+                    <div class="ro-equip__title">Equipment <span class="text-muted fw-normal">(@(deep?.Equipped.Count(e => e != null) ?? 0) equipped)</span></div>
+                    <div class="ro-equip__grid">
+                        <div>
+                            @foreach (var e in EquipLeft) { @EquipCell(e.Slot, e.Label, true) }
+                        </div>
+                        <div class="ro-equip__portrait">
+                            @if (Bots.GetSession(Id)?.WithState(w => (w.Self.IsMale, w.Self.JobId, w.Self.HeadType, w.Self.HairColor)) is var (male, job, head, hair)
+                                 && Sprites.GetPortrait(male, job, head, hair) is { } pt)
                             {
-                                @EquipCell(EquipLeft[i].Slot, EquipLeft[i].Label, true)
-                                @EquipCell(EquipRight[i].Slot, EquipRight[i].Label, false)
+                                <div class="position-relative" style="width:@(pt.Width)px;height:@(pt.Height)px;transform:scale(1.4)">
+                                    @foreach (var part in pt.Parts)
+                                    {
+                                        <div class="position-absolute" style="left:@(part.Left)px;top:@(part.Top)px;width:@(part.Width)px;height:@(part.Height)px;background:url('@part.Url') -@(part.SrcX)px -@(part.SrcY)px no-repeat@(part.Mirror ? ";transform:scaleX(-1)" : "")"></div>
+                                    }
+                                </div>
                             }
                         </div>
-                        @if (deep is { AmmoId: > 0 })
+                        <div>
+                            @foreach (var e in EquipRight) { @EquipCell(e.Slot, e.Label, false) }
+                        </div>
+                    </div>
+                    <div class="ro-equip__footer">
+                        Ammo Type: @if (deep is { AmmoId: > 0 })
                         {
-                            <div class="d-flex align-items-center justify-content-center gap-2 small mt-1 text-muted">
-                                <img src="@ItemIcon(deep.AmmoId)" alt="" width="20" height="20" style="object-fit:contain" onerror="this.style.display='none'" />
-                                Ammo: <span class="text-body">@Db.ItemName(deep.AmmoId)</span>
-                            </div>
+                            <img src="@ItemIcon(deep.AmmoId)" alt="" width="20" height="20" style="object-fit:contain;vertical-align:middle" onerror="this.style.display='none'" />
+                            <span class="text-body">@Db.ItemName(deep.AmmoId)</span>
                         }
+                        else { <span class="text-muted">None</span> }
                     </div>
                 </div>
 
@@ -1017,23 +1038,21 @@ else
     private static readonly (EquipSlot Slot, string Label)[] EquipRight =
         { (EquipSlot.HeadMid, "Middle Headgear"), (EquipSlot.Body, "Armor"), (EquipSlot.LeftHand, "Shield"), (EquipSlot.Footgear, "Footgear"), (EquipSlot.Accessory2, "Accessory") };
 
+    // In-game layout: icon on the outer edge, name toward the portrait; empty slots show a faded label.
     private RenderFragment EquipCell(EquipSlot slot, string label, bool left) => __builder =>
     {
         var slotItem = deep?.Equipped[(int)slot];
-        <div class="d-flex align-items-center gap-2 border rounded px-2 py-1 small @(left ? "flex-row-reverse text-end" : "")" style="min-height:2.6rem" title="@(slotItem?.Name ?? label)">
+        <div class="ro-equip__slot @(left ? "" : "flex-row-reverse text-end")" title="@(slotItem is null ? label : $"{slotItem.Value.Name} ({label}) — double-click to unequip")"
+             @ondblclick="() => { if (slotItem is { } x) UnequipItem(x.BagId); }">
             @if (slotItem is not { } it)
             {
-                <span style="width:24px;flex:none"></span>
-                <span class="text-muted text-truncate flex-grow-1">@label</span>
+                <span class="ro-equip__empty">@label</span>
             }
             else
             {
                 <img src="@ItemIcon(it.ItemId)" alt="" width="24" height="24" style="object-fit:contain;flex:none" onerror="this.style.visibility='hidden'" />
-                <span class="text-truncate flex-grow-1">
-                    @if (it.Refine > 0) { <span class="text-warning fw-semibold">+@it.Refine </span> }@it.Name
-                    <span class="d-block text-muted" style="font-size:.7rem">@label</span>
-                </span>
-                <button class="btn btn-sm btn-outline-secondary py-0 px-1" title="Unequip" @onclick="() => UnequipItem(it.BagId)">×</button>
+                <span class="text-truncate flex-grow-1">@if (it.Refine > 0) { <span class="text-warning fw-semibold">+@it.Refine </span> }@it.Name</span>
+                <button class="btn btn-sm btn-outline-secondary py-0 px-1 ro-equip__x" title="Unequip" @onclick="() => UnequipItem(it.BagId)">×</button>
             }
         </div>
     };
