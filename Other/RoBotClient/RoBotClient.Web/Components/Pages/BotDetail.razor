@@ -574,6 +574,13 @@ else
         </div>
 
         <div class="card mt-3">
+            <div class="card-header py-2 fw-semibold">Exp/h by playtime <span class="text-muted">(colored by map)</span></div>
+            <div class="card-body">
+                <ExpRateChart CharacterName="@s.CharacterName" BotId="@Id" />
+            </div>
+        </div>
+
+        <div class="card mt-3">
             <div class="card-header py-2 fw-semibold">Time to kill</div>
             <div class="card-body">
                 <TtkChart CharacterName="@s.CharacterName" />
