@@ -290,6 +290,7 @@ public sealed class BotSession : IAsyncDisposable
                     Log($"FAILED: socket closed before entering the world (after {(DateTime.UtcNow - enterStart).TotalMilliseconds:F0}ms, {packetsBeforeEntry} pre-entry packets).");
                     return false;
                 }
+                PacketTap?.Invoke(this, r.Message, r.Length);
                 var type = r.ReadPacketType();
                 if (type == PacketType.EnterServer)
                 {
@@ -420,6 +421,7 @@ public sealed class BotSession : IAsyncDisposable
                     Log($"Disconnected by server (session was up for {seconds:F0}s).");
                     break;
                 }
+                PacketTap?.Invoke(this, r.Message, r.Length);
                 Dispatch(r);
                 if (_needReady)
                 {
@@ -849,6 +851,10 @@ public sealed class BotSession : IAsyncDisposable
     }
 
     // ---- packet dispatch ----
+
+    /// <summary>Every packet from the server, raw, before it's handled. Only the dashboard's Watch tab
+    /// (RoBotClient.Web/Features/Watch) listens: it replays a bot's packets to a Unity client.</summary>
+    public static event Action<BotSession, byte[], int>? PacketTap;
 
     private void Dispatch(PacketReader r) => DispatchBody(r, r.ReadPacketType());
 

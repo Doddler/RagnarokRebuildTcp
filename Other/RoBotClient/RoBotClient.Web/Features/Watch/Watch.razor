@@ -1,0 +1,120 @@
+@page "/watch"
+@page "/watch/{Selected}"
+@using Microsoft.AspNetCore.Components.Web
+@using RoBotClient.Bot.Manager
+@inherits RoBotClient.Web.Components.LiveComponent
+@inject BotManager Bots
+@inject NavigationManager Nav
+@inject IConfiguration Config
+@inject IWebHostEnvironment Env
+
+<PageTitle>Watch — RoBot</PageTitle>
+
+<div class="container-fluid py-3">
+    <h2 class="mb-1">Watch</h2>
+    <div class="text-muted small mb-3">See a bot's point of view in the real Unity client. The client only watches: nothing it sends reaches the server.</div>
+
+    <div class="row g-3">
+        <div class="col-md-4">
+            <div class="list-group">
+                @foreach (var b in _bots)
+                {
+                    var name = Name(b);
+                    var viewers = Viewers(b);
+                    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center @(name == Selected ? "active" : "")"
+                       href="@($"watch/{Uri.EscapeDataString(name)}")">
+                        <span>
+                            <span class="fw-semibold">@name</span>
+                            <span class="small @(name == Selected ? "" : "text-muted")"> · Lv @b.Level · @b.MapDisplayName</span>
+                        </span>
+                        @if (viewers > 0)
+                        {
+                            <span class="badge text-bg-success">watching</span>
+                        }
+                    </a>
+                }
+                @if (_bots.Count == 0)
+                {
+                    <div class="list-group-item text-muted">No bots in game.</div>
+                }
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            @if (_bots.FirstOrDefault(b => Name(b) == Selected) is { } bot)
+            {
+                @if (ClientBuilt)
+                {
+                    @* One client per opened bot, kept alive and stacked: switching back shows it at once instead of
+                       reloading Unity (wasm compile + asset bundles + map). Hidden ones keep their size: a 0x0 canvas breaks Unity. *@
+                    <div style="position: relative; width: 100%; aspect-ratio: 16 / 10; background: #231F20">
+                        @foreach (var open in _open)
+                        {
+                            <iframe @key="open" src="@($"{WatchEndpoint.ClientPath}/watch.html?watch={Uri.EscapeDataString(open)}")"
+                                    style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0; visibility: @(open == Selected ? "visible" : "hidden")"></iframe>
+                        }
+                    </div>
+                    <div class="small text-muted mt-1">
+                        @(Viewers(bot) switch { 0 => "Connecting…", 1 => "1 client is watching.", var n => $"{n} clients are watching." })
+                        Input in the client is ignored: it only watches.
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-secondary">
+                        <p>The WebGL client isn't built yet. Close the Unity editor, then from the repo root run:</p>
+                        <pre class="mb-2"><code>~/Unity/Hub/Editor/6000.3.19f1/Editor/Unity -batchmode -nographics -projectPath RebuildClient -executeMethod WatchWebGLBuild.Build -logFile -</code></pre>
+                        <p class="mb-0 small">Or in Unity Play mode, set the login box's Server tab to <code>@ServerUrl</code> and log in as <code>@Selected</code> (any password).</p>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="text-muted">Pick a bot.</div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string? Selected { get; set; }
+
+    private List<BotSnapshot> _bots = new();
+
+    protected override int RefreshMs => 1000;
+
+    // ponytail: each live client holds ~1-2 GB in the browser; 3 caps it. Least recently picked is dropped.
+    private const int MaxOpenClients = 3;
+    private readonly List<string> _open = new(); // render order never changes: moving an iframe in the DOM reloads it
+    private readonly Dictionary<string, DateTime> _picked = new();
+
+    protected override void OnParametersSet()
+    {
+        Load();
+        if (string.IsNullOrEmpty(Selected)) return;
+        _picked[Selected] = DateTime.UtcNow;
+        if (!_open.Contains(Selected)) _open.Add(Selected);
+        if (_open.Count > MaxOpenClients)
+        {
+            var oldest = _open.MinBy(name => _picked[name])!;
+            _open.Remove(oldest);
+            _picked.Remove(oldest);
+        }
+    }
+
+    protected override bool ShouldRender()
+    {
+        Load();
+        return true;
+    }
+
+    private void Load() => _bots = Bots.GetSnapshots().Where(b => b.InGame).OrderBy(Name).ToList();
+
+    private static string Name(BotSnapshot b) => string.IsNullOrEmpty(b.CharacterName) ? b.Id : b.CharacterName;
+
+    private int Viewers(BotSnapshot b) => Bots.GetSession(b.Id) is { } s ? PovRecorder.For(s)?.ViewerCount ?? 0 : 0;
+
+    private bool ClientBuilt => File.Exists(Path.Combine(WatchEndpoint.ClientDir(Config, Env), "index.html"));
+
+    private string ServerUrl => $"ws://127.0.0.1:{new Uri(Nav.BaseUri).Port}{WatchEndpoint.Path}";
+}

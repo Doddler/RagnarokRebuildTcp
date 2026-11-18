@@ -4,6 +4,7 @@ using RoBotClient.Bot.Manager;
 using RoBotClient.Web;
 using RoBotClient.Web.Components;
 using RoBotClient.Web.Mcp;
+using RoBotClient.Web.Features.Watch;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -106,6 +107,9 @@ MapRepoPngs("/monster-atlas/{name}.png", Path.Combine("RebuildClient", "Assets",
 // Monster sprite actions (parsed once per species from the Unity .asset) for the minimap's animated sprites.
 app.MapGet("/monster-anim/{name}", (string name, MonsterSprites sprites) =>
     sprites.GetAnim(name) is { } anim ? Results.Json(anim) : Results.NotFound());
+
+// Watch tab: a Unity client logs into this dashboard to see a bot's PoV (Features/Watch). Before bots respawn below.
+app.MapWatch();
 
 // Optional demo seed: spawn N hunting bots on startup (set the ROBOT_SEED env var).
 if (int.TryParse(Environment.GetEnvironmentVariable("ROBOT_SEED"), out var seedCount) && seedCount > 0)
