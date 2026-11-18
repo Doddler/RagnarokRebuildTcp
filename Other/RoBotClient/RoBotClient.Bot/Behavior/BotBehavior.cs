@@ -755,6 +755,16 @@ public sealed partial class BotBehavior
         return Forecast(snap, mi);
     }
 
+    /// <summary>Public MCP entry for a pack: the same group forecast the bot engages with (ForecastGroupOf).</summary>
+    public GroupForecast ForecastGroupAgainst(IEnumerable<int> monsterClassIds)
+    {
+        var snap = _bot.WithState(Snapshot.From);
+        var group = new List<MonsterInfo>();
+        foreach (var id in monsterClassIds)
+            if (_data?.Monster(id) is { } db) group.Add(new MonsterInfo(0, id, db.Name, default, db.HP, db.HP));
+        return ForecastGroupOf(snap, group);
+    }
+
     /// <summary>What the simulator is actually using for a forecast — exposed so the MCP / debug UI can
     /// show "why did canWin come out as X?". Captures every input the script-aware pipeline depends on
     /// so a wrong answer can be diagnosed without re-reading server packets or guessing config.</summary>
@@ -825,24 +835,20 @@ public sealed partial class BotBehavior
     private BattleForecast Forecast(Snapshot snap, MonsterInfo m, bool poisoned = false)
     {
         var me = MeCombatant(snap);
-        var (demonBane, beastBane) = MasteryLevels(snap);
         var mDb = _data?.Monster(m.ClassId);
         // Effective HP buffer from healing potions actually in inventory AND covered by an item-script
         // rule that'll fire during the fight. Extends secsToKillMe — a Mage carrying 30 White Potions and
         // a `use 504 if hppct < 60` rule is way harder to kill than the raw HP number suggests.
         var hpBuffer = (int)EstimatePotionHpBuffer(snap);
         if (hpBuffer > 0) me = me with { Hp = me.Hp + hpBuffer };
-        var mods = BuildMonsterMods(snap, m) with
+        var defender = BuildMonsterMods(snap, m);
+        var mods = BuildPlayerMods(snap) with
         {
-            AttackerElement = SimElement.Neutral,
-            AttackerWeapon = SimWeaponClass.OneHandSword, // TODO read equipped weapon class once exposed
-            AttackerLuk = snap.SelfLuk,
-            AttackerAddCrit = snap.SelfAddCrit,
-            AttackerDemonBaneLevel = demonBane,
-            AttackerBeastBaneLevel = beastBane,
-            // Skill DPS comes from the user's actual SkillScript rules (level + skill that'd fire here),
-            // not "every known skill counts". Falls back to the legacy heuristic when no script is set.
-            ExtraSkillDps = EstimateScriptedDps(snap, me),
+            DefenderElement = defender.DefenderElement,
+            DefenderElementLevel = defender.DefenderElementLevel,
+            DefenderSize = defender.DefenderSize,
+            DefenderRace = defender.DefenderRace,
+            MonsterSkillDps = defender.MonsterSkillDps,
             AttackerAttackRange = InferAttackRange(snap),
             DefenderAttackRange = mDb?.Range ?? 1,
             // Only grants the out-of-range free kill; a mob that answers arrows with a spell doesn't get it.
@@ -948,9 +954,6 @@ public sealed partial class BotBehavior
         return (demon, beast);
     }
 
-    private static double MeleeDps(Combatant me)
-        => me.AtkMin > 0 && me.AttackInterval > 0 ? (me.AtkMin + me.AtkMax) / 2.0 / me.AttackInterval : 0;
-
     private Combatant MeCombatant(Snapshot snap)
     {
         // NoAutoAttack: bot is a pure caster — the simulator must NOT count basic-attack damage. Zeroing
@@ -990,120 +993,64 @@ public sealed partial class BotBehavior
 
     /// <summary>Build the player-side attacker modifier for a group forecast (where defender mods are per-
     /// monster and supplied separately). Folds in attacker element + weapon class + crit + skill DPS.</summary>
-    private CombatModifiers BuildPlayerMods(Snapshot snap, Combatant me)
+    private CombatModifiers BuildPlayerMods(Snapshot snap)
     {
         var (demon, beast) = MasteryLevels(snap);
-        return new CombatModifiers(
+        return WithSkillRotation(new CombatModifiers(
             AttackerElement: SimElement.Neutral,
             AttackerWeapon: SimWeaponClass.OneHandSword, // TODO read equipped weapon class once exposed
             AttackerLuk: snap.SelfLuk,
             AttackerAddCrit: snap.SelfAddCrit,
             AttackerDemonBaneLevel: demon,
-            AttackerBeastBaneLevel: beast,
-            ExtraSkillDps: EstimateScriptedDps(snap, me));
+            AttackerBeastBaneLevel: beast), snap);
     }
 
-    /// <summary>Estimate the DPS bonus from the bot's offensive skill rotation. This is a heuristic — the
-    /// real number depends on cast time, SP cost, cooldown, MATK vs ATK, and target elemental matchup.
-    /// We trade precision for "does this bot's skill kit meaningfully contribute" so the forecast and the
-    /// agent's `simulate_fight` MCP output reflect that an Acolyte with Heal vs Undead, or a Mage with
-    /// FireBolt, kills faster than naive melee predicts.
-    ///
-    /// Two damage scales feed into the bonus: melee-based skills (Bash, DoubleStrafe, SonicBlow) multiply
-    /// the bot's melee DPS; magic-based skills (FireBolt, NapalmBeat, HolyLight, SoulStrike) multiply a
-    /// magic DPS derived from MagicAtkMin/Max — server reports the real number so a Mage doesn't get its
-    /// FireBolt damage estimated from 0 melee.</summary>
-    private double EstimateSkillDps(Snapshot snap, double meleeDps)
+    /// <summary>The skill rotation every forecast (duel, pack, exp/h) credits, from the SkillScript only: no script means
+    /// TickSkillsAsync casts nothing. Physical single-target skills use SkillPolicy.DamageMultiplier, the numbers the
+    /// cast decision uses: the one adding the most over the SP on hand, as casts that each replace a swing.
+    /// Magic has no SkillPolicy model yet, so it stays a DPS heuristic on MATK.</summary>
+    // TODO: AoE (Magnum Break, Arrow Shower) and Sonic Blow get no forecast credit. Model them in SkillPolicy first
+    //       (Sonic Blow: 8 hits x (0.5 + 0.05·lv) plus a +1 s cooldown, so it doesn't just replace one swing), then credit here.
+    private CombatModifiers WithSkillRotation(CombatModifiers mods, Snapshot snap)
     {
-        var magicAtkAvg = (snap.SelfMagicAtkMin + snap.SelfMagicAtkMax) / 2.0;
-        var attackInterval = snap.SelfAttackInterval > 0.05 ? snap.SelfAttackInterval : 1.5;
-        // Magic skills don't share the basic-attack cooldown, but they have their own cast time. ~2s is a
-        // reasonable per-cast cadence for low-level bolts; gets shorter once Wizard's casting reduction
-        // perks kick in. Captures the rough rate without re-implementing cast-time tables.
-        var magicCastInterval = 2.0;
-        var magicDps = magicAtkAvg > 0 ? magicAtkAvg / magicCastInterval : 0;
-
-        var meleeBonus = 0.0;
-        var magicBonus = 0.0;
-        foreach (var (skill, level) in snap.KnownSkills)
-        {
-            switch (skill)
-            {
-                // Melee — scale melee DPS.
-                case CharacterSkill.Bash:            meleeBonus += SpAffordable(snap, skill, level) * 0.15 * level; break;
-                case CharacterSkill.MagnumBreak:     meleeBonus += SpAffordable(snap, skill, level) * 0.10 * level; break;
-                case CharacterSkill.DoubleStrafe:    meleeBonus += SpAffordable(snap, skill, level) * 0.30 * level; break;
-                case CharacterSkill.ArrowShower:     meleeBonus += SpAffordable(snap, skill, level) * 0.10 * level; break;
-                case CharacterSkill.SonicBlow:       meleeBonus += SpAffordable(snap, skill, level) * 0.20 * level; break;
-                // Magic — scale magic DPS using the bot's real MATK.
-                case CharacterSkill.FireBolt:        magicBonus += SpAffordable(snap, skill, level) * 0.40 * level; break;
-                case CharacterSkill.ColdBolt:        magicBonus += SpAffordable(snap, skill, level) * 0.40 * level; break;
-                case CharacterSkill.LightningBolt:   magicBonus += SpAffordable(snap, skill, level) * 0.40 * level; break;
-                case CharacterSkill.SoulStrike:      magicBonus += SpAffordable(snap, skill, level) * 0.30 * level; break;
-                case CharacterSkill.FireBall:        magicBonus += SpAffordable(snap, skill, level) * 0.20 * level; break;
-                case CharacterSkill.NapalmBeat:      magicBonus += SpAffordable(snap, skill, level) * 0.20 * level; break;
-                case CharacterSkill.HolyLight:       magicBonus += SpAffordable(snap, skill, level) * 0.30 * level; break;
-            }
-        }
-        var fromMelee = Math.Clamp(meleeBonus, 0, 3) * meleeDps;
-        var fromMagic = Math.Clamp(magicBonus, 0, 3) * magicDps;
-        return fromMelee + fromMagic;
-    }
-
-    /// <summary>Estimate DPS bonus from the bot's ACTUAL SkillScript rules, not "every skill known".
-    /// Walks the user's parsed offensive rules (target = Enemy or Ground) and credits each at its
-    /// rule-specified level — a Mage with `use FireBolt 5 enemy if target.dist < 9` only gets FireBolt-5
-    /// credit, not the maximum learned level. Falls back to the legacy <see cref="EstimateSkillDps"/>
-    /// heuristic when the bot has no script (so existing un-scripted setups still get a forecast).</summary>
-    private double EstimateScriptedDps(Snapshot snap, Combatant me)
-    {
-        var meleeDps = MeleeDps(me);
-        var rules = GetSkillRules();
-        if (rules.Count == 0) return EstimateSkillDps(snap, meleeDps);
-
-        // Bot's max known level per skill — for rules that specify level 0 ("use whatever I have").
         var maxKnown = new Dictionary<CharacterSkill, int>();
         foreach (var (s, lv) in snap.KnownSkills)
             if (lv > maxKnown.GetValueOrDefault(s)) maxKnown[s] = lv;
-
-        var magicAtkAvg = (snap.SelfMagicAtkMin + snap.SelfMagicAtkMax) / 2.0;
-        var magicDps = magicAtkAvg > 0 ? magicAtkAvg / 2.0 : 0;
-
-        var meleeBonus = 0.0;
-        var magicBonus = 0.0;
-        // De-duplicate rules that target the same skill — the script may have multiple conditional
-        // variants of one skill (different levels, different conditions). Credit the HIGHEST level rule
-        // since that's what'd fire under good conditions.
-        var bestLevel = new Dictionary<CharacterSkill, int>();
-        foreach (var r in rules)
+        // Several rules for one skill: credit the highest level, what fires under good conditions.
+        var levels = new Dictionary<CharacterSkill, int>();
+        foreach (var r in GetSkillRules())
         {
-            if (r.Target == SkillCastTarget.SelfCast || r.Target == SkillCastTarget.Ally) continue;
+            if (r.Target is SkillCastTarget.SelfCast or SkillCastTarget.Ally) continue;
             if (!maxKnown.TryGetValue(r.Skill, out var known) || known <= 0) continue;
             var effective = r.Level <= 0 ? known : Math.Min(r.Level, known);
-            if (effective > bestLevel.GetValueOrDefault(r.Skill)) bestLevel[r.Skill] = effective;
+            if (effective > levels.GetValueOrDefault(r.Skill)) levels[r.Skill] = effective;
         }
-        foreach (var (skill, level) in bestLevel)
+
+        double bestGain = 0, multiplier = 0, magicBonus = 0;
+        var casts = 0;
+        foreach (var (skill, level) in levels)
         {
-            switch (skill)
+            var m = SkillPolicy.DamageMultiplier(skill, level);
+            if (m > 1 && SkillPolicy.Aoe(skill) == null)
             {
-                case CharacterSkill.Bash:            meleeBonus += SpAffordable(snap, skill, level) * 0.15 * level; break;
-                case CharacterSkill.MagnumBreak:     meleeBonus += SpAffordable(snap, skill, level) * 0.10 * level; break;
-                case CharacterSkill.DoubleStrafe:    meleeBonus += SpAffordable(snap, skill, level) * 0.30 * level; break;
-                case CharacterSkill.ArrowShower:     meleeBonus += SpAffordable(snap, skill, level) * 0.10 * level; break;
-                case CharacterSkill.SonicBlow:       meleeBonus += SpAffordable(snap, skill, level) * 0.20 * level; break;
-                case CharacterSkill.FireBolt:        magicBonus += SpAffordable(snap, skill, level) * 0.40 * level; break;
-                case CharacterSkill.ColdBolt:        magicBonus += SpAffordable(snap, skill, level) * 0.40 * level; break;
-                case CharacterSkill.LightningBolt:   magicBonus += SpAffordable(snap, skill, level) * 0.40 * level; break;
-                case CharacterSkill.SoulStrike:      magicBonus += SpAffordable(snap, skill, level) * 0.30 * level; break;
-                case CharacterSkill.FireBall:        magicBonus += SpAffordable(snap, skill, level) * 0.20 * level; break;
-                case CharacterSkill.NapalmBeat:      magicBonus += SpAffordable(snap, skill, level) * 0.20 * level; break;
-                case CharacterSkill.HolyLight:       magicBonus += SpAffordable(snap, skill, level) * 0.30 * level; break;
+                var n = snap.SelfSp / SkillPolicy.SpCost(_data?.SkillInfo(skill)?.SpCost, level);
+                if ((m - 1) * n > bestGain) (bestGain, multiplier, casts) = ((m - 1) * n, m, n);
             }
+            magicBonus += SpAffordable(snap, skill, level) * MagicWeightPerLevel(skill) * level;
         }
-        var fromMelee = Math.Clamp(meleeBonus, 0, 3) * meleeDps;
-        var fromMagic = Math.Clamp(magicBonus, 0, 3) * magicDps;
-        return fromMelee + fromMagic;
+        // TODO: magic is still a heuristic (~2 s per bolt at MATK average, per-level weights). Add a SkillPolicy magic
+        //       model (MATK vs MDEF, cast time, SP) so mage forecasts and cast decisions share one source of truth.
+        var magicDps = Math.Clamp(magicBonus, 0, 3) * (snap.SelfMagicAtkMin + snap.SelfMagicAtkMax) / 2.0 / 2.0;
+        return mods with { SkillHitMultiplier = multiplier, SkillCasts = casts, ExtraSkillDps = magicDps };
     }
+
+    private static double MagicWeightPerLevel(CharacterSkill skill) => skill switch
+    {
+        CharacterSkill.FireBolt or CharacterSkill.ColdBolt or CharacterSkill.LightningBolt => 0.40,
+        CharacterSkill.SoulStrike or CharacterSkill.HolyLight => 0.30,
+        CharacterSkill.FireBall or CharacterSkill.NapalmBeat => 0.20,
+        _ => 0,
+    };
 
     /// <summary>Share of a skill's damage the bot can deliver right now: none without the SP to cast it. Bot3 took
     /// Horn after Horn on a "4 s kill" forecast that counted Bash at 2 SP; the real fights took 15 s and it died.</summary>
@@ -1221,7 +1168,7 @@ public sealed partial class BotBehavior
             mods.Add(BuildMonsterMods(snap, g));
         }
         var me = MeCombatant(snap);
-        return BattleSimulator.ForecastGroup(me, mons, mods, BuildPlayerMods(snap, me),
+        return BattleSimulator.ForecastGroup(me, mons, mods, BuildPlayerMods(snap),
             _config.WinMargin, _config.MaxRoundsToKill);
     }
 

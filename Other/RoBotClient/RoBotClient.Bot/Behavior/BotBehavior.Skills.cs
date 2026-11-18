@@ -161,7 +161,7 @@ public sealed partial class BotBehavior
             if (!_config.NoAutoAttack && autoDmg > 0)
             {
                 var f = Forecast(snap, target, poisoned: true);
-                poisonedAuto = f.MyDamagePerHit * f.MyHitChance;
+                poisonedAuto = f.ExpectedDamagePerSwing;
             }
         }
         return SkillPolicy.ChooseLevel(skill, maxLevel, pinLevel, _data?.SkillInfo(skill)?.SpCost,
@@ -176,7 +176,7 @@ public sealed partial class BotBehavior
         if (!_config.NoAutoAttack)
         {
             var f = Forecast(snap, target);
-            autoDmg = f.MyDamagePerHit * f.MyHitChance;
+            autoDmg = f.ExpectedDamagePerSwing;
         }
         var hp = target.MaxHp > 0 ? target.Hp : _data?.Monster(target.ClassId)?.HP ?? target.Hp;
         return (autoDmg, hp);

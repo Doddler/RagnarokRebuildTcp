@@ -170,8 +170,8 @@ public static class McpGameTools
      Description("Forecast a bot fighting a whole pack at once (assist mobs / aggressive swarms): it kills them one at a time while every still-alive monster keeps hitting it. 'monsters' is a comma-separated list of monster ids/codes; 'count' repeats the whole list that many times (e.g. monster=PORING count=3 = three Porings). Returns CanWin plus total seconds-to-kill and total damage taken vs the bot's HP.")]
     public static object SimulateGroupFight(BotManager bots, GameDatabase db, string botId, string monsters, int count = 1)
     {
-        var session = bots.GetSession(botId);
-        if (session == null) return new { error = $"No bot '{botId}'." };
+        var behavior = bots.GetBehavior(botId);
+        if (behavior == null) return new { error = $"No bot '{botId}'." };
 
         var entries = new List<MonsterDbEntry>();
         foreach (var key in monsters.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
@@ -186,33 +186,8 @@ public static class McpGameTools
         var pack = new List<MonsterDbEntry>(entries.Count * count);
         for (var i = 0; i < count; i++) pack.AddRange(entries);
 
-        var result = session.WithState(w =>
-        {
-            var s = w.Self;
-            var hasSelf = w.Entities.TryGetValue(s.EntityId, out var e);
-            var hp = hasSelf ? e!.Hp : s.Hp;
-            var maxHp = hasSelf ? e!.MaxHp : s.MaxHp;
-            var me = new Combatant(s.Level, s.Attack, Math.Max(s.Attack, s.AttackMax), s.Def, s.Vit, s.Dex, s.Agi, s.Hit, s.Flee, s.AttackSpeed, hp, maxHp);
-            var mons = new List<Combatant>(pack.Count);
-            var mods = new List<CombatModifiers>(pack.Count);
-            foreach (var mdb in pack)
-            {
-                var mon = new Combatant(mdb.Level, mdb.AtkMin, mdb.AtkMax, mdb.Def, mdb.Vit, mdb.Dex, mdb.Agi, 0, 0, db.MonsterAttackDelay(mdb.Id), mdb.HP, mdb.HP);
-                mons.Add(mon);
-                var (defEle, defLvl) = ElementChart.Parse(mdb.Element ?? "");
-                mods.Add(new CombatModifiers(
-                    DefenderElement: defEle, DefenderElementLevel: defLvl,
-                    DefenderSize: WeaponSizeChart.ParseSize(mdb.Size ?? ""),
-                    DefenderRace: WeaponSizeChart.ParseRace(mdb.Race ?? ""),
-                    MonsterSkillDps: BattleSimulator.MonsterSkillDps(me, s.Int, s.MDef, mon, db.MonsterInt(mdb.Id), db.MonsterCasts(mdb.Code))));
-            }
-            var playerMods = new CombatModifiers(
-                AttackerElement: SimElement.Neutral,
-                AttackerWeapon: SimWeaponClass.OneHandSword,
-                AttackerLuk: s.Luk,
-                AttackerAddCrit: s.AddCrit);
-            return BattleSimulator.ForecastGroup(me, mons, mods, playerMods, 0.6, 30);
-        });
+        // Same pipeline the bot engages with (ForecastGroupOf): skill script, masteries, range, config margins.
+        var result = behavior.ForecastGroupAgainst(pack.Select(m => m.Id));
 
         return new
         {

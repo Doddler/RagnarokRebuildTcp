@@ -25,8 +25,9 @@ public readonly record struct CombatModifiers(
     int AttackerAddCritDamage = -1, // server-side AddCritDamage stat (%). < 0 = use the default 40%.
     int AttackerDemonBaneLevel = 0, // player's max-learned DemonBane level (+3 per lvl vs Demon/Undead, pre-DEF).
     int AttackerBeastBaneLevel = 0, // player's max-learned BeastBane level (+5 per lvl vs Beast/Insect).
-    double ExtraSkillDps = 0,
-    double SkillBurstDamage = 0,
+    double ExtraSkillDps = 0,       // magic rotation (bolts): no SkillPolicy model yet, so a DPS add-on
+    double SkillHitMultiplier = 0,  // scripted physical skill (Bash...) as a multiple of one swing: SkillPolicy.DamageMultiplier
+    int SkillCasts = 0,             // casts of it the SP on hand pays for; each replaces a swing (shared attack cooldown)
     double MonsterSkillDps = 0,     // incoming: the monster's TryCast spells/skills, net of the swings it skips while casting. See MonsterSkillDps().
     bool DefenderIsBoss = false,    // bosses get specific resists; flag exposed to callers, not yet used in damage scale.
     // --- range model (added for ranged-fight forecasting) ---
@@ -38,7 +39,8 @@ public readonly record struct CombatModifiers(
                                     // (R3, AiAggressiveImmobile) are the canonical examples; both are free kills for any
                                     // ranged class.
 {
-    public static readonly CombatModifiers Default = new();
+    // Not `new()`: on a record struct that's the all-zero struct, skipping the defaults above (crit damage +0%, element Lv 0).
+    public static readonly CombatModifiers Default = new(AttackerElement: SimElement.Neutral);
 }
 
 public readonly record struct BattleForecast(
@@ -52,7 +54,8 @@ public readonly record struct BattleForecast(
     double CritChance = 0,
     double EffectiveDpsWithSkills = 0,
     double ExpectedDamageTaken = 0,
-    int AttacksToKill = 0);
+    int AttacksToKill = 0,
+    double ExpectedDamagePerSwing = 0); // one auto-attack, hit chance and crits blended: SkillPolicy's "autoDmg"
 
 /// <summary>Outcome of fighting a whole pack at once (assist mobs / aggressive swarms).</summary>
 public readonly record struct GroupForecast(
@@ -238,6 +241,7 @@ public static class BattleSimulator
         var expectedDmgPerSwing = (1 - critChance) * myDmgNormal * myHitChance
                                    + critChance     * myDmgCrit;
 
+        var (skillBonus, _) = SkillBonusDamage(monster.MaxHp, expectedDmgPerSwing, mods.SkillHitMultiplier, mods.SkillCasts);
         var myMeleeDps = expectedDmgPerSwing / myInterval;
         var myDps = myMeleeDps + Math.Max(0, mods.ExtraSkillDps);
         var monDps = monDmg * monHitChance / monInterval;
@@ -267,8 +271,8 @@ public static class BattleSimulator
             var skillPerCast = mods.ExtraSkillDps * skillCastInterval;
             if (skillPerCast > perActionDmg) perActionDmg = skillPerCast;
         }
-        var hitsToKill = (int)Math.Ceiling(monster.MaxHp / Math.Max(0.01, perActionDmg));
-        var secsToKillMonster = myDps > 0.01 ? Math.Max(0, monster.MaxHp - mods.SkillBurstDamage) / myDps : double.PositiveInfinity;
+        var hitsToKill = (int)Math.Ceiling((monster.MaxHp - skillBonus) / Math.Max(0.01, perActionDmg));
+        var secsToKillMonster = myDps > 0.01 ? Math.Max(0, monster.MaxHp - skillBonus) / myDps : double.PositiveInfinity;
         var secsToKillMe = monDps > 0.01 ? me.Hp / monDps : double.PositiveInfinity;
 
         // hitsToKill cap is the "is this fight too tanky for my tools" check — but when the mob can't
@@ -294,8 +298,21 @@ public static class BattleSimulator
             myHitChance, monHitChance,
             ClampFinite(secsToKillMonster), ClampFinite(secsToKillMe),
             winChance,
-            elementMod, sizeMod, critChance, myDps,
-            Math.Min(ClampFinite(damageTaken), 999999), hitsToKill);
+            elementMod, sizeMod, critChance,
+            secsToKillMonster > 0 && !double.IsInfinity(secsToKillMonster) ? monster.MaxHp / secsToKillMonster : myDps,
+            Math.Min(ClampFinite(damageTaken), 999999), hitsToKill, expectedDmgPerSwing);
+    }
+
+    /// <summary>Damage a scripted physical skill adds over the swings its casts replace: it shares the attack cooldown
+    /// (as SkillPolicy assumes), so each cast is a swing slot dealing <paramref name="multiplier"/>x instead of 1x.
+    /// Casts stop once the mob would be dead. Returns the bonus and the casts used.</summary>
+    // TODO: casts = SP on hand / cost; SP regen during the fight isn't counted (long fights forecast a bit slow), and
+    //       exp/h uses current SP instead of the SP the bot sustains kill after kill.
+    public static (double Bonus, int Casts) SkillBonusDamage(int hp, double swing, double multiplier, int casts)
+    {
+        if (multiplier <= 1 || casts <= 0 || swing <= 0 || hp <= 0) return (0, 0);
+        var used = (int)Math.Min(casts, Math.Ceiling(hp / (multiplier * swing)));
+        return (Math.Max(0, Math.Min(hp, used * multiplier * swing) - used * swing), used);
     }
 
     /// <summary>JSON has no representation for ±Infinity, so when a forecast computes "effectively
@@ -332,6 +349,7 @@ public static class BattleSimulator
 
         var killTime = new double[n];
         var monDps = new double[n];
+        var swing = new double[n];
         var eleAcc = 0.0;
         var sizeAcc = 0.0;
         var feasible = me.Hp > 0;
@@ -369,6 +387,7 @@ public static class BattleSimulator
 
             var monDmg = DamagePerHit(mon, me, PlayerSubDef(me.Vit), monLevelCut, 0) * HitChance(mon, me);
             var monInterval = mon.AttackInterval > 0.05 ? mon.AttackInterval : DefaultMonsterAttackInterval;
+            swing[i] = myEffDmg;
             var myDpsThis = myEffDmg / myInterval;
             // Free-kill case per the 1v1 path: if the mob can't reach us and we can hit it, it deals zero.
             // Applied per-monster so a mixed pack (one mobile + one immobile) handles each correctly.
@@ -396,11 +415,15 @@ public static class BattleSimulator
 
         var totalKill = 0.0;
         var dmgTaken = 0.0;
+        var castsLeft = playerMods.SkillCasts;
         for (var k = 0; k < n; k++)
         {
             var idx = order[k];
             var t = killTime[idx];
             if (double.IsInfinity(t)) { dmgTaken = double.PositiveInfinity; totalKill = double.PositiveInfinity; break; }
+            var (bonus, used) = SkillBonusDamage(monsters[idx].MaxHp, swing[idx], playerMods.SkillHitMultiplier, castsLeft);
+            castsLeft -= used;
+            t -= bonus / swing[idx] * myInterval; // each swing's worth of bonus saves one attack interval
             dmgTaken += remainingDps * t; // all monsters still alive during this kill keep hitting us
             remainingDps -= monDps[idx];
             totalKill += t;
