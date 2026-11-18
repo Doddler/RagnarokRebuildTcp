@@ -48,6 +48,21 @@ public sealed class BotMemory
     public Dictionary<int, DateTime> AvoidClasses { get; set; } = new();
     public string KillSplitMap { get; set; } = "";
     public List<ActivityTime> KillSplits { get; set; } = new();
+    public StayLog? Stay { get; set; }
+}
+
+/// <summary>Where the time went since the bot made Map its hunting map (see BotBehavior.NoteStay). Saved with the memory so a
+/// dashboard restart doesn't wipe a stay half way.</summary>
+public sealed class StayLog
+{
+    public string Map { get; set; } = "";
+    public Dictionary<string, double> Seconds { get; set; } = new();
+    public int Kills { get; set; }
+    public int Targets { get; set; }
+    public double ApproachCells { get; set; }
+    public int ShopTrips { get; set; }
+    public int Deaths { get; set; }
+    public double PlayerSeconds { get; set; }
 }
 
 /// <summary>Seconds by activity. Fight = in a duel (target within reach), Search = looking for and walking to the next
@@ -114,6 +129,61 @@ public sealed partial class BotBehavior
             _ => default, // travelling, shopping, dead, ...: not hunting
         };
         NoteKillSplit(snap.Map);
+        NoteStay(snap, target, elapsed);
+    }
+
+    // Why a map's exp/h missed its prediction: seconds per cause since the bot made this its hunting map (shop trips and
+    // deaths off the map count too). "Search" splits into walking to a picked target, wandering with no monster in view,
+    // and wandering past monsters it didn't pick; approach cells vs the model's spacing say whether the layout or the count is off.
+    private StayLog _stay = new();
+    private int _stayTargetId, _stayLastKills = -1; // session kill counter at the last tick; -1 = not read yet (restart)
+    private DateTime _staySavedAt;
+    private BotMode _stayLastMode;
+    private string _idleCause = "none picked"; // set by PickTarget when it finds nothing
+
+    private void NoteStay(Snapshot snap, MonsterInfo? target, double elapsed)
+    {
+        if (!string.Equals(_stay.Map, _config.HomeMap, StringComparison.OrdinalIgnoreCase)) _stay = new StayLog { Map = _config.HomeMap };
+        var kills = _bot.WithState(w => w.Self.Kills);
+        if (_stayLastKills >= 0 && kills > _stayLastKills) _stay.Kills += kills - _stayLastKills;
+        _stayLastKills = kills;
+        if (Mode != _stayLastMode)
+        {
+            if (Mode == BotMode.Shopping) _stay.ShopTrips++;
+            if (Mode == BotMode.Dead) _stay.Deaths++;
+            _stayLastMode = Mode;
+        }
+        if (target != null && target.Id != _stayTargetId) { _stay.Targets++; _stay.ApproachCells += Dist(snap.SelfPos, target.Pos); }
+        if (DateTime.UtcNow - _staySavedAt > TimeSpan.FromMinutes(1)) { _staySavedAt = DateTime.UtcNow; OnMemoryChanged?.Invoke(); }
+        _stayTargetId = target?.Id ?? 0;
+        if (elapsed <= 0) return;
+        var onMap = string.Equals(snap.Map, _stay.Map, StringComparison.OrdinalIgnoreCase);
+        var bucket = Mode switch
+        {
+            BotMode.Hunting when target != null => Dist(snap.SelfPos, target.Pos) <= InferAttackRange(snap) + 1 ? "fight" : "approach",
+            BotMode.Hunting or BotMode.Idle => snap.Monsters.Count == 0 ? "wander, none in view" : $"wander, {_idleCause}",
+            BotMode.Looting => "loot",
+            BotMode.Resting => "rest",
+            BotMode.Fleeing => "flee",
+            BotMode.Traveling when onMap => "walking on map",
+            _ => Mode.ToString().ToLowerInvariant(),
+        };
+        _stay.Seconds[bucket] = _stay.Seconds.GetValueOrDefault(bucket) + elapsed;
+        if (onMap) _stay.PlayerSeconds += elapsed * _bot.WithState(w => w.Entities.Values.Count(e => e.Type == RebuildSharedData.Enum.CharacterType.Player && e.Id != w.Self.EntityId));
+    }
+
+    private string? StaySummary()
+    {
+        var total = _stay.Seconds.Values.Sum();
+        if (total < 60 || string.IsNullOrEmpty(_stay.Map)) return null;
+        var kills = _stay.Kills;
+        var perKill = kills > 0 ? kills : 1;
+        var onMapSeconds = total - _stay.Seconds.Where(kv => kv.Key is "traveling" or "shopping" or "dead").Sum(kv => kv.Value);
+        var parts = _stay.Seconds.OrderByDescending(kv => kv.Value).Select(kv => $"{kv.Key} {kv.Value / perKill:0.0}");
+        var spacing = _mapEstimates.TryGetValue(_stay.Map, out var estimate) && estimate.PerKill.Search > 0 ? $", model spacing {estimate.PerKill.Search / PlayerSecondsPerCell:0}" : "";
+        return $"Map: time on {_stay.Map} over {Duration(total)}, {kills} kills, s/kill: {string.Join(", ", parts)}"
+               + $"; approach {(_stay.Targets > 0 ? _stay.ApproachCells / _stay.Targets : 0):0} cells/target over {_stay.Targets} targets{spacing}"
+               + $"; {_stay.ShopTrips} shop trips, {_stay.Deaths} deaths; {(onMapSeconds > 0 ? _stay.PlayerSeconds / onMapSeconds : 0):0.0} other players in view.";
     }
 
     // Per kill on the current map: activity seconds since the previous kill. Reset on map change; in memory only.
@@ -163,6 +233,8 @@ public sealed partial class BotBehavior
                 AvoidClasses = new(_avoidClasses),
                 KillSplitMap = _killSplitMap,
                 KillSplits = _killSplits.ToList(),
+                Stay = new StayLog { Map = _stay.Map, Seconds = new(_stay.Seconds), Kills = _stay.Kills, Targets = _stay.Targets,
+                    ApproachCells = _stay.ApproachCells, ShopTrips = _stay.ShopTrips, Deaths = _stay.Deaths, PlayerSeconds = _stay.PlayerSeconds },
             };
     }
 
@@ -178,6 +250,7 @@ public sealed partial class BotBehavior
         foreach (var (cls, until) in memory.AvoidClasses) if (until > now) _avoidClasses[cls] = until;
         _killSplitMap = memory.KillSplitMap ?? "";
         lock (_killSplits) { _killSplits.Clear(); _killSplits.AddRange(memory.KillSplits); }
+        if (memory.Stay != null) _stay = memory.Stay;
     }
 
     /// <summary>Median seconds per kill by activity on <paramref name="map"/> (each activity's own median), and how many
@@ -287,6 +360,7 @@ public sealed partial class BotBehavior
     private void DecideMap(Snapshot snap, DateTime now)
     {
         RefreshEstimates(snap);
+        if (StaySummary() is { } stay) OnLog?.Invoke(stay);
         var home = _config.HomeMap;
         // The map we're on is judged only on what the bot really earned there. Its real/estimated ratio then scales
         // every other map's estimate, so they're on the same footing (raw estimates run several times too high).

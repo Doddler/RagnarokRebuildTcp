@@ -578,6 +578,11 @@ public sealed partial class BotBehavior
         // diagnose "FSM keeps the bot Idle" without enabling Verbose chat.
         _restToWin = winnableRested > 0;
         var reason = $"PickTarget idle — {snap.Monsters.Count} mon in view (not-huntable={notHuntable}, avoided-class={avoided}, blacklisted={blacklisted}, in-hazard={hazardous}, near-portal={portalRisk}, unwinnable={unwinnable}, group-swarm={swarmed}, no-safe-cell={noSafeCell}, unreachable={unreachable}).";
+        // Main reason for the stay log (time split): which filter dropped the most monsters in view.
+        _idleCause = new (string Why, int Count)[] { ("not huntable", notHuntable), ("avoided class", avoided), ("blacklisted", blacklisted),
+                ("near a dangerous monster", hazardous), ("near a portal", portalRisk), ("too strong", unwinnable), ("would pull a group", swarmed),
+                ("no safe cell", noSafeCell), ("unreachable", unreachable) }
+            .MaxBy(c => c.Count) is { Count: > 0 } top ? top.Why : "none in view";
         _idleSummary = snap.Monsters.Count == 0 ? "none in view"
             : hazardous > 0 ? $"{hazardous} near a dangerous monster"
             : unwinnable > 0 ? $"{unwinnable} too strong"
