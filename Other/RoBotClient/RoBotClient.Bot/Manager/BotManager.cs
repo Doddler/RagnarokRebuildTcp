@@ -262,7 +262,7 @@ public sealed class BotManager
         var session = new BotSession(config, _data);
         var brain = new BotBehavior(session, behavior, _data);
         // Real exp/h per map, from the saved Runs history (survives restarts): the most recent stays on each, up to
-        // 20 min of hunting, ignoring stays older than 3 h (the bot was weaker then).
+        // 20 min of hunting, ignoring stays more than 2 levels ago (the bot was weaker then).
         if (_configs != null) brain.OnHomeMapChanged += () => _configs.Set(config.CharacterName, behavior);
         if (MapAudit != null) brain.OnMapMove += audit => MapAudit.Append(config.CharacterName, audit);
         if (_memory != null)
@@ -273,9 +273,12 @@ public sealed class BotManager
         brain.MeasureMaps = () =>
         {
             var result = new Dictionary<string, (double Seconds, double Exp, int Kills, ActivityTime Time, double Other)>(StringComparer.OrdinalIgnoreCase);
-            foreach (var run in MapRuns.Compute(session.Telemetry.Snapshot(), _progress?.Get(config.CharacterName) ?? Array.Empty<ProgressSample>(), true))
+            var samples = _progress?.Get(config.CharacterName) ?? Array.Empty<ProgressSample>();
+            var level = samples.Count > 0 ? samples[^1].Level : 0;
+            foreach (var run in MapRuns.Compute(session.Telemetry.Snapshot(), samples, true))
             {
-                if (DateTime.UtcNow - run.End > TimeSpan.FromHours(3)) break;
+                // Aged by level, not clock: Bot5's anthell01 stay at the same Lv 24 dropped out after sitting 2.5 h stuck in Izlude.
+                if (level - (samples.LastOrDefault(p => p.Time <= run.End)?.Level ?? 0) > 2) break;
                 var (seconds, exp, kills, time, other) = result.GetValueOrDefault(run.Map);
                 if (seconds >= 1200) continue; // most recent 20 min per map
                 seconds += run.Active.TotalSeconds;

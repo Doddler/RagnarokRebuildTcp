@@ -91,7 +91,10 @@ public sealed partial class BotBehavior
     // (IQR 0.21-0.59); moves claiming 1.25-3x actually earned 0.55-0.60x of the old map.
     // ponytail: one global constant; re-derive after model changes by pairing each bot-logs "Map: moving → X. X estimated E"
     // with the next decision's "X measured A" and taking the median A/E (drop A/E outside 0.05-5); per-bot if they diverge.
-    public const double CandidateRealization = 0.37;
+    // Re-fit 11-17 on the current model (11 moves with >= 5 kills): median 0.71. The home map's own estimate now lands within
+    // 10% (Bot2 mjolnir_09 47k vs 51k, Bot4 pay_fild07 17k vs 18k), and the worst misses (0.13, 0.22) were crowded maps the
+    // slow-threat rule now skips. At 0.37 a map had to model 3.4x the current one to win, so bots sat on Rockers for hours.
+    public const double CandidateRealization = 0.7;
     /// <summary>Raised on every map move with its prediction breakdown, so the manager can persist it for auditing.</summary>
     public event Action<MapMoveAudit>? OnMapMove;
 
@@ -321,10 +324,11 @@ public sealed partial class BotBehavior
         list.RemoveAll(t => DateTime.UtcNow - t > TimeSpan.FromMinutes(10));
         OnMemoryChanged?.Invoke();
         if (list.Count < FleesToBan) return;
-        var ban = BanMap(map);
+        // No ban: re-judge now on what the map really earns, flees included. Banning threw Bot4 off pay_fild07 (22.7k
+        // measured, fleeing 0.9 s/kill) for a 14.8k guess 7 maps away. Deaths still ban (NoteMapDeath).
         list.Clear();
         _nextMapCheck = DateTime.MinValue;
-        _retreatReason = $"fled {FleesToBan} times on {map} in 10 min, avoiding it for {ban}";
+        OnLog?.Invoke($"Map: fled {FleesToBan} times on {map} in 10 min, re-judging it on its measured exp/h.");
     }
 
     private void TickMapChoice(Snapshot snap)
@@ -509,7 +513,9 @@ public sealed partial class BotBehavior
     /// for slow monsters without a scratch. Bosses/MVPs are ignored: rare, and the hazard system steers around them.</summary>
     // ponytail: the server's base player walk (WorldObject.MoveSpeed); ignores Increase Agility and other speed buffs.
     private const float PlayerSecondsPerCell = 0.15f;
-    private const int RangedMonsterRange = 3; // spear reach (2) still has to walk up to you
+    private const int RangedMonsterRange = 3;
+    // ponytail: one flat density; per-area (near the entrance / camp) if a sparse-overall map still kills on arrival.
+    private const double CrowdedThreatsPer10kCells = 8; // spear reach (2) still has to walk up to you
 
     // Immobile ones (Geographer, Greatest General) only hit what walks into their small circle, which the hazard
     // overlay already routes around: counting them made ten yuno fields "unsafe" for Bot1.
@@ -541,6 +547,7 @@ public sealed partial class BotBehavior
             string? threat = null;
             var huntable = new List<(RebuildSharedData.ClientTypes.MonsterDbEntry Monster, int Count, double RespawnSeconds, BattleForecast Forecast)>();
             var tooStrong = new HashSet<string>();
+            var slowThreats = new List<(string Name, int Count)>(); // aggressive, beats us, but slower than a player
             var hpLoss = new Dictionary<string, double>(); // forecast HP lost per fight, by monster name
             // Healers spread evenly: about count x (19x19 / walkable cells) of them within heal reach of any monster.
             var healArea = Math.Min(1.0, (2 * HealerRadius + 1) * (2 * HealerRadius + 1) / (double)cells);
@@ -559,10 +566,16 @@ public sealed partial class BotBehavior
                 {
                     tooStrong.Add(monster.Name);
                     if (IsAggressive(monster.Id) && (killedMe ? "killed me recently" : InescapableReason(monster)) is { } why) threat ??= $"{monster.Name} ({why})";
+                    else if (IsAggressive(monster.Id) && !IsMonsterImmobile(monster)) slowThreats.Add((monster.Name, count));
                     continue;
                 }
                 huntable.Add((monster, count, respawnSeconds, forecast));
             }
+            // Slow ones are scenery only while sparse: Bot5 (Lv 24) died 2 s into beach_dun2 to Tri Joint (20 Tri Joint +
+            // 10 Neraid on 20k cells = 15 per 10k), and kept dying on mjolnir_02/05/10 (~20); the yuno fields Bot1 crossed are < 1.
+            var slowCount = slowThreats.Sum(t => t.Count);
+            if (threat == null && slowCount * 10000.0 / cells >= CrowdedThreatsPer10kCells)
+                threat = $"{string.Join(", ", slowThreats.GroupBy(t => t.Name).Select(g => $"{g.Sum(t => t.Count)} {g.Key}"))} (crowded)";
 
             // Hunting `share` of each huntable spawn spread over `area` cells.
             (double Rate, double ExpPerKill, ActivityTime PerKill, double Supply) Hunt(Func<int, double> share, int area)
