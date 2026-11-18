@@ -1021,6 +1021,13 @@ public sealed class BotSession : IAsyncDisposable
             World.Self.EntityId = sp.ServerId;
             World.Self.JobId = sp.ClassId;
             if (!string.IsNullOrEmpty(sp.Name)) World.Self.Name = sp.Name;
+            if (sp.Type == CharacterType.Player) // the server follows a player's spawn with its appearance
+            {
+                var pp = r.MemoryPackDeserializeWithLength<PlayerSpawnParameters>();
+                World.Self.IsMale = pp.IsMale;
+                World.Self.HeadType = pp.HeadType;
+                World.Self.HairColor = pp.HairColor;
+            }
         }
     }
 

@@ -32,16 +32,52 @@ public sealed class MonsterSprites
             ? null
             : _anims.GetOrAdd(monsterName, n => _spriteByName.Value.TryGetValue(n, out var sprite) ? ReadAnim(sprite) : null);
 
-    public MonsterSprites(string clientConfigDir, string importedMonstersDir)
+    public MonsterSprites(string clientConfigDir, string importedMonstersDir, string headDataFile = "", string importedCharactersDir = "")
     {
         _monstersDir = importedMonstersDir;
+        _charactersDir = importedCharactersDir;
         _spriteByName = new(() => LoadSpriteNames(Path.Combine(clientConfigDir, "monsterclass.json")));
+        _headSprites = new(() => LoadHeadSprites(headDataFile));
+    }
+
+    // Player heads: headdata.json lists, per head id, one sprite per hair color ("10_남_3"); imported like monsters
+    // under Characters/Head{Male,Female}; the atlas is HeadAtlasPath.
+    private readonly string _charactersDir;
+    private readonly Lazy<Dictionary<(bool, int, int), string>> _headSprites;
+    private readonly ConcurrentDictionary<(bool, int, int), Frame?> _heads = new();
+
+    public Frame? GetHead(bool isMale, int head, int color) =>
+        _charactersDir.Length == 0
+            ? null
+            : _heads.GetOrAdd((isMale, head, color), k =>
+                (_headSprites.Value.TryGetValue(k, out var s) || _headSprites.Value.TryGetValue((isMale, head, 0), out s))
+                    ? ReadFirstFrame(Path.Combine(_charactersDir, isMale ? "HeadMale" : "HeadFemale"), s)
+                    : null);
+
+    public string HeadAtlasPath(bool isMale, Frame f) =>
+        Path.Combine(_charactersDir, isMale ? "HeadMale" : "HeadFemale", "Atlas", f.AtlasName + ".png");
+
+    private static Dictionary<(bool, int, int), string> LoadHeadSprites(string path)
+    {
+        var map = new Dictionary<(bool, int, int), string>();
+        if (!File.Exists(path))
+            return map;
+        using var doc = JsonDocument.Parse(File.ReadAllText(path));
+        foreach (var h in doc.RootElement.GetProperty("Items").EnumerateArray())
+        {
+            var id = h.GetProperty("Id").GetInt32();
+            var c = 0;
+            foreach (var s in h.GetProperty("MaleIds").EnumerateArray()) map[(true, id, c++)] = s.GetString()!;
+            c = 0;
+            foreach (var s in h.GetProperty("FemaleIds").EnumerateArray()) map[(false, id, c++)] = s.GetString()!;
+        }
+        return map;
     }
 
     public Frame? Get(string monsterName) =>
         _monstersDir.Length == 0
             ? null
-            : _frames.GetOrAdd(monsterName, n => _spriteByName.Value.TryGetValue(n, out var sprite) ? ReadFirstFrame(sprite) : null);
+            : _frames.GetOrAdd(monsterName, n => _spriteByName.Value.TryGetValue(n, out var sprite) ? ReadFirstFrame(_monstersDir, sprite) : null);
 
     private static Dictionary<string, string> LoadSpriteNames(string path)
     {
@@ -58,21 +94,21 @@ public sealed class MonsterSprites
         return map;
     }
 
-    private Frame? ReadFirstFrame(string sprite)
+    private static Frame? ReadFirstFrame(string dir, string sprite)
     {
-        var asset = Path.Combine(_monstersDir, sprite + ".asset");
-        var atlas = Path.Combine(_monstersDir, "Atlas", sprite + "_atlas.png");
+        var asset = Path.Combine(dir, sprite + ".asset");
+        var atlas = Path.Combine(dir, "Atlas", sprite + "_atlas.png");
         if (!File.Exists(asset) || !File.Exists(atlas))
             return null;
 
-        // Unity YAML: the frame's "m_Name: sprite_<sprite>_0000" line is followed by its m_Rect x/y/width/height.
-        var target = $"m_Name: sprite_{sprite}_0000";
+        // Unity YAML: the first frame's "m_Name: sprite_<name>_0000" line is followed by its m_Rect x/y/width/height.
+        // Matched by suffix: head palette variants keep the base head's name, and non-ASCII names come quoted/escaped.
         var found = false;
         double? x = null, y = null, w = null, h = null;
         foreach (var raw in File.ReadLines(asset))
         {
             var line = raw.Trim();
-            if (!found) { found = line == target; continue; }
+            if (!found) { found = line.Replace("\"", "") is var n && n.StartsWith("m_Name: sprite_") && n.EndsWith("_0000"); continue; }
             if (line.StartsWith("x: ")) x = Num(line[3..]);
             else if (line.StartsWith("y: ")) y = Num(line[3..]);
             else if (line.StartsWith("width: ")) w = Num(line[7..]);

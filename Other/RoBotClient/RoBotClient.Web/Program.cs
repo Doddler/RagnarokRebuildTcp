@@ -22,7 +22,9 @@ var gameData = GameDatabase.Load(
 builder.Services.AddSingleton(gameData);
 builder.Services.AddSingleton(new MonsterSprites(
     ResolveRepoSubdir(Path.Combine("RebuildClient", "Assets", "StreamingAssets", "ClientConfigGenerated")),
-    ResolveRepoSubdir(Path.Combine("RebuildClient", "Assets", "Sprites", "Imported", "Monsters"))));
+    ResolveRepoSubdir(Path.Combine("RebuildClient", "Assets", "Sprites", "Imported", "Monsters")),
+    Path.Combine(ResolveRepoSubdir(Path.Combine("RebuildClient", "Assets", "StreamingAssets", "ClientConfig")), "headdata.json"),
+    ResolveRepoSubdir(Path.Combine("RebuildClient", "Assets", "Sprites", "Imported", "Characters"))));
 
 // Persistent registry of (account, password, character) tuples — populated when a bot enters the world, so
 // the UI and MCP can later "reconnect" to a previously-used character without remembering credentials.
@@ -104,6 +106,11 @@ var sharedIcons = File.Exists(sharedIconsFile)
 MapRepoPngs("/minimap/{name}.png", Path.Combine("RebuildClient", "Assets", "Maps", "minimap"), new Dictionary<string, string>());
 MapRepoPngs("/icons/{name}.png", Path.Combine("RebuildClient", "Assets", "Sprites", "Imported", "Icons", "Sprites"), sharedIcons);
 MapRepoPngs("/monster-atlas/{name}.png", Path.Combine("RebuildClient", "Assets", "Sprites", "Imported", "Monsters", "Atlas"), new Dictionary<string, string>());
+// Player head atlas by appearance (the sprite files have Korean names, so they're looked up rather than named).
+app.MapGet("/player-head/{gender}/{head:int}/{color:int}.png", (string gender, int head, int color, MonsterSprites sprites) =>
+    sprites.GetHead(gender == "m", head, color) is { } f && File.Exists(sprites.HeadAtlasPath(gender == "m", f))
+        ? Results.File(sprites.HeadAtlasPath(gender == "m", f), "image/png")
+        : Results.NotFound());
 // Monster sprite actions (parsed once per species from the Unity .asset) for the minimap's animated sprites.
 app.MapGet("/monster-anim/{name}", (string name, MonsterSprites sprites) =>
     sprites.GetAnim(name) is { } anim ? Results.Json(anim) : Results.NotFound());

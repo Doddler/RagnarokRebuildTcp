@@ -47,6 +47,9 @@ public sealed class SelfState
     public int BaseExp;
     public int Kills;
     public int JobId; // current job/class id (captured from the self spawn; not in UpdatePlayerData)
+    // Appearance from the self spawn (dashboard head portrait).
+    public bool IsMale = true;
+    public int HeadType, HairColor;
 
     public int Level => Data.GetValueOrDefault(PlayerStat.Level);
     public int JobLevel => Data.GetValueOrDefault(PlayerStat.JobLevel);

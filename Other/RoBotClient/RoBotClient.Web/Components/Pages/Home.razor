@@ -1,6 +1,7 @@
 @page "/"
 @inherits LiveComponent
 @inject BotManager Bots
+@inject RoBotClient.Web.MonsterSprites Sprites
 
 <PageTitle>Dashboard - RagBot Control</PageTitle>
 
@@ -88,6 +89,11 @@ else
                     var id = bot.Id;
                     <tr>
                         <td class="text-nowrap">
+                            @if (Bots.GetSession(id)?.WithState(w => (w.Self.IsMale, w.Self.HeadType, w.Self.HairColor)) is var (male, head, hair)
+                                 && Sprites.GetHead(male, head, hair) is { } hf)
+                            {
+                                <div class="mx-auto" style="width:@(hf.Width)px;height:@(hf.Height)px;background:url('player-head/@(male ? "m" : "f")/@head/@(hair).png') -@(hf.X)px -@(hf.Top)px no-repeat"></div>
+                            }
                             <a href="@($"/bot/{id}")" class="fw-semibold text-decoration-none">
                                 @(string.IsNullOrEmpty(bot.CharacterName) ? id : bot.CharacterName)
                             </a>
