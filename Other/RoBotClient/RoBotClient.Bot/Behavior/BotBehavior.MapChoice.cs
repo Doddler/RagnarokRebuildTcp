@@ -46,6 +46,7 @@ public sealed class BotMemory
     public Dictionary<string, List<DateTime>> MapDeaths { get; set; } = new();
     public Dictionary<string, List<DateTime>> MapFlees { get; set; } = new();
     public Dictionary<int, DateTime> AvoidClasses { get; set; } = new();
+    public Dictionary<string, double> MapLayout { get; set; } = new();
     public string KillSplitMap { get; set; } = "";
     public List<ActivityTime> KillSplits { get; set; } = new();
     public StayLog? Stay { get; set; }
@@ -81,6 +82,10 @@ public readonly record struct ActivityTime(double Fight, double Search, double R
 public sealed partial class BotBehavior
 {
     private const double MoveFactor = 1.25;
+    // Maps the bot never hunted (no layout factor yet) are ranked this much higher, so an untried map that models even with
+    // the current one clears the MoveFactor bar. Tried maps are predicted from their own layout factor, no bonus, so two known
+    // maps still need 1.25x to swap (no ping-pong).
+    private const double ExploreBonus = 1.25;
     private const double MeasureSeconds = 180;        // hunting time on a map before its real exp/h counts
     private const double StayHorizonSeconds = 1800;  // travel time is spread over a ~30 min stay
     private const double SecondsPerHop = 40;          // ponytail: flat per-map walk estimate; use route cell length if it misleads
@@ -94,7 +99,10 @@ public sealed partial class BotBehavior
     // Re-fit 11-17 on the current model (11 moves with >= 5 kills): median 0.71. The home map's own estimate now lands within
     // 10% (Bot2 mjolnir_09 47k vs 51k, Bot4 pay_fild07 17k vs 18k), and the worst misses (0.13, 0.22) were crowded maps the
     // slow-threat rule now skips. At 0.37 a map had to model 3.4x the current one to win, so bots sat on Rockers for hours.
-    public const double CandidateRealization = 0.7;
+    // Re-fit 11-18 (bot-map-audit, the 9 moves made at 0.7 with >= 5 kills, actual / model before realization): median 1.13,
+    // IQR 0.82-1.50. At 0.7 new maps earned 1.6x what they were credited, so a map the bot already measured nearly always won
+    // and bots cycled mjolnir_09 / anthell01. 1.0 stays under the median to leave room for the winner's curse.
+    public const double CandidateRealization = 1.0;
     /// <summary>Raised on every map move with its prediction breakdown, so the manager can persist it for auditing.</summary>
     public event Action<MapMoveAudit>? OnMapMove;
 
@@ -234,6 +242,7 @@ public sealed partial class BotBehavior
                 MapDeaths = _mapDeaths.ToDictionary(kv => kv.Key, kv => kv.Value.ToList()),
                 MapFlees = _mapFlees.ToDictionary(kv => kv.Key, kv => kv.Value.ToList()),
                 AvoidClasses = new(_avoidClasses),
+                MapLayout = new(_mapLayout),
                 KillSplitMap = _killSplitMap,
                 KillSplits = _killSplits.ToList(),
                 Stay = new StayLog { Map = _stay.Map, Seconds = new(_stay.Seconds), Kills = _stay.Kills, Targets = _stay.Targets,
@@ -251,6 +260,7 @@ public sealed partial class BotBehavior
         foreach (var (map, times) in memory.MapDeaths) _mapDeaths[map] = times.ToList();
         foreach (var (map, times) in memory.MapFlees) _mapFlees[map] = times.ToList();
         foreach (var (cls, until) in memory.AvoidClasses) if (until > now) _avoidClasses[cls] = until;
+        foreach (var (map, factor) in memory.MapLayout ?? new()) _mapLayout[map] = factor;
         _killSplitMap = memory.KillSplitMap ?? "";
         lock (_killSplits) { _killSplits.Clear(); _killSplits.AddRange(memory.KillSplits); }
         if (memory.Stay != null) _stay = memory.Stay;
@@ -277,6 +287,11 @@ public sealed partial class BotBehavior
     private readonly Dictionary<string, List<DateTime>> _mapDeaths = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, DateTime> _mapBannedUntil = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, int> _mapBanCount = new(StringComparer.OrdinalIgnoreCase);
+    // Per map: measured search seconds per kill / modeled. Search is layout (where spawns sit, walls, dead ends), which doesn't
+    // change with level, so it carries to later visits; the model already rescales it for how many monsters are huntable now.
+    // Fight/recover come from the simulator at the current level, flee from which monsters it still loses to.
+    // ponytail: last measurement wins; average stays if one unlucky stay misleads.
+    private readonly Dictionary<string, double> _mapLayout = new(StringComparer.OrdinalIgnoreCase);
 
     // Only maps the bot really died or fled on get banned, and each repeat ban doubles: 30min, 1h, 2h, 4h, 8h. Bot5 (Lv 23)
     // cycled six mjolnir maps for a day on flat 30 min bans, every ban expired by the time the rotation came back around.
@@ -387,11 +402,12 @@ public sealed partial class BotBehavior
         var factors = split ? new ActivityTime(Factor(measuredPerKill.Fight, homeEstimateEntry!.PerKill.Fight),
             Factor(measuredPerKill.Search, homeEstimateEntry.PerKill.Search), Factor(measuredPerKill.Recover, homeEstimateEntry.PerKill.Recover), 0) : default;
         var overheadPerKill = split ? homeOther / homeKills : 0;
-        ActivityTime Predict(MapEstimate estimate) => new(estimate.PerKill.Fight * factors.Fight, estimate.PerKill.Search * factors.Search,
+        ActivityTime Predict(string map, MapEstimate estimate) => new(estimate.PerKill.Fight * factors.Fight,
+            estimate.PerKill.Search * _mapLayout.GetValueOrDefault(map, factors.Search),
             estimate.PerKill.Recover * factors.Recover, 0);
-        double PredictRate(MapEstimate estimate)
+        double PredictRate(string map, MapEstimate estimate)
         {
-            var seconds = Predict(estimate).Total + overheadPerKill;
+            var seconds = Predict(map, estimate).Total + overheadPerKill;
             return seconds > 0 ? Math.Min(estimate.ExpPerKill / seconds, estimate.SupplyPerSecond) * 3600 : 0;
         }
 
@@ -410,12 +426,14 @@ public sealed partial class BotBehavior
             var (seconds, exp, mapKills, mapTime, mapOther) = measurements.GetValueOrDefault(map);
             var measured = isHome ? homeMeasured : seconds >= MeasureSeconds;
             var realization = isHome ? 1 : CandidateRealization;
-            var modeledRate = (split ? PredictRate(estimate) : estimate.Rate * calibration) * realization;
+            if (measured && mapKills >= 5 && mapTime.Search > 0 && estimate.PerKill.Search > 0.1)
+                _mapLayout[map] = Math.Clamp(mapTime.Per(mapKills).Search / estimate.PerKill.Search, 0.2, 5);
+            var modeledRate = (split ? PredictRate(map, estimate) : estimate.Rate * calibration) * realization;
             var rate = isHome && homeMeasured ? homeRate : measured ? exp / seconds * 3600 : modeledRate;
             var note = _mapBannedUntil.GetValueOrDefault(map) > now ? "avoiding: died or fled too often here"
                 : riskyRoute.TryGetValue(map, out var risk) ? risk : estimate.Note;
-            var perKill = isHome ? measuredPerKill : split ? Predict(estimate) : estimate.PerKill; // current map: measured only ("—" until then)
-            var expectedPerKill = split ? Predict(estimate) : estimate.PerKill;
+            var perKill = isHome ? measuredPerKill : split ? Predict(map, estimate) : estimate.PerKill; // current map: measured only ("—" until then)
+            var expectedPerKill = split ? Predict(map, estimate) : estimate.PerKill;
             var modeledSeconds = expectedPerKill.Total;
             options.Add(new MapOption(map, _data!.MapName(map), rate, measured, hops, note, estimate.Monsters, PerKill: perKill,
                 ExpPerKill: estimate.ExpPerKill, HuntSecondsPerKill: modeledSeconds,
@@ -429,7 +447,7 @@ public sealed partial class BotBehavior
         var banned = _mapBannedUntil.GetValueOrDefault(home) > now;
         // Away from the hunting map (respawned at the save point, back from shopping): is the way back still safe?
         var homeRiskyStop = string.Equals(snap.Map, home, StringComparison.OrdinalIgnoreCase) ? null : HopsTo(snap, home).RiskyStop;
-        double Effective(MapOption option) => option.ExpPerHour * Math.Max(0, StayHorizonSeconds - option.Hops * SecondsPerHop) / StayHorizonSeconds;
+        double Effective(MapOption option) => option.ExpPerHour * (_mapLayout.ContainsKey(option.Map) ? 1 : ExploreBonus) * Math.Max(0, StayHorizonSeconds - option.Hops * SecondsPerHop) / StayHorizonSeconds;
         // Trapped: every way out crosses a map it loses on (Bot1 took the one-way Kafra to Yuno; at Lv 31 every exit field
         // but yuno_fild04 is deadly). Dying costs no exp on this server and respawns at the save point, so go anyway:
         // it either gets through or lands outside the trap.
@@ -459,7 +477,7 @@ public sealed partial class BotBehavior
         }
         if (best == null) { MapDecision = $"Staying on {home}. Reason: no other reachable map is safe at Lv {snap.SelfLevel}."; return; }
         var ratio = currentRate > 0 ? Effective(best) / currentRate : double.PositiveInfinity;
-        var bestText = $"{best.Map} {(best.Measured ? "measured" : "estimated")} {best.ExpPerHour:N0} exp/h, {best.Hops} map(s) away"
+        var bestText = $"{best.Map} {(best.Measured ? "measured" : _mapLayout.ContainsKey(best.Map) ? "re-estimated" : "estimated")} {best.ExpPerHour:N0} exp/h{(best.Measured || _mapLayout.ContainsKey(best.Map) ? "" : $" (untried, ×{ExploreBonus} to explore)")}, {best.Hops} map(s) away"
                        + (_mapEstimates.GetValueOrDefault(best.Map)?.Zone != null ? $" ({_mapEstimates[best.Map].Note})" : "")
                        + (trapped && riskyRoute.TryGetValue(best.Map, out var trapNote) ? $"; trapped, every way out is risky ({trapNote}), going anyway: a death only respawns it at the save point, no exp lost" : "");
         if (_retreatReason != null || banned) reason = $"{_retreatReason ?? $"avoiding {home}"}; {bestText}";
