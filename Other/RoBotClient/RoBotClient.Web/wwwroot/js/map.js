@@ -35,7 +35,8 @@ function stateOf(canvas) {
         glides: new Map(),    // "b:name" / "m:id" -> { x, y, seen }   drawn position, eased toward the server cell
         trails: new Map(),    // monster id -> { delayed, target, accel, moving, seen }   HP bar damage trail
         plates: new Map(),    // bot name -> name-plate opacity
-        lastHp: new Map(),    // monster id -> hp at the previous frame (a drop spawns damage numbers)
+        lastHp: new Map(),    // monster id / "b:name" -> hp at the previous frame (a drop spawns damage numbers)
+        lastMiss: new Map(),  // monster id / "b:name" -> misses taken so far (a rise spawns "Miss")
         numbers: [],          // flying damage numbers
         payloadAt: 0,         // performance.now() when the latest payload arrived (its atk/hit ages are as of then)
         deadAt: new Map(),    // monster id -> when it was first seen dead (the death animation plays from there)
@@ -98,7 +99,7 @@ function render(canvas, s, payload, now) {
     bots.forEach(b => drawBot(v, s, b, mobs));
     mobs.forEach(m => drawHpBar(v, s, m)); // over the name plates
     bots.forEach(b => b.shout && drawShout(v, b.shout, v.toX(b.x), v.toY(b.y) - v.r));
-    spawnDamageNumbers(s, mobs, bots, now);
+    spawnDamageNumbers(v, s, mobs, bots, now);
     drawDamageNumbers(v, s, mobs);
     drawLegend(v, payload, bots);
     if (payload.toast) drawToast(v, payload.toast);
@@ -597,6 +598,15 @@ const COMBO_PATH = {
     scale: 2, // minimap: settles at ~3x, above any (capped) white hit
 };
 const HIT_INTERVAL_MS = 200;
+// MissPath.asset: rises straight up at constant size, holds, then fades over 1.5 s.
+const MISS_PATH = {
+    trajectory: [[-0.0012550354, -0.0013427734, 1.0056698, 1.0056698], [1.0009416, 1.0065361, 1.0056698, 1.0056698]],
+    size: [[0, 1, 0, 0], [1, 1, 0, 0]],
+    alpha: [[0, 1, 0.009446392, 0.009446392], [0.4999364, 1.0047226, 0.009446392, -0.42355192], [1.0024122, -0.0012597442, -4.6746316, -4.6746316]],
+    tween: 1.5, height: 5, distance: 0, color: "#ffffff", scale: 1.5,
+};
+// ServerControllable: damage and misses on a player (an ally) are red.
+const RED = "#ff3b3b";
 
 /** Unity's AnimationCurve.Evaluate: cubic Hermite between keys, clamped at the ends. */
 function evalCurve(keys, t) {
@@ -621,7 +631,21 @@ function nearestBot(bots, m) {
 
 /** A dueled monster's HP dropped since last frame: one white number per hit (0.2 s apart), flying away from the
  *  nearest bot (the attacker), plus the yellow running total on multi-hits. */
-function spawnDamageNumbers(s, mobs, bots, now) {
+function spawnDamageNumbers(v, s, mobs, bots, now) {
+    const missed = (key, count, x, y, color) => {
+        const before = s.lastMiss.get(key);
+        s.lastMiss.set(key, count || 0);
+        if (before != null && count > before) s.numbers.push({ path: MISS_PATH, value: "Miss", x, y, born: now, color });
+    };
+    for (const { m, x, barY } of mobs) missed(m.id, m.misses, x, barY - 6);
+    for (const b of bots) {
+        const key = "b:" + b.name, x = v.toX(b.x), y = v.toY(b.y) - v.r - 6;
+        missed(key, b.misses, x, y, RED);
+        const before = s.lastHp.get(key);
+        s.lastHp.set(key, b.hp);
+        if (before != null && b.hp < before) // ponytail: one number per HP drop; regen ticks between hits can net them
+            s.numbers.push({ path: DAMAGE_PATH, value: before - b.hp, x, y, dir: Math.random() < 0.5 ? -1 : 1, born: now, color: RED });
+    }
     for (const { m, x, barY } of mobs) {
         if (m.hp == null) continue;
         const before = s.lastHp.get(m.id);
@@ -671,7 +695,7 @@ function drawNumber(v, n, life) {
     ctx.lineWidth = Math.max(2, 2.5 * size);
     ctx.strokeStyle = "#000000";
     ctx.strokeText(String(n.value), x, y);
-    ctx.fillStyle = P.color;
+    ctx.fillStyle = n.color || P.color;
     ctx.fillText(String(n.value), x, y);
 }
 

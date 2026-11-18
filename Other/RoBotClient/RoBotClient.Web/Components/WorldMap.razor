@@ -125,6 +125,7 @@
             target = Bots.GetBehavior(s.Id)?.WanderTarget is { } goal ? new { x = goal.X, y = goal.Y } : null,
             hp = s.Hp, maxHp = s.MaxHp, sp = s.Sp, maxSp = s.MaxSp,
             shout = Shout(s.Id),
+            misses = Bots.GetSession(s.Id)?.WithState(w => w.Entities.TryGetValue(w.Self.EntityId, out var me) ? me.Misses : 0) ?? 0,
         }).ToList();
         _rows = here.Select(s =>
         {
@@ -174,7 +175,7 @@
             dead = kv.Value.E.State == RebuildSharedData.Enum.CharacterState.Dead,
             dir = (int)kv.Value.E.Facing,
             cell = kv.Value.E.MoveCellTime, // seconds per cell: the walk cycle advances with distance, as in Unity
-            atk = AgeMs(kv.Value.E.LastAttackAt), hit = AgeMs(kv.Value.E.LastHitAt),
+            atk = AgeMs(kv.Value.E.LastAttackAt), hit = AgeMs(kv.Value.E.LastHitAt), misses = kv.Value.E.Misses,
         }).ToList();
         var items = drops.Values.Select(g => new
         {
