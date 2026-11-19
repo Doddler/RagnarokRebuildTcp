@@ -1,0 +1,222 @@
+@page "/"
+@inherits LiveComponent
+@inject BotManager Bots
+@inject RoBotClient.Web.MonsterSprites Sprites
+
+<PageTitle>Dashboard - RagBot Control</PageTitle>
+
+@{
+    var snapshots = Bots.GetSnapshots();
+}
+
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+    <div class="d-flex align-items-center gap-2">
+        <h1 class="h3 mb-0">Bots</h1>
+        <span class="badge bg-secondary rounded-pill fs-6">@snapshots.Count</span>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+        <a class="btn btn-success" href="/controls">
+            <span class="me-1">+</span> Spawn a bot
+        </a>
+        <button class="btn btn-outline-danger" disabled="@(snapshots.Count == 0)" @onclick="StopAll">
+            Stop All
+        </button>
+    </div>
+</div>
+
+@if (snapshots.Count == 0)
+{
+    <div class="card text-center py-5">
+        <div class="card-body">
+            <h2 class="h5 text-muted">No bots running</h2>
+            @{
+                // Most recently played first; "last session" = everyone who gained exp within 10 min of the latest one.
+                var stored = (Bots.Accounts?.List() ?? []).SelectMany(a => a.Characters).Distinct(StringComparer.OrdinalIgnoreCase)
+                    .Select(c => (Name: c, Last: Bots.Progress?.LastPlayedUtc(c))).OrderByDescending(c => c.Last).ThenBy(c => c.Name).ToList();
+                var newest = stored.Count > 0 ? stored[0].Last : null;
+                var lastSession = newest == null ? [] : stored.Where(c => c.Last >= newest.Value.AddMinutes(-10)).Select(c => c.Name).ToList();
+            }
+            @if (stored.Count > 0)
+            {
+                <p class="text-muted mb-3">Respawn a stored character (it keeps its saved settings), or spawn a new one.</p>
+                <div class="d-flex flex-wrap justify-content-center gap-2 mb-3">
+                    @foreach (var c in stored)
+                    {
+                        <button class="btn btn-sm @(lastSession.Contains(c.Name) ? "btn-outline-primary" : "btn-outline-secondary")"
+                                title="@(c.Last is { } t ? $"Last gained exp {t.ToLocalTime():g}" : "No exp recorded")" @onclick="() => Respawn(c.Name)">@c.Name</button>
+                    }
+                </div>
+                @if (lastSession.Count > 0)
+                {
+                    <button class="btn btn-primary" @onclick="() => { foreach (var c in lastSession) Respawn(c); }">Respawn last session (@lastSession.Count)</button>
+                }
+                <a class="btn btn-outline-secondary ms-2" href="/controls">Spawn a new bot</a>
+                @if (_respawnError != null) { <div class="text-danger small mt-2">@_respawnError</div> }
+            }
+            else
+            {
+                <p class="text-muted mb-3">Spawn a bot to start hunting.</p>
+                <a class="btn btn-primary" href="/controls">Go to Controls</a>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-sm table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>Character</th>
+                    <th>Map / Pos</th>
+                    <th class="text-nowrap">Lv</th>
+                    <th class="text-nowrap">Build</th>
+                    <th class="text-nowrap">Desired job</th>
+                    <th style="min-width: 140px;">HP / SP</th>
+                    <th>Activity</th>
+                    <th>Target</th>
+                    <th class="text-end">Kills</th>
+                    <th class="text-end text-nowrap">Base Exp</th>
+                    <th class="text-end" title="Base exp over the last 15 min of playtime, per hour">Exp/h</th>
+                    <th class="text-end text-nowrap">Zeny</th>
+                    <th class="text-end text-nowrap">Mobs</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bot in snapshots)
+                {
+                    var id = bot.Id;
+                    <tr>
+                        <td class="text-nowrap">
+                            @if (Bots.GetSession(id)?.WithState(w => (w.Self.IsMale, w.Self.JobId, w.Self.HeadType, w.Self.HairColor)) is var (male, job, head, hair)
+                                 && Sprites.GetPortrait(male, job, head, hair) is { } pt)
+                            {
+                                @* Bust only (head + shoulders): the head is the last part; full-body rows were ~100px tall. *@
+                                <div class="mx-auto position-relative overflow-hidden" style="width:@(pt.Width)px;height:@(Math.Min(pt.Height, pt.Parts[^1].Top + pt.Parts[^1].Height + 20))px">
+                                    @foreach (var part in pt.Parts)
+                                    {
+                                        <div class="position-absolute" style="left:@(part.Left)px;top:@(part.Top)px;width:@(part.Width)px;height:@(part.Height)px;background:url('@part.Url') -@(part.SrcX)px -@(part.SrcY)px no-repeat@(part.Mirror ? ";transform:scaleX(-1)" : "")"></div>
+                                    }
+                                </div>
+                            }
+                            <a href="@($"/bot/{id}")" class="fw-semibold text-decoration-none">
+                                @(string.IsNullOrEmpty(bot.CharacterName) ? id : bot.CharacterName)
+                            </a>
+                            @if (!bot.InGame)
+                            {
+                                <span class="badge bg-warning text-dark ms-1">connecting</span>
+                            }
+                        </td>
+                        <td class="text-nowrap">
+                            <div>@(string.IsNullOrEmpty(bot.MapDisplayName) ? bot.Map : bot.MapDisplayName)</div>
+                            <div class="small text-muted font-monospace">(@bot.X, @bot.Y)</div>
+                        </td>
+                        <td class="text-nowrap">Lv @bot.Level/@bot.JobLevel</td>
+                        <td class="text-nowrap">@(Bots.GetBehaviorConfig(bot.Id)?.BuildName is { Length: > 0 } bn ? bn : "—")</td>
+                        <td class="text-nowrap">@DesiredJob(bot.Id)</td>
+                        <td>
+                            <div class="progress position-relative" role="progressbar" style="height: 18px;"
+                                 aria-valuenow="@bot.Hp" aria-valuemin="0" aria-valuemax="@bot.MaxHp">
+                                <div class="progress-bar @HpBarClass(bot.HpPercent)"
+                                     style="width: @PercentWidth(bot.HpPercent)"></div>
+                                <span class="position-absolute w-100 text-center small text-body fw-semibold">
+                                    @bot.Hp/@bot.MaxHp
+                                </span>
+                            </div>
+                            <div class="progress position-relative mt-1" role="progressbar" style="height: 18px;"
+                                 aria-valuenow="@bot.Sp" aria-valuemin="0" aria-valuemax="@bot.MaxSp">
+                                <div class="progress-bar bg-info"
+                                     style="width: @PercentWidth(bot.SpPercent)"></div>
+                                <span class="position-absolute w-100 text-center small text-body fw-semibold">
+                                    @bot.Sp/@bot.MaxSp
+                                </span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge @ModeBadgeClass(bot.Mode)">@bot.Mode</span>
+                            <div class="small text-muted text-nowrap">@(Bots.GetBehavior(bot.Id)?.Activity)</div>
+                        </td>
+                        <td class="text-nowrap">
+                            @if (string.IsNullOrEmpty(bot.TargetName))
+                            {
+                                <span class="text-muted">-</span>
+                            }
+                            else
+                            {
+                                @bot.TargetName
+                            }
+                        </td>
+                        <td class="text-end text-nowrap">@(Bots.GetSession(id)?.Telemetry.Count(TelemetryEventType.Kill) ?? bot.Kills) <span class="small text-muted">(@bot.Kills)</span></td>
+                        <td class="text-end">@bot.BaseExp.ToString("N0")</td>
+                        <td class="text-end">@(Bots.Progress?.ExpPerHour(bot.CharacterName) is { } eph ? eph.ToString("N0") : "—")</td>
+                        <td class="text-end text-nowrap">@bot.Zeny.ToString("N0")z</td>
+                        <td class="text-end">@bot.MonstersInView</td>
+                        <td class="text-end">
+                            <button class="btn btn-sm btn-outline-danger" @onclick="() => StopBot(id)">Stop</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex flex-wrap gap-3 mt-4">
+        @foreach (var map in snapshots.Where(s => s.InGame && !string.IsNullOrEmpty(s.Map)).Select(s => s.Map).Distinct())
+        {
+            <div class="card" @key="map">
+                <div class="card-body p-2">
+                    <WorldMap MapCode="@map" />
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private void StopAll() => Bots.StopAll();
+
+    // Desired job plus a short status, same rules as the bot page's Build card.
+    private RenderFragment DesiredJob(string id)
+    {
+        var desired = Bots.GetBehaviorConfig(id)?.DesiredJobId ?? 0;
+        var job = Bots.GetSession(id)?.WithState(w => w.Self.JobId) ?? 0;
+        var status = desired == 0 ? "" : desired == job ? "reached" : job != 0 ? "ignored" : "";
+        return @<span>@(desired == 0 ? "—" : BotBehavior.JobName(desired))@if (status != "") {<span class="small text-muted ms-1">@status</span>}</span>;
+    }
+
+    private string? _respawnError;
+
+    // Saved behavior (hunt map, filters…) is rehydrated over this by SpawnBot; prt_fild08 is the same default spawn_bot uses.
+    private void Respawn(string character)
+    {
+        try { _respawnError = Bots.SpawnExistingBot(new BotBehaviorConfig { HomeMap = "prt_fild08" }, character) == null ? $"No stored account for {character}." : null; }
+        catch (Exception e) { _respawnError = $"{character}: {e.Message}"; }
+    }
+
+    private void StopBot(string id) => Bots.StopBot(id);
+
+    private static string PercentWidth(double percent)
+    {
+        var clamped = Math.Clamp(percent, 0d, 1d) * 100d;
+        return $"{clamped.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture)}%";
+    }
+
+    private static string HpBarClass(double percent) => percent switch
+    {
+        <= 0.25 => "bg-danger",
+        <= 0.5 => "bg-warning",
+        _ => "bg-success"
+    };
+
+    private static string ModeBadgeClass(string mode) => mode switch
+    {
+        "Hunting" => "bg-success",
+        "Fleeing" or "Dead" => "bg-danger",
+        "Traveling" => "bg-primary",
+        "Following" => "bg-primary",
+        "Resting" => "bg-info",
+        "Idle" => "bg-secondary",
+        _ => "bg-secondary"
+    };
+}

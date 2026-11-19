@@ -1,0 +1,162 @@
+[
+  {
+    "Account": "bot_01",
+    "Password": "botbot01",
+    "Characters": [
+      "BotZero",
+      "[BOT] BotZero",
+      "[BOT] Bot1"
+    ]
+  },
+  {
+    "Account": "bot_02",
+    "Password": "botbot01",
+    "Characters": [
+      "[BOT] Bot2",
+      "[BOT] Arya",
+      "[BOT] Nyx"
+    ]
+  },
+  {
+    "Account": "bot_03",
+    "Password": "botbot01",
+    "Characters": [
+      "[BOT] Bot3",
+      "[BOT] Filcher",
+      "[BOT] Sera"
+    ]
+  },
+  {
+    "Account": "bot_04",
+    "Password": "botbot01",
+    "Characters": [
+      "[BOT] Bot4",
+      "[BOT] Iris",
+      "[BOT] Astrid"
+    ]
+  },
+  {
+    "Account": "bot_05",
+    "Password": "botbot01",
+    "Characters": [
+      "[BOT] Bot5",
+      "[BOT] Hawke"
+    ]
+  },
+  {
+    "Account": "bot_06",
+    "Password": "botbot01",
+    "Characters": [
+      "[BOT] Bot6",
+      "[BOT] Mira"
+    ]
+  },
+  {
+    "Account": "bot_07",
+    "Password": "botbot01",
+    "Characters": [
+      "[BOT] Bot7",
+      "[BOT] Bran",
+      "[BOT] [BOT] Valdric"
+    ]
+  },
+  {
+    "Account": "bot_08",
+    "Password": "botbot01",
+    "Characters": [
+      "[BOT] Bot8",
+      "[BOT] Cael",
+      "[BOT] [BOT] Sylvara"
+    ]
+  },
+  {
+    "Account": "bot_09",
+    "Password": "botbot01",
+    "Characters": [
+      "[BOT] Bot9",
+      "[BOT] Selene",
+      "[BOT] [BOT] Pyrion"
+    ]
+  },
+  {
+    "Account": "bot_10",
+    "Password": "botbot01",
+    "Characters": [
+      "[BOT] Bot10",
+      "[BOT] [BOT] Lumina"
+    ]
+  },
+  {
+    "Account": "bot_11",
+    "Password": "botbot01",
+    "Characters": [
+      "[BOT] Bot11",
+      "[BOT] [BOT] Shivkin"
+    ]
+  },
+  {
+    "Account": "bot_12",
+    "Password": "botbot01",
+    "Characters": [
+      "[BOT] Bot12",
+      "[BOT] [BOT] Coinwhisper"
+    ]
+  },
+  {
+    "Account": "bot_13",
+    "Password": "botbot01",
+    "Characters": [
+      "[BOT] Bot13"
+    ]
+  },
+  {
+    "Account": "bot_14",
+    "Password": "botbot01",
+    "Characters": [
+      "[BOT] Bot14",
+      "[BOT] xXx-L0n3-W0lf-xXx"
+    ]
+  },
+  {
+    "Account": "bot_15",
+    "Password": "botbot01",
+    "Characters": [
+      "[BOT] Bot15"
+    ]
+  },
+  {
+    "Account": "bot_16",
+    "Password": "botbot01",
+    "Characters": [
+      "[BOT] Bot16"
+    ]
+  },
+  {
+    "Account": "bot_17",
+    "Password": "botbot01",
+    "Characters": [
+      "[BOT] Bot17"
+    ]
+  },
+  {
+    "Account": "bot_18",
+    "Password": "botbot01",
+    "Characters": [
+      "[BOT] Bot18"
+    ]
+  },
+  {
+    "Account": "bot_19",
+    "Password": "botbot01",
+    "Characters": [
+      "[BOT] Bot19"
+    ]
+  },
+  {
+    "Account": "bot_20",
+    "Password": "botbot01",
+    "Characters": [
+      "[BOT] Bot20"
+    ]
+  }
+]

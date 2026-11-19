@@ -53,6 +53,19 @@ namespace Assets.Scripts.UI.TitleScreen
 #if !UNITY_EDITOR
             ServerInputBox.text = PlayerPrefs.GetString($"ConnectServer", "ws://127.0.0.1:5000/ws");
 #endif
+            // Bot dashboard Watch tab: a WebGL page opened as ...?watch=BotName logs straight in to the dashboard that
+            // served it, which mirrors that bot's packets (RoBotClient.Web/Features/Watch).
+            if (TryGetWatchTarget(out var watchServer, out var watchBot))
+            {
+                ServerInputBox.text = watchServer;
+                UsernameBox.text = watchBot;
+                PasswordBox.text = "watch";
+                RememberLoginToggle.isOn = false;
+                yield return null;
+                AttemptLogin();
+                yield break;
+            }
+
             UsernameBox.text = PlayerPrefs.GetString("LoginUsername", "");
             if (!string.IsNullOrWhiteSpace(GameConfig.Data?.SavedLoginToken) && !string.IsNullOrWhiteSpace(UsernameBox.text) && UsernameBox.text != "ID")
             {
@@ -62,6 +75,21 @@ namespace Assets.Scripts.UI.TitleScreen
 
             yield return new WaitForSeconds(0.1f);
             EventSystem.current.SetSelectedGameObject(UsernameBox.gameObject);
+        }
+
+        private static bool TryGetWatchTarget(out string server, out string bot)
+        {
+            server = bot = null;
+            if (string.IsNullOrEmpty(Application.absoluteURL))
+                return false;
+            var uri = new System.Uri(Application.absoluteURL);
+            foreach (var pair in uri.Query.TrimStart('?').Split('&'))
+                if (pair.StartsWith("watch="))
+                    bot = System.Uri.UnescapeDataString(pair.Substring(6));
+            if (string.IsNullOrWhiteSpace(bot))
+                return false;
+            server = $"{(uri.Scheme == "https" ? "wss" : "ws")}://{uri.Authority}/spectate";
+            return true;
         }
 
         public void ReturnFocus()

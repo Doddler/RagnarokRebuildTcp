@@ -1,0 +1,30 @@
+@using RoBotClient.Bot.Manager
+
+<select class="form-select form-select-sm" value="@Value" @onchange="OnChanged">
+    <option value="">(none)</option>
+    @foreach (var s in _snaps)
+    {
+        <option value="@s.Id">@s.Id — @s.CharacterName (@s.Map @s.X,@s.Y · @s.Mode)</option>
+    }
+</select>
+
+@code {
+    [Parameter] public string Value { get; set; } = "";
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+    [Parameter] public BotManager Bots { get; set; } = default!;
+
+    private List<BotSnapshot> _snaps = new();
+
+    protected override void OnParametersSet()
+    {
+        // Live read — the dropdown always shows the current set of running bots.
+        _snaps = Bots.GetSnapshots();
+    }
+
+    private async Task OnChanged(ChangeEventArgs e)
+    {
+        var v = e.Value as string ?? "";
+        Value = v;
+        await ValueChanged.InvokeAsync(v);
+    }
+}

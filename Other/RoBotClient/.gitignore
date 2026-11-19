@@ -1,0 +1,16 @@
+# Build output
+bin/
+obj/
+
+# Runtime artifacts
+bot-logs/
+bot-telemetry/
+bot-progress/
+BotBuilds/
+bot-party-state.json
+*.log
+running-bots.json
+bot-map-audit/
+bot-memory.json
+bot-memory.json.tmp
+bot-configs.json

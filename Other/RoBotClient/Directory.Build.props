@@ -1,0 +1,21 @@
+<Project>
+
+  <!-- Shared with every project in this solution. The game's protocol types are consumed as
+       compiled DLLs from the server's build output (same convention as Other/RoWikiGenerator).
+       Build RoRebuildServer (Debug) before building RoBotClient so these DLLs exist. -->
+  <PropertyGroup>
+    <ServerBin>$(MSBuildThisFileDirectory)..\..\RoRebuildServer\RoRebuildServer\bin\Debug\net9.0</ServerBin>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="RebuildSharedData">
+      <HintPath>$(ServerBin)\RebuildSharedData.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="GameConfig">
+      <HintPath>$(ServerBin)\GameConfig.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

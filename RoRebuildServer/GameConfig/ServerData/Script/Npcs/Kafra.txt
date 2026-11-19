@@ -84,7 +84,7 @@ macro KafraTeleportListProntera()
 	Option("Izlude", "Geffen", "Payon", "Morroc", "Orc Dungeon", "Alberta", "Cancel" );
 	switch(Result)
 	{
-		case 0: @TeleportCase("izlude", 91, 105, 600);
+		case 0: @TeleportCase("izlude", 94, 103, 600);
 		case 1: @TeleportCase("geffen", 120, 39, 1200);
 		case 2: @TeleportCase("payon", 161, 58, 1200);
 		case 3: @TeleportCase("morocc", 156, 46, 1200);

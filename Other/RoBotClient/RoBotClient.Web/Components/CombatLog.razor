@@ -1,0 +1,10 @@
+@* Bot combat log card, newest first. Takes the lines (not the bot id) so it re-renders whenever its live parent does. *@
+<div class="card mb-3">
+    <div class="card-header py-2 fw-semibold">Combat Log <span class="text-muted fw-normal small">· newest first</span></div>
+    <div class="card-body p-0">
+        <pre class="mb-0 p-2 bg-dark text-light small" style="height: 16rem; overflow-y: auto;">@if (Lines is { Length: > 0 }) { foreach (var line in Lines.Reverse()) { if (BotManager.IsWarning(line)) { <span class="text-warning fw-semibold">@line</span> } else if (line.Contains("Healing: ")) { <span style="color:#75b798" class="fw-semibold">@line</span> } else if (line.Contains("Damage taken: ")) { <span style="color:#ea868f" class="fw-semibold">@line</span> } else if (line.Contains("Damage dealt: ")) { <span style="color:#6edff6" class="fw-semibold">@line</span> } else if (line.Contains(" Engaging ")) { <span style="color:#6ea8fe">@line</span> } else if (line.Contains(" Duel lost: ")) { <span style="color:#ea868f" class="fw-semibold">@line</span> } else if (line.Contains(" Duel won: ")) { <span style="color:#fd9843" class="fw-semibold">@line</span> } else { @line }@("\n") } } else { @("(no log)") }</pre>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string[]? Lines { get; set; }}

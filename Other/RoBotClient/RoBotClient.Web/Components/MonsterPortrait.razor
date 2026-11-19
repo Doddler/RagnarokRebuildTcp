@@ -1,0 +1,14 @@
+@inject RoBotClient.Web.MonsterSprites Sprites
+
+@* A monster's first sprite frame, cropped from its atlas with CSS and shrunk to fit a badge. *@
+@if (Sprites.Get(Name) is { } f)
+{
+    var zoom = Math.Min(1.0, Size / (double)Math.Max(f.Width, f.Height)).ToString(System.Globalization.CultureInfo.InvariantCulture);
+    <span class="d-inline-block align-middle me-1"
+          style="width:@(f.Width)px;height:@(f.Height)px;zoom:@zoom;background:url('monster-atlas/@(Uri.EscapeDataString(f.AtlasName)).png') -@(f.X)px -@(f.Top)px no-repeat"></span>
+}
+
+@code {
+    [Parameter] public string Name { get; set; } = "";
+    [Parameter] public int Size { get; set; } = 28;
+}

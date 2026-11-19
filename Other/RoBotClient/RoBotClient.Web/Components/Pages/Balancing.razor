@@ -1,0 +1,155 @@
+@page "/balancing"
+@inherits LiveComponent
+@inject BotManager Bots
+
+<PageTitle>Balancing - RagBot Control</PageTitle>
+
+@{
+    if (_rows == null || DateTime.UtcNow - _computed > TimeSpan.FromSeconds(30)) Recompute();
+    var rows = _rows!;
+}
+
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+    <div class="d-flex align-items-center gap-2">
+        <h1 class="h3 mb-0">Map balancing</h1>
+        <span class="badge bg-secondary rounded-pill fs-6">@rows.Count maps</span>
+    </div>
+    <span class="small text-secondary">Every bot's hunting stays, from saved history. Updated @_computed.ToLocalTime().ToString("HH:mm:ss"), every 30 s.</span>
+</div>
+
+@if (rows.Count == 0)
+{
+    <div class="card text-center py-5"><div class="card-body text-muted">No bot has hunted on a map yet.</div></div>
+}
+else
+{
+    <div class="card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-sm table-hover align-middle mb-0" style="font-variant-numeric:tabular-nums">
+                    <thead>
+                        <tr style="vertical-align:top">
+                            <th>Map<div class="small fw-normal" style="color:@Muted;white-space:normal;min-width:7rem">where they hunted</div></th>
+                            <th class="text-end" title="Levels the bots hunted here at (median in the second line)">Level band<div class="small fw-normal" style="color:@Muted;white-space:normal;min-width:7rem">who actually hunts here</div></th>
+                            <th title="Leveling speed here over the other maps hunted at a similar level (median ±@MapBalance.PeerBand). 1× is fair">Exp vs peers<div class="small fw-normal" style="color:@Muted;white-space:normal;min-width:7rem">exp/h compared with other maps at the same level (±5); 1× is fair</div></th>
+                            <th class="text-end" title="How long one level takes here, at the bots' level">Time / level<div class="small fw-normal" style="color:@Muted;white-space:normal;min-width:7rem">how long one level takes here</div></th>
+                            <th class="text-end">Exp/h<div class="small fw-normal" style="color:@Muted;white-space:normal;min-width:7rem">base exp per hour of hunting</div></th>
+                            <th class="text-end" title="NPC sell value of what the bots looted, per hour">Zeny/h<div class="small fw-normal" style="color:@Muted;white-space:normal;min-width:7rem">loot value at NPC price</div></th>
+                            <th class="text-end" title="Median seconds from first hit to the kill">Kill time<div class="small fw-normal" style="color:@Muted;white-space:normal;min-width:7rem">median first hit to kill</div></th>
+                            <th class="text-end" title="Share of hunting time spent looking for a monster. High = too few spawns">Searching<div class="small fw-normal" style="color:@Muted;white-space:normal;min-width:7rem">time spent looking for monsters</div></th>
+                            <th class="text-end" title="Hunting time per death; peers' in the second line">Per death<div class="small fw-normal" style="color:@Muted;white-space:normal;min-width:7rem">hunting time between deaths</div></th>
+                            <th class="text-end" title="Distinct bots · hunting time">Evidence<div class="small fw-normal" style="color:@Muted;white-space:normal;min-width:7rem">how many bots went here, and for how long</div></th>
+                            <th>Verdict<div class="small fw-normal" style="color:@Muted;white-space:normal;min-width:7rem">hover a badge to see why</div></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var r in rows)
+                        {
+                            <tr>
+                                <td class="text-nowrap">
+                                    <div class="d-flex align-items-center">
+                                        <img src="minimap/@(Uri.EscapeDataString(r.Map)).png" alt="" width="40" height="40" class="me-2 rounded" style="object-fit:cover" onerror="this.style.visibility='hidden'" />
+                                        <div><span class="fw-semibold">@r.Map</span><div class="small text-secondary">@MapName(r.Map)</div></div>
+                                    </div>
+                                </td>
+                                <td class="text-end">@(r.MinLevel == r.MaxLevel ? $"Lv {r.MinLevel}" : $"Lv {r.MinLevel}–{r.MaxLevel}")
+                                    @if (r.MinLevel != r.MaxLevel) { <div class="small" style="color:@Muted">median @r.MedianLevel</div> }</td>
+                                <td class="text-nowrap">@PeerBar(r)</td>
+                                <td class="text-end">@(r.MinutesPerLevel is { } mpl ? Minutes(mpl) : "—")</td>
+                                <td class="text-end">@r.ExpPerHour.ToString("N0")</td>
+                                <td class="text-end">@r.ZenyPerHour.ToString("N0")</td>
+                                <td class="text-end">@(r.KillSeconds is { } ks ? $"{ks:0.0} s" : "—")</td>
+                                <td class="text-end">@(r.SearchShare is { } ss ? ss.ToString("P0") : "—")</td>
+                                <td class="text-end">@(r.Deaths == 0 ? "no deaths" : Minutes(60 / r.DeathsPerHour))
+                                    @if (r.PeerDeathsPerHour is { } pd) { <div class="small" style="color:@Muted">peers @(pd > 0 ? Minutes(60 / pd) : "no deaths")</div> }</td>
+                                <td class="text-end text-nowrap">@r.Bots @(r.Bots == 1 ? "bot" : "bots")<div class="small" style="color:@Muted">@Minutes(r.Hours * 60)</div></td>
+                                <td>
+                                    @foreach (var (label, css, why) in Verdicts(r))
+                                    {
+                                        <span class="badge @css me-1" title="@why">@label</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="small mt-2" style="color:@Muted">
+        Peers are the other maps bots hunted at a similar level (median ±@MapBalance.PeerBand), with at least 15 min of hunting between them; no peers shows —.
+        Leveling speed = exp per hour over the exp the bots' level needs, so a slightly lower or higher level on a peer map doesn't skew it.
+        Overpowered: ≥ 1.5× peers without dying more than them. Underpowered: ≤ 0.67× peers. Deadly: dying at least twice as often as peers (or every 20 min with no peers).
+        Underpopulated: ≥ 60% of the time searching. Zeny/h counts loot at NPC price, not what was actually sold.
+    </div>
+}
+
+@code {
+    protected override int RefreshMs => 30_000;
+    private const string Muted = "#c3c2b7";
+    private List<MapBalanceRow>? _rows;
+    private DateTime _computed;
+    private Dictionary<string, int>? _itemValue;
+
+    private void Recompute()
+    {
+        _itemValue ??= Bots.Data.ItemsById.Values
+            .Where(i => i.ItemClass != RebuildSharedData.Enum.ItemClass.Ammo)
+            .GroupBy(i => Bots.Data.ItemName(i.Id), StringComparer.OrdinalIgnoreCase)
+            .ToDictionary(g => g.Key, g => g.First().SellPrice, StringComparer.OrdinalIgnoreCase);
+        var running = Bots.GetSnapshots().ToDictionary(s => s.CharacterName, StringComparer.OrdinalIgnoreCase);
+        var names = (Bots.Accounts?.List() ?? []).SelectMany(a => a.Characters).Concat(running.Keys).Distinct(StringComparer.OrdinalIgnoreCase);
+        var chars = names.Select(n =>
+        {
+            var live = running.TryGetValue(n, out var s) ? Bots.GetSession(s.Id) : null;
+            var events = live?.Telemetry.Snapshot() ?? Bots.TelemetryStore?.Load(n) ?? new List<TelemetryEvent>();
+            return new MapBalance.Character(n, events, Bots.Progress?.Get(n) ?? Array.Empty<ProgressSample>(), s?.InGame == true);
+        });
+        _rows = MapBalance.Compute(chars, Bots.Data.BaseExpToNext, name => _itemValue.GetValueOrDefault(name));
+        _computed = DateTime.UtcNow;
+    }
+
+    // ponytail: fixed thresholds, tune here once more bots have spread across maps.
+    private static IEnumerable<(string, string, string)> Verdicts(MapBalanceRow r)
+    {
+        // Two deaths minimum: one death in a 3-minute visit is a 20/h rate but says nothing.
+        var deadly = r.Deaths >= 2 && (r.PeerDeathsPerHour is { } pd ? r.DeathsPerHour >= 1 && r.DeathsPerHour >= 2 * pd : r.DeathsPerHour >= 3);
+        if (r.PeerRatio >= 1.5 && !deadly)
+            yield return ("▲ Overpowered", "text-bg-warning", $"Levels {r.PeerRatio:0.0}× as fast as {r.PeerMaps} peer map(s) without dying more");
+        if (r.PeerRatio <= 0.67)
+            yield return ("▼ Underpowered", "text-bg-info", $"Levels at {r.PeerRatio:0.00}× the speed of {r.PeerMaps} peer map(s)");
+        if (deadly)
+            yield return ("☠ Deadly", "text-bg-danger", r.PeerDeathsPerHour is { } p
+                ? $"A death every {Minutes(60 / r.DeathsPerHour)} vs every {(p > 0 ? Minutes(60 / p) : "never")} on peers"
+                : $"A death every {Minutes(60 / r.DeathsPerHour)}, no peers to compare");
+        if (r.SearchShare >= 0.6)
+            yield return ("⌕ Underpopulated", "text-bg-secondary", $"{r.SearchShare:P0} of the time spent looking for monsters");
+        if (r.Hours < 0.5 || r.Bots < 2)
+            yield return ("Low sample", "text-bg-dark border", $"{r.Bots} bot(s), {Minutes(r.Hours * 60)}: more visits make this trustworthy");
+    }
+
+    // Ratio on a log scale centred on 1× (fair), clamped to ¼×–4×: blue bar right = faster than peers, red left = slower.
+    private static RenderFragment PeerBar(MapBalanceRow r) => __builder =>
+    {
+        if (r.PeerRatio is not { } ratio)
+        {
+            <span style="color:@Muted" title="No other map hunted at a similar level yet">— no peers</span>
+            return;
+        }
+        const double w = 100, mid = w / 2;
+        var x = mid + Math.Clamp(Math.Log2(ratio) / 2, -1, 1) * (mid - 3);
+        var label = $"{ratio:0.00}× the leveling speed of {r.PeerMaps} peer map(s)";
+        <svg width="@w" height="16" role="img" aria-label="@label" style="vertical-align:middle">
+            <title>@label</title>
+            <line x1="0" x2="@w" y1="8" y2="8" stroke="var(--bs-border-color)" stroke-width="1" />
+            <rect x="@Math.Min(mid, x).ToString("0.#")" y="4" width="@Math.Max(Math.Abs(x - mid), 1).ToString("0.#")" height="8" rx="2"
+                  fill="@(ratio >= 1 ? "#3987e5" : "#e66767")" />
+            <line x1="@mid" x2="@mid" y1="1" y2="15" stroke="#c3c2b7" stroke-width="1" />
+        </svg>
+        <span class="ms-1 fw-semibold">@ratio.ToString("0.00")×</span>
+        <div class="small" style="color:@Muted">vs @r.PeerMaps @(r.PeerMaps == 1 ? "map" : "maps")</div>
+    };
+
+    private string MapName(string code) => Bots.Data.MapsByCode.TryGetValue(code, out var m) ? m.Name : "";
+    private static string Minutes(double min) => min >= 90 ? $"{min / 60:0.0} h" : $"{min:0} min";
+}

@@ -1,0 +1,170 @@
+@using static RoBotClient.Web.Components.ChartAxes
+@using RoBotClient.Bot.Manager
+@using RoBotClient.Bot.State
+@inherits LiveComponent
+@inject BotManager Bots
+
+@* Base exp per hour of playtime, one bar per playtime bucket, colored by the map the bucket was mostly spent on.
+   Built from the never-truncated progress history, so it reaches back to the first tracked sample. Hover is
+   CSS-only (one hit column per bar), like ProgressChart. *@
+<style>
+    .er-col .er-hover { visibility: hidden; }
+    .er-col:hover .er-hover { visibility: visible; }
+    .er-col:hover .er-bar { opacity: .8; }
+</style>
+
+@{
+    var (bars, step) = Buckets();
+}
+@if (bars.Count < 2)
+{
+    <div class="text-muted small">Not enough playtime yet. Needs a few minutes of progress history.</div>
+}
+else
+{
+    // Most-played maps get the palette slots in fixed order; the rest (and samples with no known map) fold into Other.
+    var named = bars.Where(b => b.Map != Unknown).GroupBy(b => b.Map)
+                    .OrderByDescending(g => g.Sum(b => b.Seconds)).Take(Palette.Length).Select(g => g.Key).ToList();
+    string ColorOf(string map) => named.IndexOf(map) is var i and >= 0 ? Palette[i] : OtherColor;
+    var hasOther = bars.Any(b => !named.Contains(b.Map));
+
+    var yTicks = NiceTicks((long)bars.Max(b => b.Rate));
+    var yMax = (double)yTicks[^1];
+    var x0 = bars[0].From;
+    var x1 = bars[^1].From + step;
+    double X(double t) => Left + (t - x0) / (x1 - x0) * PlotW;
+    double Y(double v) => Top + PlotH - v / yMax * PlotH;
+    var slot = PlotW / ((x1 - x0) / step);
+    var barW = Math.Max(slot - 2, 1); // 2px surface gap between bars
+
+    <div class="d-flex flex-wrap gap-3 small text-secondary mb-1">
+        @foreach (var m in named)
+        {
+            <span><svg width="10" height="10" class="me-1"><rect width="10" height="10" rx="2" fill="@ColorOf(m)" /></svg>@m</span>
+        }
+        @if (hasOther)
+        {
+            <span><svg width="10" height="10" class="me-1"><rect width="10" height="10" rx="2" fill="@OtherColor" /></svg>Other / unknown</span>
+        }
+    </div>
+    <svg viewBox="0 0 @W @H" width="100%" role="img"
+         aria-label="@($"Base exp per hour over {Duration(x1 - x0)} of playtime, {(x1 - x0) / step:0} buckets of {Duration(step)}; latest {bars[^1].Rate:N0} exp/h on {bars[^1].Map}")"
+         style="display:block;font-family:system-ui,sans-serif;font-size:11px">
+        @foreach (var t in yTicks)
+        {
+            <g>
+                <line x1="@Left" x2="@(Left + PlotW)" y1="@F(Y(t))" y2="@F(Y(t))" stroke="var(--bs-border-color)" stroke-width="1" />
+                <text x="@(Left - 6)" y="@F(Y(t))" text-anchor="end" dominant-baseline="middle" fill="var(--bs-secondary-color)">@Compact(t)</text>
+            </g>
+        }
+        @foreach (var t in TimeTicks(x0, x1))
+        {
+            <g><text x="@F(X(t))" y="@(Top + PlotH + 16)" text-anchor="middle" fill="var(--bs-secondary-color)">@Duration(t)</text></g>
+        }
+        @foreach (var b in bars)
+        {
+            var bx = X(b.From) + 1;
+            var by = Y(b.Rate);
+            var tipW = 190.0;
+            var tipX = bx + barW + 6 + tipW > Left + PlotW ? bx - 6 - tipW : bx + barW + 6;
+            <g class="er-col">
+                <rect x="@F(X(b.From))" y="@Top" width="@F(slot)" height="@PlotH" fill="transparent" />
+                <path class="er-bar" d="@TopRounded(bx, by, barW, Top + PlotH)" fill="@ColorOf(b.Map)" pointer-events="none" />
+                <g class="er-hover" pointer-events="none">
+                    <rect x="@F(tipX)" y="@(Top + 4)" width="@tipW" height="72" rx="4" fill="var(--bs-tertiary-bg)" stroke="var(--bs-border-color)" />
+                    <text x="@F(tipX + 8)" y="@(Top + 20)" fill="var(--bs-secondary-color)">@Duration(b.From)–@Duration(b.From + step) played · Lv @b.Level</text>
+                    <rect x="@F(tipX + 8)" y="@(Top + 29)" width="10" height="10" rx="2" fill="@ColorOf(b.Map)" />
+                    <text x="@F(tipX + 24)" y="@(Top + 38)" fill="var(--bs-body-color)">@b.Map</text>
+                    <text x="@F(tipX + 8)" y="@(Top + 56)" fill="var(--bs-body-color)" font-weight="600">@b.Rate.ToString("N0") exp/h</text>
+                    <text x="@F(tipX + 8)" y="@(Top + 70)" fill="var(--bs-secondary-color)">@b.Exp.ToString("N0") exp in @Duration(b.Seconds)</text>
+                </g>
+            </g>
+        }
+        <line x1="@Left" x2="@(Left + PlotW)" y1="@(Top + PlotH)" y2="@(Top + PlotH)" stroke="var(--bs-secondary-color)" stroke-width="1" />
+    </svg>
+    <div class="small text-secondary mt-1">
+        Bars of <span class="text-body fw-semibold">@Duration(step)</span> playtime. Latest:
+        <span class="text-body fw-semibold">@bars[^1].Rate.ToString("N0") exp/h</span> on @bars[^1].Map.
+    </div>
+    <details class="small mt-1">
+        <summary class="text-secondary">Data table</summary>
+        <table class="table table-sm mb-0 mt-1">
+            <thead><tr><th>Playtime</th><th>Map</th><th class="text-end">Level</th><th class="text-end">Exp</th><th class="text-end">Exp/h</th></tr></thead>
+            <tbody>
+                @foreach (var b in bars.AsEnumerable().Reverse())
+                {
+                    <tr>
+                        <td>@Duration(b.From)</td><td>@b.Map</td><td class="text-end">@b.Level</td>
+                        <td class="text-end">@b.Exp.ToString("N0")</td><td class="text-end">@b.Rate.ToString("N0")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </details>
+}
+
+@code {
+    [Parameter] public string CharacterName { get; set; } = "";
+    [Parameter] public string BotId { get; set; } = "";
+
+    private const string Unknown = "unknown";
+    // Dataviz dark categorical slots 1-7, validated against the card surface (#212529): adjacent CVD ΔE >= 8.4.
+    private static readonly string[] Palette = { "#3987e5", "#d95926", "#199e70", "#c98500", "#d55181", "#0ca30c", "#9085e9" };
+    private const string OtherColor = "#6c757d";
+    private static readonly int[] StepMinutes = { 5, 10, 15, 30, 60, 120, 240, 480, 1440 };
+    private const int MaxBars = 48;
+    private const int W = 640, H = 230, Left = 52, Top = 10, PlotW = W - Left - 20, PlotH = H - Top - 30;
+
+    private sealed record Bar(double From, double Seconds, long Exp, string Map, int Level)
+    {
+        public double Rate => Exp / (Seconds / 3600);
+    }
+
+    private (List<Bar>, double step) Buckets()
+    {
+        var samples = Bots.Progress?.Get(CharacterName) ?? Array.Empty<ProgressSample>();
+        if (samples.Count < 2) return (new(), 0);
+        // Samples from before Map was recorded: take the map from the last MapChange event at or before them.
+        var changes = (Bots.GetSession(BotId)?.Telemetry.Snapshot() ?? new())
+            .Where(e => e.Type == TelemetryEventType.MapChange).ToList();
+
+        var t0 = samples[0].PlaytimeSeconds;
+        var t1 = samples[^1].PlaytimeSeconds;
+        var step = StepMinutes.Select(m => m * 60.0).FirstOrDefault(s => (t1 - t0) / s <= MaxBars, StepMinutes[^1] * 60.0);
+
+        var bars = new List<Bar>();
+        int i = 0, c = -1;
+        long ExpAt(int idx) => samples[Math.Max(idx, 0)].TotalExp;
+        var prevMap = Unknown;
+        for (var from = Math.Floor(t0 / step) * step; from < t1; from += step)
+        {
+            var to = from + step;
+            var startIdx = i - 1; // last sample before this bucket
+            var mapTime = new Dictionary<string, int>();
+            var level = 0;
+            for (; i < samples.Count && samples[i].PlaytimeSeconds < to; i++)
+            {
+                var s = samples[i];
+                while (c + 1 < changes.Count && changes[c + 1].Time <= s.Time) c++;
+                var map = s.Map ?? (c >= 0 ? changes[c].Detail : Unknown);
+                mapTime[map] = mapTime.GetValueOrDefault(map) + 1;
+                level = s.Level;
+            }
+            var covered = Math.Min(to, t1) - Math.Max(from, t0);
+            if (covered < 60) continue; // a sliver at either end would show a wild rate
+            var exp = ExpAt(i - 1) - ExpAt(startIdx);
+            var top = mapTime.Count > 0 ? mapTime.MaxBy(kv => kv.Value).Key : prevMap;
+            prevMap = top;
+            if (level == 0) level = samples[Math.Max(i - 1, 0)].Level;
+            bars.Add(new Bar(from, covered, Math.Max(exp, 0), top, level));
+        }
+        return (bars, step);
+    }
+
+    // Bar with 4px rounded top corners, square on the baseline.
+    private static string TopRounded(double x, double y, double w, double baseY)
+    {
+        var r = Math.Min(4, Math.Min(w / 2, baseY - y));
+        return $"M{F(x)},{F(baseY)} V{F(y + r)} Q{F(x)},{F(y)} {F(x + r)},{F(y)} H{F(x + w - r)} Q{F(x + w)},{F(y)} {F(x + w)},{F(y + r)} V{F(baseY)} Z";
+    }
+}

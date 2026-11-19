@@ -1,0 +1,325 @@
+@inject BotManager Bots
+@inject IJSRuntime JS
+@inject RoBotClient.Web.MonsterSprites Sprites
+@implements IAsyncDisposable
+
+@* Whole-map overview of every bot on one map. Terrain is sent once; each tick sends only bot positions,
+   read from the immutable per-bot snapshots. *@
+@if (ShowSpawnAreas == null) @* a parent that passes ShowSpawnAreas renders its own switch (BotDetail's card header) *@
+{
+    <div class="form-check form-switch mb-2">
+        <input class="form-check-input" type="checkbox" role="switch" id="show-spawn-areas" @bind="_showSpawnAreas" />
+        <label class="form-check-label" for="show-spawn-areas">Spawn areas</label>
+    </div>
+}
+<canvas @ref="_canvasRef" width="600" height="600"
+        style="width:100%;aspect-ratio:3/2;background:#10131a;border-radius:6px;display:block;"></canvas>
+<div style="width:100%;" class="mt-3">
+    @if (_species.Count > 0)
+    {
+        <div class="d-flex flex-wrap gap-1 mb-2" title="Monsters some bot on this map can see. Hover one on the map for its name.">
+            @foreach (var (name, count) in _species)
+            {
+                <span class="badge bg-dark-subtle text-body fw-normal d-inline-flex align-items-center">
+                    <MonsterPortrait Name="@name" Size="20" />@name&nbsp;<b>@count</b>
+                </span>
+            }
+        </div>
+    }
+    @foreach (var row in _rows)
+    {
+        <div class="card mb-3 border-secondary-subtle bg-body-tertiary">
+            <div class="card-body p-3">
+                <div class="d-flex flex-wrap align-items-baseline gap-2 mb-2">
+                    <strong class="fs-5">@row.Name</strong>
+                    <span class="text-muted">@row.Activity</span>
+                </div>
+                @ExpBar("Base", row.Level, row.BasePercent, "bg-primary")
+                @ExpBar("Job", row.JobLevel, row.JobPercent, "bg-warning")
+                @if (row.Hunt is { } hunt)
+                {
+                    <div class="d-flex flex-wrap gap-2 mt-3">
+                        <span class="badge bg-dark-subtle text-body fs-6 fw-normal"><b>@(hunt.Active is { } active ? Duration(active) : "—")</b> on map</span>
+                        <span class="badge bg-dark-subtle text-body fs-6 fw-normal"><b>@(hunt.ExpPerHour is { } eph ? eph.ToString("N0") : "—")</b> exp/h</span>
+                    </div>
+                    <div class="row g-2 mt-1" title="This bot's activity time on this map">
+                        <div class="col-6 col-sm-3"><div class="rounded bg-danger-subtle text-body p-2 h-100"><div class="small">Fighting</div><div class="fs-5 fw-semibold">@Duration(hunt.Time?.Fight)</div></div></div>
+                        <div class="col-6 col-sm-3"><div class="rounded bg-info-subtle text-body p-2 h-100"><div class="small">Searching</div><div class="fs-5 fw-semibold">@Duration(hunt.Time?.Search)</div></div></div>
+                        <div class="col-6 col-sm-3"><div class="rounded bg-success-subtle text-body p-2 h-100"><div class="small">Recovering</div><div class="fs-5 fw-semibold">@Duration(hunt.Time?.Recover)</div></div></div>
+                        <div class="col-6 col-sm-3"><div class="rounded bg-warning-subtle text-body p-2 h-100"><div class="small">Fleeing</div><div class="fs-5 fw-semibold">@Duration(hunt.Time?.Flee)</div></div></div>
+                    </div>
+                    <div class="border-top mt-3 pt-2" title="Median time per kill by activity on this stay">
+                        <div class="small text-muted mb-1">Median per kill · @hunt.Kills kills</div>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="badge bg-danger-subtle text-body fs-6 fw-normal">Fight <b>@Seconds(hunt.Median?.Fight)</b></span>
+                            <span class="badge bg-info-subtle text-body fs-6 fw-normal">Search <b>@Seconds(hunt.Median?.Search)</b></span>
+                            <span class="badge bg-success-subtle text-body fs-6 fw-normal">Recover <b>@Seconds(hunt.Median?.Recover)</b></span>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public string MapCode { get; set; } = "";
+    [Parameter] public bool? ShowSpawnAreas { get; set; }
+
+    // "Bash!!" for 3 s after the bot uses a skill, like Unity's ShowSkillCastMessage(skill, 3).
+    private string? Shout(string botId)
+    {
+        var (skill, at) = Bots.GetSession(botId)?.WithState(w => (w.Self.LastShoutSkill, w.Self.LastShoutAt)) ?? default;
+        if ((DateTime.UtcNow - at).TotalSeconds > 3) return null;
+        return (Bots.Data.SkillInfoById.TryGetValue(skill, out var info) ? info.Name : skill.ToString()) + "!!";
+    }
+
+    private const int RefreshMs = 500;
+    // New on every dashboard start, so a browser never runs a cached map.js from before an edit (Firefox kept a stale one).
+    private static readonly string ScriptVersion = DateTime.UtcNow.Ticks.ToString();
+
+    private ElementReference _canvasRef;
+    private IJSObjectReference? _module;
+    private PeriodicTimer? _timer;
+    private bool _terrainSent;
+    private bool _showSpawnAreas = true;
+    private bool _disposed;
+    private DateTime _nextRowsRender;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender || _disposed)
+            return;
+
+        _module = await JS.InvokeAsync<IJSObjectReference>("import", $"./js/map.js?v={ScriptVersion}");
+        await DrawAsync();
+
+        _timer = new PeriodicTimer(TimeSpan.FromMilliseconds(100)); // 10 fps: at 500 ms a walking bot jumped ~3 cells per frame
+        _ = LoopAsync();
+    }
+
+    private async Task LoopAsync()
+    {
+        try
+        {
+            while (await _timer!.WaitForNextTickAsync())
+                await InvokeAsync(DrawAsync);
+        }
+        catch (OperationCanceledException) { }
+        catch (ObjectDisposedException) { }
+    }
+
+    private async Task DrawAsync()
+    {
+        if (_disposed || _module == null)
+            return;
+
+        var here = Bots.GetSnapshots()
+            .Where(s => s.InGame && string.Equals(s.Map, MapCode, StringComparison.OrdinalIgnoreCase))
+            .ToList();
+        var bots = here.Select(s => new
+        {
+            x = s.X, y = s.Y,
+            name = string.IsNullOrEmpty(s.CharacterName) ? s.Id : s.CharacterName,
+            path = RemainingPath(s),
+            target = Bots.GetBehavior(s.Id)?.WanderTarget is { } goal ? new { x = goal.X, y = goal.Y } : null,
+            hp = s.Hp, maxHp = s.MaxHp, sp = s.Sp, maxSp = s.MaxSp,
+            shout = Shout(s.Id),
+            misses = Bots.GetSession(s.Id)?.WithState(w => w.Entities.TryGetValue(w.Self.EntityId, out var me) ? me.Misses : 0) ?? 0,
+        }).ToList();
+        _rows = here.Select(s =>
+        {
+            var (jobId, jobExp) = Bots.GetSession(s.Id)?.WithState(w => (w.Self.JobId, w.Self.JobExp)) ?? (0, 0);
+            var behavior = Bots.GetBehavior(s.Id);
+            HuntStats? hunt = null;
+            if (behavior?.IsHuntingHere(s.Map) == true)
+            {
+                var median = behavior.MedianKillSplit(s.Map);
+                var stay = StayFor(s);
+                var expPerHour = stay != null && stay.Active.TotalMinutes >= 1 ? stay.Exp / stay.Active.TotalHours : (double?)null;
+                hunt = new HuntStats(expPerHour, stay?.Active, stay?.Time, median?.Median, median?.Kills ?? 0);
+            }
+            return new Row(string.IsNullOrEmpty(s.CharacterName) ? s.Id : s.CharacterName, behavior?.Activity ?? s.Mode,
+                s.Level, Percent(s.BaseExp, Bots.Data.BaseExpToNext(s.Level)),
+                s.JobLevel, Percent(jobExp, Bots.Data.JobExpToNext(jobId, s.JobLevel)), hunt);
+        }).ToList();
+        if (DateTime.UtcNow >= _nextRowsRender) // the stat rows below the map don't need 10 fps
+        {
+            _nextRowsRender = DateTime.UtcNow.AddMilliseconds(RefreshMs);
+            StateHasChanged();
+        }
+
+        // Monsters are only known within some bot's view, so merge what every bot on this map sees (entity ids are
+        // server-wide, so the same monster seen by two bots collapses to one dot).
+        var seen = new Dictionary<int, (int X, int Y, string Name, int Hp, int MaxHp, int Hits, RoBotClient.Bot.State.EntityView E)>();
+        var drops = new Dictionary<int, RoBotClient.Bot.State.GroundItemView>(); // same merge for items on the ground
+        foreach (var s in Bots.GetSnapshots().Where(s => s.InGame && string.Equals(s.Map, MapCode, StringComparison.OrdinalIgnoreCase)))
+            Bots.GetSession(s.Id)?.WithState(w =>
+            {
+                foreach (var e in w.Entities.Values)
+                    if (e.IsMonster) seen[e.Id] = (e.Position.X, e.Position.Y, e.Name, e.Hp, e.MaxHp, e.LastHitCount, e);
+                foreach (var g in w.GroundItems.Values) drops[g.DropId] = g;
+                foreach (var (id, d) in w.RecentDeaths) // death animation: Unity's corpse plays Dead, then fades
+                    if (DateTime.UtcNow - d.At < TimeSpan.FromSeconds(2))
+                        seen.TryAdd(id, (d.Entity.Position.X, d.Entity.Position.Y, d.Entity.Name, 0, d.Entity.MaxHp, d.Entity.LastHitCount, d.Entity));
+                return 0;
+            });
+        // HP only for monsters some bot is dueling right now.
+        var dueling = here.Select(s => Bots.GetBehavior(s.Id)?.TargetId ?? 0).Where(id => id != 0).ToHashSet();
+        var mobs = seen.Select(kv => new
+        {
+            id = kv.Key, x = kv.Value.X, y = kv.Value.Y, name = kv.Value.Name,
+            hp = dueling.Contains(kv.Key) && kv.Value.MaxHp > 0 ? kv.Value.Hp : (int?)null, maxHp = kv.Value.MaxHp, hits = kv.Value.Hits,
+            // Animation inputs: moving / dead, facing (RO Direction = sprite facing), ms since its last swing and last hit taken.
+            walk = kv.Value.E.State == RebuildSharedData.Enum.CharacterState.Moving,
+            dead = kv.Value.E.State == RebuildSharedData.Enum.CharacterState.Dead,
+            dir = (int)kv.Value.E.Facing,
+            cell = kv.Value.E.MoveCellTime, // seconds per cell: the walk cycle advances with distance, as in Unity
+            atk = AgeMs(kv.Value.E.LastAttackAt), hit = AgeMs(kv.Value.E.LastHitAt), misses = kv.Value.E.Misses,
+        }).ToList();
+        var items = drops.Values.Select(g => new
+        {
+            x = g.X, y = g.Y, count = g.Count,
+            name = Bots.Data.ItemName(g.ItemId),
+            icon = $"icons/{Uri.EscapeDataString(Bots.Data.Item(g.ItemId)?.Code ?? "")}.png",
+        }).ToList();
+        // Unity's ItemObtainedToast: "<item> - <n> obtained." for 3 s; the newest across the bots on this map.
+        var toast = here
+            .Select(s => (s, got: Bots.GetSession(s.Id)?.WithState(w => (w.Self.LastObtainedItemId, w.Self.LastObtainedCount, w.Self.LastObtainedAt)) ?? default))
+            .Where(t => (DateTime.UtcNow - t.got.LastObtainedAt).TotalSeconds <= 3)
+            .OrderByDescending(t => t.got.LastObtainedAt)
+            .Select(t => new
+            {
+                text = $"{(string.IsNullOrEmpty(t.s.CharacterName) ? t.s.Id : t.s.CharacterName)}: {Bots.Data.ItemName(t.got.LastObtainedItemId)} - {t.got.LastObtainedCount} obtained.",
+                icon = $"icons/{Uri.EscapeDataString(Bots.Data.Item(t.got.LastObtainedItemId)?.Code ?? "")}.png",
+            })
+            .FirstOrDefault();
+        _species = seen.Values.GroupBy(m => m.Name).Select(g => (Name: g.Key, Count: g.Count()))
+            .OrderByDescending(entry => entry.Count).ThenBy(entry => entry.Name).ToList();
+        // First sprite frame per species in view (atlas file + rect), drawn on the map in place of a dot.
+        var sprites = _species.Select(entry => (entry.Name, Frame: Sprites.Get(entry.Name))).Where(entry => entry.Frame != null)
+            .ToDictionary(entry => entry.Name, entry => (object)new
+            {
+                atlas = $"monster-atlas/{Uri.EscapeDataString(entry.Frame!.AtlasName)}.png",
+                anim = $"monster-anim/{Uri.EscapeDataString(entry.Name)}",
+                x = entry.Frame.X, y = entry.Frame.Top, w = entry.Frame.Width, h = entry.Frame.Height,
+            });
+
+        object payload;
+        var wm = Bots.Data.GetWalkMap(MapCode);
+        if (wm == null)
+            payload = new { ok = false, message = $"no walk data for {MapCode}" };
+        else if (_terrainSent)
+            payload = new { ok = true, map = MapCode, minimap = $"minimap/{MapCode}.png", bots, mobs, items, toast, sprites, showSpawnAreas = ShowSpawnAreas ?? _showSpawnAreas };
+        else
+            payload = new
+            {
+                ok = true,
+                map = MapCode,
+                minimap = $"minimap/{MapCode}.png",
+                width = wm.Width,
+                height = wm.Height,
+                cells = TerrainString(wm),
+                bots,
+                mobs,
+                sprites,
+                showSpawnAreas = ShowSpawnAreas ?? _showSpawnAreas,
+                spawns = Bots.Data.SpawnAreas(MapCode).Select(area => new
+                {
+                    minX = area.MinX,
+                    minY = area.MinY,
+                    maxX = area.MaxX,
+                    maxY = area.MaxY,
+                    name = Bots.Data.MonstersByCode.TryGetValue(area.MonsterCode, out var monster) ? monster.Name : area.MonsterCode,
+                    count = area.Count,
+                }).ToList(),
+            };
+
+        try
+        {
+            await _module.InvokeVoidAsync("drawWorld", _canvasRef, payload);
+            _terrainSent = wm != null;
+        }
+        catch (JSDisconnectedException) { }
+        catch (ObjectDisposedException) { }
+        catch (TaskCanceledException) { }
+    }
+
+    private List<(string Name, int Count)> _species = new();
+
+    private static int AgeMs(DateTime at) => at == default ? int.MaxValue : (int)Math.Min(int.MaxValue, (DateTime.UtcNow - at).TotalMilliseconds);
+
+    private sealed record HuntStats(double? ExpPerHour, TimeSpan? Active, RoBotClient.Bot.Behavior.ActivityTime? Time,
+        RoBotClient.Bot.Behavior.ActivityTime? Median, int Kills);
+    private sealed record Row(string Name, string Activity, int Level, double? BasePercent, int JobLevel, double? JobPercent, HuntStats? Hunt);
+    private List<Row> _rows = new();
+
+    private static string Seconds(double? s) => s is { } v ? $"{v:0.0}s" : "—";
+
+    // Exp/h so far on the ongoing stay, the same number the bot page shows. Recomputed every 5 s per bot: it walks the
+    // whole telemetry history.
+    private readonly Dictionary<string, (DateTime At, RoBotClient.Bot.Manager.MapRun? Value)> _stays = new();
+
+    private RoBotClient.Bot.Manager.MapRun? StayFor(RoBotClient.Bot.Manager.BotSnapshot s)
+    {
+        if (_stays.TryGetValue(s.Id, out var cached) && DateTime.UtcNow - cached.At < TimeSpan.FromSeconds(5)) return cached.Value;
+        var events = Bots.GetSession(s.Id)?.Telemetry.Snapshot() ?? new List<RoBotClient.Bot.State.TelemetryEvent>();
+        var stay = RoBotClient.Bot.Manager.MapRuns.Compute(events, Bots.Progress?.Get(s.CharacterName) ?? Array.Empty<RoBotClient.Bot.Manager.ProgressSample>(), true)
+            .FirstOrDefault(run => run.Ongoing && string.Equals(run.Map, s.Map, StringComparison.OrdinalIgnoreCase));
+        _stays[s.Id] = (DateTime.UtcNow, stay);
+        return stay;
+    }
+
+    private static string Duration(double? seconds) => seconds is { } value ? Duration(TimeSpan.FromSeconds(value)) : "—";
+    private static string Duration(TimeSpan duration) => duration.TotalHours >= 1 ? $"{(int)duration.TotalHours}h{duration.Minutes:00}min"
+        : duration.TotalMinutes >= 1 ? $"{duration.Minutes}min{duration.Seconds:00}s" : $"{duration.Seconds}s";
+
+    private static double? Percent(int have, int need) => need > 0 ? Math.Clamp(100.0 * have / need, 0, 100) : null;
+
+    private static RenderFragment ExpBar(string label, int level, double? percent, string color) =>
+        @<div class="d-flex align-items-center gap-1" title="@label level @level: @(percent is { } p ? p.ToString("0.0") + "%" : "max or unknown")">
+            <span class="text-muted" style="width:62px;">@label @level</span>
+            <div class="progress flex-grow-1" style="height:8px;">
+                <div class="progress-bar @color" style="width:@((percent ?? 0).ToString("0.#", System.Globalization.CultureInfo.InvariantCulture))%"></div>
+            </div>
+            <span style="min-width:52px;white-space:nowrap;flex-shrink:0;" class="text-end">@(percent is { } q ? q.ToString("0.0") + "%" : "—")</span>
+        </div>;
+
+    // The walk still ahead of a traveling bot on this map, as flat [x0,y0,x1,y1,...] from the path cell nearest it.
+    // Empty unless the bot is traveling or on a shop trip (the planned path goes stale otherwise).
+    private int[] RemainingPath(RoBotClient.Bot.Manager.BotSnapshot s)
+    {
+        if (s.Mode is not ("Traveling" or "Shopping")) return Array.Empty<int>();
+        if (Bots.GetBehavior(s.Id)?.PlannedPath is not { } planned
+            || !string.Equals(planned.Map, MapCode, StringComparison.OrdinalIgnoreCase)) return Array.Empty<int>();
+        var cells = planned.Cells;
+        var nearest = 0;
+        for (var i = 1; i < cells.Count; i++)
+            if (Math.Max(Math.Abs(cells[i].x - s.X), Math.Abs(cells[i].y - s.Y)) <
+                Math.Max(Math.Abs(cells[nearest].x - s.X), Math.Abs(cells[nearest].y - s.Y))) nearest = i;
+        return cells.Skip(nearest).SelectMany(c => new[] { c.x, c.y }).ToArray();
+    }
+
+    // Row-major from world (0,0), '1' = walkable. A string is far smaller over interop than int[].
+    private static string TerrainString(RoBotClient.Bot.GameData.WalkMap wm)
+    {
+        var chars = new char[wm.Width * wm.Height];
+        for (var y = 0; y < wm.Height; y++)
+            for (var x = 0; x < wm.Width; x++)
+                chars[x + y * wm.Width] = wm.IsWalkable(x, y) ? '1' : '0';
+        return new string(chars);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        _disposed = true;
+        _timer?.Dispose();
+
+        if (_module != null)
+        {
+            try { await _module.DisposeAsync(); }
+            catch (JSDisconnectedException) { }
+            catch (ObjectDisposedException) { }
+        }
+    }
+}
