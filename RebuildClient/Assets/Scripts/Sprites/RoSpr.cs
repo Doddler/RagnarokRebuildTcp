@@ -1,13 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts.Sprites
 {
     public class RoSpr
     {
+        private const int PaletteColorCount = 256;
+        private const string ExpectedSignature = "SP";
+
         private readonly struct Versions
         {
             public const string V20 = "2.0";
@@ -18,6 +20,7 @@ namespace Assets.Scripts.Sprites
         {
             get { return $"{VersionMajor}.{VersionMinor}"; }
         }
+
         public RoBitmapImage[] BitmapImages
         {
             get
@@ -32,32 +35,26 @@ namespace Assets.Scripts.Sprites
             }
             set
             {
+                if (value.Length > ushort.MaxValue)
+                {
+                    throw new FormatException($"BitMapImages cant have more than {ushort.MaxValue} entries");
+                }
+
                 switch (Version)
                 {
                     case Versions.V20:
-                    {
-                        if (value.Length > ushort.MaxValue)
-                        {
-                            throw new FormatException($"BitMapImages cant have more than {ushort.MaxValue} entries");
-                        }
                         roSprData.BitmapImages = value;
-                        roSprData.BitmapImageCount = (ushort)value.Length;
                         break;
-                    }
                     case Versions.V21:
-                    {
-                        if (value.Length > ushort.MaxValue)
-                        {
-                            throw new FormatException($"BitMapImages cant have more than {ushort.MaxValue} entries");
-                        }
                         roSprData.CompressedBitmapImages = CompressBitmapImage(value);
-                        roSprData.BitmapImageCount = (ushort)value.Length;
                         break;
-                    }
-
+                    default:
+                        throw new InvalidDataException("Invalid SPR version?");
                 }
+                roSprData.BitmapImageCount = (ushort)value.Length;
             }
         }
+
         public RoTrueColorImage[] TrueColorImages
         {
             get { return roSprData.TrueColorImages; }
@@ -77,9 +74,9 @@ namespace Assets.Scripts.Sprites
             get { return roSprData.PaletteColors; }
             set
             {
-                if (value.Length > 256)
+                if (value.Length > PaletteColorCount)
                 {
-                    throw new FormatException("PaletteColors cant have more than 256 entries");
+                    throw new FormatException($"PaletteColors cant have more than {PaletteColorCount} entries");
                 }
                 roSprData.PaletteColors = value;
             }
@@ -144,109 +141,72 @@ namespace Assets.Scripts.Sprites
 
         private RoSprData roSprData;
 
-        /// <summary>
-        /// Compress the given RoBitmapImage and return a RoCompressedBitmapImage 
-        /// </summary>
-        /// <param name="image"></param>
-        /// <returns></returns>
         public static RoCompressedBitmapImage CompressBitmapImage(RoBitmapImage image)
         {
-            var compressedPaletteIndexesList = new List<byte>();
-            var zeroRun = false;
-            byte zeroCount = 0;
-            foreach (var colorIndex in image.PaletteIndexes)
+            var bytes = new List<byte>();
+            for (var i = 0; i < image.PaletteIndexes.Length;)
             {
-                switch (colorIndex)
+                var value = image.PaletteIndexes[i++];
+                bytes.Add(value);
+                if (value != 0) continue;
+                var count = 1;
+                while (i < image.PaletteIndexes.Length && image.PaletteIndexes[i] == 0 && count < byte.MaxValue)
                 {
-                    case 0 when !zeroRun:
-                        zeroRun = true;
-                        zeroCount++;
-                        compressedPaletteIndexesList.Add(colorIndex);
-                        break;
-                    case 0:
-                        zeroCount++;
-                        break;
-                    case > 0 when !zeroRun:
-                        compressedPaletteIndexesList.Add(colorIndex);
-                        break;
-                    case > 0:
-                        zeroRun = false;
-                        compressedPaletteIndexesList.Add(zeroCount);
-                        zeroCount = 0;
-                        compressedPaletteIndexesList.Add(colorIndex);
-                        break;
+                    i++;
+                    count++;
                 }
+                bytes.Add((byte)count);
             }
-            var compressedImage = new RoCompressedBitmapImage
+            if (bytes.Count > ushort.MaxValue)
+                throw new InvalidDataException("Compressed image exceeds the SPR size limit.");
+            return new RoCompressedBitmapImage
             {
-                ImageHeight = image.ImageHeight,
                 ImageWidth = image.ImageWidth,
-                CompressedSize = (ushort)compressedPaletteIndexesList.Count,
-                CompressedPaletteIndexes = compressedPaletteIndexesList.ToArray()
+                ImageHeight = image.ImageHeight,
+                CompressedSize = (ushort)bytes.Count,
+                CompressedPaletteIndexes = bytes.ToArray()
             };
-            return compressedImage;
         }
-        /// <summary>
-        /// Compress the given RoBitmapImage array and return a RoCompressedBitmapImage array 
-        /// </summary>
-        /// <param name="images"></param>
-        /// <returns></returns>
         public static RoCompressedBitmapImage[] CompressBitmapImage(RoBitmapImage[] images)
         {
-            var compressedBitmapImages = new RoCompressedBitmapImage[images.Length];
-            foreach (var ii in images.Select((image, index) => new { image, index }))
-            {
-                var compressedBitmapImage = CompressBitmapImage(ii.image);
-                compressedBitmapImages[ii.index] = compressedBitmapImage;
-            }
-            return compressedBitmapImages;
+            return Array.ConvertAll(images, CompressBitmapImage);
         }
         public static RoBitmapImage DecompressBitmapImage(RoCompressedBitmapImage roCompressedImage)
         {
-            var decompressedPaletteIndexes = new byte[roCompressedImage.ImageWidth * roCompressedImage.ImageHeight];
-            var decompressedIndex = 0;
-            var zeroRun = false;
-            for (var compressedIndex = 0; compressedIndex < roCompressedImage.CompressedSize; compressedIndex++)
+            var pixelCount = checked(roCompressedImage.ImageWidth * roCompressedImage.ImageHeight);
+            var source = roCompressedImage.CompressedPaletteIndexes;
+            var output = 0;
+            if (source.Length != roCompressedImage.CompressedSize)
+                throw new InvalidDataException("Truncated compressed image.");
+            // A byte pair encodes at most 255 indexed pixels.
+            if (pixelCount > source.Length / 2 * byte.MaxValue + source.Length % 2)
+                throw new InvalidDataException("Compressed image cannot fill its declared dimensions.");
+            var pixels = new byte[pixelCount];
+            for (var i = 0; i < source.Length; i++)
             {
-                var currentByte = roCompressedImage.CompressedPaletteIndexes[compressedIndex];
-                switch (currentByte)
+                var value = source[i];
+                var count = 1;
+                if (value == 0)
                 {
-                    case 0 when !zeroRun:
-                        zeroRun = true;
-                        break;
-                    case 0:
-                        throw new InvalidDataException("Found 00 00 while decompressing sprite. Not RLE?");
-                    case > 0 when zeroRun:
-                    {
-                        for (var count = 1; count <= currentByte; count++)
-                        {
-                            decompressedPaletteIndexes[decompressedIndex++] = 0x00;
-                        }
-                        zeroRun = false;
-                        break;
-                    }
-                    case > 0:
-                        decompressedPaletteIndexes[decompressedIndex++] = currentByte;
-                        break;
+                    if (++i == source.Length) throw new InvalidDataException("Missing zero-run length.");
+                    count = source[i];
+                    // Legacy encoders use 00 00 for two literal zero pixels.
+                    if (count == 0) count = 2;
                 }
+                if (output + count > pixels.Length) throw new InvalidDataException("Image run exceeds dimensions.");
+                for (var j = 0; j < count; j++) pixels[output++] = value;
             }
-            var bitmapImage = new RoBitmapImage()
+            if (output != pixels.Length) throw new InvalidDataException("Incomplete image data.");
+            return new RoBitmapImage
             {
-                ImageHeight = roCompressedImage.ImageHeight,
                 ImageWidth = roCompressedImage.ImageWidth,
-                PaletteIndexes = decompressedPaletteIndexes
+                ImageHeight = roCompressedImage.ImageHeight,
+                PaletteIndexes = pixels
             };
-            return bitmapImage;
         }
         public static RoBitmapImage[] DecompressBitmapImage(RoCompressedBitmapImage[] compressedImages)
         {
-            var bitmapImages = new RoBitmapImage[compressedImages.Length];
-            foreach (var ii in compressedImages.Select((image, index) => new { image, index }))
-            {
-                var bitmapImage = DecompressBitmapImage(ii.image);
-                bitmapImages[ii.index] = bitmapImage;
-            }
-            return bitmapImages;
+            return Array.ConvertAll(compressedImages, DecompressBitmapImage);
         }
 
         public RoSpr(string filename)
@@ -264,157 +224,79 @@ namespace Assets.Scripts.Sprites
             ReadBytes(binaryReader);
         }
 
-        /// <summary>
-        /// Write spr data to file
-        /// </summary>
-        /// <param name="filePath"></param>
-        public void WriteBytes(string filePath)
-        {
-            var fileStream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            var binaryWriter = new BinaryWriter(fileStream);
-
-            binaryWriter.Write(Signature);
-            binaryWriter.Write(VersionMinor);
-            binaryWriter.Write(VersionMajor);
-            binaryWriter.Write(BitmapImageCount);
-            binaryWriter.Write(TrueColorImageCount);
-            switch (Version)
-            {
-                case Versions.V20:
-                {
-                    foreach (var bitmapImage in BitmapImages)
-                    {
-                        binaryWriter.Write(bitmapImage.ImageWidth);
-                        binaryWriter.Write(bitmapImage.ImageWidth);
-                        binaryWriter.Write(bitmapImage.PaletteIndexes);
-                    }
-                    break;
-                }
-                case Versions.V21:
-                {
-                    foreach (var compressedBitmapImage in CompressedBitmapImages)
-                    {
-                        binaryWriter.Write(compressedBitmapImage.ImageWidth);
-                        binaryWriter.Write(compressedBitmapImage.ImageHeight);
-                        binaryWriter.Write(compressedBitmapImage.CompressedSize);
-                        binaryWriter.Write(compressedBitmapImage.CompressedPaletteIndexes);
-                    }
-                    break;
-                }
-            }
-            foreach (var trueColorImage in TrueColorImages)
-            {
-                binaryWriter.Write(trueColorImage.ImageWidth);
-                binaryWriter.Write(trueColorImage.ImageHeight);
-                foreach (var color in trueColorImage.ImageData)
-                {
-                    binaryWriter.Write(color);
-                }
-            }
-
-            foreach (var color in PaletteColors)
-            {
-                binaryWriter.Write(color.r);
-                binaryWriter.Write(color.g);
-                binaryWriter.Write(color.b);
-                binaryWriter.Write(color.a);
-            }
-
-            binaryWriter.Close();
-            fileStream.Close();
-        }
-
-        /// <summary>
-        /// Read spr data from file
-        /// </summary>
-        /// <param name="filePath"></param>
         public void ReadBytes(string filePath)
         {
-            var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-            try
-            {
-                ReadBytes(fileStream);
-            }
-            catch (NotSupportedException)
-            {
-                fileStream.Close();
-                throw;
-            }
-            fileStream.Close();
+            using var stream = File.OpenRead(filePath);
+            ReadBytes(stream);
         }
 
         public void ReadBytes(FileStream fileStream)
         {
-            var binaryReader = new BinaryReader(fileStream);
-            try
-            {
-                ReadBytes(binaryReader);
-            }
-            catch (NotSupportedException)
-            {
-                binaryReader.Close();
-                throw;
-            }
-            binaryReader.Close();
+            using var reader = new BinaryReader(fileStream, System.Text.Encoding.UTF8, true);
+            ReadBytes(reader);
+        }
+
+        private static byte[] ReadExactly(BinaryReader reader, int count)
+        {
+            EnsureRemainingBytes(reader, count);
+            var bytes = reader.ReadBytes(count);
+            if (bytes.Length != count) throw new EndOfStreamException("Truncated SPR image.");
+            return bytes;
+        }
+
+        private static void EnsureRemainingBytes(BinaryReader reader, long count)
+        {
+            var stream = reader.BaseStream;
+            if (stream.CanSeek && count > stream.Length - stream.Position)
+                throw new EndOfStreamException("Truncated SPR image.");
         }
 
         public void ReadBytes(BinaryReader binaryReader)
         {
             roSprData = new RoSprData();
 
-            Signature = binaryReader.ReadChars(2);
-            if (new string(Signature) != "SP")
-            {
-                throw new NotSupportedException("Not a spr file");
-            }
-            VersionMinor = binaryReader.ReadByte();
-            VersionMajor = binaryReader.ReadByte();
-            if (!new[] { "2.0", "2.1" }.Contains(Version))
-            {
-                throw new NotSupportedException("Unsupported spr version");
-            }
-            BitmapImageCount = binaryReader.ReadUInt16();
-            TrueColorImageCount = binaryReader.ReadUInt16();
+            ReadHeader(binaryReader);
 
             switch (Version)
             {
                 case Versions.V20:
-                {
-                    BitmapImages = new RoBitmapImage[BitmapImageCount];
-                    for (var index = 0; index < BitmapImageCount; index++)
                     {
-                        var bitmapSprite = new RoBitmapImage
-                        {
-                            ImageWidth = binaryReader.ReadUInt16(),
-                            ImageHeight = binaryReader.ReadUInt16()
-                        };
-                        bitmapSprite.PaletteIndexes = new byte[bitmapSprite.ImageWidth * bitmapSprite.ImageHeight];
-                        bitmapSprite.PaletteIndexes = binaryReader.ReadBytes(bitmapSprite.PaletteIndexes.Length);
-                        BitmapImages[index] = bitmapSprite;
+                        ReadBitmapImages(binaryReader);
+                        break;
                     }
-                    break;
-                }
                 case Versions.V21:
-                {
-                    CompressedBitmapImages = new RoCompressedBitmapImage[BitmapImageCount];
-                    for (var index = 0; index < BitmapImageCount; index++)
                     {
-                        var bitmapSprite = new RoCompressedBitmapImage
-                        {
-                            ImageWidth = binaryReader.ReadUInt16(),
-                            ImageHeight = binaryReader.ReadUInt16(),
-                            CompressedSize = binaryReader.ReadUInt16()
-                        };
-                        bitmapSprite.CompressedPaletteIndexes = new byte[bitmapSprite.CompressedSize];
-                        bitmapSprite.CompressedPaletteIndexes = binaryReader.ReadBytes(bitmapSprite.CompressedPaletteIndexes.Length);
-                        CompressedBitmapImages[index] = bitmapSprite;
+                        ReadCompressedBitmapImages(binaryReader);
+                        break;
                     }
-                    break;
-                }
 
             }
 
+            ReadTrueColorImages(binaryReader);
+            ReadPalette(binaryReader);
+        }
 
+        private void ReadHeader(BinaryReader binaryReader)
+        {
+            Signature = binaryReader.ReadChars(ExpectedSignature.Length);
+            if (new string(Signature) != ExpectedSignature)
+            {
+                throw new NotSupportedException("Not a spr file");
+            }
+
+            VersionMinor = binaryReader.ReadByte();
+            VersionMajor = binaryReader.ReadByte();
+            if (Version != Versions.V20 && Version != Versions.V21)
+            {
+                throw new NotSupportedException("Unsupported spr version");
+            }
+
+            BitmapImageCount = binaryReader.ReadUInt16();
+            TrueColorImageCount = binaryReader.ReadUInt16();
+        }
+
+        private void ReadTrueColorImages(BinaryReader binaryReader)
+        {
             TrueColorImages = new RoTrueColorImage[TrueColorImageCount];
             for (var index = 0; index < TrueColorImageCount; index++)
             {
@@ -423,7 +305,10 @@ namespace Assets.Scripts.Sprites
                     ImageWidth = binaryReader.ReadUInt16(),
                     ImageHeight = binaryReader.ReadUInt16()
                 };
-                trueColorSprite.ImageData = new Color32[trueColorSprite.ImageWidth * trueColorSprite.ImageHeight];
+                var pixelCount = checked(trueColorSprite.ImageWidth * trueColorSprite.ImageHeight);
+                const int BytesPerTrueColorPixel = 4;
+                EnsureRemainingBytes(binaryReader, (long)pixelCount * BytesPerTrueColorPixel);
+                trueColorSprite.ImageData = new Color32[pixelCount];
                 for (var pixelIndex = 0; pixelIndex < trueColorSprite.ImageData.Length; pixelIndex++)
                 {
                     var trueColorPixel = new Color32()
@@ -433,14 +318,16 @@ namespace Assets.Scripts.Sprites
                         g = binaryReader.ReadByte(),
                         r = binaryReader.ReadByte()
                     };
-                    trueColorPixel.a = byte.MaxValue;
                     trueColorSprite.ImageData[pixelIndex] = trueColorPixel;
                 }
                 TrueColorImages[index] = trueColorSprite;
             }
+        }
 
-            PaletteColors = new Color32[256];
-            for (var index = 0; index < 256; index++)
+        private void ReadPalette(BinaryReader binaryReader)
+        {
+            PaletteColors = new Color32[PaletteColorCount];
+            for (var index = 0; index < PaletteColorCount; index++)
             {
                 var bitmapColor = new Color32()
                 {
@@ -449,9 +336,41 @@ namespace Assets.Scripts.Sprites
                     b = binaryReader.ReadByte(),
                     a = binaryReader.ReadByte()
                 };
-                bitmapColor.a = byte.MaxValue;
                 PaletteColors[index] = bitmapColor;
             }
         }
+
+        private void ReadCompressedBitmapImages(BinaryReader binaryReader)
+        {
+            CompressedBitmapImages = new RoCompressedBitmapImage[BitmapImageCount];
+            for (var index = 0; index < BitmapImageCount; index++)
+            {
+                var bitmapSprite = new RoCompressedBitmapImage
+                {
+                    ImageWidth = binaryReader.ReadUInt16(),
+                    ImageHeight = binaryReader.ReadUInt16(),
+                    CompressedSize = binaryReader.ReadUInt16()
+                };
+                bitmapSprite.CompressedPaletteIndexes = ReadExactly(binaryReader, bitmapSprite.CompressedSize);
+                CompressedBitmapImages[index] = bitmapSprite;
+            }
+        }
+
+        private void ReadBitmapImages(BinaryReader binaryReader)
+        {
+            BitmapImages = new RoBitmapImage[BitmapImageCount];
+            for (var index = 0; index < BitmapImageCount; index++)
+            {
+                var bitmapSprite = new RoBitmapImage
+                {
+                    ImageWidth = binaryReader.ReadUInt16(),
+                    ImageHeight = binaryReader.ReadUInt16()
+                };
+                var pixelCount = checked(bitmapSprite.ImageWidth * bitmapSprite.ImageHeight);
+                bitmapSprite.PaletteIndexes = ReadExactly(binaryReader, pixelCount);
+                BitmapImages[index] = bitmapSprite;
+            }
+        }
+
     }
 }
