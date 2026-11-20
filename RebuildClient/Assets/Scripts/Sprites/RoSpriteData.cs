@@ -402,5 +402,9 @@ namespace Assets.Scripts
         public int SpritesPerPalette;
         public bool ReverseSortingWhenFacingNorth;
         public bool IgnoreAnchor;
+
+#if UNITY_EDITOR
+        [HideInInspector] public string SourceSprGuid;
+#endif
     }
 }
