@@ -55,13 +55,14 @@ namespace Assets.Scripts.Editor.Sprites
             });
             var palettes = ReadPalettes(directory, baseName, spr.PaletteColors);
 
+            var sourceSprGuid = AssetDatabase.AssetPathToGUID(sprPath);
             Directory.CreateDirectory(targetFolder);
             SaveVariant(targetFolder, baseName, baseName, indexed, spr.TrueColorImages,
-                spr.PaletteColors, actions, act.Sounds);
+                spr.PaletteColors, actions, act.Sounds, sourceSprGuid);
             for (var i = 0; i < palettes.Count; i++)
             {
                 SaveVariant(targetFolder, baseName, $"{baseName}_{i}", indexed, spr.TrueColorImages,
-                    palettes[i], actions, act.Sounds);
+                    palettes[i], actions, act.Sounds, sourceSprGuid);
             }
             AssetDatabase.SaveAssets();
         }
@@ -101,12 +102,13 @@ namespace Assets.Scripts.Editor.Sprites
 
         private static void SaveVariant(string targetFolder, string baseName, string outputName,
             RoBitmapImage[] indexed, RoTrueColorImage[] trueColor, Color32[] palette,
-            RoAction[] actions, string[] sounds)
+            RoAction[] actions, string[] sounds, string sourceSprGuid)
         {
             var asset = GetOrCreateSpriteData(Path.Combine(targetFolder, outputName + ".asset"));
             var atlasPath = Path.Combine(targetFolder, "Atlas", outputName + "_atlas.png").Replace('\\', '/');
             using var loader = new RagnarokSpriteLoader(indexed, trueColor, palette);
             loader.Load(baseName, atlasPath, asset);
+            asset.SourceSprGuid = sourceSprGuid;
             SetUpSpriteData(loader, asset, actions, sounds, baseName, outputName);
         }
 
