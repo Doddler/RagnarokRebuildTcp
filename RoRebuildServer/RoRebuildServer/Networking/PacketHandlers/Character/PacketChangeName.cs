@@ -1,6 +1,7 @@
-﻿using RebuildSharedData.Config;
-using RebuildSharedData.Enum;
-using RebuildSharedData.Networking;
+﻿using RebuildSharedData.Networking;
+using RoRebuildServer.Database;
+using RoRebuildServer.Database.Requests;
+using RebuildSharedData.Util;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Character;
 
@@ -17,17 +18,23 @@ public class PacketChangeName : IClientPacketHandler
 
         var str = msg.ReadString();
 
-        if (str.Length > SharedConfig.MaxPlayerName)
+        var nameError = NameValidator.GetCharacterNameError(str);
+        if (nameError != null)
         {
-            CommandBuilder.SendRequestFailed(connection.Player, ClientErrorType.RequestTooLong);
+            CommandBuilder.ErrorMessage(connection, nameError);
             return;
         }
 
-        connection.Player.Name = str;
-        connection.Character.Name = str;
+        if (connection.ActiveDbAction != ActiveDbAction.None)
+        {
+            CommandBuilder.ErrorMessage(connection, "Unable to perform the requested action, please try again.");
+            return;
+        }
 
-        connection.Character.Map.AddVisiblePlayersAsPacketRecipients(connection.Character);
-        CommandBuilder.SendChangeNameMulti(connection.Character, str);
-        CommandBuilder.ClearRecipients();
+        //the request checks for duplicates and saves; Player's update applies it
+        var request = new ChangeNameRequest(connection, connection.Player.Id, str);
+        connection.ChangeNameRequest = request;
+        connection.ActiveDbAction = ActiveDbAction.ChangeName;
+        RoDatabase.EnqueueDbRequest(request);
     }
 }

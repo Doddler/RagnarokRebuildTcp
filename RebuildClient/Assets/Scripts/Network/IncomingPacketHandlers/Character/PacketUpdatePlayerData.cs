@@ -1,6 +1,6 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using Assets.Scripts.Network.HandlerBase;
-using Assets.Scripts.Sprites;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RebuildSharedData.Networking;
@@ -13,49 +13,31 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
     {
         public override void ReceivePacket(ClientInboundMessage msg)
         {
-            var hasStatChange = false;
-            foreach (var data in PlayerClientStatusDef.PlayerUpdateData)
-            {
-                var newVal = msg.ReadInt32();
-                if(data >= PlayerStat.Str && data <= PlayerStat.Luk)
-                    if (State.CharacterData[(int)data] != newVal)
-                        hasStatChange = true;
-                State.CharacterData[(int)data] = newVal;
-            }
-            
-            foreach (var stats in PlayerClientStatusDef.PlayerUpdateStats)
-                State.CharacterStats[(int)stats] = msg.ReadInt32();
+            Span<int> data = stackalloc int[PlayerClientStatusDef.PlayerUpdateData.Length];
+            for (var i = 0; i < data.Length; i++)
+                data[i] = msg.ReadInt32();
 
-            State.Level = State.GetData(PlayerStat.Level);
-            State.AttackSpeed = msg.ReadFloat();
-            State.CurrentWeight = msg.ReadInt32();
-            State.CartWeight = msg.ReadInt32();
+            Span<int> stats = stackalloc int[PlayerClientStatusDef.PlayerUpdateStats.Length];
+            for (var i = 0; i < stats.Length; i++)
+                stats[i] = msg.ReadInt32();
+
+            var attackDelay = msg.ReadFloat();
+            State.SetWeight(msg.ReadInt32());
+            State.SetCartWeight(msg.ReadInt32());
+            State.SetCharacterData(data, stats, attackDelay);
 
             var hp = State.GetStat(CharacterStat.Hp); //we don't assign these to player state directly so we can do the health bar animation thing
             var maxHp = State.GetStat(CharacterStat.MaxHp);
             var sp = State.GetStat(CharacterStat.Sp);
             var maxSp = State.GetStat(CharacterStat.MaxSp);
-            
-            State.MaxWeight = State.GetStat(CharacterStat.WeightCapacity);
-            State.SkillPoints = State.GetData(PlayerStat.SkillPoints);
-            State.Zeny = State.GetData(PlayerStat.Zeny);
 
             var hasSkills = msg.ReadBoolean();
 
             if (hasSkills)
             {
-                var skills = msg.ReadInt16();
-
-                State.KnownSkills.Clear();
-                for (var i = 0; i < skills; i++)
-                    State.KnownSkills.Add((CharacterSkill)msg.ReadInt16(), msg.ReadByte());
-
-                State.GrantedSkills.Clear();
-                var grantedSkills = msg.ReadInt16();
-                for (var i = 0; i < grantedSkills; i++)
-                    State.GrantedSkills.Add((CharacterSkill)msg.ReadInt16(), msg.ReadByte());
-
-                UiManager.SkillManager.UpdateAvailableSkills();
+                var known = PacketRefreshGrantedSkills.ReadSkills(msg);
+                var granted = PacketRefreshGrantedSkills.ReadSkills(msg);
+                State.SetSkills(known, granted);
             }
 
             var hasInventory = msg.ReadBoolean();
@@ -65,44 +47,21 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                 State.Inventory.Deserialize(msg);
                 if(msg.ReadByte() == 1) //has cart
                     State.Cart.Deserialize(msg);
-                State.EquippedBagIdHashes.Clear();
-                for (var i = 0; i < 10; i++)
-                {
-                    var bagId = msg.ReadInt32();
-                    State.EquippedItems[i] = bagId;
-                    State.EquippedBagIdHashes.Add(bagId);
-                }
 
-                State.AmmoId = msg.ReadInt32();
-                
-                UiManager.EquipmentWindow.RefreshEquipmentWindow();
+                Span<int> equipped = stackalloc int[State.EquippedItems.Count];
+                for (var i = 0; i < equipped.Length; i++)
+                    equipped[i] = msg.ReadInt32();
+                State.SetEquipment(equipped, msg.ReadInt32());
 
                 if(Application.isEditor)
                     Debug.Log($"Equipped items: " + string.Join(", ", State.EquippedItems));
             }
 
-            var jobMax = ClientDataLoader.Instance.GetJobExpRequired(State.JobId, State.GetData(PlayerStat.JobLevel));
-            
-            CameraFollower.Instance.UpdatePlayerHP(hp, maxHp);
-            CameraFollower.Instance.UpdatePlayerSP(sp, maxSp);
-            CameraFollower.Instance.CharacterDetailBox.JobLvlDisplay.text = $"Job Lv. {State.GetData(PlayerStat.JobLevel)}";
-            CameraFollower.Instance.UpdatePlayerJobExp(State.GetData(PlayerStat.JobExp), jobMax);
-            CameraFollower.Instance.CharacterDetailBox.UpdateWeightAndZeny();
+            //no character yet at login; the spawn brings the hp
+            if (State.Character != null)
+                State.Character.SetHp(hp, maxHp, false);
+            State.SetSp(sp, maxSp);
 
-            if (CameraFollower.Instance.TargetControllable != null)
-            {
-                CameraFollower.Instance.TargetControllable.SetHp(hp, maxHp, false);
-                CameraFollower.Instance.TargetControllable.SetSp(sp, maxSp);
-            }
-
-            UiManager.Instance.SkillHotbar.UpdateItemCounts();
-            UiManager.Instance.InventoryWindow.UpdateActiveVisibleBag();
-            if(hasStatChange)
-                UiManager.Instance.StatusWindow.ResetStatChanges();
-            else
-                UiManager.Instance.StatusWindow.UpdateCharacterStats();
-            UiManager.Instance.SkillManager.RefreshSkillAvailability();
-            
 #if UNITY_EDITOR
             if (!hasInventory)
                 return;
@@ -117,7 +76,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                         sb.AppendLine($"{i.Key} - {i.Value}");
                     else
                     {
-                        var eq = State.EquippedBagIdHashes.Contains(i.Key) ? " *Equipped*" : "";
+                        var eq = State.IsEquipped(i.Key) ? " *Equipped*" : "";
                         sb.Append($"{i.Key} - {i.Value} <");
                         for (var j = 0; j < 4; j++)
                         {

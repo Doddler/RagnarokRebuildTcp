@@ -195,11 +195,21 @@ public class ItemEquipState
             case EquipSlot.HeadTop:
             case EquipSlot.HeadBottom:
             case EquipSlot.HeadMid:
+                SendAppearanceUpdate(true);
+                break;
             case EquipSlot.Weapon:
             case EquipSlot.Shield:
-                CommandBuilder.UpdatePlayerAppearanceAuto(Player);
+                SendAppearanceUpdate(false);
                 break;
         }
+    }
+
+    //Headgear also shows in party members' portraits.
+    private void SendAppearanceUpdate(bool headgearChanged)
+    {
+        CommandBuilder.UpdatePlayerAppearanceAuto(Player);
+        if (headgearChanged)
+            Player.MarkPartyInfoChanged();
     }
 
     public void UnEquipItem(int bagId)
@@ -209,6 +219,7 @@ public class ItemEquipState
 
         var itemData = DataManager.ItemList[item.Id];
         var updateAppearance = false;
+        var headgearChanged = false;
 
         if (itemData.ItemClass == ItemClass.Ammo)
         {
@@ -238,6 +249,7 @@ public class ItemEquipState
                 if (equipInfo.HeadPosition.HasFlag(HeadgearPosition.Mid)) UnEquipItem(EquipSlot.HeadMid);
                 if (equipInfo.HeadPosition.HasFlag(HeadgearPosition.Bottom)) UnEquipItem(EquipSlot.HeadBottom);
                 updateAppearance = true;
+                headgearChanged = true;
             }
 
             if (equipInfo.EquipPosition.HasFlag(EquipPosition.Shield))
@@ -259,7 +271,7 @@ public class ItemEquipState
         if (Player.CombatEntity.TryGetStatusContainer(out var status))
             status.OnChangeEquipment();
         if (updateAppearance)
-            CommandBuilder.UpdatePlayerAppearanceAuto(Player);
+            SendAppearanceUpdate(headgearChanged);
         Player.UpdateStats();
     }
 
@@ -368,7 +380,7 @@ public class ItemEquipState
         ItemIds[(int)equipSlot] = itemData.Id;
 
         OnEquipEvent(equipSlot);
-        CommandBuilder.UpdatePlayerAppearanceAuto(Player);
+        UpdateAppearanceIfNecessary(equipSlot);
 
         if (Player.CombatEntity.TryGetStatusContainer(out var status))
             status.OnChangeEquipment();
@@ -426,7 +438,7 @@ public class ItemEquipState
         ItemIds[(int)equipSlot] = itemData.Id;
 
         OnEquipEvent(equipSlot);
-        CommandBuilder.UpdatePlayerAppearanceAuto(Player);
+        UpdateAppearanceIfNecessary(equipSlot);
 
         if (Player.CombatEntity.TryGetStatusContainer(out var status))
             status.OnChangeEquipment();
@@ -1016,7 +1028,7 @@ public class ItemEquipState
     }
 
 
-    public bool HasLearnedSkill(CharacterSkill skill, int lvl = 1) => Player.MaxLearnedLevelOfSkill(skill) >= lvl;
+    public bool HasLearnedSkill(CharacterSkill skill, int lvl = 1) => Player.LearnedSkillLevel(skill) >= lvl;
 
     public void ChangeWeaponElement(AttackElement element)
     {

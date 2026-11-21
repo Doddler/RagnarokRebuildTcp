@@ -1,6 +1,7 @@
 ﻿using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RebuildSharedData.Networking;
+using RoRebuildServer.EntityComponents;
 using RoRebuildServer.Logging;
 using System.Diagnostics;
 
@@ -21,69 +22,45 @@ public class PacketChangeFollower : IClientPacketHandler
         if (!connection.Player.CanPerformCharacterActions())
             return;
 
-        //for now we assume the only use for ChangeFollower is to change your cart appearance (or remove it)
-
         var player = connection.Player;
-        var map = connection.Character.Map;
 
-        var id = msg.ReadInt32();
-        var isRemove = id < 0;
-        var isPecoChange = player.JobId == 7 || player.JobId == 13 || player.CombatEntity.HasStatusEffectOfType(CharacterStatusEffect.PecoRiding);
-
-        if (isRemove)
+        switch ((FollowerChange)msg.ReadByte())
         {
-            //player.PlayerFollower &= ~PlayerFollower.AnyCart;
-            player.PlayerFollower = 0; //this call will double for removing the bird too
-            player.SetData(PlayerStat.FollowerType, 0);
-
-            if (isPecoChange)
-            {
-                player.CombatEntity.RemoveStatusOfTypeIfExists(CharacterStatusEffect.PecoRiding); //this will call StopRidingMount as well, but we're already off the peco so it's fine.
+            case FollowerChange.CartStyle:
+                ChangeCartStyle(player, msg.ReadInt32());
                 return;
-            }
+            case FollowerChange.RemoveCart:
+                player.RemoveFollower(CharacterFollowerState.AnyCart);
+                return;
+            case FollowerChange.RemoveFalcon:
+                player.RemoveFollower(CharacterFollowerState.Falcon);
+                return;
+            case FollowerChange.RemovePeco:
+                player.RemoveFollower(CharacterFollowerState.Mounted);
+                return;
         }
-        else
+    }
+
+    private static void ChangeCartStyle(Player player, int style)
+    {
+        if (!player.HasCart)
+            return; //can't change cart if they don't have a cart
+
+        //the command counts from 1, the client from 0
+        var styleCount = CharacterFollowerStateExtensions.CartStyleCount;
+        if (style < 0 || style >= styleCount)
         {
-            if (isPecoChange)
-            {
-                if (player.HasPeco)
-                    return;
-
-                player.StartRidingMount();
-                return;
-            }
-
-            if (!player.HasCart)
-                return; //can't change cart if they don't have a cart
-
-            //the /changecart command gets a value 1-5, but the client will change the range to 0-4.
-            if (id < 0 || id >= 5)
-            {
-                CommandBuilder.ErrorMessage(player, $"Change cart must be a value between 1 and 5.");
-                ServerLogger.LogWarning(
-                    $"Player {player.Name} trying to change cart to type {id}, but it is out of bounds.");
-                return;
-            }
-
-            var minLvl = id switch
-            {
-                1 => 41,
-                2 => 66,
-                3 => 81,
-                4 => 91,
-                _ => 0
-            };
-
-            if (player.GetData(PlayerStat.Level) < minLvl)
-            {
-                CommandBuilder.ErrorMessage(player, $"You are too low level to equip push cart style {id + 1}.");
-                return;
-            }
-
-            player.PlayerFollower &= ~CharacterFollowerState.AnyCart;
-            player.SetData(PlayerStat.FollowerType, id);
+            CommandBuilder.ErrorMessage(player, $"Change cart must be a value between 1 and {styleCount}.");
+            ServerLogger.LogWarning($"Player {player.Name} trying to change cart to type {style}, but it is out of bounds.");
+            return;
         }
 
-        CommandBuilder.UpdatePlayerFollowerStateAutoVis(player);
+        if (player.GetData(PlayerStat.Level) < CharacterFollowerStateExtensions.CartStyleMinLevel(style))
+        {
+            CommandBuilder.ErrorMessage(player, $"You are too low level to equip push cart style {style + 1}.");
+            return;
+        }
+
+        player.SetCart(style);
     }
 }

@@ -5,7 +5,7 @@ using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Simulation.StatusEffects._2ndJobs;
 
-[StatusEffectHandler(CharacterStatusEffect.ImpositioManus, StatusClientVisibility.Ally)]
+[StatusEffectHandler(CharacterStatusEffect.ImpositioManus, StatusClientVisibility.Party)]
 public class StatusImpositioManus : StatusEffectBase
 {
     public override void OnApply(CombatEntity ch, ref StatusEffectState state)

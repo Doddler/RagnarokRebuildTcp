@@ -113,6 +113,7 @@ namespace Assets.Scripts.Effects.EffectHandlers
             {
                 mat1 = new Material(ShaderCache.Instance.AlphaBlendNoZTestShader);
                 mat1.renderQueue = 3015; //always front
+                Materials.Add("lens", mat1);
             }
 
             if (lensSprite == null)
@@ -136,11 +137,18 @@ namespace Assets.Scripts.Effects.EffectHandlers
             effect.transform.localScale = new Vector3(0.02f, 0.02f, 0.02f);
             effect.SetSortingGroup("FrontEffect", 10); //appear in front of damage indicators
 
+            //both lens sprites are on one atlas page, so the rays share one mesh and material
+            Debug.Assert(lensSprite[0].texture == lensSprite[1].texture, "Hit2 lens sprites are on different atlas pages");
+            mat1.mainTexture = lensSprite[0].texture;
+            var burstPrim = effect.LaunchPrimitive(PrimitiveType.Texture2DBatch, mat1, 0f);
+            burstPrim.transform.localPosition = Vector3.zero;
+            burstPrim.transform.localRotation = Quaternion.identity;
+            var burst = burstPrim.GetPrimitiveData<Texture2DBatchData>();
+
             for (var i = 0; i < 8; i++)
             {
                 var angle = i * 45 + Random.Range(-15f, 15f);
                 var duration = Random.Range(0.16f, 0.5f);
-                var prim = effect.LaunchPrimitive(PrimitiveType.Texture2D, mat1, duration);
 
                 var width = Random.Range(5f, 20f);
                 var height = Random.Range(20, 40f);
@@ -154,21 +162,20 @@ namespace Assets.Scripts.Effects.EffectHandlers
                 var x = Mathf.Sin(angle * Mathf.Deg2Rad);
                 var y = Mathf.Cos(angle * Mathf.Deg2Rad);
                 var position = new Vector2(x, y) * startDistance;
-                var data = prim.GetPrimitiveData<Texture2DData>();
-                data.MinSize = Vector2.negativeInfinity;
-                data.MaxSize = Vector2.positiveInfinity;
-                data.Size = new Vector2(width, height);
-                data.ScalingSpeed = new Vector2(widthSpeed, heightSpeed);
-                data.ScalingAccel = new Vector2(0, heightAccel);
-                data.Alpha = 0f;
-                data.AlphaSpeed = 32 * 60;
-                data.Speed = position.normalized * (speed * 60);
-                data.Acceleration = position.normalized * accel;
-                data.Sprite = lensSprite[Random.Range(0, 2)];
-                data.PivotFromBottom = true;
 
-                prim.transform.localPosition = new Vector3(position.x, position.y, 0f);
-                prim.transform.localRotation = Quaternion.Euler(0, 0, -angle);
+                ref var ray = ref burst.AddItem();
+                ray.Sprite = lensSprite[Random.Range(0, 2)];
+                ray.PivotFromBottom = true;
+                ray.Position = position;
+                ray.Angle = angle;
+                ray.Duration = duration;
+                ray.Size = new Vector2(width, height);
+                ray.ScalingSpeed = new Vector2(widthSpeed, heightSpeed);
+                ray.ScalingAccel = new Vector2(0, heightAccel);
+                ray.Alpha = 0f;
+                ray.AlphaSpeed = 32 * 60;
+                ray.Speed = position.normalized * (speed * 60);
+                ray.Acceleration = position.normalized * accel;
             }
 
             return null;

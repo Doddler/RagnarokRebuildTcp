@@ -43,11 +43,15 @@ public class Player : IEntityAutoReset
     public string Name { get; set; } = "Uninitialized Player";
 
     public HeadFacing HeadFacing;
+    //sent to the party once per update
+    private bool partyInfoChanged;
 
     //public PlayerData Data { get; set; }
     [ScriptUseable] public bool IsAdmin { get; set; }
     public bool IsInNpcInteraction { get; set; }
     public bool IsMale => GetData(PlayerStat.Gender) == 0;
+    public PlayerAppearance Appearance => new(GetData(PlayerStat.Job), GetData(PlayerStat.Head), GetData(PlayerStat.HairId), IsMale,
+        Equipment.GetEquipmentIdBySlot(EquipSlot.HeadTop), Equipment.GetEquipmentIdBySlot(EquipSlot.HeadMid), Equipment.GetEquipmentIdBySlot(EquipSlot.HeadBottom));
     public override string ToString() => $"Player:{Name}";
 
     [EntityIgnoreNullCheck] public NpcInteractionState NpcInteractionState = new();
@@ -66,7 +70,8 @@ public class Player : IEntityAutoReset
     [EntityIgnoreNullCheck] public Dictionary<int, int>? ResistVersusTag { get; set; }
     [EntityIgnoreNullCheck] public Dictionary<CharacterSkill, double> SkillSpecificCooldowns = new();
     public Dictionary<CharacterSkill, int> LearnedSkills = null!;
-    public Dictionary<CharacterSkill, int>? GrantedSkills;
+    public Dictionary<CharacterSkill, int>? GrantedSkills; //the highest of each skill's grants
+    private List<(CharacterSkill skill, int level)>? grants; //one per item or admin grant still in effect
 
     public Dictionary<string, int>? NpcFlags;
     public ItemEquipState Equipment = null!;
@@ -87,10 +92,17 @@ public class Player : IEntityAutoReset
     public int PartyMemberId;
     public bool HasEnteredServer;
 
-    public CharacterFollowerState PlayerFollower;
+    //given by the server and saved; returned when the skill to use it is lost
+    public CharacterFollowerState PlayerFollower => (CharacterFollowerState)GetData(PlayerStat.FollowerType);
     public bool HasCart => (PlayerFollower & CharacterFollowerState.AnyCart) > 0;
-    public bool HasBird => (PlayerFollower & CharacterFollowerState.Falcon) > 0;
+    public bool HasFalcon => (PlayerFollower & CharacterFollowerState.Falcon) > 0;
     public bool HasPeco => (PlayerFollower & CharacterFollowerState.Mounted) > 0;
+
+    //learned or granted
+    private CharacterFollowerState UsableFollowers =>
+        (MaxSkillLevel(CharacterSkill.PushCart) > 0 ? CharacterFollowerState.AnyCart : CharacterFollowerState.None)
+        | (MaxSkillLevel(CharacterSkill.FalconMastery) > 0 ? CharacterFollowerState.Falcon : CharacterFollowerState.None)
+        | (MaxSkillLevel(CharacterSkill.PecoPecoRiding) > 0 ? CharacterFollowerState.Mounted : CharacterFollowerState.None);
 
     public StatusTriggerFlags OnMeleeAttackStatusFlags;
     public StatusTriggerFlags OnRangedAttackStatusFlags;
@@ -111,15 +123,17 @@ public class Player : IEntityAutoReset
         return false;
     }
 
-    public int MaxLearnedLevelOfSkill(CharacterSkill skill) => LearnedSkills.TryGetValue(skill, out var learned) ? learned : 0;
-
-    public int MaxAvailableLevelOfSkill(CharacterSkill skill)
+    //the higher of the learned and granted levels, which every effect uses
+    public int MaxSkillLevel(CharacterSkill skill)
     {
         return int.Max(
             LearnedSkills.TryGetValue(skill, out var learned) ? learned : 0,
             GrantedSkills != null && GrantedSkills.TryGetValue(skill, out var granted) ? granted : 0
         );
     }
+
+    //the learned level only, for progression such as the skill tree and saving
+    public int LearnedSkillLevel(CharacterSkill skill) => LearnedSkills.TryGetValue(skill, out var learned) ? learned : 0;
 
     public void SetSkillSpecificCooldown(CharacterSkill skill, float time) => SkillSpecificCooldowns[skill] = Time.ElapsedTimeFloat + time;
 
@@ -197,6 +211,7 @@ public class Player : IEntityAutoReset
     [ScriptUseable] public void SetTiming(TimingStat type, float val) => CombatEntity.SetTiming(type, val);
     [ScriptUseable] public int GetZeny() => CharData[(int)PlayerStat.Zeny];
 
+    //AddZeny and DropZeny are the only zeny changes; both tell the client
     [ScriptUseable]
     public void AddZeny(int val)
     {
@@ -205,6 +220,7 @@ public class Player : IEntityAutoReset
             CharData[(int)PlayerStat.Zeny] = int.MaxValue;
         else
             CharData[(int)PlayerStat.Zeny] += val;
+        CommandBuilder.SendUpdateZeny(this);
     }
 
     [ScriptUseable]
@@ -214,6 +230,9 @@ public class Player : IEntityAutoReset
         CharData[(int)PlayerStat.Zeny] = v > 0 ? v : 0;
         CommandBuilder.SendUpdateZeny(this);
     }
+
+    //for party member rows: name, level, job and headgear
+    public void MarkPartyInfoChanged() => partyInfoChanged = true;
 
     //how much it costs (cumulatively) to have a stat at a specific level. Should be in its own file...
     private static readonly int[] cumulativeStatPointCost = new[]
@@ -244,6 +263,7 @@ public class Player : IEntityAutoReset
         Connection = null!;
         InputActionCooldown = 0f;
         HeadFacing = HeadFacing.Center;
+        partyInfoChanged = false;
         AutoAttackLock = false;
         Id = Guid.Empty;
         Name = "Uninitialized Player";
@@ -259,11 +279,11 @@ public class Player : IEntityAutoReset
         HasEnteredServer = false;
         LearnedSkills = null!;
         GrantedSkills = null;
+        grants = null;
         NpcFlags = null!;
         jobStatBonuses = null;
         SpecialState = SpecialPlayerActionState.None;
         SpecialStateTarget = Position.Invalid;
-        PlayerFollower = CharacterFollowerState.None;
         JobSkillTree = null;
 
         if (AttackVersusTag != null)
@@ -321,6 +341,10 @@ public class Player : IEntityAutoReset
         Equipment.Player = this;
         StorageId = -1;
         Equipment.RunAllOnEquip();
+
+        //a follower kept on a skill granted last session is returned; the rest get their statuses
+        SetData(PlayerStat.FollowerType, (int)(PlayerFollower & UsableFollowers));
+        FollowersChanged(CharacterFollowerState.None, false);
 
         if (IndirectCastQueue == null!)
             IndirectCastQueue = new List<SkillCastInfo>(4);
@@ -632,8 +656,7 @@ public class Player : IEntityAutoReset
 
         SetData(PlayerStat.Experience, curExp);
 
-        if (Party != null)
-            CommandBuilder.NotifyPartyOfChange(Party, PartyMemberId, PartyUpdateType.UpdatePlayer);
+        MarkPartyInfoChanged();
 
         Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
         CommandBuilder.LevelUp(Character, level, curExp);
@@ -693,6 +716,8 @@ public class Player : IEntityAutoReset
 
         SetData(PlayerStat.JobLevel, level);
         SetData(PlayerStat.JobExperience, curExp);
+
+        MarkPartyInfoChanged();
 
         if (job == 0 && level == 10 && origLevel < level)
             CommandBuilder.SendServerEvent(this, ServerEvent.EligibleForJobChange, job);
@@ -757,13 +782,18 @@ public class Player : IEntityAutoReset
         var basic = LearnedSkills.TryGetValue(CharacterSkill.BasicMastery, out var level) ? level : 0;
         var firstAid = LearnedSkills.TryGetValue(CharacterSkill.FirstAid, out var aidLevel) ? aidLevel : 0;
 
+        //granted skills keep their passives
+        var oldLevels = new List<(CharacterSkill skill, int level)>(LearnedSkills.Count);
         foreach (var skill in LearnedSkills)
-            SkillHandler.RemovePassiveEffects(skill.Key, CombatEntity, skill.Value);
+            oldLevels.Add((skill.Key, MaxSkillLevel(skill.Key)));
 
         LearnedSkills.Clear();
 
         if (basic > 0) LearnedSkills.Add(CharacterSkill.BasicMastery, basic);
         if (firstAid > 0) LearnedSkills.Add(CharacterSkill.FirstAid, firstAid);
+
+        foreach (var (skill, oldLevel) in oldLevels)
+            ChangePassiveLevel(skill, oldLevel);
 
         UpdateStats();
     }
@@ -774,11 +804,20 @@ public class Player : IEntityAutoReset
         if (JobId == 0)
             return;
 
-        if (MaxLearnedLevelOfSkill(CharacterSkill.BasicMastery) < 8)
+        if (LearnedSkillLevel(CharacterSkill.BasicMastery) < 8)
             AddSkillToCharacter(CharacterSkill.BasicMastery, 8);
 
-        if (MaxLearnedLevelOfSkill(CharacterSkill.FirstAid) < 1)
+        if (LearnedSkillLevel(CharacterSkill.FirstAid) < 1)
             AddSkillToCharacter(CharacterSkill.FirstAid, 1);
+    }
+
+    //call after changing head, hair color or gender
+    public void RefreshAppearance()
+    {
+        Character.Map?.RefreshEntity(Character);
+        UpdateStats();
+
+        MarkPartyInfoChanged();
     }
 
     public void UpdateStats(bool updateSkillData = true, bool sendUpdate = true)
@@ -800,7 +839,7 @@ public class Player : IEntityAutoReset
         Character.ClassId = job;
 
         if (MainWeaponClass == (int)WeaponClass.Bow) //bow
-            SetStat(CharacterStat.Range, int.Max(1, Equipment.WeaponRange + MaxLearnedLevelOfSkill(CharacterSkill.VultureEye)));
+            SetStat(CharacterStat.Range, int.Max(1, Equipment.WeaponRange + MaxSkillLevel(CharacterSkill.VultureEye)));
         else
             SetStat(CharacterStat.Range, int.Max(1, Equipment.WeaponRange));
 
@@ -834,7 +873,7 @@ public class Player : IEntityAutoReset
 
         if (HasPeco)
         {
-            var ridingLevel = MaxLearnedLevelOfSkill(CharacterSkill.CavalierMastery);
+            var ridingLevel = MaxSkillLevel(CharacterSkill.CavalierMastery);
             if (ridingLevel < 5)
                 recharge *= 1.5f - ridingLevel * 0.1f;
         }
@@ -902,7 +941,7 @@ public class Player : IEntityAutoReset
         if (GetStat(CharacterStat.Sp) > newMaxSp)
             SetStat(CharacterStat.Sp, newMaxSp);
 
-        var weightBonus = MaxLearnedLevelOfSkill(CharacterSkill.EnlargeWeightLimit) * 2000;
+        var weightBonus = MaxSkillLevel(CharacterSkill.EnlargeWeightLimit) * 2000;
         SetStat(CharacterStat.WeightCapacity, 28000 + GetEffectiveStat(CharacterStat.Str) * 300 + weightBonus);
 
         var moveBonus = 1f;
@@ -914,7 +953,7 @@ public class Player : IEntityAutoReset
             if (moveBonus < 0.8f)
                 moveBonus = 0.8f; //lower is faster, speed here is capped at +20%. Later peco will push this limit to 0.7 (+30%)
             if (HasCart)
-                moveBonus += 0.05f * (10 - MaxLearnedLevelOfSkill(CharacterSkill.PushCart));
+                moveBonus += 0.05f * (10 - MaxSkillLevel(CharacterSkill.PushCart));
             if (HasPeco)
                 moveBonus *= 0.75f;
         }
@@ -1033,65 +1072,44 @@ public class Player : IEntityAutoReset
         {
             case WeaponClass.Dagger: //dagger
             case WeaponClass.Sword: //sword
-                mastery = MaxLearnedLevelOfSkill(CharacterSkill.SwordMastery) * 4;
+                mastery = MaxSkillLevel(CharacterSkill.SwordMastery) * 4;
                 break;
             case WeaponClass.TwoHandSword: //2hand sword
-                mastery = MaxLearnedLevelOfSkill(CharacterSkill.TwoHandSwordMastery) * 4;
+                mastery = MaxSkillLevel(CharacterSkill.TwoHandSwordMastery) * 4;
                 break;
             case WeaponClass.Spear: //spear
             case WeaponClass.TwoHandSpear: //2hand spear
                 if (HasPeco)
-                    mastery = MaxLearnedLevelOfSkill(CharacterSkill.SpearMastery) * 5;
+                    mastery = MaxSkillLevel(CharacterSkill.SpearMastery) * 5;
                 else
-                    mastery = MaxLearnedLevelOfSkill(CharacterSkill.SpearMastery) * 4;
+                    mastery = MaxSkillLevel(CharacterSkill.SpearMastery) * 4;
                 break;
             case WeaponClass.Mace:
             case WeaponClass.TwoHandMace:
-                mastery = MaxLearnedLevelOfSkill(CharacterSkill.MaceMastery) * 4;
+                mastery = MaxSkillLevel(CharacterSkill.MaceMastery) * 4;
                 break;
             case WeaponClass.Katar:
-                mastery = MaxLearnedLevelOfSkill(CharacterSkill.KatarMastery) * 4;
+                mastery = MaxSkillLevel(CharacterSkill.KatarMastery) * 4;
                 break;
         }
 
-        var appraisal = MaxLearnedLevelOfSkill(CharacterSkill.ItemAppraisal);
+        var appraisal = MaxSkillLevel(CharacterSkill.ItemAppraisal);
         if (appraisal > 0)
             mastery += appraisal * Equipment.MainHandWeapon.WeaponLevel;
 
         SetStat(CharacterStat.WeaponMastery, mastery);
     }
 
+    //rents a peco; only knights and crusaders ride one
     public void StartRidingMount()
     {
-        if (HasPeco)
-            return;
-
         if (JobId != 7 && JobId != 13)
         {
             ServerLogger.LogErrorWithStackTrace($"Player {Character.Name} attempting to mount, but they are not one of the allowed jobs (job {JobId})");
             return;
         }
 
-        PlayerFollower |= CharacterFollowerState.Mounted;
-        SetData(PlayerStat.FollowerType, (int)PlayerFollower);
-        CombatEntity.AddStatusEffect(CharacterStatusEffect.PecoRiding, int.MaxValue);
-
-        RefreshWeaponMastery();
-        UpdateStats(false, false);
-        Character.Map?.RefreshEntity(Character);
-    }
-
-    public void StopRidingMount()
-    {
-        if (HasPeco)
-        {
-            PlayerFollower = 0; //this call will double for removing the bird too
-            SetData(PlayerStat.FollowerType, 0);
-        }
-
-        RefreshWeaponMastery();
-        UpdateStats(false, false);
-        Character.Map?.RefreshEntity(Character);
+        SetFollowers(PlayerFollower | CharacterFollowerState.Mounted);
     }
 
     public void LevelUp()
@@ -1232,7 +1250,7 @@ public class Player : IEntityAutoReset
         SetStat(CharacterStat.Sp, currentSp);
         CommandBuilder.ChangeSpValue(this, currentSp, GetStat(CharacterStat.MaxSp));
         if (Party != null)
-            CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(this, true);
+            CommandBuilder.UpdatePartyMembersOfHpSpChange(this, true);
     }
 
     public bool TryTakeSpValue(int spCost)
@@ -1247,56 +1265,140 @@ public class Player : IEntityAutoReset
 
     public void AddSkillToCharacter(CharacterSkill skill, int level)
     {
-        if (LearnedSkills.TryGetValue(skill, out var curLevel))
-            SkillHandler.RemovePassiveEffects(skill, CombatEntity, curLevel); //remove the old passive if they currently know it
-
-        SkillHandler.ApplyPassiveEffects(skill, CombatEntity, level);
+        var isNew = !LearnedSkills.ContainsKey(skill);
+        var oldLevel = MaxSkillLevel(skill);
         LearnedSkills[skill] = level;
+        ChangePassiveLevel(skill, oldLevel);
+        if (isNew)
+            SkillHandler.OnLearned(skill, CombatEntity);
 
         if (SkillHandler.GetSkillAttributes(skill).SkillTarget == SkillTarget.Passive)
             UpdateStats();
     }
 
-    public void GrantSkillToCharacter(CharacterSkill skill, int level)
+    //runs at the higher of the learned and granted levels; the caller updates the stats
+    private void ChangePassiveLevel(CharacterSkill skill, int oldLevel)
     {
-        GrantedSkills ??= new();
-
-        if (GrantedSkills.TryGetValue(skill, out var cur))
-        {
-            if (cur >= level)
-                return;
-
-            GrantedSkills[skill] = level;
+        var newLevel = MaxSkillLevel(skill);
+        if (newLevel == oldLevel)
             return;
-        }
 
-        GrantedSkills.Add(skill, level);
+        if (oldLevel > 0)
+            SkillHandler.RemovePassiveEffects(skill, CombatEntity, oldLevel);
+        if (newLevel > 0)
+            SkillHandler.ApplyPassiveEffects(skill, CombatEntity, newLevel);
+        else
+            SetFollowers(PlayerFollower); //drops a follower that needed this skill
     }
 
+    //style 0-4
+    public void SetCart(int style) =>
+        SetFollowers((PlayerFollower & ~CharacterFollowerState.AnyCart) | CharacterFollowerStateExtensions.CartForStyle(style));
+
+    public void GiveFalcon() => SetFollowers(PlayerFollower | CharacterFollowerState.Falcon);
+
+    public void RemoveFollower(CharacterFollowerState follower) => SetFollowers(PlayerFollower & ~follower);
+
+    //followers without the skill to use them are left out
+    public void SetFollowers(CharacterFollowerState followers, bool updateClients = true)
+    {
+        var oldFollowers = PlayerFollower;
+        SetData(PlayerStat.FollowerType, (int)(followers & UsableFollowers));
+        FollowersChanged(oldFollowers, updateClients);
+    }
+
+    //Without updateClients only the statuses change.
+    private void FollowersChanged(CharacterFollowerState oldFollowers, bool updateClients)
+    {
+        var followers = PlayerFollower;
+        var changed = followers ^ oldFollowers;
+        if (changed == CharacterFollowerState.None)
+            return;
+
+        if ((changed & CharacterFollowerState.Falcon) != 0)
+            SetFollowerStatus(CharacterStatusEffect.Falcon, HasFalcon);
+
+        var mountChanged = (changed & CharacterFollowerState.Mounted) != 0;
+        if (mountChanged)
+            SetFollowerStatus(CharacterStatusEffect.PecoRiding, HasPeco);
+
+        if (!updateClients)
+            return;
+
+        if (mountChanged)
+        {
+            //riding changes the sprite, so the whole entity is sent again
+            RefreshWeaponMastery();
+            UpdateStats(false); //sent, so speed, attack and weight limit follow the mount
+            Character.Map?.RefreshEntity(Character);
+        }
+        else
+            CommandBuilder.UpdatePlayerFollowerStateAutoVis(this);
+    }
+
+    private void SetFollowerStatus(CharacterStatusEffect status, bool hasFollower)
+    {
+        if (hasFollower)
+            CombatEntity.AddStatusEffect(status, int.MaxValue);
+        else
+            CombatEntity.RemoveStatusOfTypeIfExists(status);
+    }
+
+    //lasts until removed or logout; the caller updates the stats
+    public void GrantSkillToCharacter(CharacterSkill skill, int level)
+    {
+        grants ??= new();
+        grants.Add((skill, level));
+        UpdateGrantedLevel(skill);
+    }
+
+    //removes one grant of that level, or every grant without a level; the caller updates the stats
     public void RemoveGrantedSkill(CharacterSkill skill, int level = -1)
     {
-        if (GrantedSkills == null)
+        if (grants == null)
             return;
 
-        if (!GrantedSkills.TryGetValue(skill, out var cur))
-            return;
+        if (level > 0)
+        {
+            var i = grants.IndexOf((skill, level));
+            if (i < 0)
+                return;
+            grants.RemoveAt(i);
+        }
+        else
+            grants.RemoveAll(g => g.skill == skill);
 
-        if (level > 0 && cur != level)
-            return;
+        UpdateGrantedLevel(skill);
+    }
 
-        GrantedSkills.Remove(skill);
+    //another grant of the same skill can still hold it at its own level
+    private void UpdateGrantedLevel(CharacterSkill skill)
+    {
+        var level = 0;
+        foreach (var g in grants!)
+            if (g.skill == skill && g.level > level)
+                level = g.level;
+
+        var oldLevel = MaxSkillLevel(skill);
+        if (level > 0)
+            (GrantedSkills ??= new())[skill] = level;
+        else
+            GrantedSkills?.Remove(skill);
+
+        ChangePassiveLevel(skill, oldLevel);
     }
 
     private void RefreshPassiveSkills()
     {
         foreach (var skill in LearnedSkills)
-            SkillHandler.RefreshPassiveEffects(skill.Key, CombatEntity, skill.Value);
+            SkillHandler.RefreshPassiveEffects(skill.Key, CombatEntity, MaxSkillLevel(skill.Key));
 
         if (GrantedSkills == null)
             return;
 
         foreach (var skill in GrantedSkills)
-            SkillHandler.RefreshPassiveEffects(skill.Key, CombatEntity, skill.Value);
+            if (!LearnedSkills.ContainsKey(skill.Key))
+                SkillHandler.RefreshPassiveEffects(skill.Key, CombatEntity, skill.Value);
     }
 
     public void UpdateSitStatus(bool isSitting)
@@ -1366,7 +1468,7 @@ public class Player : IEntityAutoReset
         else
             isSittingHpTick = false;
 
-        var hpRegenSkill = MaxLearnedLevelOfSkill(CharacterSkill.IncreasedHPRecovery);
+        var hpRegenSkill = MaxSkillLevel(CharacterSkill.IncreasedHPRecovery);
         if (hpRegenSkill > 0 && hp < maxHp)
         {
             var plusHpRegen = 5 * hpRegenSkill + maxHp * hpRegenSkill / 500;
@@ -1389,7 +1491,7 @@ public class Player : IEntityAutoReset
             //CommandBuilder.ClearRecipients();
 
             if (Party != null)
-                CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(this, false); //only update those out of range
+                CommandBuilder.UpdatePartyMembersOfHpSpChange(this, false); //only update those out of range
         }
     }
 
@@ -1418,7 +1520,7 @@ public class Player : IEntityAutoReset
         else
             isSittingSpTick = false;
 
-        var spRegenSkill = MaxLearnedLevelOfSkill(CharacterSkill.IncreaseSPRecovery);
+        var spRegenSkill = MaxSkillLevel(CharacterSkill.IncreaseSPRecovery);
         if (spRegenSkill > 0 && sp < maxSp)
         {
             var plusSpRegen = 3 * spRegenSkill + maxSp * spRegenSkill / 500; //3sp + 0.2% maxSP per level
@@ -1437,7 +1539,7 @@ public class Player : IEntityAutoReset
         {
             CommandBuilder.ChangeSpValue(this, sp + regen, maxSp);
             if (Party != null)
-                CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(this, true);
+                CommandBuilder.UpdatePartyMembersOfHpSpChange(this, true);
         }
     }
 
@@ -1574,14 +1676,17 @@ public class Player : IEntityAutoReset
         if (Character.ClassId < 100) //we don't want to override special character classes like GameMaster
             Character.ClassId = newJobId;
 
-        PlayerFollower &= ~CharacterFollowerState.AnyCart;
-        SetData(PlayerStat.FollowerType, 0);
+        //rented carts, falcons and pecos are returned; the refresh below shows it
+        SetFollowers(CharacterFollowerState.None, false);
 
         Equipment.UnequipAllItems();
         UpdateStats();
 
         if (Character.Map != null)
             Character.Map.RefreshEntity(Character);
+
+        //party members draw this player's job and headgear
+        MarkPartyInfoChanged();
     }
 
     [ScriptUseable]
@@ -1795,7 +1900,7 @@ public class Player : IEntityAutoReset
         var isDualWielding = Character.Player.Equipment.IsDualWielding;
 
         if (isDualWielding)
-            multiplier *= 0.5f + MaxLearnedLevelOfSkill(CharacterSkill.RightHandMastery) * 0.1f;
+            multiplier *= 0.5f + MaxSkillLevel(CharacterSkill.RightHandMastery) * 0.1f;
 
         var di = CombatEntity.CalculateCombatResult(target, multiplier, 1, AttackFlags.Physical | AttackFlags.CanCrit);
         var canDoubleAttack = (Character.Player.MainWeaponClass == (int)WeaponClass.Dagger ||
@@ -1811,7 +1916,7 @@ public class Player : IEntityAutoReset
         if (MainWeaponClass == (int)WeaponClass.Katar && di.Damage > 0) //katar
         {
             di.Time = Time.ElapsedTimeFloat + di.TimeInSeconds * 0.5f;
-            di.DamageOffHand = (short)(di.Damage * (1 + MaxAvailableLevelOfSkill(CharacterSkill.DoubleAttack) * 2) / 100);
+            di.DamageOffHand = (short)(di.Damage * (1 + MaxSkillLevel(CharacterSkill.DoubleAttack) * 2) / 100);
             if (di.DamageOffHand <= 0)
                 di.DamageOffHand = 1;
         }
@@ -1828,7 +1933,7 @@ public class Player : IEntityAutoReset
             if (element == AttackElement.None)
                 element = AttackElement.Neutral; //None would be replaced by main-hand element, and off-hand is never endowed, so we specify here if it's a neutral type.
 
-            var req = new AttackRequest(0.3f + MaxLearnedLevelOfSkill(CharacterSkill.LeftHandMastery) * 0.1f, 1, flags, element);
+            var req = new AttackRequest(0.3f + MaxSkillLevel(CharacterSkill.LeftHandMastery) * 0.1f, 1, flags, element);
             (req.MinAtk, req.MaxAtk) = CombatEntity.CalculateAttackPowerRange(false, false); //calculate offhand
             var di2 = CombatEntity.CalculateCombatResult(target, req);
 
@@ -2094,7 +2199,7 @@ public class Player : IEntityAutoReset
             if (Party != null)
             {
                 CommandBuilder.UpdatePartyMembersOfMapChange(this, mapName);
-                CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(this, true);
+                CommandBuilder.UpdatePartyMembersOfHpSpChange(this, true);
             }
         }
 
@@ -2175,12 +2280,7 @@ public class Player : IEntityAutoReset
             if (Character.State == CharacterState.Moving && canAttack)
                 Character.StopMovingImmediately(); //we've locked in place but we're close enough to attack
             if (Character.State == CharacterState.Idle && !canAttack && !Character.InAttackCooldown)
-            {
-                var target = CombatEntity.CastingSkill.TargetEntity;
-                isValid = Character.TryMove(cast.TargetedPosition, 1);
-                if (isValid)
-                    Character.QueuedAction = QueuedAction.Cast; //trymove will reset this...
-            }
+                isValid = MoveKeepingQueuedCast(cast.TargetedPosition);
 
             if (InCombatReadyState && isValid && canAttack)
             {
@@ -2210,10 +2310,7 @@ public class Player : IEntityAutoReset
                 if (Character.State == CharacterState.Moving && canAttack)
                     Character.StopMovingImmediately(); //we've locked in place but we're close enough to attack
                 if (Character.State == CharacterState.Idle && !canAttack)
-                {
-                    var target = CombatEntity.CastingSkill.TargetEntity;
-                    isValid = Character.TryMove(targetCharacter.Position, 1);
-                }
+                    isValid = MoveKeepingQueuedCast(targetCharacter.Position);
 
                 if (InCombatReadyState && isValid)
                 {
@@ -2232,6 +2329,16 @@ public class Player : IEntityAutoReset
                 Target = Entity.Null;
             }
         }
+    }
+
+    //TryMove clears the queued action, so the cast is queued again to run on arrival
+    private bool MoveKeepingQueuedCast(Position destination)
+    {
+        if (!Character.TryMove(destination, 1))
+            return false;
+
+        Character.QueuedAction = QueuedAction.Cast;
+        return true;
     }
 
     public void IndirectCastQueueUpdate()
@@ -2255,6 +2362,13 @@ public class Player : IEntityAutoReset
         InputActionCooldown -= Time.DeltaTimeFloat; //this cooldown is the delay on how often a player can perform actions
         if (InputActionCooldown < 0)
             InputActionCooldown = 0;
+
+        if (partyInfoChanged)
+        {
+            partyInfoChanged = false;
+            if (Party != null)
+                CommandBuilder.NotifyPartyOfChange(Party, PartyMemberId, PartyUpdateType.UpdatePlayer);
+        }
 
         Debug.Assert(Character.Map != null);
         Debug.Assert(CombatEntity != null);
@@ -2315,6 +2429,30 @@ public class Player : IEntityAutoReset
                     }
 
                     Connection.ActiveDbAction = ActiveDbAction.None;
+                }
+            }
+
+            if (Connection.ActiveDbAction == ActiveDbAction.ChangeName)
+            {
+                var request = Connection.ChangeNameRequest;
+                if (request == null || request.IsComplete)
+                {
+                    //a failed request has already told the player why
+                    if (request is { HasFailed: false })
+                    {
+                        World.Instance.RenamePlayer(Entity, Name, request.NewName);
+                        Name = request.NewName;
+                        Character.Name = request.NewName;
+
+                        Character.Map?.AddVisiblePlayersAsPacketRecipients(Character);
+                        CommandBuilder.SendChangeNameMulti(Character, request.NewName);
+                        CommandBuilder.ClearRecipients();
+
+                        MarkPartyInfoChanged();
+                    }
+
+                    Connection.ActiveDbAction = ActiveDbAction.None;
+                    Connection.ChangeNameRequest = null;
                 }
             }
         }

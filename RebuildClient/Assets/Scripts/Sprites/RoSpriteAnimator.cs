@@ -13,7 +13,11 @@ namespace Assets.Scripts.Sprites
         bool isActive,
         float TransitionTime = 0,
         SpriteMotion CurrentMotion = SpriteMotion.Idle,
-        SpriteMotion TargetMotion = SpriteMotion.Idle);
+        SpriteMotion TargetMotion = SpriteMotion.Idle)
+    {
+        //the record is immutable, so every animator not waiting on a transition can share one instance
+        public static readonly QueuedMotionTransition Inactive = new(false);
+    }
 
     public class RoSpriteAnimator : MonoBehaviour
     {
@@ -146,7 +150,7 @@ namespace Assets.Scripts.Sprites
         private bool isDirty;
         private bool isActive;
 
-        private QueuedMotionTransition queuedMotionTransition;
+        private QueuedMotionTransition queuedMotionTransition = QueuedMotionTransition.Inactive;
 
         public void OverrideCurrentFrame(int frame)
         {
@@ -186,6 +190,14 @@ namespace Assets.Scripts.Sprites
         public void SetDirty()
         {
             isDirty = true;
+        }
+
+        // toggle the raycast collider without affecting the visible sprite
+        public void SetColliderEnabled(bool isEnabled)
+        {
+            var collider = GetComponent<MeshCollider>();
+            if (collider != null)
+                collider.enabled = isEnabled;
         }
 
         public void SetRenderActive(bool isActive)
@@ -238,6 +250,46 @@ namespace Assets.Scripts.Sprites
                 ChangeAction(0);
         }
 
+
+        //Swaps the sprite, keeping state, color and children.
+        public void ReplaceSpriteData(RoSpriteData spriteData)
+        {
+            if (!isInitialized || SpriteRenderer == null)
+            {
+                OnSpriteDataLoad(spriteData);
+                return;
+            }
+
+            if (spriteData == null)
+                spriteData = FallbackSpriteData;
+            if (spriteData == SpriteData)
+                return;
+
+            SpriteData = spriteData;
+            Type = spriteData.Type;
+            spriteName = spriteData.Name;
+            IgnoreAnchor = spriteData.IgnoreAnchor;
+            SpriteRenderer.SetSprite(spriteData);
+
+            foreach (var child in ChildrenSprites)
+                child.SpriteRenderer?.SetOffset(spriteData.Size / 125f);
+
+            if (Parent == null)
+            {
+                var frame = currentFrame;
+                var paused = isPaused;
+                ChangeMotion(CurrentMotion, true);
+                currentFrame = Mathf.Min(frame, maxFrame);
+                isPaused = paused;
+            }
+            else
+            {
+                ChildSetFrameData(currentActionIndex, currentAngleIndex, 0);
+                Parent.isDirty = true;
+            }
+
+            isDirty = true;
+        }
 
         public void OnSpriteDataLoadNoCollider(RoSpriteData spriteData)
         {
@@ -499,7 +551,7 @@ namespace Assets.Scripts.Sprites
             if (CurrentMotion == nextMotion && !forceUpdate)
                 return;
 
-            queuedMotionTransition = new QueuedMotionTransition(false);
+            queuedMotionTransition = QueuedMotionTransition.Inactive;
 
             CurrentMotion = nextMotion;
             currentFrame = 0;
@@ -662,11 +714,11 @@ namespace Assets.Scripts.Sprites
 
                     if (SpriteRenderer is RoSpriteRendererStandard std)
                     {
-                        transform.localPosition = new Vector3(diff.x / 50f, 0, -SpriteOrder * 0.003f);
-                        std.ShaderYOffset = -diff.y / 50f;
+                        transform.localPosition = new Vector3(diff.x / SpriteMeshBuilder.PixelsPerUnit, 0, -SpriteOrder * 0.003f);
+                        std.ShaderYOffset = -diff.y / SpriteMeshBuilder.PixelsPerUnit;
                     }
                     else
-                        transform.localPosition = new Vector3(diff.x / 50f, -diff.y / 50f, -SpriteOrder * 0.01f);
+                        transform.localPosition = new Vector3(diff.x / SpriteMeshBuilder.PixelsPerUnit, -diff.y / SpriteMeshBuilder.PixelsPerUnit, -SpriteOrder * 0.01f);
                 }
             }
 
@@ -821,7 +873,7 @@ namespace Assets.Scripts.Sprites
             if (queuedMotionTransition.isActive && queuedMotionTransition.TransitionTime <= Time.timeSinceLevelLoad)
             {
                 if (queuedMotionTransition.CurrentMotion != CurrentMotion)
-                    queuedMotionTransition = new QueuedMotionTransition(false);
+                    queuedMotionTransition = QueuedMotionTransition.Inactive;
                 else
                 {
                     var target = queuedMotionTransition.TargetMotion;

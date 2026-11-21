@@ -65,7 +65,7 @@ public class StatusPoisonReact : StatusEffectBase
 
         var level = 1;
         if (ch.Character.Type == CharacterType.Player)
-            level = ch.Player.MaxAvailableLevelOfSkill(CharacterSkill.Envenom);
+            level = ch.Player.MaxSkillLevel(CharacterSkill.Envenom);
         
         var skill = new SkillCastInfo()
         {

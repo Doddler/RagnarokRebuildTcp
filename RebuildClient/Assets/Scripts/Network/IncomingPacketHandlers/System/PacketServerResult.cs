@@ -22,6 +22,9 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.System
                 case ServerResult.InviteFailedAlreadyInParty:
                     Camera.AppendChatText($"Party invite failed, player is already in another party.", TextColor.Error);
                     break;
+                case ServerResult.InviteFailedPartyFull:
+                    Camera.AppendChatText($"Party invite failed, the party is full.", TextColor.Error);
+                    break;
                 case ServerResult.InviteFailedRecipientNoBasicSkill:
                     Camera.AppendChatText($"Party invite failed, player's basic skill level is too low to join.", TextColor.Error);
                     break;

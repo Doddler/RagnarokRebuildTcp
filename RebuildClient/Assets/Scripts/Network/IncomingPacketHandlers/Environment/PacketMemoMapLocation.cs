@@ -9,8 +9,10 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Environment
     {
         public override void ReceivePacket(ClientInboundMessage msg)
         {
-            for(var i = 0; i < 4; i++)
-                State.MemoLocations[i] = MapMemoLocation.DeSerialize(msg);
+            var locations = new MapMemoLocation[State.MemoLocations.Count];
+            for (var i = 0; i < locations.Length; i++)
+                locations[i] = MapMemoLocation.DeSerialize(msg);
+            State.SetMemoLocations(locations);
         }
     }
 }

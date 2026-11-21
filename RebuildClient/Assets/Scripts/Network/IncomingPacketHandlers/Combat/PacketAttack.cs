@@ -30,6 +30,11 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             var motionTime = msg.ReadFloat();
             var damageTime = msg.ReadFloat();
             var showAttackAction = msg.ReadBoolean();
+            //credited to someone other than the attacker, such as a poison's caster
+            var ownerId = msg.ReadInt32();
+            ServerControllable owner = null;
+            if (ownerId >= 0)
+                Network.EntityList.TryGetValue(ownerId, out owner);
 
             var comboDelay = 0.2f;
 
@@ -131,10 +136,10 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                     {
                         if (hasOffHand)
                             controllable2.Messages.SendDualWieldingDamageEvent(controllable, damageTime, dmg, offHand, hits,
-                                resultType == AttackResult.CriticalDamage);
+                                resultType == AttackResult.CriticalDamage, owner);
                         else
                             controllable2.Messages.SendDamageEvent(controllable, damageTime, dmg, hits, resultType == AttackResult.CriticalDamage, dmgSound,
-                                result.Skill != CharacterSkill.Smoking);
+                                result.Skill != CharacterSkill.Smoking, owner);
                     }
                 }
 

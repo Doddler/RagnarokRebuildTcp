@@ -136,8 +136,10 @@ namespace Assets.Scripts.Network.Messaging
             EnqueueMessage(msg);
         }
 
-        public void SendDualWieldingDamageEvent(ServerControllable src, float time, int damage, int offDamage, int hitCount, bool isCrit)
+        public void SendDualWieldingDamageEvent(ServerControllable src, float time, int damage, int offDamage, int hitCount, bool isCrit,
+            ServerControllable owner = null)
         {
+            var damageOwner = owner != null ? owner : src;
             if (damage > 0)
             {
                 for (var i = 0; i < hitCount; i++)
@@ -146,6 +148,7 @@ namespace Assets.Scripts.Network.Messaging
                     msg.ActivationTime = Time.timeSinceLevelLoad + time + 0.1f * i;
                     msg.Type = EntityMessageType.ShowDamage;
                     msg.Entity = src;
+                    msg.DamageOwner = damageOwner;
                     msg.Value1 = damage;
                     if (hitCount > 1)
                         msg.Value2 = (i + 1) * damage;
@@ -163,6 +166,7 @@ namespace Assets.Scripts.Network.Messaging
                 msg.ActivationTime = Time.timeSinceLevelLoad + time + 0.3f;
                 msg.Type = EntityMessageType.ShowDamage;
                 msg.Entity = src;
+                msg.DamageOwner = damageOwner;
                 msg.Value1 = offDamage;
                 if (damage > 0 && hitCount > 1)
                     msg.Value2 = damage * hitCount + offDamage;
@@ -182,7 +186,8 @@ namespace Assets.Scripts.Network.Messaging
             EnqueueMessage(msg);
         }
 
-        public void SendDamageEvent(ServerControllable src, float time, int damage, int hitCount, bool isCrit = false, bool takeWeaponSound = true, bool playSound = true)
+        public void SendDamageEvent(ServerControllable src, float time, int damage, int hitCount, bool isCrit = false, bool takeWeaponSound = true, bool playSound = true,
+            ServerControllable owner = null)
         {
 // #if DEBUG
 //             Debug.Log($"Enqueued damage event {damage}x{hitCount} damage, execute after {time}s");
@@ -193,6 +198,7 @@ namespace Assets.Scripts.Network.Messaging
                 msg.ActivationTime = Time.timeSinceLevelLoad + time + 0.2f * i;
                 msg.Type = EntityMessageType.ShowDamage;
                 msg.Entity = src;
+                msg.DamageOwner = owner != null ? owner : src;
                 msg.Value1 = damage;
                 if (hitCount > 1)
                     msg.Value2 = (i + 1) * damage;

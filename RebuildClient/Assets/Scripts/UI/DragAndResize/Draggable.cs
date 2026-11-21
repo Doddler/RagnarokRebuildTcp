@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.UI.ConfigWindow;
+using Assets.Scripts.Utility;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
@@ -9,7 +11,6 @@ namespace Assets.Scripts.UI
         public RectTransform Target;
         public CanvasGroup CanvasGroup;
         public bool ShouldReturn;
-        public bool LockFullyInBounds;
         public bool SnapToStep;
         public int StepSize;
         
@@ -17,7 +18,6 @@ namespace Assets.Scripts.UI
         private Vector3 startMousePosition;
         private Vector3 startPosition;
         private bool adjustCanvasAlpha;
-        private Vector2 initialSize;
 
         public UnityEvent OnDragEvent;
 
@@ -25,7 +25,6 @@ namespace Assets.Scripts.UI
         {
             if (CanvasGroup != null)
                 adjustCanvasAlpha = true;
-            initialSize = Target.sizeDelta * Target.lossyScale;
         }
 
         public void OnPointerDown(PointerEventData eventData)
@@ -50,14 +49,7 @@ namespace Assets.Scripts.UI
 
         public void FitWindowIntoPlayArea()
         {
-
-            var pos = Target.position;
-            // var halfx = rect.sizeDelta.x * rect.transform.lossyScale.x / 2f;
-
-            pos = new Vector3(Mathf.Clamp(pos.x, 0, Screen.width - Target.sizeDelta.x * Target.transform.lossyScale.x),
-                Mathf.Clamp(pos.y, Target.sizeDelta.y * Target.transform.lossyScale.y, Screen.height), pos.z);
-            
-            Target.position = pos;
+            Target.position = Target.ClampFullyOnScreen(Target.position);
         }
 
         public void Update()
@@ -75,19 +67,10 @@ namespace Assets.Scripts.UI
 
                 var pos = startPosition + diff;
 
-                var halfx = Target.sizeDelta.x * Target.transform.lossyScale.x / 2f;
+                pos = GameConfig.Data.KeepWindowsOnScreen
+                    ? Target.ClampFullyOnScreen(pos)
+                    : Target.ClampDragToScreen(pos);
 
-
-
-                
-                if (LockFullyInBounds)
-                pos = new Vector3(Mathf.Clamp(pos.x, 0, Screen.width - Target.sizeDelta.x * Target.transform.lossyScale.x),
-                    Mathf.Clamp(pos.y, Target.sizeDelta.y * Target.transform.lossyScale.y, Screen.height), pos.z);
-                else
-                    pos = new Vector3(Mathf.Clamp(pos.x, -halfx, Screen.width - halfx),
-                        Mathf.Clamp(pos.y, Target.sizeDelta.y * Target.transform.lossyScale.y / 2f, Screen.height), pos.z);
-
-                //Debug.Log($"Screen.width:{Screen.width} Screen.height:{Screen.height} pos:{pos} rect:{rect.sizeDelta} scale:{rect.transform.lossyScale}");
                 if (pos != Target.position)
                     Target.position = pos;
             }

@@ -98,7 +98,7 @@ public class PacketVendingPurchaseFromStore : IClientPacketHandler
         }
 
         //we got this far, lets go
-        player.SetData(PlayerStat.Zeny, zeny - totalCost); //do this first
+        player.DropZeny(totalCost); //do this first
         for (var i = 0; i < purchaseCount; i++)
         {
             cart.RemoveItemByBagIdAndGetRemovedItem(bagIds[i], itemCounts[i], out var item);
@@ -122,7 +122,7 @@ public class PacketVendingPurchaseFromStore : IClientPacketHandler
             CommandBuilder.VendingNotifyOfSale(vendor, bagIds[i], itemCounts[i]);
         }
 
-        vendor.SetData(PlayerStat.Zeny, vendor.GetData(PlayerStat.Zeny) + totalCost); //do this last
+        vendor.AddZeny(totalCost); //do this last
 
         CommandBuilder.SendServerEvent(player, ServerEvent.TradeSuccess, -totalCost);
 

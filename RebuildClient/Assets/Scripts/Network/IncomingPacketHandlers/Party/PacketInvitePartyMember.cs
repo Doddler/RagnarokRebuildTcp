@@ -12,7 +12,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Party
             var partyName = msg.ReadString();
             var senderName = msg.ReadString();
 
-            State.InvitedPartyId = partyId;
+            State.Party.InvitedPartyId = partyId;
             
             UiManager.Instance.ToastNotificationArea.AddPartyInvite(partyId, senderName, partyName);
         }

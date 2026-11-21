@@ -9,6 +9,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills.Priest
         public static void Create(ServerControllable target)
         {
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.LexAeterna);
+            effect.UpdateOnlyOnFrameChange = true;
             effect.SetDurationByFrames(60);
             effect.FollowTarget = target.gameObject;
             effect.DestroyOnTargetLost = true;

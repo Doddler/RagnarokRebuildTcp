@@ -16,7 +16,7 @@ public class WeaponPerfectionHandler : SkillHandlerBase
             source.ApplyCooldownForSupportSkillAction();
 
         var len = lvl * 20;
-        if (source.Character.Type == CharacterType.Player && source.Player.MaxAvailableLevelOfSkill(CharacterSkill.HiltBinding) > 0)
+        if (source.Character.Type == CharacterType.Player && source.Player.MaxSkillLevel(CharacterSkill.HiltBinding) > 0)
             len = lvl * 22;
 
         var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.WeaponPerfection, len, lvl * 4);

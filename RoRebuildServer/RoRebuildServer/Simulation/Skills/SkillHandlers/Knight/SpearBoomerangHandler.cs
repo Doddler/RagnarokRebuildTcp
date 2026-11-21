@@ -15,12 +15,11 @@ public class SpearBoomerangHandler : SkillHandlerBase
     {
         return lvl switch
         {
-            1 => 5,
+            <= 1 => 5,
             2 => 6,
             3 => 8,
             4 => 9,
-            5 => 11,
-            _ => 5,
+            _ => 11,
         };
     }
 
@@ -36,8 +35,6 @@ public class SpearBoomerangHandler : SkillHandlerBase
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl,
         bool isIndirect, bool isItemSource)
     {
-        lvl = lvl.Clamp(1, 10);
-
         if (target == null || !target.IsValidTarget(source))
             return;
 

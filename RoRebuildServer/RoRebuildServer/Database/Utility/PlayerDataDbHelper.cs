@@ -25,37 +25,27 @@ public static class PlayerDataDbHelper
 
     public static void PackPlayerSummaryData(int[] buffer, Player p)
     {
+        p.Appearance.WriteSummary(buffer);
         buffer[(int)PlayerSummaryData.Level] = p.GetData(PlayerStat.Level);
-        buffer[(int)PlayerSummaryData.JobId] = p.GetData(PlayerStat.Job);
-        buffer[(int)PlayerSummaryData.HeadId] = p.GetData(PlayerStat.Head);
-        buffer[(int)PlayerSummaryData.HairColor] = p.GetData(PlayerStat.HairId);
         buffer[(int)PlayerSummaryData.Hp] = p.GetStat(CharacterStat.Hp);
         buffer[(int)PlayerSummaryData.MaxHp] = p.GetStat(CharacterStat.MaxHp);
         buffer[(int)PlayerSummaryData.Sp] = p.GetStat(CharacterStat.Sp);
         buffer[(int)PlayerSummaryData.MaxSp] = p.GetStat(CharacterStat.MaxSp);
-        buffer[(int)PlayerSummaryData.Headgear1] = p.Equipment.ItemIds[(int)EquipSlot.HeadTop];
-        buffer[(int)PlayerSummaryData.Headgear2] = p.Equipment.ItemIds[(int)EquipSlot.HeadMid];
-        buffer[(int)PlayerSummaryData.Headgear3] = p.Equipment.ItemIds[(int)EquipSlot.HeadBottom];
         buffer[(int)PlayerSummaryData.Str] = p.GetData(PlayerStat.Str);
         buffer[(int)PlayerSummaryData.Agi] = p.GetData(PlayerStat.Agi);
         buffer[(int)PlayerSummaryData.Int] = p.GetData(PlayerStat.Int);
         buffer[(int)PlayerSummaryData.Vit] = p.GetData(PlayerStat.Vit);
         buffer[(int)PlayerSummaryData.Dex] = p.GetData(PlayerStat.Dex);
         buffer[(int)PlayerSummaryData.Luk] = p.GetData(PlayerStat.Luk);
-        buffer[(int)PlayerSummaryData.Gender] = p.GetData(PlayerStat.Gender);
     }
-
 
     public static void PackNewCharacterSummaryData(int[] buffer, int gender, int headId, int hairColor)
     {
         var maxHp = DataManager.JobMaxHpLookup[0][1];
+        new PlayerAppearance(0, headId, hairColor, gender == 0).WriteSummary(buffer);
         buffer[(int)PlayerSummaryData.Level] = 1;
-        buffer[(int)PlayerSummaryData.JobId] = 0;
-        buffer[(int)PlayerSummaryData.HeadId] = headId;
-        buffer[(int)PlayerSummaryData.HairColor] = hairColor;
         buffer[(int)PlayerSummaryData.Hp] = maxHp;
         buffer[(int)PlayerSummaryData.MaxHp] = maxHp;
-        buffer[(int)PlayerSummaryData.Gender] = gender;
     }
 
     public static byte[] CompressData(byte[] array, int size)

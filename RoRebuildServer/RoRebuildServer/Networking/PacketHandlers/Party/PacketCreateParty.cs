@@ -3,6 +3,7 @@ using System.Diagnostics;
 using RoRebuildServer.Database.Requests;
 using RoRebuildServer.Database;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Util;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Party;
 
@@ -26,15 +27,10 @@ public class PacketCreateParty : IClientPacketHandler
 
         var partyName = msg.ReadString();
 
-        if (string.IsNullOrWhiteSpace(partyName))
+        var nameError = NameValidator.GetPartyNameError(partyName);
+        if (nameError != null)
         {
-            CommandBuilder.ErrorMessage(connection, "Party name cannot be empty.");
-            return;
-        }
-
-        if (partyName.Length > 32)
-        {
-            CommandBuilder.ErrorMessage(connection, "Party name cannot be longer than 32 characters long.");
+            CommandBuilder.ErrorMessage(connection, nameError);
             return;
         }
 
@@ -44,7 +40,7 @@ public class PacketCreateParty : IClientPacketHandler
             return;
         }
 
-        if (connection.Player.MaxLearnedLevelOfSkill(CharacterSkill.BasicMastery) < 6)
+        if (connection.Player.LearnedSkillLevel(CharacterSkill.BasicMastery) < 6)
         {
             CommandBuilder.SendActionResult(connection.Player, ServerResult.InviteFailedSenderNoBasicSkill);
             return;

@@ -665,7 +665,9 @@ namespace Assets.Scripts.MapEditor
                 return;
             }
 
+            SceneView.duringSceneGui -= OnSceneGUI;
             SceneView.duringSceneGui += OnSceneGUI;
+            EditorApplication.playModeStateChanged -= OnChangePlayMode;
             EditorApplication.playModeStateChanged += OnChangePlayMode;
 
 

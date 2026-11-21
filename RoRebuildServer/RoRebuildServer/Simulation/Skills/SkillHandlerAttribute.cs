@@ -42,6 +42,8 @@ public abstract class SkillHandlerBase
     public virtual void ApplyPassiveEffects(CombatEntity owner, int lvl) { }
     public virtual void RemovePassiveEffects(CombatEntity owner, int lvl) { }
     public virtual void RefreshPassiveEffects(CombatEntity owner, int lvl) { }
+    //the first level of the skill was just learned, after its passive effects were applied
+    public virtual void OnLearned(CombatEntity owner) { }
 
     public virtual int GetSkillRange(CombatEntity source, int lvl)
     {
@@ -286,6 +288,6 @@ public struct SkillCastInfo()
     public SkillCastFlags Flags;
     public bool IsIndirect { get; set; }
 
-    public bool IsValid => Level > 0 && Level <= 30;
+    public bool IsValid => Level > 0;
     public void Clear() => this = default; //{ Level = 0; Range = -1; ItemSource = -1; IsIndirect = false; HideName = false; }
 }

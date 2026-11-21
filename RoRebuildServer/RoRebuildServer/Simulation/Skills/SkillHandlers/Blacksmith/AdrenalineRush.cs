@@ -28,7 +28,7 @@ public class AdrenalineRush : SkillHandlerBase
             source.ApplyCooldownForSupportSkillAction();
 
         var duration = lvl * 30;
-        if (source.Character.Type == CharacterType.Player && source.Player.MaxAvailableLevelOfSkill(CharacterSkill.HiltBinding) > 0)
+        if (source.Character.Type == CharacterType.Player && source.Player.MaxSkillLevel(CharacterSkill.HiltBinding) > 0)
             duration = lvl * 33;
 
         var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.AdrenalineRush, duration, 30);

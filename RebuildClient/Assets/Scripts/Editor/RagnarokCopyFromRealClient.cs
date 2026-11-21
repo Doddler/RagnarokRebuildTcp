@@ -45,17 +45,10 @@ namespace Assets.Editor
 
         private static string UpdateSpriteName(string name)
         {
-            name = name.Replace("성직자_", "Acolyte_");
-            name = name.Replace("궁수_", "Archer_");
-            name = name.Replace("마법사_", "Mage_");
-            name = name.Replace("상인_", "Merchant_");
-            name = name.Replace("초보자_", "Novice_");
-            name = name.Replace("검사_", "Swordsman_");
-            name = name.Replace("도둑_", "Thief_");
-            name = name.Replace("여_", "F_");
-            name = name.Replace("남_", "M_");
+            foreach (var mapping in RagnarokClientDataImportDefinitions.JobSpriteMappings)
+                name = name.Replace(mapping.SourceName + "_", mapping.DestinationName + "_");
 
-            return name;
+            return name.Replace("여_", "F_").Replace("남_", "M_");
         }
 
 
@@ -434,6 +427,30 @@ namespace Assets.Editor
             private Vector2 scrollPos;
             private string dataDir;
 
+            private static readonly Color HealthBarBackground = new Color(0.15f, 0.15f, 0.15f, 1f);
+            private static readonly Color HealthBarPresent = new Color(0.20f, 0.62f, 0.32f, 1f);
+            private static readonly Color HealthBarMissing = new Color(0.82f, 0.55f, 0.16f, 1f);
+
+            private static GUIStyle _healthBarTextStyle;
+
+            private static GUIStyle HealthBarTextStyle
+            {
+                get
+                {
+                    if (_healthBarTextStyle != null)
+                        return _healthBarTextStyle;
+
+                    _healthBarTextStyle = new GUIStyle(EditorStyles.centeredGreyMiniLabel)
+                    {
+                        alignment = TextAnchor.MiddleCenter,
+                        fontStyle = FontStyle.Bold
+                    };
+
+                    _healthBarTextStyle.normal.textColor = Color.white;
+                    return _healthBarTextStyle;
+                }
+            }
+
             private CopyCategory CreateCopyCategory(
                 string label,
                 string sourceRelativePath,
@@ -510,10 +527,7 @@ namespace Assets.Editor
 
             private static string UpdateJobSpriteName(string path)
             {
-                foreach (var mapping in RagnarokClientDataImportDefinitions.JobSpriteMappings)
-                    path = path.Replace(mapping.SourceName, mapping.DestinationName);
-
-                return path.Replace("여_", "F_").Replace("남_", "M_");
+                return UpdateSpriteName(path);
             }
 
             private static bool ShouldImportJobSpriteMapping(
@@ -1032,32 +1046,6 @@ namespace Assets.Editor
                 };
 
                 RunHealthCheck();
-            }
-
-
-
-            private static readonly Color HealthBarBackground = new Color(0.15f, 0.15f, 0.15f, 1f);
-            private static readonly Color HealthBarPresent = new Color(0.20f, 0.62f, 0.32f, 1f);
-            private static readonly Color HealthBarMissing = new Color(0.82f, 0.55f, 0.16f, 1f);
-
-            private static GUIStyle _healthBarTextStyle;
-
-            private static GUIStyle HealthBarTextStyle
-            {
-                get
-                {
-                    if (_healthBarTextStyle != null)
-                        return _healthBarTextStyle;
-
-                    _healthBarTextStyle = new GUIStyle(EditorStyles.centeredGreyMiniLabel)
-                    {
-                        alignment = TextAnchor.MiddleCenter,
-                        fontStyle = FontStyle.Bold
-                    };
-
-                    _healthBarTextStyle.normal.textColor = Color.white;
-                    return _healthBarTextStyle;
-                }
             }
 
             private static void DrawHealthProgressBar(ImportHealth health)

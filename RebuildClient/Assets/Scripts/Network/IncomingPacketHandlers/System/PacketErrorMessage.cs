@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Network.HandlerBase;
 using RebuildSharedData.Networking;
+using Assets.Scripts.UI.Utility;
 
 namespace Assets.Scripts.Network.IncomingPacketHandlers.System
 {
@@ -9,7 +10,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.System
         public override void ReceivePacket(ClientInboundMessage msg)
         {
             var text = msg.ReadString();
-            Camera.AppendChatText($"<color=#FF7777>{text}</color>");
+            Camera.AppendChatText(text, TextColor.Error);
         }
     }
 }

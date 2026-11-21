@@ -27,7 +27,7 @@ public class PacketEquipUnequipGear : IClientPacketHandler
             connection.Player.Equipment.UnEquipItem(bagId);
             CommandBuilder.SendHealMultiAutoVis(connection.Character, 0, HealType.None);
             if (connection.Player.Party != null)
-                CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(connection.Player);
+                CommandBuilder.UpdatePartyMembersOfHpSpChange(connection.Player);
             //connection.Player.UpdateStats();
             return;
         }
@@ -52,7 +52,7 @@ public class PacketEquipUnequipGear : IClientPacketHandler
                 connection.Player.UpdateStats();
                 CommandBuilder.SendHealMultiAutoVis(connection.Character, 0, HealType.None);
                 if (connection.Player.Party != null)
-                    CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(connection.Player);
+                    CommandBuilder.UpdatePartyMembersOfHpSpChange(connection.Player);
                 return; //if it succeeds we'll have already sent a response
         }
     }

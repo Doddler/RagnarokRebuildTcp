@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.Network.HandlerBase;
 using Assets.Scripts.PlayerControl;
-using Assets.Scripts.UI.Hud;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using UnityEngine;
@@ -16,21 +15,9 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             var status = (CharacterStatusEffect)msg.ReadByte();
             var isRefresh = msg.ReadBoolean();
 
+            //no character while a map loads; the buff bar resets when the next one is bound
             if (Network.EntityList.TryGetValue(id, out var controllable))
-            {
-                //Debug.Log($"Removing status {status} from {controllable.Name}");
-
-                StatusEffectState.RemoveStatusFromTarget(controllable, status);
-                if(controllable.IsMainCharacter && !isRefresh)
-                    StatusEffectPanel.Instance.RemoveStatusEffect(status);
-            }
-            else
-            {
-                Debug.Log($"Status effect {status} is removed while player not active on map.");
-                if (NetworkManager.Instance.PlayerId == id && !isRefresh)
-                    StatusEffectPanel.Instance.RemoveStatusEffect(status);
-                    
-            }
+                StatusEffectState.RemoveStatusFromTarget(controllable, status, isRefresh);
         }
     }
 }

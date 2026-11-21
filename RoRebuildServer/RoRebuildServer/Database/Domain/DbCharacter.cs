@@ -9,7 +9,7 @@ public class DbCharacter
 {
     [Key] public Guid Id { get; set; }
 
-    [MaxLength(SharedConfig.MaxPlayerName, ErrorMessage = "Player name cannot exceed 32 characters in length")]
+    [MaxLength(SharedConfig.MaxPlayerName, ErrorMessage = "Player name cannot exceed {1} characters in length")]
     public string Name { get; set; } = null!;
 
     [MaxLength(32)] public string? Map { get; set; }

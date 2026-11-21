@@ -25,6 +25,17 @@ namespace Assets.Scripts.UI
         public static WarpPortalWindow Instance;
         [NonSerialized] public bool InMemoMode = false;
         private int selectedEntry;
+        private int shownSkillLevel;
+
+        private void OnEnable() => PlayerState.Instance.MemoLocationsChanged += OnMemoLocationsChanged;
+
+        private void OnDisable() => PlayerState.Instance.MemoLocationsChanged -= OnMemoLocationsChanged;
+
+        private void OnMemoLocationsChanged()
+        {
+            if (shownSkillLevel > 0)
+                FillInMemoButtons(shownSkillLevel, InMemoMode);
+        }
 
         public override void HideWindow()
         {
@@ -78,7 +89,7 @@ namespace Assets.Scripts.UI
 
             if (!hasDestinations)
             {
-                CameraFollower.Instance.AppendNotice("To cast warp portal you must first use the /memo command to memorize a destination.");
+                CameraFollower.Instance.AppendError("To cast warp portal you must first use the /memo command to memorize a destination.");
                 return;
             }
 
@@ -98,7 +109,7 @@ namespace Assets.Scripts.UI
         {
             if (!PlayerState.Instance.KnownSkills.TryGetValue(CharacterSkill.WarpPortal, out var skillLevel))
             {
-                CameraFollower.Instance.AppendNotice("You cannot use /memo command without knowing the warp portal skill.");
+                CameraFollower.Instance.AppendError("You cannot use /memo command without knowing the warp portal skill.");
                 return;
             }
             
@@ -106,7 +117,7 @@ namespace Assets.Scripts.UI
             var mapInfo = ClientDataLoader.Instance.GetMapInfo(mapName);
             if (mapInfo == null)
             {
-                CameraFollower.Instance.AppendNotice("This location is unavailable to use as a warp portal destination.");
+                CameraFollower.Instance.AppendError("This location is unavailable to use as a warp portal destination.");
                 return;
             }
 
@@ -120,7 +131,7 @@ namespace Assets.Scripts.UI
                     _ => "This location is unavailable to use as a warp portal destination."
                 };
                 
-                CameraFollower.Instance.AppendNotice(msg);
+                CameraFollower.Instance.AppendError(msg);
                 return;
             }
 
@@ -140,6 +151,7 @@ namespace Assets.Scripts.UI
         {
             Instance = this;
             InMemoMode = isMemo;
+            shownSkillLevel = skillLevel;
             gameObject.SetActive(true);
             transform.RectTransform().sizeDelta = PreferredDimensions;
             

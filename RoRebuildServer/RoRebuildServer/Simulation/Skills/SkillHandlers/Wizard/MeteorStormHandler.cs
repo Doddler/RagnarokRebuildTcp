@@ -30,12 +30,14 @@ public class MeteorStormHandler : SkillHandlerBase
             position = target != null ? target.Character.Position : source.Character.Position;
 
         var meteorCount = (4 + lvl) / 2;
-        if (lvl > 10)
-            meteorCount = 10;
-
         var maxDistance = 3;
-        if(lvl > 10)
+
+        //monsters above level 10 cast a version that rains over a much larger area
+        if (source.Character.Type == CharacterType.Monster && lvl > 10)
+        {
+            meteorCount = 10;
             maxDistance = 11;
+        }
 
         var dropArea = Area.CreateAroundPoint(position, maxDistance);
 

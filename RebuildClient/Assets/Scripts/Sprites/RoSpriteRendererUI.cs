@@ -24,6 +24,8 @@ namespace Assets.Scripts.Sprites
         private bool isEnabled;
         private string lastSprite;
 
+        public override Texture mainTexture => SpriteData?.Atlas ?? Texture2D.whiteTexture;
+
         public void SetAction(int action, bool is8Direction) => ActionId = action;
         public void SetColor(Color color) => Color = color;
         public void SetDirection(Direction direction) => Direction = direction;
@@ -65,8 +67,6 @@ namespace Assets.Scripts.Sprites
             throw new NotImplementedException();
         }
 
-        public override Texture mainTexture => SpriteData.Atlas;
-        
         protected override void OnRectTransformDimensionsChange()
         {
             base.OnRectTransformDimensionsChange();
@@ -93,7 +93,7 @@ namespace Assets.Scripts.Sprites
             var meshTriangles = mesh.triangles;
 
             for(var i = 0; i < meshVertices.Length; i++)
-                vh.AddVert(((Vector2)meshVertices[i] + OffsetPosition / 50f) * rectTransform.sizeDelta, meshColors32[i], meshUv[i]);
+                vh.AddVert(((Vector2)meshVertices[i] + OffsetPosition / SpriteMeshBuilder.PixelsPerUnit) * rectTransform.sizeDelta, meshColors32[i], meshUv[i]);
 
             for(var i = 0; i < meshTriangles.Length; i+=3)
                 vh.AddTriangle(meshTriangles[i], meshTriangles[i+1], meshTriangles[i+2]);
@@ -129,17 +129,18 @@ namespace Assets.Scripts.Sprites
         {
             //just a simple hash
             var id = ((ActionId + (int)Direction) << 16) + CurrentFrame;
-            
-            //if (meshCache == null || SpriteData.Name != lastSprite)
+
+            if (meshCache == null || SpriteData.Name != lastSprite)
+            {
                 meshCache = SpriteMeshCache.GetMeshCacheForSprite(SpriteData.Name);
+                lastSprite = SpriteData.Name;
+            }
 
             if (meshCache.TryGetValue(id, out var mesh))
                 return mesh;
 
             var newMesh = SpriteMeshBuilder.BuildSpriteMesh(SpriteData, ActionId, (int)Direction, CurrentFrame);
-
             meshCache.Add(id, newMesh);
-            lastSprite = SpriteData.Name;
 
             return newMesh;
         }

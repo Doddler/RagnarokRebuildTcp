@@ -18,7 +18,7 @@ public class PowerThrustHandler : SkillHandlerBase
         source.RemoveStatusOfTypeIfExists(CharacterStatusEffect.PowerThrustParty);
 
         var duration = lvl * 20;
-        if (source.Character.Type == CharacterType.Player && source.Player.MaxAvailableLevelOfSkill(CharacterSkill.HiltBinding) > 0)
+        if (source.Character.Type == CharacterType.Player && source.Player.MaxSkillLevel(CharacterSkill.HiltBinding) > 0)
             duration = lvl * 22;
 
         var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.PowerThrustSelf, duration, lvl * 5);

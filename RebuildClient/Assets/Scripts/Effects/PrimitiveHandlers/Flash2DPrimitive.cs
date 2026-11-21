@@ -13,67 +13,77 @@ namespace Assets.Scripts.Effects.PrimitiveHandlers
 
         private void UpdateFlash2D(RagnarokPrimitive primitive)
         {
-            var data = primitive.GetPrimitiveData<FlashData>();
+            var flash = primitive.GetPrimitiveData<FlashData>();
 
-            if (primitive.IsStepFrame && data.ChangePoint > 0 && data.ChangePoint == primitive.Step)
+            for (var i = 0; i < flash.RayCount; i++)
             {
-                data.RotationSpeed = data.ChangeRotationSpeed;
-                data.RotationAccel = data.ChangeRotationAccel;
-                data.LengthSpeed = data.ChangeLengthSpeed;
+                ref var data = ref flash.Rays[i];
+
+                if (primitive.IsStepFrame && data.ChangePoint > 0 && data.ChangePoint == primitive.Step)
+                {
+                    data.RotationSpeed = data.ChangeRotationSpeed;
+                    data.RotationAccel = data.ChangeRotationAccel;
+                    data.LengthSpeed = data.ChangeLengthSpeed;
+                }
+
+                var fadeStartTime = primitive.Duration - data.FadeOutLength;
+                if (primitive.CurrentPos > fadeStartTime)
+                    data.Alpha = Mathf.Clamp(data.Alpha - data.MaxAlpha / data.FadeOutLength * Time.deltaTime, 0, data.MaxAlpha);
+                else
+                    data.Alpha = Mathf.Clamp(data.Alpha + data.AlphaSpeed * Time.deltaTime, 0, data.MaxAlpha);
+
+                // Debug.Log($"{primitive.CurrentPos} fadeStart:{fadeStartTime} alpha:{data.Alpha} alphaSpeed:{data.AlphaSpeed} fadeSpeed:{data.MaxAlpha/data.FadeOutLength}");
+
+                data.RotationSpeed += data.RotationAccel * Time.deltaTime * 60;
+                data.RotationAngle += data.RotationSpeed * Time.deltaTime;
+
+                data.Length += data.LengthSpeed * Time.deltaTime;
+
+                if (data.Length < 0)
+                {
+                    data.LengthSpeed *= -1; //flip direction if we hit 0 size
+                    data.Length = 0;
+                }
+
+                // Debug.Log($"{Time.deltaTime}: Angle: {data.RotationAngle} RotationSpeed: {data.RotationSpeed} Accel: {data.RotationAccel} Length: {data.Length} Arc: {data.ArcLength} Alpha: {data.Alpha}");
             }
-            
-            var fadeStartTime = primitive.Duration - data.FadeOutLength;
-            if (primitive.CurrentPos > fadeStartTime)
-                data.Alpha = Mathf.Clamp(data.Alpha - data.MaxAlpha / data.FadeOutLength * Time.deltaTime, 0, data.MaxAlpha);
-            else
-                data.Alpha = Mathf.Clamp(data.Alpha + data.AlphaSpeed * Time.deltaTime, 0, data.MaxAlpha);
-
-            // Debug.Log($"{primitive.CurrentPos} fadeStart:{fadeStartTime} alpha:{data.Alpha} alphaSpeed:{data.AlphaSpeed} fadeSpeed:{data.MaxAlpha/data.FadeOutLength}");
-
-            data.RotationSpeed += data.RotationAccel * Time.deltaTime * 60;
-            data.RotationAngle += data.RotationSpeed * Time.deltaTime;
-
-            data.Length += data.LengthSpeed * Time.deltaTime;
-
-            if (data.Length < 0)
-            {
-                data.LengthSpeed *= -1; //flip direction if we hit 0 size
-                data.Length = 0;
-            }
-            
-            // Debug.Log($"{Time.deltaTime}: Angle: {data.RotationAngle} RotationSpeed: {data.RotationSpeed} Accel: {data.RotationAccel} Length: {data.Length} Arc: {data.ArcLength} Alpha: {data.Alpha}");
 
             primitive.IsDirty = true;
             primitive.IsActive = primitive.Step <= primitive.FrameDuration;
         }
-        
+
         private void RenderFlash2D(RagnarokPrimitive primitive, MeshBuilder mb)
         {
             mb.Clear();
             if (!primitive.IsActive)
                 return;
-            
-            var data = primitive.GetPrimitiveData<FlashData>();
-            
-            var color = new Color(1f, 1f, 1f, data.Alpha / 255f);
-            
-            var size = data.Length;
-            var angle = data.RotationAngle;
-            var arc = data.ArcLength;
-            
-            var c1 = Mathf.Cos((angle - arc) * Mathf.Deg2Rad);
-            var s1 = Mathf.Sin((angle - arc) * Mathf.Deg2Rad);
-            var c2 = Mathf.Cos((angle + arc) * Mathf.Deg2Rad);
-            var s2 = Mathf.Sin((angle + arc) * Mathf.Deg2Rad);
 
-            var point1 = new Vector3(c1 * size, s1 * size, 0f);
-            var point2 = new Vector3(c2 * size, s2 * size, 0f);
+            var flash = primitive.GetPrimitiveData<FlashData>();
 
             var uv0 = new Vector2(0.5f, 0f);
             var uv1 = new Vector2(1f, 1f);
             var uv2 = new Vector2(0f, 1f);
-            
-            primitive.AddTriangle(Vector3.zero, point1, point2, uv0, uv1, uv2, color);
+
+            for (var i = 0; i < flash.RayCount; i++)
+            {
+                ref var data = ref flash.Rays[i];
+
+                var color = new Color(1f, 1f, 1f, data.Alpha / 255f);
+
+                var size = data.Length;
+                var angle = data.RotationAngle;
+                var arc = data.ArcLength;
+
+                var c1 = Mathf.Cos((angle - arc) * Mathf.Deg2Rad);
+                var s1 = Mathf.Sin((angle - arc) * Mathf.Deg2Rad);
+                var c2 = Mathf.Cos((angle + arc) * Mathf.Deg2Rad);
+                var s2 = Mathf.Sin((angle + arc) * Mathf.Deg2Rad);
+
+                var point1 = new Vector3(c1 * size, s1 * size, 0f);
+                var point2 = new Vector3(c2 * size, s2 * size, 0f);
+
+                primitive.AddTriangle(Vector3.zero, point1, point2, uv0, uv1, uv2, color);
+            }
         }
 
     }

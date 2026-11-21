@@ -34,7 +34,11 @@ OnClick:
 	Dialog(name, "Welcome to the Kafra Corporation~ The Kafra Services are always here to support you. So how can I be of service today?");
 	string cartOption = "";
 	if(HasLearnedSkill(PushCart, 1) && !HasCart) cartOption = "Rent Push Cart";
-	Option("Save", "Use Storage", "Teleport Service", cartOption, "Cancel");
+	string falconOption = "";
+	if(HasLearnedSkill(FalconMastery, 1) && !HasFalcon) falconOption = "Rent Falcon";
+	string pecoOption = "";
+	if(HasLearnedSkill(PecoPecoRiding, 1) && !HasPeco) pecoOption = "Rent Peco Peco";
+	Option("Save", "Use Storage", "Teleport Service", cartOption, falconOption, pecoOption, "Cancel");
 	switch(Result) 	
 	{
 	case 0:
@@ -75,6 +79,34 @@ OnClick:
 			}
 			DropZeny(850);
 			EquipPushCart();
+		}
+	case 4:
+		Dialog(name, "The fee to rent a falcon is 2500 zeny. Is that alright?");
+		Option("Yes", "No");
+		switch(Result)
+		{
+		case 0:
+			if(GetZeny() < 2500)
+			{
+				Dialog(name, "Oh dear, you don't have enough money. Please come back when you have at least 2500 zeny.");
+				return;
+			}
+			DropZeny(2500);
+			EquipFalcon();
+		}
+	case 5:
+		Dialog(name, "The fee to rent a Peco Peco is 2500 zeny. Is that alright?");
+		Option("Yes", "No");
+		switch(Result)
+		{
+		case 0:
+			if(GetZeny() < 2500)
+			{
+				Dialog(name, "Oh dear, you don't have enough money. Please come back when you have at least 2500 zeny.");
+				return;
+			}
+			DropZeny(2500);
+			GivePeco();
 		}
 	}
 }

@@ -27,6 +27,7 @@ public static class SkillHandler
     public static void ApplyPassiveEffects(CharacterSkill skill, CombatEntity owner, int level) => handlers[(int)skill]?.ApplyPassiveEffects(owner, level);
     public static void RemovePassiveEffects(CharacterSkill skill, CombatEntity owner, int level) => handlers[(int)skill]?.RemovePassiveEffects(owner, level);
     public static void RefreshPassiveEffects(CharacterSkill skill, CombatEntity owner, int level) => handlers[(int)skill]?.RefreshPassiveEffects(owner, level);
+    public static void OnLearned(CharacterSkill skill, CombatEntity owner) => handlers[(int)skill]?.OnLearned(owner);
 
     static SkillHandler()
     {

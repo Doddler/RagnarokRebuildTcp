@@ -4,6 +4,7 @@ using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using Assets.Scripts.UI.ConfigWindow;
 using Assets.Scripts.UI.Hud;
+using Assets.Scripts.UI.Utility;
 using Assets.Scripts.Utility;
 using RebuildSharedData.Enum;
 using UnityEngine;
@@ -25,7 +26,7 @@ namespace Assets.Scripts.UI
     public class StorageUI : MonoBehaviour
     {
         public GenericItemListV2 ItemWindow;
-        public StorageControls StorageControls;
+        public TabGroupVisual StorageTabGroup;
         public static StorageUI Instance;
         
         public StorageSectionType CurrentSection;
@@ -40,6 +41,11 @@ namespace Assets.Scripts.UI
             RefreshItemList();
         }
 
+        public void ClickStorageTab(int type)
+        {
+            ChangeStorageTab((StorageSectionType)type);
+        }
+
         public void UpdateDropArea(bool isActive)
         {
             ItemWindow.DropZone.DisableDropArea();
@@ -52,54 +58,51 @@ namespace Assets.Scripts.UI
             Destroy(gameObject);
         }
 
-        public void UpdateStorageItemCount(InventoryItem item, int change)
+        //patches only the changed entry
+        private void OnStorageChanged(int bagId)
         {
-            if (change > 0)
+            if (bagId == ClientInventory.AllItems)
             {
-                if (!itemList.TryGetValue(item.BagSlotId, out var entry))
-                {
-                    AddItem(item);
-                }
-                else
-                {
-                    entry.UpdateCount(item.Count);
-                }
-
-                itemBag.UpdateItem(item);
+                RefreshItemList();
+                return;
             }
-            else
-            {
-                if (!itemList.TryGetValue(item.BagSlotId, out var entry))
-                    return;
-                
-                itemBag.RemoveItem(item.BagSlotId, -change);
 
-                if (entry.ItemCount + change <= 0) //change will be negative here
-                {
-                    itemList.Remove(item.BagSlotId);
-                    ItemWindow.ReturnItemListEntry(entry);
-                }
-                else
-                    entry.UpdateCount(entry.ItemCount + change);
-            }
-            
             RefreshItemCount();
 
-            if (CurrentSection == StorageSectionType.All)
+            if (!itemBag.TryGetInventoryItem(bagId, out var item))
+            {
+                if (itemList.Remove(bagId, out var removed))
+                    ItemWindow.ReturnItemListEntry(removed);
                 return;
-            
-            if(CurrentSection != StorageSectionType.Useable && item.ItemData.ItemClass == ItemClass.Useable) 
-                StorageControls.ClickStorageButton((int)StorageSectionType.Useable);
-            if(CurrentSection != StorageSectionType.Weapon && item.ItemData.ItemClass == ItemClass.Weapon) 
-                StorageControls.ClickStorageButton((int)StorageSectionType.Weapon);
-            if(CurrentSection != StorageSectionType.Armor && item.ItemData.ItemClass == ItemClass.Equipment) 
-                StorageControls.ClickStorageButton((int)StorageSectionType.Armor);
-            if(CurrentSection != StorageSectionType.Ammo && item.ItemData.ItemClass == ItemClass.Ammo) 
-                StorageControls.ClickStorageButton((int)StorageSectionType.Ammo);
-            if(CurrentSection != StorageSectionType.Card && item.ItemData.ItemClass == ItemClass.Card) 
-                StorageControls.ClickStorageButton((int)StorageSectionType.Card);
-            if(CurrentSection != StorageSectionType.Etc && item.ItemData.ItemClass == ItemClass.Etc) 
-                StorageControls.ClickStorageButton((int)StorageSectionType.Etc);
+            }
+
+            if (!IsInSection(item, CurrentSection))
+                return;
+
+            if (itemList.TryGetValue(bagId, out var entry))
+                entry.UpdateCount(item.Count);
+            else
+                AddItem(item);
+        }
+
+        private static StorageSectionType SectionFor(ItemClass itemClass) => itemClass switch
+        {
+            ItemClass.Useable => StorageSectionType.Useable,
+            ItemClass.Weapon => StorageSectionType.Weapon,
+            ItemClass.Equipment => StorageSectionType.Armor,
+            ItemClass.Ammo => StorageSectionType.Ammo,
+            ItemClass.Card => StorageSectionType.Card,
+            _ => StorageSectionType.Etc
+        };
+
+        private static bool IsInSection(InventoryItem item, StorageSectionType section) =>
+            section == StorageSectionType.All || SectionFor(item.ItemData.ItemClass) == section;
+
+        //an item put into storage brings up its tab, so it shows when it arrives
+        private void ShowSectionFor(InventoryItem item)
+        {
+            if (!IsInSection(item, CurrentSection))
+                SelectStorageTab(SectionFor(item.ItemData.ItemClass));
         }
         
         public void SetupStorageItems(ClientInventory bag)
@@ -132,12 +135,18 @@ namespace Assets.Scripts.UI
             }
 
             itemBag = bag;
+            itemBag.Changed += OnStorageChanged;
             itemList = new Dictionary<int, ItemListEntryV2>();
             
             var targetSection = CurrentSection;
             Debug.Log($"Setup storage with initial tab: {CurrentSection}");
             CurrentSection = StorageSectionType.Uninitialized; //it won't change if it thinks we're already on the tab... so lets change it
-            StorageControls.ClickStorageButton((int)targetSection);
+            SelectStorageTab(targetSection);
+        }
+
+        private void SelectStorageTab(StorageSectionType section)
+        {
+            StorageTabGroup.SelectTab((int)section, true);
         }
 
         public void OnDropInventoryItem(ItemDragObject srcItem)
@@ -147,6 +156,7 @@ namespace Assets.Scripts.UI
 
             if (PlayerState.Instance.Inventory.GetInventoryData().TryGetValue(srcItem.ItemId, out var item))
             {
+                ShowSectionFor(item);
                 if (item.ItemData.IsUnique || item.Count == 1)
                     NetworkManager.Instance.SendMoveStorageItem(srcItem.ItemId, srcItem.ItemCount, true);
                 else
@@ -160,6 +170,7 @@ namespace Assets.Scripts.UI
 
             if (PlayerState.Instance.Inventory.GetInventoryData().TryGetValue(bagSlotId, out var item))
             {
+                ShowSectionFor(item);
                 if (item.ItemData.IsUnique || item.Count == 1 || Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
                     NetworkManager.Instance.SendMoveStorageItem(bagSlotId, item.Count, true);
                 else
@@ -209,34 +220,8 @@ namespace Assets.Scripts.UI
             itemList.Clear();
             
             foreach (var (key, item) in itemBag.GetInventoryData())
-            {
-                switch (CurrentSection)
-                {
-                    case StorageSectionType.All:
-                        break;
-                    case StorageSectionType.Useable:
-                        if (item.ItemData.ItemClass != ItemClass.Useable) continue;
-                        break;
-                    case StorageSectionType.Weapon:
-                        if (item.ItemData.ItemClass != ItemClass.Weapon) continue;
-                        break;
-                    case StorageSectionType.Armor:
-                        if (item.ItemData.ItemClass != ItemClass.Equipment) continue;
-                        break;
-                    case StorageSectionType.Ammo:
-                        if (item.ItemData.ItemClass != ItemClass.Ammo) continue;
-                        break;
-                    case StorageSectionType.Card:
-                        if (item.ItemData.ItemClass != ItemClass.Card) continue;
-                        break;
-                    default: //etc
-                        if(item.ItemData.ItemClass is ItemClass.Useable or ItemClass.Equipment or ItemClass.Weapon or ItemClass.Ammo or ItemClass.Card)
-                            continue;
-                        break;
-                }
-                
-                AddItem(item);
-            }
+                if (IsInSection(item, CurrentSection))
+                    AddItem(item);
         }
 
         private void AddItem(InventoryItem item)
@@ -280,7 +265,9 @@ namespace Assets.Scripts.UI
             Instance = shop;
 
             shop.ItemWindow = window.GetComponent<GenericItemListV2>();
-            shop.StorageControls = window.GetComponent<StorageControls>();
+            shop.StorageTabGroup = window.GetComponentInChildren<TabGroupVisual>(true);
+            shop.StorageTabGroup.OnTabSelected.RemoveListener(shop.ClickStorageTab);
+            shop.StorageTabGroup.OnTabSelected.AddListener(shop.ClickStorageTab);
             shop.CurrentSection = (StorageSectionType)GameConfig.Data.LastStorageTab;
             
             return shop;
@@ -289,6 +276,8 @@ namespace Assets.Scripts.UI
         public void OnDestroy()
         {
             Instance = null;
+            if (itemBag != null)
+                itemBag.Changed -= OnStorageChanged;
             GameConfig.Data.LastStorageTab = (int)CurrentSection;
             GameConfig.Data.StoragePosition = ItemWindow.RectTransform().anchoredPosition;
             ItemWindow.CloseWindow();

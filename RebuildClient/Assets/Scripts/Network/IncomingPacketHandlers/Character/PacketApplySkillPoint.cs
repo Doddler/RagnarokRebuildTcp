@@ -13,10 +13,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             var level = (int)msg.ReadByte();
             var newSkillPoints = msg.ReadInt32();
 
-            State.SkillPoints = newSkillPoints;
-            State.KnownSkills[skill] = level;
-            UiManager.SkillManager.ApplySkillUpdateFromServer(skill, level);
-            UiManager.SkillManager.RefreshSkillAvailability();
+            State.SetSkillLevel(skill, level, newSkillPoints);
         }
     }
 }

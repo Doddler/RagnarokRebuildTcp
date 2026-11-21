@@ -35,11 +35,16 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Acolyte
             }
 
             var duration = 40 + 20 * lvl; //60s-240s
+            var speedBonus = 25; //will cap out player move speed buff
 
-            if (lvl > 10)
+            //monsters above level 10 cast a short, much faster version
+            if (source.Character.Type == CharacterType.Monster && lvl > 10)
+            {
                 duration = 60;
+                speedBonus = 100;
+            }
 
-            var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.IncreaseAgi, duration, lvl);
+            var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.IncreaseAgi, duration, lvl, speedBonus);
             target.AddStatusEffect(status);
 
             if (!isIndirect)

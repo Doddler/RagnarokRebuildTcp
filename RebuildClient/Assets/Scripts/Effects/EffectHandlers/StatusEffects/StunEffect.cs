@@ -18,6 +18,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.StatusEffects
         public static Ragnarok3dEffect AttachStunEffect(ServerControllable stunnedTarget)
         {
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.Stun);
+            effect.UpdateOnlyOnFrameChange = true;
             effect.SetDurationByTime(10f); //we'll manually end this early probably
             effect.FollowTarget = stunnedTarget.gameObject;
             effect.SourceEntity = stunnedTarget;

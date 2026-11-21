@@ -24,6 +24,7 @@ public class PartyLoadCharacter
 {
     public Guid Id;
     public string Name = null!;
+    public byte[]? Summary;
 }
 
 public class LoadCharacterRequest : IDbRequest
@@ -94,7 +95,7 @@ public class LoadCharacterRequest : IDbRequest
                         {
                             PartyId = p.Id,
                             PartyName = p.PartyName,
-                            Characters = p.Characters.Where(m => m.PartyId == p.Id).Select(m => new PartyLoadCharacter() { Id = m.Id, Name = m.Name }).ToList()
+                            Characters = p.Characters.Where(m => m.PartyId == p.Id).Select(m => new PartyLoadCharacter() { Id = m.Id, Name = m.Name, Summary = m.CharacterSummary }).ToList()
                         }).FirstOrDefaultAsync();
                     if (dbParty != null)
                     {

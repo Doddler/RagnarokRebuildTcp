@@ -7,6 +7,8 @@ namespace Assets.Scripts.Network.Messaging
     {
         public float ActivationTime;
         public ServerControllable Entity;
+        //who damage is credited to when not Entity, such as a trap's owner or a poison's caster
+        public ServerControllable DamageOwner;
         public EntityMessageType Type;
         public Vector3 Position;
         public string String;
@@ -21,6 +23,7 @@ namespace Assets.Scripts.Network.Messaging
         {
             ActivationTime = 0;
             Entity = null;
+            DamageOwner = null;
             String = null;
             Type = EntityMessageType.None;
             Value1 = Value2 = Value3 = Value4 = 0;

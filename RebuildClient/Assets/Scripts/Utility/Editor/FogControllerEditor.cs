@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Assets.Scripts;
 using Assets.Scripts.Sprites;
+using Assets.Scripts.Utility;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -70,7 +71,8 @@ namespace Utility.Editor
             if (mapFog != null)
             {
                 EditorGUILayout.LabelField($"Fog Near/Far: {mapFog.NearPlane}/{mapFog.FarPlane}");
-                fogController.UpdateFog(mapFog.NearPlane * 1500f / 400f, mapFog.FarPlane * 1500f / 400f, false);
+                var ratios = MapFog.RatiosFor(mapFog);
+                fogController.UpdateFog(ratios.x, ratios.y, false);
             }
         }
     }

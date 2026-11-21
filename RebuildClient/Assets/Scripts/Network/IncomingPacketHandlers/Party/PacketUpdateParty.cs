@@ -1,7 +1,8 @@
 ﻿using Assets.Scripts.Network.HandlerBase;
-using Assets.Scripts.UI.Hud;
+using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
+using Assets.Scripts.UI.Utility;
 
 namespace Assets.Scripts.Network.IncomingPacketHandlers.Party
 {
@@ -14,86 +15,62 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Party
             switch (updateType)
             {
                 case PartyUpdateType.AddPlayer:
-                    var newMember = PartyPacketHelpers.LoadPartyMemberInfo(msg);
-                    State.RegisterOrUpdatePartyMember(newMember);
-                    Camera.AppendChatText($"<color=#77FF77>{newMember.PlayerName} has joined the party.</color>");
-                    UiManager.Instance.PartyPanel.AddPartyMember(newMember);
+                    var newMember = PartyMemberData.Read(msg);
+                    State.Party.AddMember(newMember);
+                    Camera.AppendChatText($"{newMember.Name} has joined the party.", TextColor.Party);
                     break;
                 case PartyUpdateType.LogIn:
                 case PartyUpdateType.LogOut:
                 case PartyUpdateType.UpdatePlayer:
-                    var memberInfo = PartyPacketHelpers.LoadPartyMemberInfo(msg);
+                    var memberInfo = PartyMemberData.Read(msg);
                     
                     if(updateType == PartyUpdateType.LogIn)
-                        Camera.AppendChatText($"<color=#77FF77>{memberInfo.PlayerName} has logged in.</color>");
+                        Camera.AppendChatText($"{memberInfo.Name} has logged in.", TextColor.Party);
                     if(updateType == PartyUpdateType.LogOut)
-                        Camera.AppendChatText($"<color=#77FF77>{memberInfo.PlayerName} has logged out.</color>");
-                    State.RegisterOrUpdatePartyMember(memberInfo);
-                    UiManager.Instance.PartyPanel.RefreshPartyMember(memberInfo.PartyMemberId);
+                        Camera.AppendChatText($"{memberInfo.Name} has logged out.", TextColor.Party);
+                    State.Party.UpdateMember(memberInfo);
                     break;
                 case PartyUpdateType.RemovePlayer:
                     var removePartyId = msg.ReadInt32();
-                    var existing = State.RemovePartyMember(removePartyId);
+                    var existing = State.Party.RemoveMember(removePartyId);
+                    if (existing == null)
+                        break; //a member this client never had
                     if (existing.EntityId == Network.PlayerId)
                     {
                         updateType = PartyUpdateType.LeaveParty;
                         goto case PartyUpdateType.LeaveParty;
                     }
-                    UiManager.Instance.PartyPanel.RemovePartyMember(removePartyId);
-                    Camera.AppendChatText($"<color=#77FF77>{existing.PlayerName} has left the party.</color>");
+                    Camera.AppendChatText($"{existing.PlayerName} has left the party.", TextColor.Party);
                     break;
                 case PartyUpdateType.ChangeLeader:
                     var newLeaderId = msg.ReadInt32();
-                    if (State.PartyMembers.TryGetValue(newLeaderId, out var leader))
+                    if (State.Party.ChangeLeader(newLeaderId))
                     {
-                        var oldLeaderId = State.PartyLeader;
-                        if (State.PartyMembers.TryGetValue(oldLeaderId, out var oldLeader))
-                            oldLeader.IsLeader = false;
-
-                        leader.IsLeader = true;
-                        State.PartyLeader = newLeaderId;
-                        
-                        if (newLeaderId == State.PartyMemberId)
-                            Camera.AppendChatText($"<color=#77FF77>You have been promoted to party leader.</color>");
+                        if (newLeaderId == State.Party.MemberId)
+                            Camera.AppendChatText($"You have been promoted to party leader.", TextColor.Party);
                         else
-                            Camera.AppendChatText($"<color=#77FF77>{leader.PlayerName} has been promoted to party leader.</color>");
-                        State.UpdatePlayerName(); //add party leader indicator (or remove it)
-                        UiManager.Instance.PartyPanel.RefreshPartyMember(newLeaderId);
-                        UiManager.Instance.PartyPanel.RefreshPartyMember(oldLeaderId);
+                            Camera.AppendChatText($"{State.Party.Members[newLeaderId].PlayerName} has been promoted to party leader.", TextColor.Party);
                     }
                     break;
                 case PartyUpdateType.UpdateMap:
-                    if (State.PartyMembers.TryGetValue(msg.ReadInt32(), out var mapUpdatePlayer))
-                    {
-                        mapUpdatePlayer.Map = msg.ReadString();
-                        UiManager.Instance.PartyPanel.RefreshPartyMember(mapUpdatePlayer.PartyMemberId);
-                    }
+                {
+                    var memberId = msg.ReadInt32();
+                    State.Party.SetMemberMap(memberId, msg.ReadString());
                     break;
+                }
                 case PartyUpdateType.UpdateHpSp:
-                    if (State.PartyMembers.TryGetValue(msg.ReadInt32(), out var hpUpdatePlayer))
-                    {
-                        hpUpdatePlayer.Hp = msg.ReadInt32();
-                        hpUpdatePlayer.MaxHp = msg.ReadInt32();
-                        hpUpdatePlayer.Sp = msg.ReadInt32();
-                        hpUpdatePlayer.MaxSp = msg.ReadInt32();
-                        UiManager.Instance.PartyPanel.UpdateHpSpOfPartyMember(hpUpdatePlayer.PartyMemberId);
-                    }
+                {
+                    var memberId = msg.ReadInt32();
+                    State.Party.SetMemberVitals(memberId, msg.ReadInt32(), msg.ReadInt32(), msg.ReadInt32(), msg.ReadInt32());
                     break;
+                }
                 case PartyUpdateType.LeaveParty:
                 case PartyUpdateType.DisbandParty:
                     if(updateType == PartyUpdateType.LeaveParty)
-                        Camera.AppendChatText($"<color=#77FF77>You have left the party.</color>");
+                        Camera.AppendChatText($"You have left the party.", TextColor.Party);
                     if(updateType == PartyUpdateType.DisbandParty)
-                        Camera.AppendChatText($"<color=#77FF77>The party has disbanded.</color>");
-                    State.IsInParty = false;
-                    State.PartyMembers.Clear();
-                    State.PartyMemberEntityLookup.Clear();
-                    State.PartyMemberIdLookup.Clear();
-                    State.UpdatePlayerName();
-                    UiManager.Instance.PartyPanel.FullRefreshPartyMemberPanel();
-                    MinimapController.Instance.RefreshPartyMembers();
-                    if (Camera.TargetControllable != null)
-                        Camera.TargetControllable.PartyName = null;
+                        Camera.AppendChatText($"The party has disbanded.", TextColor.Party);
+                    State.Party.Leave();
                     break;
             }
         }

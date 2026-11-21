@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Network;
+﻿using System.Collections.Generic;
+using Assets.Scripts.Network;
 using Assets.Scripts.PlayerControl;
 using Assets.Scripts.Sprites;
 using RebuildSharedData.Enum;
@@ -14,6 +15,8 @@ namespace Assets.Scripts.UI.Inventory
         public TextMeshProUGUI AmmoType;
         public TextMeshProUGUI CartInfo;
 
+        private readonly List<string> followerLinks = new();
+
         public override void OnPointerDown(PointerEventData eventData)
         {
             base.OnPointerDown(eventData);
@@ -28,12 +31,17 @@ namespace Assets.Scripts.UI.Inventory
             link = TMP_TextUtilities.FindIntersectingLink(CartInfo, eventData.position, null);
             if (link >= 0)
             {
-                NetworkManager.Instance.SendChangeCart(-1);
+                switch (CartInfo.textInfo.linkInfo[link].GetLinkID())
+                {
+                    case "RemoveCart": NetworkManager.Instance.SendRemoveCart(); break;
+                    case "RemoveFalcon": NetworkManager.Instance.SendRemoveFalcon(); break;
+                    case "RemovePeco": NetworkManager.Instance.SendRemovePeco(); break;
+                }
             }
         }
 
 
-        public void RefreshEquipmentWindow()
+        private void RefreshEquipmentWindow()
         {
             var state = PlayerState.Instance;
             var inventory = state.Inventory.GetInventoryData();
@@ -75,21 +83,60 @@ namespace Assets.Scripts.UI.Inventory
             else
                 AmmoType.text = "";
 
+            //each name unequips that follower
+            followerLinks.Clear();
             if (state.HasCart)
-                CartInfo.text = "Push Cart (<color=#0000FF><link=\"RemoveCart\">Unequip</link></color>)";
-            else
-                CartInfo.text = "";
+                followerLinks.Add("<color=#0000FF><link=\"RemoveCart\">Cart</link></color>");
+            if (state.HasFalcon)
+                followerLinks.Add("<color=#0000FF><link=\"RemoveFalcon\">Falcon</link></color>");
+            if (state.HasPeco)
+                followerLinks.Add("<color=#0000FF><link=\"RemovePeco\">Peco</link></color>");
+            CartInfo.text = followerLinks.Count > 0 ? "Unequip: " + string.Join(" · ", followerLinks) : "";
         }
 
         private void FixMultiSlotHeadgear(EquipSlot slot)
         {
         }
 
-        public void UpdateCharacterDisplay(int headgear1, int headgear2, int headgear3)
+        public void OnEnable()
         {
             var state = PlayerState.Instance;
+            state.AppearanceChanged += UpdateCharacterDisplay;
+            state.EquipmentChanged += RefreshEquipmentWindow;
+            state.FollowerChanged += RefreshEquipmentWindow;
+            state.Inventory.Changed += OnInventoryChanged;
+            UpdateCharacterDisplay();
+            if (state.IsReadyForDisplay)
+                RefreshEquipmentWindow();
+        }
 
-            PlayerSprite.PrepareDisplayPlayerCharacter(state.JobId, state.HairStyleId, state.HairColorId, headgear1, headgear2, headgear3, state.IsMale);
+        public void OnDisable()
+        {
+            var state = PlayerState.Instance;
+            state.AppearanceChanged -= UpdateCharacterDisplay;
+            state.EquipmentChanged -= RefreshEquipmentWindow;
+            state.FollowerChanged -= RefreshEquipmentWindow;
+            state.Inventory.Changed -= OnInventoryChanged;
+        }
+
+        //only equipped items show here; the tooltip reads the slots, so it refreshes after them
+        private void OnInventoryChanged(int bagId)
+        {
+            var state = PlayerState.Instance;
+            if (bagId != ClientInventory.AllItems && !state.IsEquipped(bagId) && bagId != state.AmmoId)
+                return;
+
+            RefreshEquipmentWindow();
+            UiManager.Instance.RefreshTooltip();
+        }
+
+        private void UpdateCharacterDisplay()
+        {
+            var state = PlayerState.Instance;
+            if (!state.IsReadyForDisplay)
+                return;
+
+            PlayerSprite.PrepareDisplayPlayerCharacter(state.Appearance);
         }
     }
 }

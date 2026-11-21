@@ -29,6 +29,9 @@ namespace Assets.Scripts.UI
 
         private SkillHotbarEntry pressedEntry;
 
+        //toggled with F12 only
+        protected override bool InEscapeStack => false;
+
         public void ToggleTransparentState()
         {
             var img = GetComponent<Image>();
@@ -105,7 +108,30 @@ namespace Assets.Scripts.UI
             entry.DragItem.OnDoubleClick = entry.OnDoubleClick;
         }
 
-        public void UpdateItemCounts()
+        private void OnEnable()
+        {
+            var state = PlayerState.Instance;
+            state.Inventory.Changed += OnInventoryChanged;
+            state.EquipmentChanged += UpdateItemCounts;
+            if (state.IsReadyForDisplay)
+                UpdateItemCounts();
+        }
+
+        private void OnDisable()
+        {
+            var state = PlayerState.Instance;
+            state.Inventory.Changed -= OnInventoryChanged;
+            state.EquipmentChanged -= UpdateItemCounts;
+        }
+
+        //the tooltip reads the counts, so it refreshes after them
+        private void OnInventoryChanged(int _)
+        {
+            UpdateItemCounts();
+            UiManager.Instance.RefreshTooltip();
+        }
+
+        private void UpdateItemCounts()
         {
             var state = PlayerState.Instance;
             var inventory = state.Inventory;
@@ -117,7 +143,7 @@ namespace Assets.Scripts.UI
                 {
                     if (entry.ItemId >= 20000)
                     {
-                        if(PlayerState.Instance.EquippedBagIdHashes.Contains(HotBarEntries[i].DragItem.ItemId))
+                        if(PlayerState.Instance.IsEquipped(HotBarEntries[i].DragItem.ItemId))
                             entry.SetEquipped();
                         else
                             entry.HideCount();

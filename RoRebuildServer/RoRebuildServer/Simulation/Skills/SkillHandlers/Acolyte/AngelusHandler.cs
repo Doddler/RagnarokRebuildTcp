@@ -24,7 +24,7 @@ public class AngelusHandler : SkillHandlerBase
 
         var dp = 0;
         if (ch.Type == CharacterType.Player)
-            dp = source.Player.MaxLearnedLevelOfSkill(CharacterSkill.DivineProtection);
+            dp = source.Player.MaxSkillLevel(CharacterSkill.DivineProtection);
 
         var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.Angelus, 30f + 30 * lvl, lvl, dp);
         source.AddStatusEffect(status);

@@ -14,7 +14,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 GameObject.Destroy(entity.Value.gameObject);
             }
 
-            Network.EntityList.Clear();
+            Network.ClearEntities();
             UiManager.VendAndChatManager.RemoveAllDialogNpcs();
         }
     }

@@ -18,7 +18,7 @@ public class StatusFalcon : StatusEffectBase
         if (ch.Character.Type != CharacterType.Player || info.AttackSkill != CharacterSkill.None || !info.IsDamageResult || !info.Target.TryGet<CombatEntity>(out var target))
             return StatusUpdateResult.Continue;
 
-        var maxSkill = ch.Player.MaxLearnedLevelOfSkill(CharacterSkill.BlitzBeat);
+        var maxSkill = ch.Player.MaxSkillLevel(CharacterSkill.BlitzBeat);
         if (maxSkill == 0)
             return StatusUpdateResult.Continue;
 

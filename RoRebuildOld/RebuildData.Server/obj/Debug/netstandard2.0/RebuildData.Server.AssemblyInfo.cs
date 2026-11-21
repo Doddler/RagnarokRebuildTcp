@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RebuildData.Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+89f7e1a6b22bcc3c566d545b9d9d3532ec23c62e")]
 [assembly: System.Reflection.AssemblyProductAttribute("RebuildData.Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RebuildData.Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

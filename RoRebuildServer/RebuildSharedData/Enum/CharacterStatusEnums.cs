@@ -35,10 +35,11 @@ public enum StatusEffectFlags : byte
     NoSave = 2,
 }
 
+//who in view is told about a status, least to most visible; Owner and Party only apply to players
 public enum StatusClientVisibility : byte
 {
     None,
     Owner,
-    Ally,
+    Party,
     Everyone
 }

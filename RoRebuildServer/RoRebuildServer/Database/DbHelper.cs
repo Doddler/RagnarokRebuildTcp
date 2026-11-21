@@ -1,4 +1,5 @@
-﻿using RoRebuildServer.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using RoRebuildServer.Logging;
 using System.Buffers;
 using RebuildSharedData.Util;
 
@@ -6,6 +7,13 @@ namespace RoRebuildServer.Database
 {
     public static class DbHelper
     {
+        //names are unique regardless of case; a character being renamed doesn't count against itself
+        public static Task<bool> IsCharacterNameTaken(RoContext db, string name, Guid? exceptCharacterId = null)
+        {
+            var upperName = name.ToUpper();
+            return db.Character.AnyAsync(c => c.Name.ToUpper() == upperName && (exceptCharacterId == null || c.Id != exceptCharacterId));
+        }
+
         public static void WriteDictionary(IBinaryMessageWriter bw, Dictionary<string, int>? dict)
         {
             bw.Write((byte)(dict != null ? 1 : 0));

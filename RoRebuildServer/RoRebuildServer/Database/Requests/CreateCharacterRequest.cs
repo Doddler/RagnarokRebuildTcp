@@ -48,7 +48,7 @@ namespace RoRebuildServer.Database.Requests
                 return;
             }
 
-            var doesNameExist = await dbContext.Character.AnyAsync(c => c.Name.ToUpper() == name.ToUpper());
+            var doesNameExist = await DbHelper.IsCharacterNameTaken(dbContext, name);
             if (doesNameExist)
             {
                 CommandBuilder.ErrorMessage(connection, "Error: A character with that name already exists.");

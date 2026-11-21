@@ -605,8 +605,9 @@ public class CharacterStatusContainer
 
         NotifyStatusEffectRemoval(ref status);
 
-        StatusEffectHandler.OnExpiration(status.Type, Owner, ref status);
+        //out of the list before its handler runs, so a refresh it sends leaves it out
         statusEffects!.Remove(id);
+        StatusEffectHandler.OnExpiration(status.Type, Owner, ref status);
 
         RemoveUpdateModeForStatus(status.Type);
     }
@@ -617,8 +618,9 @@ public class CharacterStatusContainer
 
         NotifyStatusEffectRemoval(ref status);
 
-        StatusEffectHandler.OnExpiration(status.Type, Owner, ref status);
+        //out of the list before its handler runs, so a refresh it sends leaves it out
         statusEffects!.Remove(ref status);
+        StatusEffectHandler.OnExpiration(status.Type, Owner, ref status);
 
         RemoveUpdateModeForStatus(status.Type);
     }
@@ -725,77 +727,111 @@ public class CharacterStatusContainer
 
     private void NotifyStatusEffectAddition(ref StatusEffectState state)
     {
-        var visibility = StatusEffectHandler.GetStatusVisibility(state.Type);
-        if (Character.Map != null && visibility != StatusClientVisibility.None)
-        {
-            if (visibility == StatusClientVisibility.Everyone || (visibility == StatusClientVisibility.Ally && Character.Type == CharacterType.Player))
-            {
-                Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
-                CommandBuilder.SendApplyStatusEffect(Character, ref state);
-                CommandBuilder.ClearRecipients();
-            }
+        if (!AddStatusRecipients(state.Type))
+            return;
 
-            if (visibility == StatusClientVisibility.Owner && Character.Type == CharacterType.Player)
-            {
-                CommandBuilder.AddRecipient(Character.Entity);
-                CommandBuilder.SendApplyStatusEffect(Character, ref state);
-                CommandBuilder.ClearRecipients();
-            }
-        }
+        CommandBuilder.SendApplyStatusEffect(Character, ref state);
+        CommandBuilder.ClearRecipients();
     }
 
     private void NotifyStatusEffectRemoval(ref StatusEffectState state)
     {
-        var visibility = StatusEffectHandler.GetStatusVisibility(state.Type);
-        if (Character.Map != null && visibility != StatusClientVisibility.None)
-        {
-            if (visibility == StatusClientVisibility.Everyone || (visibility == StatusClientVisibility.Ally && Character.Type == CharacterType.Player))
-            {
-                Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
-                CommandBuilder.SendRemoveStatusEffect(Character, ref state);
-                CommandBuilder.ClearRecipients();
-            }
+        if (!AddStatusRecipients(state.Type))
+            return;
 
-            if (visibility == StatusClientVisibility.Owner && Character.Type == CharacterType.Player)
-            {
-                CommandBuilder.AddRecipient(Character.Entity);
-                CommandBuilder.SendRemoveStatusEffect(Character, ref state);
-                CommandBuilder.ClearRecipients();
-            }
-        }
+        CommandBuilder.SendRemoveStatusEffect(Character, ref state);
+        CommandBuilder.ClearRecipients();
     }
 
-    public void PrepareCreateEntityMessage(OutboundMessage msg)
+    //the owner is told even while they can't see themselves, as when changing maps
+    private bool AddStatusRecipients(CharacterStatusEffect type)
+    {
+        if (Character.Map == null)
+            return false;
+
+        var visibility = StatusEffectHandler.GetStatusVisibility(type);
+        if (visibility == StatusClientVisibility.Everyone)
+            Character.Map.AddVisiblePlayersAsPacketRecipients(Character);
+        else if (Character.Type == CharacterType.Player && IsShownTo(visibility, Character.Player))
+        {
+            //every online member is shown Party statuses, so only being in view is checked
+            if (visibility == StatusClientVisibility.Party && Character.Player.Party is { } party)
+                foreach (var e in party.OnlineMembers)
+                    if (e != Character.Entity && Character.IsPlayerVisible(e))
+                        CommandBuilder.AddRecipient(e);
+
+            CommandBuilder.EnsureRecipient(Character.Entity);
+        }
+
+        return CommandBuilder.HasRecipients();
+    }
+
+    //what everyone sees on spawn; the owner and party get the rest after
+    public Dictionary<CharacterStatusEffect, float> GetClientSerializationContainer() => CollectStatuses(null);
+
+    //also sent to a player who just joined this character's party
+    public void SendViewerStatuses(Player viewer)
+    {
+        if (statusEffects == null || statusEffects.Count == 0)
+            return;
+
+        //only the owner and party see more than the spawn carries
+        if (!IsShownTo(StatusClientVisibility.Party, viewer))
+            return;
+
+        var statuses = CollectStatuses(viewer);
+        if (statuses.Count > 0)
+            CommandBuilder.SendStatusEffectList(Character, statuses, viewer);
+    }
+
+    //what a viewer stops seeing when they or this character leave the party
+    public void SendPartyStatusRemovals(Player viewer)
     {
         if (statusEffects == null)
-        {
-            msg.Write(false);
             return;
-        }
 
+        CommandBuilder.AddRecipient(viewer.Entity);
         for (var i = 0; i < statusEffects.Count; i++)
         {
-            if (StatusEffectHandler.GetStatusVisibility(statusEffects[i].Type) != StatusClientVisibility.None)
-            {
-                msg.Write(true);
-                msg.Write((byte)statusEffects[i].Type);
-                msg.Write((float)(statusEffects[i].Expiration - Time.ElapsedTime));
-            }
+            var state = statusEffects[i];
+            if (StatusEffectHandler.GetStatusVisibility(state.Type) == StatusClientVisibility.Party)
+                CommandBuilder.SendRemoveStatusEffect(Character, ref state);
         }
 
-        msg.Write(false);
+        CommandBuilder.ClearRecipients();
     }
 
-    public Dictionary<CharacterStatusEffect, float> GetClientSerializationContainer()
+    //with no viewer, the Everyone statuses; with one, the others that viewer is shown
+    private Dictionary<CharacterStatusEffect, float> CollectStatuses(Player? viewer)
     {
         clientSerializationData.Clear();
-        if (statusEffects == null || statusEffects.Count == 0)
+        if (statusEffects == null)
             return clientSerializationData;
 
         foreach (var status in statusEffects)
-            clientSerializationData.Add(status.Type, (float)(status.Expiration - Time.ElapsedTime));
+        {
+            var visibility = StatusEffectHandler.GetStatusVisibility(status.Type);
+            var include = viewer == null
+                ? visibility == StatusClientVisibility.Everyone
+                : visibility != StatusClientVisibility.Everyone && IsShownTo(visibility, viewer);
+            if (include)
+                clientSerializationData.Add(status.Type, (float)(status.Expiration - Time.ElapsedTime));
+        }
 
         return clientSerializationData;
+    }
+
+    //whether a viewer may see this character's statuses of a visibility, wherever they are
+    private bool IsShownTo(StatusClientVisibility visibility, Player viewer)
+    {
+        var isOwner = viewer.Character == Character;
+        return visibility switch
+        {
+            StatusClientVisibility.Everyone => true,
+            StatusClientVisibility.Party => isOwner || (Character.Type == CharacterType.Player && viewer.Party != null && viewer.Party == Character.Player.Party),
+            StatusClientVisibility.Owner => isOwner,
+            _ => false
+        };
     }
 
     public int Serialize(IBinaryMessageWriter bw)

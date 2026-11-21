@@ -12,7 +12,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
         {
             src.PerformSkillMotion();
             if(src.CharacterType == CharacterType.Player)
-                src.FloatingDisplay.ShowChatBubbleMessage("Pneuma!!");
+                src.EnsureFloatingDisplayCreated().ShowChatBubbleMessage("Pneuma!!");
         }
     }
 }

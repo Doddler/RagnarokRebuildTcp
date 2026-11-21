@@ -17,7 +17,7 @@ public class ChargeArrowHandler : SkillHandlerBase
     public override int GetSkillRange(CombatEntity source, int lvl)
     {
         if (source.Character.Type == CharacterType.Player)
-            return 10 + source.Player.MaxLearnedLevelOfSkill(CharacterSkill.VultureEye) / 2;
+            return 10 + source.Player.MaxSkillLevel(CharacterSkill.VultureEye) / 2;
 
         return 10;
     }

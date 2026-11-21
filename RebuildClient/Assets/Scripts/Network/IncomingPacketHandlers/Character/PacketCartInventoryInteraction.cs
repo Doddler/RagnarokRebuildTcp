@@ -17,22 +17,20 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             var cartWeight = msg.ReadInt32();
             var otherWeight = msg.ReadInt32();
 
-            PlayerState.Instance.CartWeight = cartWeight;
+            PlayerState.Instance.SetCartWeight(cartWeight);
             
             if (type == CartInteractionType.CartToInventory)
             {
                 //item is already added to inventory with another packet, just remove item from cart
+                PlayerState.Instance.SetWeight(otherWeight);
                 PlayerState.Instance.Cart.RemoveItem(bagId, change);
-                PlayerState.Instance.CurrentWeight = otherWeight;
-                UiManager.Instance.CartWindow.UpdateActiveVisibleBag();
             }
 
             if (type == CartInteractionType.InventoryToCart)
             {
                 //item should already be removed form the inventory with another placket
+                PlayerState.Instance.SetWeight(otherWeight);
                 PlayerState.Instance.Cart.UpdateItem(item);
-                PlayerState.Instance.CurrentWeight = otherWeight;
-                UiManager.Instance.CartWindow.UpdateActiveVisibleBag();
             }
         }
     }

@@ -22,12 +22,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                 return;
             }
 
-            controllable.Hp = hp;
-            controllable.MaxHp = maxHp;
-
-            if (controllable.IsMainCharacter)
-                Camera.UpdatePlayerHP(hp, maxHp);
-            controllable.SetHp(controllable.Hp, controllable.MaxHp);
+            controllable.SetHp(hp, maxHp);
             if (type == HealType.HealSkill)
             {
                 HealEffect.CreateAutoLevel(controllable.gameObject, amnt);

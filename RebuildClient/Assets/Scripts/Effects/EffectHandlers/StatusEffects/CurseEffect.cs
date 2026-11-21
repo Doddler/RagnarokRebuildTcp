@@ -49,7 +49,8 @@ namespace Assets.Scripts.Effects.EffectHandlers.StatusEffects
                 IsLoadingSprite = false;
             }
 
-            if (step == 0)
+            //step stays 0 for more than one frame at high frame rates
+            if (step == 0 && effect.EffectData == null)
             {
                 var target = effect.SourceEntity;
                 if (target == null)
@@ -75,6 +76,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.StatusEffects
                     renderer.ZOffset = height * 0.7f;
                 
                 effect.SourceEntity.SpriteAnimator.EffectChild = curseSprite;
+                effect.EffectData = curseObj; //each effect removes its own sprite
 
                 //AudioManager.Instance.OneShotSoundEffect(-1, "_stun.ogg", effect.transform.position, 0.7f);
             }
@@ -84,19 +86,14 @@ namespace Assets.Scripts.Effects.EffectHandlers.StatusEffects
 
         public void OnCleanup(Ragnarok3dEffect effect)
         {
-            if (effect.SourceEntity == null || effect.SourceEntity.SpriteAnimator == null)
-                return;
+            if (effect.EffectData is not GameObject curseObj)
+                return; //ended before its sprite was made
 
-            var anim = effect.SourceEntity.SpriteAnimator;
-            if (anim.ChildrenSprites == null)
-                return;
+            var anim = effect.SourceEntity != null ? effect.SourceEntity.SpriteAnimator : null;
+            if (anim != null && anim.EffectChild != null && anim.EffectChild.gameObject == curseObj)
+                anim.EffectChild = null;
 
-
-            if (anim.EffectChild != null)
-            {
-                GameObject.Destroy(anim.EffectChild.gameObject);
-                anim.EffectChild = null;                
-            }
+            GameObject.Destroy(curseObj);
         }
     }
 }

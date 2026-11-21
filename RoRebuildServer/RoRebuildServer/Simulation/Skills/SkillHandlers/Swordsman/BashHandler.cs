@@ -13,8 +13,6 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Swordsman
     {
         public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect, bool isItemSource)
         {
-            lvl = lvl.Clamp(1, 10);
-
             if (target == null || !target.IsValidTarget(source))
                 return;
 

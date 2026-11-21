@@ -63,7 +63,6 @@ public class PacketAdminChangeAppearance : IClientPacketHandler
             //    break;
         }
 
-        connection.Character.Map.RefreshEntity(p.Character);
-        p.UpdateStats();
+        p.RefreshAppearance();
     }
 }

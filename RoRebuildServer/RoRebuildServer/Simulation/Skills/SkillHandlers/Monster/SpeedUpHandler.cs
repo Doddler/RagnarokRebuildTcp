@@ -20,7 +20,7 @@ public class SpeedUpHandler : SkillHandlerBase
 
         var duration = 10 * lvl;
 
-        if (lvl > 10)
+        if (source.Character.Type == CharacterType.Monster && lvl > 10)
             duration = 60;
 
         var status = StatusEffectState.NewStatusEffect(CharacterStatusEffect.SpeedUp, duration, lvl);

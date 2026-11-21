@@ -864,6 +864,9 @@ class Program
                     ShadowSize = monster.ClientShadow,
                     Size = monster.ClientSize,
                     AttackTiming = monster.SpriteAttackTiming / 1000f,
+                    Race = monster.Race,
+                    SizeType = monster.Size,
+                    Element = monster.Element,
                     Color = monster.Color
                 };
 
@@ -1004,7 +1007,8 @@ class Program
                 Name = j.Class,
                 SpriteFemale = j.SpriteFemale,
                 SpriteMale = j.SpriteMale,
-                ExpChart = j.ExpChart
+                ExpChart = j.ExpChart,
+                MaxJobLevel = j.MaxJobLevel
             }).ToList()
         );
 
@@ -1089,9 +1093,9 @@ class Program
                 if (string.IsNullOrWhiteSpace(baseName))
                     baseName = status.StatusEffect.ToString();
                 var name = status.Type == "Debuff"
-                    ? $"<color=#FF3300>{baseName}</color>\n"
-                    : $"<color=#FFA300>{baseName}</color>\n";
-                status.Description = name + desc;
+                    ? $"<size=85%><color=#FF3300>{baseName}</color></size>\n"
+                    : $"<size=85%><color=#FFA300>{baseName}</color></size>\n";
+                status.Description = name + $"<size=70%>{desc}</size>";
             }
 
             statusOut.Add(status);

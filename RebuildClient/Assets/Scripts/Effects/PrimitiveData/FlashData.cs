@@ -1,8 +1,9 @@
-﻿using Assets.Scripts.Utility;
+﻿using System;
+using Assets.Scripts.Utility;
 
 namespace Assets.Scripts.Effects.PrimitiveData
 {
-    public class FlashData : IResettable
+    public struct FlashRay
     {
         public float ArcLength;
         public float RotationAngle;
@@ -18,10 +19,27 @@ namespace Assets.Scripts.Effects.PrimitiveData
         public float ChangeRotationSpeed;
         public float ChangeRotationAccel;
         public float ChangeLengthSpeed;
-        
+    }
+
+    //all rays of one flash share the primitive's mesh
+    public class FlashData : IResettable
+    {
+        public FlashRay[] Rays = Array.Empty<FlashRay>();
+        public int RayCount;
+
+        public ref FlashRay AddRay()
+        {
+            if (RayCount == Rays.Length)
+                Array.Resize(ref Rays, Math.Max(8, Rays.Length * 2));
+
+            ref var ray = ref Rays[RayCount++];
+            ray = default;
+            return ref ray;
+        }
+
         public void Reset()
         {
-            ChangePoint = 0;
+            RayCount = 0;
         }
     }
 }

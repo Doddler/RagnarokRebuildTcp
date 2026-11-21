@@ -55,23 +55,25 @@ namespace Assets.Scripts.Effects.EffectHandlers
                 cData.Color = Color.white;
             }
 
+            var flashPrim = effect.LaunchPrimitive(PrimitiveType.Flash2D, flashMaterial, 0.667f);
+            var fData = flashPrim.GetPrimitiveData<FlashData>();
+            flashPrim.transform.localScale = new Vector3(scale, scale, scale);
+            flashPrim.transform.localPosition += new Vector3(0f, 2f, -0.01f);
+            flashPrim.SetBillboardMode(BillboardStyle.Normal);
+
             for (var i = 0; i < 20; i++)
             {
-                var flashPrim = effect.LaunchPrimitive(PrimitiveType.Flash2D, flashMaterial, 0.667f);
-                var fData = flashPrim.GetPrimitiveData<FlashData>();
-                flashPrim.transform.localScale = new Vector3(scale, scale, scale);
-                flashPrim.transform.localPosition += new Vector3(0f, 2f, -0.01f);
-                flashPrim.SetBillboardMode(BillboardStyle.Normal);
-                fData.RotationAngle = Random.Range(0, 360f);
-                fData.RotationSpeed = Random.Range(10, 70) / 0.166f; //10-70 degrees per second
-                fData.RotationAccel = -(fData.RotationSpeed / 40) / 1.5f; //acceleration per frame
-                fData.Length = Random.Range(20, 60);
-                fData.LengthSpeed = Random.Range(20, 50) / 0.166f;
-                fData.ArcLength = Random.Range(5, 30) / 10f;
-                fData.Alpha = 0;
-                fData.MaxAlpha = 170;
-                fData.AlphaSpeed = fData.MaxAlpha / 0.1f;
-                fData.FadeOutLength = 0.667f - (0.667f / 3f);
+                ref var ray = ref fData.AddRay();
+                ray.RotationAngle = Random.Range(0, 360f);
+                ray.RotationSpeed = Random.Range(10, 70) / 0.166f; //10-70 degrees per second
+                ray.RotationAccel = -(ray.RotationSpeed / 40) / 1.5f; //acceleration per frame
+                ray.Length = Random.Range(20, 60);
+                ray.LengthSpeed = Random.Range(20, 50) / 0.166f;
+                ray.ArcLength = Random.Range(5, 30) / 10f;
+                ray.Alpha = 0;
+                ray.MaxAlpha = 170;
+                ray.AlphaSpeed = ray.MaxAlpha / 0.1f;
+                ray.FadeOutLength = 0.667f - (0.667f / 3f);
             }
             
             //Debug.Break();

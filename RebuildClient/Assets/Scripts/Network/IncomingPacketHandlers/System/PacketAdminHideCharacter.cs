@@ -14,10 +14,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.System
 
             State.IsAdminHidden = isHidden;
 
-            if (Camera.TargetControllable)
-            {
-                Camera.TargetControllable.IsHidden = isHidden;
-            }
+            if (State.Character != null)
+                State.Character.IsHidden = isHidden;
         }
     }
 }

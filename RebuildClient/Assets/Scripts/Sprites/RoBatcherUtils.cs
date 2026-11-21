@@ -14,6 +14,8 @@ public class CollectionDictionary<TKey, TCollection, TValue> : IEnumerable
 
 	public IEnumerable<TKey> Keys => InternalDictionary.Keys;
 
+	public Dictionary<TKey, TCollection> Pairs => InternalDictionary;
+
 	public void AddItems(TKey key, params TValue[] items)
 	{
 		EnsureCollectionExistsForAdd(key);
@@ -102,8 +104,6 @@ public class CollectionDictionary<TKey, TCollection, TValue> : IEnumerable
 	{
 		return GetEnumerator();
 	}
-
-	public Dictionary<TKey, TCollection> Pairs => InternalDictionary;
 }
 
 internal sealed class GrowableBuffer<T> : IDisposable where T : struct

@@ -36,6 +36,8 @@ namespace Assets.Scripts.Network
         public CharacterType CharacterType;
         public CharacterState CharacterState;
         public RoSpriteAnimator SpriteAnimator;
+        //null without a separate head layer
+        public RoSpriteAnimator HeadAnimator;
         public int Id;
         public int ClassId;
         public int OverrideClassId;
@@ -48,48 +50,59 @@ namespace Assets.Scripts.Network
         public float ShadowSize;
         public float Angle;
         public bool IsAlly;
-        public bool IsPartyMember;
-        public bool IsPartyLeader;
-        public bool IsMale;
+        public bool IsPartyMember { get; private set; }
+        private bool hasShownSpawnHpBar;
+        public bool IsMale => Appearance.IsMale;
         public bool IsMainCharacter;
+        public bool IsOwnOrPartyCharacter => IsMainCharacter || IsPartyMember;
         public bool IsInteractable;
         public bool IsAttackable;
-        public int Level;
-        public string Name;
+        public int Level { get; private set; }
+        public event Action LevelChanged;
+        public string Name { get; private set; }
+        public event Action NameChanged;
 
-        public int Hp;
-        public int MaxHp;
-        public int Sp;
-        public int MaxSp;
-        public int WeaponClass;
-        public string PartyName;
+        public int Hp { get; private set; }
+        public int MaxHp { get; private set; }
+        public event Action HpChanged;
+        //as the damage numbers showed it; resets when the character spawns again
+        public int DamageFromPlayer { get; private set; }
+        public static event Action<ServerControllable> PlayerDealtDamage;
+        public int WeaponClass { get; private set; }
+        public event Action WeaponClassChanged;
+        public string PartyName { get; private set; }
+
+        public string NamePlateText => GameConfig.Data.ShowPartyNameInOverlay && !string.IsNullOrWhiteSpace(PartyName)
+            ? $"{Name}\n<size=-2>[{PartyName}]"
+            : Name;
+
+        public string ColoredNamePlateText => IsAlly ? NamePlateText : $"<color=#FFAAAA>{NamePlateText}</color>";
+
+        //players only
+        public PlayerAppearance Appearance { get; private set; }
+        public event Action AppearanceChanged;
 
         public GameObject PopupDialog;
         public List<Ragnarok3dEffect> EffectList;
 
         public Dictionary<EquipPosition, GameObject> AttachedComponents = new();
 
-        public string DisplayName
-        {
-            get
-            {
-                if (CharacterType == CharacterType.NPC || !GameConfig.Data.ShowLevelsInOverlay || Name.StartsWith("[NPC]"))
-                    return Name;
-                if (string.IsNullOrWhiteSpace(PartyName))
-                    return $"Lv.{Level} {Name}";
-
-                return $"Lv.{Level} {Name}\n<size=-2>[{PartyName}]";
-            }
-        }
-
         [NonSerialized] public Vector3 CounterHitDir;
 
         [NonSerialized] public ClientSpriteType SpriteMode;
         [NonSerialized] public GameObject EntityObject;
         [NonSerialized] public DamageIndicator ComboIndicator;
-        [NonSerialized] public GameObject FollowerObject;
+        [NonSerialized] public GameObject CartObject;
+        [NonSerialized] public GameObject FalconObject;
+        public CharacterFollowerState Follower { get; private set; }
+        public event Action FollowerChanged;
         [NonSerialized] public GameObject BodyStateEffect;
         [NonSerialized] public StatusEffectState StatusEffectState;
+        public event Action<CharacterStatusEffect, float> StatusAdded;
+        //not raised when a refresh removes and re-applies it
+        public event Action<CharacterStatusEffect> StatusRemoved;
+        //raised once when this leaves the entity list, before it fades out; the second argument is the object replacing it, if any
+        public event Action<ServerControllable, ServerControllable> Left;
 
         [NonSerialized] public CharacterFloatingDisplay FloatingDisplay;
         private List<Vector2Int> movePath;
@@ -146,6 +159,9 @@ namespace Assets.Scripts.Network
         public bool IsWalking => movePath != null && movePath.Count > 1;
 
         public bool IsHidden { get; set; }
+        public bool IsHiddenFromPlayer { get; set; }
+        //CameraFollower drops the selection once false; dead players stay until they respawn
+        public bool IsSelectable => (IsCharacterAlive || CharacterType == CharacterType.Player) && IsInteractable && !IsHiddenFromPlayer;
 
         public void SkipNextSkillOrAttackMotion(bool val) => skipNextAttackMotion = val;
 
@@ -154,12 +170,37 @@ namespace Assets.Scripts.Network
             Messages.Owner = this;
         }
 
-        public CharacterFloatingDisplay EnsureFloatingDisplayCreated(bool makeEnabled = false)
+        // Sitting lowers the body below the feet, so the overlay layout has to shift to clear it.
+        public void SetSitting(bool sitting)
+        {
+            if (sitting)
+            {
+                SpriteAnimator.ChangeMotion(SpriteMotion.Sit);
+                SpriteAnimator.State = SpriteState.Sit;
+            }
+            else
+            {
+                if (SpriteAnimator.State != SpriteState.Sit)
+                    return;
+                SpriteAnimator.ChangeMotion(SpriteMotion.Idle);
+                SpriteAnimator.State = SpriteState.Idle;
+            }
+
+            if (FloatingDisplay != null)
+            {
+                //sitting shifts both stacks (body dips below the feet, head tucks lower above it)
+                FloatingDisplay.InvalidateBelowFeet();
+                FloatingDisplay.InvalidateAboveHead();
+            }
+        }
+
+        public CharacterFloatingDisplay EnsureFloatingDisplayCreated()
         {
             if (FloatingDisplay == null)
+            {
                 FloatingDisplay = NetworkManager.Instance.OverlayManager.GetNewFloatingDisplay();
-            if (makeEnabled)
-                FloatingDisplay.gameObject.SetActive(true);
+                FloatingDisplay.AttachTo(this);
+            }
             return FloatingDisplay;
         }
 
@@ -202,83 +243,153 @@ namespace Assets.Scripts.Network
                 LookAt(target.transform.position);
         }
 
-        private void RefreshPartyValues()
+        //while the entity is built, without updating any display
+        public void InitializeParty(string partyName, bool isPartyMember)
         {
-            if (CharacterType == CharacterType.Player && !IsMainCharacter && PartyName == PlayerState.Instance.PartyName
-                && PlayerState.Instance.PartyMemberIdLookup.TryGetValue(Id, out var partyMemberId))
-                UiManager.Instance.PartyPanel.UpdateHpSpOfPartyMember(partyMemberId);
+            PartyName = partyName;
+            IsPartyMember = isPartyMember;
         }
 
-        public void SetSp(int sp, int maxSp)
+        public void SetPartyName(string partyName)
         {
-            EnsureFloatingDisplayCreated();
-            MaxSp = maxSp;
-            Sp = sp;
-            FloatingDisplay.UpdateMaxMp(maxSp);
-            FloatingDisplay.UpdateMp(sp);
+            if (PartyName == partyName)
+                return;
 
-            if (!string.IsNullOrWhiteSpace(PartyName))
-                RefreshPartyValues();
+            PartyName = partyName;
+            RefreshNamePlate();
         }
+
+        public void SetPartyMember(bool isPartyMember)
+        {
+            if (CharacterType != CharacterType.Player || isPartyMember == IsPartyMember)
+                return;
+
+            IsPartyMember = isPartyMember;
+            //the player's own bars always show
+            if (IsMainCharacter)
+                return;
+            //shows or recolours the bar, or hides a former member's at full hp
+            if (ShouldUpdateHpBar())
+                UpdateHpBar(Hp, false);
+            else if (FloatingDisplay != null)
+                FloatingDisplay.HideHpBar();
+        }
+
+        //the bar only; PlayerState owns the player's sp
+        public void ShowSp(int sp, int maxSp) => EnsureFloatingDisplayCreated().UpdateMp(sp, maxSp);
+
+        //only fires when the look changed, not for a weapon swap
+        public void SetAppearance(PlayerAppearance appearance)
+        {
+            if (appearance == Appearance)
+                return;
+
+            Appearance = appearance;
+            AppearanceChanged?.Invoke();
+        }
+
+        public void SetLevel(int level)
+        {
+            Level = level;
+            LevelChanged?.Invoke();
+        }
+
+        public void SetName(string name)
+        {
+            Name = name;
+            RefreshNamePlate();
+            NameChanged?.Invoke();
+        }
+
+        //only a plate already on screen changes
+        public void RefreshNamePlate()
+        {
+            if (FloatingDisplay != null)
+                FloatingDisplay.SetNamePlateText(ColoredNamePlateText);
+        }
+
+        public void SetWeaponClass(int weaponClass)
+        {
+            WeaponClass = weaponClass;
+            WeaponClassChanged?.Invoke();
+        }
+
+        //records only; EntityBuilder.ChangeFollowerState builds the visuals
+        public void SetFollower(CharacterFollowerState follower)
+        {
+            Follower = follower;
+            FollowerChanged?.Invoke();
+        }
+
+        public void SetFollowersVisible(bool visible)
+        {
+            if (CartObject != null)
+                CartObject.SetActive(visible);
+            if (FalconObject != null)
+                FalconObject.SetActive(visible);
+        }
+
+        public void NotifyStatusAdded(CharacterStatusEffect status, float duration) => StatusAdded?.Invoke(status, duration);
+
+        public void NotifyStatusRemoved(CharacterStatusEffect status) => StatusRemoved?.Invoke(status);
 
         private bool ShouldUpdateHpBar()
         {
-            if (SpriteAnimator == null)
+            //npcs and anything without a known max hp have no bar
+            if (SpriteAnimator == null || CharacterType == CharacterType.NPC || MaxHp <= 0)
                 return false;
             if (IsMainCharacter)
                 return true;
+            //only party members' bars stay while they're hidden
             if (SpriteAnimator.IsHidden)
-            {
-                if (CharacterType == CharacterType.Player && PartyName == PlayerState.Instance.PartyName)
-                    return true;
-
-                return false;
-            }
+                return CharacterType == CharacterType.Player && IsPartyMember;
 
             return true;
         }
 
-        public void SetHp(int hp, int maxHp, bool animate = true)
+        //while the entity is built, without updating any display
+        public void InitializeHp(int hp, int maxHp)
         {
-            if (!ShouldUpdateHpBar())
-                return;
-
-            MaxHp = maxHp;
             Hp = hp;
-            FloatingDisplay.UpdateMaxHp(maxHp);
-            SetHp(hp, animate);
-            if (!string.IsNullOrWhiteSpace(PartyName))
-                RefreshPartyValues();
+            MaxHp = maxHp;
         }
 
-        public void SetHp(int hp, bool animate = true)
+        //stored even while hidden; the bar animates from the previous hp
+        public void SetHp(int hp, int maxHp, bool animate = true)
         {
-            if (!ShouldUpdateHpBar())
-                return;
-
             var oldHp = Hp;
+            MaxHp = maxHp;
             Hp = hp;
+            HpChanged?.Invoke();
+            if (IsPartyMember)
+                PlayerState.Instance.Party.SetMemberHp(Id, hp, maxHp);
+            if (ShouldUpdateHpBar())
+                UpdateHpBar(oldHp, animate);
+        }
 
-            if (!string.IsNullOrWhiteSpace(PartyName))
-                RefreshPartyValues();
+        public void RefreshHpBar()
+        {
+            if (ShouldUpdateHpBar())
+                UpdateHpBar(Hp, false);
+        }
 
-            if ((GameConfig.Data.AutoHideFullHPBars && hp >= MaxHp) || !IsInteractable)
+        //others' bars only show while hurt; the player's and party members' always do
+        private void UpdateHpBar(int oldHp, bool animate)
+        {
+            if ((Hp >= MaxHp && !IsOwnOrPartyCharacter) || !IsInteractable)
             {
-                if (FloatingDisplay == null)
-                    return;
-                FloatingDisplay.HideHpBar();
+                if (FloatingDisplay != null)
+                    FloatingDisplay.HideHpBar();
                 return;
             }
 
             EnsureFloatingDisplayCreated();
-            if (IsMainCharacter)
-            {
+            if (IsOwnOrPartyCharacter)
                 FloatingDisplay.ForceHpBarOn();
+            if (IsMainCharacter)
                 FloatingDisplay.ForceMpBarOn();
-            }
 
-            if (CharacterType != CharacterType.NPC)
-                FloatingDisplay.UpdateHp(oldHp, hp, animate);
+            FloatingDisplay.UpdateHp(oldHp, Hp, animate);
         }
 
         public void ShowSkillCastMessage(CharacterSkill skill, float duration = 5f)
@@ -295,8 +406,7 @@ namespace Assets.Scripts.Network
             // if (SpriteAnimator.IsHidden && skill == CharacterSkill.Hiding)
             //     return;
 
-            var sName = ClientDataLoader.Instance.GetSkillName(skill);
-            FloatingDisplay.ShowChatBubbleMessage(sName + "!!", duration);
+            EnsureFloatingDisplayCreated().ShowChatBubbleMessage(ClientDataLoader.Instance.GetPlayerSkillCastName(skill), duration);
         }
 
         public void StartCastBar(CharacterSkill skill, float duration, SkillCastFlags flags)
@@ -306,28 +416,21 @@ namespace Assets.Scripts.Network
             if (!flags.HasFlag(SkillCastFlags.HideCastBar))
             {
                 if (CharacterType != CharacterType.Player || (skill != CharacterSkill.BowlingBash && skill != CharacterSkill.BrandishSpear)) //put this in a config or something...
-                {
-                    EnsureFloatingDisplayCreated();
-                    FloatingDisplay.StartCasting(duration);
-                }
-
-                var sName = ClientDataLoader.Instance.GetSkillName(skill);
+                    EnsureFloatingDisplayCreated().StartCasting(duration);
 
                 if (!HideCastName && skill != CharacterSkill.NoCast &&
-                    (skill != CharacterSkill.Hiding || !SpriteAnimator.IsHidden)) //don't show skill name when unhiding
+                    (skill != CharacterSkill.Hiding || !(SpriteAnimator?.IsHidden ?? false))) //don't show skill name when unhiding
                 {
                     if (CharacterType == CharacterType.Player)
-                        FloatingDisplay.ShowChatBubbleMessage(sName + "!!");
+                        EnsureFloatingDisplayCreated().ShowChatBubbleMessage(ClientDataLoader.Instance.GetPlayerSkillCastName(skill));
                     else
-                    {
-                        FloatingDisplay.ShowChatBubbleMessage("<size=-2><color=#FF8888>" + sName + "</size>", duration);
-                    }
+                        EnsureFloatingDisplayCreated().ShowChatBubbleMessage(ClientDataLoader.Instance.GetMonsterSkillCastName(skill), duration, isCastName: true);
                 }
                 else
-                    FloatingDisplay.HideChatBubbleMessage();
+                    FloatingDisplay?.HideChatBubbleMessage();
             }
             else
-                FloatingDisplay.HideChatBubbleMessage();
+                FloatingDisplay?.HideChatBubbleMessage();
 
             if (SpriteAnimator != null && SpriteAnimator.SpriteData != null &&
                 ClientDataLoader.Instance.GetUniqueAction(SpriteAnimator.SpriteData.Name, skill, out var action))
@@ -352,7 +455,7 @@ namespace Assets.Scripts.Network
             FloatingDisplay?.CancelCasting();
             EndEffectOfType(EffectType.CastEffect);
             EndEffectOfType(EffectType.CastHolyEffect);
-            if (SpriteAnimator.CurrentMotion == SpriteMotion.Casting)
+            if (SpriteAnimator != null && SpriteAnimator.CurrentMotion == SpriteMotion.Casting)
             {
                 if (CharacterType == CharacterType.Player || CharacterType == CharacterType.PlayerLikeNpc)
                 {
@@ -388,25 +491,21 @@ namespace Assets.Scripts.Network
         //         SpriteAnimator.SetRenderActive(!isHidden);
         // }
 
-        public void ShowTargetNamePlate(string name)
+        public void ShowTargeted()
         {
-            EnsureFloatingDisplayCreated();
-            FloatingDisplay.UpdateName(name);
-            FloatingDisplay.TargetingNamePlate();
+            EnsureFloatingDisplayCreated().StartTargeting(ColoredNamePlateText);
         }
 
-        public void ShowHoverNamePlate(string name)
+        public void ShowHoverNamePlate()
         {
-            EnsureFloatingDisplayCreated();
-            FloatingDisplay.UpdateName(name);
-            FloatingDisplay.HoverNamePlate();
+            EnsureFloatingDisplayCreated().HoverNamePlate(ColoredNamePlateText);
         }
 
-        public void HideTargetNamePlate()
+        public void HideTargeted()
         {
             if (FloatingDisplay == null)
                 return;
-            FloatingDisplay.EndTargetingNamePlate();
+            FloatingDisplay.EndTargeting();
         }
 
         public void HideHoverNamePlate()
@@ -426,33 +525,8 @@ namespace Assets.Scripts.Network
         public void DialogBox(string text)
         {
             EnsureFloatingDisplayCreated();
+            FloatingDisplay.ClearCastReservation(); //a regular message has nothing to do with any cast
             FloatingDisplay.ShowChatBubbleMessage(text, 8f);
-
-            SnapDialog();
-        }
-
-        public void SnapDialog()
-        {
-            if (FloatingDisplay == null)
-                return;
-
-            if (IsMainCharacter)
-                FloatingDisplay.transform.SetAsLastSibling();
-
-            var cf = CameraFollower.Instance;
-            var rect = FloatingDisplay.transform as RectTransform;
-            var screenPos = cf.Camera.WorldToScreenPoint(transform.position);
-
-            var d = 70 / cf.Distance;
-            var reverseScale = 1f / cf.CanvasScaler.scaleFactor;
-
-            if (!GameConfig.Data.ScalePlayerDisplayWithZoom)
-                d = 1f;
-            var screenScale = Screen.height / 1920f * 2f;
-            d *= screenScale;
-
-            rect.localScale = new Vector3(d, d, d);
-            rect.anchoredPosition = new Vector2(screenPos.x * reverseScale, (screenPos.y - cf.UiCanvas.pixelRect.height) * reverseScale);
         }
 
         public void ConfigureEntity(int id, Vector2Int worldPos, Direction direction)
@@ -1218,9 +1292,6 @@ namespace Assets.Scripts.Network
 
             yield return new WaitForSeconds(deathTiming);
 
-            if (CameraFollower.Instance.SelectedTarget == gameObject)
-                CameraFollower.Instance.ClearSelected();
-
             FadeOutAndVanish(2f);
         }
 
@@ -1229,8 +1300,10 @@ namespace Assets.Scripts.Network
             isMoving = false;
             movePath = null;
 
-            FloatingDisplay.Close();
-            FloatingDisplay = null;
+            FloatingDisplay?.Close(); //also nulls our reference
+
+            // the corpse stays visible while fading out, but should no longer be selectable
+            SpriteAnimator?.SetColliderEnabled(false);
 
             StopCasting();
 
@@ -1242,11 +1315,10 @@ namespace Assets.Scripts.Network
             if (IsMainCharacter)
                 CameraFollower.Instance.AppendChatText("You have died! Press R key to respawn at your save point.");
 
-            if (CameraFollower.Instance.SelectedTarget == this)
-                CameraFollower.Instance.ClearSelected();
-
             if (position.x > 0 && position.y > 0)
                 StopImmediate(position, true);
+            //not every death follows a hit to 0, such as /die
+            SetHp(0, MaxHp);
             IsCharacterAlive = false;
             SpriteAnimator.State = SpriteState.Dead;
             SpriteAnimator.ChangeMotion(SpriteMotion.Dead, true);
@@ -1255,18 +1327,7 @@ namespace Assets.Scripts.Network
             {
                 CameraFollower.Instance.AttachEffectToEntity("Death", gameObject, Id);
             }
-        }
 
-        public void UpdateHp(int hp)
-        {
-            EnsureFloatingDisplayCreated();
-        }
-
-        public void ForceHpBarOn(int hp)
-        {
-            EnsureFloatingDisplayCreated();
-            //FloatingDisplay.UpdateHp(hp, hp ,false);
-            FloatingDisplay.ForceHpBarOn();
         }
 
         //     public void BlastOff(Vector3 direction)
@@ -1355,7 +1416,7 @@ namespace Assets.Scripts.Network
             var di = RagnarokEffectPool.GetDamageIndicator();
             var height = 1f;
             var direction = SpriteAnimator != null ? SpriteAnimator.Direction : RoAnimationHelper.GetFacingForAngle(Angle);
-            di.DoDamage(TextIndicatorType.Heal, damage.ToString(), new Vector3(0f, 0.6f, 0f), height, direction, "green", false);
+            di.DoDamage(TextIndicatorType.Heal, damage, new Vector3(0f, 0.6f, 0f), height, direction, "green", false);
             di.AttachDamageIndicator(this);
         }
 
@@ -1364,7 +1425,7 @@ namespace Assets.Scripts.Network
             var di = RagnarokEffectPool.GetDamageIndicator();
             var height = 1f;
             var direction = SpriteAnimator != null ? SpriteAnimator.Direction : RoAnimationHelper.GetFacingForAngle(Angle);
-            di.DoDamage(TextIndicatorType.Heal, damage.ToString(), new Vector3(0f, 0.6f, 0f), height, direction, "blue", false);
+            di.DoDamage(TextIndicatorType.Heal, damage, new Vector3(0f, 0.6f, 0f), height, direction, "blue", false);
             di.AttachDamageIndicator(this);
         }
 
@@ -1375,13 +1436,13 @@ namespace Assets.Scripts.Network
             var color = red ? "#FF8888" : "#FFFF33"; //crit changed from FFFF00 to FFFF33 to brighten it up a bit due to the gradient effect
             var height = 1f;
             var direction = SpriteAnimator != null ? SpriteAnimator.Direction : RoAnimationHelper.GetFacingForAngle(Angle);
-            di.DoDamage(TextIndicatorType.Critical, damage.ToString(), gameObject.transform.localPosition, height, direction, color, true);
+            di.DoDamage(TextIndicatorType.Critical, damage, gameObject.transform.localPosition, height, direction, color, true);
 
             if (totalDamage > 0 && CharacterType != CharacterType.Player)
             {
 	            ComboIndicator?.EndDamageIndicator();
                 var di2 = RagnarokEffectPool.GetDamageIndicator();
-                di2.DoDamage(TextIndicatorType.ComboDamage, $"{totalDamage}", Vector3.zero, height, direction, color, false);
+                di2.DoDamage(TextIndicatorType.ComboDamage, totalDamage, Vector3.zero, height, direction, color, false);
                 di2.AttachComboIndicatorToControllable(this);
                 ComboIndicator = di2;
             }
@@ -1393,13 +1454,13 @@ namespace Assets.Scripts.Network
             var red = SpriteAnimator != null && SpriteAnimator.Type == SpriteType.Player;
             var height = 1f;
             var direction = SpriteAnimator != null ? SpriteAnimator.Direction : RoAnimationHelper.GetFacingForAngle(Angle);
-            di.DoDamage(TextIndicatorType.Damage, damage.ToString(), gameObject.transform.localPosition, height, direction, red ? "red" : null, false);
+            di.DoDamage(TextIndicatorType.Damage, damage, gameObject.transform.localPosition, height, direction, red ? "red" : null, false);
 
             if (totalDamage > 0 && CharacterType != CharacterType.Player)
             {
 	            ComboIndicator?.EndDamageIndicator();
 	            var di2 = RagnarokEffectPool.GetDamageIndicator();
-                di2.DoDamage(TextIndicatorType.ComboDamage, $"{totalDamage}", Vector3.zero, height,
+                di2.DoDamage(TextIndicatorType.ComboDamage, totalDamage, Vector3.zero, height,
                     direction, "#FFFF00", false);
                 di2.AttachComboIndicatorToControllable(this);
                 ComboIndicator = di2;
@@ -1530,6 +1591,12 @@ namespace Assets.Scripts.Network
                 return;
             }
 
+            if (dmg > 0 && msg.DamageOwner != null && msg.DamageOwner.IsMainCharacter)
+            {
+                DamageFromPlayer += dmg;
+                PlayerDealtDamage?.Invoke(this);
+            }
+
             var hasEndure = StatusEffectState != null && (StatusEffectState.HasStatusEffect(CharacterStatusEffect.Endure)
                                                           || StatusEffectState.HasStatusEffect(CharacterStatusEffect.Smoking));
 
@@ -1625,39 +1692,29 @@ namespace Assets.Scripts.Network
 
         private void Update()
         {
-            if (FloatingDisplay != null)
-                SnapDialog();
-
             if (IsMainCharacter)
             {
                 var mc = MinimapController.Instance;
                 if (mc == null || SpriteAnimator == null)
                     return;
 
-                MinimapController.Instance.SetPlayerPosition(CellPosition, Directions.GetAngleForDirection(SpriteAnimator.Direction) + 180f);
+                mc.SetPlayerPosition(CellPosition);
 
                 Shader.SetGlobalVector(RoBlindFocus, transform.position);
             }
 
-            //this is scuffed
-            if (CharacterType == CharacterType.Player && PlayerState.Instance.PartyId > 0 && PartyName == PlayerState.Instance.PartyName)
+            //the spawn arrives before the sprite, so the first bar is set up here
+            if (!hasShownSpawnHpBar && SpriteAnimator != null)
             {
-                FloatingDisplay.ForceHpBarOn();
-                FloatingDisplay.RefreshHpBarDetails();
-                IsPartyMember = true;
-            }
-            else
-            {
-                if (IsMainCharacter)
+                hasShownSpawnHpBar = true;
+                if (IsOwnOrPartyCharacter)
                 {
-                    FloatingDisplay.ForceHpBarOn();
-                    FloatingDisplay.RefreshHpBarDetails();
+                    var display = EnsureFloatingDisplayCreated();
+                    display.ForceHpBarOn();
+                    display.RefreshHpBarDetails();
                 }
-
-                if (IsPartyMember)
-                    FloatingDisplay.RefreshHpBarDetails();
-
-                IsPartyMember = false;
+                else
+                    RefreshHpBar();
             }
 
             HandleMessages();
@@ -1778,11 +1835,7 @@ namespace Assets.Scripts.Network
             if (PopupDialog != null)
                 Destroy(PopupDialog);
 
-            if (FloatingDisplay != null)
-            {
-                FloatingDisplay.Close();
-                FloatingDisplay = null;
-            }
+            FloatingDisplay?.Close();
 
             if (EffectList != null)
             {
@@ -1798,6 +1851,13 @@ namespace Assets.Scripts.Network
         public void OnEffectEnd(Ragnarok3dEffect effect)
         {
             EffectList.Remove(effect);
+        }
+
+        public void NotifyLeft(ServerControllable replacement)
+        {
+            var left = Left;
+            Left = null;
+            left?.Invoke(this, replacement);
         }
     }
 }

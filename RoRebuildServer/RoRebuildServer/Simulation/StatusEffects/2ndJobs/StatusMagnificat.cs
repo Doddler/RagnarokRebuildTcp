@@ -5,7 +5,7 @@ using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Simulation.StatusEffects._2ndJobs;
 
-[StatusEffectHandler(CharacterStatusEffect.Magnificat, StatusClientVisibility.Ally)]
+[StatusEffectHandler(CharacterStatusEffect.Magnificat, StatusClientVisibility.Party)]
 public class StatusMagnificat : StatusEffectBase
 {
     public override void OnApply(CombatEntity ch, ref StatusEffectState state)

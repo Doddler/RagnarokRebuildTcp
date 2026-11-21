@@ -364,13 +364,11 @@ namespace Assets.Scripts.UI
             var rectLeft = LeftWindow.GetComponent<RectTransform>();
             var rectRight = RightWindow.GetComponent<RectTransform>();
 
-            var parentContainer = (RectTransform)transform.parent;
-            var middle = parentContainer.rect.size / 2f;
-            middle = new Vector2(middle.x, -middle.y); //flip y
+            var pr = ((RectTransform)transform.parent).rect;
+            var middle = pr.center - (pr.min + Vector2.Scale(rectLeft.anchorMin, pr.size));
 
             var sizeLeft = rectLeft.sizeDelta;
-            var sizeRight = rectRight.sizeDelta;
-            
+
             rectRight.sizeDelta = new Vector2(sizeLeft.x, sizeLeft.y  * 0.6f);
 
             rectLeft.anchoredPosition = middle - new Vector2(sizeLeft.x, -sizeLeft.y / 2);
@@ -446,7 +444,7 @@ namespace Assets.Scripts.UI
 
                 count++;
                 var item = i.Value;
-                if (item.Type == ItemType.UniqueItem && state.EquippedBagIdHashes.Contains(item.BagSlotId))
+                if (item.Type == ItemType.UniqueItem && state.IsEquipped(item.BagSlotId))
                     continue;
                 var shopEntry = new ShopEntry() { ItemId = item.BagSlotId, Count = item.Count, Cost = item.SalePrice };
                 LeftSideItems.Add(shopEntry.ItemId, shopEntry);

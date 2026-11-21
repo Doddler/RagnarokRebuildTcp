@@ -107,7 +107,6 @@ namespace Assets.Scripts.UI
         public void CheckAndTryTrade()
         {
             var inventory = PlayerState.Instance.Inventory;
-            var equipHashes = PlayerState.Instance.EquippedBagIdHashes;
             
             //if they have unique items to trade, need to make sure they trade the right ones
             foreach (var req in currentTrade.Requirements)
@@ -138,7 +137,6 @@ namespace Assets.Scripts.UI
             selectWindow.InfoAreaText.gameObject.SetActive(false);
             selectWindow.OnPressCancel = OnCancel;
 
-            var equipHashes = PlayerState.Instance.EquippedBagIdHashes;
             var inventory = PlayerState.Instance.Inventory;
             selectWindow.TitleBar.text = "Select Item to Trade";
             selectWindow.OkButtonText.text = "Select";
@@ -165,7 +163,7 @@ namespace Assets.Scripts.UI
                 entry.EventOnSelect = OnClickItemOnPromptList;
                 entry.UniqueEntryId = item.BagSlotId;
                 //entry.EventDoubleClick = DoubleClickItemOnPromptList;
-                if (!equipHashes.Contains(item.BagSlotId))
+                if (!PlayerState.Instance.IsEquipped(item.BagSlotId))
                     entry.HideCount();
                 else
                     entry.CountText.text = "E";
@@ -219,7 +217,7 @@ namespace Assets.Scripts.UI
                 return;
             }
             
-            if (PlayerState.Instance.EquippedBagIdHashes.Contains(selectedBagId))
+            if (PlayerState.Instance.IsEquipped(selectedBagId))
             {
                 UiManager.Instance.YesNoOptionsWindow.BeginPrompt($"{item.ProperName()} - This item is currently equipped, are you sure you want to trade it?",
                     "Yes", "No", CheckAndTryTrade, OnCancel, false, false);

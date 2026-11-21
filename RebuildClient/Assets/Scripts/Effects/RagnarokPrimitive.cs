@@ -69,7 +69,7 @@ namespace Assets.Scripts.Effects
 
         private static readonly Dictionary<Sprite, Vector2[]> spriteUvCache = new();
 
-        private static Vector2[] GetSpriteUVs(Sprite sprite)
+        public static Vector2[] GetSpriteUVs(Sprite sprite)
         {
             if (!spriteUvCache.TryGetValue(sprite, out var cached))
             {
@@ -446,7 +446,20 @@ namespace Assets.Scripts.Effects
             
             mb.AddQuad(verts, normals, uvs, colors);
         }
-        
+
+        //a quad with its own place and turn inside the primitive, so several share one mesh; angle in radians
+        public void AddPlacedQuad(Vector2 corner0, Vector2 corner1, Vector2 corner2, Vector2 corner3,
+            Vector2 uv0, Vector2 uv1, Vector2 uv2, Vector2 uv3, Vector2 position, float angle, Color32 c)
+        {
+            var cos = Mathf.Cos(angle);
+            var sin = Mathf.Sin(angle);
+            AddTexturedQuad(Place(corner0, cos, sin, position), Place(corner1, cos, sin, position),
+                Place(corner2, cos, sin, position), Place(corner3, cos, sin, position), uv0, uv1, uv2, uv3, c);
+        }
+
+        private static Vector3 Place(Vector2 v, float cos, float sin, Vector2 position) =>
+            new(v.x * cos - v.y * sin + position.x, v.x * sin + v.y * cos + position.y);
+
         public void AddTexturedPerspectiveQuad(Vector3 vert1, Vector3 vert2, Vector3 vert3, Vector3 vert4, Vector3 uv1,
             Vector3 uv2, Vector3 uv3, Vector3 uv4, Color32 c, float scale = 1)
         {

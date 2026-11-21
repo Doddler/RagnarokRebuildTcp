@@ -25,7 +25,6 @@ public class SpearStabHandler : SkillHandlerBase
 
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect, bool isItemSource)
     {
-        lvl = lvl.Clamp(1, 10);
         var map = source.Character.Map;
 
         if (target == null || !target.IsValidTarget(source) || map == null)

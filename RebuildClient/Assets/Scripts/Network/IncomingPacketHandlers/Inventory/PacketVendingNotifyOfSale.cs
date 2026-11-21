@@ -13,7 +13,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers
             var bagId = msg.ReadInt32();
             var count = msg.ReadInt32();
             
-            VendingActiveWindow.Instance.ReceiveNotificationOfSale(bagId, count);
+            if (VendingActiveWindow.Instance != null)
+                VendingActiveWindow.Instance.ReceiveNotificationOfSale(bagId, count);
             PlayerState.Instance.Cart.RemoveItem(bagId, count);
         }
     }

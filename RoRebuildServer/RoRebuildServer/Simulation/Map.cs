@@ -150,7 +150,9 @@ public class Map
         if (ch.TryGetVisiblePlayerList(out var list))
         {
             CommandBuilder.AddRecipients(list);
-            CommandBuilder.SendRemoveEntityMulti(ch, reason);
+            //clients update or replace an entity on a refresh; other reasons, like a metamorphosis, remove it first
+            if (reason != CharacterRemovalReason.Refresh)
+                CommandBuilder.SendRemoveEntityMulti(ch, reason);
             CommandBuilder.SendCreateEntityMulti(ch, CreateEntityEventType.Refresh);
             CommandBuilder.ClearRecipients();
         }

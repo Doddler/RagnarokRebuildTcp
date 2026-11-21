@@ -64,11 +64,7 @@ namespace Assets.Scripts.UI.Inventory
             }
             else
                 itemList[bagId] = saleItem;
-            
-            PlayerState.Instance.Zeny += zeny;
-            
-            CameraFollower.Instance.CharacterDetailBox.CharacterZeny.text = $"Zeny: {PlayerState.Instance.Zeny:N0}";
-            
+
             IconContainer.RefreshItemList();
         }
     }

@@ -145,6 +145,7 @@ MonoBehaviour:
     HotSpot: {x: 15, y: 26}
     frameRate: 0
   NumberSprites:
+  - {fileID: 21300000, guid: a7500969f501b594eb5234f78e74234d, type: 3}
   - {fileID: 21300000, guid: 83d139e728d7a094fbe8424a32bc657c, type: 3}
   - {fileID: 21300000, guid: 608e1f5a5995e364bbdfde32dddd146b, type: 3}
   - {fileID: 21300000, guid: d362da6d48b34cb4eb1d93167e6fa024, type: 3}
@@ -154,4 +155,3 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 46afa9efe7ce5d54aa0d087051971cbe, type: 3}
   - {fileID: 21300000, guid: 7e90cbaee68563546b4b74b49a11f131, type: 3}
   - {fileID: 21300000, guid: e6a8b60d98d574b40835cb79b8c38759, type: 3}
-  - {fileID: 21300000, guid: a7500969f501b594eb5234f78e74234d, type: 3}

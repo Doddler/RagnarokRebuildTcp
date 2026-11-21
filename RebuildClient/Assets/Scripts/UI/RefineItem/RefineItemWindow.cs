@@ -39,7 +39,7 @@ namespace Assets.Scripts.UI.RefineItem
         public static RefineItemWindow Instance;
         
         
-        public new void OnDestroy()
+        public override void OnDestroy()
         {
             Instance = null;
             base.OnDestroy();
@@ -81,7 +81,7 @@ namespace Assets.Scripts.UI.RefineItem
                 return;
             
             targetItem = state.Inventory.GetInventoryItem(MainTargetItem.ItemId);
-            if(state.EquippedBagIdHashes.Contains(targetItem.BagSlotId))
+            if(state.IsEquipped(targetItem.BagSlotId))
                 MainTargetItem.SetEquipped();
             else
                 MainTargetItem.HideCount();
@@ -139,7 +139,7 @@ namespace Assets.Scripts.UI.RefineItem
             entry.UniqueEntryId = id;
             entry.ItemName.text = item.ProperName();
             entry.ItemName.rectTransform.anchorMax = new Vector2(1, 1); //resize to full width
-            if (state.EquippedBagIdHashes.Contains(item.BagSlotId))
+            if (state.IsEquipped(item.BagSlotId))
                 entry.SetEquipped();
             else
                 entry.HideCount();
@@ -155,7 +155,6 @@ namespace Assets.Scripts.UI.RefineItem
         private void StartSelectTargetItem()
         {
             var inventory = state.Inventory;
-            var equipped = state.EquippedBagIdHashes;
             selectWindow.TitleBar.text = "Select Item to Refine";
             selectWindow.OkButtonText.text = "Select";
             selectWindow.OnPressCancel = () => Destroy(selectWindow.gameObject);
@@ -222,7 +221,7 @@ namespace Assets.Scripts.UI.RefineItem
             SelectItem(selected);
             MainTargetItem.Assign(selectedItem);
             targetItem = state.Inventory.GetInventoryItem(selectedItem.ItemId);
-            if(state.EquippedBagIdHashes.Contains(selectedItem.ItemId))
+            if(state.IsEquipped(selectedItem.ItemId))
                 MainTargetItem.SetEquipped();
             else
                 MainTargetItem.HideCount();

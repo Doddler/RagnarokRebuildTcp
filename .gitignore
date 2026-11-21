@@ -26,6 +26,7 @@ RebuildClient/Temp/
 RebuildClient/obj/
 RebuildClient/*.csproj
 RebuildClient/*.sln
+RebuildClient/*.slnx
 RebuildClient/*.suo
 RebuildClient/*.DotSettings
 RebuildClient/Assets/Maps/

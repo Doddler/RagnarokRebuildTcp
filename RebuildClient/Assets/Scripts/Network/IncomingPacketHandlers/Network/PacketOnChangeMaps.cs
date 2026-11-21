@@ -10,8 +10,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
         public override void ReceivePacket(ClientInboundMessage msg)
         {
             var mapName = msg.ReadString();
-            
-            Network.EntityList.Clear();
+
+            Network.ClearEntities();
             Network.ClearGroundItemList();
             Network.CurrentMap = mapName;
             

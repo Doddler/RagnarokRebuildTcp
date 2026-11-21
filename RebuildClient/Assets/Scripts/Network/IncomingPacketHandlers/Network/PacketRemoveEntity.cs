@@ -39,10 +39,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Network
                 Network.ClearGroundItemList();
             }
 
-            Network.EntityList.Remove(id);
-
-            if (Camera.SelectedTarget == controllable)
-                Camera.ClearSelected();
+            Network.RemoveEntity(id);
 
             Network.EntityLastSeenTime[controllable.Id] = Time.timeSinceLevelLoad;
 

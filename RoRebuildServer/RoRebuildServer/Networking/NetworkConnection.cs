@@ -16,7 +16,8 @@ public enum ConnectionStatus
 public enum ActiveDbAction
 {
     None,
-    CreateParty
+    CreateParty,
+    ChangeName
 }
 
 public class NetworkConnection
@@ -36,6 +37,7 @@ public class NetworkConnection
     public LoadCharacterRequest? LoadCharacterRequest { get; set; }
     public StorageLoadRequest? LoadStorageRequest { get; set; }
     public CreatePartyRequest? CreatePartyRequest { get; set; }
+    public ChangeNameRequest? ChangeNameRequest { get; set; }
     public ActiveDbAction ActiveDbAction { get; set; }
 
     //when this connection has its entity removed from the world it is no longer alive. Used to prevent queueing removal while the entity is awaiting recycling.

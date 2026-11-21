@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Assets.Scripts.Network;
 using Assets.Scripts.Sprites;
@@ -152,7 +152,7 @@ namespace Assets.Scripts.UI.TitleScreen
         void Start()
         {
             //do this in start instead of awake to make sure DataLoader has loaded everything
-            ProjectTitleText.text = $"Ragnarok Online Rebuild Project (Protocol v{ClientDataLoader.Instance.ServerVersion})";
+            ProjectTitleText.text = $"Ragnarok Online Rebuild Project (Protocol v{ClientDataLoader.Instance.ServerVersion}) - Not affiliated with Gravity Co. Ltd.";
         }
 
         // Update is called once per frame

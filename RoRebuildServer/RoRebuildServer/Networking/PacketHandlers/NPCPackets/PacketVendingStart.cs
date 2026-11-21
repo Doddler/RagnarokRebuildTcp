@@ -61,7 +61,7 @@ public class PacketVendingStart : IClientPacketHandler
             return;
         }
 
-        if (itemCount > player.MaxLearnedLevelOfSkill(CharacterSkill.Vending) + 2)
+        if (itemCount > player.MaxSkillLevel(CharacterSkill.Vending) + 2)
         {
             CommandBuilder.SkillFailed(player, SkillValidationResult.VendFailedTooManyItems);
             return;

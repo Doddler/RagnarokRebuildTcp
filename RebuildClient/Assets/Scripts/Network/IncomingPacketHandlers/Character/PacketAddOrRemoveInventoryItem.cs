@@ -2,6 +2,7 @@
 using Assets.Scripts.PlayerControl;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
+using Assets.Scripts.UI.Utility;
 
 namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
 {
@@ -17,7 +18,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                 var type = (ItemType)msg.ReadByte();
                 var bagId = msg.ReadInt32();
                 var change = (int)msg.ReadInt16();
-                State.CurrentWeight = msg.ReadInt32();
+                State.SetWeight(msg.ReadInt32());
                 var item = InventoryItem.Deserialize(msg, type, bagId);
                 State.Inventory.UpdateItem(item);
                 UiManager.Instance.ItemObtainedPopup.SetText(item, change);
@@ -27,15 +28,15 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             {
                 var bagId = msg.ReadInt32();
                 var change = (int)msg.ReadInt16();
-                State.CurrentWeight = msg.ReadInt32();
-                
+                State.SetWeight(msg.ReadInt32());
+
                 if(msg.ReadBoolean())
                 {
                     var item = State.Inventory.GetInventoryItem(bagId);
                     if(item.Type == ItemType.UniqueItem)
-                        Camera.AppendChatText($"<color=#ed0000>You lost {item.ProperName()}.</color>");
+                        Camera.AppendChatText($"<color={TextColors.Unequip}>You lost {item.ProperName()}.</color>");
                     else
-                        Camera.AppendChatText($"<color=#ed0000>You lost {change}x {item.ProperName()}.</color>");
+                        Camera.AppendChatText($"<color={TextColors.Unequip}>You lost {change}x {item.ProperName()}.</color>");
                         
                 }
                 
@@ -45,11 +46,6 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                 //if(msg.ReadBoolean())
                 // Debug.Log($"Removed {change} of item with a bag Id {bagId} (weight changed {State.CurrentWeight - oldWeight} to {State.CurrentWeight})");
             }
-
-            UiManager.SkillHotbar.UpdateItemCounts();
-            UiManager.InventoryWindow.UpdateActiveVisibleBag();
-            UiManager.RefreshTooltip();
-            CameraFollower.Instance.CharacterDetailBox.UpdateWeightAndZeny();
         }
     }
 }

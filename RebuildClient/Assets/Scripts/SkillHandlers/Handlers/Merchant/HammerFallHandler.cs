@@ -13,7 +13,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers
             src.PerformBasicAttackMotion(); //server will send the hammerfall effect separately
             
             if(src.CharacterType == CharacterType.Player)
-                src.FloatingDisplay.ShowChatBubbleMessage("Hammer Fall!!");
+                src.EnsureFloatingDisplayCreated().ShowChatBubbleMessage("Hammer Fall!!");
         }
     }
 }

@@ -69,6 +69,15 @@ public class World
     public bool TryFindPlayerByGuid(Guid id, out Entity entity) => playerList.TryGetValue(id, out entity) && entity.IsAlive();
     public bool TryFindPlayerByName(string name, out Entity entity) => playerNameLookup.TryGetValue(name, out entity) && entity.IsAlive();
 
+    public void RenamePlayer(Entity entity, string oldName, string newName)
+    {
+        using (entityLock.EnterScope())
+        {
+            playerNameLookup.Remove(oldName);
+            playerNameLookup[newName] = entity;
+        }
+    }
+
     public CancellationToken GetCancellationToken => CancellationSource.Token;
 
     public World()

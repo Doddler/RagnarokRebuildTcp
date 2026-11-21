@@ -397,6 +397,8 @@ namespace Assets.Scripts
         public int Size;
         public float AverageWidth;
         public float StandingHeight;
+        public float SittingHeight; // only computed for player body sprites; 0 otherwise
+        public float SitDepth; // how far the seated body dips below the origin; player body sprites only, 0 otherwise
         public AudioClip[] Sounds;
         public int AttackFrameTime;
         public int SpritesPerPalette;

@@ -1,4 +1,6 @@
-﻿namespace RebuildSharedData.ClientTypes;
+﻿using RebuildSharedData.Enum.EntityStats;
+
+namespace RebuildSharedData.ClientTypes;
 
 #pragma warning disable CS8618 //disable warning for nullable fields
 
@@ -14,6 +16,11 @@ public class MonsterClassData
     public float Size;
 
     public float AttackTiming;
+    //race, size type and element are left at their defaults for npcs, which have none
+    public CharacterRace Race;
+    //small, medium or large; Size is the sprite's scale
+    public CharacterSize SizeType;
+    public CharacterElement Element;
 
     //public float HitTiming;
     public string Color = "FFFFFFFF";

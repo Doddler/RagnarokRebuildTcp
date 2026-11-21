@@ -149,7 +149,7 @@ namespace RoRebuildServer.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(40)
+                        .HasMaxLength(16)
                         .HasColumnType("TEXT");
 
                     b.Property<byte[]>("NpcFlags")
@@ -201,7 +201,7 @@ namespace RoRebuildServer.Migrations
 
                     b.Property<string>("PartyName")
                         .IsRequired()
-                        .HasMaxLength(64)
+                        .HasMaxLength(16)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

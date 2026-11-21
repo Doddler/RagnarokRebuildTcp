@@ -532,10 +532,10 @@ public partial class CombatEntity
 
                 //masteries, demonbane, etc
                 if (targetRace == CharacterRace.Demon || baseElementType == AttackElement.Undead)
-                    addDamage += Player.MaxLearnedLevelOfSkill(CharacterSkill.DemonBane) * 3;
+                    addDamage += Player.MaxSkillLevel(CharacterSkill.DemonBane) * 3;
 
                 if (targetRace == CharacterRace.Beast || targetRace == CharacterRace.Insect || target.IsFlying())
-                    addDamage += Player.MaxLearnedLevelOfSkill(CharacterSkill.BeastBane) * 5;
+                    addDamage += Player.MaxSkillLevel(CharacterSkill.BeastBane) * 5;
 
                 addDamage += GetStat(CharacterStat.WeaponMastery);
 

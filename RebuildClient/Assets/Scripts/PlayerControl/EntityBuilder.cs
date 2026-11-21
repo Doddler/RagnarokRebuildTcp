@@ -15,6 +15,7 @@ using RebuildSharedData.Packets;
 using UnityEngine;
 using UnityEngine.Rendering;
 using PlayerSpawnParameters = RebuildSharedData.Packets.PlayerSpawnParameters;
+using RebuildSharedData.Data;
 
 namespace Assets.Scripts.PlayerControl
 {
@@ -39,17 +40,10 @@ namespace Assets.Scripts.PlayerControl
             go.layer = LayerMask.NameToLayer("Characters");
             go.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
             var control = go.AddComponent<ServerControllable>();
-            
-            var pData = dataLoader.PlayerClassLookup[0]; //novice
-            if (dataLoader.PlayerClassLookup.TryGetValue(spawn.ClassId, out pData))
-            {
-                go.name = $"[{pData.Name}]{spawn.Name}";
-            }
-            else
-            {
-                Debug.LogWarning($"Failed to player class for player {spawn.Name} with classId of {spawn.ClassId}");
-            }
-            
+            control.IsMainCharacter = spawn.IsMainCharacter;
+            control.SetAppearance(PlayerAppearance.FromSpawn(spawn, player));
+            NameAfterJob(control, ref spawn);
+
             if (spawn.OverrideClassId > 0 && dataLoader.MonsterClassLookup.TryGetValue(spawn.OverrideClassId, out var monData))
             {
                 
@@ -58,30 +52,29 @@ namespace Assets.Scripts.PlayerControl
                 else
                     InstantiateMonsterSprite(control, ref spawn, monData);
                 
-                if (player.Follower != CharacterFollowerState.None)
-                    ChangeFollowerState(control, player.Follower);
-                
-                if (spawn.IsMainCharacter)
-                {
-                    var state = PlayerState.Instance;
-                    control.IsMainCharacter = true;
-                    state.PlayerName = control.Name;
-                    state.UpdatePlayerName();
-                    state.WeaponClass = player.WeaponClass;
-                    CameraFollower.Instance.CharacterDetailBox.CharacterJob.text = pData.Name;
-                    CameraFollower.Instance.CharacterDetailBox.BaseLvlDisplay.text = $"Base Lv. {control.Level}";
-                }
-                
+                ChangeFollowerState(control, player.Follower);
+
                 control.ConfigureEntity(spawn.ServerId, spawn.Position.ToVector2Int(), spawn.Facing);
-                control.Name = spawn.Name;
-                control.Hp = spawn.Hp;
-                control.MaxHp = spawn.MaxHp;
+                control.SetName(spawn.Name);
+                control.InitializeHp(spawn.Hp, spawn.MaxHp);
                 return control;
             }
 
-            InstantiatePlayerSprite(control, ref spawn, ref player, pData);
+            InstantiatePlayerSprite(control, ref spawn, ref player);
 
             return control;
+        }
+
+        //named "[Job]Name"; an unknown job shows as novice
+        private void NameAfterJob(ServerControllable control, ref EntitySpawnParameters spawn)
+        {
+            if (!dataLoader.PlayerClassLookup.TryGetValue(spawn.ClassId, out var data))
+            {
+                Debug.LogWarning($"Failed to find player class for player {spawn.Name} with classId of {spawn.ClassId}");
+                data = dataLoader.PlayerClassLookup[0];
+            }
+
+            control.gameObject.name = $"[{data.Name}]{spawn.Name}";
         }
 
         public ServerControllable LoadMonster(ref EntitySpawnParameters spawn)
@@ -147,13 +140,8 @@ namespace Assets.Scripts.PlayerControl
             return control;
         }
         
-        private void InstantiatePlayerSprite(ServerControllable control, ref EntitySpawnParameters spawn, ref PlayerSpawnParameters player, PlayerClassData data)
+        private void InstantiatePlayerSprite(ServerControllable control, ref EntitySpawnParameters spawn, ref PlayerSpawnParameters player)
         {
-            bool isMounted = (player.Follower & CharacterFollowerState.Mounted) > 0 && (spawn.ClassId == 7 || spawn.ClassId == 13);
-            var displayData = data;
-            if (isMounted)
-                dataLoader.PlayerClassLookup.TryGetValue(spawn.ClassId, out displayData);
-            
             var go = control.gameObject;
             var billboard = go.AddComponent<BillboardObject>();
             billboard.Style = BillboardStyle.Character;
@@ -173,20 +161,12 @@ namespace Assets.Scripts.PlayerControl
             var bodySprite = body.AddComponent<RoSpriteAnimator>();
             var headSprite = head.AddComponent<RoSpriteAnimator>();
 
-            control.ClassId = spawn.ClassId;
-            control.OverrideClassId = isMounted ? spawn.ClassId + 500 : control.ClassId;
+            ApplyPlayerFields(control, ref spawn, ref player);
             control.SpriteAnimator = bodySprite;
             control.CharacterType = CharacterType.Player;
             control.SpriteMode = ClientSpriteType.Sprite;
             control.IsAlly = true;
-            control.IsMainCharacter = spawn.IsMainCharacter;
-            control.IsMale = player.IsMale;
-            control.Level = spawn.Level;
-            control.WeaponClass = player.WeaponClass;
-            control.PartyName = player.PartyName;
-            control.IsPartyMember = player.PartyId > 0 && player.PartyId == player.PartyId;
-            
-            
+
             bodySprite.Controllable = control;
             if (spawn.State == CharacterState.Moving)
                 bodySprite.ChangeMotion(SpriteMotion.Walk);
@@ -204,66 +184,88 @@ namespace Assets.Scripts.PlayerControl
 
             headSprite.Parent = bodySprite;
             headSprite.SpriteOrder = 1;
+            control.HeadAnimator = headSprite;
 
             control.ShadowSize = 0.5f;
-            control.WeaponClass = player.WeaponClass;
 
-            var weapon = player.Weapon;
-            var shield = player.Shield;
+            Debug.Log($"Instantiate player sprite with job {spawn.ClassId} weapon {player.WeaponClass}");
+
+            AttachGear(control, player.Headgear1, player.Headgear2, player.Headgear3, player.Weapon, player.Shield);
+
+            control.ConfigureEntity(spawn.ServerId, spawn.Position.ToVector2Int(), spawn.Facing);
+            control.InitializeHp(spawn.Hp, spawn.MaxHp);
+            // control.EnsureFloatingDisplayCreated().SetUp(param.Name, param.MaxHp, 0);
+
+            LoadBodyAndHead(control, ref player);
+            control.AttachShadow(dataLoader.ShadowSprite);
+            //AddressableUtility.LoadSprite(go, "shadow", control.AttachShadow);
+
+            control.Init();
+
+            ChangeFollowerState(control, player.Follower);
+        }
+
+        //Applies a refreshed player to the shown object, keeping its position, effects and selection.
+        //False when it needs a new object, as for a monster disguise.
+        public bool TryRefreshPlayer(ServerControllable control, ref EntitySpawnParameters spawn, ref PlayerSpawnParameters player)
+        {
+            if (control.HeadAnimator == null)
+                return false;
+            if (spawn.OverrideClassId > 0 && dataLoader.MonsterClassLookup.ContainsKey(spawn.OverrideClassId))
+                return false;
+
+            NameAfterJob(control, ref spawn);
+            ApplyPlayerFields(control, ref spawn, ref player);
+            control.SetAppearance(PlayerAppearance.FromSpawn(spawn, player));
+
+            LoadBodyAndHead(control, ref player);
+            AttachGear(control, player.Headgear1, player.Headgear2, player.Headgear3, player.Weapon, player.Shield);
+
+            if (player.Follower != control.Follower)
+                ChangeFollowerState(control, player.Follower);
+
+            return true;
+        }
+
+        private void ApplyPlayerFields(ServerControllable control, ref EntitySpawnParameters spawn, ref PlayerSpawnParameters player)
+        {
+            //a mounted knight or crusader uses its peco body, job id + 500
+            var isMounted = (player.Follower & CharacterFollowerState.Mounted) > 0 && (spawn.ClassId == 7 || spawn.ClassId == 13);
+            control.ClassId = spawn.ClassId;
+            control.OverrideClassId = isMounted ? spawn.ClassId + 500 : spawn.ClassId;
+            control.InitializeParty(player.PartyName, PlayerState.Instance.Party.IsMemberEntity(spawn.ServerId));
+            control.SetName(spawn.Name); //after the party name, which the name plate shows
+            control.SetLevel(spawn.Level);
+            control.SetWeaponClass(player.WeaponClass);
+        }
+
+        //each layer shows its old sprite until the new one loads
+        private void LoadBodyAndHead(ServerControllable control, ref PlayerSpawnParameters player)
+        {
+            var go = control.gameObject;
+            var bodySpriteName = dataLoader.GetPlayerBodySpriteName(control.OverrideClassId, player.IsMale);
+            var headSpriteName = dataLoader.GetPlayerHeadSpriteName(player.HeadType, player.HairColor, player.IsMale);
+            AddressableUtility.LoadRoSpriteData(go, bodySpriteName, control.SpriteAnimator.ReplaceSpriteData);
+            AddressableUtility.LoadRoSpriteData(go, headSpriteName, control.HeadAnimator.ReplaceSpriteData);
+        }
+
+        //Gender and job pick the sprite variant, so set those first.
+        public void AttachGear(ServerControllable control, int headgear1, int headgear2, int headgear3, int weapon, int shield)
+        {
+            //a dual-wielded weapon arrives in the shield slot
             var offHand = 0;
-            if (player.Shield > 0 && dataLoader.TryGetItemById(player.Shield, out var item) && item.ItemClass == ItemClass.Weapon)
+            if (shield > 0 && dataLoader.TryGetItemById(shield, out var item) && item.ItemClass == ItemClass.Weapon)
             {
-                
                 offHand = item.SubType;
                 shield = 0;
             }
 
-            var bodySpriteName = dataLoader.GetPlayerBodySpriteName(control.OverrideClassId, player.IsMale);
-            var headSpriteName = dataLoader.GetPlayerHeadSpriteName(player.HeadType, player.HairColor, player.IsMale);
-            
-            
-            Debug.Log($"Instantiate player sprite with job {spawn.ClassId} weapon {player.WeaponClass}");
-
-            dataLoader.LoadAndAttachEquipmentSprite(control, player.Headgear1, EquipPosition.HeadUpper, 4);
-            dataLoader.LoadAndAttachEquipmentSprite(control, player.Headgear2, EquipPosition.HeadMid, 3);
-            dataLoader.LoadAndAttachEquipmentSprite(control, player.Headgear3, EquipPosition.HeadLower, 2);
+            dataLoader.LoadAndAttachEquipmentSprite(control, headgear1, EquipPosition.HeadUpper, 4);
+            dataLoader.LoadAndAttachEquipmentSprite(control, headgear2, EquipPosition.HeadMid, 3);
+            dataLoader.LoadAndAttachEquipmentSprite(control, headgear3, EquipPosition.HeadLower, 2);
             dataLoader.LoadAndAttachEquipmentSprite(control, shield, EquipPosition.Shield, 1);
 
             dataLoader.LoadAndAttachWeapon(control, weapon, offHand);
-
-            control.ConfigureEntity(spawn.ServerId, spawn.Position.ToVector2Int(), spawn.Facing);
-            control.Name = spawn.Name;
-            control.Hp = spawn.Hp;
-            control.MaxHp = spawn.MaxHp;
-            // control.EnsureFloatingDisplayCreated().SetUp(param.Name, param.MaxHp, 0);
-
-            AddressableUtility.LoadRoSpriteData(go, bodySpriteName, bodySprite.OnSpriteDataLoad);
-            AddressableUtility.LoadRoSpriteData(go, headSpriteName, headSprite.OnSpriteDataLoad);
-            control.AttachShadow(dataLoader.ShadowSprite);
-            //AddressableUtility.LoadSprite(go, "shadow", control.AttachShadow);
-
-            var state = PlayerState.Instance;
-            
-            if (control.IsMainCharacter)
-            {
-                CameraFollower.Instance.CharacterDetailBox.CharacterJob.text = data.Name;
-                state.PlayerName = control.Name;
-                state.UpdatePlayerName();
-                state.WeaponClass = player.WeaponClass;
-                CameraFollower.Instance.CharacterDetailBox.BaseLvlDisplay.text = $"Base Lv. {control.Level}";
-            }
-
-            control.Init();
-
-            if (player.PartyId == state.PartyId)
-            {
-                state.AssignPartyMemberControllable(control.Id, control);
-                if (state.PartyMemberIdLookup.TryGetValue(control.Id, out var partyMemberId) &&
-                    UiManager.Instance.PartyPanel.PartyEntryLookup.TryGetValue(partyMemberId, out var panel))
-                    panel.ClearAllStatusEffects(); //we will re-assign them right after
-            }
-            
-            ChangeFollowerState(control, player.Follower);
         }
 
         private void InstantiateMonsterSprite(ServerControllable control, ref EntitySpawnParameters spawn, MonsterClassData data)
@@ -290,25 +292,19 @@ namespace Assets.Scripts.PlayerControl
             //control.SpriteAnimator.SpriteOffset = mData.Offset;
             control.ShadowSize = data.ShadowSize;
             control.IsAlly = spawn.Type != CharacterType.Monster;
-            control.Level = spawn.Level;
-            control.Name = spawn.Name;
+            control.SetLevel(spawn.Level);
+            control.SetName(spawn.Name);
             if (string.IsNullOrEmpty(spawn.Name))
-                control.Name = data.Name;
-            control.WeaponClass = 0;
-            control.Hp = spawn.Hp;
-            control.MaxHp = spawn.MaxHp;
+                control.SetName(data.Name);
+            control.SetWeaponClass(0);
+            control.InitializeHp(spawn.Hp, spawn.MaxHp);
             if (ColorUtility.TryParseHtmlString(data.Color, out var color))
                 sprite.BaseColor = color;
 
             control.ConfigureEntity(spawn.ServerId, spawn.Position.ToVector2Int(), spawn.Facing);
             // control.EnsureFloatingDisplayCreated().SetUp(param.Name, param.MaxHp, 0);
 
-            var basePath = "Assets/Sprites/Monsters/";
-            if (control.ClassId < 4000)
-                basePath = "Assets/Sprites/Npcs/";
-
-
-            AddressableUtility.LoadRoSpriteData(go, basePath + data.SpriteName, control.SpriteAnimator.OnSpriteDataLoad);
+            AddressableUtility.LoadRoSpriteData(go, ClientDataLoader.GetMonsterSpritePath(control.ClassId, data.SpriteName), control.SpriteAnimator.OnSpriteDataLoad);
             if (data.ShadowSize > 0)
                 control.AttachShadow(dataLoader.ShadowSprite);
             //AddressableUtility.LoadSprite(go, "shadow", control.AttachShadow);
@@ -328,15 +324,14 @@ namespace Assets.Scripts.PlayerControl
             control.SpriteMode = ClientSpriteType.Prefab;
             control.EntityObject = control.gameObject;
             control.IsInteractable = false;
-            control.Level = spawn.Level;
-            control.Name = spawn.Name;
+            control.SetLevel(spawn.Level);
+            control.SetName(spawn.Name);
             control.IsAlly = spawn.Type != CharacterType.Monster;
             control.CharacterState = spawn.State;
             
             
             control.ConfigureEntity(spawn.ServerId, spawn.Position.ToVector2Int(), spawn.Facing);
-            control.EnsureFloatingDisplayCreated().SetUp(control, spawn.Name, spawn.MaxHp, 0, false, false);
-            
+
             ClientDataLoader.Instance.AttachPrefabToControllable(control, prefabName);
         }
 
@@ -348,8 +343,8 @@ namespace Assets.Scripts.PlayerControl
             control.CharacterType = CharacterType.NPC;
             control.SpriteMode = ClientSpriteType.Prefab;
             control.EntityObject = obj;
-            control.Level = spawn.Level;
-            control.Name = spawn.Name;
+            control.SetLevel(spawn.Level);
+            control.SetName(spawn.Name);
             control.IsAlly = true;
             control.IsInteractable = npc.Interactable;
             control.CharacterState = spawn.State;
@@ -455,58 +450,40 @@ namespace Assets.Scripts.PlayerControl
         }
         
         
-        public void ChangeFollowerState(ServerControllable control, CharacterFollowerState follower)
+        //The peco is part of the body sprite; an unchanged follower keeps its place.
+        public void ChangeFollowerState(ServerControllable control, CharacterFollowerState newState)
         {
-            if (control.FollowerObject != null)
+            var currentState = control.Follower;
+
+            var currentHasFalcon = (currentState & CharacterFollowerState.Falcon) != 0;
+            var newHasFalcon = (newState & CharacterFollowerState.Falcon) != 0;
+            if (newHasFalcon && !currentHasFalcon)
             {
-                Object.Destroy(control.FollowerObject);
+                control.FalconObject = new GameObject("Falcon");
+                control.FalconObject.AddComponent<BirdFollower>().AttachBird(control, 0);
+            }
+            else if (currentHasFalcon && !newHasFalcon)
+            {
+                Object.Destroy(control.FalconObject);
+                control.FalconObject = null;
             }
 
-            if (follower == CharacterFollowerState.None)
+            var newCartStyle = newState.CartStyle();
+            if (newCartStyle != currentState.CartStyle())
             {
-                control.FollowerObject = null;
-                if (control.IsMainCharacter)
+                if (control.CartObject != null)
+                    Object.Destroy(control.CartObject);
+                control.CartObject = null;
+
+                if (newCartStyle >= 0)
                 {
-                    PlayerState.Instance.HasCart = false;
-                    UiManager.Instance.EquipmentWindow.RefreshEquipmentWindow();
+                    control.CartObject = new GameObject("Cart");
+                    control.CartObject.AddComponent<CartFollower>().AttachCart(control, newCartStyle);
                 }
-
-                return;
-            }
-            
-            if ((follower & CharacterFollowerState.AnyCart) > 0)
-            {
-                var cartStyle = follower switch
-                {
-                    CharacterFollowerState.Cart0 => 0,
-                    CharacterFollowerState.Cart1 => 1,
-                    CharacterFollowerState.Cart2 => 2,
-                    CharacterFollowerState.Cart3 => 3,
-                    CharacterFollowerState.Cart4 => 4,
-                    _ => 0
-                };
-                var cartObj = new GameObject("Cart");
-                var cart = cartObj.AddComponent<CartFollower>();
-                cart.AttachCart(control, cartStyle);
-                control.FollowerObject = cartObj;
             }
 
-            if ((follower & CharacterFollowerState.Falcon) > 0)
-            {
-                var birdObj = new GameObject("Falcon");
-                var bird = birdObj.AddComponent<BirdFollower>();
-                bird.AttachBird(control, 0);
-
-                if (control.FollowerObject != null)
-                    Destroy(control.FollowerObject);
-                control.FollowerObject = birdObj;
-
-                if (control.IsMainCharacter)
-                    PlayerState.Instance.HasBird = true;
-            }
-            
-            if(control.IsMainCharacter)
-                UiManager.Instance.EquipmentWindow.RefreshEquipmentWindow();
+            control.SetFollowersVisible(!control.IsHiddenFromPlayer);
+            control.SetFollower(newState);
         }
     }
 }

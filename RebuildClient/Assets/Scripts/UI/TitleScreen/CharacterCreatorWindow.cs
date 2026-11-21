@@ -1,10 +1,13 @@
 ﻿using Assets.Scripts.Network;
 using Assets.Scripts.Sprites;
+using RebuildSharedData.Config;
 using RebuildSharedData.Enum;
+using RebuildSharedData.Util;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using RebuildSharedData.Data;
 
 namespace Assets.Scripts.UI.TitleScreen
 {
@@ -18,7 +21,8 @@ namespace Assets.Scripts.UI.TitleScreen
         public Button[] StatDownButtons;
         public Button[] GenderButtons;
         public TextMeshProUGUI[] StatTexts;
-        public Button SaveButton;
+        public Button OkButton;
+        public Button CancelButton;
         
         public int hairColor;
         public int hairStyle;
@@ -41,6 +45,8 @@ namespace Assets.Scripts.UI.TitleScreen
         private const int StartingStatVal = 5;
         private const int MaxStartingStat = 9;
         private const int MaxHairId = 19;
+
+        private bool IsNameValid => NameValidator.GetCharacterNameError(PlayerNameText.text.Trim()) == null;
 
         public void AddStat(int statId) => UpdateStats(statId, 1);
         public void SubStat(int statId) => UpdateStats(statId, -1);
@@ -68,7 +74,8 @@ namespace Assets.Scripts.UI.TitleScreen
             else
                 for (var i = 0; i < 6; i++)
                     StatUpButtons[i].interactable = statValues[i] < MaxStartingStat;
-            
+
+            RefreshOkButton();
         }
 
         public new void Awake()
@@ -83,20 +90,30 @@ namespace Assets.Scripts.UI.TitleScreen
             }
 
             isGenderMale = true;
-            
-            PlayerSprite.PrepareDisplayPlayerCharacter(0, hairStyle, hairColor, 0, 0, 0, isGenderMale);
+
+            ShowPreview();
 
             StatsRemainingText.text = statsRemaining.ToString();
+
+            //'\0' rejects a typed character
+            PlayerNameText.characterLimit = SharedConfig.MaxPlayerName;
+            PlayerNameText.onValidateInput = NameValidator.FilterTyped;
+            PlayerNameText.onValueChanged.AddListener(_ => RefreshOkButton());
+            RefreshOkButton();
         }
-        
+
         public void Open()
         {
+            OkButton.gameObject.SetActive(true);
+            CancelButton.gameObject.SetActive(true);
             Pane.SetActive(true);
             Parent.TitleState = TitleScreen.TitleScreenState.CharacterCreation;
         }
         
         public void HidePane()
         {
+            OkButton.gameObject.SetActive(false);
+            CancelButton.gameObject.SetActive(false);
             Pane.SetActive(false);
         }
 
@@ -106,7 +123,7 @@ namespace Assets.Scripts.UI.TitleScreen
             ColorButtons[id].interactable = false;
             hairColor = id;
             
-            PlayerSprite.PrepareDisplayPlayerCharacter(0, hairStyle, hairColor, 0, 0, 0, isGenderMale);
+            ShowPreview();
         }
 
         public void ChangeHair(bool isLeft)
@@ -118,7 +135,7 @@ namespace Assets.Scripts.UI.TitleScreen
             if (hairStyle > MaxHairId)
                 hairStyle = 0;
             
-            PlayerSprite.PrepareDisplayPlayerCharacter(0, hairStyle, hairColor, 0, 0, 0, isGenderMale);
+            ShowPreview();
         }
 
         public void ChangeGender(bool isMale)
@@ -126,9 +143,13 @@ namespace Assets.Scripts.UI.TitleScreen
             isGenderMale = isMale;
             GenderButtons[0].interactable = !isMale;
             GenderButtons[1].interactable = isMale;
-            PlayerSprite.PrepareDisplayPlayerCharacter(0, hairStyle, hairColor, 0, 0, 0, isGenderMale);
+            ShowPreview();
         }
-        
+
+        //a new character is always a novice
+        private void ShowPreview() =>
+            PlayerSprite.PrepareDisplayPlayerCharacter(new PlayerAppearance(0, hairStyle, hairColor, isGenderMale));
+
         public void TurnCharacter(bool isLeft)
         {
             var change = isLeft ? 1 : -1;
@@ -149,22 +170,15 @@ namespace Assets.Scripts.UI.TitleScreen
 
         public void SubmitCreate()
         {
-            if (PlayerNameText.text.Length <= 0 || statsRemaining != 0)
+            var playerName = PlayerNameText.text.Trim();
+            if (!IsNameValid || statsRemaining != 0)
                 return;
-            if (PlayerNameText.text.Length > 30)
-            {
-                Parent.ErrorMessage("Character name must be 30 or fewer characters in length.");
-                return;
-            }
-            NetworkManager.Instance.SendEnterServerNewCharacterMessage(PlayerNameText.text, Parent.SelectedSlot, hairStyle, hairColor, statValues, isGenderMale);
+            NetworkManager.Instance.SendEnterServerNewCharacterMessage(playerName, Parent.SelectedSlot, hairStyle, hairColor, statValues, isGenderMale);
             Parent.LastTitleState = TitleScreen.TitleScreenState.CharacterCreation;
             Parent.TitleState = TitleScreen.TitleScreenState.Waiting;
             gameObject.SetActive(false);
         }
 
-        public void Update()
-        {
-            SaveButton.interactable = PlayerNameText.text.Length > 0 && statsRemaining <= 0;
-        }
+        private void RefreshOkButton() => OkButton.interactable = IsNameValid && statsRemaining <= 0;
     }
 }

@@ -6,7 +6,7 @@ using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Simulation.StatusEffects._2ndJobs;
 
-[StatusEffectHandler(CharacterStatusEffect.KyrieEleison, StatusClientVisibility.Ally)]
+[StatusEffectHandler(CharacterStatusEffect.KyrieEleison, StatusClientVisibility.Party)]
 public class StatusKyrieEleison : StatusEffectBase
 {
     public override StatusUpdateMode UpdateMode => StatusUpdateMode.OnCalculateDamageTaken;

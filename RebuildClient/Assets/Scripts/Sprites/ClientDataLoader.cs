@@ -47,6 +47,7 @@ namespace Assets.Scripts.Sprites
     public class ClientDataLoader : MonoBehaviour
     {
         public static ClientDataLoader Instance;
+        public static event Action InitializationCompleted;
 
         public SpriteAtlas ItemIconAtlas;
         public Sprite ShadowSprite;
@@ -73,6 +74,7 @@ namespace Assets.Scripts.Sprites
         public readonly Dictionary<int, EmoteData> EmoteDataTable = new();
         public readonly Dictionary<int, StatusEffectData> StatusEffectData = new();
         public readonly int[] JobExpData = new int[70 * 3];
+        private readonly int[] baseExpData = new int[99];
 
         private readonly List<string> validMonsterClasses = new();
         private readonly List<string> validMonsterCodes = new();
@@ -95,6 +97,7 @@ namespace Assets.Scripts.Sprites
         private const string ServerVersionDataPath = "ClientConfigGenerated/ServerVersion.txt";
         private const string PatchNoteDataPath = "ClientConfigGenerated/PatchNotes.txt";
         private const string JobExpDataPath = "ClientConfigGenerated/jobexpchart.txt";
+        private const string BaseExpDataPath = "ClientConfigGenerated/levelchart.txt";
         private const string EmoteDataPath = "ClientConfigGenerated/emotes.json";
         private const string StatusEffectDataPath = "ClientConfigGenerated/statusinfo.json";
 
@@ -102,7 +105,6 @@ namespace Assets.Scripts.Sprites
         private string[] streamingAssets = new[]
         {
             "ClientConfigGenerated/effects.json",
-            "ClientConfigGenerated/levelchart.txt",
             "ClientConfig/AdminWarpList.txt",
             "ClientConfig/fogData.json",
             MapDataPath,
@@ -132,6 +134,7 @@ namespace Assets.Scripts.Sprites
             ServerVersionDataPath,
             PatchNoteDataPath,
             JobExpDataPath,
+            BaseExpDataPath,
             EmoteDataPath,
             StatusEffectDataPath,
         };
@@ -139,13 +142,15 @@ namespace Assets.Scripts.Sprites
         private Dictionary<string, string> streamingAssetsData;
 // #endif
 
+        private bool isInitialized;
+        public bool IsInitialized => isInitialized;
+
+        private readonly Dictionary<CharacterSkill, string> playerCastNameCache = new();
+        private readonly Dictionary<CharacterSkill, string> monsterCastNameCache = new();
+
         public Sprite GetIconAtlasSprite(string name) => EffectSharedMaterialManager.GetAtlasSprite(ItemIconAtlas, name);
 
         // private static int EffectClassId = 3999;
-
-        private bool isInitialized;
-
-        public bool IsInitialized => isInitialized;
 
         public bool IsValidMonsterName(string name) => validMonsterClasses.Contains(name);
         public bool IsValidMonsterCode(string name) => validMonsterCodes.Contains(name);
@@ -154,6 +159,20 @@ namespace Assets.Scripts.Sprites
         public string GetFullNameForMap(string mapName) => MapDataLookup.TryGetValue(mapName, out var map) ? map.Name : "Unknown Map";
         public string GetJobNameForId(int id) => PlayerClassLookup.TryGetValue(id, out var job) ? job.Name : "-";
         public string GetSkillName(CharacterSkill skill) => SkillData.TryGetValue(skill, out var skOut) ? skOut.Name : "";
+
+        public string GetPlayerSkillCastName(CharacterSkill skill)
+        {
+            if (!playerCastNameCache.TryGetValue(skill, out var text))
+                playerCastNameCache[skill] = text = GetSkillName(skill) + "!!";
+            return text;
+        }
+
+        public string GetMonsterSkillCastName(CharacterSkill skill)
+        {
+            if (!monsterCastNameCache.TryGetValue(skill, out var text))
+                monsterCastNameCache[skill] = text = "<size=-2><color=#FF8888>" + GetSkillName(skill) + "</size>";
+            return text;
+        }
         public SkillData GetSkillData(CharacterSkill skill) => SkillData[skill];
         public SkillTarget GetSkillTarget(CharacterSkill skill) => SkillData.TryGetValue(skill, out var target) ? target.Target : SkillTarget.Any;
         public Dictionary<CharacterSkill, SkillData> GetAllSkills() => SkillData;
@@ -163,6 +182,10 @@ namespace Assets.Scripts.Sprites
         public MapViewpoint GetMapViewpoint(string mapName) => MapViewpoints.GetValueOrDefault(mapName);
         public ClientMapEntry GetMapInfo(string mapName) => MapDataLookup.GetValueOrDefault(mapName);
         public MonsterClassData GetMonsterData(int classId) => MonsterClassLookup.GetValueOrDefault(classId);
+
+        //monsters below class id 4000 keep their sprites in the npc folder
+        public static string GetMonsterSpritePath(int classId, string spriteName) =>
+            (classId < 4000 ? "Assets/Sprites/Npcs/" : "Assets/Sprites/Monsters/") + spriteName;
         public ItemData GetItemById(int id) => ItemIdLookup.TryGetValue(id, out var item) ? item : ItemIdLookup[-1];
         public ItemData GetItemByName(string name) => ItemNameLookup[name];
         public bool TryGetItemByName(string name, out ItemData item) => ItemNameLookup.TryGetValue(name, out item);
@@ -171,11 +194,15 @@ namespace Assets.Scripts.Sprites
         public CardPrefixData GetCardPrefixData(int id) => CardPrefixPostfixTable.GetValueOrDefault(id, null);
         public StatusEffectData GetStatusEffect(int id) => StatusEffectData.GetValueOrDefault(id, null);
 
+        //-1 at the highest level
+        public int GetBaseExpRequired(int level) => level < 1 || level >= 99 ? -1 : baseExpData[level - 1];
+
+        //-1 at the job's highest level
         public int GetJobExpRequired(int job, int level)
         {
             if (!PlayerClassLookup.TryGetValue(job, out var jobInfo))
                 return -1;
-            if (level < 0 || level >= 70)
+            if (level < 0 || level >= jobInfo.MaxJobLevel || level >= 70)
                 return -1;
             return JobExpData[jobInfo.ExpChart * 70 + level];
         }
@@ -295,6 +322,10 @@ namespace Assets.Scripts.Sprites
                 JobExpData[140 + jobLvl] = int.Parse(s[2]);
                 jobLvl++;
             }
+
+            var baseExpLines = ReadStreamingAssetFile(BaseExpDataPath).Split("\n");
+            for (var i = 0; i < baseExpData.Length; i++)
+                baseExpData[i] = int.Parse(baseExpLines[i].Trim());
 
             var entityData = JsonUtility.FromJson<Wrapper<MonsterClassData>>(ReadStreamingAssetFile(MonsterClassDataPath));
             foreach (var m in entityData.Items)
@@ -499,61 +530,7 @@ namespace Assets.Scripts.Sprites
             builder.Initialize();
             
             isInitialized = true;
-        }
-
-        private List<RoSpriteAnimator> tempList;
-
-        public void ChangePlayerClass(ServerControllable player, ref PlayerSpawnParameters param)
-        {
-            if (!isInitialized)
-                throw new Exception($"We shouldn't be changing the player class while not initialized!");
-
-            var pData = PlayerClassLookup[0]; //novice
-            if (PlayerClassLookup.TryGetValue(param.ClassId, out var lookupData))
-                pData = lookupData;
-            else
-                Debug.LogWarning("Failed to find player with id of " + param.ClassId);
-
-            var hData = PlayerHeadLookup[0]; //default;
-            if (PlayerHeadLookup.TryGetValue(param.HeadId, out var lookupData2))
-                hData = lookupData2;
-            else
-                Debug.LogWarning("Failed to find player head with id of " + param.ClassId);
-
-            var bodySprite = player.SpriteAnimator;
-
-            //find the head child, discard everything else
-            if (tempList == null)
-                tempList = new List<RoSpriteAnimator>();
-            else
-                tempList.Clear();
-
-            RoSpriteAnimator headSprite = null;
-
-            for (var i = 0; i < bodySprite.ChildrenSprites.Count; i++)
-            {
-                var type = bodySprite.ChildrenSprites[i].Type;
-                switch (type)
-                {
-                    case SpriteType.Head:
-                        headSprite = bodySprite.ChildrenSprites[i];
-                        tempList.Add(headSprite);
-                        break;
-                    case SpriteType.Headgear:
-                        tempList.Add(bodySprite.ChildrenSprites[i]);
-                        break;
-                    default:
-                        Destroy(bodySprite.ChildrenSprites[i].gameObject);
-                        break;
-                }
-            }
-
-            if (headSprite == null)
-                throw new Exception($"Existing player has no head!");
-
-            bodySprite.ChildrenSprites.Clear();
-            for (var i = 0; i < tempList.Count; i++)
-                bodySprite.ChildrenSprites.Add(tempList[i]);
+            InitializationCompleted?.Invoke();
         }
 
         public string GetPlayerBodySpriteName(int jobId, bool isMale)
@@ -642,172 +619,6 @@ namespace Assets.Scripts.Sprites
             return false;
         }
 
-        public ServerControllable InstantiatePlayer(ref PlayerSpawnParameters param)
-        {
-            if (!isInitialized)
-                Initialize();
-
-            var state = PlayerState.Instance;
-
-            var pData = PlayerClassLookup[0]; //novice
-            if (PlayerClassLookup.TryGetValue(param.ClassId, out var lookupData))
-                pData = lookupData;
-            else
-                Debug.LogWarning("Failed to find player with id of " + param.ClassId);
-
-            bool isMounted = (param.Follower & CharacterFollowerState.Mounted) > 0 && (param.ClassId == 7 || param.ClassId == 13);
-            var displayData = pData;
-            if (isMounted)
-                PlayerClassLookup.TryGetValue(param.ClassId, out displayData);
-
-            var go = new GameObject(pData.Name);
-            go.layer = LayerMask.NameToLayer("Characters");
-            go.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-            var control = go.AddComponent<ServerControllable>();
-            var billboard = go.AddComponent<BillboardObject>();
-            billboard.Style = BillboardStyle.Character;
-            go.AddComponent<SortingGroup>();
-
-            var body = new GameObject("Sprite");
-            body.layer = LayerMask.NameToLayer("Characters");
-            body.transform.SetParent(go.transform, false);
-            body.transform.localPosition = Vector3.zero;
-            body.AddComponent<SortingGroup>();
-
-            var head = new GameObject("Head");
-            head.layer = LayerMask.NameToLayer("Characters");
-            head.transform.SetParent(go.transform, false);
-            head.transform.localPosition = Vector3.zero;
-
-            var bodySprite = body.AddComponent<RoSpriteAnimator>();
-            var headSprite = head.AddComponent<RoSpriteAnimator>();
-
-            control.ClassId = param.ClassId;
-            control.OverrideClassId = isMounted ? param.ClassId + 500 : control.ClassId;
-            control.SpriteAnimator = bodySprite;
-            control.CharacterType = CharacterType.Player;
-            control.SpriteMode = ClientSpriteType.Sprite;
-            control.IsAlly = true;
-            control.IsMainCharacter = param.IsMainCharacter;
-            control.IsMale = param.IsMale;
-            control.Level = param.Level;
-            control.WeaponClass = param.WeaponClass;
-            control.PartyName = param.PartyName;
-            control.IsPartyMember = param.PartyId > 0 && param.PartyId == state.PartyId;
-
-            bodySprite.Controllable = control;
-            if (param.State == CharacterState.Moving)
-                bodySprite.ChangeMotion(SpriteMotion.Walk);
-            bodySprite.ChildrenSprites.Add(headSprite);
-            //bodySprite.SpriteOffset = 0.5f;
-            bodySprite.HeadFacing = param.HeadFacing;
-
-            if (param.State == CharacterState.Sitting)
-                bodySprite.State = SpriteState.Sit;
-            if (param.State == CharacterState.Moving)
-                bodySprite.State = SpriteState.Walking;
-
-            if (param.State == CharacterState.Dead)
-                control.PlayerDie(Vector2Int.zero);
-
-            headSprite.Parent = bodySprite;
-            headSprite.SpriteOrder = 1;
-
-            control.ShadowSize = 0.5f;
-            control.WeaponClass = param.WeaponClass;
-
-            var weapon = param.Weapon;
-            var shield = param.Shield;
-            var offHand = 0;
-            if (param.Shield > 0 && TryGetItemById(param.Shield, out var item) && item.ItemClass == ItemClass.Weapon)
-            {
-                
-                offHand = item.SubType;
-                shield = 0;
-            }
-
-            var bodySpriteName = GetPlayerBodySpriteName(control.OverrideClassId, param.IsMale);
-            var headSpriteName = GetPlayerHeadSpriteName(param.HeadId, param.HairDyeId, param.IsMale);
-
-            // bodySpriteName = bodySpriteName.Replace(".spr", "_4.spr");
-
-            Debug.Log($"Instantiate player sprite with job {param.ClassId} weapon {param.WeaponClass}");
-
-            LoadAndAttachEquipmentSprite(control, param.Headgear1, EquipPosition.HeadUpper, 4);
-            LoadAndAttachEquipmentSprite(control, param.Headgear2, EquipPosition.HeadMid, 3);
-            LoadAndAttachEquipmentSprite(control, param.Headgear3, EquipPosition.HeadLower, 2);
-            LoadAndAttachEquipmentSprite(control, shield, EquipPosition.Shield, 1);
-
-            LoadAndAttachWeapon(control, weapon, offHand);
-
-            control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
-            control.Name = param.Name;
-            control.Hp = param.Hp;
-            control.MaxHp = param.MaxHp;
-            // control.EnsureFloatingDisplayCreated().SetUp(param.Name, param.MaxHp, 0);
-
-            AddressableUtility.LoadRoSpriteData(go, bodySpriteName, bodySprite.OnSpriteDataLoad);
-            AddressableUtility.LoadRoSpriteData(go, headSpriteName, headSprite.OnSpriteDataLoad);
-            control.AttachShadow(ShadowSprite);
-            //AddressableUtility.LoadSprite(go, "shadow", control.AttachShadow);
-
-            if (control.IsMainCharacter)
-            {
-                CameraFollower.Instance.CharacterDetailBox.CharacterJob.text = pData.Name;
-                state.PlayerName = control.Name;
-                state.UpdatePlayerName();
-                state.WeaponClass = param.WeaponClass;
-                CameraFollower.Instance.CharacterDetailBox.BaseLvlDisplay.text = $"Base Lv. {control.Level}";
-            }
-
-            control.Init();
-
-            if (param.PartyId == state.PartyId)
-            {
-                state.AssignPartyMemberControllable(control.Id, control);
-                if (state.PartyMemberIdLookup.TryGetValue(control.Id, out var partyMemberId) &&
-                    UiManager.Instance.PartyPanel.PartyEntryLookup.TryGetValue(partyMemberId, out var panel))
-                    panel.ClearAllStatusEffects(); //we will re-assign them right after
-            }
-
-            if (param.CharacterStatusEffects != null)
-                foreach (var (s, duration) in param.CharacterStatusEffects)
-                    StatusEffectState.AddStatusToTarget(control, s, true, duration);
-
-            if ((param.Follower & CharacterFollowerState.AnyCart) > 0)
-            {
-                var cartStyle = param.Follower switch
-                {
-                    CharacterFollowerState.Cart0 => 0,
-                    CharacterFollowerState.Cart1 => 1,
-                    CharacterFollowerState.Cart2 => 2,
-                    CharacterFollowerState.Cart3 => 3,
-                    CharacterFollowerState.Cart4 => 4,
-                    _ => 0
-                };
-                var cartObj = new GameObject();
-                var cart = cartObj.AddComponent<CartFollower>();
-                cart.AttachCart(control, cartStyle);
-                control.FollowerObject = cartObj;
-            }
-
-            if ((param.Follower & CharacterFollowerState.Falcon) > 0)
-            {
-                var birdObj = new GameObject();
-                var bird = birdObj.AddComponent<BirdFollower>();
-                bird.AttachBird(control, 0);
-
-                if (control.FollowerObject != null)
-                    Destroy(control.FollowerObject);
-                control.FollowerObject = birdObj;
-
-                if (control.IsMainCharacter)
-                    PlayerState.Instance.HasBird = true;
-            }
-
-            return control;
-        }
-
         public void LoadAndAttachWeapon(ServerControllable ctrl, int item, int offHand = 0)
         {
             var weaponSpriteFile = "";
@@ -822,15 +633,17 @@ namespace Assets.Scripts.Sprites
             }
 
             var attachPosition = isEffect ? EquipPosition.Accessory : EquipPosition.Weapon; //it's not an accessory but too lazy to make a new option
+            GameObject oldObj = null;
             if (ctrl.AttachedComponents.TryGetValue(attachPosition, out var existing))
             {
                 ctrl.SpriteAnimator.ChildrenSprites.Remove(existing.GetComponent<RoSpriteAnimator>());
                 ctrl.AttachedComponents.Remove(attachPosition);
-                Destroy(existing);
+                oldObj = existing;
             }
 
             if (ctrl.WeaponClass == 0)
             {
+                Destroy(oldObj);
                 if (!isEffect)
                 {
                     if (PlayerWeaponLookup.TryGetValue(ctrl.OverrideClassId, out var weaponsByJob2))
@@ -838,7 +651,6 @@ namespace Assets.Scripts.Sprites
                             ctrl.SpriteAnimator.PreferredAttackMotion = ctrl.IsMale ? unarmed.AttackMale : unarmed.AttackFemale;
                     LoadAndAttachWeapon(ctrl, int.MaxValue);
                 }
-
                 return;
             }
 
@@ -854,7 +666,10 @@ namespace Assets.Scripts.Sprites
             }
 
             if (!PlayerWeaponLookup.TryGetValue(ctrl.OverrideClassId, out var weaponsByJob))
+            {
+                Destroy(oldObj);
                 return;
+            }
 
             if (!weaponsByJob.TryGetValue(weaponClass, out var weapon))
             {
@@ -862,6 +677,7 @@ namespace Assets.Scripts.Sprites
                     Debug.Log($"Could not load default weapon sprite for weapon class {ctrl.WeaponClass} for job {ctrl.OverrideClassId}");
                 else
                     Debug.Log($"Could not load default weapon sprite for weapon class {ctrl.WeaponClass}/{offHand} for job {ctrl.OverrideClassId}");
+                Destroy(oldObj);
                 return;
             }
 
@@ -873,9 +689,10 @@ namespace Assets.Scripts.Sprites
             }
 
             if (string.IsNullOrWhiteSpace(weaponSpriteFile) && isEffect)
+            {
+                Destroy(oldObj);
                 return;
-
-            var bodyTransform = ctrl.SpriteAnimator.transform;
+            }
 
             var weaponObj = new GameObject("Weapon");
             weaponObj.layer = LayerMask.NameToLayer("Characters");
@@ -895,22 +712,30 @@ namespace Assets.Scripts.Sprites
 
             ctrl.AttachedComponents[attachPosition] = weaponObj;
 
-            AddressableUtility.LoadRoSpriteData(ctrl.gameObject, weaponSpriteFile, weaponSprite.OnSpriteDataLoad);
+            AddressableUtility.LoadRoSpriteData(ctrl.gameObject, weaponSpriteFile, spriteData =>
+            {
+                Destroy(oldObj);
+                weaponSprite.OnSpriteDataLoad(spriteData);
+            });
             if (!isEffect) LoadAndAttachWeapon(ctrl, int.MaxValue); //attach effect sprite too
         }
 
 
         public void LoadAndAttachEquipmentSprite(ServerControllable ctrl, int itemId, EquipPosition position, int priority)
         {
+            GameObject oldObj = null;
             if (ctrl.AttachedComponents.TryGetValue(position, out var existing))
             {
                 ctrl.SpriteAnimator.ChildrenSprites.Remove(existing.GetComponent<RoSpriteAnimator>());
                 ctrl.AttachedComponents.Remove(position);
-                Destroy(existing);
+                oldObj = existing;
             }
 
             if (!ItemIdLookup.TryGetValue(itemId, out var hat) || !DisplaySpriteList.TryGetValue(hat.Code, out var hatSprite))
+            {
+                Destroy(oldObj);
                 return;
+            }
 
             var headgearObj = new GameObject(position.ToString());
             headgearObj.layer = LayerMask.NameToLayer("Characters");
@@ -940,9 +765,16 @@ namespace Assets.Scripts.Sprites
             ctrl.AttachedComponents[position] = headgearObj;
 
             if (!DoesAddressableExist<RoSpriteData>(spriteName))
+            {
                 Debug.LogWarning($"Could not load equipment sprite at path: {spriteName}");
+                Destroy(oldObj);
+            }
             else
-                AddressableUtility.LoadRoSpriteData(ctrl.gameObject, spriteName, headgearSprite.OnSpriteDataLoad);
+                AddressableUtility.LoadRoSpriteData(ctrl.gameObject, spriteName, spriteData =>
+                {
+                    Destroy(oldObj);
+                    headgearSprite.OnSpriteDataLoad(spriteData);
+                });
         }
 
         public void AttachEmote(ServerControllable target, int emoteId)
@@ -965,8 +797,15 @@ namespace Assets.Scripts.Sprites
             emote.Target = target.gameObject;
 
             var height = 50f;
-            if (target.SpriteAnimator?.SpriteData != null)
-                height = target.SpriteAnimator.SpriteData.StandingHeight;
+            var spriteData = target.SpriteAnimator?.SpriteData;
+            if (spriteData != null)
+            {
+                //seated players use their (lower) sitting height, falling back to standing if it wasn't baked
+                var seated = target.CharacterType == CharacterType.Player
+                    && target.SpriteAnimator.State == SpriteState.Sit
+                    && spriteData.SittingHeight > 0;
+                height = seated ? spriteData.SittingHeight : spriteData.StandingHeight;
+            }
             if (target.CharacterType == CharacterType.Player)
                 height += 12;
             if (height > 100)
@@ -991,132 +830,6 @@ namespace Assets.Scripts.Sprites
             sprite.SpriteOrder = 50;
 
             AddressableUtility.LoadRoSpriteData(go, "Assets/Sprites/Misc/emotion.spr", emote.OnFinishLoad);
-        }
-
-        public ServerControllable InstantiateEffect(ref MonsterSpawnParameters param, NpcEffectType type, bool ignoreTypeCheck = false)
-        {
-            if (type == NpcEffectType.None && !ignoreTypeCheck)
-            {
-                Debug.LogError($"Attempting to instantiate effect with type None!");
-                return null;
-            }
-
-#if UNITY_EDITOR
-            // Debug.Log($"Instantiating entity effect {type}");
-#endif
-
-            var obj = new GameObject(type.ToString());
-            obj.layer = LayerMask.NameToLayer("Characters");
-
-            var control = obj.AddComponent<ServerControllable>();
-            control.ClassId = param.ClassId;
-            control.CharacterType = CharacterType.NPC;
-            control.SpriteMode = ClientSpriteType.Prefab;
-            control.EntityObject = obj;
-            control.Level = param.Level;
-            control.Name = param.Name;
-            control.IsAlly = true;
-            control.IsInteractable = false;
-            control.CharacterState = param.State;
-
-            control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
-            if (type < NpcEffectType.AnkleSnare || type > NpcEffectType.ShockwaveTrap)
-            {
-                obj.AddComponent<BillboardObject>();
-                obj.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-            }
-
-            switch (type)
-            {
-                case NpcEffectType.Firewall:
-                    CameraFollower.Instance.AttachEffectToEntity("FirewallEffect", obj);
-                    break;
-                case NpcEffectType.Pneuma:
-                    CameraFollower.Instance.AttachEffectToEntity("Pneuma1", obj);
-                    // var go = new GameObject("PneumaArea");
-                    var highlighter = GroundHighlighter.Create(control, "pneumazone", new Color(1, 1, 1, 0.2f), 2);
-                    highlighter.MaxTime = 10f;
-                    break;
-                case NpcEffectType.Demonstration:
-                    var demonstration = RoSpriteEffect.AttachSprite(control, "Assets/Sprites/Effects/데몬스트레이션.spr", -0.15f, 1f, RoSpriteEffectFlags.None);
-                    control.gameObject.transform.localScale = new Vector3(1.8f, 1.8f, 1.8f);
-                    demonstration.SetDurationByFrames(9999);
-                    AudioManager.Instance.OneShotSoundEffect(control.Id, $"ef_firewall.ogg", control.transform.position);
-                    control.AttachEffect(demonstration);
-                    break;
-                case NpcEffectType.WarpPortalOpening:
-                    WarpPortalOpeningEffect.StartWarpPortalOpen(obj);
-                    break;
-                case NpcEffectType.WarpPortal:
-                    WarpPortalEffect.StartWarpPortal(obj);
-                    break;
-                case NpcEffectType.SafetyWall:
-                    SafetyWallEffect.LaunchSafetyWall(obj);
-                    break;
-                case NpcEffectType.WaterBall:
-                    //DummyGroundEffect.Create(obj, $"<color=#AAAAFF>Water Ball!!");
-                    WaterBallRiseEffect.LaunchWaterBallRise(obj);
-                    break;
-                case NpcEffectType.MapWarp:
-                    MapWarpEffect.StartWarp(obj);
-                    break;
-                case NpcEffectType.LightOrb:
-                    DiscoLightsEffect.LaunchDiscoLights(control);
-                    break;
-                case NpcEffectType.Sanctuary:
-                    SanctuaryEffect.Create(control, false);
-                    //DummyGroundEffect.Create(obj, "Sanctuary");
-                    break;
-                case NpcEffectType.MagnusExorcismus:
-                    SanctuaryEffect.Create(control, true);
-                    //DummyGroundEffect.Create(obj, "Sanctuary");
-                    break;
-                case NpcEffectType.VenomDust:
-                    //DummyGroundEffect.Create(obj, "VenomDust");
-                    VenomDustEffect.Create(control);
-                    break;
-                case NpcEffectType.FirePillar:
-                    FirePillarEffect.Create(control);
-                    break;
-            case NpcEffectType.Quagmire:
-                    //DummyGroundEffect.Create(obj, $"<color=#33FF33>Quagmire!!");
-                    QuagmireEffect.Create(control);
-                    break;
-                case NpcEffectType.AnkleSnare:
-                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelAnkleSnare.prefab");
-                    break;
-                case NpcEffectType.LandMine:
-                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelLandMine.prefab");
-                    break;
-                case NpcEffectType.BlastMine:
-                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelBlastMine.prefab");
-                    control.IsAttackable = true;
-                    break;
-                case NpcEffectType.ClaymoreTrap:
-                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelClaymoreTrap.prefab");
-                    control.IsAttackable = true;
-                    break;
-                case NpcEffectType.FlasherTrap:
-                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelFlasherTrap.prefab");
-                    break;
-                case NpcEffectType.FreezingTrap:
-                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelFreezingTrap.prefab");
-                    break;
-                case NpcEffectType.SandmanTrap:
-                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelSandmanTrap.prefab");
-                    break;
-                case NpcEffectType.SkidTrap:
-                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelSkidTrap.prefab");
-                    break;
-                case NpcEffectType.ShockwaveTrap:
-                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelShockwaveTrap.prefab");
-                    break;
-                case NpcEffectType.TalkieBox:
-                    AttachPrefabToControllable(control, "Assets/Effects/Prefabs/ModelTalkieBox.prefab");
-                    break;
-            }
-
-            return control;
         }
 
         public void AttachPrefabToControllable(ServerControllable target, string prefabName)
@@ -1145,121 +858,6 @@ namespace Assets.Scripts.Sprites
                     }
                 }
             };
-        }
-
-        private ServerControllable PrefabMonster(MonsterClassData mData, ref MonsterSpawnParameters param)
-        {
-            var prefabName = mData.SpriteName;
-
-            var obj = new GameObject(prefabName);
-
-            var control = obj.AddComponent<ServerControllable>();
-            control.ClassId = param.ClassId;
-            control.CharacterType = CharacterType.NPC;
-            control.SpriteMode = ClientSpriteType.Prefab;
-            control.EntityObject = obj;
-            control.Level = param.Level;
-            control.Name = param.Name;
-            control.IsAlly = true;
-            control.IsInteractable = false;
-            control.CharacterState = param.State;
-
-            control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
-            control.EnsureFloatingDisplayCreated().SetUp(control, param.Name, param.MaxHp, 0, false, false);
-
-            var loader = Addressables.LoadAssetAsync<GameObject>(prefabName);
-            loader.Completed += ah =>
-            {
-                if (obj != null && obj.activeInHierarchy)
-                {
-                    var obj2 = GameObject.Instantiate(ah.Result, obj.transform, false);
-                    obj2.transform.localPosition = Vector3.zero;
-
-                    var sprite = obj2.GetComponent<RoSpriteAnimator>();
-                    if (sprite != null)
-                        sprite.Controllable = control;
-
-                    if (obj2.TryGetComponent<ServerControllable>(out var ctrl) && ctrl.EntityObject && ctrl.EntityObject.TryGetComponent<IEntityActionHandler>(out var handler))
-                        handler.ChangeCharacterState(ctrl.CharacterState);                   
-                }
-            };
-
-            control.Init();
-
-            return control;
-        }
-
-        public ServerControllable InstantiateMonster(ref MonsterSpawnParameters param, CharacterType entityType)
-        {
-            if (!isInitialized)
-                Initialize();
-
-            var mData = MonsterClassLookup[4000]; //poring
-            if (MonsterClassLookup.TryGetValue(param.ClassId, out var lookupData))
-                mData = lookupData;
-            else
-                Debug.LogWarning("Failed to find monster with id of " + param.ClassId);
-
-            if (mData.SpriteName.Contains(".prefab"))
-                return PrefabMonster(mData, ref param);
-
-            var go = new GameObject(mData.Name);
-            go.layer = LayerMask.NameToLayer("Characters");
-            go.transform.localScale = new Vector3(1.5f * mData.Size, 1.5f * mData.Size, 1.5f * mData.Size);
-            var control = go.AddComponent<ServerControllable>();
-            // if (param.ClassId < 4000)
-            //     control.CharacterType = CharacterType.NPC;
-            // else
-            //     control.CharacterType = CharacterType.Monster;
-            control.ClassId = param.ClassId;
-            control.CharacterType = entityType;
-            control.SpriteMode = ClientSpriteType.Sprite;
-            control.IsInteractable = param.Interactable;
-            var billboard = go.AddComponent<BillboardObject>();
-            billboard.Style = BillboardStyle.Character;
-
-            var child = new GameObject("Sprite");
-            child.layer = LayerMask.NameToLayer("Characters");
-            child.transform.SetParent(go.transform, false);
-            child.transform.localPosition = Vector3.zero;
-
-            var sprite = child.AddComponent<RoSpriteAnimator>();
-            sprite.Controllable = control;
-
-            control.SpriteAnimator = sprite;
-            //control.SpriteAnimator.SpriteOffset = mData.Offset;
-            control.ShadowSize = mData.ShadowSize;
-            control.IsAlly = false;
-            control.Level = param.Level;
-            control.Name = param.Name;
-            if (string.IsNullOrEmpty(param.Name))
-                control.Name = mData.Name;
-            control.WeaponClass = 0;
-            control.Hp = param.Hp;
-            control.MaxHp = param.MaxHp;
-            if (ColorUtility.TryParseHtmlString(mData.Color, out var color))
-                sprite.BaseColor = color;
-
-            control.ConfigureEntity(param.ServerId, param.Position, param.Facing);
-            // control.EnsureFloatingDisplayCreated().SetUp(param.Name, param.MaxHp, 0);
-
-            var basePath = "Assets/Sprites/Monsters/";
-            if (param.ClassId < 4000)
-                basePath = "Assets/Sprites/Npcs/";
-
-
-            AddressableUtility.LoadRoSpriteData(go, basePath + mData.SpriteName, control.SpriteAnimator.OnSpriteDataLoad);
-            if (mData.ShadowSize > 0)
-                control.AttachShadow(ShadowSprite);
-            //AddressableUtility.LoadSprite(go, "shadow", control.AttachShadow);
-
-            control.Init();
-
-            if (param.CharacterStatusEffects != null)
-                foreach (var (s, duration) in param.CharacterStatusEffects)
-                    StatusEffectState.AddStatusToTarget(control, s, true, duration);
-
-            return control;
         }
     }
 }

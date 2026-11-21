@@ -50,8 +50,6 @@ public class PacketNpcRefineSubmit : IClientPacketHandler
 
         CommandBuilder.ClearRecipients();
 
-        CommandBuilder.SendUpdateZeny(player);
-
         if (result == RefineSuccessResult.Success || result == RefineSuccessResult.FailedWithLevelDown)
         {
             player.Inventory.UpdateUniqueItemReference(bagId, targetItem.UniqueItem);

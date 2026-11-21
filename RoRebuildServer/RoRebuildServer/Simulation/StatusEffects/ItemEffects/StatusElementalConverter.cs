@@ -11,7 +11,7 @@ namespace RoRebuildServer.Simulation.StatusEffects.ItemEffects;
 [StatusEffectHandler(CharacterStatusEffect.ElementalConverterEarth, StatusClientVisibility.Owner, shareGroup: "ElementalEndow")]
 [StatusEffectHandler(CharacterStatusEffect.CursedWater, StatusClientVisibility.Owner, shareGroup: "ElementalEndow")]
 [StatusEffectHandler(CharacterStatusEffect.EnchantPoison, StatusClientVisibility.Owner, shareGroup: "ElementalEndow")]
-[StatusEffectHandler(CharacterStatusEffect.Aspersio, StatusClientVisibility.Ally, shareGroup: "ElementalEndow")]
+[StatusEffectHandler(CharacterStatusEffect.Aspersio, StatusClientVisibility.Party, shareGroup: "ElementalEndow")]
 public class StatusElementalConverter : StatusEffectBase
 {
     public override StatusUpdateMode UpdateMode => StatusUpdateMode.OnChangeEquipment;

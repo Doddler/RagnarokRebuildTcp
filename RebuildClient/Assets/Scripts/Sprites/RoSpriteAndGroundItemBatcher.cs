@@ -137,6 +137,8 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
         }
     }
 
+    private static Camera _billboardCamera;
+
     private void OnEnable()
     {
         Instance = this;
@@ -359,8 +361,6 @@ public partial class RoSpriteAndGroundItemBatcher : MonoBehaviour
             && _entries[handle.EntryId].InUse
             && _entrySeq[handle.EntryId] == handle.Seq;
     }
-
-    private static Camera _billboardCamera;
 
     internal static Quaternion BillboardCameraRotation()
     {

@@ -5,6 +5,9 @@ namespace Assets.Scripts.Sprites
 {
 	public static class SpriteMeshBuilder
 	{
+		//one unit of a sprite mesh spans this many sprite pixels
+		public const float PixelsPerUnit = 50f;
+
 		private static List<Vector3> outVertices = new List<Vector3>(512);
 		private static List<Vector3> outNormals = new List<Vector3>(512);
 		private static List<int> outTris = new List<int>(1024);
@@ -62,7 +65,7 @@ namespace Assets.Scripts.Sprites
 				for (var j = 0; j < verts.Length; j++)
 				{
 					var v = rotation * (verts[j] * scale);
-					var vert = v + new Vector3(layer.Position.x - offsetX, -(layer.Position.y) + offsetY) / 50f;
+					var vert = v + new Vector3(layer.Position.x - offsetX, -(layer.Position.y) + offsetY) / PixelsPerUnit;
 
 					if (min.x > vert.x)
 						min.x = vert.x;
@@ -202,7 +205,7 @@ namespace Assets.Scripts.Sprites
 				{
 					var v3 = rotation * (verts[j] * scale);
 					v3 += new Vector3(0, vOffset, 0);
-					outVertices.Add(v3 + new Vector3(layer.Position.x - offsetX, -(layer.Position.y) + offsetY) / 50f);
+					outVertices.Add(v3 + new Vector3(layer.Position.x - offsetX, -(layer.Position.y) + offsetY) / PixelsPerUnit);
 					
 					Vector2 uv = uvs[j];
 					if (layer.IsMirror)

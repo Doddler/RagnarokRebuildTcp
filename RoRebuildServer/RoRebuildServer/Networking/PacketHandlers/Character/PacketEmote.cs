@@ -21,7 +21,7 @@ public class PacketEmote : IClientPacketHandler
         Debug.Assert(connection.Character != null);
         Debug.Assert(connection.Character.Map != null);
 
-        if (connection.Player.JobId == 0 && connection.Player.MaxLearnedLevelOfSkill(CharacterSkill.BasicMastery) < 1)
+        if (connection.Player.JobId == 0 && connection.Player.LearnedSkillLevel(CharacterSkill.BasicMastery) < 1)
         {
             CommandBuilder.ErrorMessage(connection.Player, $"You need level 1 of basic mastery to use emotes.");
             return;

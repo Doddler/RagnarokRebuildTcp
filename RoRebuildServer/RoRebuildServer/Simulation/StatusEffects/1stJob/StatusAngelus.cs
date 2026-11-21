@@ -5,7 +5,7 @@ using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Simulation.StatusEffects._1stJob;
 
-[StatusEffectHandler(CharacterStatusEffect.Angelus, StatusClientVisibility.Owner)]
+[StatusEffectHandler(CharacterStatusEffect.Angelus, StatusClientVisibility.Party)]
 public class StatusAngelus : StatusEffectBase
 {
     //value1 = skill level
@@ -21,7 +21,7 @@ public class StatusAngelus : StatusEffectBase
         {
             //Angelus transfers the bonus of divine protection (the level stored in value2),
             //but we don't want it to stack if the player already has divine protection.
-            var currentDp = ch.Player.MaxLearnedLevelOfSkill(CharacterSkill.DivineProtection);
+            var currentDp = ch.Player.MaxSkillLevel(CharacterSkill.DivineProtection);
             state.Value2 -= currentDp;
             if (state.Value2 <= 0)
             {

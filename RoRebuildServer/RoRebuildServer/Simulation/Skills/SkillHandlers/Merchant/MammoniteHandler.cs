@@ -22,8 +22,6 @@ public class MammoniteHandler : SkillHandlerBase
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
         bool isItemSource)
     {
-        lvl = lvl.Clamp(1, 10);
-
         if (target == null || !target.IsValidTarget(source))
             return;
 
@@ -31,7 +29,6 @@ public class MammoniteHandler : SkillHandlerBase
         {
             var cost = GetMammoniteCost(source.Player, lvl);
             source.Player.DropZeny(cost);
-            CommandBuilder.SendUpdateZeny(source.Player);
         }
 
         var res = source.CalculateCombatResult(target, 1f + lvl * 0.5f, 1, AttackFlags.Physical, CharacterSkill.Mammonite);
@@ -44,7 +41,7 @@ public class MammoniteHandler : SkillHandlerBase
     private int GetMammoniteCost(Player player, int level)
     {
         var cost = 50 * level;
-        var discountLvl = player.MaxLearnedLevelOfSkill(CharacterSkill.Discount);
+        var discountLvl = player.MaxSkillLevel(CharacterSkill.Discount);
         var discount = discountLvl > 0 ? 5 + discountLvl * 2 : 0;
         cost -= cost * discount / 100;
         return cost;

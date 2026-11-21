@@ -13,9 +13,6 @@ public class DarkThunderHandler : SkillHandlerBase
     {
         //return 0f;
 
-        if (lvl < 0 || lvl > 10)
-            lvl = 10;
-
         return 2f + lvl * 0.5f;
     }
 

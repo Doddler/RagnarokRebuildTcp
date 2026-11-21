@@ -10,6 +10,7 @@ public class PlayerClassData
     public string SpriteMale;
     public string SpriteFemale;
     public int ExpChart;
+    public int MaxJobLevel;
 }
 
 [Serializable]

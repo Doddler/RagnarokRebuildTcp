@@ -1,8 +1,5 @@
 ﻿using Assets.Scripts.Network.HandlerBase;
 using Assets.Scripts.PlayerControl;
-using Assets.Scripts.Sprites;
-using RebuildSharedData.ClientTypes;
-using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using UnityEngine;
 
@@ -23,29 +20,13 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             var headLower = msg.ReadInt32();
             var weapon = msg.ReadInt32();
             var shield = msg.ReadInt32();
-            controllable.WeaponClass = msg.ReadInt32();
-            
-            var offHand = 0;
-            if (shield > 0 && ClientDataLoader.Instance.TryGetItemById(shield, out var item) && item.ItemClass == ItemClass.Weapon)
-            {
-                offHand = item.SubType;
-                shield = 0;
-            }
+            controllable.SetWeaponClass(msg.ReadInt32());
 
-            if (controllable.OverrideClassId < 4000)
-            {
-                ClientDataLoader.Instance.LoadAndAttachEquipmentSprite(controllable, headUpper, EquipPosition.HeadUpper, 6);
-                ClientDataLoader.Instance.LoadAndAttachEquipmentSprite(controllable, headMid, EquipPosition.HeadMid, 5);
-                ClientDataLoader.Instance.LoadAndAttachEquipmentSprite(controllable, headLower, EquipPosition.HeadLower, 4);
-                ClientDataLoader.Instance.LoadAndAttachWeapon(controllable, weapon, offHand);
-                ClientDataLoader.Instance.LoadAndAttachEquipmentSprite(controllable, shield, EquipPosition.Shield, 7);
-            }
+            //a disguise is a single sprite without gear layers
+            if (controllable.HeadAnimator != null)
+                EntityBuilder.Instance.AttachGear(controllable, headUpper, headMid, headLower, weapon, shield);
 
-            if (controllable.IsMainCharacter)
-            {
-                UiManager.Instance.EquipmentWindow.UpdateCharacterDisplay(headUpper, headMid, headLower);
-                PlayerState.Instance.WeaponClass = controllable.WeaponClass;
-            }
+            controllable.SetAppearance(controllable.Appearance.WithHeadgear(headUpper, headMid, headLower));
 
             Debug.Log($"Updating appearance data. New weapon class: {controllable.WeaponClass}");
         }

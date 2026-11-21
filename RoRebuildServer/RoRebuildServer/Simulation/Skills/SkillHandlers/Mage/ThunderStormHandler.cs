@@ -16,9 +16,6 @@ public class ThunderStormHandler : SkillHandlerBase
 
     public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl)
     {
-        if (lvl < 0 || lvl > 10)
-            lvl = 10;
-
         return 1.5f + lvl * 0.5f;
     }
 

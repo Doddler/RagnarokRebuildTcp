@@ -5,6 +5,7 @@ using System.Linq;
 using Assets.Editor;
 using Assets.Scripts.MapEditor.Editor.ObjectEditors;
 using Assets.Scripts.Utility;
+using Assets.Scripts.UI.Hud;
 using Unity.EditorCoroutines.Editor;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -430,6 +431,11 @@ namespace Assets.Scripts.MapEditor.Editor
             //it registers lighting settings have changed, so we wait. But only for a second.
             AssetDatabase.Refresh();
             yield return new EditorWaitForSeconds(1f);
+
+            //the falloff delegate is dropped when a map scene closes, so it's registered every pass
+            if (TryFindMapEditor(out var map))
+                map.UpdateLightmapSettings();
+
             Lightmapping.BakeAsync();
         }
         
@@ -485,14 +491,16 @@ namespace Assets.Scripts.MapEditor.Editor
 
                 //dirLight.shadowStrength = oldStr;
 
-                const int pixelsPerTile = 2;
+                //map data counts ground cells, each 2x2 walk tiles
+                var tilesWide = width * 2;
+                var tilesHigh = height * 2;
 
-                var tool = go.AddComponent<ScreenshotCamera>();
-                tool.FileName = editor.MapData.name;
-                tool.Width = width * pixelsPerTile;
-                tool.Height = height * pixelsPerTile;
+                //the client derives the map's size in tiles from this resolution
+                const int artPixelsPerTile = MinimapArt.PixelsPerTile;
 
-                tool.TakeScreenshotCoroutine();
+                var minimapWidth = tilesWide * artPixelsPerTile;
+                var minimapHeight = tilesHigh * artPixelsPerTile;
+                MinimapCapture.Capture(cam, minimapWidth, minimapHeight, $"Assets/Maps/minimap/{editor.MapData.name}.png");
 
                 var walk = editor.MapData.WalkData;
 
@@ -557,73 +565,71 @@ namespace Assets.Scripts.MapEditor.Editor
                 cam.backgroundColor = new Color(66f / 255f, 66f / 255f, 66f / 255f, 1f);
                 cam.cullingMask = 1 << LayerMask.NameToLayer("Editor");
 
-                tool.FileName = editor.MapData.name + "_walkmask";
-                tool.TakeScreenshotCoroutine();
+                MinimapCapture.Capture(cam, minimapWidth, minimapHeight, $"Assets/Maps/minimap/{editor.MapData.name}_walkmask.png");
 
                 mapList.Add(editor.MapData.name);
                 foreach (var g in gos)
                     DestroyImmediate(g);
 
-
-                //start mesh building -------------------------------------------------
-                //this one for combined
-                m = new MeshBuilder();
-
-                c = new Color(0f, 0f, 0f, 0.5f);
-                colors = new Color[4] { c, c, c, c };
-
-                count = 0;
-                gos = new List<GameObject>();
-
-                for (var x = 0; x < walk.InitialSize.x; x++)
-                {
-                    for (var y = 0; y < walk.InitialSize.y; y++)
-                    {
-
-                        if (walk.WalkCellData.CellWalkable(x, y))
-                            continue;
-
-                        var tVerts = sharedData.GetTileVertices(new Vector2Int(x, y), Vector3.zero);
-                        var tNormals = sharedData.GetTileNormals(new Vector2Int(x, y));// topNormals[x1 + y1 * ChunkBounds.width];
-                        //var tColors = sharedData.GetTileColors(new Vector2Int(x, y));
-
-
-                        m.StartTriangle();
-
-                        m.AddVertices(tVerts);
-                        m.AddUVs(uvs);
-                        m.AddColors(colors);
-                        m.AddNormals(tNormals);
-                        m.AddTriangles(new[] { 0, 1, 3, 3, 2, 0 });
-
-                        count++;
-                        if (count > 8000)
-                        {
-                            var newGo = BuildMeshIntoObject(m, Shader.Find("Unlit/BlendingTestShader"));
-                            newGo.transform.position = new Vector3(0f, 200f, 0f);
-                            newGo.transform.localScale = new Vector3(1f, 0f, 1f);
-                            gos.Add(newGo);
-                            count = 0;
-                        }
-                    }
-                }
-
-                newGo2 = BuildMeshIntoObject(m, Shader.Find("Unlit/BlendingTestShader"));
-                newGo2.transform.position = new Vector3(0f, 200f, 0f);
-                newGo2.transform.localScale = new Vector3(1f, 0f, 1f);
-                gos.Add(newGo2);
-
-                cam.clearFlags = CameraClearFlags.SolidColor;
-                cam.backgroundColor = new Color(0f, 0f, 0f, 0f);
-                cam.cullingMask = -1;
-
-                tool.FileName = editor.MapData.name + "_combined";
-                tool.TakeScreenshotCoroutine();
-
-                mapList.Add(editor.MapData.name);
-                //yield break;
-                foreach (var g in gos)
-                    DestroyImmediate(g);
+                //the client doesn't use the combined image
+                ////start mesh building -------------------------------------------------
+                ////this one for combined
+                //m = new MeshBuilder();
+                //
+                //c = new Color(0f, 0f, 0f, 0.5f);
+                //colors = new Color[4] { c, c, c, c };
+                //
+                //count = 0;
+                //gos = new List<GameObject>();
+                //
+                //for (var x = 0; x < walk.InitialSize.x; x++)
+                //{
+                //    for (var y = 0; y < walk.InitialSize.y; y++)
+                //    {
+                //
+                //        if (walk.WalkCellData.CellWalkable(x, y))
+                //            continue;
+                //
+                //        var tVerts = sharedData.GetTileVertices(new Vector2Int(x, y), Vector3.zero);
+                //        var tNormals = sharedData.GetTileNormals(new Vector2Int(x, y));// topNormals[x1 + y1 * ChunkBounds.width];
+                //        //var tColors = sharedData.GetTileColors(new Vector2Int(x, y));
+                //
+                //
+                //        m.StartTriangle();
+                //
+                //        m.AddVertices(tVerts);
+                //        m.AddUVs(uvs);
+                //        m.AddColors(colors);
+                //        m.AddNormals(tNormals);
+                //        m.AddTriangles(new[] { 0, 1, 3, 3, 2, 0 });
+                //
+                //        count++;
+                //        if (count > 8000)
+                //        {
+                //            var newGo = BuildMeshIntoObject(m, Shader.Find("Unlit/BlendingTestShader"));
+                //            newGo.transform.position = new Vector3(0f, 200f, 0f);
+                //            newGo.transform.localScale = new Vector3(1f, 0f, 1f);
+                //            gos.Add(newGo);
+                //            count = 0;
+                //        }
+                //    }
+                //}
+                //
+                //newGo2 = BuildMeshIntoObject(m, Shader.Find("Unlit/BlendingTestShader"));
+                //newGo2.transform.position = new Vector3(0f, 200f, 0f);
+                //newGo2.transform.localScale = new Vector3(1f, 0f, 1f);
+                //gos.Add(newGo2);
+                //
+                //cam.clearFlags = CameraClearFlags.SolidColor;
+                //cam.backgroundColor = new Color(0f, 0f, 0f, 0f);
+                //cam.cullingMask = -1;
+                //
+                //MinimapCapture.Capture(cam, minimapWidth, minimapHeight, $"Assets/Maps/minimap/{editor.MapData.name}_combined.png");
+                //
+                //mapList.Add(editor.MapData.name);
+                ////yield break;
+                //foreach (var g in gos)
+                //    DestroyImmediate(g);
 
                 //end light baking
 
@@ -657,9 +663,18 @@ namespace Assets.Scripts.MapEditor.Editor
                     tImporter.textureCompression = TextureImporterCompression.CompressedHQ;
                     tImporter.textureType = TextureImporterType.Sprite;
                     tImporter.alphaSource = TextureImporterAlphaSource.FromInput;
+                    //non-power-of-two sprites with mipmaps stay uncompressed
+                    tImporter.mipmapEnabled = false;
                     //tmp.spriteMeshType = SpriteMeshType.FullRect;
                     //tmp.textureType = TextureImporterType.Sprite;
-                    tImporter.spriteImportMode = SpriteImportMode.Single;
+                    //one sprite named after the map, over the drawn part; the client loads it by that name
+                    tImporter.spriteImportMode = SpriteImportMode.Multiple;
+#pragma warning disable CS0618 //the replacement needs the 2D Sprite package
+                    tImporter.spritesheet = new[]
+                    {
+                        new SpriteMetaData { name = mapName, rect = DrawnArtRect(path), alignment = (int)SpriteAlignment.Center, pivot = new Vector2(0.5f, 0.5f) }
+                    };
+#pragma warning restore CS0618
                     //tImporter.SetTextureSettings(tmp);
                     EditorUtility.SetDirty(tImporter);
                     tImporter.SaveAndReimport();
@@ -689,6 +704,51 @@ namespace Assets.Scripts.MapEditor.Editor
             }
 
             AssetDatabase.Refresh();
+        }
+
+        //The drawn part of the art in pixels, rounded out to whole tiles; the whole art if nothing is drawn or it can't be read.
+        private static Rect DrawnArtRect(string artPath)
+        {
+            const int pixelsPerTile = MinimapArt.PixelsPerTile;
+            var art = new Texture2D(2, 2);
+            try
+            {
+                if (!art.LoadImage(File.ReadAllBytes(artPath)))
+                    return new Rect(0, 0, art.width, art.height);
+
+                var tilesWide = art.width / pixelsPerTile;
+                var tilesHigh = art.height / pixelsPerTile;
+
+                var pixels = art.GetPixels32();
+                int minX = art.width, minY = art.height, maxX = -1, maxY = -1;
+                for (var y = 0; y < art.height; y++)
+                {
+                    var row = y * art.width;
+                    for (var x = 0; x < art.width; x++)
+                    {
+                        if (pixels[row + x].a == 0)
+                            continue;
+                        if (x < minX) minX = x;
+                        if (x > maxX) maxX = x;
+                        if (y < minY) minY = y;
+                        if (y > maxY) maxY = y;
+                    }
+                }
+
+                if (maxX < 0)
+                    return new Rect(0, 0, art.width, art.height);
+
+                //texture rows count from the bottom, like tiles and sprite rects
+                var xMin = Mathf.Clamp(minX / pixelsPerTile, 0, tilesWide);
+                var yMin = Mathf.Clamp(minY / pixelsPerTile, 0, tilesHigh);
+                var xMax = Mathf.Clamp(Mathf.CeilToInt((maxX + 1) / (float)pixelsPerTile), 0, tilesWide);
+                var yMax = Mathf.Clamp(Mathf.CeilToInt((maxY + 1) / (float)pixelsPerTile), 0, tilesHigh);
+                return Rect.MinMaxRect(xMin * pixelsPerTile, yMin * pixelsPerTile, xMax * pixelsPerTile, yMax * pixelsPerTile);
+            }
+            finally
+            {
+                DestroyImmediate(art);
+            }
         }
 
         private GameObject BuildMeshIntoObject(MeshBuilder m, Shader shader)

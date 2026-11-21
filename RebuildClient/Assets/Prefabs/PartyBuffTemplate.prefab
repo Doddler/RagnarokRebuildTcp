@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &7364920175821634511
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 790080859935505990, guid: bfab9dda70dbf2d4e80ad3aa27866843,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 790080859935505990, guid: bfab9dda70dbf2d4e80ad3aa27866843,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 938598829616299996, guid: bfab9dda70dbf2d4e80ad3aa27866843,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 938598829616299996, guid: bfab9dda70dbf2d4e80ad3aa27866843,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 938598829616299996, guid: bfab9dda70dbf2d4e80ad3aa27866843,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 938598829616299996, guid: bfab9dda70dbf2d4e80ad3aa27866843,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4946240339681929205, guid: bfab9dda70dbf2d4e80ad3aa27866843,
+        type: 3}
+      propertyPath: m_Name
+      value: PartyBuffTemplate
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bfab9dda70dbf2d4e80ad3aa27866843, type: 3}

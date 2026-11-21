@@ -106,33 +106,26 @@ namespace Assets.Scripts.PlayerControl
                 controllable.StatusEffectState = new StatusEffectState();
 
             var state = controllable.StatusEffectState;
+            var isActive = state.activeStatusEffects.ContainsKey(status);
 
             state.activeStatusEffects[status] = duration + Time.timeSinceLevelLoad;
 
-            UpdateColorForStatus(controllable);
-            
-            // Debug.Log($"Character {controllable.DisplayName} gained status {status}");
+            // Debug.Log($"Character {controllable.Name} gained status {status}");
 
-            if (controllable.CharacterType == CharacterType.Player && PlayerState.Instance.IsInParty &&
-                PlayerState.Instance.PartyMemberIdLookup.TryGetValue(controllable.Id, out var partyMemberId))
-            {
-                if(UiManager.Instance.PartyPanel.PartyEntryLookup.TryGetValue(partyMemberId, out var panel))
-                    panel.AddStatusEffect(status, duration);
-            }
-            
+            controllable.NotifyStatusAdded(status, duration);
+
+            //sent again, such as on a refresh: only the duration changes
+            if (isActive)
+                return;
+
+            UpdateColorForStatus(controllable);
+
             switch (status)
             {
-                case CharacterStatusEffect.PushCart:
-                {
-                    var go = new GameObject();
-                    var cart = go.AddComponent<CartFollower>();
-                    cart.AttachCart(controllable, 0);
-                    controllable.FollowerObject = go;
-                    break;
-                }
                 case CharacterStatusEffect.Hiding:
                 case CharacterStatusEffect.Cloaking:
                 case CharacterStatusEffect.Invisible:
+                    controllable.IsHiddenFromPlayer = true;
                     if(controllable.PrefabActionHandler != null)
                         controllable.PrefabActionHandler.SetHide(true);
                     else
@@ -141,17 +134,11 @@ namespace Assets.Scripts.PlayerControl
                         controllable.SpriteAnimator.HideShadow = !controllable.IsMainCharacter;
                     }
 
-                    if(controllable.FollowerObject != null)
-                        controllable.FollowerObject.SetActive(false); //hide cart, bird, whatever is following the player
+                    controllable.SetFollowersVisible(false);
                     if (controllable.CharacterType != CharacterType.Player)
                         controllable.HideHpBar();
-                    if (controllable.CharacterType == CharacterType.Player && !controllable.IsMainCharacter)
-                    {
-                        if(!PlayerState.Instance.IsInParty || PlayerState.Instance.PartyName != controllable.PartyName)
-                            controllable.HideHpBar();
-                    }
-                    if (CameraFollower.Instance.SelectedTarget == controllable)
-                        CameraFollower.Instance.ClearSelected();
+                    if (controllable.CharacterType == CharacterType.Player && !controllable.IsMainCharacter && !controllable.IsPartyMember)
+                        controllable.HideHpBar();
                     break;
                 case CharacterStatusEffect.Stun:
                     StunEffect.AttachStunEffect(controllable);
@@ -184,7 +171,8 @@ namespace Assets.Scripts.PlayerControl
                         AudioManager.Instance.OneShotSoundEffect(controllable.Id, "_stonecurse.ogg", controllable.transform.position, 0.8f);
                     break;
                 case CharacterStatusEffect.Curse:
-                    AudioManager.Instance.AttachSoundToEntity(controllable.Id, "_curse.ogg", controllable.gameObject);
+                    if(!isNewEntity)
+                        AudioManager.Instance.AttachSoundToEntity(controllable.Id, "_curse.ogg", controllable.gameObject);
                     CurseEffect.AttachCurseEffect(controllable);
                     break;
                 case CharacterStatusEffect.PowerUp:
@@ -250,7 +238,7 @@ namespace Assets.Scripts.PlayerControl
             }
         }
 
-        public static void RemoveStatusFromTarget(ServerControllable controllable, CharacterStatusEffect status)
+        public static void RemoveStatusFromTarget(ServerControllable controllable, CharacterStatusEffect status, bool isRefresh)
         {
             if (controllable.StatusEffectState == null)
             {
@@ -265,26 +253,18 @@ namespace Assets.Scripts.PlayerControl
             
             UpdateColorForStatus(controllable);
 
-            // Debug.Log($"Character {controllable.DisplayName} loses status {status}");
+            // Debug.Log($"Character {controllable.Name} loses status {status}");
             
-            if (controllable.CharacterType == CharacterType.Player && PlayerState.Instance.IsInParty &&
-                PlayerState.Instance.PartyMemberIdLookup.TryGetValue(controllable.Id, out var partyMemberId))
-            {
-                if(UiManager.Instance.PartyPanel.PartyEntryLookup.TryGetValue(partyMemberId, out var panel))
-                    panel.RemoveStatusEffect(status);
-            }
+            //a refresh applies it again right after, so listeners keep it
+            if (!isRefresh)
+                controllable.NotifyStatusRemoved(status);
 
             switch (status)
             {
-                case CharacterStatusEffect.PushCart:
-                {
-                    if (controllable.FollowerObject != null)
-                        GameObject.Destroy(controllable.FollowerObject);
-                    break;
-                }
                 case CharacterStatusEffect.Hiding:
                 case CharacterStatusEffect.Cloaking:
                 case CharacterStatusEffect.Invisible:
+                    controllable.IsHiddenFromPlayer = false;
                     if(controllable.PrefabActionHandler != null)
                         controllable.PrefabActionHandler.SetHide(false);
                     else
@@ -293,9 +273,9 @@ namespace Assets.Scripts.PlayerControl
                         controllable.SpriteAnimator.HideShadow = false;
                     }
 
-                    if(controllable.FollowerObject != null)
-                        controllable.FollowerObject.SetActive(true); //unhide cart/bird
+                    controllable.SetFollowersVisible(true);
                     HideEffect.AttachHideEffect(controllable.gameObject); //smoke plays when unhiding too
+                    controllable.RefreshHpBar(); //hp changes while hidden weren't shown
                     break;
                 case CharacterStatusEffect.Stun:
                     controllable.EndEffectOfType(EffectType.Stun);

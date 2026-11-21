@@ -29,20 +29,18 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
                         MinimapController.Instance.SetEntityPosition(id, type, pos);
                     else
                     {
+                        //the packet has more entries after this one
                         var name = msg.ReadString();
                         if (Network.MapEffects.ContainsKey(name))
-                            return; //already added
+                            continue;
                         var prefab = Resources.Load<GameObject>(name);
                         if (prefab == null)
                         {
                             Debug.LogError($"Could not load asset {name} from Resources path!");
-                            return;
+                            continue;
                         }
                         var go = GameObject.Instantiate(prefab);
-                        if (go == null)
-                            Debug.LogError($"Could not load mapimportantentity effect by name of {name}");
-                        else
-                            NetworkManager.Instance.MapEffects[name] = go;
+                        NetworkManager.Instance.MapEffects[name] = go;
 
                         if (go.TryGetComponent<IMapEffect>(out var effect))
                             effect.Create();

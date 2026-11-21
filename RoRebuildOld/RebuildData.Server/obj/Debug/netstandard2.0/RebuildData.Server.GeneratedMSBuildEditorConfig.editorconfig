@@ -1,3 +1,8 @@
 is_global = true
 build_property.RootNamespace = RebuildData.Server
-build_property.ProjectDir = F:\ProjectsSSD\RagnarokRebuildTcp\RoRebuildOld\RebuildData.Server\
+build_property.ProjectDir = E:\Repos\Akadiosgg\RagnarokRebuildTcp\RoRebuildOld\RebuildData.Server\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.CsWinRTUseWindowsUIXamlProjections = false
+build_property.EffectiveAnalysisLevelStyle = 
+build_property.EnableCodeStyleSeverity = 

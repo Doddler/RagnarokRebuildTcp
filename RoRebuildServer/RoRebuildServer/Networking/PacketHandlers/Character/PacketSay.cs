@@ -50,7 +50,7 @@ public class PacketSay : IClientPacketHandler
 
         if (type == PlayerChatType.Shout)
         {
-            if (connection.Player!.MaxLearnedLevelOfSkill(CharacterSkill.BasicMastery) < 7)
+            if (connection.Player!.LearnedSkillLevel(CharacterSkill.BasicMastery) < 7)
             {
                 CommandBuilder.ErrorMessage(connection.Player, $"You need level 7 of basic mastery to use shout chat.");
                 return;

@@ -4,6 +4,7 @@ using RoRebuildServer.Database;
 using RoRebuildServer.Database.Requests;
 using System.Buffers;
 using RebuildSharedData.Enum.EntityStats;
+using RebuildSharedData.Util;
 
 namespace RoRebuildServer.Networking.PacketHandlers.Connection;
 
@@ -26,22 +27,10 @@ public class PacketEnterServer : IClientPacketHandler
             return;
         }
 
-        if (chName.Length > 30)
+        var nameError = NameValidator.GetCharacterNameError(chName);
+        if (nameError != null)
         {
-            CommandBuilder.ErrorMessage(connection, $"The character name you entered is too long, it must be 30 or fewer characters in length.");
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(chName) || chName.Length < 2)
-        {
-            CommandBuilder.ErrorMessage(connection, $"The character name is invalid. It must be at least 2 characters long.");
-            return;
-        }
-
-        var t = chName.Trim();
-        if (t != chName)
-        {
-            CommandBuilder.ErrorMessage(connection, $"The character name is invalid. Names cannot contain leading or trailing whitespace.");
+            CommandBuilder.ErrorMessage(connection, nameError);
             return;
         }
 

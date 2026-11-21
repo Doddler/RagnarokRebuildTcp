@@ -9,6 +9,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.General
         public static void Create(ServerControllable target)
         {
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.HammerFall);
+            effect.UpdateOnlyOnFrameChange = true;
             effect.SetDurationByFrames(60);
             effect.FollowTarget = target.gameObject;
             effect.DestroyOnTargetLost = true;

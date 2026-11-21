@@ -5,7 +5,7 @@ using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Simulation.StatusEffects._1stJob
 {
-    [StatusEffectHandler(CharacterStatusEffect.Blessing, StatusClientVisibility.Everyone)]
+    [StatusEffectHandler(CharacterStatusEffect.Blessing, StatusClientVisibility.Party)]
     public class StatusBlessing : StatusEffectBase
     {
         public override void OnApply(CombatEntity ch, ref StatusEffectState state)

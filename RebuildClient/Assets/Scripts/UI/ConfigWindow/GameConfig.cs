@@ -2,19 +2,13 @@
 using System.IO;
 using Assets.Scripts.PlayerControl;
 using UnityEngine;
-using File = System.IO.File;
 
 namespace Assets.Scripts.UI.ConfigWindow
 {
-    public static class GameConfig
+    public static partial class GameConfig
     {
         public static GameConfigData Data;
 
-        public static int GetVolumeForAudioChannel(ConfigAudioChannel channel) => Data.AudioVolumeLevels[(int)channel];
-        public static bool GetMuteStatusForAudioChannel(ConfigAudioChannel channel) => Data.AudioMuteValues[(int)channel];
-        public static void SetVolumeForAudioChannel(ConfigAudioChannel channel, int volume) => Data.AudioVolumeLevels[(int)channel] = volume;
-        public static void SetMuteStatusForAudioChannel(ConfigAudioChannel channel, bool isMuted) => Data.AudioMuteValues[(int)channel] = isMuted;
-        
         private static bool isInitialized;
         private static string configPath => Path.Combine(Application.persistentDataPath, "config.txt");
 
@@ -22,9 +16,9 @@ namespace Assets.Scripts.UI.ConfigWindow
         {
             if (isInitialized)
                 return;
-            
-            Data = new GameConfigData();
-            Data.InitDefaultValues();
+
+            //FromJsonOverwrite only writes fields present in the file; the rest keep their defaults
+            Data = GameConfigData.CreateDefault();
 
             if (File.Exists(configPath))
             {
@@ -36,16 +30,11 @@ namespace Assets.Scripts.UI.ConfigWindow
                 }
                 catch (Exception)
                 {
+                    //a throw can leave a partial overwrite, so reset to defaults
                     Debug.LogError($"Could not load config file from {configPath}, using default values instead.");
-
+                    Data = GameConfigData.CreateDefault();
                 }
             }
-            else
-            {
-                Data = new GameConfigData();
-                Data.InitDefaultValues();
-            }
-
 
             isInitialized = true;
         }

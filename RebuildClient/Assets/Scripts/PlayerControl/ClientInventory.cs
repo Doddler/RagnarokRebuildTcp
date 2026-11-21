@@ -266,15 +266,20 @@ namespace Assets.Scripts.PlayerControl
     
     public class ClientInventory
     {
-        private SortedDictionary<int, InventoryItem> inventoryLookup = new();
+        private readonly SortedDictionary<int, InventoryItem> inventoryLookup = new();
+        private readonly Dictionary<int, int> uniqueItemCounts = new();
+        private readonly Dictionary<Guid, int> uniqueItemIdToBagId = new();
 
-        public SortedDictionary<int, InventoryItem> GetInventoryData() => inventoryLookup;
-        public Dictionary<int, int> UniqueItemCounts = new();
+        //the bag id of the changed item, or AllItems when the whole bag was loaded
+        public event Action<int> Changed;
+        public const int AllItems = -1;
+
+        public IReadOnlyDictionary<Guid, int> UniqueItemIdToBagId => uniqueItemIdToBagId;
+        public int TotalItems => inventoryLookup.Count;
+
+        public IReadOnlyDictionary<int, InventoryItem> GetInventoryData() => inventoryLookup;
         public InventoryItem GetInventoryItem(int bagId) => inventoryLookup[bagId];
         public bool TryGetInventoryItem(int bagId, out InventoryItem item) => inventoryLookup.TryGetValue(bagId, out item);
-        public Dictionary<Guid, int> UniqueItemIdToBagId = new();
-
-        public int TotalItems => inventoryLookup.Count;
         
         public int GetItemCount(int itemId)
         {
@@ -287,7 +292,7 @@ namespace Assets.Scripts.PlayerControl
         {
             if (inventoryLookup.TryGetValue(itemId, out var item))
                 return item.Count;
-            return UniqueItemCounts.GetValueOrDefault(itemId, 0);
+            return uniqueItemCounts.GetValueOrDefault(itemId, 0);
         }
 
         public bool RemoveItem(int itemId, int count)
@@ -298,11 +303,11 @@ namespace Assets.Scripts.PlayerControl
             if (item.Count <= count || item.Type == ItemType.UniqueItem)
             {
                 inventoryLookup.Remove(itemId);
-                if (UniqueItemCounts.TryGetValue(item.Id, out var curCount) && curCount - count <= 0)
-                    UniqueItemCounts.Remove(item.Id);
+                if (uniqueItemCounts.TryGetValue(item.Id, out var curCount) && curCount - count <= 0)
+                    uniqueItemCounts.Remove(item.Id);
                 else
-                    UniqueItemCounts[item.Id] = curCount - count;
-                UniqueItemIdToBagId.Remove(item.UniqueItem.UniqueId);
+                    uniqueItemCounts[item.Id] = curCount - count;
+                uniqueItemIdToBagId.Remove(item.UniqueItem.UniqueId);
 
             }
             else
@@ -311,6 +316,7 @@ namespace Assets.Scripts.PlayerControl
                 inventoryLookup[itemId] = item;
             }
 
+            Changed?.Invoke(itemId);
             return true;
         }
 
@@ -319,14 +325,15 @@ namespace Assets.Scripts.PlayerControl
             var change = item.Count;
             if (!inventoryLookup.ContainsKey(item.BagSlotId) && item.Type == ItemType.UniqueItem)
             {
-                if (UniqueItemCounts.TryGetValue(item.Id, out var curCount))
-                    UniqueItemCounts[item.Id] += 1;
+                if (uniqueItemCounts.TryGetValue(item.Id, out var curCount))
+                    uniqueItemCounts[item.Id] += 1;
                 else
-                    UniqueItemCounts[item.Id] = 1;
-                UniqueItemIdToBagId[item.UniqueItem.UniqueId] = item.BagSlotId;
+                    uniqueItemCounts[item.Id] = 1;
+                uniqueItemIdToBagId[item.UniqueItem.UniqueId] = item.BagSlotId;
             }
             
             inventoryLookup[item.BagSlotId] = item;
+            Changed?.Invoke(item.BagSlotId);
         }
 
         public bool TryFindCatalystCapableItem(int baseId, int ignoreBagId, out InventoryItem catalyst)
@@ -363,18 +370,25 @@ namespace Assets.Scripts.PlayerControl
                 return;
             }
 
-            UniqueItemIdToBagId.Remove(curItem.UniqueItem.UniqueId);
-            UniqueItemIdToBagId[item.UniqueId] = bagId;
+            uniqueItemIdToBagId.Remove(curItem.UniqueItem.UniqueId);
+            uniqueItemIdToBagId[item.UniqueId] = bagId;
             
             curItem.UniqueItem = item;
             inventoryLookup[bagId] = curItem;
+            Changed?.Invoke(bagId);
         }
-        
+
         public void Deserialize(ClientInboundMessage msg)
         {
+            DeserializeItems(msg);
+            Changed?.Invoke(AllItems);
+        }
+
+        private void DeserializeItems(ClientInboundMessage msg)
+        {
             inventoryLookup.Clear();
-            UniqueItemCounts.Clear();
-            UniqueItemIdToBagId.Clear();
+            uniqueItemCounts.Clear();
+            uniqueItemIdToBagId.Clear();
             var hasBagData = msg.ReadByte();
             if (hasBagData == 0)
                 return;
@@ -391,11 +405,11 @@ namespace Assets.Scripts.PlayerControl
                 var key = msg.ReadInt32();
                 var item = InventoryItem.DeserializeUnique(msg, key);
                 inventoryLookup.Add(key, item);
-                if (UniqueItemCounts.TryGetValue(item.Id, out var count))
-                    UniqueItemCounts[item.Id] = count + 1;
+                if (uniqueItemCounts.TryGetValue(item.Id, out var count))
+                    uniqueItemCounts[item.Id] = count + 1;
                 else
-                    UniqueItemCounts.Add(item.Id, 1);
-                UniqueItemIdToBagId.Add(item.UniqueItem.UniqueId, item.BagSlotId);
+                    uniqueItemCounts.Add(item.Id, 1);
+                uniqueItemIdToBagId.Add(item.UniqueItem.UniqueId, item.BagSlotId);
                 // items.Add(item);
             }
         }

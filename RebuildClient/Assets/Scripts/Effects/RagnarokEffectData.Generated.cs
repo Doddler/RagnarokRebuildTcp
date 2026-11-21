@@ -120,6 +120,7 @@ namespace Assets.Scripts.Effects
 		Sphere3D,
 		Spike3D,
 		Teleport,
+		Texture2DBatch,
 		Texture2D,
 		Texture3D,
 		WarpPortal,
@@ -250,6 +251,8 @@ namespace Assets.Scripts.Effects
 			primitiveHandlers.Add(PrimitiveType.Spike3D, new Assets.Scripts.Effects.PrimitiveHandlers.Spike3DPrimitive());
 			primitiveDataFactory.Add(PrimitiveType.Spike3D, () => new Assets.Scripts.Effects.PrimitiveData.Spike3DData());
 			primitiveHandlers.Add(PrimitiveType.Teleport, new Assets.Scripts.Effects.PrimitiveHandlers.TeleportPrimitive());
+			primitiveHandlers.Add(PrimitiveType.Texture2DBatch, new Assets.Scripts.Effects.PrimitiveHandlers.Texture2DBatchPrimitive());
+			primitiveDataFactory.Add(PrimitiveType.Texture2DBatch, () => new Assets.Scripts.Effects.PrimitiveData.Texture2DBatchData());
 			primitiveHandlers.Add(PrimitiveType.Texture2D, new Assets.Scripts.Effects.PrimitiveHandlers.Texture2DPrimitive());
 			primitiveDataFactory.Add(PrimitiveType.Texture2D, () => new Assets.Scripts.Effects.PrimitiveData.Texture2DData());
 			primitiveHandlers.Add(PrimitiveType.Texture3D, new Assets.Scripts.Effects.PrimitiveHandlers.Texture3DPrimitive());

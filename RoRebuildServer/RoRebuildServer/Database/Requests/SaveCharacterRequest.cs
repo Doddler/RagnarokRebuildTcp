@@ -108,6 +108,9 @@ public class SaveCharacterRequest : IDbRequest
         };
 
         dbContext.Update(ch);
+        //only a new character's name is written here; a rename is written by ChangeNameRequest alone
+        if (Id != Guid.Empty)
+            dbContext.Entry(ch).Property(c => c.Name).IsModified = false;
         await dbContext.SaveChangesAsync();
 
         if (summaryData != null) ByteArrayPools.ArrayPoolPlayerSummary.Return(summaryData);

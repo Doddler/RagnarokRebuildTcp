@@ -1,4 +1,5 @@
 ﻿using System;
+using RebuildSharedData.Util;
 using TMPro;
 using UnityEngine;
 
@@ -23,13 +24,24 @@ namespace Assets.Scripts.UI.Hud
             onSubmitAction = null;
         }
 
-        public void BeginTextInput(string description, Action<string> onSubmit)
+        //above 0 limits the input to a name of that length
+        public void BeginTextInput(string description, Action<string> onSubmit, int nameLength = 0)
         {
             gameObject.SetActive(true);
             onSubmitAction = onSubmit;
             transform.SetAsLastSibling();
             TextTitle.text = description;
             TextInput.text = $"";
+
+            //the window is shared, so the last prompt's limits are cleared
+            TextInput.characterLimit = 0;
+            TextInput.onValidateInput = null;
+            if (nameLength > 0)
+            {
+                TextInput.characterLimit = nameLength;
+                TextInput.onValidateInput = NameValidator.FilterTyped;
+            }
+
             TextInput.ActivateInputField();
             CameraFollower.Instance.InTextInputBox = true;
         }

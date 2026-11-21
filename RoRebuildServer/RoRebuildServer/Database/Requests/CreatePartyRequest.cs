@@ -44,7 +44,9 @@ public class CreatePartyRequest : IDbRequest
             return;
         }
 
-        var partyExists = await dbContext.Parties.AnyAsync(p => p.PartyName == PartyName);
+        //case-insensitive, like character names
+        var upperName = PartyName.ToUpper();
+        var partyExists = await dbContext.Parties.AnyAsync(p => p.PartyName.ToUpper() == upperName);
         if (partyExists)
         {
             FailureResult("Failed to create party, a party of that name already exists.");

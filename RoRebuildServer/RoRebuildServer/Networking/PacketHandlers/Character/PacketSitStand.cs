@@ -28,7 +28,7 @@ public class PacketSitStand : IClientPacketHandler
 
         var isSitting = msg.ReadBoolean();
 
-        if (isSitting && (connection.Player.JobId == 0 && connection.Player.MaxLearnedLevelOfSkill(CharacterSkill.BasicMastery) < 2))
+        if (isSitting && (connection.Player.JobId == 0 && connection.Player.LearnedSkillLevel(CharacterSkill.BasicMastery) < 2))
         {
             CommandBuilder.ErrorMessage(connection.Player, $"You need level 2 of basic mastery to sit.");
             return;

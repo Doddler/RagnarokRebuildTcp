@@ -53,22 +53,25 @@ namespace Assets.Scripts.UI
         private int lastLevel;
 
         private float timeInAnimation;
-        private float frameTime;
-        private int frameCount;
         private Texture2D lastFrameTexture;
-        private int lastCursorType;
+        //-1 so the first update picks the cursor
+        private int lastCursorType = -1;
         private Dictionary<int, List<Texture2D>> cursorTextures;
-        private Vector2 hotSpot;
+        private CursorConfig activeConfig;
         private List<Texture2D> activeCursor;
 
-        private void CopySpriteIntoTexture(Texture2D target, Sprite source, Rect src, Rect dest)
+        private Rect[] digits; //each digit's rect in their texture, 0-9 in NumberSprites order
+        private const int NumberStart = 37; //x where the level number starts
+        private const int PrebuiltSkillLevels = 10; //higher levels are built when first shown
+
+        private void CopySpriteIntoTexture(Texture2D target, Texture2D source, Rect src, Rect dest)
         {
             var w = (int)src.width;
             var h = (int)src.height;
             var x = (int)src.x;
             var y = (int)src.y;
 
-            var pixels = source.texture.GetPixels(x, y, w, h);
+            var pixels = source.GetPixels(x, y, w, h);
             target.SetPixels((int)dest.x, (int)dest.y, w, h, pixels);
         }
 
@@ -76,77 +79,100 @@ namespace Assets.Scripts.UI
         {
             if (lookup == null)
             {
-                //build a mapping so that we can quickly find details for the selected cursor 
+                //build a mapping so that we can quickly find details for the selected cursor
                 lookup = new Dictionary<GameCursorMode, CursorConfig>();
                 for (var i = 0; i < CursorSettings.Count; i++)
                     lookup.TryAdd(CursorSettings[i].CursorType, CursorSettings[i]);
                 cursorTextures = new Dictionary<int, List<Texture2D>>();
             }
 
+            digits = new Rect[NumberSprites.Count];
+            for (var d = 0; d < digits.Length; d++)
+                digits[d] = DigitRect(NumberSprites[d]);
+
             foreach (var cursor in CursorSettings)
-            {
-                var maxCursorLevel = 0;
-                if (cursor.CursorType == GameCursorMode.SkillTarget)
-                    maxCursorLevel = 10;
-                var rSize = 27;
-                var size = cursor.AnimFrames[0].rect.size;
-                size = new Vector2(Mathf.Max(size.x, 48), Mathf.Max(size.y, 48));
+                GetCursorTextures(cursor.CursorType, 0);
 
-                var blankColors = new Color32[(int)size.x * (int)size.y];
-                for (var i = 0; i < blankColors.Length; i++)
-                    blankColors[i] = new Color32(0, 0, 0, 0);
-
-                for (var level = 0; level <= maxCursorLevel; level++)
-                {
-                    var targetId = level * 100 + (int)cursor.CursorType;
-                    var existing = new Dictionary<string, Texture2D>();
-                    var textureList = new List<Texture2D>();
-                    foreach (var frame in cursor.AnimFrames)
-                    {
-                        if (existing.TryGetValue(frame.name, out var value))
-                        {
-                            textureList.Add(value);
-                            continue;
-                        }
-
-                        var tex = new Texture2D((int)size.x, (int)size.y, TextureFormat.RGBA32, false);
-                        tex.SetPixels32(blankColors);
-                        tex.name = frame.name + "_" + level;
-
-                        var srcRect = new Rect(frame.textureRect.x, frame.textureRect.y, frame.textureRect.width, frame.textureRect.height);
-                        var destRect = new Rect(0, 0, frame.textureRect.width, frame.textureRect.height);
-                        CopySpriteIntoTexture(tex, frame, srcRect, destRect);
-
-                        if (level > 0)
-                        {
-                            var sprite = NumberSprites[level - 1];
-                            tex.name = $"{frame.name}_{sprite.name}";
-                            srcRect = new Rect(sprite.textureRect.x + sprite.textureRect.width - rSize, sprite.textureRect.y, rSize, sprite.textureRect.height);
-                            destRect = new Rect(tex.width - rSize, 0, srcRect.width, srcRect.height);
-                            CopySpriteIntoTexture(tex, sprite, srcRect, destRect);
-                        }
-
-                        tex.Apply();
-                        textureList.Add(tex);
-                        existing.Add(frame.name, tex);
-                    }
-
-                    cursorTextures.Add(targetId, textureList);
-                }
-            }
-
-            SwitchCursor(GameCursorMode.Normal);
-            var cursorType = (int)GameCursorMode.Normal;
-            activeCursor = cursorTextures[cursorType];
-            Cursor.SetCursor(activeCursor[0], hotSpot, CursorMode.Auto);
+            for (var level = 1; level <= PrebuiltSkillLevels; level++)
+                GetCursorTextures(GameCursorMode.SkillTarget, level);
         }
 
-        public void SwitchCursor(GameCursorMode mode)
+        private List<Texture2D> GetCursorTextures(GameCursorMode mode, int level)
         {
-            var data = lookup[mode];
-            frameCount = data.AnimFrames.Count;
-            frameTime = data.frameRate;
-            hotSpot = data.HotSpot;
+            var key = CursorKey(mode, level);
+            if (!cursorTextures.TryGetValue(key, out var textures))
+            {
+                textures = BuildCursorTextures(lookup[mode], level);
+                cursorTextures.Add(key, textures);
+            }
+            return textures;
+        }
+
+        private static int CursorKey(GameCursorMode mode, int level) => level * 100 + (int)mode;
+
+        private List<Texture2D> BuildCursorTextures(CursorConfig cursor, int level)
+        {
+            var number = level > 0 ? level.ToString() : "";
+            var numberWidth = 0;
+            foreach (var c in number)
+                numberWidth += (int)digits[c - '0'].width + 1;
+
+            var size = cursor.AnimFrames[0].rect.size;
+            var width = Mathf.Max((int)size.x, 48, NumberStart + numberWidth);
+            var height = Mathf.Max((int)size.y, 48);
+
+            var blankColors = new Color32[width * height];
+
+            var existing = new Dictionary<string, Texture2D>();
+            var textureList = new List<Texture2D>();
+            foreach (var frame in cursor.AnimFrames)
+            {
+                if (existing.TryGetValue(frame.name, out var value))
+                {
+                    textureList.Add(value);
+                    continue;
+                }
+
+                var tex = new Texture2D(width, height, TextureFormat.RGBA32, false);
+                tex.SetPixels32(blankColors);
+                tex.name = frame.name + "_" + level;
+
+                var srcRect = new Rect(frame.textureRect.x, frame.textureRect.y, frame.textureRect.width, frame.textureRect.height);
+                var destRect = new Rect(0, 0, frame.textureRect.width, frame.textureRect.height);
+                CopySpriteIntoTexture(tex, frame.texture, srcRect, destRect);
+
+                var x = NumberStart;
+                foreach (var c in number)
+                {
+                    var digit = digits[c - '0'];
+                    CopySpriteIntoTexture(tex, NumberSprites[0].texture, digit, new Rect(x, 0, digit.width, digit.height));
+                    x += (int)digit.width + 1;
+                }
+
+                tex.Apply();
+                textureList.Add(tex);
+                existing.Add(frame.name, tex);
+            }
+
+            return textureList;
+        }
+
+        private static Rect DigitRect(Sprite sprite)
+        {
+            var r = sprite.textureRect;
+            var w = (int)r.width;
+            var pixels = sprite.texture.GetPixels((int)r.x, (int)r.y, w, (int)r.height);
+
+            int left = w, right = -1;
+            for (var i = 0; i < pixels.Length; i++)
+            {
+                if (pixels[i].a <= 0)
+                    continue;
+                left = Mathf.Min(left, i % w);
+                right = Mathf.Max(right, i % w);
+            }
+
+            return new Rect(r.x + left, r.y, right - left + 1, r.height);
         }
 
         public void UpdateCursor(GameCursorMode mode, int level = 0)
@@ -162,15 +188,15 @@ namespace Assets.Scripts.UI
                 level = 0;
             }
 
-            var cursorType = level * 100 + (int)mode;
+            var cursorType = CursorKey(mode, level);
 
             if (lastCursorType != cursorType)
             {
-                SwitchCursor(mode);
-                activeCursor = cursorTextures[cursorType];
+                activeConfig = lookup[mode];
+                activeCursor = GetCursorTextures(mode, level);
             }
 
-            var frame = Mathf.FloorToInt(timeInAnimation * frameTime) % frameCount;
+            var frame = Mathf.FloorToInt(timeInAnimation * activeConfig.frameRate) % activeCursor.Count;
 
             lastCursorType = cursorType;
             var frameTexture = activeCursor[frame];
@@ -179,7 +205,7 @@ namespace Assets.Scripts.UI
 
             lastFrameTexture = frameTexture;
 
-            Cursor.SetCursor(frameTexture, hotSpot, CursorMode.Auto);
+            Cursor.SetCursor(frameTexture, activeConfig.HotSpot, CursorMode.Auto);
             return;
             /*
 

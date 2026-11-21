@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Network.HandlerBase;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
+using Assets.Scripts.UI.Utility;
 
 namespace Assets.Scripts.Network.IncomingPacketHandlers.System
 {
@@ -16,35 +17,35 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.System
             switch (type)
             {
                 case ServerEvent.TradeSuccess:
-                    Camera.AppendChatText($"<color=#00fbfb>The trade completed successfully.</color>");
+                    Camera.AppendChatText($"The trade completed successfully.", TextColor.Item);
                     break;
                 case ServerEvent.GetZeny:
                     if (val > 0)
-                        Camera.AppendChatText($"<color=#00fbfb>Obtained {val} zeny.</color>");
+                        Camera.AppendChatText($"Obtained {val} zeny.", TextColor.Item);
                     if (val < 0)
-                        Camera.AppendChatText($"<color=#00fbfb>Lost {-val} zeny.</color>");
+                        Camera.AppendChatText($"Lost {-val} zeny.", TextColor.Item);
                     break;
                 case ServerEvent.NoAmmoEquipped:
-                    if (Camera.TargetControllable.WeaponClass == 12)
-                        Camera.AppendChatText($"<color=#ed0000>You don't have any arrows equipped.</color>");
+                    if (State.WeaponClass == 12)
+                        Camera.AppendChatText($"You don't have any arrows equipped.", TextColor.Error);
                     else
-                        Camera.AppendChatText($"<color=#ed0000>You don't have any ammunition equipped.</color>");
+                        Camera.AppendChatText($"You don't have any ammunition equipped.", TextColor.Error);
                     break;
                 case ServerEvent.WrongAmmoEquipped:
-                    Camera.AppendChatText($"<color=#ed0000>You don't have the right kind of ammunition equipped.</color>");
+                    Camera.AppendChatText($"You don't have the right kind of ammunition equipped.", TextColor.Error);
                     break;
                 case ServerEvent.OutOfAmmo:
-                    Camera.AppendChatText($"<color=#ed0000>You don't have enough ammunition left to fire.</color>");
+                    Camera.AppendChatText($"You don't have enough ammunition left to fire.", TextColor.Error);
                     break;
                 case ServerEvent.EligibleForJobChange:
-                    Camera.AppendChatText($"<color=#99CCFF><i>Congratulations, you've reached job 10! You are now eligible to change jobs. "
-                                          + "Speak to the bard south of Prontera to get started.</i></color>");
+                    Camera.AppendChatText($"<i>Congratulations, you've reached job 10! You are now eligible to change jobs. "
+                                          + "Speak to the bard south of Prontera to get started.</i>", TextColor.Job);
                     break;
                 case ServerEvent.MemoLocationSaved:
                     if(State.KnownSkills.TryGetValue(CharacterSkill.WarpPortal, out var level) && level > 1)
-                        Camera.AppendChatText($"<color=#00fbfb>Current location has been recorded in slot {val + 1} as a warp portal destination.</color>");
+                        Camera.AppendChatText($"Current location has been recorded in slot {val + 1} as a warp portal destination.", TextColor.Item);
                     else
-                        Camera.AppendChatText($"<color=#00fbfb>Current location has been recorded as your warp portal destination.</color>");
+                        Camera.AppendChatText($"Current location has been recorded as your warp portal destination.", TextColor.Item);
                     break;
                 // case ServerEvent.PartyInviteSent:
                 //     Camera.AppendChatText($"<color=#77FF77>A party invite has been sent.</color>");

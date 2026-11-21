@@ -24,6 +24,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
             }
             
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.WarpPortalOpening);
+            effect.UpdateOnlyOnFrameChange = true;
             effect.SetDurationByFrames(600);
             effect.FollowTarget = target;
             effect.transform.position = target.transform.position;

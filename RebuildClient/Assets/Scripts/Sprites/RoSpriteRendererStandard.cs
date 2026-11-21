@@ -119,6 +119,8 @@ namespace Assets.Scripts.Sprites
 
         private Mesh _mesh;
 
+        internal int CachedInstanceId => _instanceId != 0 ? _instanceId : _instanceId = GetInstanceID();
+
         public void SetAction(int action, bool is8Direction)
         {
             ActionId = action;
@@ -131,7 +133,22 @@ namespace Assets.Scripts.Sprites
         public void SetAngle(float angle) => Angle = angle;
 
         public void SetFrame(int frame) => CurrentFrame = frame;
-        public void SetSprite(RoSpriteData sprite) => SpriteData = sprite;
+        public void SetSprite(RoSpriteData sprite)
+        {
+            SpriteData = sprite;
+            if (!isInitialized)
+                return;
+
+            //a live renderer needs new mesh caches and a full rebuild
+            LoadMeshCaches();
+            _hasRebuiltOnce = false;
+        }
+
+        private void LoadMeshCaches()
+        {
+            meshCache = SpriteMeshCache.GetMeshCacheForSprite(SpriteData.Name);
+            colliderCache = SpriteMeshCache.GetColliderCacheForSprite(SpriteData.Name);
+        }
         public void SetOffset(float offset) => SpriteOffset = offset;
 
         public RoFrame GetActiveRendererFrame()
@@ -174,8 +191,7 @@ namespace Assets.Scripts.Sprites
             if (shader == null)
                 shader = GameConfig.Data.EnableXRay ? ShaderCache.Instance?.SpriteShaderWithXRay : ShaderCache.Instance?.SpriteShader;
 
-            meshCache = SpriteMeshCache.GetMeshCacheForSprite(SpriteData.Name);
-            colliderCache = SpriteMeshCache.GetColliderCacheForSprite(SpriteData.Name);
+            LoadMeshCaches();
 
             Color = Color.white;
 
@@ -237,17 +253,21 @@ namespace Assets.Scripts.Sprites
                 transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, reverseNorth ? -ZOffset : ZOffset);
 
             _mesh = GetMeshForFrame();
-            var cMesh = GetColliderForFrame();
 
             if (MeshFilter.sharedMesh != _mesh)
             {
                 MeshFilter.sharedMesh = null;
                 MeshFilter.sharedMesh = _mesh;
             }
-            if (MeshCollider != null && MeshCollider.sharedMesh != cMesh)
+            // skip the per-frame collision recook (a PhysX bake) for disabled colliders
+            if (MeshCollider != null && MeshCollider.enabled)
             {
-                MeshCollider.sharedMesh = null;
-                MeshCollider.sharedMesh = cMesh;
+                var cMesh = GetColliderForFrame();
+                if (MeshCollider.sharedMesh != cMesh)
+                {
+                    MeshCollider.sharedMesh = null;
+                    MeshCollider.sharedMesh = cMesh;
+                }
             }
 
             if (propertyBlock != null && MeshRenderer != null)
@@ -484,8 +504,6 @@ namespace Assets.Scripts.Sprites
             _useFallback = true;
             UpdateFallbackRenderer();
         }
-
-        internal int CachedInstanceId => _instanceId != 0 ? _instanceId : _instanceId = GetInstanceID();
 
         private RoSpriteRendererStandard ResolveRootRenderer()
         {

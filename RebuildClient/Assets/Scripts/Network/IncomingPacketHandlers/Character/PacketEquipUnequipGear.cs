@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Network.HandlerBase;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
+using Assets.Scripts.UI.Utility;
 
 namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
 {
@@ -17,46 +18,22 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             if (item.ItemData.ItemClass == ItemClass.Ammo)
             {
                 if (isEquip)
-                {
-                    Camera.AppendChatText($"<color=#00f6c7>Equipped {item.ProperName()}.</color>");
-                    State.AmmoId = bagId;
-                }
+                    Camera.AppendChatText($"<color={TextColors.Equip}>Equipped {item.ProperName()}.</color>");
                 else
-                {
-                    Camera.AppendChatText($"<color=#c80000>Unequipped {item.ProperName()}.</color>");
-                    State.AmmoId = -1;
-                }
-                UiManager.Instance.InventoryWindow.UpdateActiveVisibleBag();
+                    Camera.AppendChatText($"<color={TextColors.Unequip}>Unequipped {item.ProperName()}.</color>");
             }
             else
             {
                 if (isEquip)
-                    Camera.AppendChatText($"<color=#00f6c7>Put on {item.ProperName()}.</color>");
+                    Camera.AppendChatText($"<color={TextColors.Equip}>Put on {item.ProperName()}.</color>");
                 else
-                    Camera.AppendChatText($"<color=#ed0000>Took off {item.ProperName()}.</color>");
+                    Camera.AppendChatText($"<color={TextColors.Unequip}>Took off {item.ProperName()}.</color>");
             }
             
             if (slot == EquipSlot.Ammunition)
-            {
-                if (isEquip)
-                    State.AmmoId = bagId;
-                else
-                    State.AmmoId = 0;
-            }
+                State.SetAmmo(isEquip ? bagId : 0);
             else
-            {
-                State.EquippedBagIdHashes.Remove(State.EquippedItems[(int)slot]); //if the slot is empty it's fine, remove just won't take anything out
-
-                if (isEquip)
-                {
-                    State.EquippedItems[(int)slot] = bagId;
-                    State.EquippedBagIdHashes.Add(bagId);
-                }
-                else
-                    State.EquippedItems[(int)slot] = 0;
-            }
-            
-            UiManager.EquipmentWindow.RefreshEquipmentWindow();
+                State.SetEquippedItem(slot, isEquip ? bagId : 0);
         }
     }
 }

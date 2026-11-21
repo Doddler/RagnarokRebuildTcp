@@ -15,6 +15,7 @@ using JetBrains.Annotations;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RebuildSharedData.Networking;
+using RebuildSharedData.Util;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -23,6 +24,12 @@ namespace PlayerControl
     public static class ClientCommandHandler
     {
         private static Dictionary<string, int> emoteList = new();
+
+        private static readonly (string Prefix, PlayerChatType Type)[] ChatPrefixes =
+        {
+            ("/sh", PlayerChatType.Shout), ("/s", PlayerChatType.Shout), ("/shout", PlayerChatType.Shout),
+            ("/p", PlayerChatType.Party), ("/party", PlayerChatType.Party)
+        };
 
         public static void RegisterEmoteCommand(string command, int id)
         {
@@ -64,165 +71,167 @@ namespace PlayerControl
             return outList.ToArray();
         }
 
+        private static void ShowUsage(CameraFollower cameraFollower, string usage) =>
+            cameraFollower.AppendError($"Incorrect parameters. Usage: {usage}");
+
+        //false when given but not a number
+        private static bool TryGetOptionalInt(string[] s, int index, out int value)
+        {
+            value = 0;
+            return index >= s.Length || int.TryParse(s[index], out value);
+        }
+
+        private static bool TryGetOptionalInts(string[] s, int start, out int v1, out int v2, out int v3, out int v4) =>
+            TryGetOptionalInt(s, start, out v1) & TryGetOptionalInt(s, start + 1, out v2)
+                                                & TryGetOptionalInt(s, start + 2, out v3) & TryGetOptionalInt(s, start + 3, out v4);
+
+        //Every command ends in an action or a message, never silently.
         public static void HandleClientCommand(CameraFollower cameraFollower, ServerControllable controllable, string text)
         {
             if (string.IsNullOrWhiteSpace(text))
                 return;
 
-            if (text.StartsWith("/"))
+            if (!text.StartsWith("/"))
             {
-                if (text.StartsWith("/sh "))
+                if (text.Length > 255)
+                    cameraFollower.AppendError("Text too long.");
+                else
+                    NetworkManager.Instance.SendSay(text, PlayerChatType.Say);
+                return;
+            }
+
+            foreach (var (prefix, type) in ChatPrefixes)
+            {
+                if (text.Length > prefix.Length && text[prefix.Length] == ' ' && text.StartsWith(prefix))
                 {
-                    var msg = text.Substring(4);
-                    NetworkManager.Instance.SendSay(msg, PlayerChatType.Shout);
+                    NetworkManager.Instance.SendSay(text.Substring(prefix.Length + 1), type);
                     return;
                 }
+            }
 
-                if (text.StartsWith("/s "))
+            var s = SplitStringCommand(text);
+            if (s == null)
+            {
+                cameraFollower.AppendError($"Malformed slash command, could not execute.");
+                return;
+            }
+
+            Debug.Log($"string command: " + string.Join('|', s));
+
+            foreach (var (prefix, type) in ChatPrefixes)
+            {
+                if (s[0] == prefix)
                 {
-                    var msg = text.Substring(3);
-                    NetworkManager.Instance.SendSay(msg, PlayerChatType.Shout);
+                    ShowUsage(cameraFollower, type == PlayerChatType.Party ? $"{prefix} <message> (use /organize <party name> to form a party)" : $"{prefix} <message>");
                     return;
                 }
+            }
 
-                if (text.StartsWith("/shout "))
-                {
-                    var msg = text.Substring(7);
-                    NetworkManager.Instance.SendSay(msg, PlayerChatType.Shout);
-                    return;
-                }
-                
-                if (text.StartsWith("/p "))
-                {
-                    var msg = text.Substring(3);
-                    NetworkManager.Instance.SendSay(msg, PlayerChatType.Party);
-                    return;
-                }
-
-                if (text.StartsWith("/party "))
-                {
-                    var msg = text.Substring(7);
-                    NetworkManager.Instance.SendSay(msg, PlayerChatType.Party);
-                    return;
-                }
-
-                var s = SplitStringCommand(text);
-                if (s == null)
-                {
-                    cameraFollower.AppendError($"Malformed slash command, could not execute.");
-                    return;
-                }
-
-                Debug.Log($"string command: " + string.Join('|', s));
-
-                if (s[0] == "/memo")
-                {
+            switch (s[0])
+            {
+                case "/memo":
                     WarpPortalWindow.RunMemoCommand();
                     return;
-                }
 
-                if (s[0] == "/warp" && s.Length > 1)
+                case "/warp":
                 {
-                    if (s.Length == 4)
-                    {
-                        if (int.TryParse(s[2], out var x) && int.TryParse(s[3], out var y))
-                            NetworkManager.Instance.SendMoveRequest(s[1], x, y);
-                        else
-                            NetworkManager.Instance.SendMoveRequest(s[1]);
-                    }
-                    else
+                    if (s.Length == 2)
                         NetworkManager.Instance.SendMoveRequest(s[1]);
+                    else if (s.Length == 4 && int.TryParse(s[2], out var x) && int.TryParse(s[3], out var y))
+                        NetworkManager.Instance.SendMoveRequest(s[1], x, y);
+                    else
+                        ShowUsage(cameraFollower, "/warp <map> [x y]");
+                    return;
                 }
 
-                if (s[0] == "/where")
+                case "/where":
                 {
                     var mapname = NetworkManager.Instance.CurrentMap;
-                    var srcPos = cameraFollower.WalkProvider.GetMapPositionForWorldPosition(cameraFollower.Target.transform.position, out var srcPosition);
+                    cameraFollower.WalkProvider.GetMapPositionForWorldPosition(cameraFollower.Target.transform.position, out var srcPosition);
 
                     cameraFollower.AppendChatText($"Client location: {mapname} {srcPosition.x},{srcPosition.y}");
                     NetworkManager.Instance.SendClientTextCommand(ClientTextCommand.Where);
+                    return;
                 }
 
-                if (s[0] == "/info")
-                {
+                case "/info":
                     NetworkManager.Instance.SendClientTextCommand(ClientTextCommand.Info);
-                }
+                    return;
 
-                if (s[0] == "/adminify")
-                {
+                case "/adminify":
                     if (s.Length > 1)
-                    {
-                        var cmdText = text.Substring(10);
-                        NetworkManager.Instance.SendClientTextCommand(ClientTextCommand.Adminify, cmdText);
-                    }
+                        NetworkManager.Instance.SendClientTextCommand(ClientTextCommand.Adminify, text.Substring(10));
                     else
                         NetworkManager.Instance.SendClientTextCommand(ClientTextCommand.Adminify);
-                }
+                    return;
 
-                if (s[0] == "/name" || s[0] == "/changename")
-                {
-                    var newName = text.Substring(s[0].Length + 1);
-                    NetworkManager.Instance.SendChangeName(newName);
-                }
-
-                if (s[0] == "/find")
-                {
-                    var target = text.Substring(s[0].Length + 1);
-                    NetworkManager.Instance.SendAdminFind(target);
-                }
-
-                if (s[0] == "/level")
-                {
-                    if (s.Length == 1 || !int.TryParse(s[1], out var level))
-                        NetworkManager.Instance.SendAdminLevelUpRequest(0, false);
-                    else
-                        NetworkManager.Instance.SendAdminLevelUpRequest(level, false);
-                }
-
-                if (s[0] == "/joblevel")
-                {
-                    if (s.Length == 1 || !int.TryParse(s[1], out var level))
-                        NetworkManager.Instance.SendAdminLevelUpRequest(0, true);
-                    else
-                        NetworkManager.Instance.SendAdminLevelUpRequest(level, true);
-                }
-
-                if (s[0] == "/skillreset")
-                {
-                    NetworkManager.Instance.SendAdminResetSkillPoints();
-                }
-
-                if (s[0] == "/statreset")
-                {
-                    NetworkManager.Instance.SendAdminResetStatPoints();
-                }
-
-                if (s[0] == "/hide")
-                {
-                    NetworkManager.Instance.SendAdminHideCharacter(!controllable.IsHidden);
-                }
-
-                if (s[0] == "/return")
-                {
-                    NetworkManager.Instance.SendRespawn(false);
-                }
-
-                if (s[0] == "/logout")
-                {
-                    GameConfig.SaveConfig();
-                    NetworkManager.Instance.Disconnect();
-                    SceneManager.LoadScene(0);
-                }
-
-                if (s[0] == "/item")
+                case "/name":
+                case "/changename":
                 {
                     if (s.Length < 2)
                     {
-                        cameraFollower.AppendError("Invalid item request.");
+                        ShowUsage(cameraFollower, $"{s[0]} <new name>");
+                        return;
+                    }
+
+                    var newName = text.Substring(s[0].Length + 1).Trim();
+                    var error = NameValidator.GetCharacterNameError(newName);
+                    if (error != null)
+                        cameraFollower.AppendError(error);
+                    else
+                        NetworkManager.Instance.SendChangeName(newName);
+                    return;
+                }
+
+                case "/find":
+                    if (s.Length < 2)
+                        ShowUsage(cameraFollower, "/find <name>");
+                    else
+                        NetworkManager.Instance.SendAdminFind(text.Substring(s[0].Length + 1));
+                    return;
+
+                case "/level":
+                case "/joblevel":
+                {
+                    //no number raises the level by one
+                    if (s.Length > 2 || !TryGetOptionalInt(s, 1, out var level))
+                        ShowUsage(cameraFollower, $"{s[0]} [levels to add]");
+                    else
+                        NetworkManager.Instance.SendAdminLevelUpRequest(level, s[0] == "/joblevel");
+                    return;
+                }
+
+                case "/skillreset":
+                    NetworkManager.Instance.SendAdminResetSkillPoints();
+                    return;
+
+                case "/statreset":
+                    NetworkManager.Instance.SendAdminResetStatPoints();
+                    return;
+
+                case "/hide":
+                    NetworkManager.Instance.SendAdminHideCharacter(!controllable.IsHidden);
+                    return;
+
+                case "/return":
+                    NetworkManager.Instance.SendRespawn(false);
+                    return;
+
+                case "/logout":
+                    GameConfig.SaveConfig();
+                    NetworkManager.Instance.Disconnect();
+                    SceneManager.LoadScene(0);
+                    return;
+
+                case "/item":
+                {
+                    if (s.Length < 2)
+                    {
+                        ShowUsage(cameraFollower, "/item <item name> [count]");
+                        return;
                     }
 
                     var count = 1;
-                    var name = s[1];
                     var nameMax = s.Length;
 
                     if (s.Length >= 3 && int.TryParse(s[s.Length - 1], out var newCount))
@@ -231,22 +240,20 @@ namespace PlayerControl
                         nameMax--;
                     }
 
-                    Debug.Log($"Item '{name}' {count} {nameMax}");
-
-                    if (s.Length > 2)
-                        name = String.Join(" ", s.Skip(1).Take(nameMax - 1));
+                    var name = string.Join(" ", s.Skip(1).Take(nameMax - 1));
 
                     if (!ClientDataLoader.Instance.TryGetItemByName(name, out var item))
                         cameraFollower.AppendError($"The item name '{name}' is not valid.");
                     else
                         NetworkManager.Instance.SendAdminCreateItem(item.Id, count);
+                    return;
                 }
 
-                if (s[0] == "/refine")
+                case "/refine":
                 {
                     if (s.Length < 2)
                     {
-                        cameraFollower.AppendError("Invalid command format.");
+                        ShowUsage(cameraFollower, "/refine <slot> [refine level]");
                         return;
                     }
 
@@ -297,19 +304,20 @@ namespace PlayerControl
                     }
 
                     NetworkManager.Instance.SendAdminRefineAttempt(itemId, refine);
+                    return;
                 }
 
-                if (s[0] == "/summon" || s[0] == "/boss" || s[0] == "/monster")
+                case "/summon":
+                case "/boss":
+                case "/monster":
                 {
                     if (s.Length < 2)
                     {
-                        cameraFollower.AppendError("Invalid summon monster request.");
+                        ShowUsage(cameraFollower, $"{s[0]} <monster name> [count]");
                         return;
                     }
 
-                    //var failed = false;
                     var count = 1;
-                    var name = s[1];
                     var nameMax = s.Length;
 
                     if (s.Length >= 3 && int.TryParse(s[s.Length - 1], out var newCount))
@@ -318,179 +326,214 @@ namespace PlayerControl
                         nameMax--;
                     }
 
-                    Debug.Log($"Summon '{name}' {count} {nameMax}");
-
-                    var isBoss = s[0] == "/boss";
-
-                    if (s.Length > 2)
-                        name = String.Join(" ", s.Skip(1).Take(nameMax - 1));
+                    var name = string.Join(" ", s.Skip(1).Take(nameMax - 1));
 
                     if (!ClientDataLoader.Instance.IsValidMonsterName(name) && !ClientDataLoader.Instance.IsValidMonsterCode(name))
                         cameraFollower.AppendError($"The monster name '{name}' is not valid.");
                     else
-                        NetworkManager.Instance.SendAdminSummonMonster(name, count, isBoss);
+                        NetworkManager.Instance.SendAdminSummonMonster(name, count, s[0] == "/boss");
+                    return;
                 }
 
-                if (s[0] == "/bgm")
+                case "/bgm":
                     AudioManager.Instance.ToggleMute();
+                    return;
 
-                if (s[0] == "/emote" && s.Length == 2)
-                    cameraFollower.Emote(int.Parse(s[1]));
+                case "/emote":
+                    if (s.Length == 2 && int.TryParse(s[1], out var emoteId))
+                        cameraFollower.Emote(emoteId);
+                    else
+                        ShowUsage(cameraFollower, "/emote <emote id>");
+                    return;
 
-                if (s[0] == "/change")
+                case "/change":
                 {
                     if (s.Length == 1)
+                    {
                         NetworkManager.Instance.SendChangeAppearance(0);
+                        return;
+                    }
+
+                    var mode = s[1].ToLower() switch
+                    {
+                        "hair" => 1,
+                        "gender" => 2,
+                        "job" or "class" => 3,
+                        "weapon" => 4,
+                        _ => -1
+                    };
+
+                    //only hair takes a second value, its colour
+                    var maxLength = mode == 1 ? 4 : 3;
+                    if (mode < 0 || s.Length > maxLength
+                                 || !TryGetOptionalInt(s, 2, out var id) || !TryGetOptionalInt(s, 3, out var subId))
+                    {
+                        ShowUsage(cameraFollower, "/change [hair [style [colour]] | gender [id] | job [id] | weapon [id]]");
+                        return;
+                    }
 
                     if (s.Length == 2)
                     {
-                        if (s[1].ToLower() == "hair")
-                            NetworkManager.Instance.SendChangeAppearance(1);
-                        if (s[1].ToLower() == "gender")
+                        if (mode == 2)
                             NetworkManager.Instance.SendChangeAppearance(2, controllable.IsMale ? 1 : 0);
-                        if (s[1].ToLower() == "job" || s[1].ToLower() == "class")
-                            NetworkManager.Instance.SendChangeAppearance(3);
-                        if (s[1].ToLower() == "weapon")
-                            NetworkManager.Instance.SendChangeAppearance(4);
+                        else
+                            NetworkManager.Instance.SendChangeAppearance(mode);
                     }
-
-                    if (s.Length == 3)
-                    {
-                        if (int.TryParse(s[2], out var id))
-                        {
-                            if (s[1].ToLower() == "hair")
-                                NetworkManager.Instance.SendChangeAppearance(1, id);
-                            if (s[1].ToLower() == "gender")
-                                NetworkManager.Instance.SendChangeAppearance(2, id);
-                            if (s[1].ToLower() == "job" || s[1].ToLower() == "class")
-                                NetworkManager.Instance.SendChangeAppearance(3, id);
-                            if (s[1].ToLower() == "weapon")
-                                NetworkManager.Instance.SendChangeAppearance(4, id);
-                        }
-                    }
-
-                    if (s.Length == 4)
-                    {
-                        if (int.TryParse(s[2], out var id) && int.TryParse(s[3], out var subId))
-                            if (s[1].ToLower() == "hair")
-                                NetworkManager.Instance.SendChangeAppearance(1, id, subId);
-                    }
+                    else if (s.Length == 3)
+                        NetworkManager.Instance.SendChangeAppearance(mode, id);
+                    else
+                        NetworkManager.Instance.SendChangeAppearance(mode, id, subId);
+                    return;
                 }
 
-                if (s[0] == "/speed")
-                {
-                    if (s.Length > 1 && int.TryParse(s[1], out var speed))
+                case "/speed":
+                    if (s.Length == 2 && int.TryParse(s[1], out var speed))
                         NetworkManager.Instance.SendAdminChangeSpeed(speed);
                     else
-                        cameraFollower.AppendChatText("<color=yellow>Error</color>: Incorrect parameters.");
-                }
+                        ShowUsage(cameraFollower, "/speed <move speed>");
+                    return;
 
-                if (s[0] == "/admin")
-                {
+                case "/admin":
                     NetworkManager.Instance.SendAdminChangeSpeed(50);
                     NetworkManager.Instance.SendAdminHideCharacter(true);
-                }
+                    return;
 
-                if (s[0] == "/ailog" || s[0] == "/ailogging")
-                {
+                case "/ailog":
+                case "/ailogging":
                     NetworkManager.Instance.SendAiLogging();
-                }
+                    return;
 
-                if (s[0] == "/kill")
-                {
+                case "/kill":
                     NetworkManager.Instance.SendAdminKillMobAction(false);
-                }
+                    return;
 
-                if (s[0] == "/killall")
-                {
+                case "/killall":
                     NetworkManager.Instance.SendAdminKillMobAction(true);
-                }
+                    return;
 
-                if (s[0] == "/die" || s[0] == "/suicide")
-                {
+                case "/die":
+                case "/suicide":
                     NetworkManager.Instance.SendAdminDieAction();
-                }
+                    return;
 
-                if (s[0] == "/showexp") {
+                case "/showexp":
                     GameConfig.Data.ShowExpGainInChat = !GameConfig.Data.ShowExpGainInChat;
                     UiManager.Instance.ConfigManager.Refresh();
                     cameraFollower.AppendChatText($"showexp turned {(GameConfig.Data.ShowExpGainInChat == true ? "on" : "off")}",TextColor.System);
-                }
+                    return;
 
-                if (s[0] == "/sit")
+                case "/sit":
                 {
-                    if (controllable.SpriteAnimator.State == SpriteState.Idle || controllable.SpriteAnimator.State == SpriteState.Standby)
+                    var state = controllable.SpriteAnimator.State;
+                    if (state == SpriteState.Idle || state == SpriteState.Standby)
                         NetworkManager.Instance.ChangePlayerSitStand(true);
-                    if (controllable.SpriteAnimator.State == SpriteState.Sit)
+                    else if (state == SpriteState.Sit)
                         NetworkManager.Instance.ChangePlayerSitStand(false);
+                    else
+                        cameraFollower.AppendError("You can't sit down right now.");
+                    return;
                 }
 
-                if (s[0] == "/randomize" || s[0] == "/random")
+                case "/randomize":
+                case "/random":
                     NetworkManager.Instance.SendChangeAppearance(0);
+                    return;
 
-                if (s[0] == "/effect" && s.Length > 1)
+                case "/effect":
                 {
-                    if (int.TryParse(s[1], out var id))
+                    if (s.Length < 2)
+                    {
+                        ShowUsage(cameraFollower, "/effect <effect id or name> [count]");
+                        return;
+                    }
+
+                    if (int.TryParse(s[1], out var effectId))
                     {
                         if (Application.isEditor && s.Length > 2 && int.TryParse(s[2], out var count))
                         {
                             for (var i = 0; i < count; i++)
-                                cameraFollower.AttachEffectToEntity(id, controllable.gameObject);
+                                cameraFollower.AttachEffectToEntity(effectId, controllable.gameObject);
                         }
                         else
-                            cameraFollower.AttachEffectToEntity(id, controllable.gameObject);
+                            cameraFollower.AttachEffectToEntity(effectId, controllable.gameObject);
                     }
                     else
                         cameraFollower.AttachEffectToEntity(s[1], controllable.gameObject);
+                    return;
                 }
 
-                if (s[0] == "/status" && s.Length > 2)
+                case "/status":
                 {
-                    if (!Enum.TryParse<CharacterStatusEffect>(s[1], out var status))
+                    const string usage = "/status <status name> [seconds] [value1] [value2] [value3] [value4]";
+                    if (s.Length < 2 || s.Length > 7)
                     {
-                        cameraFollower.AppendChatText($"<color=yellow>Error</color>: Could not find status effect {s[1]}.");
+                        ShowUsage(cameraFollower, usage);
                         return;
                     }
 
-                    var len = s.Length >= 3 && float.TryParse(s[2], out var f) ? f : 15f;
-                    var v1 = s.Length >= 4 && int.TryParse(s[3], out var v) ? v : 0;
-                    var v2 = s.Length >= 5 && int.TryParse(s[4], out v) ? v : 0;
-                    var v3 = s.Length >= 6 && int.TryParse(s[5], out v) ? v : 0;
-                    var v4 = s.Length >= 7 && int.TryParse(s[6], out v) ? v : 0;
+                    if (!Enum.TryParse<CharacterStatusEffect>(s[1], out var status))
+                    {
+                        cameraFollower.AppendError($"Could not find status effect {s[1]}.");
+                        return;
+                    }
+
+                    var len = 15f;
+                    if ((s.Length >= 3 && !float.TryParse(s[2], out len))
+                        || !TryGetOptionalInts(s, 3, out var v1, out var v2, out var v3, out var v4))
+                    {
+                        ShowUsage(cameraFollower, usage);
+                        return;
+                    }
 
                     NetworkManager.Instance.SendAdminStatusAdd(status, len, v1, v2, v3, v4);
-                }
-                
-                if (s[0] == "/event" && s.Length > 2)
-                {
-                    var name = s[1];
-                    var v1 = s.Length >= 3 && int.TryParse(s[2], out var v) ? v : 0;
-                    var v2 = s.Length >= 4 && int.TryParse(s[3], out v) ? v : 0;
-                    var v3 = s.Length >= 5 && int.TryParse(s[4], out v) ? v : 0;
-                    var v4 = s.Length >= 6 && int.TryParse(s[5], out v) ? v : 0;
-
-                    NetworkManager.Instance.SendAdminCreateEvent(name, v1, v2, v3, v4);
+                    return;
                 }
 
-                if (s[0] == "/reloadscript" || s[0] == "/scriptreload")
+                case "/event":
                 {
-                    NetworkManager.Instance.SendAdminAction(AdminAction.ReloadScripts);
-                }
-
-                if (s[0] == "/grantskill" && s.Length >= 2)
-                {
-                    if (Enum.TryParse<CharacterSkill>(s[1], out var skill))
+                    if (s.Length < 2 || s.Length > 6
+                        || !TryGetOptionalInts(s, 2, out var v1, out var v2, out var v3, out var v4))
                     {
-                        if (s.Length > 2 && int.TryParse(s[2], out var lvl))
-                            NetworkManager.Instance.AdminGrantSkill(skill, lvl);
-                        else
-                            NetworkManager.Instance.AdminGrantSkill(skill, 1);
+                        ShowUsage(cameraFollower, "/event <event name> [value1] [value2] [value3] [value4]");
+                        return;
                     }
-                    else
-                        cameraFollower.AppendChatText($"Could not parse skill name {s[1]}", TextColor.Error);
+
+                    NetworkManager.Instance.SendAdminCreateEvent(s[1], v1, v2, v3, v4);
+                    return;
                 }
 
-                if (s[0] == "/god" || s[0] == "/godmode")
+                case "/reloadscript":
+                case "/scriptreload":
+                    NetworkManager.Instance.SendAdminAction(AdminAction.ReloadScripts);
+                    return;
+
+                case "/grantskill":
+                {
+                    if (s.Length < 2 || s.Length > 3)
+                    {
+                        ShowUsage(cameraFollower, "/grantskill <skill name> [level]");
+                        return;
+                    }
+
+                    if (!Enum.TryParse<CharacterSkill>(s[1], out var skill))
+                    {
+                        cameraFollower.AppendError($"Could not parse skill name {s[1]}.");
+                        return;
+                    }
+
+                    var lvl = 1;
+                    if (s.Length == 3 && !int.TryParse(s[2], out lvl))
+                    {
+                        ShowUsage(cameraFollower, "/grantskill <skill name> [level]");
+                        return;
+                    }
+
+                    NetworkManager.Instance.AdminGrantSkill(skill, lvl);
+                    return;
+                }
+
+                case "/god":
+                case "/godmode":
                 {
                     if (s.Length == 1)
                     {
@@ -516,82 +559,87 @@ namespace PlayerControl
                         var name = text.Substring(chopStart);
                         NetworkManager.Instance.SendAdminGodModeOther(name, true);
                     }
+                    return;
                 }
 
-                if (s[0] == "/servergc")
-                {
+                case "/servergc":
                     NetworkManager.Instance.SendAdminAction(AdminAction.ForceGC);
-                }
+                    return;
 
-                if (s[0] == "/clear" || s[0] == "/cls" || s[0] == "/clearchat")
+                case "/clear":
+                case "/cls":
+                case "/clearchat":
                     cameraFollower.ResetChat();
+                    return;
 
-                if (s[0] == "/debug")
+                case "/debug":
+                    if (s.Length != 3 || !float.TryParse(s[2], out var debugValue))
+                        ShowUsage(cameraFollower, "/debug <value name> <number>");
+                    else
+                        DebugValueHolder.Set(s[1], debugValue);
+                    return;
+
+                case "/organize":
                 {
-                    if (s.Length < 3)
+                    if (s.Length < 2)
                     {
-                        cameraFollower.AppendChatText("<color=yellow>Incorrect parameters. Usage:</color>/debug valueName value");
+                        ShowUsage(cameraFollower, "/organize <party name>");
                         return;
                     }
 
-                    if (float.TryParse(s[2], out var f))
-                        DebugValueHolder.Set(s[1], f);
-                    else
-                        cameraFollower.AppendChatText("<color=yellow>Incorrect parameters. Usage:</color>/debug valueName float");
-                }
-
-                if ((s[0] == "/organize" || s[0] == "/party") && s.Length > 1)
-                {
-                    if (PlayerState.Instance.IsInParty)
+                    if (PlayerState.Instance.Party.IsInParty)
                     {
-                        cameraFollower.AppendChatText($"<color=yellow>You are already in a party. You'll need to /leave to form a new party.</color>");
+                        cameraFollower.AppendError("You are already in a party. You'll need to /leave to form a new party.");
                         return;
                     }
 
-                    var msg = s[1];
-                    if (!msg.Contains("\""))
-                        text.Substring(s[0].Length + 1);
-                    NetworkManager.Instance.OrganizeParty(msg);
+                    NetworkManager.Instance.OrganizeParty(string.Join(" ", s.Skip(1)));
+                    return;
                 }
 
-                if (s[0] == "/invite" && s.Length > 1)
+                case "/invite":
                 {
-                    var name = s[1];
-                    if (!name.Contains("\""))
-                        text.Substring(s[0].Length + 1);
-                    if (!PlayerState.Instance.IsInParty)
-                        cameraFollower.AppendChatText($"<color=yellow>You must first create a party with /organize before you can invite a player.</color>");
-                    else
-                        NetworkManager.Instance.PartyInviteByName(name);
-                }
-
-                if (s[0] == "/accept")
-                {
-                    if (s.Length > 1 && int.TryParse(s[1], out var id))
+                    if (s.Length < 2)
                     {
-                        NetworkManager.Instance.PartyAcceptInvite(id);
+                        ShowUsage(cameraFollower, "/invite <player name>");
+                        return;
                     }
+
+                    if (!PlayerState.Instance.Party.IsInParty)
+                        cameraFollower.AppendError("You must first create a party with /organize before you can invite a player.");
                     else
+                        NetworkManager.Instance.PartyInviteByName(string.Join(" ", s.Skip(1)));
+                    return;
+                }
+
+                case "/accept":
+                {
+                    if (s.Length > 1)
                     {
-                        if (PlayerState.Instance.InvitedPartyId < 0)
-                            cameraFollower.AppendChatText($"<color=yellow>You do not have a pending party invite.</color>");
+                        if (s.Length == 2 && int.TryParse(s[1], out var partyId))
+                            NetworkManager.Instance.PartyAcceptInvite(partyId);
                         else
-                            NetworkManager.Instance.PartyAcceptInvite(PlayerState.Instance.InvitedPartyId);
+                            ShowUsage(cameraFollower, "/accept [party id]");
                     }
+                    else if (PlayerState.Instance.Party.InvitedPartyId < 0)
+                        cameraFollower.AppendError("You do not have a pending party invite.");
+                    else
+                        NetworkManager.Instance.PartyAcceptInvite(PlayerState.Instance.Party.InvitedPartyId);
+                    return;
                 }
 
-                if (s[0] == "/leave" || s[0] == "/leaveparty")
-                {
-                    if (!PlayerState.Instance.IsInParty)
-                        cameraFollower.AppendChatText($"<color=yellow>You are not currently in a party.</color>");
+                case "/leave":
+                case "/leaveparty":
+                    if (!PlayerState.Instance.Party.IsInParty)
+                        cameraFollower.AppendError("You are not currently in a party.");
                     else
                         NetworkManager.Instance.LeaveParty();
-                }
+                    return;
 
-                if (s[0] == "/partyinfo")
+                case "/partyinfo":
                 {
                     var state = PlayerState.Instance;
-                    if (!state.IsInParty || state.PartyMembers == null || state.PartyMembers.Count == 0)
+                    if (!state.Party.IsInParty || state.Party.Members == null || state.Party.Members.Count == 0)
                     {
                         cameraFollower.AppendChatText("You are not currently in a party.");
                         return;
@@ -601,7 +649,7 @@ namespace PlayerControl
                     sb.Append("Party members: ");
 
                     var count = 0;
-                    foreach (var (_, member) in state.PartyMembers)
+                    foreach (var (_, member) in state.Party.Members)
                     {
                         if (count > 0)
                             sb.Append(", ");
@@ -612,105 +660,82 @@ namespace PlayerControl
                     }
 
                     cameraFollower.AppendChatText(sb.ToString());
-                }
-
-                if (s[0] == "/signalnpc" && s.Length > 1)
-                {
-                    var npcName = s[1];
-                    var signalVal = s.Length > 2 ? s[2] : "";
-                    var v1 = s.Length > 3 && int.TryParse(s[3], out var i) ? i : 0;
-                    var v2 = s.Length > 4 && int.TryParse(s[4], out i) ? i : 0;
-                    var v3 = s.Length > 5 && int.TryParse(s[5], out i) ? i : 0;
-                    var v4 = s.Length > 6 && int.TryParse(s[6], out i) ? i : 0;
-
-                    NetworkManager.Instance.SendAdminSignalNpc(npcName, signalVal, v1, v2, v3, v4);
-                }
-
-                if (s[0] == "/shutdown")
-                {
-                    if (s.Length == 1)
-                        NetworkManager.Instance.SendServerShutdown(60, "");
-                    else
-                    {
-                        if (int.TryParse(s[1], out var seconds))
-                        {
-                            if (s.Length > 3)
-                                cameraFollower.AppendChatText("Incorrectly formated command", TextColor.Error);
-                            else
-                                NetworkManager.Instance.SendServerShutdown(seconds, s.Length > 2 ? s[2] : "");
-                        }
-                        else
-                        {
-                            if (s.Length > 2)
-                                cameraFollower.AppendChatText("Incorrectly formated command", TextColor.Error);
-                            else
-                                NetworkManager.Instance.SendServerShutdown(60, s[1]);
-                        }
-                    }
-                }
-
-                if (s[0] == "/changecart" || s[0] == "/changeriding")
-                {
-                    if (s.Length != 2 || !int.TryParse(s[1], out var cartId))
-                    {
-                        cameraFollower.AppendChatText($"Incorrectly formatted command. Command should look like: /{s[0]} #");
-                        return;
-                    }
-
-                    NetworkManager.Instance.SendChangeCart(cartId - 1);
                     return;
                 }
 
-                if (s[0] == "/disguise")
+                case "/signalnpc":
                 {
-                    if(s.Length < 2)
-                        NetworkManager.Instance.SendAdminDisguise(-1);
-                    else if (int.TryParse(s[1], out var disguiseId))
-                        NetworkManager.Instance.SendAdminDisguise(disguiseId);
-                    else
+                    if (s.Length < 2 || s.Length > 7
+                        || !TryGetOptionalInts(s, 3, out var v1, out var v2, out var v3, out var v4))
                     {
-                        //var failed = false;
-                        var count = 1;
-                        var name = s[1];
-                        var nameMax = s.Length;
-
-                        if (s.Length >= 3 && int.TryParse(s[s.Length - 1], out var newCount))
-                        {
-                            count = newCount;
-                            nameMax--;
-                        }
-
-                        if (s.Length > 2)
-                            name = String.Join(" ", s.Skip(1).Take(nameMax - 1));
-
-                        var mon = ClientDataLoader.Instance.MonsterClassLookup.Values.FirstOrDefault(m => m.Name == name);
-                        if (mon == null)
-                        {
-                            var code = name.ToUpperInvariant();
-                            mon = ClientDataLoader.Instance.MonsterClassLookup.Values.FirstOrDefault(m => m.Code == code);
-                            if(mon == null)
-                                cameraFollower.AppendError($"The monster name '{name}' is not valid.");
-                            else
-                                NetworkManager.Instance.SendAdminDisguise(mon.Id);    
-                        }
-                        else
-                            NetworkManager.Instance.SendAdminDisguise(mon.Id);
+                        ShowUsage(cameraFollower, "/signalnpc <npc name> [signal] [value1] [value2] [value3] [value4]");
+                        return;
                     }
-                        
+
+                    NetworkManager.Instance.SendAdminSignalNpc(s[1], s.Length > 2 ? s[2] : "", v1, v2, v3, v4);
+                    return;
                 }
 
-                if (emoteList.TryGetValue(s[0], out var emote))
-                    NetworkManager.Instance.SendEmote(emote);
-            }
-            else
-            {
-                if (text.Length > 255)
+                case "/shutdown":
                 {
-                    cameraFollower.AppendChatText("<color=yellow>Error</color>: Text too long.");
+                    const string usage = "/shutdown [seconds] [message]";
+                    if (s.Length == 1)
+                        NetworkManager.Instance.SendServerShutdown(60, "");
+                    else if (int.TryParse(s[1], out var seconds))
+                    {
+                        if (s.Length > 3)
+                            ShowUsage(cameraFollower, usage);
+                        else
+                            NetworkManager.Instance.SendServerShutdown(seconds, s.Length > 2 ? s[2] : "");
+                    }
+                    else if (s.Length > 2)
+                        ShowUsage(cameraFollower, usage);
+                    else
+                        NetworkManager.Instance.SendServerShutdown(60, s[1]);
+                    return;
                 }
-                else
-                    NetworkManager.Instance.SendSay(text, PlayerChatType.Say);
-                //AppendChatText(text);
+
+                case "/changecart":
+                    if (s.Length != 2 || !int.TryParse(s[1], out var cartId))
+                        ShowUsage(cameraFollower, $"{s[0]} <number>");
+                    else if (cartId <= 0)
+                        NetworkManager.Instance.SendRemoveCart();
+                    else
+                        NetworkManager.Instance.SendChangeCartStyle(cartId - 1);
+                    return;
+
+                case "/disguise":
+                {
+                    if (s.Length < 2)
+                    {
+                        NetworkManager.Instance.SendAdminDisguise(-1);
+                        return;
+                    }
+
+                    if (int.TryParse(s[1], out var disguiseId))
+                    {
+                        NetworkManager.Instance.SendAdminDisguise(disguiseId);
+                        return;
+                    }
+
+                    //a trailing number is dropped, as with /summon
+                    var nameMax = s.Length >= 3 && int.TryParse(s[^1], out _) ? s.Length - 1 : s.Length;
+                    var name = string.Join(" ", s.Skip(1).Take(nameMax - 1));
+                    var mon = ClientDataLoader.Instance.MonsterClassLookup.Values.FirstOrDefault(m => m.Name == name)
+                              ?? ClientDataLoader.Instance.MonsterClassLookup.Values.FirstOrDefault(m => m.Code == name.ToUpperInvariant());
+                    if (mon == null)
+                        cameraFollower.AppendError($"The monster name '{name}' is not valid.");
+                    else
+                        NetworkManager.Instance.SendAdminDisguise(mon.Id);
+                    return;
+                }
+
+                default:
+                    if (emoteList.TryGetValue(s[0], out var emote))
+                        NetworkManager.Instance.SendEmote(emote);
+                    else
+                        cameraFollower.AppendError($"Unknown command {s[0]}.");
+                    return;
             }
         }
     }

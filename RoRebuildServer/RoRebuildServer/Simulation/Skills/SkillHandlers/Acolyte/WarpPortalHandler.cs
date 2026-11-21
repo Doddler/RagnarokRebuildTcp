@@ -110,7 +110,7 @@ public class WarpPortalHandler : SkillHandlerBase
                 return;
             }
 
-            var maxLevel = player.MaxLearnedLevelOfSkill(CharacterSkill.WarpPortal);
+            var maxLevel = player.MaxSkillLevel(CharacterSkill.WarpPortal);
             var lifeTime = 5 + maxLevel * 5;
             var e = World.Instance.CreateEvent(source.Entity, map, "WarpPortalBaseEvent", player.SpecialStateTarget,
                 lifeTime, memo.Position.X, memo.Position.Y, 0, memo.MapName);

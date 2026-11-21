@@ -627,7 +627,7 @@ public partial class CombatEntity : IEntityAutoReset
 
         CommandBuilder.ChangeSpValue(Player, curSp + sp, maxSp);
         if (Player.Party != null)
-            CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(Player);
+            CommandBuilder.UpdatePartyMembersOfHpSpChange(Player);
     }
 
     public void RecoverSpFixed(int sp)
@@ -649,7 +649,7 @@ public partial class CombatEntity : IEntityAutoReset
 
         CommandBuilder.ChangeSpValue(Player, newSp, maxSp);
         if (Player.Party != null)
-            CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(Player);
+            CommandBuilder.UpdatePartyMembersOfHpSpChange(Player);
     }
 
     [ScriptUseable]
@@ -1056,7 +1056,7 @@ public partial class CombatEntity : IEntityAutoReset
                 return false;
 
             if (level <= 0)
-                level = Player.MaxLearnedLevelOfSkill(skill);
+                level = Player.MaxSkillLevel(skill);
         }
 
         var skillInfo = new SkillCastInfo()
@@ -1712,7 +1712,7 @@ public partial class CombatEntity : IEntityAutoReset
         }
 
         if (hasResult && Character.Type == CharacterType.Player && Player.Party != null)
-            CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(Player, false); //notify party members out of sight
+            CommandBuilder.UpdatePartyMembersOfHpSpChange(Player, false); //notify party members out of sight
     }
 
     public void Init(ref Entity e, WorldObject ch)

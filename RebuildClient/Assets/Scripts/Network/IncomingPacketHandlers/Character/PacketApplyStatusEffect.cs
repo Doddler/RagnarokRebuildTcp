@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.Network.HandlerBase;
 using Assets.Scripts.PlayerControl;
-using Assets.Scripts.UI.Hud;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 
@@ -19,8 +18,6 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             {
                 // Debug.Log($"Applying status {status} to {controllable.Name}");
                 StatusEffectState.AddStatusToTarget(controllable, status, false, duration);
-                if (id == Network.PlayerId)
-                    StatusEffectPanel.Instance.AddStatusEffect(status, duration);
             }
         }
     }

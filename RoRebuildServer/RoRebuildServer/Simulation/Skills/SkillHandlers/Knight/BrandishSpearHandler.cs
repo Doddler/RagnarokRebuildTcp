@@ -24,11 +24,13 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Knight
             return base.ValidateTarget(source, target, position, lvl, isIndirect, isItemSource);
         }
 
+        //how far the strike reaches, which stops growing at level 10
+        private static int DistanceRank(int lvl) => int.Min((lvl - 1) / 3, 3);
+
         private float GetDamageForDistanceAndLevel(int distance, int lvl)
         {
             var baseAtk = 1f + 0.2f * lvl;
-            var distRank = (lvl - 1) / 3;
-            var distScore = distRank - int.Max(0, distance - 1);
+            var distScore = DistanceRank(lvl) - int.Max(0, distance - 1);
 
             return baseAtk + distScore switch
             {
@@ -41,7 +43,6 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Knight
 
         public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect, bool isItemSource)
         {
-            lvl = lvl.Clamp(1, 10);
             var map = source.Character.Map;
 
             if (target == null || !target.IsValidTarget(source) || map == null)
@@ -50,7 +51,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Knight
             var srcPoint = source.Character.Position;
             var endPoint = target.Character.Position;
             var dist = (int)srcPoint.FloatDistance(endPoint);
-            var aoeLength = 2 + (lvl - 1) / 3;
+            var aoeLength = 2 + DistanceRank(lvl);
 
             using var potentialTargets = EntityListPool.Get();
             var area = Area.CreateAroundTwoPoints(srcPoint, endPoint, 7 - dist);

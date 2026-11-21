@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
+using RebuildSharedData.Config;
 using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
@@ -16,7 +18,8 @@ using RoRebuildServer.Simulation.Util;
 
 namespace RoRebuildServer.Simulation.Parties;
 
-public record PartyMemberInfo(Guid PlayerId, string Name, int Level, int EntityId, Entity Entity, bool IsOnline);
+//only kept for offline members; an online member's is read from the player
+public record PartyMemberInfo(Guid PlayerId, string Name, int Level, int EntityId, Entity Entity, bool IsOnline, PlayerAppearance Appearance);
 
 public class Party
 {
@@ -33,6 +36,7 @@ public class Party
     private readonly Lock writeLock = new();
 
     public bool IsPartyLeader(Player p) => p.PartyMemberId == PartyOwnerId;
+    public bool IsFull => PartyMemberInfo.Count >= SharedConfig.MaxPartySize;
 
     public Party(string partyName)
     {
@@ -44,7 +48,7 @@ public class Party
     {
         idCount++;
         p.PartyMemberId = idCount;
-        var info = new PartyMemberInfo(p.Id, p.Name, p.GetData(PlayerStat.Level), p.Character.Id, p.Entity, true);
+        var info = new PartyMemberInfo(p.Id, p.Name, p.GetData(PlayerStat.Level), p.Character.Id, p.Entity, true, default);
         PartyMemberInfo.Add(idCount, info);
         OnlineMembers.Add(p.Entity);
         PlayerIdToMemberId.Add(p.Id, idCount);
@@ -82,7 +86,7 @@ public class Party
         foreach (var m in existingParty.Characters)
         {
             idCount++;
-            PartyMemberInfo.Add(idCount, new PartyMemberInfo(m.Id, m.Name, -1, 0, Entity.Null, false));
+            PartyMemberInfo.Add(idCount, new PartyMemberInfo(m.Id, m.Name, -1, 0, Entity.Null, false, PlayerAppearance.FromSummary(MemoryMarshal.Cast<byte, int>(m.Summary))));
             PlayerIdToMemberId.Add(m.Id, idCount);
         }
     }
@@ -95,13 +99,19 @@ public class Party
             return false;
         }
 
-        if (sender.MaxLearnedLevelOfSkill(CharacterSkill.BasicMastery) < 6)
+        if (IsFull)
+        {
+            CommandBuilder.SendActionResult(sender, ServerResult.InviteFailedPartyFull);
+            return false;
+        }
+
+        if (sender.LearnedSkillLevel(CharacterSkill.BasicMastery) < 6)
         {
             CommandBuilder.SendActionResult(sender, ServerResult.InviteFailedSenderNoBasicSkill);
             return false;
         }
 
-        if (invitee.MaxLearnedLevelOfSkill(CharacterSkill.BasicMastery) < 4)
+        if (invitee.LearnedSkillLevel(CharacterSkill.BasicMastery) < 4)
         {
             CommandBuilder.SendActionResult(sender, ServerResult.InviteFailedRecipientNoBasicSkill);
             return false;
@@ -139,6 +149,7 @@ public class Party
         CommandBuilder.NotifyPartyOfChange(this, player.PartyMemberId, PartyUpdateType.AddPlayer);
         CommandBuilder.AcceptPartyInvite(player);
         CommandBuilder.NotifyNearbyPlayersOfPartyChangeAutoVis(player);
+        ShareStatusesWithMembersInView(player, true);
     }
 
     public void RemoveMember(int memberId)
@@ -166,6 +177,7 @@ public class Party
     public void RemoveMember(Player player)
     {
         CommandBuilder.NotifyPartyOfChange(this, player.PartyMemberId, PartyUpdateType.RemovePlayer);
+        ShareStatusesWithMembersInView(player, false);
 
         var memberId = player.PartyMemberId;
 
@@ -200,7 +212,7 @@ public class Party
 
         using (writeLock.EnterScope())
         {
-            PartyMemberInfo[memberId] = new PartyMemberInfo(p.Id, p.Name, p.GetData(PlayerStat.Level), p.Character.Id, p.Entity, true);
+            PartyMemberInfo[memberId] = new PartyMemberInfo(p.Id, p.Name, p.GetData(PlayerStat.Level), p.Character.Id, p.Entity, true, default);
             OnlineMembers.Add(p.Entity);
             p.PartyMemberId = memberId;
 
@@ -224,7 +236,7 @@ public class Party
 
         using (writeLock.EnterScope())
         {
-            PartyMemberInfo[memberId] = new PartyMemberInfo(p.Id, p.Name, p.GetData(PlayerStat.Level), -1, Entity.Null, false);
+            PartyMemberInfo[memberId] = new PartyMemberInfo(p.Id, p.Name, p.GetData(PlayerStat.Level), -1, Entity.Null, false, p.Appearance);
             OnlineMembers.Remove(ref p.Entity);
             if (PartyOwnerId == memberId || PartyOwnerId < 0)
                 PromoteRandomToLeader();
@@ -252,16 +264,50 @@ public class Party
     public void Disband()
     {
         CommandBuilder.NotifyPartyOfChange(this, -1, PartyUpdateType.DisbandParty);
+
         foreach (var e in OnlineMembers)
         {
-            if (e.TryGet<Player>(out var player))
-            {
-                player.Party = null;
-                CommandBuilder.NotifyNearbyPlayersOfPartyChangeAutoVis(player);
-            }
+            if (!e.TryGet<Player>(out var player))
+                continue;
+
+            ShareOtherMembersStatuses(player, false);
+            player.Party = null;
+            CommandBuilder.NotifyNearbyPlayersOfPartyChangeAutoVis(player);
         }
 
         EndParty(); //we don't need to send individual db requests as EndParty will remove everyone's party ids
+    }
+
+    private void ShareStatusesWithMembersInView(Player player, bool hasJoined)
+    {
+        foreach (var e in OnlineMembers)
+        {
+            if (!e.TryGet<Player>(out var member) || member == player)
+                continue;
+
+            ShareStatuses(member, player, hasJoined);
+            ShareStatuses(player, member, hasJoined);
+        }
+    }
+
+    //only one way: what the viewer sees on the other members
+    private void ShareOtherMembersStatuses(Player viewer, bool hasJoined)
+    {
+        foreach (var e in OnlineMembers)
+            if (e.TryGet<Player>(out var member) && member != viewer)
+                ShareStatuses(member, viewer, hasJoined);
+    }
+
+    private static void ShareStatuses(Player member, Player viewer, bool hasJoined)
+    {
+        var statuses = member.CombatEntity.StatusContainer;
+        if (statuses == null || !member.Character.IsPlayerVisible(viewer.Entity))
+            return;
+
+        if (hasJoined)
+            statuses.SendViewerStatuses(viewer);
+        else
+            statuses.SendPartyStatusRemovals(viewer);
     }
 
     private void EndParty()
@@ -324,19 +370,15 @@ public class Party
         if (id == -1)
             PlayerIdToMemberId.TryGetValue(info.PlayerId, out id);
 
-        packet.Write(id);
-        packet.Write(info.EntityId);
-        packet.Write((short)info.Level);
-        packet.Write(info.Name);
-        packet.Write((byte)(info.EntityId > 0 && id == PartyOwnerId ? 1 : 0));
-        if (info.EntityId > 0 && info.Entity.TryGet<Player>(out var p))
-        {
-            packet.Write(p.Character.Map != null ? p.Character.Map.Name : "");
-            packet.Write(p.GetStat(CharacterStat.Hp));
-            packet.Write(p.GetStat(CharacterStat.MaxHp));
-            packet.Write(p.GetStat(CharacterStat.Sp));
-            packet.Write(p.GetStat(CharacterStat.MaxSp));
-        }
+        //an online member is read from the player, as their level and name can change
+        var data = info.EntityId > 0 && info.Entity.TryGet<Player>(out var p)
+            ? new PartyMemberData(id, info.EntityId, p.GetData(PlayerStat.Level), p.Name, id == PartyOwnerId, p.Appearance,
+                p.Character.Map != null ? p.Character.Map.Name : "",
+                p.GetStat(CharacterStat.Hp), p.GetStat(CharacterStat.MaxHp), p.GetStat(CharacterStat.Sp), p.GetStat(CharacterStat.MaxSp),
+                p.GetData(PlayerStat.JobLevel))
+            : PartyMemberData.Offline(id, info.Level, info.Name, info.Appearance);
+
+        data.Write(packet);
     }
 
     public void SerializePartyInfo(OutboundMessage packet)

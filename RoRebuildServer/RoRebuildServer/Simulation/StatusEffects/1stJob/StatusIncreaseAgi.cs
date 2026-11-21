@@ -5,15 +5,12 @@ using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Simulation.StatusEffects._1stJob
 {
-    [StatusEffectHandler(CharacterStatusEffect.IncreaseAgi, StatusClientVisibility.Everyone, StatusEffectFlags.None, "SpeedBonus")]
+    [StatusEffectHandler(CharacterStatusEffect.IncreaseAgi, StatusClientVisibility.Party, StatusEffectFlags.None, "SpeedBonus")]
     public class StatusIncreaseAgi : StatusEffectBase
     {
+        //Value1 is the level, Value2 the move speed bonus the skill gave
         public override void OnApply(CombatEntity ch, ref StatusEffectState state)
         {
-            var lvl = state.Value1;
-            state.Value2 = 25; //will cap out player move speed buff
-            if (lvl > 10)
-                state.Value2 = 100;
             ch.AddStat(CharacterStat.AddAgi, state.Value1 + 2);
             ch.AddStat(CharacterStat.MoveSpeedBonus, state.Value2);
         }

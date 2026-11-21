@@ -215,17 +215,18 @@ public static class CommandBuilder
         if (type == CharacterType.Player)
         {
             var player = c.Player;
+            var appearance = player.Appearance;
 
             var pData = new PlayerSpawnParameters()
             {
-                HeadType = (byte)player.GetData(PlayerStat.Head),
-                HairColor = (byte)player.GetData(PlayerStat.HairId),
+                HeadType = (byte)appearance.HairStyleId,
+                HairColor = (byte)appearance.HairColorId,
                 HeadFacing = player.HeadFacing,
                 WeaponClass = (byte)player.MainWeaponClass,
-                IsMale = player.IsMale,
-                Headgear1 = player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadTop),
-                Headgear2 = player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadMid),
-                Headgear3 = player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadBottom),
+                IsMale = appearance.IsMale,
+                Headgear1 = appearance.Headgear1,
+                Headgear2 = appearance.Headgear2,
+                Headgear3 = appearance.Headgear3,
                 Weapon = player.Equipment.GetEquipmentIdBySlot(EquipSlot.Weapon),
                 Shield = player.Equipment.GetEquipmentIdBySlot(EquipSlot.Shield),
                 PartyId = player.Party?.PartyId ?? -1,
@@ -304,160 +305,6 @@ public static class CommandBuilder
         }
     }
 
-    private static void AddFullEntityData(OutboundMessage packet, WorldObject c, bool isSelf = false)
-    {
-        var type = c.Type;
-        //var isCharacterNpc = false; //npc that has taken a player appearance
-        if (c.OverrideAppearanceState != null)
-        {
-            type = CharacterType.PlayerLikeNpc;
-            //isCharacterNpc = true;
-        }
-
-        packet.Write(c.Id);
-        packet.Write((byte)type);
-        packet.Write((short)c.ClassId);
-        packet.Write(c.Position);
-        packet.Write((byte)c.FacingDirection);
-        packet.Write((byte)c.State);
-
-        if (type == CharacterType.PlayerLikeNpc)
-        {
-            packet.Write((byte)40); //lvl
-            packet.Write(1000); //max hp
-            packet.Write(1000); //hp
-            if (c.OverrideAppearanceState!.HasCart)
-            {
-                packet.Write(true);
-                packet.Write((byte)CharacterStatusEffect.PushCart);
-                packet.Write(float.MaxValue);
-            }
-
-            packet.Write(false); //statusEffectData
-        }
-        else if (type == CharacterType.Monster || type == CharacterType.Player || type == CharacterType.BattleNpc)
-        {
-            var ce = c.Entity.Get<CombatEntity>();
-            packet.Write((byte)ce.GetStat(CharacterStat.Level));
-            packet.Write(ce.GetStat(CharacterStat.MaxHp));
-            packet.Write(ce.GetStat(CharacterStat.Hp));
-
-            var status = ce.StatusContainer;
-            if (status == null)
-                packet.Write(false);
-            else
-                status.PrepareCreateEntityMessage(packet);
-        }
-
-        if (type == CharacterType.Player || type == CharacterType.PlayerLikeNpc)
-        {
-            if (type != CharacterType.PlayerLikeNpc)
-            {
-                var player = c.Entity.Get<Player>();
-                packet.Write((byte)player.HeadFacing);
-                packet.Write((byte)player.GetData(PlayerStat.Head));
-                packet.Write((byte)player.GetData(PlayerStat.HairId));
-                packet.Write((byte)player.MainWeaponClass);
-                packet.Write(player.IsMale);
-                packet.Write(player.Name);
-                packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadTop));
-                packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadMid));
-                packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.HeadBottom));
-                packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.Weapon));
-                packet.Write(player.Equipment.GetEquipmentIdBySlot(EquipSlot.Shield));
-                if (isSelf)
-                {
-                    packet.Write(player.GetStat(CharacterStat.Sp));
-                    packet.Write(player.GetStat(CharacterStat.MaxSp));
-                }
-                else
-                {
-                    packet.Write(0); //they don't need the sp value for other players
-                    packet.Write(0);
-                }
-
-                //party
-                if (player.Party != null)
-                {
-                    packet.Write((byte)1);
-                    packet.Write(player.Party.PartyId);
-                    packet.Write(player.Party.PartyName);
-                    //if(isSelf)
-                    //    player.Party.SerializePartyInfo(packet);
-                }
-                else
-                    packet.Write((byte)0);
-
-                packet.Write((byte)player.PlayerFollower);
-
-                //packet.Write(isSelf);
-            }
-            else
-            {
-                var npc = c.OverrideAppearanceState!;
-                packet.Write((byte)npc.HeadFacing);
-                packet.Write((byte)npc.HeadType);
-                packet.Write((byte)npc.HairColor);
-                packet.Write((byte)npc.WeaponClass);
-                packet.Write(npc.IsMale);
-                packet.Write(c.Name);
-                packet.Write(npc.HeadTop);
-                packet.Write(npc.HeadMid);
-                packet.Write(npc.HeadBottom);
-                packet.Write(npc.Weapon);
-                packet.Write(npc.Shield);
-                packet.Write(0); //sp
-                packet.Write(0); //maxsp
-
-                packet.Write((byte)(npc.HasCart ? CharacterFollowerState.Cart0 : CharacterFollowerState.None));
-                //packet.Write(false);
-            }
-        }
-
-        if (type == CharacterType.NPC || type == CharacterType.BattleNpc)
-        {
-            var npc = c.Entity.Get<Npc>();
-            var display = npc.DisplayType;
-
-
-            if (display == NpcDisplayType.MaskedEffect &&
-                (npc.AreaOfEffect == null || !npc.AreaOfEffect.IsMaskedArea))
-                display = NpcDisplayType.Effect;
-            packet.Write(npc.Name);
-            packet.Write((byte)display);
-            packet.Write(npc.HasInteract);
-            packet.Write((byte)npc.EffectType);
-            if (display == NpcDisplayType.MaskedEffect)
-            {
-                var aoe = npc.AreaOfEffect!;
-                packet.Write(aoe.Area);
-                var mask = aoe.GetAreaMask()!;
-                for (var i = 0; i < aoe.Area.Size; i++)
-                    packet.Write(mask[i]);
-            }
-
-            if (display == NpcDisplayType.VendingProxy)
-            {
-                if (!npc.Owner.TryGet<WorldObject>(out var ownerCh))
-                {
-                    ServerLogger.LogWarning($"Attempting to send vend proxy npc to client, but it's owner {npc.FullName} does not exist!");
-                    packet.Write(-1);
-                }
-                else
-                    packet.Write(ownerCh.Id);
-            }
-        }
-
-        if (c.AdminHidden && !isSelf)
-            ServerLogger.LogWarning($"We are sending the data of hidden character \"{c.Name}\" to the client!");
-
-        if (c.State == CharacterState.Moving)
-        {
-            WriteWalkData2(c, packet);
-        }
-    }
-
-
     private static OutboundMessage BuildCreateEntity2(WorldObject c, CreateEntityEventType entryType, bool isSelf = false)
     {
         //var type = isSelf ? PacketType.EnterServer : PacketType.CreateEntity2;
@@ -483,20 +330,6 @@ public static class CommandBuilder
             ServerLogger.LogWarning($"We are unexpectedly sending data for the hidden object {c} to a player!");
 
         SerializeEntityDataV2(packet, c, isSelf);
-
-        return packet;
-    }
-
-
-    private static OutboundMessage BuildCreateEntity(WorldObject c, bool isSelf = false)
-    {
-        var type = isSelf ? PacketType.EnterServer : PacketType.CreateEntity;
-        var packet = NetworkManager.StartPacket(type, 256);
-
-        if (c.AdminHidden && !isSelf)
-            ServerLogger.LogWarning($"We are unexpectedly sending data for the hidden object {c} to a player!");
-
-        AddFullEntityData(packet, c, isSelf);
 
         return packet;
     }
@@ -745,6 +578,8 @@ public static class CommandBuilder
         packet.Write((byte)di.AttackSkill);
         packet.Write((byte)di.HitCount);
         packet.Write((byte)di.Result);
+        //-1 once they're gone
+        packet.Write(di.Source.TryGet<WorldObject>(out var owner) ? owner.Id : -1);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
@@ -856,6 +691,8 @@ public static class CommandBuilder
         packet.Write(di.AttackMotionTime);
         packet.Write(di.Time - Time.ElapsedTimeFloat);
         packet.Write(showAttackMotion);
+        //-1 once they're gone
+        packet.Write(di.Source.TryGet<WorldObject>(out var owner) ? owner.Id : -1);
 
         NetworkManager.SendMessageMulti(packet, recipients);
     }
@@ -1133,26 +970,16 @@ public static class CommandBuilder
         if (!HasRecipients())
             return;
 
-        //var packet = BuildCreateEntity(c);
-        //packet.Write((byte)entryType);
-        //NetworkManager.SendMessageMulti(packet, recipients);
-
-        //ServerLogger.Debug($"Sending duplicate CreateEntityV2, be sure to remove this at some point.");
-
         var packet = BuildCreateEntity2(c, entryType);
         NetworkManager.SendMessageMulti(packet, recipients);
+        SendViewerStatuses(c, recipients!);
     }
 
     public static void SendCreateEntity(WorldObject c, Player player, CreateEntityEventType entryType = CreateEntityEventType.Normal)
     {
-        //var packet = BuildCreateEntity(c);
-        //packet.Write((byte)entryType);
-        //NetworkManager.SendMessage(packet, player.Connection);
-
-        //ServerLogger.Debug($"Sending duplicate CreateEntityV2, be sure to remove this at some point.");
-
         var packet = BuildCreateEntity2(c, entryType);
         NetworkManager.SendMessage(packet, player.Connection);
+        SendViewerStatuses(c, player);
     }
 
     public static void SendCreateEntityWithEventMulti(WorldObject c, CreateEntityEventType eventType, Position pos)
@@ -1160,15 +987,37 @@ public static class CommandBuilder
         if (!HasRecipients())
             return;
 
-        //var packet = BuildCreateEntity(c);
-        //packet.Write((byte)eventType);
-        //packet.Write(pos);
-        //NetworkManager.SendMessageMulti(packet, recipients);
-
-        //ServerLogger.Debug($"Sending duplicate CreateEntityV2, be sure to remove this at some point.");
-
         var packet = BuildCreateEntity2(c, eventType, pos);
         NetworkManager.SendMessageMulti(packet, recipients);
+        SendViewerStatuses(c, recipients!);
+    }
+
+    private static void SendViewerStatuses(WorldObject c, List<NetworkConnection> viewers)
+    {
+        foreach (var connection in viewers)
+            if (connection.Player != null)
+                SendViewerStatuses(c, connection.Player);
+    }
+
+    //the spawn only carries what everyone may see; the owner and party get the rest after
+    private static void SendViewerStatuses(WorldObject c, Player viewer)
+    {
+        if (c.Type == CharacterType.Player)
+            c.CombatEntity.StatusContainer?.SendViewerStatuses(viewer);
+    }
+
+    public static void SendStatusEffectList(WorldObject c, Dictionary<CharacterStatusEffect, float> statuses, Player player)
+    {
+        var packet = NetworkManager.StartPacket(PacketType.StatusEffectList, 16 + statuses.Count * 5);
+        packet.Write(c.Id);
+        packet.Write((byte)statuses.Count);
+        foreach (var (status, duration) in statuses)
+        {
+            packet.Write((byte)status);
+            packet.Write(duration);
+        }
+
+        NetworkManager.SendMessage(packet, player.Connection);
     }
 
     public static void SendRemoveEntityMulti(WorldObject c, CharacterRemovalReason reason, float value = -1)
@@ -1509,7 +1358,7 @@ public static class CommandBuilder
         var count = 0;
         if (npc.ItemsForSale != null)
             count = npc.ItemsForSale.Count;
-        var discount = canDiscount ? p.MaxLearnedLevelOfSkill(CharacterSkill.Discount) : 0;
+        var discount = canDiscount ? p.MaxSkillLevel(CharacterSkill.Discount) : 0;
 
         packet.Write((byte)1); //buy from NPC
         packet.Write((byte)discount);
@@ -1575,7 +1424,7 @@ public static class CommandBuilder
     {
         var packet = NetworkManager.StartPacket(PacketType.OpenShop, 128);
         packet.Write((byte)0); //sell to NPC
-        packet.Write(p.MaxLearnedLevelOfSkill(CharacterSkill.Overcharge));
+        packet.Write(p.MaxSkillLevel(CharacterSkill.Overcharge));
 
         NetworkManager.SendMessage(packet, p.Connection);
     }
@@ -1847,29 +1696,25 @@ public static class CommandBuilder
         }
     }
 
-    private static void AddPartyMembers(Player p, Party party, bool addSelf = false, bool addOnlyOnMap = false)
+    private static void AddPartyMembers(Player p, Party party)
     {
         foreach (var m in party.OnlineMembers)
         {
-            if (m == p.Entity && !addSelf)
+            if (m == p.Entity)
                 continue;
 
             if (m.TryGet<Player>(out var partyMember))
-            {
-                if (addOnlyOnMap && p.Character.Map != partyMember.Character.Map)
-                    continue;
                 AddRecipient(partyMember.Connection);
-            }
         }
     }
 
     /// <summary>
-    /// Send hp/sp status to all party members on the current map.
+    /// Send hp/sp status to all party members, on any map.
     /// </summary>
     /// <param name="p">Player</param>
     /// <param name="notifyAllMembers">If set to false, only party members out of view distance will be notified.
     /// You'd set this to false if nearby players are notified by another method (damage, regen tick, etc.)</param>
-    public static void UpdatePartyMembersOnMapOfHpSpChange(Player p, bool notifyAllMembers = true)
+    public static void UpdatePartyMembersOfHpSpChange(Player p, bool notifyAllMembers = true)
     {
         if (p.Party == null || p.Party.OnlineMembers.Count <= 1)
             return;
@@ -1883,7 +1728,7 @@ public static class CommandBuilder
         packet.Write(p.GetStat(CharacterStat.MaxSp));
 
         if (notifyAllMembers)
-            AddPartyMembers(p, p.Party, false, true);
+            AddPartyMembers(p, p.Party);
         else
             AddPartyMembersOutOfViewRange(p, p.Party);
 

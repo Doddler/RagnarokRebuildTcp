@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Network.HandlerBase;
 using Assets.Scripts.Objects;
 using Assets.Scripts.UI.ConfigWindow;
+using Assets.Scripts.UI.Utility;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
 using UnityEngine;
@@ -31,7 +32,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             if (id == -1)
             {
                 if(!string.IsNullOrWhiteSpace(name))
-                    Camera.AppendChatText($"{name}: {text}");
+                    Camera.AppendChatText(Line(name, TextColors.System, text));
                 else
                     Camera.AppendChatText(text);
                 return;
@@ -40,8 +41,8 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             if (type == PlayerChatType.Party)
             {
                 if (Network.EntityList.TryGetValue(id, out var partyMember))
-                    partyMember.DialogBox($"{name}: <i><color=#2FCE2C>{text}</color></i>");
-                Camera.AppendChatText($"{name} to party: <i><color=#2FCE2C>{text}</color></i>");
+                    partyMember.DialogBox(Line(name, TextColors.Party, text));
+                Camera.AppendChatText(Line(name, TextColors.Party, text));
                 return;
             }
 
@@ -49,22 +50,24 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Character
             {
                 if (type == PlayerChatType.Shout)
                 {
-                    controllable.DialogBox($"{name}: <i><color=#FFB051>{text}</color></i>");
-                    Camera.AppendChatText($"{name} shouts: <i><color=#FFB051>{text}</color></i>");
+                    controllable.DialogBox(Line(name, TextColors.Shout, text));
+                    Camera.AppendChatText(Line($"{name} shouts", TextColors.Shout, text));
                 }
                 else
                 {
-                    controllable.DialogBox($"{name}: {text}");
-                    Camera.AppendChatText($"{name}: {text}");
+                    controllable.DialogBox(Line(name, TextColors.Say, text));
+                    Camera.AppendChatText(Line(name, TextColors.Say, text));
                 }
             }
             else
             {
                 if (type == PlayerChatType.Shout)
-                    Camera.AppendChatText($"{name} shouts: <i><color=#FFB051>{text}</color></i>");
+                    Camera.AppendChatText(Line($"{name} shouts", TextColors.Shout, text));
                 else
-                    Camera.AppendChatText($"{name} nearby: <i><color=#FFFF6A>{text}</color></i>");
+                    Camera.AppendChatText(Line($"{name} nearby", TextColors.Say, text));
             }
         }
+
+        private static string Line(string speaker, string color, string text) => $"<color={color}>{speaker}: {text}</color>";
     }
 }

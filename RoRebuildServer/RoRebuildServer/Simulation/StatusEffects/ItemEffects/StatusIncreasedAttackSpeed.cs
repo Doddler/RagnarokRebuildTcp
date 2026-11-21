@@ -5,7 +5,7 @@ using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Simulation.StatusEffects.ItemEffects;
 
-[StatusEffectHandler(CharacterStatusEffect.IncreasedAttackSpeed, StatusClientVisibility.Everyone)]
+[StatusEffectHandler(CharacterStatusEffect.IncreasedAttackSpeed, StatusClientVisibility.Owner)]
 public class StatusIncreasedAttackSpeed : StatusEffectBase
 {
     public override void OnApply(CombatEntity ch, ref StatusEffectState state)

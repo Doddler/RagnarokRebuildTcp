@@ -41,12 +41,16 @@ namespace Assets.Scripts.Effects.EffectHandlers.General
             }
             
             //breaking ice effect
+            var shardPrim = effect.LaunchPrimitive(PrimitiveType.Texture2DBatch, coldHitMaterial, 0f);
+            shardPrim.transform.localPosition = Vector3.zero;
+            shardPrim.transform.localRotation = Quaternion.identity;
+            var shards = shardPrim.GetPrimitiveData<Texture2DBatchData>();
+
             var tmpObj = 0;
             for (var i = 0; i < 360; i += 40, tmpObj++)
             {
                 var angle = i * 40 + Random.Range(-15f, 45f);
                 var duration = 0.25f;
-                var prim = effect.LaunchPrimitive(PrimitiveType.Texture2D, coldHitMaterial, duration);
 
                 var width = 4f;
                 var height = Random.Range(0, 5) + 45f;
@@ -67,10 +71,11 @@ namespace Assets.Scripts.Effects.EffectHandlers.General
                 var x = Mathf.Sin(angle * Mathf.Deg2Rad);
                 var y = Mathf.Cos(angle * Mathf.Deg2Rad);
                 var position = new Vector2(x, y) * startDistance;
-                var data = prim.GetPrimitiveData<Texture2DData>();
+                ref var data = ref shards.AddItem();
+                data.Shape = Texture2DBatchShape.Pointy;
                 // data.MinSize = Vector2.negativeInfinity;
                 // data.MaxSize = Vector2.positiveInfinity;
-                data.Size = new Vector2(width, height); 
+                data.Size = new Vector2(width, height);
                 // data.ScalingSpeed = new Vector2(widthSpeed, heightSpeed);
                 // data.ScalingAccel = new Vector2(0, heightAccel);
                 data.Alpha = 200f;
@@ -78,12 +83,12 @@ namespace Assets.Scripts.Effects.EffectHandlers.General
                 data.FadeOutLength = 0.17f;
                 data.Speed = position.normalized * (speed * 60f);
                 data.Acceleration = position.normalized * accel;
-                
+
                 // Debug.Log($"Shatter Speed: {data.Speed}");
 
-                prim.transform.localPosition = new Vector3(position.x, position.y, 0f);
-                prim.transform.localRotation = Quaternion.Euler(0, 0, -angle);
-                prim.RenderHandler = Texture2DPrimitive.RenderPointyQuad2D;
+                data.Position = position;
+                data.Angle = angle;
+                data.Duration = duration;
             }
         }
 

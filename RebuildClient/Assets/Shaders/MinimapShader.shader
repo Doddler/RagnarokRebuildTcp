@@ -5,6 +5,8 @@ Shader "Ragnarok/MinimapShader"
 		[PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
 		_SecondaryTex("Sprite Texture", 2D) = "white" {}
 		_Color("Tint", Color) = (1,1,1,1)
+		//only the hud minimap shows the current map's fog
+		[MaterialToggle] _UseMapFog("Use Map Fog", Float) = 0
 
 		_StencilComp("Stencil Comparison", Float) = 8
 		_Stencil("Stencil ID", Float) = 0
@@ -83,6 +85,11 @@ Shader "Ragnarok/MinimapShader"
 			half4 _TextureSampleAdd;
 			float4 _ClipRect;
 			float4 _MainTex_ST;
+			half _UseMapFog;
+
+			//set globally by MapFog
+			half4 _MinimapFogColor;
+			half _MinimapFogAmount;
 
 			v2f vert(appdata_t v)
 			{
@@ -100,8 +107,12 @@ Shader "Ragnarok/MinimapShader"
 
 			half4 frag(v2f IN) : SV_Target
 			{
-				half4 color = (SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, IN.texcoord) + _TextureSampleAdd) * IN.color;
+				half4 color = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, IN.texcoord) + _TextureSampleAdd;
 				half4 color2 = (SAMPLE_TEXTURE2D(_SecondaryTex, sampler_SecondaryTex, IN.texcoord) + _TextureSampleAdd);
+
+				//the map's fog as it covers the ground around the player
+				color.rgb = lerp(color.rgb, _MinimapFogColor.rgb, _MinimapFogAmount * _UseMapFog);
+				color *= IN.color;
 
 				if (color2.r > 0.5)
 					color.rgb *= 0.6;

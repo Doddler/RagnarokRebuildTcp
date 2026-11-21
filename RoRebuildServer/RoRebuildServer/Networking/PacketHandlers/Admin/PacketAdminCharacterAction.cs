@@ -77,6 +77,7 @@ public class PacketAdminCharacterAction : IClientPacketHandler
                     else
                         ch.Player.RemoveGrantedSkill(skill);
 
+                    ch.Player.UpdateStats();
                     CommandBuilder.RefreshGrantedSkills(ch.Player);
                     break;
                 }
@@ -115,6 +116,11 @@ public class PacketAdminCharacterAction : IClientPacketHandler
 
                     break;
                 }
+#else
+            case AdminCharacterAction.GodModeSelf:
+            case AdminCharacterAction.GodModeOther:
+                CommandBuilder.ErrorMessage(connection, "God mode is only available on a debug build of the server.");
+                break;
 #endif
         }
     }

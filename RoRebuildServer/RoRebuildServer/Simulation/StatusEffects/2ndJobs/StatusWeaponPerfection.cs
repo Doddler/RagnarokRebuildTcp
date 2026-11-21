@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace RoRebuildServer.Simulation.StatusEffects._2ndJobs;
 
-[StatusEffectHandler(CharacterStatusEffect.WeaponPerfection, StatusClientVisibility.Ally)]
+[StatusEffectHandler(CharacterStatusEffect.WeaponPerfection, StatusClientVisibility.Party)]
 public class StatusWeaponPerfection : StatusEffectBase
 {
     //why in the world did I make it so complicated...?

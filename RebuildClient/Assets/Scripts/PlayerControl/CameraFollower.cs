@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers;
 using Assets.Scripts.Effects.EffectHandlers.General;
@@ -78,7 +77,6 @@ namespace Assets.Scripts
         // public GameObject LevelUpPrefab;
         // public GameObject ResurrectPrefab;
         // public GameObject DeathPrefab;
-        public TextAsset LevelChart;
 
         private static CameraFollower _instance;
         private static readonly int RoBlindDistance = Shader.PropertyToID("_RoBlindDistance");
@@ -96,15 +94,20 @@ namespace Assets.Scripts
         // public Slider ExpSlider;
         public TMP_InputField TextBoxInputField;
         public CanvasScaler CanvasScaler;
+        public float AppliedUiScale { get; private set; } = 1f;
+
+        public float OverlayRootScale => DisplayZoomFactor;
+        public float OverlayGlueScale => SpriteZoom / AppliedUiScale;
+
+        // Sprite pixels to screen pixels, calibrated at 1080p height.
+        private float SpriteZoom => 70f / Mathf.Max(Distance, 0.01f);
+        // Only the root SIZE uses this, so toggling never moves overlays.
+        private float DisplayZoomFactor => GameConfig.Data.ScalePlayerDisplayWithZoom ? SpriteZoom : 1f;
         public TextMeshProUGUI ErrorNoticeUi;
         // public TextMeshProUGUI DebugDisplay;
 
-        public ScrollRect TextBoxScrollRect;
-        public TextMeshProUGUI TextBoxText;
+        public ChatLog ChatLog;
 
-        private List<string> chatMessages = new();
-
-        public CharacterDetailBox CharacterDetailBox;
 
         // public TextMeshProUGUI CharacterName;
         // public TextMeshProUGUI CharacterJob;
@@ -124,9 +127,7 @@ namespace Assets.Scripts
         private bool lastPathValid;
 
         //private bool noHold = false;
-        private bool hasSelection;
         public ServerControllable SelectedTarget;
-        private GameObject selectedSprite;
         private string targetText;
         private GameObject clickEffectPrefab;
         private ServerControllable LastTargetedEnemy;
@@ -140,9 +141,8 @@ namespace Assets.Scripts
         public bool UseSmoothPixel = false;
         public bool UseTTFDamage = false;
         public bool IsInNPCInteraction = false;
-        public bool IsHoveringSelfPanel;
-
-        private int[] levelReqs = new int[100];
+        //the frame under the mouse, which ally skills on the cursor target
+        public CharacterFrame HoveredFrame { get; set; }
 
         public Dictionary<string, int> EffectIdLookup;
         public Dictionary<int, EffectTypeEntry> EffectList;
@@ -166,9 +166,22 @@ namespace Assets.Scripts
 
         private bool canChangeCursorLevel;
 
+        //raised after the target type is set
+        public event Action SkillOnCursorChanged;
+
         //private bool cursorShowSkillLevel = true;
-        public bool HasSkillOnCursor => hasSkillOnCursor;
+        public bool HasSkillOnCursor
+        {
+            get => hasSkillOnCursor;
+            private set
+            {
+                hasSkillOnCursor = value;
+                SkillOnCursorChanged?.Invoke();
+            }
+        }
+
         public SkillTarget CursorSkillTarget => cursorSkillTarget;
+        public bool HasAllySkillOnCursor => hasSkillOnCursor && (cursorSkillTarget == SkillTarget.Ally || cursorSkillTarget == SkillTarget.Any);
 
         public bool CinemachineMode;
         public VideoRecorder Recorder;
@@ -178,9 +191,6 @@ namespace Assets.Scripts
         public bool IsInErrorState;
         public bool DebugVisualization;
         public bool DebugIgnoreAttackMotion;
-
-        public float FogNearRatio = 0.3f;
-        public float FogFarRatio = 4f;
 
         public bool IsBlindActive;
         public float BlindStrength = 60;
@@ -199,8 +209,6 @@ namespace Assets.Scripts
 #else
         private const float MaxClickDistance = 150;
 #endif
-
-        public int ExpForLevel(int lvl) => lvl < 1 || lvl >= 99 ? -1 : levelReqs[lvl - 1];
 
         public Vector2Int PlayerPosition => TargetControllable != null ? TargetControllable.CellPosition : Vector2Int.zero;
 
@@ -245,6 +253,10 @@ namespace Assets.Scripts
         public ServerControllable TargetControllable => controllable;
 
         private ServerControllable mouseHoverTarget;
+        //Lost: the target can't stay selected. Dismissed: the player let go of it.
+        public enum SelectionEnd { None, Lost, Dismissed }
+
+        public event Action<ServerControllable, SelectionEnd> SelectedTargetChanged;
 
         public Vector3 MoveTo;
 
@@ -291,6 +303,8 @@ namespace Assets.Scripts
 
         private ServerControllable rightClickDown;
 
+        private static readonly RaycastHit[] characterHitBuffer = new RaycastHit[32];
+
         public void ResetCursor() => isHolding = false;
 
         public void Awake()
@@ -327,12 +341,6 @@ namespace Assets.Scripts
                 EffectList.Add(e.Id, e);
                 EffectIdLookup.Add(e.Name, e.Id);
             }
-
-            var lines = ClientDataLoader.ReadStreamingAssetFile("ClientConfigGenerated/levelchart.txt").Split("\n"); //we'll trim out \r after if it exists
-            for (var i = 0; i < 99; i++)
-                levelReqs[i] = int.Parse(lines[i].Trim());
-
-            LevelChart = null; //don't need to hold this anymore
 
             DialogPanel.GetComponent<DialogWindow>().HideUI();
 
@@ -392,7 +400,6 @@ namespace Assets.Scripts
                 case SkillTarget.Enemy:
                 case SkillTarget.Ground:
                 case SkillTarget.Ally:
-                    hasSkillOnCursor = true;
                     isCursorSkillItem = false;
                     canChangeCursorLevel = ClientDataLoader.Instance.GetSkillData(skill).AdjustableLevel;
                     cursorSkill = skill;
@@ -404,8 +411,7 @@ namespace Assets.Scripts
                         skillScroll = cursorMaxSkillLvl;
                     cursorSkillLvl = Mathf.RoundToInt(skillScroll);
                     cursorSkillTarget = target;
-                    if (target == SkillTarget.Any || target == SkillTarget.Ally)
-                        UiManager.Instance.PartyPanel.StartSkillOnCursor();
+                    HasSkillOnCursor = true;
                     return true;
                 case SkillTarget.Passive:
                     Debug.LogWarning($"Can't cast passive skill!");
@@ -428,7 +434,6 @@ namespace Assets.Scripts
 
         public void BeginTargetingItem(int cursorItem, SkillTarget target)
         {
-            hasSkillOnCursor = true;
             isCursorSkillItem = true;
             canChangeCursorLevel = false;
             cursorSkill = CharacterSkill.NoCast;
@@ -437,8 +442,7 @@ namespace Assets.Scripts
             cursorSkillLvl = 1;
             cursorSkillTarget = target;
             cursorItemId = cursorItem;
-            if (target == SkillTarget.Any || target == SkillTarget.Ally)
-                UiManager.Instance.PartyPanel.StartSkillOnCursor();
+            HasSkillOnCursor = true;
         }
 
         public void SetCameraViewpoint(MapViewpoint viewpoint)
@@ -496,208 +500,102 @@ namespace Assets.Scripts
 #endif
         }
 
-        public void UpdatePlayerHP(int hp, int maxHp)
+
+
+        public void SetSelectedTarget(ServerControllable target)
         {
-            if (hp < 0)
-                hp = 0;
-
-            var percent = hp / (float)maxHp;
-            CharacterDetailBox.HpDisplay.gameObject.SetActive(true);
-            CharacterDetailBox.HpDisplay.text = $"HP: {hp} / {maxHp} ({percent * 100f:F1}%)";
-            CharacterDetailBox.HpSlider.value = (float)hp / (float)maxHp;
-
-            PlayerState.Hp = hp;
-            PlayerState.MaxHp = maxHp;
-        }
-
-        public void UpdatePlayerSP(int sp, int maxSp)
-        {
-            if (sp < 0)
-                sp = 0;
-
-            var percent = sp / (float)maxSp;
-            CharacterDetailBox.SpDisplay.gameObject.SetActive(true);
-            CharacterDetailBox.SpDisplay.text = $"SP: {sp} / {maxSp} ({percent * 100f:F1}%)";
-            CharacterDetailBox.SpSlider.value = (float)sp / (float)maxSp;
-
-            PlayerState.Sp = sp;
-            PlayerState.MaxSp = maxSp;
-        }
-
-
-        public void UpdatePlayerExp(int exp, int maxExp)
-        {
-            if (maxExp <= 0)
-            {
-                CharacterDetailBox.ExpDisplay.text = "";
-                CharacterDetailBox.ExpSlider.gameObject.SetActive(false);
+            if (ReferenceEquals(SelectedTarget, target))
                 return;
-            }
 
-            var percent = exp / (float)maxExp;
+            if (!ReferenceEquals(SelectedTarget, null))
+                ReleaseSelectedTarget();
 
-            CharacterDetailBox.ExpSlider.gameObject.SetActive(true);
-
-            var showValue = GameConfig.Data.ShowBaseExpValue;
-            var showPercent = GameConfig.Data.ShowBaseExpPercent;
-
-            var percentVal = Mathf.Floor(percent * 1000f) / 10f;
-
-            if (showValue)
-            {
-                if (showPercent)
-                    CharacterDetailBox.ExpDisplay.text = $"XP: {exp} / {maxExp} ({percentVal:F1}%)";
-                else
-                    CharacterDetailBox.ExpDisplay.text = $"XP: {exp} / {maxExp}";
-            }
-            else if (showPercent)
-                CharacterDetailBox.ExpDisplay.text = $"{percentVal:F1}%";
-            else
-                CharacterDetailBox.ExpDisplay.text = $"";
-
-            CharacterDetailBox.ExpSlider.value = percent;
-            //
-            // CharacterDetailBox.ExpDisplay.text = $"XP: {exp} / {maxExp} ({percent * 100f:F1}%)";
-            // CharacterDetailBox.ExpSlider.value = percent;
-        }
-
-        public void UpdatePlayerJobExp(int exp, int maxExp)
-        {
-            if (maxExp <= 0)
-            {
-                CharacterDetailBox.JobExpDisplay.text = "";
-                CharacterDetailBox.JobExpSlider.gameObject.SetActive(false);
-                return;
-            }
-
-            var percent = exp / (float)maxExp;
-
-            CharacterDetailBox.JobExpSlider.gameObject.SetActive(true);
-
-            var showValue = GameConfig.Data.ShowJobExpValue;
-            var showPercent = GameConfig.Data.ShowJobExpPercent;
-
-
-            var percentVal = Mathf.Floor(percent * 1000f) / 10f;
-
-            if (showValue)
-            {
-                if (showPercent)
-                    CharacterDetailBox.JobExpDisplay.text = $"XP: {exp} / {maxExp} ({percentVal:F1}%)";
-                else
-                    CharacterDetailBox.JobExpDisplay.text = $"XP: {exp} / {maxExp}";
-            }
-            else if (showPercent)
-                CharacterDetailBox.JobExpDisplay.text = $"{percentVal:F1}%";
-            else
-                CharacterDetailBox.JobExpDisplay.text = $"";
-
-            CharacterDetailBox.JobExpSlider.value = percent;
-        }
-
-
-        private GameObject CreateSelectedCursorObject()
-        {
-            var go = new GameObject("Cursor");
-            go.layer = LayerMask.NameToLayer("Characters");
-            go.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-            go.AddComponent<BillboardObject>();
-
-            var cursor = new GameObject("Cursor");
-            cursor.layer = LayerMask.NameToLayer("Characters");
-            cursor.transform.SetParent(go.transform, false);
-            cursor.transform.localPosition = new Vector3(0f, 0.5f, 0f);
-            cursor.AddComponent<SortingGroup>();
-
-            var sprite = cursor.AddComponent<RoSpriteAnimator>();
-
-            //sprite.SpriteOffset = 0.5f;
-            sprite.ChangeMotion(SpriteMotion.Idle);
-            sprite.Type = SpriteType.Npc;
-            sprite.LockAngle = true;
-            sprite.SpriteOrder = 19999; //be in front of everything damn you
-
-            var loader = Addressables.LoadAssetAsync<RoSpriteData>("Assets/Sprites/Misc/cursors.spr");
-            loader.Completed += ah =>
-            {
-                sprite.OnSpriteDataLoadNoCollider(ah.Result);
-                sprite.ChangeActionExact(3);
-
-                var mat = EffectHelpers.NoZTestMaterial;
-
-                var renderer = sprite.GetComponent<RoSpriteRendererStandard>();
-                renderer.SetOverrideMaterial(mat);
-            };
-
-            return go;
-        }
-
-        public void SetSelectedTarget(ServerControllable target, string name, bool isAlly, bool isHard)
-        {
-            if (selectedSprite == null)
-                selectedSprite = CreateSelectedCursorObject();
-
-            var color = "";
-            if (!isAlly)
-                color = "<color=#FFAAAA>";
-            if (isHard)
-                color = "<color=#FF4444>";
-
-            if (SelectedTarget != null && SelectedTarget != target)
-                SelectedTarget.HideTargetNamePlate();
-
-            hasSelection = true;
             SelectedTarget = target;
-            SelectedTarget.ShowTargetNamePlate(color + name);
-            //PlayerTargetUi.text = color + name;
-            //PlayerTargetUi.gameObject.SetActive(true);
-            selectedSprite.SetActive(true);
-            //Debug.Log("Selecting target: '" + name + "' with game object: " + target);
+            target.Left += OnSelectedTargetLeft;
+            target.ShowTargeted();
+            SelectedTargetChanged?.Invoke(target, SelectionEnd.None);
             UpdateSelectedTarget();
         }
 
-        public void ClearSelected()
+        //the server only sends a target for auto attacks
+        private void SelectClicked(ServerControllable target)
         {
-            //Debug.Log("Clearing target.");
-            hasSelection = false;
-            if (SelectedTarget != null)
-                SelectedTarget.HideTargetNamePlate();
-            SelectedTarget = null;
-            // PlayerTargetUi.text = "";
-            // PlayerTargetUi.gameObject.SetActive(false);
-            if (selectedSprite != null)
-                selectedSprite.SetActive(false);
+            if (target.IsMainCharacter || (target.CharacterType != CharacterType.Monster && target.CharacterType != CharacterType.Player))
+                return;
+            SetSelectedTarget(target);
         }
 
+        private void ClearSelected(SelectionEnd reason)
+        {
+            if (ReferenceEquals(SelectedTarget, null))
+                return;
+
+            ReleaseSelectedTarget();
+            SelectedTarget = null;
+            SelectedTargetChanged?.Invoke(null, reason);
+        }
+
+        //a destroyed target is still unsubscribed, but not hidden
+        private void ReleaseSelectedTarget()
+        {
+            SelectedTarget.Left -= OnSelectedTargetLeft;
+            if (SelectedTarget != null)
+                SelectedTarget.HideTargeted();
+        }
+
+        //a refreshed target hands its selection to the new object
+        private void OnSelectedTargetLeft(ServerControllable target, ServerControllable replacement)
+        {
+            if (!ReferenceEquals(replacement, null) && replacement.IsSelectable)
+                SetSelectedTarget(replacement);
+            else
+                ClearSelected(SelectionEnd.Lost);
+        }
+
+        //checked every frame; leaving the entity list ends it through OnSelectedTargetLeft
         private void UpdateSelectedTarget()
         {
-            if (!hasSelection || SelectedTarget == null || IsInNPCInteraction)
+            if (IsInNPCInteraction)
             {
-                ClearSelected();
+                ClearSelected(SelectionEnd.Dismissed);
                 return;
             }
-            //
-            // if (!PlayerTargetUi.gameObject.activeInHierarchy)
-            //     PlayerTargetUi.gameObject.SetActive(true);
 
-            // var screenPos = Camera.WorldToScreenPoint(SelectedTarget.transform.position);
-            // var reverseScale = 1f / CanvasScaler.scaleFactor;
-
-            // PlayerTargetUi.rectTransform.anchoredPosition = new Vector2(screenPos.x * reverseScale,
-            //     ((screenPos.y - UiCanvas.pixelRect.height) - 30) * reverseScale);
-
-            selectedSprite.transform.position = SelectedTarget.transform.position;
-            //TargetUi.text = color + anim.Controllable.gameObject.name;
+            //by reference: Unity's == treats a destroyed target as missing
+            if (!ReferenceEquals(SelectedTarget, null) && !SelectedTarget.IsSelectable)
+                ClearSelected(SelectionEnd.Lost);
         }
 
         public void UpdateCameraSize()
         {
-            if (Screen.width == 0)
-                return; //wut?
-            var scale = 1f / (1080f / Screen.height);
-            CanvasScaler.scaleFactor = GameConfig.Data.MasterUIScale;
+            if (Screen.width == 0 || Screen.height == 0)
+                return;
+
+            var uiScale = Mathf.Max(GameConfig.Data.MasterUIScale, 0.01f);
+
+            if (GameConfig.Data.ScaleUiWithResolution)
+            {
+                CanvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+                CanvasScaler.referenceResolution = new Vector2(1920f / uiScale, 1080f / uiScale);
+                CanvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+                CanvasScaler.matchWidthOrHeight = 1f;
+
+                AppliedUiScale = uiScale;
+            }
+            else
+            {
+                CanvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ConstantPixelSize;
+                CanvasScaler.scaleFactor = uiScale;
+
+                // The canvas no longer grows with height but the sprite does, so the divisor compensates.
+                AppliedUiScale = uiScale * 1080f / Screen.height;
+            }
+
+            Canvas.ForceUpdateCanvases();
+
             lastWidth = Screen.width;
             lastHeight = Screen.height;
+
             UiManager.Instance.FitFloatingWindowsIntoPlayArea();
         }
 
@@ -943,8 +841,6 @@ namespace Assets.Scripts
             return false;
         }
 
-        private static readonly RaycastHit[] characterHitBuffer = new RaycastHit[32];
-
         private bool FindEntityUnderCursor(Ray ray, bool preferEnemy, out ServerControllable target)
         {
             //one of these days we'll be able to target allies and that preferEnemy value will matter
@@ -1048,15 +944,10 @@ namespace Assets.Scripts
 
             var isSkillEnemyTargeted = hasSkillOnCursor && cursorSkillTarget == SkillTarget.Enemy;
             var isSkillAllyTargeted = hasSkillOnCursor && cursorSkillTarget == SkillTarget.Ally;
-            var canTargetPartyList = hasSkillOnCursor && isSkillAllyTargeted && UiManager.Instance.PartyPanel.HoverEntry != null;
-            var canTargetSelf = IsHoveringSelfPanel && hasSkillOnCursor && isSkillAllyTargeted;
 
             //cancel skill on cursor if we can't use a skill
             if (hasSkillOnCursor && (!isAlive || isSitting))
-            {
-                hasSkillOnCursor = false;
-                UiManager.Instance.PartyPanel.EndSkillOnCursor();
-            }
+                HasSkillOnCursor = false;
 
             if (hasSkillOnCursor && cursorSkillTarget == SkillTarget.Any)
             {
@@ -1073,6 +964,9 @@ namespace Assets.Scripts
                     isSkillAllyTargeted = true;
                 }
             }
+
+            var frameTarget = HoveredFrame != null ? HoveredFrame.Character : null;
+            var canTargetFrame = isSkillAllyTargeted && frameTarget != null;
 
             var walkMask = 1 << LayerMask.NameToLayer("WalkMap");
             var groundMask = 1 << LayerMask.NameToLayer("Ground");
@@ -1098,12 +992,9 @@ namespace Assets.Scripts
             var canMove = ClickDelay <= 0 && isAlive && !isSitting && !Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.RightControl);
             var showEntityName = hasEntity && !isOverUi;
 
-            var cancelSkill = (hasSkillOnCursor && rightClick) || (hasSkillOnCursor && leftClick && hasTargetedSkill && !hasEntity && !canTargetPartyList);
+            var cancelSkill = (hasSkillOnCursor && rightClick) || (hasSkillOnCursor && leftClick && hasTargetedSkill && !hasEntity && !canTargetFrame);
             if (cancelSkill)
-            {
-                hasSkillOnCursor = hasGroundSkill = hasTargetedSkill = leftClick = rightClick = false; //lol
-                UiManager.Instance.PartyPanel.EndSkillOnCursor();
-            }
+                HasSkillOnCursor = hasGroundSkill = hasTargetedSkill = leftClick = rightClick = false; //lol
 
 
             var displayCursor = canClickEnemy ? GameCursorMode.Attack : GameCursorMode.Normal;
@@ -1112,7 +1003,8 @@ namespace Assets.Scripts
             if (hasItem && showEntityName && mouseTarget.IsAlly)
                 showEntityName = false; //don't show friendly names if you could instead pick up an item
 
-            if (canInteract && mouseTarget.IsAlly && mouseTarget.CharacterType == CharacterType.Player)
+            //a right click counts when pressed and released on the same character
+            if (canInteract)
             {
                 if (rightClick)
                 {
@@ -1120,8 +1012,14 @@ namespace Assets.Scripts
                 }
                 else if (Input.GetMouseButtonUp(1) && mouseTarget == rightClickDown)
                 {
-                    UiManager.Instance.RightClickMenuWindow.RightClickPlayer(mouseTarget);
-                    return displayCursor;
+                    rightClickDown = null;
+                    if (mouseTarget == SelectedTarget && mouseTarget.CharacterType == CharacterType.Player)
+                    {
+                        UiManager.Instance.RightClickMenuWindow.RightClickPlayer(mouseTarget);
+                        return displayCursor;
+                    }
+
+                    SelectClicked(mouseTarget);
                 }
             }
 
@@ -1134,10 +1032,7 @@ namespace Assets.Scripts
 
                     mouseHoverTarget = mouseTarget;
 
-                    if (mouseHoverTarget.IsAlly)
-                        mouseHoverTarget.ShowHoverNamePlate(mouseHoverTarget.DisplayName);
-                    else
-                        mouseHoverTarget.ShowHoverNamePlate("<color=#FFAAAA>" + mouseHoverTarget.DisplayName); //yeah this is stupid
+                    mouseHoverTarget.ShowHoverNamePlate();
                 }
             }
             else
@@ -1184,32 +1079,30 @@ namespace Assets.Scripts
                 return displayCursor;
             }
 
-            if ((canClickEnemy || canTargetPartyList) && leftClick)
+            if ((canClickEnemy || canTargetFrame) && leftClick)
             {
                 if (!hasTargetedSkill)
                 {
                     LastTargetedEnemy = mouseTarget;
+                    SelectClicked(mouseTarget);
                     NetworkManager.Instance.SendAttack(mouseTarget.Id);
                 }
                 else
                 {
-                    if (canTargetPartyList)
-                    {
-                        var partyMember = UiManager.Instance.PartyPanel.HoverEntry.PartyMemberInfo;
-                        if (partyMember != null && partyMember.Controllable != null)
-                            mouseTarget = partyMember.Controllable;
-                    }
+                    if (canTargetFrame)
+                        mouseTarget = frameTarget;
 
                     if (!mouseTarget.IsAlly)
                         LastTargetedEnemy = mouseTarget;
+
+                    SelectClicked(mouseTarget);
 
                     if (!isCursorSkillItem)
                         NetworkManager.Instance.SendSingleTargetSkillAction(mouseTarget.Id, cursorSkill, cursorSkillLvl);
                     else
                         NetworkManager.Instance.SendUseItem(cursorItemId, mouseTarget.Id);
-                    hasSkillOnCursor = false;
                     isCursorSkillItem = false;
-                    UiManager.Instance.PartyPanel.EndSkillOnCursor();
+                    HasSkillOnCursor = false;
                 }
 
                 return displayCursor;
@@ -1233,8 +1126,7 @@ namespace Assets.Scripts
             if (leftClick && hasSkillOnCursor && hasTargetedSkill && !canClickEnemy)
             {
                 //they clicked, they have a targeted skill, but they have no target
-                hasSkillOnCursor = false;
-                UiManager.Instance.PartyPanel.EndSkillOnCursor();
+                HasSkillOnCursor = false;
                 return displayCursor;
             }
 
@@ -1274,13 +1166,7 @@ namespace Assets.Scripts
 
             //this draws (or disables) the square indicator that shows where you're targeting on the ground
             if (!isOverUi && canClickGround)
-            {
-#if DEBUG
-                if (lastTile != groundPosition)
-                    CharacterDetailBox.DebugInfo.text = $"({groundPosition.x}, {groundPosition.y})";
-#endif
                 WalkProvider.UpdateCursorPosition(Target.transform.position, intersectLocation, hasValidPath);
-            }
             else
                 WalkProvider.DisableRenderer();
 
@@ -1292,14 +1178,12 @@ namespace Assets.Scripts
                 if (WalkProvider.IsCellWalkable(groundPosition))
                 {
                     NetworkManager.Instance.SendGroundTargetSkillAction(groundPosition, cursorSkill, cursorSkillLvl);
-                    hasSkillOnCursor = false;
                     isHolding = false;
                 }
 
                 //TODO: we should inform the user it isn't valid here
 
-                hasSkillOnCursor = false;
-                UiManager.Instance.PartyPanel.EndSkillOnCursor();
+                HasSkillOnCursor = false;
                 return GameCursorMode.Normal; //the skill is no longer on our cursor so no point in keeping skill cursor
             }
 
@@ -1334,32 +1218,8 @@ namespace Assets.Scripts
 
         public void ResetChat()
         {
-            chatMessages.Clear();
-            chatMessages.Add("Welcome to Ragnarok Rebuild!");
-            RefreshChatWindow();
-        }
-
-        private readonly StringBuilder chatBuilder = new();
-
-        private void RefreshChatWindow()
-        {
-            if (chatMessages.Count > 50)
-                chatMessages.RemoveAt(0);
-
-            foreach (var c in chatMessages)
-                chatBuilder.AppendLine(c);
-
-            TextBoxText.text = chatBuilder.ToString();
-            chatBuilder.Clear();
-
-            StartCoroutine(ApplyScrollPosition(TextBoxScrollRect, 0));
-        }
-
-        IEnumerator ApplyScrollPosition(ScrollRect sr, float verticalPos)
-        {
-            yield return new WaitForEndOfFrame();
-            sr.verticalNormalizedPosition = verticalPos;
-            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)sr.transform);
+            ChatLog.Clear();
+            ChatLog.Add("Welcome to Ragnarok Rebuild!");
         }
 
         public void AppendChatText(string txt)
@@ -1367,13 +1227,7 @@ namespace Assets.Scripts
             if (string.IsNullOrWhiteSpace(txt))
                 return;
 
-            chatMessages.Add(txt);
-            RefreshChatWindow();
-
-            // TextBoxText.ForceMeshUpdate();
-            // LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)TextBoxScrollRect.transform);
-            // TextBoxScrollRect.verticalNormalizedPosition = 0;
-            // Debug.Log(TextBoxScrollRect.verticalNormalizedPosition);
+            ChatLog.Add(txt);
         }
 
         public void AppendChatText(string txt, TextColor color)
@@ -1383,28 +1237,17 @@ namespace Assets.Scripts
 
             var c = color switch
             {
-                TextColor.Party => "<color=#77FF77>",
-                TextColor.Job => "<color=#99CCFF>",
-                TextColor.Skill => "<color=#00fbfb>",
-                TextColor.Equipment => "<color=#00fbfb>",
-                TextColor.Item => "<color=#00fbfb>",
-                TextColor.Error => "<color=#ed0000>",
-                TextColor.System => "<color=#FFFF00>",
-                _ => ""
+                TextColor.Party => TextColors.Party,
+                TextColor.Job => TextColors.Job,
+                TextColor.Skill => TextColors.Item,
+                TextColor.Equipment => TextColors.Item,
+                TextColor.Item => TextColors.Item,
+                TextColor.Error => TextColors.Error,
+                TextColor.System => TextColors.System,
+                _ => null
             };
 
-            chatMessages.Add(c + txt + "</color>");
-            RefreshChatWindow();
-
-            // TextBoxText.text += Environment.NewLine + txt;
-            // TextBoxText.ForceMeshUpdate();
-            // LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)TextBoxScrollRect.transform);
-            // TextBoxScrollRect.verticalNormalizedPosition = 0;
-        }
-
-        public void AppendNotice(string text)
-        {
-            AppendChatText($"<color=yellow><i>{text}</i></color>");
+            ChatLog.Add(c == null ? txt : $"<color={c}>{txt}</color>");
         }
 
         public void AppendError(string txt)
@@ -1412,13 +1255,18 @@ namespace Assets.Scripts
             if (string.IsNullOrWhiteSpace(txt))
                 return;
 
-            chatMessages.Add("<color=red>Error</color>: " + txt);
-            RefreshChatWindow();
+            ChatLog.Add($"<color={TextColors.Error}>Error</color>: " + txt);
         }
 
         public void Emote(int id)
         {
             NetworkManager.Instance.SendEmote(id);
+        }
+
+        private void OpenChatInput()
+        {
+            TextBoxInputField.gameObject.SetActive(true);
+            TextBoxInputField.ActivateInputField();
         }
 
         public void OnSubmitTextBox(string text)
@@ -1433,7 +1281,7 @@ namespace Assets.Scripts
             }
             catch (Exception)
             {
-                AppendChatText($"<color=yellow>Error</color>: Command could not be parse.");
+                AppendError("Command could not be parse.");
             }
 
             lastMessage = text;
@@ -1676,8 +1524,8 @@ namespace Assets.Scripts
         {
             if (!CinemachineMode && RenderSettings.fog)
             {
-                var near = Distance * FogNearRatio;
-                var far = Distance * FogFarRatio;
+                var near = Distance * MapFog.NearRatio;
+                var far = Distance * MapFog.FarRatio;
 
                 RenderSettings.fogStartDistance = near;
                 RenderSettings.fogEndDistance = far;
@@ -1698,7 +1546,7 @@ namespace Assets.Scripts
             Dispatcher.RunOnMainThread(() =>
             {
                 Instance.ErrorNoticeUi.gameObject.SetActive(true);
-                Instance.ErrorNoticeUi.text = "<color=red>Error: </color>" + text;
+                Instance.ErrorNoticeUi.text = $"<color={TextColors.Error}>Error: </color>" + text;
                 Instance.IsInErrorState = true;
             });
         }
@@ -1760,7 +1608,7 @@ namespace Assets.Scripts
             if (WalkProvider == null)
                 WalkProvider = GameObject.FindObjectOfType<RoWalkDataProvider>();
 
-            if (Screen.height != lastHeight)
+            if (Screen.height != lastHeight || Screen.width != lastWidth)
                 UpdateCameraSize();
 
             var pointerOverUi = EventSystem.current.IsPointerOverGameObject();
@@ -1783,54 +1631,6 @@ namespace Assets.Scripts
                     pointerOverUi = false;
                     selected = null;
                 }
-                //
-                // if (pointerEvent.pointerEnter.name == "Partymember")
-                // {
-                //     pointerOverUi = false;
-                //     selected = null;
-                // }
-
-                if (pointerEvent.pointerEnter.name == "TopLeftCharacterUI")
-                {
-                    pointerOverUi = false;
-                    selected = null;
-
-                    if (Input.GetMouseButtonDown(1) && UiManager.Instance.RightClickMenuWindow.RightClickSelf())
-                    {
-                        pointerOverUi = true;
-                    }
-
-                    if (HasSkillOnCursor && (CursorSkillTarget == SkillTarget.Ally || CursorSkillTarget == SkillTarget.Any))
-                    {
-                        if (Input.GetMouseButtonDown(0))
-                        {
-                            NetworkManager.Instance.SendSingleTargetSkillAction(PlayerState.EntityId, cursorSkill, cursorSkillLvl);
-                            hasSkillOnCursor = false;
-                            isCursorSkillItem = false;
-                            CharacterDetailBox.OverlayDisplay.SetActive(false);
-                            pointerOverUi = true;
-                        }
-                        else
-                        {
-                            pointerOverUi = true;
-                            IsHoveringSelfPanel = true;
-                            CharacterDetailBox.OverlayDisplay.SetActive(true);
-                        }
-                    }
-                    else
-                        CharacterDetailBox.OverlayDisplay.SetActive(false);
-                }
-
-                if (pointerEvent.pointerEnter.name == "PartyMember")
-                {
-                    pointerOverUi = false;
-                    selected = null;
-
-                    if (Input.GetMouseButtonDown(1) && UiManager.Instance.RightClickMenuWindow.RightClickPartyMenu(pointerEvent))
-                    {
-                        pointerOverUi = true;
-                    }
-                }
 
                 if (pointerEvent.pointerEnter.name == "BuffTemplate(Clone)" && !Input.GetMouseButtonDown(1))
                 {
@@ -1851,10 +1651,7 @@ namespace Assets.Scripts
                 //Debug.Log(EventSystem.current.currentSelectedGameObject);
 
                 if (hasSkillOnCursor)
-                {
-                    hasSkillOnCursor = false;
-                    UiManager.Instance.PartyPanel.EndSkillOnCursor();
-                }
+                    HasSkillOnCursor = false;
 
                 if (InItemInputBox)
                 {
@@ -1871,9 +1668,10 @@ namespace Assets.Scripts
                     InTextBox = false;
                     TextBoxInputField.text = "";
                 }
-                else
+                //windows close first; once none are left the selection goes
+                else if (!UiManager.Instance.CloseLastWindow())
                 {
-                    UiManager.Instance.CloseLastWindow();
+                    ClearSelected(SelectionEnd.Dismissed);
                 }
 
                 EventSystem.current.SetSelectedGameObject(null);
@@ -1894,7 +1692,7 @@ namespace Assets.Scripts
                 if (!InItemInputBox && !InTextInputBox && !InTextBox && TextBoxInputField.text == "")
                 {
                     TextBoxInputField.text = "/";
-                    TextBoxInputField.ActivateInputField();
+                    OpenChatInput();
                     TextBoxInputField.caretPosition = 1;
                 }
             }
@@ -1912,35 +1710,20 @@ namespace Assets.Scripts
                 }
                 else if (!InTextBox)
                 {
-                    //EventSystem.current.SetSelectedGameObject(TextBoxInputField.gameObject);
-                    TextBoxInputField.ActivateInputField();
+                    OpenChatInput();
                 }
                 else
                 {
-                    var text = TextBoxInputField.text;
-                    OnSubmitTextBox(text);
-                    if (string.IsNullOrWhiteSpace(text) || text.StartsWith("/"))
-                    {
-                        TextBoxInputField.text = "";
-                        TextBoxInputField.DeactivateInputField(true);
-                        EventSystem.current.SetSelectedGameObject(null);
-                    }
-                    else
-                    {
-                        InTextBox = false;
-
-                        //Debug.Log(text);
-                        //TextBoxInputField.DeactivateInputField(true);
-                        TextBoxInputField.text = "";
-                        TextBoxInputField.ActivateInputField();
-                        //EventSystem.current.SetSelectedGameObject(null);
-                    }
+                    OnSubmitTextBox(TextBoxInputField.text);
+                    TextBoxInputField.text = "";
+                    TextBoxInputField.DeactivateInputField(true);
+                    EventSystem.current.SetSelectedGameObject(null);
                 }
             }
 
             if (!inInputUI && Input.GetKeyDown(KeyCode.R))
             {
-                if (controllable.SpriteAnimator.State == SpriteState.Dead || !controllable.IsCharacterAlive || PlayerState.Instance.Hp == 0)
+                if (controllable.SpriteAnimator.State == SpriteState.Dead || !controllable.IsCharacterAlive || controllable.Hp == 0)
                     NetworkManager.Instance.SendRespawn(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
             }
 
@@ -2016,6 +1799,9 @@ namespace Assets.Scripts
             if (!inInputUI && Input.GetKeyDown(KeyCode.I) && UiManager.Instance.ClientDatabaseWindow != null)
                 UiManager.Instance.ClientDatabaseWindow.ToggleVisibility();
 
+            if (Input.GetKeyDown(KeyCode.F7))
+                UiManager.Instance.FrameStatsOverlay.Toggle();
+
             //remove the flag to enable cinemachine recording on this
 #if UNITY_EDITOR
             if ((Input.GetKeyDown(KeyCode.F5) || Input.GetKeyDown(KeyCode.F6)) && Application.isEditor && Recorder != null)
@@ -2062,8 +1848,9 @@ namespace Assets.Scripts
                 }
                 else
                 {
-                    var turnSpeed = 200;
-                    TargetRotation += Input.GetAxis("Mouse X") * turnSpeed * Time.deltaTime;
+                    //the axis is the mouse movement since the last frame, so it isn't scaled by the frame time
+                    const float degreesPerMouseUnit = 1f;
+                    TargetRotation += Input.GetAxis("Mouse X") * degreesPerMouseUnit;
                     if (lockCamera)
                     {
                         if (TargetRotation > 180 && rotationRange.x < 0)
@@ -2160,7 +1947,7 @@ namespace Assets.Scripts
                 }
             }
 
-            if (pointerOverUi && UiManager.Instance.PartyPanel.HoverEntry != null && !blockScrollZoom)
+            if (pointerOverUi && HoveredFrame != null && !blockScrollZoom)
             {
                 if (canChangeCursorLevel) //probably should put this in a function or something instead of duplicating the code...
                 {

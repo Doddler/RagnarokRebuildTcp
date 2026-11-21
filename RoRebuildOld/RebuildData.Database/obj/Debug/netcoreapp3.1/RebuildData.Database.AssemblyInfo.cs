@@ -11,11 +11,10 @@
 using System;
 using System.Reflection;
 
-[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("dotnet-RebuildData.Database-3BE441BE-C75C-4D9C-BE39-B90CF65D993B")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("RebuildData.Database")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+89f7e1a6b22bcc3c566d545b9d9d3532ec23c62e")]
 [assembly: System.Reflection.AssemblyProductAttribute("RebuildData.Database")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RebuildData.Database")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

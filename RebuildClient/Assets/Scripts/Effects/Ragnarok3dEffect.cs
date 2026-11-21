@@ -129,6 +129,7 @@ namespace Assets.Scripts.Effects
             FollowTarget = null;
             DestroyOnTargetLost = false;
             EndWithoutWaitingForPrimitives = true;
+            UpdateOnlyOnFrameChange = false;
             ActiveDelay = 0;
             PauseTime = 0;
             EffectHandler = null;

@@ -717,7 +717,7 @@ public class Npc : IEntityAutoReset
         var addItemCount = 0;
         var inventory = player.Inventory;
 
-        var dcLevel = player.MaxLearnedLevelOfSkill(CharacterSkill.Discount);
+        var dcLevel = player.MaxSkillLevel(CharacterSkill.Discount);
         var discount = allowDiscount && dcLevel > 0 ? 5 + dcLevel * 2 : 0;
         if (discount > 24)
             discount = 24;
@@ -773,7 +773,7 @@ public class Npc : IEntityAutoReset
         }
 
         //we got this far, lets go
-        player.SetData(PlayerStat.Zeny, zeny - totalCost); //do this first
+        player.DropZeny(totalCost); //do this first
         for (var i = 0; i < numItems; i++)
         {
             var item = new ItemReference(itemIds[i], itemCounts[i]);
@@ -797,8 +797,8 @@ Error:
             throw new Exception($"Player {player} is attempting to sell items when it has no inventory!");
         if (numItems > inventory.UsedSlots)
             return;
-        var ocLevel = player.MaxLearnedLevelOfSkill(CharacterSkill.Overcharge);
-        var overCharge = ocLevel > 0 ? 5 + player.MaxLearnedLevelOfSkill(CharacterSkill.Overcharge) * 2 : 0;
+        var ocLevel = player.MaxSkillLevel(CharacterSkill.Overcharge);
+        var overCharge = ocLevel > 0 ? 5 + player.MaxSkillLevel(CharacterSkill.Overcharge) * 2 : 0;
         if (overCharge > 24)
             overCharge = 24;
 
@@ -838,8 +838,7 @@ Error:
         ServerLogger.Log($"Player {player} sold {numItems} types of items to the NPC {Character.Name} for a total of {zenyGained}z.");
         CommandBuilder.SendServerEvent(player, ServerEvent.TradeSuccess, zenyGained);
 
-        var curZeny = player.GetData(PlayerStat.Zeny);
-        player.SetData(PlayerStat.Zeny, zenyGained + curZeny);
+        player.AddZeny(zenyGained);
 
         player.WriteCharacterToDatabase(); //save immediately, no shenanigans
         CommandBuilder.SendUpdatePlayerData(player, true, false);

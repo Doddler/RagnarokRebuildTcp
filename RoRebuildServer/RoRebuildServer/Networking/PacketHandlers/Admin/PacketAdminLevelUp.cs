@@ -34,8 +34,7 @@ public class PacketAdminLevelUp : IClientPacketHandler
             //    character.Player.LevelUp();
             //}
 
-            if (player.Party != null)
-                CommandBuilder.NotifyPartyOfChange(player.Party, player.PartyMemberId, PartyUpdateType.UpdatePlayer);
+            player.MarkPartyInfoChanged();
 
             character.Map!.AddVisiblePlayersAsPacketRecipients(character);
             CommandBuilder.LevelUp(character, newLevel);

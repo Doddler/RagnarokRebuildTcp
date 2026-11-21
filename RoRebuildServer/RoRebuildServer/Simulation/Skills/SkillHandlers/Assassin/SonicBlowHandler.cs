@@ -20,7 +20,6 @@ public class SonicBlowHandler : SkillHandlerBase
             return;
 
         var ch = source.Character;
-        lvl = lvl.Clamp(1, 10);
 
         var flags = AttackFlags.Physical;
         var multiplier = 0.5f + 0.05f * lvl;

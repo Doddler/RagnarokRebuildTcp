@@ -25,6 +25,7 @@ using RebuildSharedData.Data;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Enum.EntityStats;
 using RebuildSharedData.Networking;
+using RebuildSharedData.Util;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -46,7 +47,10 @@ namespace Assets.Scripts.Network
         public LoginBox LoginBox;
         public GameObject TargetNoticePrefab;
         public TextMeshProUGUI LoadingText;
-        public Dictionary<int, ServerControllable> EntityList = new Dictionary<int, ServerControllable>();
+        //changed only through AddEntity, RemoveEntity and ClearEntities, which raise ServerControllable.Left
+        public IReadOnlyDictionary<int, ServerControllable> EntityList => entityList;
+        private readonly Dictionary<int, ServerControllable> entityList = new Dictionary<int, ServerControllable>();
+        private readonly List<ServerControllable> leavingEntities = new List<ServerControllable>();
         public Dictionary<int, GroundItem> GroundItemList = new Dictionary<int, GroundItem>();
         public Dictionary<string, GameObject> MapEffects = new Dictionary<string, GameObject>();
         public int PlayerId;
@@ -55,6 +59,10 @@ namespace Assets.Scripts.Network
         public Dictionary<int, float> EntityLastSeenTime = new();
 
         //private static NetClient client;
+
+        private const float PingIntervalSeconds = 1f; //this is the keep-alive, so it doubles as the latency sample rate
+
+        public readonly LatencyTracker Latency = new();
 
         private float lastPing;
         private bool isReady;
@@ -102,6 +110,8 @@ namespace Assets.Scripts.Network
             Debug.Log("Starting Network Manager");
 
             Instance = this;
+            PlayerState.Instance.ResetForNewSession();
+            PlayerState.Instance.Party.MembershipChanged += OnPartyMembershipChanged;
 
             //NetPeerConfiguration config = new NetPeerConfiguration("RebuildZoneServer");
 
@@ -245,6 +255,7 @@ namespace Assets.Scripts.Network
             Debug.Log($"Connecting to server at target {serverPath}...");
 
             lastPing = Time.time;
+            Latency.Reset();
 
             socket.Connect();
         }
@@ -276,6 +287,7 @@ namespace Assets.Scripts.Network
             Debug.Log($"Connecting to server at target {serverPath}...");
 
             lastPing = Time.time;
+            Latency.Reset();
 
             socket.Connect();
         }
@@ -381,7 +393,7 @@ namespace Assets.Scripts.Network
             isReady = false;
             socket = null;
 
-            PlayerState.Instance.PlayerName = null;
+            PlayerState.Instance.ForgetPlayerName();
         }
 
         private void StartConnectServer(string serverPath, string username, string password)
@@ -427,6 +439,7 @@ namespace Assets.Scripts.Network
             Debug.Log($"Connecting to server at target {serverPath}...");
 
             lastPing = Time.time;
+            Latency.Reset();
 
             socket.Connect();
         }
@@ -518,7 +531,7 @@ namespace Assets.Scripts.Network
 
             CameraFollower.Target = null;
 
-            EntityList.Clear();
+            ClearEntities();
         }
 
         public void ClearGroundItemList()
@@ -530,13 +543,6 @@ namespace Assets.Scripts.Network
                 GameObject.Destroy(item.Value.gameObject);
 
             GroundItemList.Clear();
-        }
-
-        private Vector2Int ReadPosition(ClientInboundMessage msg)
-        {
-            var x = msg.ReadInt16();
-            var y = msg.ReadInt16();
-            return new Vector2Int(x, y);
         }
 
         public void LoadMoveData2(ClientInboundMessage msg, ServerControllable ctrl)
@@ -580,29 +586,56 @@ namespace Assets.Scripts.Network
             //ctrl.SetHitDelay(lockTime);
         }
 
-        private void OnMessageChangeSitStand(ClientInboundMessage msg)
+        //links a member already in view; one that comes into view later is linked by AddEntity
+        private void OnPartyMembershipChanged(int entityId)
         {
-            var id = msg.ReadInt32();
-            var isSitting = msg.ReadBoolean();
-
-            if (!EntityList.TryGetValue(id, out var controllable))
-            {
-                Debug.LogWarning("Trying to move entity " + id + ", but it does not exist in scene!");
+            if (!EntityList.TryGetValue(entityId, out var controllable))
                 return;
-            }
 
-            if (isSitting)
-            {
-                controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Sit);
-                controllable.SpriteAnimator.State = SpriteState.Sit;
-                return;
-            }
+            var state = PlayerState.Instance;
+            var isMember = state.Party.IsMemberEntity(entityId);
+            controllable.SetPartyMember(isMember);
+            if (isMember)
+                state.Party.AssignMemberEntity(entityId, controllable);
+        }
 
-            if (controllable.SpriteAnimator.State == SpriteState.Sit)
-            {
-                controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Idle);
-                controllable.SpriteAnimator.State = SpriteState.Idle;
-            }
+        //a party member links before the spawn re-applies their statuses, so the row sees them;
+        //a replaced entity hands over to the new one once it's in the list
+        public void AddEntity(ServerControllable entity)
+        {
+            entityList.TryGetValue(entity.Id, out var replaced);
+            entityList[entity.Id] = entity;
+            if (entity.CharacterType == CharacterType.Player)
+                PlayerState.Instance.Party.AssignMemberEntity(entity.Id, entity);
+            if (!ReferenceEquals(replaced, null) && !ReferenceEquals(replaced, entity))
+                replaced.NotifyLeft(entity);
+        }
+
+        public void RemoveEntity(int id)
+        {
+            if (entityList.Remove(id, out var entity))
+                entity.NotifyLeft(null);
+        }
+
+        public void ClearEntities()
+        {
+            leavingEntities.AddRange(entityList.Values);
+            entityList.Clear();
+            foreach (var entity in leavingEntities)
+                entity.NotifyLeft(null);
+            leavingEntities.Clear();
+        }
+
+        public void RefreshHpBars()
+        {
+            foreach (var controllable in EntityList.Values)
+                controllable.RefreshHpBar();
+        }
+
+        public void RefreshNamePlates()
+        {
+            foreach (var controllable in EntityList.Values)
+                controllable.RefreshNamePlate();
         }
 
         private void OnMessageChangeFacing(ClientInboundMessage msg)
@@ -620,64 +653,6 @@ namespace Assets.Scripts.Network
             controllable.LookAt(lookAt.ToWorldPosition());
             if (controllable.SpriteAnimator.Type == SpriteType.Player)
                 controllable.SpriteAnimator.SetHeadFacing((HeadFacing)msg.ReadByte());
-        }
-
-        private void OnMessageMove(ClientInboundMessage msg)
-        {
-            var id = msg.ReadInt32();
-
-            if (!EntityList.TryGetValue(id, out var controllable))
-            {
-                Debug.LogWarning("Trying to move entity " + id + ", but it does not exist in scene!");
-                return;
-            }
-
-            controllable.MovePosition(ReadPosition(msg));
-        }
-
-        private void OnMessageStartMove(ClientInboundMessage msg)
-        {
-            var id = msg.ReadInt32();
-
-            if (!EntityList.TryGetValue(id, out var controllable))
-            {
-                Debug.LogWarning("Trying to move entity " + id + ", but it does not exist in scene!");
-                return;
-            }
-
-            LoadMoveData2(msg, controllable);
-        }
-
-        private void OnMessageStopImmediate(ClientInboundMessage msg)
-        {
-            var id = msg.ReadInt32();
-
-            if (!EntityList.TryGetValue(id, out var controllable))
-            {
-                Debug.LogWarning("Trying to stop entity " + id + ", but it does not exist in scene!");
-                return;
-            }
-
-            var pos = ReadPosition(msg);
-            // Debug.Log($"Stoppping {controllable}");
-
-            controllable.StopImmediate(pos, false);
-        }
-
-        private void OnMessageStopPlayer(ClientInboundMessage msg)
-        {
-            var id = msg.ReadInt32();
-
-            if (!EntityList.TryGetValue(id, out var controllable))
-            {
-                Debug.LogWarning("Trying to stop entity " + id + ", but it does not exist in scene!");
-                return;
-            }
-
-            if (id == PlayerId)
-                CameraFollower.ClearSelected();
-
-            controllable.StopWalking();
         }
 
         public void PrepareAttackMotionSettings(ServerControllable src, Vector2Int pos, Direction dir, float motionSpeed, [CanBeNull] ServerControllable target)
@@ -771,7 +746,7 @@ namespace Assets.Scripts.Network
         {
             var di = RagnarokEffectPool.GetDamageIndicator();
             var height = 1f;
-            di.DoDamage(TextIndicatorType.Heal, damage.ToString(), new Vector3(0f, 0.6f, 0f), height,
+            di.DoDamage(TextIndicatorType.Heal, damage, new Vector3(0f, 0.6f, 0f), height,
                 target.SpriteAnimator.Direction, "green", false);
             di.AttachDamageIndicator(target);
         }
@@ -782,149 +757,18 @@ namespace Assets.Scripts.Network
             var di = RagnarokEffectPool.GetDamageIndicator();
             var red = target.SpriteAnimator.Type == SpriteType.Player;
             var height = 1f;
-            di.DoDamage(TextIndicatorType.Damage, damage.ToString(), target.gameObject.transform.localPosition, height,
+            di.DoDamage(TextIndicatorType.Damage, damage, target.gameObject.transform.localPosition, height,
                 target.SpriteAnimator.Direction, red ? "red" : null, false);
 
             if (damage != totalDamage && target.CharacterType != CharacterType.Player)
             {
                 var di2 = RagnarokEffectPool.GetDamageIndicator();
-                di2.DoDamage(TextIndicatorType.ComboDamage, $"{totalDamage}", Vector3.zero, height,
+                di2.DoDamage(TextIndicatorType.ComboDamage, totalDamage, Vector3.zero, height,
                     target.SpriteAnimator.Direction, "#FFFF00", false);
                 di2.AttachComboIndicatorToControllable(target);
             }
         }
 
-        private void OnMessageHit(ClientInboundMessage msg)
-        {
-            var id = msg.ReadInt32();
-            //var delay = msg.ReadFloat();
-            var damage = msg.ReadInt32();
-            var pos = ReadPosition(msg);
-            var shouldStop = msg.ReadBoolean();
-
-            if (!EntityList.TryGetValue(id, out var controllable))
-            {
-                //Debug.LogWarning("Trying to do hit entity " + id1 + ", but it does not exist in scene!");
-                return;
-            }
-
-            var newHp = controllable.Hp - damage;
-
-            if (controllable.CharacterType != CharacterType.NPC && controllable.MaxHp > 0)
-            {
-                if (controllable.IsMainCharacter)
-                    CameraFollower.UpdatePlayerHP(newHp, controllable.MaxHp);
-                controllable.SetHp(newHp);
-            }
-
-            controllable.Hp = newHp;
-            if (controllable.Hp < 0)
-                controllable.Hp = 0;
-
-
-            if (shouldStop)
-            {
-                controllable.StopImmediate(pos, false);
-                if (controllable.SpriteAnimator != null)
-                {
-                    if (controllable.CharacterType != CharacterType.Player || !controllable.SpriteAnimator.IsAttackMotion)
-                        controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Hit);
-                }
-            }
-        }
-
-        public void OnMessageGainExp(ClientInboundMessage msg)
-        {
-            var total = msg.ReadInt32();
-            var exp = msg.ReadInt32();
-            var jobTotal = msg.ReadInt32();
-            var job = msg.ReadInt32();
-
-            // Show exp-gain in chat window if the given setting was activated
-            if (GameConfig.Data.ShowExpGainInChat == true && (exp > 0 || job > 0)) {
-                CameraFollower.AppendChatText($"You gained {exp} base and {job} job exp.", TextColor.System);
-            }
-
-            //Debug.Log("Gain Exp:" + exp + " " + total);
-
-            PlayerState.Instance.Exp = total;
-
-            if (!EntityList.TryGetValue(PlayerId, out var controllable))
-                return;
-            
-            var max = CameraFollower.Instance.ExpForLevel(controllable.Level);
-            var jobMax = ClientDataLoader.Instance.GetJobExpRequired(PlayerState.Instance.JobId, PlayerState.Instance.GetData(PlayerStat.JobLevel));
-            CameraFollower.Instance.UpdatePlayerExp(PlayerState.Instance.Exp, max);
-            CameraFollower.Instance.UpdatePlayerJobExp(jobTotal, jobMax);
-            
-            if (exp == 0)
-                return;
-
-            //var go = GameObject.Instantiate(HealPrefab, controllable.transform.localPosition, Quaternion.identity);
-            var di = RagnarokEffectPool.GetDamageIndicator();
-            var height = 72f / 50f;
-
-            if (GameConfig.Data.ShowExpGainOnKill)
-            {
-                if (controllable.SpriteAnimator != null && controllable.SpriteMode != ClientSpriteType.Prefab)
-                    height = controllable.SpriteAnimator.SpriteData.Size / 50f;
-
-                di.DoDamage(TextIndicatorType.Experience, $"+{exp} Exp", controllable.gameObject.transform.localPosition,
-                    height, Direction.None, "yellow", false);
-            }
-        }
-
-        public void OnMessageLevelUp(ClientInboundMessage msg)
-        {
-            var id = msg.ReadInt32();
-            var lvl = msg.ReadByte();
-            var curExp = msg.ReadInt32();
-
-            if (!EntityList.TryGetValue(id, out var controllable))
-            {
-                //Debug.LogWarning("Trying to do hit entity " + id1 + ", but it does not exist in scene!");
-                return;
-            }
-
-            CameraFollower.AttachEffectToEntity("LevelUp", controllable.gameObject, id);
-            //
-            // var go = GameObject.Instantiate(ClientConstants.Instance.LevelUpPrefab);
-            // go.transform.SetParent(controllable.transform, true);
-            // go.transform.localPosition = Vector3.zero;
-            // go.transform.localRotation = Quaternion.identity;
-
-            var oldLvl = controllable.Level;
-            controllable.Level = lvl;
-            if (controllable.IsMainCharacter)
-            {
-                // if (PlayerState.JobId == 0 && oldLvl < 10 && lvl >= 10)
-                //     CameraFollower.AppendChatText($"<color=#99CCFF><i>Congratulations, you've reached level 10! You are now eligible to change jobs. "
-                //                                   + "Speak to the bard south of Prontera to get started.</i></color>");
-
-                var req = CameraFollower.Instance.ExpForLevel(lvl);
-                PlayerState.Instance.Exp = curExp;
-                PlayerState.Instance.Level = lvl;
-                CameraFollower.Instance.UpdatePlayerExp(PlayerState.Instance.Exp, req);
-                //CameraFollower.Instance.CharacterDetailBox.CharacterName.text = $"Lv. {controllable.Level} {controllable.Name}";
-                CameraFollower.Instance.CharacterDetailBox.BaseLvlDisplay.text = $"Base Lv. {controllable.Level}";
-            }
-        }
-
-        public void OnMessageDeath(ClientInboundMessage msg)
-        {
-            var id = msg.ReadInt32();
-            var pos = ReadPosition(msg);
-
-            if (!EntityList.TryGetValue(id, out var controllable))
-            {
-                Debug.LogWarning("Trying to do death on entity " + id + ", but it does not exist in scene!");
-                return;
-            }
-
-            Debug.Log($"{controllable.Name} is dead!");
-
-            controllable.PlayerDie(pos);
-        }
         //
         // public void OnMessageHpRecovery(ClientInboundMessage msg)
         // {
@@ -952,21 +796,6 @@ namespace Assets.Scripts.Network
         //         AttachHealIndicator(amnt, controllable);
         //     }
         // }
-
-        public void OnMessageChangeName(ClientInboundMessage msg)
-        {
-            var id = msg.ReadInt32();
-            var text = msg.ReadString();
-
-            if (!EntityList.TryGetValue(id, out var controllable))
-                return;
-
-            CameraFollower.AppendChatText($"{controllable.Name} has changed their name to {text}.");
-            controllable.Name = text;
-
-            if (controllable.IsMainCharacter)
-                CameraFollower.Instance.CharacterDetailBox.CharacterName.text = controllable.Name;
-        }
 
 
         public void OnMessageNpcInteraction(ClientInboundMessage msg)
@@ -1088,55 +917,6 @@ namespace Assets.Scripts.Network
         //     }
         // }
 
-        public void OnMessageStartAreaCasting(ClientInboundMessage msg)
-        {
-            var srcId = msg.ReadInt32();
-            var target = new Vector2Int(msg.ReadInt16(), msg.ReadInt16());
-            var skill = (CharacterSkill)msg.ReadByte();
-            var lvl = (int)msg.ReadByte();
-            var size = (int)msg.ReadByte();
-            var dir = (Direction)msg.ReadByte();
-            var casterPos = new Vector2Int(msg.ReadInt16(), msg.ReadInt16());
-            var castTime = msg.ReadFloat();
-            var flags = (SkillCastFlags)msg.ReadByte();
-
-            if (EntityList.TryGetValue(srcId, out var controllable))
-            {
-                if (controllable.SpriteAnimator.State == SpriteState.Walking)
-                    controllable.StopImmediate(casterPos, false);
-                if(target == controllable.CellPosition)
-                    controllable.LookInDirection(dir);
-                else
-                    controllable.LookAt(target.ToWorldPosition());
-                if (controllable.SpriteAnimator.State != SpriteState.Dead && controllable.SpriteAnimator.State != SpriteState.Walking)
-                {
-                    controllable.SpriteAnimator.State = SpriteState.Standby;
-                    controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Casting);
-                    controllable.SpriteAnimator.PauseAnimation();
-                }
-
-                controllable.HideCastName = flags.HasFlag(SkillCastFlags.HideSkillName);
-                ClientSkillHandler.StartCastingSkill(controllable, target, skill, lvl, castTime);
-                controllable.StartCastBar(skill, castTime, flags);
-            }
-        }
-
-        public void OnMessageCreateCastCircle(ClientInboundMessage msg)
-        {
-            var target = new Vector2Int(msg.ReadInt16(), msg.ReadInt16());
-            var size = (int)msg.ReadByte();
-            var castTime = msg.ReadFloat();
-            var isAlly = msg.ReadBoolean();
-            var hasSound = msg.ReadBoolean();
-
-            var targetCell = CameraFollower.Instance.WalkProvider.GetWorldPositionForTile(target);
-            var color = new Color(1f, 1f, 1f, 0.5f);
-            //CastTargetCircle.Create(isAlly? "magic_target" : "magic_target_bad", targetCell, color, size, castTime);
-            CastTargetCircle.Create(isAlly, targetCell, size, castTime);
-            if (hasSound)
-                AudioManager.Instance.OneShotSoundEffect(-1, $"ef_beginspell.ogg", targetCell);
-        }
-
         public void OnMessagePlaySound(ClientInboundMessage msg)
         {
         }
@@ -1163,51 +943,15 @@ namespace Assets.Scripts.Network
                 case PacketType.ConnectionDenied:
                     TitleScreen.LogInError(msg.ReadString());
                     break;
-                case PacketType.StartWalk:
-                    OnMessageStartMove(msg);
-                    break;
-                case PacketType.SitStand:
-                    OnMessageChangeSitStand(msg);
-                    break;
-                case PacketType.StopAction:
-                    OnMessageStopPlayer(msg);
-                    break;
-                case PacketType.StopImmediate:
-                    OnMessageStopImmediate(msg);
-                    break;
-                case PacketType.Move:
-                    OnMessageMove(msg);
-                    break;
-                case PacketType.HitTarget:
-                    OnMessageHit(msg);
-                    break;
-                case PacketType.GainExp:
-                    OnMessageGainExp(msg);
-                    break;
-                case PacketType.LevelUp:
-                    OnMessageLevelUp(msg);
-                    break;
-                case PacketType.Death:
-                    OnMessageDeath(msg);
-                    break;
                 // case PacketType.HpRecovery:
                 //     OnMessageHpRecovery(msg);
                 //     break;
-                case PacketType.ChangeName:
-                    OnMessageChangeName(msg);
-                    break;
                 // case PacketType.NpcInteraction:
                 //     OnMessageNpcInteraction(msg);
                 //     break;
                 // case PacketType.StartCast:
                 //     OnMessageStartCasting(msg);
                 //     break;
-                case PacketType.StartAreaCast:
-                    OnMessageStartAreaCasting(msg);
-                    break;
-                case PacketType.CreateCastCircle:
-                    OnMessageCreateCastCircle(msg);
-                    break;
                 default:
                     InvalidPacket(msg, type); //Debug.LogWarning($"Failed to handle packet type: {type}"));
                     break;
@@ -1334,6 +1078,7 @@ namespace Assets.Scripts.Network
         {
             var msg = StartMessage();
             msg.Write((byte)PacketType.Ping);
+            msg.Write(NetworkClock.Ms); //the server echoes this back so we can measure the round trip
 
             SendMessage(msg);
         }
@@ -1959,12 +1704,21 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
         
+        //names the server would refuse are reported locally
         public void OrganizeParty(string partyName, int entityId = -1)
         {
+            partyName = partyName.Trim();
+            var error = NameValidator.GetPartyNameError(partyName);
+            if (error != null)
+            {
+                CameraFollower.Instance.AppendError(error);
+                return;
+            }
+
             var msg = StartMessage(PacketType.CreateParty);
             msg.Write(partyName);
             msg.Write(entityId);
-            
+
             SendMessage(msg);
         }
 
@@ -2048,13 +1802,25 @@ namespace Assets.Scripts.Network
             SendMessage(msg);
         }
 
-        public void SendChangeCart(int cartId)
+        //style 0-4
+        public void SendChangeCartStyle(int style)
+        {
+            var msg = StartFollowerChange(FollowerChange.CartStyle);
+            msg.Write(style);
+            SendMessage(msg);
+        }
+
+        public void SendRemoveCart() => SendMessage(StartFollowerChange(FollowerChange.RemoveCart));
+
+        public void SendRemoveFalcon() => SendMessage(StartFollowerChange(FollowerChange.RemoveFalcon));
+
+        public void SendRemovePeco() => SendMessage(StartFollowerChange(FollowerChange.RemovePeco));
+
+        private ClientOutgoingMessage StartFollowerChange(FollowerChange change)
         {
             var msg = StartMessage(PacketType.ChangeFollower);
-            
-            msg.Write(cartId);
-            
-            SendMessage(msg);
+            msg.Write((byte)change);
+            return msg;
         }
 
         public void AttachEffectToEntity(int effectId)
@@ -2079,7 +1845,7 @@ namespace Assets.Scripts.Network
 
             if (state == WebSocketState.Open)
             {
-                if (lastPing + 5 < Time.time)
+                if (lastPing + PingIntervalSeconds < Time.time)
                 {
                     SendPing();
                     //Debug.Log("Sending keep alive packet.");
@@ -2147,6 +1913,8 @@ namespace Assets.Scripts.Network
 
         public void OnDestroy()
         {
+            //the state outlives the scene
+            PlayerState.Instance.Party.MembershipChanged -= OnPartyMembershipChanged;
             Disconnect();
         }
 

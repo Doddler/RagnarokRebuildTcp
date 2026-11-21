@@ -3,6 +3,7 @@ using Assets.Scripts.Sprites;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Assets.Scripts.UI.Utility;
 
 namespace Assets.Scripts.UI.Hud
 {
@@ -23,16 +24,20 @@ namespace Assets.Scripts.UI.Hud
         public void SetText(InventoryItem inventoryItem, int itemCount, bool chatOnly = false)
         {
             //var itemName = item.Slots == 0 ? item.Name : $"{item.Name} [{item.Slots}]";
-            var obtainedText = $"{inventoryItem.ProperName()} - {itemCount} obtained.";
-            
-            if(itemCount == 1)
-                CameraFollower.Instance.AppendChatText($"<color=#00fbfb>You got {inventoryItem.ProperName()}.</color>");
+            var obtainedText = "";
+            if (itemCount == 1)
+                obtainedText = $"{inventoryItem.ProperName()} obtained.";
             else
-                CameraFollower.Instance.AppendChatText($"<color=#00fbfb>You got {itemCount}x {inventoryItem.ProperName()}.</color>");
+                obtainedText = $"{inventoryItem.ProperName()} - {itemCount} obtained.";
+
+            if (itemCount == 1)
+                CameraFollower.Instance.AppendChatText($"You got {inventoryItem.ProperName()}.", TextColor.Item);
+            else
+                CameraFollower.Instance.AppendChatText($"You got {itemCount}x {inventoryItem.ProperName()}.", TextColor.Item);
 
             if (chatOnly)
                 return;
-            
+
             Icon.sprite = ClientDataLoader.Instance.GetIconAtlasSprite(inventoryItem.ItemData.Sprite);
             Icon.rectTransform.sizeDelta = Icon.sprite.rect.size * 2;
             Text.text = obtainedText;
@@ -41,7 +46,6 @@ namespace Assets.Scripts.UI.Hud
             endTime = Time.timeSinceLevelLoad + 3f;
             
             LayoutRebuilder.ForceRebuildLayoutImmediate(Rect);
-            Text.ForceMeshUpdate();
         }
 
         public void Update()

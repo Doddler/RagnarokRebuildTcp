@@ -7,6 +7,7 @@ using UnityEngine;
 namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
 {
     //a targeted skill attack where the source is either not known or we probably don't care. Usually aoe damage.
+    //Damage from a placed source, like a trap, is credited to its owner.
     [ClientPacketHandler(PacketType.SkillIndirect)]
     public class PacketSkillIndirect : ClientPacketHandlerBase
     {
@@ -20,9 +21,13 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             var skill = (CharacterSkill)msg.ReadByte();
             var hitCount = msg.ReadByte();
             var result = (AttackResult)msg.ReadByte();
-            
+            var ownerId = msg.ReadInt32();
+
             var hasSource = Network.EntityList.TryGetValue(id1, out var attacker);
             var hasTarget = Network.EntityList.TryGetValue(id2, out var target);
+            ServerControllable owner = null;
+            if (ownerId >= 0)
+                Network.EntityList.TryGetValue(ownerId, out owner);
             
 #if UNITY_EDITOR
             if(time < 0)
@@ -69,7 +74,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 }
 
                 if(hitCount > 0 && result != AttackResult.Miss && result != AttackResult.Invisible)
-                    target.Messages.SendDamageEvent(attacker, time, damage, hitCount, result == AttackResult.CriticalDamage);
+                    target.Messages.SendDamageEvent(attacker, time, damage, hitCount, result == AttackResult.CriticalDamage, owner: owner);
             }
 
         }

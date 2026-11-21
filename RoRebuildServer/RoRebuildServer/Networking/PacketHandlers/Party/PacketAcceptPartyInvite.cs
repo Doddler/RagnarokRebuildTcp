@@ -33,6 +33,13 @@ public class PacketAcceptPartyInvite : IClientPacketHandler
             return;
         }
 
+        //the party can fill up while an invite is pending
+        if (party.IsFull)
+        {
+            CommandBuilder.ErrorMessage(p, "Unable to join party, the party is full.");
+            return;
+        }
+
         p.Party = party;
         p.PartyMemberId = party.PartyId;
 

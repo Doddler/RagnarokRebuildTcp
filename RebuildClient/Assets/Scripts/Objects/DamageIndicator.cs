@@ -60,7 +60,43 @@ public class DamageIndicator
 		basePosition = controllable.transform.localPosition;
 	}
 
+	//takes the number as an int, so no text is formatted on every hit
+	public void DoDamage(TextIndicatorType type, int value, Vector3 startPosition, float height, Direction direction, string colorCode, bool isCrit)
+	{
+		Begin(type, startPosition, height, direction, colorCode, isCrit);
+		this.value = value;
+		UseTmpFallback = false;
+	}
+
+	//"Miss" and numbers use sprites; other text uses TMP
 	public void DoDamage(TextIndicatorType type, string value, Vector3 startPosition, float height, Direction direction, string colorCode, bool isCrit)
+	{
+		Begin(type, startPosition, height, direction, colorCode, isCrit);
+
+		var isBakedMiss = type == TextIndicatorType.Miss && value == "Miss";
+		var isNumeric = int.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out this.value);
+		UseTmpFallback = !isBakedMiss && !isNumeric;
+
+		if (UseTmpFallback)
+		{
+			TmpVisual = RagnarokEffectPool.GetTmpDamageVisual();
+			if (TmpVisual.TextObject != null)
+			{
+				TmpVisual.TextObject.text = value ?? string.Empty;
+				var c = color;
+				c.a = 1f;
+				TmpVisual.TextObject.color = c;
+			}
+			if (TmpVisual.CritSprite != null)
+			{
+				TmpVisual.CritSprite.gameObject.SetActive(isCrit);
+				if (isCrit)
+					TmpVisual.CritSprite.Reset();
+			}
+		}
+	}
+
+	private void Begin(TextIndicatorType type, Vector3 startPosition, float height, Direction direction, string colorCode, bool isCrit)
 	{
 		this.type = type;
 		this.isCrit = isCrit;
@@ -88,29 +124,6 @@ public class DamageIndicator
 		};
 
 		direction = direction.GetIntercardinalDirection();
-
-		var isBakedMiss = type == TextIndicatorType.Miss && value == "Miss";
-		var isNumeric = int.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out this.value);
-		UseTmpFallback = !isBakedMiss && !isNumeric;
-
-		if (UseTmpFallback)
-		{
-			TmpVisual = RagnarokEffectPool.GetTmpDamageVisual();
-			if (TmpVisual.TextObject != null)
-			{
-				TmpVisual.TextObject.text = value ?? string.Empty;
-				var c = color;
-				c.a = 1f;
-				TmpVisual.TextObject.color = c;
-			}
-			if (TmpVisual.CritSprite != null)
-			{
-				TmpVisual.CritSprite.gameObject.SetActive(isCrit);
-				if (isCrit)
-					TmpVisual.CritSprite.Reset();
-			}
-		}
-
 		var vec = -direction.GetVectorValue();
 		var dirVector = new Vector3(vec.x, 0, vec.y);
 

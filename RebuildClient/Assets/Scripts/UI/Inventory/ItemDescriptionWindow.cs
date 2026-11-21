@@ -128,8 +128,8 @@ namespace Assets.Scripts.UI.Inventory
                 }
             }
 
-            ItemDescription.ForceMeshUpdate();
-            Vector2 preferredDimensions = ItemDescription.GetPreferredValues(415, 0); //300 minus 20 for margins
+            var descriptionWidth = ((RectTransform)ItemDescription.transform).rect.width;
+            Vector2 preferredDimensions = ItemDescription.GetPreferredValues(ItemDescription.text, descriptionWidth, 0);
             WindowRect.sizeDelta = new Vector2(626, Mathf.Max(246, preferredDimensions.y + 70));
 
             if (linkHover != null)

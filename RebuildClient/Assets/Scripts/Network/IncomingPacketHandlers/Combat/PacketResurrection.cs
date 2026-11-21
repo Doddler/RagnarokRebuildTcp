@@ -25,9 +25,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             controllable.IsCharacterAlive = true;
             controllable.SpriteAnimator.State = SpriteState.Idle;
             controllable.SpriteAnimator.ChangeMotion(SpriteMotion.Idle, true);
-            controllable.SetHp(hp);
-            if (controllable.IsMainCharacter)
-                Camera.UpdatePlayerHP(hp, State.MaxHp);
+            controllable.SetHp(hp, controllable.MaxHp);
         }
     }
 }

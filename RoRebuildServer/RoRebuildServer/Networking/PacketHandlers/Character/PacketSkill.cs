@@ -54,6 +54,15 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
             return;
         }
 
+        //0 means the player's own level
+        private static int LevelToUse(Player player, CharacterSkill skill, int lvl)
+        {
+            var data = DataManager.SkillData[skill];
+            if ((!data.AdjustableLevel && skill != CharacterSkill.WarpPortal) || lvl == 0)
+                return player.MaxSkillLevel(skill);
+            return lvl;
+        }
+
         private void ProcessSelfTargetedSkill(NetworkConnection connection, InboundMessage msg)
         {
             Debug.Assert(connection.Player != null, "connection.Player != null");
@@ -70,13 +79,9 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
                 return;
             }
 
-            var data = DataManager.SkillData[skill];
-            if ((!data.AdjustableLevel && skill != CharacterSkill.WarpPortal) || lvl == 0)
-            {
-                lvl = connection.Player.MaxAvailableLevelOfSkill(skill);
-                if (lvl == 0)
-                    return;
-            }
+            lvl = LevelToUse(connection.Player, skill, lvl);
+            if (lvl == 0)
+                return;
 
             var target = SkillHandler.GetSkillAttributes(skill).SkillTarget;
             if (target == SkillTarget.Passive)
@@ -125,6 +130,10 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
                 return;
             }
 
+            lvl = LevelToUse(connection.Player, skill, lvl);
+            if (lvl == 0)
+                return;
+
             var validation = SkillHandler.ValidateTarget(skill, caster.CombatEntity, null, groundTarget, lvl);
             if (validation != SkillValidationResult.Success)
             {
@@ -164,6 +173,10 @@ namespace RoRebuildServer.Networking.PacketHandlers.Character
                 CommandBuilder.SkillFailed(connection.Player, SkillValidationResult.SkillNotKnown);
                 return;
             }
+
+            lvl = LevelToUse(connection.Player, skill, lvl);
+            if (lvl == 0)
+                return;
 
             if (target.Character.Type == CharacterType.BattleNpc && !target.Character.BattleNpc.CanBeTargeted(caster.CombatEntity, skill))
                 return;

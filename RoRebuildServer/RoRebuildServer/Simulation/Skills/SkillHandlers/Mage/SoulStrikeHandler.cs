@@ -15,9 +15,6 @@ public class SoulStrikeHandler : SkillHandlerBase
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,
         bool isItemSource)
     {
-        if (lvl < 0 || lvl > 10)
-            lvl = 10;
-
         if (target == null || !target.IsValidTarget(source))
             return;
 

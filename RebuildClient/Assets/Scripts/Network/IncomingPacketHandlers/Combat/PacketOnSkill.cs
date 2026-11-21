@@ -101,6 +101,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 controllable.SkipNextSkillOrAttackMotion(false);
         }
 
+        //credited to the attacker, not the cast source of a placed effect; the source still plays the hit
         private void OnMessageTargetedSkillAttack(ClientInboundMessage msg)
         {
             var castSource = msg.ReadInt32();
@@ -124,7 +125,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             var motionTime = msg.ReadFloat();
             var damageTiming = msg.ReadFloat();
             var isIndirect = msg.ReadBoolean();
-            
+
             if (result == AttackResult.InvisibleMiss)
             {
                 hasTarget = false;
@@ -154,14 +155,14 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
 
                 if (hits > 0 && result != AttackResult.Miss && result != AttackResult.Invisible && controllable2 != null)
                 {
-                    controllable2?.Messages.SendDamageEvent(null, motionTime, dmg, hits, result == AttackResult.CriticalDamage, dmgSound);
+                    controllable2?.Messages.SendDamageEvent(null, motionTime, dmg, hits, result == AttackResult.CriticalDamage, dmgSound, owner: attackerCtrl);
                     if(dmg > 0)
                         ClientSkillHandler.OnHitEffect(controllable2, ref attack);
                 }
 
                 return;
             }
-            
+
             if(controllable != controllable2)
                 controllable.LookAtOrDefault(controllable2, dir);
 
@@ -173,7 +174,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             if(!isIndirect)
                 controllable.ShowSkillCastMessage(skill, 3);
             // controllable.SnapToTile(pos, 0.03f, 1f);
-            
+
             if (result == AttackResult.Miss && attackerCtrl != null)
             {
                 for(var i = 0; i < attack.HitCount; i++)
@@ -187,13 +188,13 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
                 ClientSkillHandler.ExecuteSkill(controllable, ref attack);
                 if(isIndirect)
                     controllable.SkipNextSkillOrAttackMotion(false);
-                
+
                 if (result == AttackResult.LuckyDodge)
                 {
                     controllable2.Messages.SendMessage(EntityMessageType.LuckyDodge, motionTime);
                     return;
                 }
-                
+
                 if (result == AttackResult.Block)
                 {
                     controllable2.Messages.SendBlockEvent(damageTiming);
@@ -205,7 +206,7 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
 
                 if (hits > 0 && result != AttackResult.Miss && result != AttackResult.Invisible)
                 {
-                    controllable2.Messages.SendDamageEvent(controllable, damageTiming, dmg, hits, result == AttackResult.CriticalDamage, dmgSound);
+                    controllable2.Messages.SendDamageEvent(controllable, damageTiming, dmg, hits, result == AttackResult.CriticalDamage, dmgSound, owner: attackerCtrl);
                     if(dmg > 0)
                         ClientSkillHandler.OnHitEffect(controllable2, ref attack);
                 }

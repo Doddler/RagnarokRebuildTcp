@@ -22,7 +22,7 @@ public class PacketMemoMapLocation : IClientPacketHandler
         Debug.Assert(map != null); //IsConnectedAndInGame assures this is true
 
         var slot = (int)msg.ReadByte();
-        var maxLevel = p.MaxLearnedLevelOfSkill(CharacterSkill.WarpPortal);
+        var maxLevel = p.MaxSkillLevel(CharacterSkill.WarpPortal);
 
         if (maxLevel == 0 || slot > maxLevel - 1 || slot < 0 || slot > 3)
             return;

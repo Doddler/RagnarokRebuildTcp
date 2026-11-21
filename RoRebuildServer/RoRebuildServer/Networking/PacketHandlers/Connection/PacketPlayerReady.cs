@@ -30,7 +30,7 @@ public class PacketPlayerReady : IClientPacketHandler
             if (!connection.Player.HasEnteredServer)
                 CommandBuilder.AcceptPartyInvite(connection.Player, true);
             CommandBuilder.UpdatePartyMembersOfMapChange(connection.Player, connection.Character.Map.Name);
-            CommandBuilder.UpdatePartyMembersOnMapOfHpSpChange(connection.Player, false);
+            CommandBuilder.UpdatePartyMembersOfHpSpChange(connection.Player, false);
         }
 
         connection.Player.HasEnteredServer = true;

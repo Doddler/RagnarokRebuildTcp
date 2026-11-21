@@ -17,67 +17,70 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.Combat
             switch (result)
             {
                 case SkillValidationResult.IncorrectAmmunition:
-                    Camera.AppendChatText("<color=#FF7777>Skill failed: You don't have the correct ammunition type equipped.</color>");
+                    Camera.AppendChatText("Skill failed: You don't have the correct ammunition type equipped.", TextColor.Error);
                     break;
                 case SkillValidationResult.IncorrectWeapon:
-                    Camera.AppendChatText("<color=#FF7777>Skill failed: Skill cannot be used with this weapon.</color>");
+                    Camera.AppendChatText("Skill failed: Skill cannot be used with this weapon.", TextColor.Error);
                     break;
                 case SkillValidationResult.InsufficientSp:
-                    Camera.AppendChatText("<color=#FF7777>Skill failed: Insufficient SP.</color>");
+                    Camera.AppendChatText("Skill failed: Insufficient SP.", TextColor.Error);
                     break;
                 case SkillValidationResult.InsufficientZeny:
-                    Camera.AppendChatText("<color=#FF7777>Skill failed: Insufficient Zeny.</color>");
+                    Camera.AppendChatText("Skill failed: Insufficient Zeny.", TextColor.Error);
                     break;
                 case SkillValidationResult.InsufficientItemCount:
-                    Camera.AppendChatText("<color=#FF7777>Skill failed: Missing a required item.</color>");
+                    Camera.AppendChatText("Skill failed: Missing a required item.", TextColor.Error);
                     break;
                 case SkillValidationResult.CannotTargetBossMonster:
-                    Camera.AppendChatText("<color=#FF7777>Skill failed: The monster is immune to this skill effect.</color>");
+                    Camera.AppendChatText("Skill failed: The monster is immune to this skill effect.", TextColor.Error);
                     break;
                 case SkillValidationResult.ItemAlreadyStolen:
-                    Camera.AppendChatText("<color=#FF7777>Skill failed: An item has already been stolen from this target.</color>");
+                    Camera.AppendChatText("Skill failed: An item has already been stolen from this target.", TextColor.Error);
                     break;
                 case SkillValidationResult.Failure:
-                    Camera.AppendChatText("<color=#FF7777>Skill failed.</color>");
+                    Camera.AppendChatText("Skill failed.", TextColor.Error);
                     break;
                 case SkillValidationResult.MemoLocationInvalid:
-                    Camera.AppendChatText("<color=#FF7777>This location is unavailable for use as a warp portal destination.</color>");
+                    Camera.AppendChatText("This location is unavailable for use as a warp portal destination.", TextColor.Error);
                     break;
                 case SkillValidationResult.MemoLocationUnwalkable:
-                    Camera.AppendChatText("<color=#FF7777>Cannot memo current location while standing on un-walkable ground.</color>");
+                    Camera.AppendChatText("Cannot memo current location while standing on un-walkable ground.", TextColor.Error);
                     break;
                 case SkillValidationResult.MustBeStandingInWater:
-                    Camera.AppendChatText("<color=#FF7777>Skill failed: You must have water nearby to use this skill.</color>");
+                    Camera.AppendChatText("Skill failed: You must have water nearby to use this skill.", TextColor.Error);
                     break;
                 case SkillValidationResult.MissingRequiredItem:
-                    Camera.AppendChatText("<color=#FF7777>Skill failed: You are missing a required item or catalyst.</color>");
+                    Camera.AppendChatText("Skill failed: You are missing a required item or catalyst.", TextColor.Error);
                     break;
                 case SkillValidationResult.SkillNotKnown:
-                    Camera.AppendChatText("<color=#FF7777>Skill failed: Skill not learned or available.</color>");
+                    Camera.AppendChatText("Skill failed: Skill not learned or available.", TextColor.Error);
                     break;
                 case SkillValidationResult.TrapTooClose:
-                    Camera.AppendChatText("<color=#FF7777>Skill failed: Too close to another trap, player, or monster.</color>");
+                    Camera.AppendChatText("Skill failed: Too close to another trap, player, or monster.", TextColor.Error);
                     break;
                 case SkillValidationResult.TargetImmuneToEffect:
-                    Camera.AppendChatText("<color=#FF7777>Skill failed: The target's equipment blocks this skill.</color>");
+                    Camera.AppendChatText("Skill failed: The target's equipment blocks this skill.", TextColor.Error);
                     break;
                 case SkillValidationResult.TargetAreaOccupied:
-                    Camera.AppendChatText("<color=#FF7777>Skill failed: Target area is currently occupied.</color>");
+                    Camera.AppendChatText("Skill failed: Target area is currently occupied.", TextColor.Error);
                     break;
                 case SkillValidationResult.CannotTargetSelf:
-                    Camera.AppendChatText("<color=#FF7777>Skill failed: You can't target yourself with this skill.</color>");
+                    Camera.AppendChatText("Skill failed: You can't target yourself with this skill.", TextColor.Error);
+                    break;
+                case SkillValidationResult.FalconRequired:
+                    Camera.AppendChatText("Skill failed: You need a falcon to use this skill.", TextColor.Error);
                     break;
                 case SkillValidationResult.TargetStateIgnoresEffect:
-                    Camera.AppendChatText("<color=#FF7777>Skill failed: A status effect on the target prevents them from being targeted by this skill.</color>");
+                    Camera.AppendChatText("Skill failed: A status effect on the target prevents them from being targeted by this skill.", TextColor.Error);
                     break;
                 case SkillValidationResult.UnusableWhileHidden:
-                    Camera.AppendChatText("<color=#FF7777>Skill failed: This skill cannot be used while hidden.</color>");
+                    Camera.AppendChatText("Skill failed: This skill cannot be used while hidden.", TextColor.Error);
                     break;
                 case SkillValidationResult.MustBeUsedWhileHidden:
-                    Camera.AppendChatText("<color=#FF7777>Skill failed: This skill can only be used while using hiding.</color>");
+                    Camera.AppendChatText("Skill failed: This skill can only be used while using hiding.", TextColor.Error);
                     break;
                 case SkillValidationResult.CannotTeleportHere:
-                    Camera.AppendChatText("<color=#FF7777>You're unable to teleport in this location.</color>");
+                    Camera.AppendChatText("You're unable to teleport in this location.", TextColor.Error);
                     break;
                 case SkillValidationResult.VendFailedGenericError:
                     VendingSetupManager.Instance?.ResumeVendWindow();

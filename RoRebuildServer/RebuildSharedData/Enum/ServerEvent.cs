@@ -19,4 +19,5 @@ public enum ServerResult
     InviteFailedSenderNoBasicSkill,
     InviteFailedRecipientNoBasicSkill,
     InviteFailedAlreadyInParty,
+    InviteFailedPartyFull,
 }

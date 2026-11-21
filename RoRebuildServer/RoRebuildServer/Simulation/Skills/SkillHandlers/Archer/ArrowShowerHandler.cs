@@ -18,10 +18,7 @@ public class ArrowShowerHandler : SkillHandlerBase
 
     public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl)
     {
-        if (lvl < 0 || lvl > 10)
-            lvl = 10;
-
-        return 1.5f - lvl * 0.1f;
+        return MathF.Max(0f, 1.5f - lvl * 0.1f); //instant from level 15, which only a grant reaches
     }
 
     //new arrow shower is 5x5
@@ -31,8 +28,6 @@ public class ArrowShowerHandler : SkillHandlerBase
     {
         var map = source.Character.Map;
         Debug.Assert(map != null);
-
-        lvl = int.Clamp(lvl, 1, 10);
 
         map.AddVisiblePlayersAsPacketRecipients(source.Character);
 

@@ -27,8 +27,6 @@ public class NapalmBeatHandler : SkillHandlerBase
         var map = source.Character.Map;
         Debug.Assert(map != null);
 
-        lvl = int.Clamp(lvl, 1, 10);
-
         //gather all players who can see either the caster or target as recipients of the following packets
         map.AddVisiblePlayersAsPacketRecipients(source.Character, target.Character);
 

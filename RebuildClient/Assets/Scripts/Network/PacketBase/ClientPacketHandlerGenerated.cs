@@ -15,7 +15,7 @@ namespace Assets.Scripts.Network.PacketBase
 	{
 		static ClientPacketHandler()
 		{
-			handlers = new ClientPacketHandlerBase[114];
+			handlers = new ClientPacketHandlerBase[116];
 			handlers[0] = new InvalidPacket(); //PlayerReady
 			handlers[1] = new PacketOnEnterServer(); //EnterServer
 			handlers[2] = new InvalidPacket(); //Ping
@@ -41,38 +41,38 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[22] = new InvalidPacket(); //InstancePacketHandlerStart
 			handlers[23] = new PacketOnConnectionApproved(); //ConnectionApproved
 			handlers[24] = new InvalidPacket(); //ConnectionDenied
-			handlers[25] = new PacketCreateEntity(); //CreateEntity
+			handlers[25] = new InvalidPacket(); //CreateEntity
 			handlers[26] = new PacketCreateEntity2(); //CreateEntity2
-			handlers[27] = new InvalidPacket(); //StartWalk
+			handlers[27] = new PacketStartWalk(); //StartWalk
 			handlers[28] = new InvalidPacket(); //PauseMove
 			handlers[29] = new InvalidPacket(); //ResumeMove
-			handlers[30] = new InvalidPacket(); //Move
+			handlers[30] = new PacketMove(); //Move
 			handlers[31] = new PacketAttack(); //Attack
 			handlers[32] = new PacketTakeDamage(); //TakeDamage
 			handlers[33] = new PacketLookTowards(); //LookTowards
-			handlers[34] = new InvalidPacket(); //SitStand
+			handlers[34] = new PacketSitStand(); //SitStand
 			handlers[35] = new PacketRemoveEntity(); //RemoveEntity
 			handlers[36] = new PacketRemoveAllEntities(); //RemoveAllEntities
 			handlers[37] = new InvalidPacket(); //Disconnect
 			handlers[38] = new PacketOnChangeMaps(); //ChangeMaps
-			handlers[39] = new InvalidPacket(); //StopAction
-			handlers[40] = new InvalidPacket(); //StopImmediate
+			handlers[39] = new PacketStopAction(); //StopAction
+			handlers[40] = new PacketStopImmediate(); //StopImmediate
 			handlers[41] = new InvalidPacket(); //RandomTeleport
 			handlers[42] = new InvalidPacket(); //UnhandledPacket
-			handlers[43] = new InvalidPacket(); //HitTarget
+			handlers[43] = new PacketHitTarget(); //HitTarget
 			handlers[44] = new PacketStartCasting(); //StartCast
-			handlers[45] = new InvalidPacket(); //StartAreaCast
+			handlers[45] = new PacketStartAreaCast(); //StartAreaCast
 			handlers[46] = new PacketUpdateExistingCast(); //UpdateExistingCast
 			handlers[47] = new PacketStopCasting(); //StopCast
-			handlers[48] = new InvalidPacket(); //CreateCastCircle
+			handlers[48] = new PacketCreateCastCircle(); //CreateCastCircle
 			handlers[49] = new PacketOnSkill(); //Skill
 			handlers[50] = new PacketSkillIndirect(); //SkillIndirect
 			handlers[51] = new PacketSkillFailure(); //SkillError
 			handlers[52] = new PacketErrorMessage(); //ErrorMessage
 			handlers[53] = new PacketChangeTarget(); //ChangeTarget
-			handlers[54] = new InvalidPacket(); //GainExp
-			handlers[55] = new InvalidPacket(); //LevelUp
-			handlers[56] = new InvalidPacket(); //Death
+			handlers[54] = new PacketGainExp(); //GainExp
+			handlers[55] = new PacketLevelUp(); //LevelUp
+			handlers[56] = new PacketDeath(); //Death
 			handlers[57] = new PacketHpRecovery(); //HpRecovery
 			handlers[58] = new PacketImprovedRecoveryTick(); //ImprovedRecoveryTick
 			handlers[59] = new PacketChangeSpValue(); //ChangeSpValue
@@ -81,7 +81,7 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[62] = new PacketRequestFailed(); //RequestFailed
 			handlers[63] = new PacketTargeted(); //Targeted
 			handlers[64] = new PacketSay(); //Say
-			handlers[65] = new InvalidPacket(); //ChangeName
+			handlers[65] = new PacketChangeName(); //ChangeName
 			handlers[66] = new PacketResurrection(); //Resurrection
 			handlers[67] = new InvalidPacket(); //UseInventoryItem
 			handlers[68] = new PacketEquipUnequipGear(); //EquipUnequipGear
@@ -130,6 +130,8 @@ namespace Assets.Scripts.Network.PacketBase
 			handlers[111] = new InvalidPacket(); //StartWalkInDirection
 			handlers[112] = new PacketResetMotion(); //ResetMotion
 			handlers[113] = new PacketToggleActivatedState(); //ToggleActivatedState
+			handlers[114] = new PacketPong(); //Pong
+			handlers[115] = new PacketStatusEffectList(); //StatusEffectList
 		}
 	}
 }

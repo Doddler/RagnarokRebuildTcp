@@ -162,7 +162,7 @@ namespace Assets.Scripts.Utility
 
 			MonsterHoverText.text = "";
 			LightmapSettings.lightProbes = null;
-			MinimapController.Instance.RemoveAllEntities();
+			MinimapController.Instance.UnloadMap();
 
 			var sceneName = $"Assets/Scenes/Maps/{newScene}.unity";
 
@@ -190,11 +190,10 @@ namespace Assets.Scripts.Utility
             var newMap = mapEntries.FirstOrDefault(m => m.Code == newScene);
             
             LightProbes.Tetrahedralize();
-            UiManager.Instance.ConfigManager.RefreshAudioLevels(); //why unity does doing this in onAwake do literally nothing?
+            GameConfig.ApplyAudio();
             UiManager.Instance.StatusWindow.ResetStatChanges(); //clear existing changes
 
-            PlayerState.Instance.MapName = newMap.Code;
-            UiManager.Instance.PartyPanel.OnChangeMaps();
+            PlayerState.Instance.SetMapName(newMap.Code);
             UiManager.Instance.EmoteManager.GetComponent<EmoteWindow>()?.EnsureInitialized();
 
 			if (needAudioChange)
@@ -208,22 +207,12 @@ namespace Assets.Scripts.Utility
 				mapFogInfo = json.Items.ToList();
 			}
 			
-			var fog = mapFogInfo.FirstOrDefault(m => m.Map == newScene);
-			if (fog != null)
-			{
-				CameraFollower.Instance.FogNearRatio = fog.NearPlane * 1500f / 400f;
-				CameraFollower.Instance.FogFarRatio = fog.FarPlane * 1500f / 400f;
-			}
-			else
-			{
-				CameraFollower.Instance.FogNearRatio = 0.1f * 1500f / 400f;
-				CameraFollower.Instance.FogFarRatio = 0.9f * 1500f / 400f;
-			}
+			MapFog.SetMap(mapFogInfo.FirstOrDefault(m => m.Map == newScene));
 
 			var type = (MapType)newMap.MapMode;
 
 			if (type == MapType.None || type == MapType.Indoor)
-				MinimapController.Instance.gameObject.SetActive(false);
+				MinimapController.Instance.HideMinimap();
 			else
 				MinimapController.Instance.LoadMinimap(newScene, type);
 			

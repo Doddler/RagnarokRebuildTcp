@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts;
 using UnityEngine;
+using Assets.Scripts.Utility;
 
 
 namespace Utility
@@ -33,8 +34,6 @@ namespace Utility
         public bool UpdateWoeBanner;
 
         private bool firstUpdate = false;
-        
-        private CameraFollower cameraFollower;
 
         public float GetFogDistance => fogDistance;
         
@@ -48,7 +47,6 @@ namespace Utility
 
         public void Awake()
         {
-            cameraFollower = CameraFollower.Instance;
             firstUpdate = true;
         }
 
@@ -138,7 +136,7 @@ namespace Utility
 
         public void LateUpdate()
         {
-            UpdateFog(cameraFollower.FogNearRatio, cameraFollower.FogFarRatio, firstUpdate);
+            UpdateFog(MapFog.NearRatio, MapFog.FarRatio, firstUpdate);
 
             if (UpdateWoeBanner)
                 WoeBannerMaterial.mainTexture = WoeTexture;

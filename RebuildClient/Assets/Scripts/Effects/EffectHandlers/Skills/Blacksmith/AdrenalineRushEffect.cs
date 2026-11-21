@@ -29,27 +29,29 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills.Blacksmith
 
                 var scale = 0.025f;
                 var flashMat = EffectSharedMaterialManager.GetMaterial(EffectMaterialType.SkillFlashEffect);
+                var flashPrim = effect.LaunchPrimitive(PrimitiveType.Flash2D, flashMat, 1.33f);
+                var fData = flashPrim.GetPrimitiveData<FlashData>();
+                flashPrim.transform.localScale = new Vector3(scale, scale, scale);
+                flashPrim.transform.localPosition += new Vector3(0f, 1.6f, -0.01f);
+                flashPrim.SetBillboardMode(BillboardStyle.Normal);
+
                 for (var i = 0; i < 40; i++)
                 {
-                    var flashPrim = effect.LaunchPrimitive(PrimitiveType.Flash2D, flashMat, 1.33f);
-                    var fData = flashPrim.GetPrimitiveData<FlashData>();
-                    flashPrim.transform.localScale = new Vector3(scale, scale, scale);
-                    flashPrim.transform.localPosition += new Vector3(0f, 1.6f, -0.01f);
-                    flashPrim.SetBillboardMode(BillboardStyle.Normal);
-                    fData.RotationAngle = Random.Range(0, 360f);
-                    fData.RotationSpeed = Random.Range(10, 60) / 0.166f; //10-60 degrees per second
-                    fData.RotationAccel = -(fData.RotationSpeed / 80) / 1.5f; //acceleration per frame
-                    fData.Length = 0;
-                    fData.LengthSpeed = Random.Range(20, 50) / 0.2167f;
-                    fData.ArcLength = Random.Range(5, 30) / 10f;
-                    fData.Alpha = 0;
-                    fData.MaxAlpha = 170;
-                    fData.AlphaSpeed = fData.MaxAlpha / 0.1f;
-                    fData.FadeOutLength = 0.167f; //.15f;
-                    fData.ChangePoint = 40;
-                    fData.ChangeRotationSpeed = Random.Range(15, 25) / 0.166f;
-                    fData.ChangeRotationAccel = 0;
-                    fData.ChangeLengthSpeed = 0;
+                    ref var ray = ref fData.AddRay();
+                    ray.RotationAngle = Random.Range(0, 360f);
+                    ray.RotationSpeed = Random.Range(10, 60) / 0.166f; //10-60 degrees per second
+                    ray.RotationAccel = -(ray.RotationSpeed / 80) / 1.5f; //acceleration per frame
+                    ray.Length = 0;
+                    ray.LengthSpeed = Random.Range(20, 50) / 0.2167f;
+                    ray.ArcLength = Random.Range(5, 30) / 10f;
+                    ray.Alpha = 0;
+                    ray.MaxAlpha = 170;
+                    ray.AlphaSpeed = ray.MaxAlpha / 0.1f;
+                    ray.FadeOutLength = 0.167f; //.15f;
+                    ray.ChangePoint = 40;
+                    ray.ChangeRotationSpeed = Random.Range(15, 25) / 0.166f;
+                    ray.ChangeRotationAccel = 0;
+                    ray.ChangeLengthSpeed = 0;
                 }
                 
                 var particleMat = EffectSharedMaterialManager.GetMaterial(EffectMaterialType.ParticleAlphaBlend);

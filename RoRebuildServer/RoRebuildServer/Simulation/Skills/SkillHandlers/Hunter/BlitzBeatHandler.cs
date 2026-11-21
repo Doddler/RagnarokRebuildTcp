@@ -17,6 +17,15 @@ public class BlitzBeatHandler : SkillHandlerBase
 {
     public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl) => 1.5f;
 
+    public override SkillValidationResult ValidateTarget(CombatEntity source, CombatEntity? target,
+        Position position, int lvl, bool isIndirect, bool isItemSource)
+    {
+        if (source.Character.Type == CharacterType.Player && !source.Player.HasFalcon)
+            return SkillValidationResult.FalconRequired;
+
+        return base.ValidateTarget(source, target, position, lvl, isIndirect, isItemSource);
+    }
+
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect, bool isItemSource)
     {
         if (target == null || !target.IsTargetable || source.Character.Type != CharacterType.Player)
@@ -25,7 +34,7 @@ public class BlitzBeatHandler : SkillHandlerBase
         var map = source.Character.Map!;
 
         var baseDamage = 80 + source.GetEffectiveStat(CharacterStat.Dex) / 5 + source.GetEffectiveStat(CharacterStat.Int)
-                         + 6 * source.Player.MaxLearnedLevelOfSkill(CharacterSkill.SteelCrow);
+                         + 6 * source.Player.MaxSkillLevel(CharacterSkill.SteelCrow);
 
         //custom change: add crit damage effects apply to blitz beat
         baseDamage += baseDamage * (source.GetStat(CharacterStat.AddCritDamage) + target.GetStat(CharacterStat.AddCritDamageRaceFormless + (int)target.GetRace())) / 100;

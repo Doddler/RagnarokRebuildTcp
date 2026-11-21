@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Network.HandlerBase;
 using RebuildSharedData.Enum;
 using RebuildSharedData.Networking;
+using Assets.Scripts.UI.Utility;
 
 namespace Assets.Scripts.Network.IncomingPacketHandlers.System
 {
@@ -14,22 +15,22 @@ namespace Assets.Scripts.Network.IncomingPacketHandlers.System
             switch (error)
             {
                 case ClientErrorType.InvalidCoordinates:
-                    Camera.AppendChatText("<color=#FF3030>Error</color>: Coordinates were invalid.");
+                    Camera.AppendError("Coordinates were invalid.");
                     break;
                 case ClientErrorType.TooManyRequests:
-                    Camera.AppendChatText("<color=yellow>Warning</color>: Too many actions or requests.");
+                    Camera.AppendChatText($"<color={TextColors.System}>Warning</color>: Too many actions or requests.");
                     break;
                 case ClientErrorType.UnknownMap:
-                    Camera.AppendChatText("<color=#FF3030>Error</color>: Could not find map.");
+                    Camera.AppendError("Could not find map.");
                     break;
                 case ClientErrorType.MalformedRequest:
-                    Camera.AppendChatText("<color=#FF3030>Error</color>: Request could not be completed due to malformed data.");
+                    Camera.AppendError("Request could not be completed due to malformed data.");
                     break;
                 case ClientErrorType.RequestTooLong:
-                    Camera.AppendChatText("<color=#FF3030>Error</color>: Your text was too long.");
+                    Camera.AppendError("Your text was too long.");
                     break;
                 case ClientErrorType.InvalidInput:
-                    Camera.AppendChatText("<color=#FF3030>Error</color>: Server request could not be performed as the input was not valid.");
+                    Camera.AppendError("Server request could not be performed as the input was not valid.");
                     break;
             }
         }

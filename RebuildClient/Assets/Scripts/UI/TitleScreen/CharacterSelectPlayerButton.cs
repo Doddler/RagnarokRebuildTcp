@@ -1,9 +1,9 @@
 ﻿using Assets.Scripts.Sprites;
-using RebuildSharedData.Util;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using RebuildSharedData.Data;
 
 namespace Assets.Scripts.UI.TitleScreen
 {
@@ -62,16 +62,7 @@ namespace Assets.Scripts.UI.TitleScreen
 
             UnavailableText.gameObject.SetActive(false);
             PlayerSprite.gameObject.SetActive(true);
-            
-            var isMale = summary.SummaryData[(int)PlayerSummaryData.Gender] == 0;
-            var body = summary.SummaryData[(int)PlayerSummaryData.JobId];
-            var head = summary.SummaryData[(int)PlayerSummaryData.HeadId];
-            var hair = summary.SummaryData[(int)PlayerSummaryData.HairColor];
-            var headgear1 = summary.SummaryData[(int)PlayerSummaryData.Headgear1];
-            var headgear2 = summary.SummaryData[(int)PlayerSummaryData.Headgear2];
-            var headgear3 = summary.SummaryData[(int)PlayerSummaryData.Headgear3];
-
-            PlayerSprite.PrepareDisplayPlayerCharacter(body, head, hair, headgear1, headgear2, headgear3, isMale);
+            PlayerSprite.PrepareDisplayPlayerCharacter(PlayerAppearance.FromSummary(summary.SummaryData));
         }
 
         public void OnPointerClick(PointerEventData eventData)

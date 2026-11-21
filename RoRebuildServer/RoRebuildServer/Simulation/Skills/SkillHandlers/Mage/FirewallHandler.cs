@@ -28,10 +28,7 @@ public class FirewallHandler : SkillHandlerBase
 
     public override float GetCastTime(CombatEntity source, CombatEntity? target, Position position, int lvl)
     {
-        if (lvl < 0 || lvl > 10)
-            lvl = 10;
-
-        return 2.15f - lvl * 0.15f;
+        return MathF.Max(0f, 2.15f - lvl * 0.15f); //instant from level 15, which only a grant reaches
     }
 
     public override void Process(CombatEntity source, CombatEntity? target, Position position, int lvl, bool isIndirect,

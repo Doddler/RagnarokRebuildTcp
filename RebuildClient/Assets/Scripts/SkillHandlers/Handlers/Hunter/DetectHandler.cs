@@ -21,7 +21,7 @@ namespace Assets.Scripts.SkillHandlers.Handlers.Hunter
             
             src.PerformSkillMotion();
             
-            var follower = src.FollowerObject;
+            var follower = src.FalconObject;
             if (follower == null)
                 return;
             var bird = follower.GetComponent<BirdFollower>();

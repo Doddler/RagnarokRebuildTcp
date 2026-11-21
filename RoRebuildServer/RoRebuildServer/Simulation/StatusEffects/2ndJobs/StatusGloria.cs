@@ -5,7 +5,7 @@ using RoRebuildServer.Simulation.StatusEffects.Setup;
 
 namespace RoRebuildServer.Simulation.StatusEffects._2ndJobs;
 
-[StatusEffectHandler(CharacterStatusEffect.Gloria, StatusClientVisibility.Ally)]
+[StatusEffectHandler(CharacterStatusEffect.Gloria, StatusClientVisibility.Party)]
 public class StatusGloria : StatusEffectBase
 {
     public override void OnApply(CombatEntity ch, ref StatusEffectState state)
